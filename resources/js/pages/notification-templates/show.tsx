@@ -76,6 +76,7 @@ export default function NotificationTemplateShow({ template, languages, variable
     return (
         <PageTemplate
             title={template.name}
+            description={t('Notification template details and related information')}
             url={route('notification-templates.show', template.id)}
             breadcrumbs={breadcrumbs}
             actions={[

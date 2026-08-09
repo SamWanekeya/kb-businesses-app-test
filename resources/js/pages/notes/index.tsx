@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router } from '@inertiajs/react';
 import { Plus, Eye, Edit, Trash2, Share2, Users, MoreHorizontal, NotebookPen, User } from 'lucide-react';
@@ -15,7 +15,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Dialog } from '@/components/ui/dialog';
 import ViewPopup from './view';
-
+import { Calendar } from 'lucide-react';
 export default function Notes() {
     const { t } = useTranslation();
     const { auth, myNotes, sharedNotes, totalPersonalNotes = 0, totalSharedNotes = 0, users = [], allUsers = [], filters: pageFilters = {} } = usePage().props as any;
@@ -23,7 +23,6 @@ export default function Notes() {
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
     const [selectedCreator, setSelectedCreator] = useState(pageFilters.created_by || 'all');
-    const [showFilters, setShowFilters] = useState(false);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -52,11 +51,16 @@ export default function Notes() {
         return (searchTerm ? 1 : 0) + (selectedCreator !== 'all' ? 1 : 0);
     };
 
+    const pageInitialState = useState(true);
+    useEffect(() => {
+        if (pageInitialState[0]) { pageInitialState[1](false); return; }
+        applyFilters();
+    }, [searchTerm, selectedCreator]);
+
     const handleResetFilters = () => {
         setSearchTerm('');
         setSelectedCreator('all');
-        setShowFilters(false);
-        router.get(route('notes.index'), { view: activeView, page: 1 }, { preserveState: true, preserveScroll: true });
+        router.get(route('notes.index'), { view: activeView });
     };
 
     const handleAction = (action: string, item: any) => {
@@ -137,9 +141,10 @@ export default function Notes() {
     return (
         <PageTemplate
             title={t("Notes")}
+            description={t("Manage your personal and shared notes")}
             actions={hasPermission(permissions, 'create-notes') ? [{
                 label: t('Add Note'),
-                variant:'default',
+                variant: 'default',
                 icon: <Plus className="h-4 w-4 mr-2" />,
                 onClick: () => { setCurrentItem(null); setFormMode('create'); setIsFormModalOpen(true); }
             }] : []}
@@ -183,7 +188,7 @@ export default function Notes() {
                     </div>
                 </Card>
             </div>
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -205,12 +210,9 @@ export default function Notes() {
                             ]
                         }
                     ]}
-                    showFilters={showFilters}
-                    setShowFilters={setShowFilters}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
                     onResetFilters={handleResetFilters}
-                    onApplyFilters={applyFilters}
                     {...(activeView !== 'kanban' && {
                         currentPerPage: pageFilters.per_page?.toString() || "10",
                         onPerPageChange: (value: string) => {
@@ -237,7 +239,7 @@ export default function Notes() {
                             sort_field: pageFilters.sort_field || undefined,
                             sort_direction: pageFilters.sort_direction || undefined,
                             ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-                        }, { preserveState: true, preserveScroll: true });
+                        });
                     }}
                     viewOptions={[
                         { value: 'grid', label: t('Grid'), icon: 'Grid3X3' },
@@ -267,13 +269,13 @@ export default function Notes() {
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
                                                     {hasPermission(permissions, 'view-notes') && (
-                                                    <DropdownMenuItem onClick={() => handleAction('view', note)}>
-                                                        <Eye className="h-4 w-4 mr-2" />{t('View')}
-                                                    </DropdownMenuItem>
+                                                        <DropdownMenuItem onClick={() => handleAction('view', note)}>
+                                                            <Eye className="h-4 w-4 mr-2" />{t('View')}
+                                                        </DropdownMenuItem>
                                                     )}
                                                     {hasPermission(permissions, 'edit-notes') && note.created_by === auth.user.id && (
                                                         <DropdownMenuItem onClick={() => handleAction('edit', note)}>
-                                                            <Edit className="h-4 w-4 mr-2" />{t('Edit')}
+                                                            <Edit className="h-4 w-4 mr-2 " />{t('Edit')}
                                                         </DropdownMenuItem>
                                                     )}
                                                     {hasPermission(permissions, 'delete-notes') && note.created_by === auth.user.id && (
@@ -287,7 +289,7 @@ export default function Notes() {
                                                 </DropdownMenuContent>
                                             </DropdownMenu>
                                         </div>
-                                        <div className="text-sm line-clamp-2 md:line-clamp-3 cursor-pointer h-[40px] md:h-[60px] overflow-hidden" dangerouslySetInnerHTML={{ __html: note.content || t('No content') }}/>
+                                        <div className="text-sm line-clamp-2 md:line-clamp-3 cursor-pointer h-[40px] md:h-[60px] overflow-hidden" dangerouslySetInnerHTML={{ __html: note.content || t('No content') }} />
                                     </Card>
                                 ))}
                                 {myNotesData.length === 0 && (
@@ -314,20 +316,20 @@ export default function Notes() {
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
                                                     {hasPermission(permissions, 'view-notes') && (
-                                                    <DropdownMenuItem onClick={() => handleAction('view', note)}>
-                                                        <Eye className="h-4 w-4 mr-2" />{t('View')}
-                                                    </DropdownMenuItem>
+                                                        <DropdownMenuItem onClick={() => handleAction('view', note)}>
+                                                            <Eye className="h-4 w-4 mr-2 text-gray-500" />{t('View')}
+                                                        </DropdownMenuItem>
                                                     )}
                                                     {hasPermission(permissions, 'edit-notes') && note.created_by === auth.user.id && (
                                                         <DropdownMenuItem onClick={() => handleAction('edit', note)}>
-                                                            <Edit className="h-4 w-4 mr-2" />{t('Edit')}
+                                                            <Edit className="h-4 w-4 mr-2 text-gray-500" />{t('Edit')}
                                                         </DropdownMenuItem>
                                                     )}
                                                     {hasPermission(permissions, 'delete-notes') && note.created_by === auth.user.id && (
                                                         <>
                                                             <DropdownMenuSeparator />
                                                             <DropdownMenuItem onClick={() => handleAction('delete', note)} className="text-red-600">
-                                                                <Trash2 className="h-4 w-4 mr-2" />{t('Delete')}
+                                                                <Trash2 className="h-4 w-4 mr-2 text-gray-500" />{t('Delete')}
                                                             </DropdownMenuItem>
                                                         </>
                                                     )}
@@ -365,26 +367,38 @@ export default function Notes() {
                                             </div>
                                             <User className="h-4 w-4 text-primary flex-shrink-0 ml-2" />
                                         </div>
-                                        <p className="text-xs text-gray-500 mb-3">
-                                            {t('By')} {note.creator?.name} • {window.appSettings?.formatDateTime(note.created_at,false) || '-'}
+                                        <p className="text-xs text-gray-500 mb-3 flex items-center gap-2">
+                                            <span>
+                                                {t('By')} {note.creator?.name}
+                                            </span>
+
+                                            {note.created_at ? (
+                                                <span className="flex items-center gap-1">
+                            <Calendar className="h-4 w-4 text-gray-500" />
+                                                    {window.appSettings?.formatDateTime(note.created_at, false) ||
+                                                        new Date(note.created_at).toLocaleDateString()}
+                                                </span>
+                                            ) : (
+                                                <span>-</span>
+                                            )}
                                         </p>
                                         <div className="text-sm text-gray-600 mb-4 line-clamp-2 h-[40px] overflow-hidden" dangerouslySetInnerHTML={{ __html: note.content || t('No content') }} />
                                         <div className="flex justify-end gap-1 border-t pt-3">
                                             {hasPermission(permissions, 'view-notes') && (
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <Button variant="ghost" size="icon" onClick={() => handleAction('view', note)} className="h-8 w-8 text-blue-500 hover:text-blue-700">
-                                                        <Eye className="h-4 w-4" />
-                                                    </Button>
-                                                </TooltipTrigger>
-                                                <TooltipContent>{t('View')}</TooltipContent>
-                                            </Tooltip>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <Button variant="ghost" size="icon" onClick={() => handleAction('view', note)} className="h-8 w-8 text-blue-500 hover:text-blue-700">
+                                                            <Eye className="h-4 w-4 text-gray-500" />
+                                                        </Button>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent>{t('View')}</TooltipContent>
+                                                </Tooltip>
                                             )}
                                             {hasPermission(permissions, 'edit-notes') && note.created_by === auth.user.id && (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
                                                         <Button variant="ghost" size="icon" onClick={() => handleAction('edit', note)} className="h-8 w-8 text-amber-500 hover:text-amber-700">
-                                                            <Edit className="h-4 w-4" />
+                                                            <Edit className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
                                                     <TooltipContent>{t('Edit')}</TooltipContent>
@@ -394,7 +408,7 @@ export default function Notes() {
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
                                                         <Button variant="ghost" size="icon" onClick={() => handleAction('delete', note)} className="h-8 w-8 text-red-500 hover:text-red-700">
-                                                            <Trash2 className="h-4 w-4" />
+                                                            <Trash2 className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
                                                     <TooltipContent>{t('Delete')}</TooltipContent>
@@ -422,26 +436,38 @@ export default function Notes() {
                                             </div>
                                             <Share2 className="h-4 w-4 text-primary flex-shrink-0 ml-2" />
                                         </div>
-                                        <p className="text-xs text-gray-500 mb-3">
-                                            {t('By')} {note.creator?.name} • {new Date(note.created_at).toLocaleDateString()}
-                                        </p>
+                                        <p className="text-xs text-gray-500 mb-3 flex items-center gap-2">
+    <span>
+        {t('By')} {note.creator?.name}
+    </span>
+
+    {note.created_at ? (
+        <span className="flex items-center gap-1">
+            <Calendar className="h-4 w-4 text-gray-500" />
+            {window.appSettings?.formatDateTime(note.created_at, false) ||
+                new Date(note.created_at).toLocaleDateString()}
+        </span>
+    ) : (
+        <span>-</span>
+    )}
+</p>
                                         <div className="text-sm text-gray-600 mb-4 line-clamp-2 h-[40px] overflow-hidden" dangerouslySetInnerHTML={{ __html: note.content || t('No content') }} />
                                         <div className="flex justify-end gap-1 border-t pt-3">
                                             {hasPermission(permissions, 'view-notes') && (
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <Button variant="ghost" size="icon" onClick={() => handleAction('view', note)} className="h-8 w-8 text-blue-500 hover:text-blue-700">
-                                                        <Eye className="h-4 w-4" />
-                                                    </Button>
-                                                </TooltipTrigger>
-                                                <TooltipContent>{t('View')}</TooltipContent>
-                                            </Tooltip>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <Button variant="ghost" size="icon" onClick={() => handleAction('view', note)} className="h-8 w-8 text-blue-500 hover:text-blue-700">
+                                                            <Eye className="h-4 w-4 text-gray-500" />
+                                                        </Button>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent>{t('View')}</TooltipContent>
+                                                </Tooltip>
                                             )}
                                             {hasPermission(permissions, 'edit-notes') && note.created_by === auth.user.id && (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
                                                         <Button variant="ghost" size="icon" onClick={() => handleAction('edit', note)} className="h-8 w-8 text-amber-500 hover:text-amber-700">
-                                                            <Edit className="h-4 w-4" />
+                                                            <Edit className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
                                                     <TooltipContent>{t('Edit')}</TooltipContent>
@@ -451,7 +477,7 @@ export default function Notes() {
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
                                                         <Button variant="ghost" size="icon" onClick={() => handleAction('delete', note)} className="h-8 w-8 text-red-500 hover:text-red-700">
-                                                            <Trash2 className="h-4 w-4" />
+                                                            <Trash2 className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
                                                     <TooltipContent>{t('Delete')}</TooltipContent>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Brain } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { ChatGptModal } from '@/components/chatgpt';
 import { Button } from '@/components/ui/button';
 import { usePage } from '@inertiajs/react';
@@ -81,7 +81,7 @@ export function FloatingChatGpt() {
           data-chatgpt-button
           style={{ pointerEvents: 'auto' }}
         >
-          <Brain className="h-6 w-6" />
+          <Sparkles className="h-6 w-6" />
         </Button>
       </div>
 

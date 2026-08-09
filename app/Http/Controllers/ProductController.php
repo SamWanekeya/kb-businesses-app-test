@@ -116,10 +116,11 @@ class ProductController extends Controller
             ->get();
 
         return Inertia::render('products/create', [
-            'categories' => $categories,
-            'brands' => $brands,
-            'taxes' => $taxes,
-            'users' => $users
+            'categories'   => $categories,
+            'brands'       => $brands,
+            'taxes'        => $taxes,
+            'users'        => $users,
+            'existingSkus' => \App\Models\Product::where('created_by', createdBy())->pluck('sku'),
         ]);
     }
 
@@ -204,6 +205,7 @@ class ProductController extends Controller
                 'users'            => $users,
                 'mainImage'        => $product->main_image_url,
                 'additionalImages' => $product->additional_image_urls,
+                'existingSkus'     => \App\Models\Product::where('created_by', createdBy())->where('id', '!=', $id)->pluck('sku'),
             ]);
         } else {
             return redirect()->route('products.index')->with('error', __('Product not found.'));
@@ -217,24 +219,24 @@ class ProductController extends Controller
             ->first();
 
         if ($product) {
-            try {
-                $validated = $request->validate([
-                    'name' => 'required|string|max:255',
-                    'sku' => 'required|string|max:255|unique:products,sku,' . $productId,
-                    'description' => 'nullable|string',
-                    'price' => 'required|numeric|min:0',
-                    'stock_quantity' => 'nullable|integer|min:0',
-                    'image' => 'nullable|string',
-                    'main_image_id' => 'nullable|exists:media,id',
-                    'additional_image_ids' => 'nullable|array',
-                    'additional_image_ids.*' => 'exists:media,id',
-                    'category_id' => 'required|exists:categories,id',
-                    'brand_id' => 'required|exists:brands,id',
-                    'tax_id' => 'required|exists:taxes,id',
-                    'status' => 'nullable|in:active,inactive',
-                    'assigned_to' => 'required|exists:users,id',
-                ]);
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'sku' => 'required|string|max:255|unique:products,sku,' . $productId,
+                'description' => 'nullable|string',
+                'price' => 'required|numeric|min:0',
+                'stock_quantity' => 'nullable|integer|min:0',
+                'image' => 'nullable|string',
+                'main_image_id' => 'nullable|exists:media,id',
+                'additional_image_ids' => 'nullable|array',
+                'additional_image_ids.*' => 'exists:media,id',
+                'category_id' => 'required|exists:categories,id',
+                'brand_id' => 'required|exists:brands,id',
+                'tax_id' => 'required|exists:taxes,id',
+                'status' => 'nullable|in:active,inactive',
+                'assigned_to' => 'required|exists:users,id',
+            ]);
 
+            try {
                 $product->update($validated);
 
                 return redirect()->route('products.index')->with('success', __('Product updated successfully.'));

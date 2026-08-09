@@ -73,7 +73,7 @@ class PlanOrderController extends BaseController
             $perPage = 10;
         }
 
-        $planOrders = $query->paginate((int)$perPage);
+        $planOrders = $query->paginate((int)$perPage)->withQueryString();
 
         return Inertia::render('plans/plan-orders', [
             'planOrders' => $planOrders,

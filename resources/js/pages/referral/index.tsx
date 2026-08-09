@@ -52,22 +52,26 @@ export default function Referral() {
   const settingsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const getTopOffset = (el: HTMLElement) => el.getBoundingClientRect().top + window.scrollY;
+
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + 100;
+      const scrollPosition = window.scrollY + 120;
 
-      const dashboardPosition = dashboardRef.current?.offsetTop || 0;
-      const referredUsersPosition = referredUsersRef.current?.offsetTop || 0;
-      const payoutRequestsPosition = payoutRequestsRef.current?.offsetTop || 0;
-      const settingsPosition = settingsRef.current?.offsetTop || 0;
+      const refs = [
+        ...(userType === 'superadmin' ? [{ id: 'settings', ref: settingsRef }] : []),
+        { id: 'payout-requests', ref: payoutRequestsRef },
+        { id: 'referred-users', ref: referredUsersRef },
+        { id: 'dashboard', ref: dashboardRef },
+      ];
 
-      if (userType === 'superadmin' && scrollPosition >= settingsPosition) {
-        setActiveSection('settings');
-      } else if (scrollPosition >= payoutRequestsPosition) {
-        setActiveSection('payout-requests');
-      } else if (scrollPosition >= referredUsersPosition) {
-        setActiveSection('referred-users');
-      } else {
-        setActiveSection('dashboard');
+      for (const { id, ref } of refs) {
+        if (ref.current) {
+          const top = getTopOffset(ref.current);
+          if (scrollPosition >= top) {
+            setActiveSection(id);
+            break;
+          }
+        }
       }
     };
 
@@ -77,14 +81,13 @@ export default function Referral() {
     if (hash) {
       const element = document.getElementById(hash);
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+        const top = getTopOffset(element) - 80;
+        window.scrollTo({ top, behavior: 'smooth' });
         setActiveSection(hash);
       }
     }
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [userType]);
 
   const handleNavClick = (href: string) => {
@@ -101,18 +104,29 @@ export default function Referral() {
     breadcrumbs={breadcrumbs}
       title={t('Referral Program')}
       url="/referral"
+      description={t('Manage your referral program.')}
     >
+    <style>{`
+            main {
+            max-width: 100vw;
+            overflow-x: clip !important;
+            }
+            body {
+            overflow-x: clip !important;
+            }
+        `}</style>
       <div className="flex flex-col md:flex-row gap-8">
         <div className="md:w-64 flex-shrink-0">
           <div className="sticky top-20">
             <ScrollArea className="h-[calc(100vh-5rem)]">
-              <div className="pr-4 space-y-1">
+              <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-3 pr-4">
+                  <div className="flex flex-col gap-2">
                 {sidebarNavItems.map((item) => (
                   <Button
                     key={item.href}
                     variant="ghost"
-                    className={cn('w-full justify-start text-sm', {
-                      'bg-muted font-semibold': activeSection === item.href.replace('#', ''),
+                    className={cn('w-full justify-start gap-3 rounded-lg text-sm font-normal text-card-foreground hover:bg-muted hover:font-normal', {
+                      'bg-muted font-medium text-card-foreground': activeSection === item.href.replace('#', ''),
                     })}
                     onClick={() => handleNavClick(item.href)}
                   >
@@ -120,6 +134,7 @@ export default function Referral() {
                     {item.title}
                   </Button>
                 ))}
+              </div>
               </div>
             </ScrollArea>
           </div>

@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router } from '@inertiajs/react';
-import { ArrowLeft, Plus } from 'lucide-react';
+import { ArrowLeft, Plus, Eye, Edit, Trash2, User, Calendar, Building2, MoreHorizontal } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Card } from '@/components/ui/card';
-import { Eye, Edit, Trash2, User, Calendar, Building2, MoreHorizontal } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useInitials } from '@/hooks/use-initials';
 import { CrudFormModal } from '@/components/CrudFormModal';
@@ -12,8 +11,8 @@ import { CrudDeleteModal } from '@/components/CrudDeleteModal';
 import { toast } from '@/components/custom-toast';
 import { hasPermission } from '@/utils/authorization';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { capitalize, getDisplayUrl } from '@/utils/helper';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
 
 export default function ProjectKanban() {
     const { t } = useTranslation();
@@ -191,45 +190,16 @@ export default function ProjectKanban() {
     return (
         <PageTemplate
             title={`${project.name} - ${t('Kanban View')}`}
+            description={t('Manage project tasks using a kanban board')}
             url={`/projects/${project.id}/kanban`}
             actions={pageActions}
             breadcrumbs={breadcrumbs}
             noPadding
             className="overflow-hidden"
         >
-            <style>{`
-        .kanban-scroll::-webkit-scrollbar {
-          height: 8px;
-        }
-        .kanban-scroll::-webkit-scrollbar-track {
-          background: #f1f5f9;
-          border-radius: 4px;
-        }
-        .kanban-scroll::-webkit-scrollbar-thumb {
-          background: #cbd5e1;
-          border-radius: 4px;
-        }
-        .kanban-scroll::-webkit-scrollbar-thumb:hover {
-          background: #94a3b8;
-        }
-        .column-scroll::-webkit-scrollbar {
-          width: 6px;
-        }
-        .column-scroll::-webkit-scrollbar-track {
-          background: #f8fafc;
-          border-radius: 3px;
-        }
-        .column-scroll::-webkit-scrollbar-thumb {
-          background: #e2e8f0;
-          border-radius: 3px;
-        }
-        .column-scroll::-webkit-scrollbar-thumb:hover {
-          background: #cbd5e1;
-        }
-      `}</style>
 
             {/* Search and filters section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 shadow mb-4">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -273,211 +243,193 @@ export default function ProjectKanban() {
                 />
             </div>
 
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
-                <div className="bg-gray-50 p-4 rounded-lg overflow-hidden">
-                    <div className="flex gap-4 overflow-x-auto pb-4 kanban-scroll" style={{ height: 'calc(100vh - 250px)', width: '100%' }}>
-                        {statuses.map((status) => {
-                            const statusTasks = Object.values(kanbanData).find((column: any) => column.status?.id === status.id)?.tasks || [];
-                            return (
-                                <div
-                                    key={status.id}
-                                    className="flex-shrink-0"
-                                    style={{ minWidth: 'calc(20% - 16px)', width: 'calc(20% - 16px)' }}
-                                    onDrop={(e) => {
-                                        e.preventDefault();
-                                        e.currentTarget.classList.remove('bg-blue-50');
-                                        const taskId = e.dataTransfer.getData('taskId');
-                                        if (taskId) {
-                                            if (!hasPermission(permissions, 'edit-project-tasks')) {
-                                                toast.error(t('Permission denied.'));
-                                                return;
-                                            }
+            <style>{`
+                .kanban-col-scroll::-webkit-scrollbar { width: 4px; }
+                .kanban-col-scroll::-webkit-scrollbar-track { background: transparent; }
+                .kanban-col-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+                .kanban-board-scroll::-webkit-scrollbar { height: 6px; }
+                .kanban-board-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+                .kanban-board-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+            `}</style>
 
-                                            toast.loading('Updating task status...');
+            <div className="flex gap-4 overflow-x-auto pb-2 kanban-board-scroll" style={{ height: 'calc(100vh - 240px)' }}>
+                {statuses.map((status: any) => {
+                    const statusTasks = Object.values(kanbanData).find((column: any) => column.status?.id === status.id)?.tasks || [];
+                    const colBg = status.color ? `${status.color}12` : '#f8fafc';
+                    const colBorder = status.color ? `${status.color}30` : '#e2e8f0';
+                    return (
+                        <div
+                            key={status.id}
+                            className="flex-shrink-0 flex flex-col rounded-xl border"
+                            style={{ width: '300px', minWidth: '300px', backgroundColor: colBg, borderColor: colBorder, height: '100%' }}
+                            onDragOver={(e) => e.preventDefault()}
+                            onDrop={(e) => {
+                                e.preventDefault();
+                                const taskId = e.dataTransfer.getData('taskId');
+                                if (!taskId) return;
+                                if (!hasPermission(permissions, 'edit-project-tasks')) { toast.error(t('Permission denied.')); return; }
+                                const currentTask = Object.values(kanbanData).flatMap((column: any) => column.tasks).find((task: any) => task.id.toString() === taskId);
+                                if (currentTask) {
+                                    toast.loading(t('Updating task status...'));
+                                    router.put(route('project-tasks.update-status', taskId), { task_status_id: status.id }, {
+                                        preserveState: true,
+                                        preserveScroll: true,
+                                        onSuccess: (page) => {
+                                            toast.dismiss();
+                                            if (page.props.flash?.success) toast.success(t(page.props.flash.success));
+                                            router.reload();
+                                        },
+                                        onError: () => { toast.dismiss(); toast.error(t('Failed to update task status')); }
+                                    });
+                                }
+                            }}
+                        >
+                            {/* Column header */}
+                            <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: colBorder }}>
+                                <div className="flex items-center gap-2">
+                                    <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: status.color }}></span>
+                                    <span className="font-semibold text-sm text-gray-800 dark:text-gray-100">{status.name}</span>
+                                    <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: status.color + '22', color: status.color }}>
+                                        {statusTasks.length}
+                                    </span>
+                                </div>
+                                {hasPermission(permissions, 'create-project-tasks') && (
+                                    <button
+                                        onClick={() => handleAddTask(status.id)}
+                                        className="w-6 h-6 flex items-center justify-center rounded-md hover:bg-white/60 text-gray-500 hover:text-gray-800 transition-colors cursor-pointer"
+                                        title={t('Add Task')}
+                                    >
+                                        <Plus className="h-4 w-4" />
+                                    </button>
+                                )}
+                            </div>
 
-                                            const currentTask = Object.values(kanbanData)
-                                                .flatMap((column: any) => column.tasks)
-                                                .find((task: any) => task.id.toString() === taskId);
-
-                                            if (currentTask) {
-                                                router.put(route('project-tasks.update-status', taskId), {
-                                                    task_status_id: status.id
-                                                }, {
-                                                    preserveState: true,
-                                                    preserveScroll: true,
-                                                    onSuccess: (page) => {
-                                                        toast.dismiss();
-                                                        if (page.props.flash?.success) {
-                                                            toast.success(t(page.props.flash.success));
-                                                        }
-                                                        router.reload();
-                                                    },
-                                                    onError: () => {
-                                                        toast.dismiss();
-                                                        toast.error('Failed to update task status');
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    }}
-                                    onDragOver={(e) => {
-                                        e.preventDefault();
-                                        e.currentTarget.classList.add('bg-blue-50');
-                                    }}
-                                    onDragLeave={(e) => {
-                                        e.currentTarget.classList.remove('bg-blue-50');
-                                    }}
-                                >
-                                    <div className="bg-gray-100 rounded-lg h-full flex flex-col">
-                                        <div className="p-3 border-b border-gray-200">
-                                            <div className="flex items-center justify-between mb-2">
-                                                <div className="flex items-center gap-2">
-                                                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: status.color }}></div>
-                                                    <h3 className="font-semibold text-sm text-gray-700">{status.name}</h3>
-                                                </div>
-                                                <span className="text-xs text-gray-500 bg-gray-200 px-2 py-1 rounded-full">
-                                                    {statusTasks.length}
-                                                </span>
-                                            </div>
-                                            {hasPermission(permissions, 'create-project-tasks') && (
-                                                <button
-                                                    onClick={() => handleAddTask(status.id)}
-                                                    className="w-full text-xs text-gray-600 hover:text-blue-600 hover:bg-blue-50 py-2 px-3 rounded-md border border-dashed border-gray-300 hover:border-blue-300 transition-all duration-200 flex items-center justify-center gap-1 cursor-pointer"
-                                                >
-                                                    <Plus className="h-3 w-3" />
-                                                    {t('Add Task')}
-                                                </button>
-                                            )}
+                            {/* Cards */}
+                            <div className="flex-1 overflow-y-auto kanban-col-scroll p-3 space-y-3">
+                                {statusTasks.length === 0 ? (
+                                    <div className="flex flex-col items-center justify-center h-40 text-gray-300">
+                                        <div className="w-14 h-14 rounded-full border-2 border-dashed border-gray-200 flex items-center justify-center mb-2">
+                                            <User className="h-6 w-6 text-gray-300" />
                                         </div>
-                                        <div className="p-2 space-y-2 overflow-y-auto flex-1 column-scroll" style={{ maxHeight: 'calc(100vh - 320px)' }}>
-                                            {statusTasks.map((task) => (
-                                                <div
-                                                    key={task.id}
-                                                    draggable={hasPermission(permissions, 'edit-project-tasks')}
-                                                    onDragStart={(e) => {
-                                                        if (!hasPermission(permissions, 'edit-project-tasks')) {
-                                                            e.preventDefault();
-                                                            return;
-                                                        }
-                                                        e.dataTransfer.setData('taskId', task.id.toString());
-                                                        e.currentTarget.classList.add('opacity-50', 'scale-95');
-                                                    }}
-                                                    onDragEnd={(e) => {
-                                                        e.currentTarget.classList.remove('opacity-50', 'scale-95');
-                                                    }}
-                                                    className={`transition-all duration-200 ${hasPermission(permissions, 'edit-project-tasks') ? 'cursor-move' : 'cursor-default'
-                                                        }`}
-                                                >
-                                                    <Card className="bg-white border-l-4 border-t border-r border-b border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 group" style={{ borderLeftColor: status.color }}>
-                                                        <div className="p-3">
-                                                            <div className="flex items-center justify-between mb-2">
-                                                                <h4
-                                                                    className="font-medium text-sm text-gray-900 cursor-pointer hover:text-blue-600 flex-1 pr-2"
-                                                                    onClick={() => handleAction('view', task)}
-                                                                >
-                                                                    {task.title}
-                                                                </h4>
-                                                                <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                                                                    <DropdownMenu>
-                                                                        <DropdownMenuTrigger asChild>
-                                                                            <button className="p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded cursor-pointer">
-                                                                                <MoreHorizontal className="h-4 w-4" />
-                                                                            </button>
-                                                                        </DropdownMenuTrigger>
-                                                                        <DropdownMenuContent align="end" className="w-40">
-                                                                            <DropdownMenuItem onClick={() => handleAction('view', task)}>
-                                                                                <Eye className="h-4 w-4 mr-2" />
-                                                                                {t('View')}
-                                                                            </DropdownMenuItem>
-                                                                            {hasPermission(permissions, 'edit-project-tasks') && (
-                                                                                <DropdownMenuItem onClick={() => handleAction('edit', task)}>
-                                                                                    <Edit className="h-4 w-4 mr-2" />
-                                                                                    {t('Edit')}
-                                                                                </DropdownMenuItem>
-                                                                            )}
-                                                                            {hasPermission(permissions, 'delete-project-tasks') && (
-                                                                                <>
-                                                                                    <DropdownMenuSeparator />
-                                                                                    <DropdownMenuItem onClick={() => handleAction('delete', task)} className="text-red-600">
-                                                                                        <Trash2 className="h-4 w-4 mr-2" />
-                                                                                        {t('Delete')}
-                                                                                    </DropdownMenuItem>
-                                                                                </>
-                                                                            )}
-                                                                        </DropdownMenuContent>
-                                                                    </DropdownMenu>
-                                                                </div>
-                                                            </div>
-
-                                                            {task.description && (
-                                                                <p className="text-xs text-gray-500 mb-3 line-clamp-2">{task.description}</p>
+                                        <p className="text-xs text-gray-400">{t('Drop tasks here')}</p>
+                                    </div>
+                                ) : statusTasks.map((task: any) => (
+                                    <div
+                                        key={task.id}
+                                        draggable={hasPermission(permissions, 'edit-project-tasks')}
+                                        onDragStart={(e) => {
+                                            if (!hasPermission(permissions, 'edit-project-tasks')) { e.preventDefault(); return; }
+                                            e.dataTransfer.setData('taskId', task.id.toString());
+                                            e.currentTarget.classList.add('opacity-50');
+                                        }}
+                                        onDragEnd={(e) => e.currentTarget.classList.remove('opacity-50')}
+                                        className={hasPermission(permissions, 'edit-project-tasks') ? 'cursor-grab active:cursor-grabbing' : ''}
+                                    >
+                                        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow duration-200">
+                                            <div className="p-3">
+                                                {/* Top row: title + menu */}
+                                                <div className="flex items-start gap-2.5 mb-2.5">
+                                                    <div className="flex-1 min-w-0">
+                                                        <h4
+                                                            className="font-semibold text-sm text-gray-900 dark:text-gray-100 leading-tight truncate cursor-pointer hover:text-primary transition-colors"
+                                                            onClick={() => handleAction('view', task)}
+                                                        >
+                                                            {task.title}
+                                                        </h4>
+                                                    </div>
+                                                    <DropdownMenu>
+                                                        <DropdownMenuTrigger asChild>
+                                                            <Button variant="ghost" size="sm" className="h-6 w-6 p-0 flex-shrink-0 text-gray-400 hover:text-gray-600">
+                                                                <MoreHorizontal className="h-3.5 w-3.5" />
+                                                            </Button>
+                                                        </DropdownMenuTrigger>
+                                                        <DropdownMenuContent align="end" className="w-32">
+                                                            <DropdownMenuItem onClick={() => handleAction('view', task)}>
+                                                                <Eye className="h-4 w-4 mr-2" />{t('View')}
+                                                            </DropdownMenuItem>
+                                                            {hasPermission(permissions, 'edit-project-tasks') && (
+                                                                <DropdownMenuItem onClick={() => handleAction('edit', task)}>
+                                                                    <Edit className="h-4 w-4 mr-2" />{t('Edit')}
+                                                                </DropdownMenuItem>
                                                             )}
-
-                                                            <div className="mb-3">
-                                                                <div className="flex justify-between text-xs mb-1">
-                                                                    <span className="text-gray-600">Progress</span>
-                                                                    <span className="font-medium">{task.progress}%</span>
-                                                                </div>
-                                                                <div className="w-full bg-gray-200 rounded-full h-1.5">
-                                                                    <div
-                                                                        className="h-1.5 rounded-full transition-all duration-300 bg-primary"
-                                                                        style={{ width: `${task.progress}%` }}
-                                                                    ></div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div className="flex items-center justify-between text-xs">
-                                                                <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${task.priority === 'urgent' ? 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20' :
-                                                                        task.priority === 'high' ? 'bg-orange-50 text-orange-700 ring-1 ring-inset ring-orange-600/20' :
-                                                                            task.priority === 'medium' ? 'bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20' :
-                                                                                'bg-gray-50 text-gray-700 ring-1 ring-inset ring-gray-600/20'
-                                                                    }`}>
-                                                                    {capitalize(task.priority)}
-                                                                </span>
-                                                                {task.assigned_user && (
-                                                                    <div className="flex items-center gap-1">
-                                                                        <Avatar className="w-5 h-5 rounded-full object-cover">
-                                                                            <AvatarImage
-                                                                                src={task.assigned_user?.avatar}
-                                                                                alt={task.assigned_user?.name || 'Avatar'}
-                                                                                onError={(e) => {
-                                                                                    // Fallback to default avatar on error
-                                                                                    const target = e.target as HTMLImageElement;
-                                                                                    target.src = getDisplayUrl('avatars/avatar.png');
-                                                                                }}
-                                                                            />
-                                                                            <AvatarFallback className="text-lg">
-                                                                                {task.assigned_user?.name?.charAt(0)?.toUpperCase() || 'U'}
-                                                                            </AvatarFallback>
-                                                                        </Avatar>
-                                                                        <span className="text-gray-600 max-w-16 truncate">{task.assigned_user.name}</span>
-                                                                    </div>
-                                                                )}
-                                                            </div>
-
-                                                            {task.due_date && (
-                                                                <div className="flex items-center gap-1 mt-2 text-xs text-gray-500">
-                                                                    <Calendar className="h-3 w-3" />
-                                                                    <span>Due: {window.appSettings?.formatDateTime(task.due_date, false) || new Date(task.due_date).toLocaleDateString()}</span>
-                                                                </div>
+                                                            {hasPermission(permissions, 'delete-project-tasks') && (
+                                                                <>
+                                                                    <DropdownMenuSeparator />
+                                                                    <DropdownMenuItem onClick={() => handleAction('delete', task)} className="text-red-600">
+                                                                        <Trash2 className="h-4 w-4 mr-2" />{t('Delete')}
+                                                                    </DropdownMenuItem>
+                                                                </>
                                                             )}
+                                                        </DropdownMenuContent>
+                                                    </DropdownMenu>
+                                                </div>
+
+                                                {/* Description */}
+                                                {task.description && (
+                                                    <p className="text-xs text-gray-500 mb-2.5 line-clamp-2">{task.description}</p>
+                                                )}
+
+                                                {/* Progress bar */}
+                                                <div className="mb-2.5">
+                                                    <div className="flex justify-between text-xs mb-1">
+                                                        <span className="text-gray-500">{t('Progress')}</span>
+                                                        <span className="font-medium text-gray-700">{task.progress}%</span>
+                                                    </div>
+                                                    <div className="w-full bg-gray-200 rounded-full h-1.5">
+                                                        <div className="h-1.5 rounded-full transition-all duration-300 bg-primary" style={{ width: `${task.progress}%` }} />
+                                                    </div>
+                                                </div>
+
+                                                {/* Priority badge */}
+                                                <div className="flex flex-wrap gap-1 mb-2.5">
+                                                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                                                        task.priority === 'urgent' ? 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20' :
+                                                        task.priority === 'high' ? 'bg-orange-50 text-orange-700 ring-1 ring-inset ring-orange-600/20' :
+                                                        task.priority === 'medium' ? 'bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20' :
+                                                        'bg-gray-50 text-gray-700 ring-1 ring-inset ring-gray-600/20'
+                                                    }`}>
+                                                        {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
+                                                    </span>
+                                                </div>
+
+                                                {/* Footer: due date + assigned avatar */}
+                                                <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-700">
+                                                    <div className="flex items-center gap-1 text-xs text-gray-500">
+                                                        <Calendar className="h-3 w-3" />
+                                                        <span>
+                                                            {task.due_date
+                                                                ? `${t('Due')}: ${window.appSettings?.formatDateTime(task.due_date, false) || new Date(task.due_date).toLocaleDateString()}`
+                                                                : t('No due date')}
+                                                        </span>
+                                                    </div>
+                                                    {task.assigned_user ? (
+                                                        <TooltipProvider>
+                                                            <Tooltip>
+                                                                <TooltipTrigger asChild>
+                                                                    <Avatar className="h-7 w-7 cursor-pointer">
+                                                                        <AvatarImage src={task.assigned_user.avatar} />
+                                                                        <AvatarFallback className="text-xs" style={{ backgroundColor: status.color + '33', color: status.color }}>
+                                                                            {getInitials(task.assigned_user.name)}
+                                                                        </AvatarFallback>
+                                                                    </Avatar>
+                                                                </TooltipTrigger>
+                                                                <TooltipContent>{task.assigned_user.name}</TooltipContent>
+                                                            </Tooltip>
+                                                        </TooltipProvider>
+                                                    ) : (
+                                                        <div className="h-6 w-6 rounded-full bg-gray-100 flex items-center justify-center">
+                                                            <User className="h-3 w-3 text-gray-400" />
                                                         </div>
-                                                    </Card>
+                                                    )}
                                                 </div>
-                                            ))}
-                                            {statusTasks.length === 0 && (
-                                                <div className="text-center py-8 text-gray-400">
-                                                    <Building2 className="h-8 w-8 mx-auto mb-2" />
-                                                    <p className="text-sm">{t('No tasks')}</p>
-                                                </div>
-                                            )}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
+                                ))}
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
 
             <CrudFormModal

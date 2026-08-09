@@ -59,9 +59,10 @@ class CompanyController extends Controller
         }
 
         // Get paginated results
-        $perPage = $request->input('per_page', 10);
-        if (!is_numeric($perPage) || $perPage < 1 || $perPage > 100) {
-            $perPage = 10;
+        $defaultPerPage = $request->view === 'grid' ? 12 : 10;
+        $perPage = $request->input('per_page', $defaultPerPage);
+        if (!is_numeric($perPage) || $perPage < 1 || $perPage > 200) {
+            $perPage = $defaultPerPage;
         }
         $companies = $query->paginate((int)$perPage)->withQueryString();
 

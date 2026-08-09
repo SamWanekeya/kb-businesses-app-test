@@ -1,5 +1,5 @@
 // pages/plans/plan-orders.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { ShoppingCart, Calendar, CheckCircle, CreditCard, User, Tag, Download, UserCheck, FileText } from 'lucide-react';
 import { capitalize, getDisplayUrl } from '@/utils/helper';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useInitials } from '@/hooks/use-initials';
 
 export default function PlanOrdersPage() {
     const { t } = useTranslation();
@@ -21,22 +23,21 @@ export default function PlanOrdersPage() {
 
     // State
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
-    const [selectedStatus, setSelectedStatus] = useState(pageFilters.status || '_empty_');
+    const [selectedStatus, setSelectedStatus] = useState(pageFilters.status || 'all');
     const [dateFrom, setDateFrom] = useState(pageFilters.date_from || '');
     const [dateTo, setDateTo] = useState(pageFilters.date_to || '');
-    const [showFilters, setShowFilters] = useState(false);
     const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const [currentItem, setCurrentItem] = useState<any>(null);
 
     // Check if any filters are active
     const hasActiveFilters = () => {
-        return selectedStatus !== '_empty_' || dateFrom !== '' || dateTo !== '' || searchTerm !== '';
+        return selectedStatus !== 'all' || dateFrom !== '' || dateTo !== '' || searchTerm !== '';
     };
 
     // Count active filters
     const activeFilterCount = () => {
-        return (selectedStatus !== '_empty_' ? 1 : 0) +
+        return (selectedStatus !== 'all' ? 1 : 0) +
             (dateFrom !== '' ? 1 : 0) +
             (dateTo !== '' ? 1 : 0) +
             (searchTerm !== '' ? 1 : 0);
@@ -51,7 +52,7 @@ export default function PlanOrdersPage() {
         router.get(route('plan-orders.index'), {
             page: 1,
             search: searchTerm || undefined,
-            status: selectedStatus !== '_empty_' ? selectedStatus : undefined,
+            status: selectedStatus !== 'all' ? selectedStatus : undefined,
             date_from: dateFrom || undefined,
             date_to: dateTo || undefined,
             ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
@@ -67,7 +68,7 @@ export default function PlanOrdersPage() {
             sort_direction: direction,
             page: 1,
             search: searchTerm || undefined,
-            status: selectedStatus !== '_empty_' ? selectedStatus : undefined,
+            status: selectedStatus !== 'all' ? selectedStatus : undefined,
             date_from: dateFrom || undefined,
             date_to: dateTo || undefined,
             per_page: pageFilters.per_page
@@ -141,14 +142,18 @@ export default function PlanOrdersPage() {
         });
     };
 
+    const [pageInitialState, setPageInitialState] = useState(true);
+    useEffect(() => {
+        if (pageInitialState) { setPageInitialState(false); return; }
+        applyFilters();
+    }, [selectedStatus, dateFrom, dateTo]);
+
     const handleResetFilters = () => {
         setSearchTerm('');
-        setSelectedStatus('_empty_');
+        setSelectedStatus('all');
         setDateFrom('');
         setDateTo('');
-        setShowFilters(false);
-
-        router.get(route('plan-orders.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
+        router.get(route('plan-orders.index'));
     };
 
     const breadcrumbs = [
@@ -169,18 +174,24 @@ export default function PlanOrdersPage() {
         {
             key: 'order_number',
             label: t('Order Number'),
-            render: (value) => value || '-'
+            className: 'whitespace-nowrap',
+            render: (value) => <span className="whitespace-nowrap">{value || '-'}</span>
         },
         {
             key: 'user.name',
-            label: t('Name'),
+            label: t('Ordered By'),
+            className: 'whitespace-nowrap',
             render: (_, row) => {
                 const avatarUrl = row.user?.avatar ? getDisplayUrl(row.user.avatar) : getDisplayUrl('avatars/avatar.png');
                 return (
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
+                        <Avatar className="h-8 w-8 flex-shrink-0">
+                            <AvatarImage src={avatarUrl} alt={row.user?.name || ''} />
+                            <AvatarFallback>{getInitials(row.user?.name || '')}</AvatarFallback>
+                        </Avatar>
                         <div>
-                            <div className="font-medium">{row.user?.name || '-'}</div>
-                            <div className="text-xs text-gray-500">{row.user?.email || ''}</div>
+                            <div className="whitespace-nowrap font-medium">{row.user?.name || '-'}</div>
+                            <div className="text-sm text-muted-foreground whitespace-nowrap">{row.user?.email || ''}</div>
                         </div>
                     </div>
                 );
@@ -189,11 +200,12 @@ export default function PlanOrdersPage() {
         {
             key: 'plan.name',
             label: t('Plan'),
+            className: 'whitespace-nowrap',
             render: (_, row) => {
                 const planName = row.plan?.name;
                 if (!planName) return '-';
                 return (
-                    <span className={'inline-flex items-center rounded-md px-2 py-1 text-sm font-medium bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20'}>
+                    <span className="inline-flex items-center rounded-md px-2 py-1 text-sm font-medium bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20 whitespace-nowrap">
                         {capitalize(planName)}
                     </span>
                 );
@@ -202,24 +214,28 @@ export default function PlanOrdersPage() {
         {
             key: 'original_price',
             label: t('Original Price'),
-            render: (value) => window.appSettings.formatCurrency(value) || '0'
+            className: 'whitespace-nowrap',
+            render: (value) => <span className="whitespace-nowrap font-mono">{window.appSettings.formatCurrency(value) || '0'}</span>
         },
         {
             key: 'discount_amount',
             label: t('Discount'),
-            render: (value) => value > 0 ? `-${window.appSettings.formatCurrency(value)}` : '-'
+            className: 'whitespace-nowrap',
+            render: (value) => <span className="whitespace-nowrap font-mono">{value > 0 ? `-${window.appSettings.formatCurrency(value)}` : '-'}</span>
         },
         {
             key: 'final_price',
             label: t('Final Price'),
             sortable: true,
-            render: (value) => window.appSettings.formatCurrency(value) || '0'
+            className: 'whitespace-nowrap',
+            render: (value) => <span className="whitespace-nowrap font-mono">{window.appSettings.formatCurrency(value) || '0'}</span>
         },
         {
             key: 'status',
             label: t('Status'),
+            className: 'whitespace-nowrap',
             render: (value) => (
-                <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset capitalize ${statusColors[value] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}>
+                <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset capitalize whitespace-nowrap ${statusColors[value] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}>
                     {t(value)}
                 </span>
             )
@@ -227,6 +243,7 @@ export default function PlanOrdersPage() {
         {
             key: 'receipt_path',
             label: t('Receipt'),
+            className: 'whitespace-nowrap',
             render: (value) => value ? (
                 <a href={getDisplayUrl(value)} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} title={t('View Receipt')}>
                     <FileText className="h-4 w-4 text-green-600 hover:text-green-800" />
@@ -237,11 +254,13 @@ export default function PlanOrdersPage() {
             key: 'ordered_at',
             label: t('Order Date'),
             sortable: true,
-            render: (value) => window.appSettings?.formatDateTime(value, false) || '-'
+            className: 'whitespace-nowrap',
+            type: 'date'
         }
     ];
 
     // Define table actions - only visible to super admin
+    const getInitials = useInitials();
     const isSuperAdmin = auth?.user?.type === 'superadmin';
     const actions = isSuperAdmin ? [
         {
@@ -272,7 +291,7 @@ export default function PlanOrdersPage() {
 
     // Prepare status options for filter
     const statusOptions = [
-        { value: '_empty_', label: t('All Status') },
+        { value: 'all', label: t('All Status') },
         { value: 'pending', label: t('Pending') },
         { value: 'approved', label: t('Approved') },
         { value: 'rejected', label: t('Rejected') },
@@ -284,10 +303,11 @@ export default function PlanOrdersPage() {
             title={t('Plan Orders')}
             url="/plan-orders"
             breadcrumbs={breadcrumbs}
+            description={isSuperAdmin ? t('View and manage all plan orders from companies.') : t('View your plan orders.')}
             noPadding
         >
             {/* Search and filters section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -316,29 +336,15 @@ export default function PlanOrdersPage() {
                             onChange: setDateTo
                         }
                     ]}
-                    showFilters={showFilters}
-                    setShowFilters={setShowFilters}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
                     onResetFilters={handleResetFilters}
-                    onApplyFilters={applyFilters}
-                    currentPerPage={pageFilters.per_page?.toString() || "10"}
-                    onPerPageChange={(value) => {
-                        router.get(route('plan-orders.index'), {
-                            page: 1,
-                            per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
-                            search: searchTerm || undefined,
-                            status: selectedStatus !== '_empty_' ? selectedStatus : undefined,
-                            date_from: dateFrom || undefined,
-                            date_to: dateTo || undefined,
-                            ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
-                        }, { preserveState: true, preserveScroll: true });
-                    }}
                 />
             </div>
 
             {/* Content section */}
             <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+                <div className="overflow-x-auto">
                 <CrudTable
                     columns={columns}
                     actions={actions}
@@ -350,6 +356,7 @@ export default function PlanOrdersPage() {
                     onSort={handleSort}
                     permissions={permissions}
                 />
+                </div>
 
                 {/* Pagination section */}
                 <Pagination
@@ -359,6 +366,18 @@ export default function PlanOrdersPage() {
                     links={planOrders?.links}
                     entityName={t("plan orders")}
                     onPageChange={(url) => router.get(url)}
+                    currentPerPage={pageFilters.per_page?.toString() || "10"}
+                    onPerPageChange={(value) => {
+                        router.get(route('plan-orders.index'), {
+                            page: 1,
+                            per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
+                            search: searchTerm || undefined,
+                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                            date_from: dateFrom || undefined,
+                            date_to: dateTo || undefined,
+                            ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+                        }, { preserveState: true, preserveScroll: true });
+                    }}
                 />
             </div>
 
@@ -447,14 +466,14 @@ export default function PlanOrdersPage() {
                                         <CreditCard className="h-4 w-4" />
                                         {t('Original Price')}
                                     </label>
-                                    <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{window.appSettings.formatCurrency(currentItem.original_price)}</p>
+                                    <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white font-mono">{window.appSettings.formatCurrency(currentItem.original_price)}</p>
                                 </div>
                                 <div>
                                     <label className="text-sm font-medium text-gray-500 flex items-center gap-2">
                                         <Tag className="h-4 w-4" />
                                         {t('Discount')}
                                     </label>
-                                    <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">
+                                    <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white font-mono">
                                         {currentItem.discount_amount > 0 ? `-${window.appSettings.formatCurrency(currentItem.discount_amount)}` : '-'}
                                     </p>
                                 </div>
@@ -467,7 +486,7 @@ export default function PlanOrdersPage() {
                                         <CreditCard className="h-4 w-4" />
                                         {t('Final Price')}
                                     </label>
-                                    <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{window.appSettings.formatCurrency(currentItem.final_price)}</p>
+                                    <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white font-mono">{window.appSettings.formatCurrency(currentItem.final_price)}</p>
                                 </div>
                                 {currentItem.receipt_path && (
                                     <div>

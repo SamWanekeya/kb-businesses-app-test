@@ -61,7 +61,8 @@ class UserController extends BaseController
         }
 
         // Handle pagination
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $defaultPerPage = $request->view === 'grid' ? 12 : 10;
+        $perPage = max(1, min(200, (int) $request->get('per_page', $defaultPerPage)));
         $users = $userQuery->paginate($perPage)->withQueryString();
 
         # Roles listing - Get roles based on user type

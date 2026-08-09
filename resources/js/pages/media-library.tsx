@@ -368,7 +368,9 @@ export default function MediaLibraryDemo() {
             title={t('Media Library')}
             url="/media-library"
             breadcrumbs={breadcrumbs}
+            description={t('Manage all your media files in one place.')}
             actions={pageActions}
+            noPadding
         >
             <div className="space-y-6">
 
@@ -527,7 +529,7 @@ export default function MediaLibraryDemo() {
                                 {totalPages > 1 && (
                                     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t">
                                         <div className="text-sm text-muted-foreground">
-                                            {t('Showing')} <span className="font-semibold">{startIndex + 1}</span> {t('to')} <span className="font-semibold">{Math.min(startIndex + itemsPerPage, filteredMedia.length)}</span> {t('of')} <span className="font-semibold">{filteredMedia.length}</span> {t('files')}
+                                            {t('Showing')} <span className="font-semibold">{startIndex + 1}</span> {t('to')} <span className="font-semibold">{Math.min(startIndex + itemsPerPage, filteredMedia.length)}</span> {t('of')} <span className="font-semibold">{filteredMedia.length}</span> {t('results')}
                                         </div>
 
                                         <div className="flex items-center gap-2">

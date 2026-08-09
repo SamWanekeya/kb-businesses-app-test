@@ -49,16 +49,20 @@ class CallController extends Controller
         }
 
         $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
-        $calls = $query->paginate($perPage);
+        $calls = $query->paginate($perPage)->withQueryString();
 
         $userQuery = \App\Models\User::where('created_by', createdBy());
-        $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
+        $allUsers = (clone $userQuery)->select('id', 'name', 'email', 'avatar')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
+        $allContacts = \App\Models\Contact::where('created_by', createdBy())->select('id', 'name')->get();
+        $allLeads = \App\Models\Lead::where('created_by', createdBy())->select('id', 'name')->get();
 
         return Inertia::render('calls/index', [
             'calls' => $calls,
             'users' => $users,
             'allUsers' => $allUsers,
+            'allContacts' => $allContacts,
+            'allLeads' => $allLeads,
             'filters' => $request->all(['search', 'status', 'assigned_to', 'sort_field', 'sort_direction', 'per_page', 'page']),
             'settings' => settings(createdBy()),
         ]);

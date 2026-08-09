@@ -67,8 +67,9 @@ class CaseController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
-        $cases = $query->paginate($perPage);
+        $defaultPerPage = $request->view === 'grid' ? 12 : 10;
+        $perPage = max(1, min(200, (int) $request->get('per_page', $defaultPerPage)));
+        $cases = $query->paginate($perPage)->withQueryString();
 
         $accountQuery = Account::where('created_by', createdBy());
         $allAccounts = (clone $accountQuery)->get(['id', 'name']);

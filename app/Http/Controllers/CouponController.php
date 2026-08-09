@@ -61,7 +61,7 @@ class CouponController extends BaseController
             $perPage = 10;
         }
 
-        $coupons = $query->paginate((int)$perPage);
+        $coupons = $query->paginate((int)$perPage)->withQueryString();
 
         return Inertia::render('coupons/index', [
             'coupons' => $coupons,

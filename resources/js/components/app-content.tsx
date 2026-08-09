@@ -7,7 +7,7 @@ export function AppContent({ variant = 'header', children, ...props }) {
 
     if (variant === 'sidebar') {
         return (
-            <SidebarInset {...props}>
+        <SidebarInset {...props} style={{ overflowX: 'hidden' }}>
                 <div dir={position === 'right' ? 'rtl' : 'ltr'}>
                     {children}
                 </div>

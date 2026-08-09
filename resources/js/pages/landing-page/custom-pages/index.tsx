@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePage, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { Plus } from 'lucide-react';
+import { Plus, Calendar } from 'lucide-react';
 import { PageTemplate } from '@/components/page-template';
 import { CrudTable } from '@/components/CrudTable';
 import { CrudDeleteModal } from '@/components/CrudDeleteModal';
@@ -43,6 +43,13 @@ export default function CustomPagesIndex() {
   const hasActiveFilters = () => searchTerm !== '';
   const activeFilterCount = () => searchTerm ? 1 : 0;
 
+  const [pageInitialState, setPageInitialState] = useState(true);
+
+    useEffect(() => {
+        if (!pageInitialState) applyFilters();
+        setPageInitialState(false);
+    }, [searchTerm]);
+
   const applyFilters = () => {
     router.get(route('landing-page.custom-pages.index'), {
       page: 1,
@@ -53,9 +60,7 @@ export default function CustomPagesIndex() {
   };
 
   const handleResetFilters = () => {
-    setSearchTerm('');
-    setShowFilters(false);
-    router.get(route('landing-page.custom-pages.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
+    router.get(route('landing-page.custom-pages.index'));
   };
 
   const handleEdit = (page: CustomPage) => {
@@ -155,7 +160,12 @@ export default function CustomPagesIndex() {
       key: 'created_at',
       label: 'Created',
       sortable: true,
-      render: (value: string) => window.appSettings?.formatDateTime(value, false) || new Date(value).toLocaleDateString()
+      render: (value: string) => (
+        <div className="flex items-center gap-1.5 text-gray-500 whitespace-nowrap">
+          <Calendar className="h-3.5 w-3.5 shrink-0" />
+          <span>{window.appSettings?.formatDateTime(value, false) || new Date(value).toLocaleDateString()}</span>
+        </div>
+      )
     }
   ];
 
@@ -177,6 +187,7 @@ export default function CustomPagesIndex() {
   return (
     <PageTemplate
       title="Custom Pages"
+      description={t('Manage your custom pages and their content.')}
       url="/custom-pages"
       breadcrumbs={[
         { title: t('Dashboard'), href: route('dashboard') },
@@ -193,27 +204,16 @@ export default function CustomPagesIndex() {
       ]}
       noPadding
     >
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+     <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
         <SearchAndFilterBar
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
           onSearch={handleSearch}
           filters={[]}
-          showFilters={showFilters}
-          setShowFilters={setShowFilters}
           hasActiveFilters={hasActiveFilters}
           activeFilterCount={activeFilterCount}
           onResetFilters={handleResetFilters}
-          onApplyFilters={applyFilters}
-          currentPerPage={pageFilters.per_page?.toString() || "10"}
-          onPerPageChange={(value) => {
-            router.get(route('landing-page.custom-pages.index'), {
-              page: 1,
-              per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
-              search: searchTerm || undefined,
-              ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
-            }, { preserveState: true, preserveScroll: true });
-          }}
+
         />
       </div>
 
@@ -237,6 +237,15 @@ export default function CustomPagesIndex() {
             links={pages?.links}
             entityName="pages"
             onPageChange={(url) => router.get(url)}
+            currentPerPage={pageFilters.per_page?.toString() || "10"}
+            onPerPageChange={(value) => {
+              router.get(route('landing-page.custom-pages.index'), {
+                page: 1,
+                per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
+                search: searchTerm || undefined,
+                ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+              }, { preserveState: true, preserveScroll: true });
+            }}
           />
         )}
       </div>

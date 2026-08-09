@@ -48,7 +48,7 @@ class UserObserver
                     $data = [
                         'user_id' => $user->id,
                         'plan_id' => $user->plan_id,
-                        'billing_cycle'=>'monthly',
+                        // 'billing_cycle'=>'monthly',
                         'payment_method' => 'manual',
                         'coupon_code' => null,
                         'payment_id' => null,

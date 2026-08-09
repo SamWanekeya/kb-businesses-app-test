@@ -2,5 +2,5 @@
 
 return [
     'system' => 'Sales SaaS',
-    'system_version' => '7.9',
+    'system_version' => '8.0',
 ];

@@ -20,9 +20,9 @@ export default function Template7({ salesOrder, items, taxesData, settings, colo
     const fontColor = color === 'ffffff' || color === 'fbdd03' || color === 'c1d82f' || color === '46de98' || color === '40c7d0' || color === 'fac168' ? '#000000' : '#ffffff';
     const borderColor = color === 'ffffff' ? '#000000' : `#${color}`;
 
-    const formatCurrency = (amount: number | string) => {
+    const formatCurrency = (amount: number | string): React.ReactNode => {
         if (typeof amount === 'string' && amount.startsWith('<')) return amount;
-        return (window as any).appSettings?.formatCurrency(Number(amount)) || `$${Number(amount)}`;
+        const val = (window as any).appSettings?.formatCurrency(Number(amount)) || `$${Number(amount)}`; return <span style={{fontFamily:'monospace'}}>{val}</span>;
     };
 
     const formatValue = (value: any, fallback: string = '') => {

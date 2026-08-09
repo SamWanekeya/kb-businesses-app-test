@@ -189,7 +189,7 @@ export default function Settings() {
         // For company users, only show specific settings
         if (hasRole(auth.roles, 'company')) {
             // Only allow system settings, email settings, brand settings, currency settings, webhook settings, email notifications, and settings
-            return ['manage-system-settings', 'manage-email-settings', 'manage-brand-settings', 'manage-currency-settings', 'manage-webhook-settings', 'manage-email-notifications', 'manage-twilio-notifications','manage-quotes-settings','manage-sales-orders-settings','manage-invoices-settings', 'settings'].includes(item.permission);
+            return ['manage-system-settings', 'manage-email-settings', 'manage-brand-settings', 'manage-currency-settings', 'manage-webhook-settings', 'manage-email-notifications', 'manage-twilio-notifications', 'manage-quotes-settings', 'manage-sales-orders-settings', 'manage-invoices-settings', 'settings'].includes(item.permission);
         }
         return false;
     });
@@ -251,45 +251,43 @@ export default function Settings() {
             const storageSettingsPosition = storageSettingsRef.current?.offsetTop || 0;
 
             // Determine active section based on scroll position
-            if (scrollPosition >= storageSettingsPosition) {
-                setActiveSection('storage-settings');
-
-            } else if (scrollPosition >= googleCalendarSettingsPosition) {
-                setActiveSection('google-calendar-settings');
-            } else if (scrollPosition >= webhookSettingsPosition) {
+            if (scrollPosition >= webhookSettingsPosition && webhookSettingsPosition > 0) {
                 setActiveSection('webhook-settings');
-            } else if (scrollPosition >= cacheSettingsPosition) {
+            } else if (scrollPosition >= googleCalendarSettingsPosition && googleCalendarSettingsPosition > 0) {
+                setActiveSection('google-calendar-settings');
+            } else if (scrollPosition >= cacheSettingsPosition && cacheSettingsPosition > 0) {
                 setActiveSection('cache-settings');
-            } else if (scrollPosition >= seoSettingsPosition) {
+            } else if (scrollPosition >= storageSettingsPosition && storageSettingsPosition > 0) {
+                setActiveSection('storage-settings');
+            } else if (scrollPosition >= seoSettingsPosition && seoSettingsPosition > 0) {
                 setActiveSection('seo-settings');
-            } else if (scrollPosition >= cookieSettingsPosition) {
+            } else if (scrollPosition >= cookieSettingsPosition && cookieSettingsPosition > 0) {
                 setActiveSection('cookie-settings');
-            } else if (scrollPosition >= chatgptSettingsPosition) {
+            } else if (scrollPosition >= chatgptSettingsPosition && chatgptSettingsPosition > 0) {
                 setActiveSection('chatgpt-settings');
-            } else if (scrollPosition >= recaptchaSettingsPosition) {
+            } else if (scrollPosition >= recaptchaSettingsPosition && recaptchaSettingsPosition > 0) {
                 setActiveSection('recaptcha-settings');
-            } else if (scrollPosition >= slackNotificationSettingsPosition) {
-                setActiveSection('slack-notification-settings');
-            } else if (scrollPosition >= twilioNotificationSettingsPosition) {
-                setActiveSection('twilio-notification-settings');
-            } else if (scrollPosition >= emailNotificationSettingsPosition) {
-                setActiveSection('email-notification-settings');
-            } else if (scrollPosition >= salesOrderTemplatesPosition) {
-                setActiveSection('sales-order-templates');
-            } else if (scrollPosition >= quoteTemplatesPosition) {
-                setActiveSection('quote-templates');
-            } else if (scrollPosition >= invoiceTemplatesPosition) {
+            } else if (scrollPosition >= invoiceTemplatesPosition && invoiceTemplatesPosition > 0) {
                 setActiveSection('invoice-templates');
-            } else if (scrollPosition >= companyPaymentSettingsPosition) {
+            } else if (scrollPosition >= salesOrderTemplatesPosition && salesOrderTemplatesPosition > 0) {
+                setActiveSection('sales-order-templates');
+            } else if (scrollPosition >= quoteTemplatesPosition && quoteTemplatesPosition > 0) {
+                setActiveSection('quote-templates');
+            } else if (scrollPosition >= companyPaymentSettingsPosition && companyPaymentSettingsPosition > 0) {
                 setActiveSection('company-payment-settings');
-            } else if (scrollPosition >= paymentSettingsPosition) {
+            } else if (scrollPosition >= slackNotificationSettingsPosition && slackNotificationSettingsPosition > 0) {
+                setActiveSection('slack-notification-settings');
+            } else if (scrollPosition >= twilioNotificationSettingsPosition && twilioNotificationSettingsPosition > 0) {
+                setActiveSection('twilio-notification-settings');
+            } else if (scrollPosition >= emailNotificationSettingsPosition && emailNotificationSettingsPosition > 0) {
+                setActiveSection('email-notification-settings');
+            } else if (scrollPosition >= paymentSettingsPosition && paymentSettingsPosition > 0) {
                 setActiveSection('payment-settings');
-            } else if (scrollPosition >= emailSettingsPosition) {
+            } else if (scrollPosition >= emailSettingsPosition && emailSettingsPosition > 0) {
                 setActiveSection('email-settings');
-            } else if (scrollPosition >= currencySettingsPosition) {
+            } else if (scrollPosition >= currencySettingsPosition && currencySettingsPosition > 0) {
                 setActiveSection('currency-settings');
-
-            } else if (scrollPosition >= brandSettingsPosition) {
+            } else if (scrollPosition >= brandSettingsPosition && brandSettingsPosition > 0) {
                 setActiveSection('brand-settings');
             } else {
                 setActiveSection('system-settings');
@@ -332,22 +330,31 @@ export default function Settings() {
     return (
         <PageTemplate
             title={t('Settings')}
+            description={t('Manage system settings.')}
             url="/settings"
             breadcrumbs={breadcrumbs}
-        >
+        ><style>{`
+            main {
+            max-width: 100vw;
+            overflow-x: clip !important;
+            }
+            body {
+            overflow-x: clip !important;
+            }
+        `}</style>
             <div className={`flex flex-col md:flex-row gap-8`} dir={position === 'right' ? 'rtl' : 'ltr'}>
                 {/* Sidebar Navigation */}
                 <div className="md:w-64 flex-shrink-0">
                     <div className="sticky top-20">
                         <ScrollArea className="h-[calc(100vh-5rem)]">
-                            <div className={`space-y-1 ${position === 'right' ? 'pl-4' : 'pr-4'}`}>
-                                {/* <div className="pr-4 space-y-1"> */}
+                            <div className={`bg-card rounded-xl border p-2 shadow-sm`}>
+                                  <div className="flex flex-col gap-2">
                                 {sidebarNavItems.map((item) => (
                                     <Button
                                         key={item.href}
                                         variant="ghost"
-                                        className={cn('w-full justify-start', {
-                                            'bg-muted font-medium': activeSection === item.href.replace('#', ''),
+                                        className={cn('w-full justify-start gap-3 rounded-lg text-sm font-normal text-card-foreground hover:bg-muted hover:font-normal', {
+                                            'bg-muted font-medium text-card-foreground': activeSection === item.href.replace('#', ''),
                                         })}
                                         onClick={() => handleNavClick(item.href)}
                                     >
@@ -355,6 +362,7 @@ export default function Settings() {
                                         {item.title}
                                     </Button>
                                 ))}
+                            </div>
                             </div>
                         </ScrollArea>
                     </div>

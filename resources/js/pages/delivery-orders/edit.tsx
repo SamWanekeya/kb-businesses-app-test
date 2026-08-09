@@ -169,8 +169,10 @@ export default function DeliveryOrderEdit() {
     return (
         <PageTemplate
             title={t('Edit Delivery Order')}
+            description={t('Update delivery order details and related information')}
             breadcrumbs={breadcrumbs}
             url="/delivery-orders"
+            noPadding
             actions={[{ label: t('Back'), icon: <ArrowLeft className="h-4 w-4 mr-2" />, variant: 'outline', onClick: () => router.visit(route('delivery-orders.index')) }]}
         >
             <div className="space-y-8 bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-6 rounded-lg border border-gray-200 dark:border-gray-700">
@@ -277,22 +279,27 @@ export default function DeliveryOrderEdit() {
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
                                 {t('Delivery Date')} <span className="text-red-500">*</span>
                             </Label>
+                            <div className="cursor-pointer" onClick={(e) => { const input = (e.currentTarget as HTMLElement).querySelector('input'); try { (input as any)?.showPicker?.(); } catch { input?.focus(); } }}>
                             <Input
                                 type="date"
                                 value={form.delivery_date}
                                 onChange={e => set('delivery_date', e.target.value)}
-                                className={errors.delivery_date ? 'border-red-500' : ''}
+                                className={`cursor-pointer ${errors.delivery_date ? 'border-red-500' : ''}`}
                             />
+                            </div>
                             <FieldError message={errors.delivery_date} />
                         </div>
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">{t('Expected Delivery Date')}</Label>
+                            <div className="cursor-pointer" onClick={(e) => { const input = (e.currentTarget as HTMLElement).querySelector('input'); try { (input as any)?.showPicker?.(); } catch { input?.focus(); } }}>
                             <Input
                                 type="date"
                                 value={form.expected_delivery_date}
                                 onChange={e => set('expected_delivery_date', e.target.value)}
+                                className="cursor-pointer"
                             />
+                            </div>
                             <FieldError message={errors.expected_delivery_date} />
                         </div>
 
@@ -312,13 +319,11 @@ export default function DeliveryOrderEdit() {
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">{t('Shipping Cost')}</Label>
                             <div className="relative">
-                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
                                 <Input
                                     type="number" min="0" step="0.01"
                                     value={form.shipping_cost}
                                     onChange={e => set('shipping_cost', e.target.value)}
                                     placeholder="0.00"
-                                    className="pl-7"
                                 />
                             </div>
                         </div>
@@ -346,8 +351,8 @@ export default function DeliveryOrderEdit() {
                 </div>
 
                 {/* ── Products ── */}
-                <div>
-                    <div className="flex items-center justify-between mb-5 pb-2 border-b border-gray-200 dark:border-gray-700">
+                <div className="-mx-6">
+                    <div className="flex items-center justify-between px-6 py-3 border-t border-b bg-gray-50 dark:bg-gray-800">
                         <div className="flex items-center gap-2">
                             <h2 className="text-base font-semibold text-gray-900 dark:text-white">
                                 {t('Products')}
@@ -358,32 +363,33 @@ export default function DeliveryOrderEdit() {
                             type="button" size="sm"
                             onClick={() => setProductRows(p => [...p, { id: crypto.randomUUID(), product_id: '', quantity: '1', unit_weight: '0' }])}
                         >
-                            <Plus className="h-4 w-4 mr-1.5" />{t('Add Product')}
+                            <Plus className="h-4 w-4 mr-1" /> {t('Add Product')}
                         </Button>
                     </div>
 
                     {productRows.length === 0 ? (
-                        <div className="text-center py-10 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-lg">
+                        <div className="text-center py-10 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-lg mx-6 my-4">
                             <p className="text-sm text-gray-400">{t('No products added yet. Click "Add Product" to begin.')}</p>
                         </div>
                     ) : (
-                        <div className="overflow-x-auto max-h-72 overflow-y-auto">
+                        <>
+                        <div className="overflow-x-auto overflow-y-auto max-h-72">
                             <table className="w-full text-sm">
                                 <thead className="sticky top-0 z-10">
-                                    <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
-                                        {['Product', 'Quantity', 'Unit Weight (kg)', 'Total Weight (kg)', ''].map(h => (
-                                            <th key={h} className="text-left text-xs font-semibold text-gray-500 dark:text-gray-400 pb-3 pr-4 whitespace-nowrap">
-                                                {h === 'Product' ? <>{t(h)} <span className="text-red-500">*</span></> : h === 'Quantity' ? <>{t(h)} <span className="text-red-500">*</span></> : h ? t(h) : ''}
-                                            </th>
-                                        ))}
+                                    <tr className="border-b bg-gray-50 dark:bg-gray-800 text-xs font-semibold text-gray-600 dark:text-gray-400">
+                                        <th className="px-4 py-3 text-left min-w-[220px]">{t('Product')} <span className="text-red-500">*</span></th>
+                                        <th className="px-4 py-3 text-left w-28">{t('Quantity')} <span className="text-red-500">*</span></th>
+                                        <th className="px-4 py-3 text-left w-36">{t('Unit Weight (kg)')}</th>
+                                        <th className="px-4 py-3 text-left w-36">{t('Total Weight (kg)')}</th>
+                                        <th className="px-4 py-3 w-12"></th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                                     {productRows.map((row, i) => {
                                         const lineWeight = (parseFloat(row.quantity) || 0) * (parseFloat(row.unit_weight) || 0);
                                         return (
-                                            <tr key={row.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 dark:text-gray-100">
-                                                <td className="py-3 pr-4 min-w-[220px]">
+                                            <tr key={row.id} className="border-b hover:bg-gray-50 dark:hover:bg-gray-800/50 dark:text-gray-100">
+                                                <td className="px-4 py-3 min-w-[220px]">
                                                     <Select value={row.product_id} onValueChange={v => setRow(row.id, 'product_id', v)}>
                                                         <SelectTrigger>
                                                             <SelectValue placeholder={t('Select product')} />
@@ -423,10 +429,11 @@ export default function DeliveryOrderEdit() {
                                                 <td className="py-3 w-10">
                                                     <button
                                                         type="button"
-                                                        onClick={() => setProductRows(p => p.filter(r => r.id !== row.id))}
-                                                        className="p-1 text-red-600"
+                                                        onClick={() => setProductRows(p => p.length <= 1 ? p : p.filter(r => r.id !== row.id))}
+                                                        disabled={productRows.length <= 1}
+                                                        className="p-1 rounded text-gray-500 hover:bg-gray-100 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
                                                     >
-                                                        <Trash2 className="h-4 w-4" />
+                                                        <Trash2 className="h-4 w-4 text-gray-500" />
                                                     </button>
                                                 </td>
                                             </tr>
@@ -434,19 +441,24 @@ export default function DeliveryOrderEdit() {
                                     })}
                                 </tbody>
                             </table>
-                            {totalWeight > 0 && (
-                                <div className="flex justify-end mt-3">
-                                    <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                                        {t('Total Weight')}: {totalWeight.toFixed(2)} kg
-                                    </span>
-                                </div>
-                            )}
                         </div>
+                        {totalWeight >= 0 && productRows.some(r => r.product_id) && (
+                            <div className="flex justify-end px-6 py-3 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
+                                <div className="w-64">
+                                    <div className="flex justify-between text-base font-bold text-gray-900 dark:text-gray-100 border-t pt-2">
+                                        <span>{t('Total Weight')}</span>
+                                        <span className="text-green-600 text-lg">{totalWeight.toFixed(2)} kg</span>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        </>
                     )}
                 </div>
 
                 {/* ── Delivery Address ── */}
-                <div>
+                <div className="-mx-6"><div className="border-t border-gray-200 dark:border-gray-700" /></div>
+                <div className="mt-6">
                     <SectionHeader title={t('Delivery Address')} />
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
 

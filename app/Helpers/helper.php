@@ -843,12 +843,14 @@ if (! function_exists('createPlanOrder')) {
     function createPlanOrder($data)
     {
         $plan = Plan::findOrFail($data['plan_id']);
+        $billingCycle = $data['billing_cycle'] ?? 'monthly';
         $pricing = calculatePlanPricing($plan, $data['coupon_code'] ?? null, $data['billing_cycle'] ?? 'monthly');
         return PlanOrder::create([
             'user_id' => $data['user_id'],
             'plan_id' => $plan->id,
             'coupon_id' => $pricing['coupon_id'],
-            'billing_cycle' => $data['billing_cycle'],
+            // 'billing_cycle' => $data['billing_cycle'],
+             'billing_cycle' => $billingCycle,
             'payment_method' => $data['payment_method'],
             'coupon_code' => $data['coupon_code'] ?? null,
             'original_price' => $pricing['original_price'],

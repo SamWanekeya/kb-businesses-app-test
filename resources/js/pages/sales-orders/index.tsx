@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router, Link } from '@inertiajs/react';
 import { Plus, FileDown } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useInitials } from '@/hooks/use-initials';
 import { hasPermission } from '@/utils/authorization';
 import { CrudTable } from '@/components/CrudTable';
 import { CrudFormModal } from '@/components/CrudFormModal';
@@ -14,6 +16,7 @@ import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 
 export default function SalesOrders() {
     const { t } = useTranslation();
+    const getInitials = useInitials();
     const { auth, salesOrders, allAccounts, allUsers = [], filters: pageFilters = {}, publicUrlBase, encryptedSalesOrderIds, flash = {} } = usePage().props as any;
 
     useEffect(() => {
@@ -27,7 +30,6 @@ export default function SalesOrders() {
     const [selectedStatus, setSelectedStatus] = useState(pageFilters.status || 'all');
     const [selectedAccount, setSelectedAccount] = useState(pageFilters.account_id || 'all');
     const [selectedAssignee, setSelectedAssignee] = useState(pageFilters.assigned_to || 'all');
-    const [showFilters, setShowFilters] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
     const [currentItem, setCurrentItem] = useState<any>(null);
@@ -135,13 +137,18 @@ export default function SalesOrders() {
 
 
 
+    const pageInitialState = useState(true);
+    useEffect(() => {
+        if (pageInitialState[0]) { pageInitialState[1](false); return; }
+        applyFilters();
+    }, [searchTerm, selectedStatus, selectedAccount, selectedAssignee]);
+
     const handleResetFilters = () => {
         setSearchTerm('');
         setSelectedStatus('all');
         setSelectedAccount('all');
         setSelectedAssignee('all');
-        setShowFilters(false);
-        router.get(route('sales-orders.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
+        router.get(route('sales-orders.index'));
     };
 
     const pageActions = [];
@@ -175,34 +182,51 @@ export default function SalesOrders() {
             key: 'order_number',
             label: t('Order Number'),
             sortable: true,
+            className: 'whitespace-nowrap',
             render: (value: string, item: any) => (
-                <Link
-                    href={route('sales-orders.show', item.id)}
-                    className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 hover:border-blue-400 transition-colors duration-200 border border-blue-200 cursor-pointer" style={{ color: '#1d4ed8' }} onMouseEnter={e => (e.currentTarget.style.color = '#1d4ed8')} onMouseLeave={e => (e.currentTarget.style.color = '#1d4ed8')}
-                >
-                    {value}
-                </Link>
+                <Link href={route('sales-orders.show', item.id)} className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 hover:border-blue-400 transition-colors duration-200 border border-blue-200 cursor-pointer whitespace-nowrap" style={{ color: '#1d4ed8' }} onMouseEnter={e => (e.currentTarget.style.color = '#1d4ed8')} onMouseLeave={e => (e.currentTarget.style.color = '#1d4ed8')}>{value}</Link>
             )
         },
         {
             key: 'name',
             label: t('Name'),
             sortable: true,
+            render: (value: string) => <span className="whitespace-nowrap font-medium">{value || '-'}</span>
+        },
+        {
+            key: 'assigned_user',
+            label: t('Assigned To'),
+            className: 'whitespace-nowrap',
+            render: (value: any) => value ? (
+                <div className="flex items-center gap-2">
+                    <Avatar className="h-8 w-8 flex-shrink-0">
+                        <AvatarImage src={value.avatar} alt={value.name} />
+                        <AvatarFallback className="text-xs">{getInitials(value.name)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                        <div className="font-medium whitespace-nowrap">{value.name}</div>
+                        <div className="text-sm text-muted-foreground whitespace-nowrap">{value.email}</div>
+                    </div>
+                </div>
+            ) : <span className="whitespace-nowrap">{t('Unassigned')}</span>
         },
         {
             key: 'order_date',
             label: t('Order Date'),
             sortable: true,
-            render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
+            className: 'whitespace-nowrap',
+            type: 'date'
         },
         {
             key: 'total_amount',
             label: t('Total Amount'),
-            render: (value: any) => window.appSettings?.formatCurrency(Number(value || 0)) || `$${Number(value || 0).toFixed(2)}`
+            className: 'whitespace-nowrap',
+            render: (value: any) => <span className="whitespace-nowrap font-mono">{window.appSettings?.formatCurrency(Number(value || 0)) || `$${Number(value || 0).toFixed(2)}`}</span>
         },
         {
             key: 'status',
             label: t('Status'),
+            className: 'whitespace-nowrap',
             render: (value: string) => {
                 const statusColors = {
                     draft: 'bg-gray-50 text-gray-700 ring-gray-600/20',
@@ -213,23 +237,19 @@ export default function SalesOrders() {
                     cancelled: 'bg-red-50 text-red-700 ring-red-600/20'
                 };
                 return (
-                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[value as keyof typeof statusColors] || statusColors.draft}`}>
+                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset whitespace-nowrap ${statusColors[value as keyof typeof statusColors] || statusColors.draft}`}>
                         {t(value.charAt(0).toUpperCase() + value.slice(1))}
                     </span>
                 );
             }
         },
-        {
-            key: 'assigned_user',
-            label: t('Assigned To'),
-            render: (value: any) => value?.name || t('Unassigned')
-        },
-        {
-            key: 'created_at',
-            label: t('Created At'),
-            sortable: true,
-            render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
-        }
+        // {
+        //     key: 'created_at',
+        //     label: t('Created At'),
+        //     sortable: true,
+        //     className: 'whitespace-nowrap',
+        //     type: 'date'
+        // }
     ];
 
     const actions = [
@@ -293,12 +313,13 @@ export default function SalesOrders() {
     return (
         <PageTemplate
             title={t("Sales Orders")}
+            description={t("Manage your sales orders.")}
             url="/sales-orders"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
             noPadding
         >
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -331,29 +352,14 @@ export default function SalesOrders() {
                             options: assigneeOptions
                         }
                     ]}
-                    showFilters={showFilters}
-                    setShowFilters={setShowFilters}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
                     onResetFilters={handleResetFilters}
-                    onApplyFilters={applyFilters}
-                    currentPerPage={pageFilters.per_page?.toString() || "10"}
-                    onPerPageChange={(value) => {
-                        router.get(route('sales-orders.index'), {
-                            page: 1,
-                            search: searchTerm || undefined,
-                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                            account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
-                            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-                            sort_field: pageFilters.sort_field || undefined,
-                            sort_direction: pageFilters.sort_direction || undefined,
-                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
-                        }, { preserveState: true, preserveScroll: true });
-                    }}
                 />
             </div>
 
             <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+                <div className="overflow-x-auto">
                 <CrudTable
                     columns={columns}
                     actions={actions}
@@ -371,6 +377,7 @@ export default function SalesOrders() {
                         delete: 'delete-sales-orders'
                     }}
                 />
+                </div>
 
                 <Pagination
                     from={salesOrders?.from || 0}
@@ -379,6 +386,19 @@ export default function SalesOrders() {
                     links={salesOrders?.links}
                     entityName={t("sales orders")}
                     onPageChange={(url) => router.get(url)}
+                    currentPerPage={pageFilters.per_page?.toString() || "10"}
+                    onPerPageChange={(value) => {
+                        router.get(route('sales-orders.index'), {
+                            page: 1,
+                            search: searchTerm || undefined,
+                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                            account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                            sort_field: pageFilters.sort_field || undefined,
+                            sort_direction: pageFilters.sort_direction || undefined,
+                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+                        }, { preserveState: true, preserveScroll: true });
+                    }}
                 />
             </div>
 

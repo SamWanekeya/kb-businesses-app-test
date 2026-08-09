@@ -75,7 +75,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-sm font-medium text-muted-foreground">{t('Total Commission Paid')}</p>
-                                    <h3 className="mt-1 text-2xl font-bold text-green-600 dark:text-green-400">{currencySymbol}{stats.totalCommissionPaid}</h3>
+                                    <h3 className="mt-1 text-2xl font-bold text-green-600 dark:text-green-400 font-mono">{currencySymbol}{stats.totalCommissionPaid}</h3>
                                     <p className="text-xs text-muted-foreground mt-1">{t('Total payouts')}</p>
                                 </div>
                                 <div className="h-10 w-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
@@ -121,9 +121,19 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                                     {stats.topCompanies.slice(0, 5).map((company: any, index: number) => (
                                         <div key={company.id} className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors">
                                             <div className="flex items-center space-x-3 min-w-0">
-                                                <div className="flex items-center justify-center w-7 h-7 rounded-full bg-muted text-xs font-semibold text-muted-foreground shrink-0">
+                                                {/* <div className="flex items-center justify-center w-7 h-7 rounded-full bg-muted text-xs font-semibold text-muted-foreground shrink-0">
                                                     {index + 1}
-                                                </div>
+                                                </div> */}
+                                                <Avatar className="flex items-center justify-center w-10 h-10 rounded-full bg-muted text-xs font-semibold text-muted-foreground shrink-0">
+                                                    <AvatarImage
+                                                        src={company?.avatar}
+                                                        alt={company?.name}
+                                                    />
+                                                    <AvatarFallback className="text-lg">
+                                                        {getInitials(company?.name)}
+                                                    </AvatarFallback>
+                                                </Avatar>
+
                                                 <div>
                                                     <p className="text-sm font-semibold truncate">{company.name}</p>
                                                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
@@ -137,7 +147,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                                                     <Users className="h-4 w-4" />
                                                     {company.referral_count}
                                                 </div>
-                                                <p className="text-xs text-green-600 dark:text-green-400 font-medium">{currencySymbol}{company.total_earned || 0}</p>
+                                                <p className="text-xs text-green-600 dark:text-green-400 font-medium font-mono">{currencySymbol}{company.total_earned || 0}</p>
                                             </div>
                                         </div>
                                     ))}
@@ -185,7 +195,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                                         <p className="text-sm font-medium text-green-900 dark:text-green-100">{t('Payouts Processed')}</p>
                                         <DollarSign className="h-4 w-4 text-green-600 dark:text-green-400" />
                                     </div>
-                                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+                                    <p className="text-2xl font-bold text-green-600 dark:text-green-400 font-mono">
                                         {currencySymbol}{typeof stats.monthlyPayouts === 'object'
                                             ? Object.values(stats.monthlyPayouts || {}).reduce((a: any, b: any) => a + b, 0)
                                             : (stats.monthlyPayouts || 0)}
@@ -242,7 +252,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-sm font-medium text-muted-foreground">{t('Total Earned')}</p>
-                                <h3 className="mt-1 text-2xl font-bold text-amber-600 dark:text-amber-400">{currencySymbol}{stats.totalEarned}</h3>
+                                <h3 className="mt-1 text-2xl font-bold text-amber-600 dark:text-amber-400 font-mono">{currencySymbol}{stats.totalEarned}</h3>
                                 <p className="text-xs text-muted-foreground mt-1">{t('Commission earned')}</p>
                             </div>
                             <div className="h-10 w-10 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
@@ -257,7 +267,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-sm font-medium text-muted-foreground">{t('Available Balance')}</p>
-                                <h3 className="mt-1 text-2xl font-bold text-purple-600 dark:text-purple-400">{currencySymbol}{stats.availableBalance.toFixed(2)}</h3>
+                                <h3 className="mt-1 text-2xl font-bold text-purple-600 dark:text-purple-400 font-mono">{currencySymbol}{stats.availableBalance.toFixed(2)}</h3>
                                 <p className="text-xs text-muted-foreground mt-1">{t('Ready to withdraw')}</p>
                             </div>
                             <div className="h-10 w-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">

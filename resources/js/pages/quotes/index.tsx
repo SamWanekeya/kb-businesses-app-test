@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router, Link } from '@inertiajs/react';
 import { Plus, FileDown } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useInitials } from '@/hooks/use-initials';
 import { hasPermission } from '@/utils/authorization';
 import { CrudTable } from '@/components/CrudTable';
 import { CrudFormModal } from '@/components/CrudFormModal';
@@ -13,6 +15,7 @@ import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 
 export default function Quotes() {
     const { t } = useTranslation();
+    const getInitials = useInitials();
     const { auth, quotes, allAccounts, allOpportunities, allUsers = [], filters: pageFilters = {}, publicUrlBase, encryptedQuoteIds, flash = {} } = usePage().props as any;
     const permissions = auth?.permissions || [];
 
@@ -27,10 +30,15 @@ export default function Quotes() {
     const [selectedAccount, setSelectedAccount] = useState(pageFilters.account_id || 'all');
     const [selectedOpportunity, setSelectedOpportunity] = useState(pageFilters.opportunity_id || 'all');
     const [selectedAssignee, setSelectedAssignee] = useState(pageFilters.assigned_to || 'all');
-    const [showFilters, setShowFilters] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
     const [currentItem, setCurrentItem] = useState<any>(null);
+    const [pageInitialState, setPageInitialState] = useState(true);
+
+    useEffect(() => {
+        if (!pageInitialState) applyFilters();
+        setPageInitialState(false);
+    }, [selectedStatus, selectedAccount, selectedOpportunity, selectedAssignee]);
 
     const hasActiveFilters = () =>
         searchTerm !== '' || selectedStatus !== 'all' || selectedAccount !== 'all' || selectedOpportunity !== 'all' || selectedAssignee !== 'all';
@@ -132,13 +140,7 @@ export default function Quotes() {
     };
 
     const handleResetFilters = () => {
-        setSearchTerm('');
-        setSelectedStatus('all');
-        setSelectedAccount('all');
-        setSelectedOpportunity('all');
-        setSelectedAssignee('all');
-        setShowFilters(false);
-        router.get(route('quotes.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
+        router.get(route('quotes.index'));
     };
 
     const pageActions: any[] = [];
@@ -171,30 +173,54 @@ export default function Quotes() {
             key: 'quote_number',
             label: t('Quote Number'),
             sortable: true,
+            className: 'whitespace-nowrap',
             render: (value: string, item: any) => (
                 hasPermission(permissions, 'view-quotes') ? (
                     <Link
                         href={route('quotes.show', item.id)}
-                        className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 hover:border-blue-400 transition-colors duration-200 border border-blue-200 cursor-pointer" style={{ color: '#1d4ed8' }} onMouseEnter={e => (e.currentTarget.style.color = '#1d4ed8')} onMouseLeave={e => (e.currentTarget.style.color = '#1d4ed8')}
+                        className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 hover:border-blue-400 transition-colors duration-200 border border-blue-200 cursor-pointer whitespace-nowrap" style={{ color: '#1d4ed8' }} onMouseEnter={e => (e.currentTarget.style.color = '#1d4ed8')} onMouseLeave={e => (e.currentTarget.style.color = '#1d4ed8')}
                     >
                         {value}
                     </Link>
                 ) : (
-                    <span className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md bg-blue-50 text-blue-700 border border-blue-200">
+                    <span className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap">
                         {value}
                     </span>
                 )
             )
         },
-        { key: 'name', label: t('Name'), sortable: true },
+        {
+            key: 'name',
+            label: t('Name'),
+            sortable: true,
+            render: (value: string) => <span className="whitespace-nowrap font-medium">{value || '-'}</span>
+        },
+                {
+            key: 'assigned_user',
+            label: t('Assigned To'),
+            className: 'whitespace-nowrap',
+            render: (value: any) => value ? (
+                <div className="flex items-center gap-2">
+                    <Avatar className="h-8 w-8 flex-shrink-0">
+                        <AvatarImage src={value.avatar} alt={value.name} />
+                        <AvatarFallback className="text-xs">{getInitials(value.name)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                        <div className="font-medium whitespace-nowrap">{value.name}</div>
+                        <div className="text-sm text-muted-foreground whitespace-nowrap">{value.email}</div>
+                    </div>
+                </div>
+            ) : <span className="whitespace-nowrap">{t('Unassigned')}</span>
+        },
         {
             key: 'total_amount',
             label: t('Amount'),
-            render: (value: any) => window.appSettings?.formatCurrency(Number(value || 0)) || `$${Number(value || 0).toFixed(2)}`
+            render: (value: any) => <span className="whitespace-nowrap font-mono">{window.appSettings?.formatCurrency(Number(value || 0)) || `$${Number(value || 0).toFixed(2)}`}</span>
         },
         {
             key: 'status',
             label: t('Status'),
+            className: 'whitespace-nowrap',
             render: (value: string) => {
                 const statusColors: Record<string, string> = {
                     draft: 'bg-gray-50 text-gray-700 ring-gray-600/20',
@@ -204,23 +230,20 @@ export default function Quotes() {
                     expired: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20'
                 };
                 return (
-                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[value] || statusColors.draft}`}>
+                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset whitespace-nowrap ${statusColors[value] || statusColors.draft}`}>
                         {t(value?.charAt(0).toUpperCase() + value?.slice(1)) || t('Draft')}
                     </span>
                 );
             }
         },
-        {
-            key: 'assigned_user',
-            label: t('Assigned To'),
-            render: (value: any) => value?.name || t('Unassigned')
-        },
-        {
-            key: 'created_at',
-            label: t('Date'),
-            sortable: true,
-            render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
-        }
+
+        // {
+        //     key: 'created_at',
+        //     label: t('Date'),
+        //     sortable: true,
+        //     className: 'whitespace-nowrap',
+        //     type: 'date'
+        // }
     ];
 
     const actions = [
@@ -228,7 +251,7 @@ export default function Quotes() {
         { label: t('Change Status'), icon: 'RefreshCw', action: 'toggle-status', className: 'text-amber-500', requiredPermission: 'toggle-status-quotes' },
         { label: t('View'), icon: 'Eye', action: 'view', className: 'text-blue-500', requiredPermission: 'view-quotes' },
         { label: t('Edit'), icon: 'Edit', action: 'edit', className: 'text-amber-500', requiredPermission: 'edit-quotes' },
-        { label: t('Delete'), icon: 'Trash2', action: 'delete', className: 'text-red-500', requiredPermission: 'delete-quotes' }
+        { label: t('Delete'), icon: 'Trash2', action: 'delete', className: 'text-grey-500', requiredPermission: 'delete-quotes' }
     ];
 
     const statusOptions = [
@@ -241,8 +264,10 @@ export default function Quotes() {
     ];
 
     return (
-        <PageTemplate title={t('Quotes')} url="/quotes" actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+        <PageTemplate title={t('Quotes')} 
+        description={t('Manage your quotes.')}
+        url="/quotes" actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -265,12 +290,34 @@ export default function Quotes() {
                             options: [{ value: 'all', label: t('All Users') }, ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name }))]
                         }
                     ]}
-                    showFilters={showFilters}
-                    setShowFilters={setShowFilters}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
                     onResetFilters={handleResetFilters}
-                    onApplyFilters={applyFilters}
+                />
+            </div>
+
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+                <div className="overflow-x-auto">
+                <CrudTable
+                    columns={columns}
+                    actions={actions}
+                    data={quotes?.data || []}
+                    from={quotes?.from || 1}
+                    onAction={handleAction}
+                    sortField={pageFilters.sort_field}
+                    sortDirection={pageFilters.sort_direction}
+                    onSort={handleSort}
+                    permissions={permissions}
+                    entityPermissions={{ view: 'view-quotes', create: 'create-quotes', edit: 'edit-quotes', delete: 'delete-quotes' }}
+                />
+                </div>
+                <Pagination
+                    from={quotes?.from || 0}
+                    to={quotes?.to || 0}
+                    total={quotes?.total || 0}
+                    links={quotes?.links}
+                    entityName={t('quotes')}
+                    onPageChange={(url) => router.get(url)}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
                         router.get(route('quotes.index'), {
@@ -285,29 +332,6 @@ export default function Quotes() {
                             ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
                         }, { preserveState: true, preserveScroll: true });
                     }}
-                />
-            </div>
-
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
-                <CrudTable
-                    columns={columns}
-                    actions={actions}
-                    data={quotes?.data || []}
-                    from={quotes?.from || 1}
-                    onAction={handleAction}
-                    sortField={pageFilters.sort_field}
-                    sortDirection={pageFilters.sort_direction}
-                    onSort={handleSort}
-                    permissions={permissions}
-                    entityPermissions={{ view: 'view-quotes', create: 'create-quotes', edit: 'edit-quotes', delete: 'delete-quotes' }}
-                />
-                <Pagination
-                    from={quotes?.from || 0}
-                    to={quotes?.to || 0}
-                    total={quotes?.total || 0}
-                    links={quotes?.links}
-                    entityName={t('quotes')}
-                    onPageChange={(url) => router.get(url)}
                 />
             </div>
 

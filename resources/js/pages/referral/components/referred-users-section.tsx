@@ -118,7 +118,7 @@ export default function ReferredUsersSection({ referredUsers, usersWithPlans, to
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-sm font-medium text-muted-foreground">{t('Total Commission Earned')}</p>
-                                <p className="mt-2 text-2xl font-bold">{currencySymbol}{(totalCommissionEarned || 0).toFixed(2)}</p>
+                                <p className="mt-2 text-2xl font-bold font-mono">{currencySymbol}{(totalCommissionEarned || 0).toFixed(2)}</p>
                             </div>
                             <div className="rounded-full bg-yellow-100 p-3 dark:bg-yellow-900">
                                 <DollarSign className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
@@ -182,7 +182,7 @@ export default function ReferredUsersSection({ referredUsers, usersWithPlans, to
                                                             <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 mb-1.5">
                                                                 {planInfo.name}
                                                             </span>
-                                                            <p className="text-sm text-muted-foreground">
+                                                            <p className="text-sm text-muted-foreground font-mono">
                                                                 {currencySymbol}{planInfo.price}/{t(planInfo.cycle)}
                                                             </p>
                                                         </div>
@@ -196,7 +196,7 @@ export default function ReferredUsersSection({ referredUsers, usersWithPlans, to
 
                                             {getTotalCommission(user) > 0 && (
                                                 <div className="text-right min-w-[80px]">
-                                                    <p className="text-sm font-semibold text-green-600">
+                                                    <p className="text-sm font-semibold text-green-600 font-mono">
                                                         +{currencySymbol}{getTotalCommission(user)?.toFixed(2)}
                                                     </p>
                                                     <p className="text-xs text-muted-foreground mt-1">
@@ -216,7 +216,7 @@ export default function ReferredUsersSection({ referredUsers, usersWithPlans, to
                                                         <span className="text-sm text-muted-foreground">
                                                             {referral.commission_percentage}% {t('commission')}
                                                         </span>
-                                                        <span className="text-sm font-semibold text-green-600">
+                                                        <span className="text-sm font-semibold text-green-600 font-mono">
                                                             +{currencySymbol}{referral.amount}
                                                         </span>
                                                     </div>
@@ -248,6 +248,7 @@ export default function ReferredUsersSection({ referredUsers, usersWithPlans, to
                             only: ['referredUsers']
                         });
                     }}
+                    hidePerPage={true}
                 />
             )}
         </div>

@@ -46,7 +46,7 @@ class RoleController extends BaseController
         }
 
         $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
-        $roles = $query->paginate($perPage);
+        $roles = $query->paginate($perPage)->withQueryString();
 
         $permissions = $this->getFilteredPermissions();
 

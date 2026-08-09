@@ -141,7 +141,7 @@ export default function MediaPicker({
                         size="icon"
                         onClick={handleClear}
                     >
-                        <X className="h-4 w-4" />
+                        <X className="h-4 w-4 mx-2" />
                     </Button>
                 )}
             </div>

@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router } from '@inertiajs/react';
-import { Plus, Eye, Edit, Trash2, MoreHorizontal, Download, FileDown, Lock } from 'lucide-react';
+import { Plus, Eye, Edit, Trash2, MoreHorizontal, FileDown, Lock, Calendar, Phone, Briefcase, Building2, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useInitials } from '@/hooks/use-initials';
+import UserInitials from '@/components/user-initials';
 import { hasPermission } from '@/utils/authorization';
 import { CrudTable } from '@/components/CrudTable';
 import { CrudFormModal } from '@/components/CrudFormModal';
@@ -25,7 +28,6 @@ export default function Contacts() {
     const [selectedAccount, setSelectedAccount] = useState(pageFilters.account_id || 'all');
     const [selectedStatus, setSelectedStatus] = useState(pageFilters.status || 'all');
     const [selectedAssignee, setSelectedAssignee] = useState(pageFilters.assigned_to || 'all');
-    const [showFilters, setShowFilters] = useState(false);
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [currentItem, setCurrentItem] = useState<any>(null);
@@ -33,7 +35,13 @@ export default function Contacts() {
     const [activeView, setActiveView] = useState(
         ['list', 'grid'].includes(pageFilters.view) ? pageFilters.view : 'list'
     );
+    const [pageInitialState, setPageInitialState] = useState(true);
     const getInitials = useInitials();
+
+    useEffect(() => {
+        if (!pageInitialState) applyFilters();
+        setPageInitialState(false);
+    }, [selectedAccount, selectedStatus, selectedAssignee]);
 
     // Check if any filters are active
     const hasActiveFilters = () => {
@@ -207,12 +215,7 @@ export default function Contacts() {
     };
 
     const handleResetFilters = () => {
-        setSearchTerm('');
-        setSelectedAccount('all');
-        setSelectedStatus('all');
-        setSelectedAssignee('all');
-        setShowFilters(false);
-        router.get(route('contacts.index'), { view: activeView, page: 1 }, { preserveState: true, preserveScroll: true });
+        router.get(route('contacts.index'), { view: activeView });
     };
 
     // Define page actions
@@ -254,9 +257,7 @@ export default function Contacts() {
             render: (value: any, row: any) => {
                 return (
                     <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
-                            {getInitials(row.name)}
-                        </div>
+                        <UserInitials name={row.name} />
                         <div>
                             <div className="font-medium">{row.name}</div>
                             <div className="text-sm text-muted-foreground">{row.email || t('No email')}</div>
@@ -278,7 +279,9 @@ export default function Contacts() {
         {
             key: 'account',
             label: t('Account'),
-            render: (value: any) => value?.name || '-'
+            render: (value: any) => value?.name
+                ? <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset bg-blue-50 text-blue-700 ring-blue-600/20">{value.name}</span>
+                : <span className="text-muted-foreground">-</span>
         },
         {
             key: 'status',
@@ -298,7 +301,8 @@ export default function Contacts() {
             key: 'created_at',
             label: t('Created At'),
             sortable: true,
-            render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
+            type: 'date',
+            // render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
         }
     ];
 
@@ -337,13 +341,14 @@ export default function Contacts() {
     return (
         <PageTemplate
             title={t("Contacts")}
+            description={t("Manage your contacts.")}
             url="/contacts"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
             noPadding
         >
             {/* Search and filters section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -392,26 +397,9 @@ export default function Contacts() {
                             ]
                         }
                     ]}
-                    showFilters={showFilters}
-                    setShowFilters={setShowFilters}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
                     onResetFilters={handleResetFilters}
-                    onApplyFilters={applyFilters}
-                    currentPerPage={pageFilters.per_page?.toString() || "10"}
-                    onPerPageChange={(value) => {
-                        router.get(route('contacts.index'), {
-                            view: activeView,
-                            page: 1,
-                            search: searchTerm || undefined,
-                            account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
-                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-                            sort_field: pageFilters.sort_field || undefined,
-                            sort_direction: pageFilters.sort_direction || undefined,
-                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
-                        }, { preserveState: true, preserveScroll: true });
-                    }}
                     showViewToggle={true}
                     activeView={activeView}
                     onViewChange={(view) => {
@@ -426,7 +414,7 @@ export default function Contacts() {
                             sort_field: pageFilters.sort_field || undefined,
                             sort_direction: pageFilters.sort_direction || undefined,
                             ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-                        }, { preserveState: true, preserveScroll: true });
+                        });
                     }}
                 />
             </div>
@@ -460,6 +448,19 @@ export default function Contacts() {
                         links={contacts?.links}
                         entityName={t("contacts")}
                         onPageChange={(url) => router.get(url)}
+                        currentPerPage={pageFilters.per_page?.toString() || "10"}
+                        onPerPageChange={(value) => {
+                            router.get(route('contacts.index'), {
+                                view: activeView, page: 1,
+                                search: searchTerm || undefined,
+                                account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                                sort_field: pageFilters.sort_field || undefined,
+                                sort_direction: pageFilters.sort_direction || undefined,
+                                ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+                            }, { preserveState: true, preserveScroll: true });
+                        }}
                     />
                 </div>
             ) : (
@@ -467,130 +468,110 @@ export default function Contacts() {
                     {/* Grid View */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                         {contacts?.data?.map((contact: any) => (
-                            <Card key={contact.id} className="bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow">
-                                <div className="p-6">
-                                    <div className="flex items-start justify-between mb-4">
-                                        <div className="flex items-start space-x-4">
-                                            <div className="h-16 w-16 rounded-full bg-primary text-white flex items-center justify-center text-lg font-bold">
-                                                {getInitials(contact.name)}
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{contact.name}</h3>
-                                                <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">{contact.email || t('No email')}</p>
-                                                <div className="flex items-center">
-                                                    <div className={`h-2 w-2 rounded-full mr-2 ${contact.status === 'active' ? 'bg-green-500' : 'bg-gray-400'
-                                                        }`}></div>
-                                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                                        {contact.status === 'active' ? t('Active') : t('Inactive')}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
+                            <Card key={contact.id} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col">
+                                <div className="relative p-4 flex flex-col flex-1">
 
-                                        {/* Actions dropdown */}
+                                    {/* Three-dots dropdown — top right */}
+                                    <div className="absolute top-2 right-2">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
-                                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300">
+                                                <Button variant="ghost" size="sm" className="h-7 w-7 p-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                                                     <MoreHorizontal className="h-4 w-4" />
                                                 </Button>
                                             </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end" className="w-48 z-50" sideOffset={5}>
+                                            <DropdownMenuContent align="end" className="w-40 z-50" sideOffset={5}>
                                                 {hasPermission(permissions, 'view-contacts') && (
                                                     <DropdownMenuItem onClick={() => handleAction('view', contact)}>
                                                         <Eye className="h-4 w-4 mr-2" />
-                                                        <span>{t("View Contact")}</span>
+                                                        <span>{t('View Contact')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {hasPermission(permissions, 'toggle-status-contacts') && (
                                                     <DropdownMenuItem onClick={() => handleAction('toggle-status', contact)}>
                                                         <Lock className="h-4 w-4 mr-2" />
-                                                        <span>{contact.status === 'active' ? t("Deactivate") : t("Activate")}</span>
+                                                        <span>{contact.status === 'active' ? t('Deactivate') : t('Activate')}</span>
+                                                    </DropdownMenuItem>
+                                                )}
+                                                {hasPermission(permissions, 'edit-contacts') && (
+                                                    <DropdownMenuItem onClick={() => handleAction('edit', contact)}>
+                                                        <Edit className="h-4 w-4 mr-2" />
+                                                        <span>{t('Edit')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 <DropdownMenuSeparator />
-                                                {hasPermission(permissions, 'edit-contacts') && (
-                                                    <DropdownMenuItem onClick={() => handleAction('edit', contact)} className="text-amber-600">
-                                                        <Edit className="h-4 w-4 mr-2" />
-                                                        <span>{t("Edit")}</span>
-                                                    </DropdownMenuItem>
-                                                )}
                                                 {hasPermission(permissions, 'delete-contacts') && (
                                                     <DropdownMenuItem onClick={() => handleAction('delete', contact)} className="text-rose-600">
                                                         <Trash2 className="h-4 w-4 mr-2" />
-                                                        <span>{t("Delete")}</span>
+                                                        <span>{t('Delete')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </div>
 
-                                    {/* Contact info */}
-                                    <div className="border border-gray-200 dark:border-gray-700 rounded-md p-3 mb-4">
-                                        <div className="mb-2">
-                                            <span className="text-sm text-gray-600 dark:text-gray-400">
-                                                {t('Phone')}: {contact.phone || t('-')}
+                                    {/* Status badge — top right below trigger */}
+                                    <div className="flex items-start gap-3 mb-4 pr-8">
+                                        <UserInitials name={contact.name} />
+                                        <div className="flex-1 min-w-0">
+                                            <h3 className="text-sm font-semibold text-gray-900 dark:text-white truncate">{contact.name}</h3>
+                                            <div className="flex items-center gap-1.5 mt-0.5 mb-1.5">
+                                                <Mail className="h-3 w-3 text-gray-500 shrink-0" />
+                                                <p className="text-xs text-gray-600 dark:text-gray-400 truncate">{contact.email || t('No email')}</p>
+                                            </div>
+                                            <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                                contact.status === 'active'
+                                                    ? 'bg-green-50 text-green-700 ring-green-600/20'
+                                                    : 'bg-red-50 text-red-700 ring-red-600/20'
+                                            }`}>
+                                                {contact.status === 'active' ? t('Active') : t('Inactive')}
                                             </span>
-                                        </div>
-                                        <div className="mb-2">
-                                            <span className="text-sm text-gray-600 dark:text-gray-400">
-                                                {t('Position')}: {contact.position || t('-')}
-                                            </span>
-                                        </div>
-                                        <div className="flex flex-wrap gap-1">
-                                            {contact.account && (
-                                                <span className="inline-flex items-center rounded-md bg-blue-50 dark:bg-blue-900/30 px-2 py-1 text-xs font-medium text-blue-700 dark:text-blue-300">
-                                                    {contact.account.name}
-                                                </span>
-                                            )}
-                                            {contact.assigned_user && (
-                                                <span className="inline-flex items-center rounded-md bg-purple-50 dark:bg-purple-900/30 px-2 py-1 text-xs font-medium text-purple-700 dark:text-purple-300">
-                                                    {contact.assigned_user.name}
-                                                </span>
-                                            )}
                                         </div>
                                     </div>
 
-                                    {/* Created date */}
-                                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-4">
-                                        {t("Created:")} {window.appSettings?.formatDateTime(contact.created_at, false) || new Date(contact.created_at).toLocaleDateString()}
+                                    {/* Info rows */}
+                                    <div className="space-y-1.5 mb-3">
+                                        <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                            <Phone className="h-3.5 w-3.5 text-gray-500 shrink-0" />
+                                            <span className="truncate">{contact.phone || '-'}</span>
+                                        </div>
+                                        <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                            <Briefcase className="h-3.5 w-3.5 text-gray-500 shrink-0" />
+                                            <span className="truncate">{contact.position || '-'}</span>
+                                        </div>
+                                        {contact.account && (
+                                            <div className="flex items-center gap-2 min-w-0">
+                                                <Building2 className="h-3.5 w-3.5 text-gray-500 shrink-0" />
+                                                <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset bg-blue-50 text-blue-700 ring-blue-600/20 max-w-full overflow-hidden">
+                                                    <span className="truncate">{contact.account.name}</span>
+                                                </span>
+                                            </div>
+                                        )}
                                     </div>
 
-                                    {/* Action buttons */}
-                                    <div className="flex gap-2">
-                                        {hasPermission(permissions, 'edit-contacts') && (
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={() => handleAction('edit', contact)}
-                                                className="flex-1 h-9 text-sm border-gray-300 dark:border-gray-600 dark:text-gray-200"
-                                            >
-                                                <Edit className="h-4 w-4 mr-2" />
-                                                {t("Edit")}
-                                            </Button>
-                                        )}
-
-                                        {hasPermission(permissions, 'view-contacts') && (
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={() => handleAction('view', contact)}
-                                                className="flex-1 h-9 text-sm border-gray-300 dark:border-gray-600 dark:text-gray-200"
-                                            >
-                                                <Eye className="h-4 w-4 mr-2" />
-                                                {t("View")}
-                                            </Button>
-                                        )}
-
-                                        {hasPermission(permissions, 'delete-contacts') && (
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={() => handleAction('delete', contact)}
-                                                className="flex-1 h-9 text-sm text-gray-700 border-gray-300 dark:border-gray-600 dark:text-gray-200"
-                                            >
-                                                <Trash2 className="h-4 w-4 mr-2" />
-                                                {t("Delete")}
-                                            </Button>
+                                    {/* Footer: date left, assigned avatar right */}
+                                    <div className="mt-auto pt-3 border-t border-border flex items-center justify-between">
+                                        
+                                        <div className="flex items-center gap-2 text-xs font-medium text-gray-600 dark:text-gray-400">
+                                            <Calendar className="h-3.5 w-3.5 text-gray-500 shrink-0" />
+                                            <span>{window.appSettings?.formatDateTime(contact.created_at, false) || new Date(contact.created_at).toLocaleDateString()}</span>
+                                        </div>
+                                        {contact.assigned_user && (
+                                            <div className="flex items-center gap-1.5">
+                                                <span className="text-xs text-gray-500 dark:text-gray-400">{t('Assigned to')}</span>
+                                                <TooltipProvider>
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <Avatar className="h-7 w-7 cursor-pointer shrink-0">
+                                                                <AvatarImage src={contact.assigned_user.avatar} alt={contact.assigned_user.name} />
+                                                                <AvatarFallback className="text-xs bg-purple-100 text-purple-700 font-medium">{getInitials(contact.assigned_user.name)}</AvatarFallback>
+                                                            </Avatar>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent side="top">
+                                                            <p>{contact.assigned_user.name}</p>
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
+                                            </div>
                                         )}
                                     </div>
                                 </div>
@@ -607,6 +588,20 @@ export default function Contacts() {
                             links={contacts?.links}
                             entityName={t("contacts")}
                             onPageChange={(url) => router.get(url)}
+                            perPageOptions={[12, 24, 48, 96]}
+                            currentPerPage={pageFilters.per_page?.toString() || '12'}
+                            onPerPageChange={(value) => {
+                                router.get(route('contacts.index'), {
+                                    view: activeView, page: 1,
+                                    search: searchTerm || undefined,
+                                    account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                                    status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                    assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                                    sort_field: pageFilters.sort_field || undefined,
+                                    sort_direction: pageFilters.sort_direction || undefined,
+                                    ...(parseInt(value) !== 12 && { per_page: parseInt(value) }),
+                                }, { preserveState: true, preserveScroll: true });
+                            }}
                         />
                     </div>
                 </div>

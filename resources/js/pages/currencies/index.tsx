@@ -1,5 +1,5 @@
 // pages/currencies/index.tsx
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
@@ -27,6 +27,13 @@ export default function Currencies() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState<any>(null);
   const [formMode, setFormMode] = useState<'create' | 'edit' | 'view'>('create');
+
+  const [pageInitialState, setPageInitialState] = useState(true);
+
+    useEffect(() => {
+        if (!pageInitialState) applyFilters();
+        setPageInitialState(false);
+    }, [searchTerm]);
 
   // Check if any filters are active
   const hasActiveFilters = () => {
@@ -177,9 +184,7 @@ export default function Currencies() {
   };
 
   const handleResetFilters = () => {
-    setSearchTerm('');
-    setShowFilters(false);
-    router.get(route('currencies.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
+    router.get(route('currencies.index'));
   };
 
   // Define page actions
@@ -221,11 +226,10 @@ export default function Currencies() {
       key: 'is_default',
       label: t('Default'),
       render: (value: boolean) => (
-        <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
-          value
+        <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${value
             ? 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20'
             : 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20'
-        }`}>
+          }`}>
           {value ? t('Yes') : t('No')}
         </span>
       )
@@ -261,37 +265,26 @@ export default function Currencies() {
   return (
     <PageTemplate
       title={t("Currency")}
+      description={t('Manage your currencies.')}
       url="/currencies"
       actions={pageActions}
       breadcrumbs={breadcrumbs}
       noPadding
     >
       {/* Search and filters section */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+     <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
         <SearchAndFilterBar
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
           onSearch={handleSearch}
           filters={[]}
-          showFilters={showFilters}
-          setShowFilters={setShowFilters}
+
+
           hasActiveFilters={hasActiveFilters}
           activeFilterCount={activeFilterCount}
           onResetFilters={handleResetFilters}
-          onApplyFilters={applyFilters}
-          currentPerPage={pageFilters.per_page?.toString() || "10"}
-          onPerPageChange={(value) => {
-            const params: any = {
-              page: 1,
-              search: searchTerm || undefined,
-              sort_field: pageFilters.sort_field || undefined,
-              sort_direction: pageFilters.sort_direction || undefined,
-            };
-            if (parseInt(value) !== 10) {
-              params.per_page = parseInt(value);
-            }
-            router.get(route('currencies.index'), params, { preserveState: true, preserveScroll: true });
-          }}
+
+
         />
       </div>
 
@@ -323,6 +316,19 @@ export default function Currencies() {
           links={currencies?.links}
           entityName={t("currencies")}
           onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
+          currentPerPage={pageFilters.per_page?.toString() || "10"}
+          onPerPageChange={(value) => {
+            const params: any = {
+              page: 1,
+              search: searchTerm || undefined,
+              sort_field: pageFilters.sort_field || undefined,
+              sort_direction: pageFilters.sort_direction || undefined,
+            };
+            if (parseInt(value) !== 10) {
+              params.per_page = parseInt(value);
+            }
+            router.get(route('currencies.index'), params, { preserveState: true, preserveScroll: true });
+          }}
         />
       </div>
 

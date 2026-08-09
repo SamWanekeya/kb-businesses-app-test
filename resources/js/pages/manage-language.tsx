@@ -210,45 +210,58 @@ export default function ManageLanguagePage() {
                 ] : [])
             ]}
         >
+            <style>{`
+            main {
+            max-width: 100vw;
+            overflow-x: clip !important;
+            }
+            body {
+            overflow-x: clip !important;
+            }
+        `}</style>
+
             <div className="flex flex-col md:flex-row gap-8">
                 {/* Sidebar: Language List */}
                 <div className="md:w-64 flex-shrink-0">
                     <div className="sticky top-20">
                         <ScrollArea className="h-[calc(100vh-5rem)]">
-                            <div className="pr-4 space-y-1">
-                                {availableLanguages.map((lang) => {
-                                    const isEnabled = lang.enabled === true || (lang.enabled === undefined && !lang.hasOwnProperty('enabled'));
-                                    return (
-                                        <Button
-                                            key={lang.code}
-                                            variant="ghost"
-                                            className={cn('w-full justify-start gap-2', {
-                                                'bg-muted font-medium': selectedLang === lang.code,
-                                                'text-muted-foreground': !isEnabled
-                                            })}
-                                            onClick={() => {
-                                                if (selectedLang !== lang.code) {
-                                                    // Navigate to the language page using Inertia
-                                                    router.get(route('manage-language', { lang: lang.code }));
-                                                }
-                                            }}
-                                        >
-                                            {lang.countryCode && (
-                                                <ReactCountryFlag
-                                                    countryCode={lang.countryCode}
-                                                    svg
-                                                    style={{ width: '1.2em', height: '1.2em' }}
-                                                />
-                                            )}
-                                            <span className={!isEnabled ? 'text-muted-foreground' : ''}>
-                                                {lang.name}
-                                            </span>
-                                            {!isEnabled && (
-                                                <Lock className="h-3 w-3 ml-auto text-muted-foreground" />
-                                            )}
-                                        </Button>
-                                    );
-                                })}
+                            {/* <div className="bg-white dark:bg-gray-900 rounded-xl border p-2 shadow-sm"> */}
+                            <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-3 pr-4">
+                                <div className="flex flex-col gap-2">
+                                    {availableLanguages.map((lang) => {
+                                        const isEnabled = lang.enabled === true || (lang.enabled === undefined && !lang.hasOwnProperty('enabled'));
+                                        return (
+                                            <Button
+                                                key={lang.code}
+                                                variant="ghost"
+                                                className={cn('w-full justify-start gap-3 rounded-lg text-sm font-normal text-card-foreground hover:bg-muted hover:font-normal', {
+                                                    'bg-muted font-medium text-card-foreground': selectedLang === lang.code,
+                                                    'text-muted-foreground': !isEnabled
+                                                })}
+                                                onClick={() => {
+                                                    if (selectedLang !== lang.code) {
+                                                        // Navigate to the language page using Inertia
+                                                        router.get(route('manage-language', { lang: lang.code }));
+                                                    }
+                                                }}
+                                            >
+                                                {lang.countryCode && (
+                                                    <ReactCountryFlag
+                                                        countryCode={lang.countryCode}
+                                                        svg
+                                                        style={{ width: '1.2em', height: '1.2em' }}
+                                                    />
+                                                )}
+                                                <span className={!isEnabled ? 'text-muted-foreground' : ''}>
+                                                    {lang.name}
+                                                </span>
+                                                {!isEnabled && (
+                                                    <Lock className="h-3 w-3 ml-auto text-muted-foreground" />
+                                                )}
+                                            </Button>
+                                        );
+                                    })}
+                                </div>
                             </div>
                         </ScrollArea>
                     </div>

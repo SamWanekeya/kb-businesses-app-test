@@ -61,7 +61,7 @@ class DeliveryOrderController extends Controller
         }
 
         $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
-        $deliveryOrders = $query->paginate($perPage);
+        $deliveryOrders = $query->paginate($perPage)->withQueryString();
 
         $userQuery = \App\Models\User::where('created_by', createdBy());
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();

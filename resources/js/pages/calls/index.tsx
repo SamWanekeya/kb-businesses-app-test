@@ -1,8 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router } from '@inertiajs/react';
-import { Plus, Eye, Edit, Trash2, Phone } from 'lucide-react';
+import { Plus, Eye, Edit, Trash2, Phone, Calendar, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
+import { useInitials } from '@/hooks/use-initials';
+import UserInitials from '@/components/user-initials';
 import { hasPermission } from '@/utils/authorization';
 import { CrudTable } from '@/components/CrudTable';
 import { CrudFormModal } from '@/components/CrudFormModal';
@@ -15,14 +19,26 @@ import { capitalize } from '@/utils/helper';
 
 export default function Calls() {
     const { t } = useTranslation();
-    const { auth, calls, users = [], allUsers = [], filters: pageFilters = {}, settings = {} } = usePage().props as any;
+    const getInitials = useInitials();
+    const { auth, calls, users = [], allUsers = [], allContacts = [], allLeads = [], filters: pageFilters = {}, settings = {} } = usePage().props as any;
+
+    const userMap: Record<number, any>    = Object.fromEntries(allUsers.map((u: any) => [u.id, u]));
+    const contactMap: Record<number, any> = Object.fromEntries(allContacts.map((c: any) => [c.id, c]));
+    const leadMap: Record<number, any>    = Object.fromEntries(allLeads.map((l: any) => [l.id, l]));
+
+    const resolveAttendees = (call: any) =>
+        (call.attendees || []).map((a: any) => {
+            if (a.attendee_type === 'user')    { const u = userMap[a.attendee_id];    return u ? { name: u.name, avatar: u.avatar, type: 'user' }    : null; }
+            if (a.attendee_type === 'contact') { const c = contactMap[a.attendee_id]; return c ? { name: c.name, avatar: null, type: 'contact' } : null; }
+            if (a.attendee_type === 'lead')    { const l = leadMap[a.attendee_id];    return l ? { name: l.name, avatar: null, type: 'lead' }    : null; }
+            return null;
+        }).filter(Boolean);
     const permissions = auth?.permissions || [];
     const isGoogleCalendarSynced = settings?.googleCalendarEnabled === '1';
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
     const [selectedStatus, setSelectedStatus] = useState(pageFilters.status || 'all');
     const [selectedAssignee, setSelectedAssignee] = useState(pageFilters.assigned_to || 'all');
-    const [showFilters, setShowFilters] = useState(false);
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
@@ -198,12 +214,14 @@ export default function Calls() {
         });
     };
 
+    const pageInitialState = useState(true);
+    useEffect(() => {
+        if (pageInitialState[0]) { pageInitialState[1](false); return; }
+        applyFilters();
+    }, [searchTerm, selectedStatus, selectedAssignee]);
+
     const handleResetFilters = () => {
-        setSearchTerm('');
-        setSelectedStatus('all');
-        setSelectedAssignee('all');
-        setShowFilters(false);
-        router.get(route('calls.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
+        router.get(route('calls.index'));
     };
 
     const pageActions = [];
@@ -227,34 +245,105 @@ export default function Calls() {
             label: t('Title'),
             sortable: true,
             render: (value: string) => (
-                <div className="font-medium">{value}</div>
+                <div className="font-medium whitespace-nowrap">{value}</div>
             )
+        },
+        {
+            key: 'assigned_user',
+            label: t('Assigned To'),
+            className: 'whitespace-nowrap',
+            render: (value: any) => value ? (
+                <div className="flex items-center gap-2">
+                    <Avatar className="h-8 w-8 flex-shrink-0">
+                        <AvatarImage src={value.avatar} alt={value.name} />
+                        <AvatarFallback className="text-xs">{getInitials(value.name)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                        <div className="font-medium whitespace-nowrap">{value.name}</div>
+                        <div className="text-sm text-muted-foreground whitespace-nowrap">{value.email}</div>
+                    </div>
+                </div>
+            ) : <span className="whitespace-nowrap">{t('Unassigned')}</span>
         },
         {
             key: 'start_date',
             label: t('Date & Time'),
             sortable: true,
+            className: 'whitespace-nowrap',
             render: (value: string, row: any) => (
-                <div>
-                    <div className="font-medium">{window.appSettings?.formatDateTime(value, false) || '-'}</div>
-                    <div className="text-sm text-muted-foreground">
-                        {window.appSettings?.formatTime(row.start_time) || row.start_time} - {window.appSettings?.formatTime(row.end_time) || row.end_time}
-                    </div>
+                <div className="flex flex-col gap-1 whitespace-nowrap">
+                    <span className="flex items-center gap-1 text-xs text-gray-500">
+                        <Calendar className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
+                        {window.appSettings?.formatDateTime(`${value.split('T')[0]}T${row.start_time}`, true) || '-'}
+                    </span>
+                    <span className="flex items-center gap-1 text-xs text-gray-500">
+                        <Calendar className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
+                        {window.appSettings?.formatDateTime(`${row.end_date.split('T')[0]}T${row.end_time}`, true) || '-'}
+                    </span>
                 </div>
             )
         },
+        
         {
             key: 'parent_module',
             label: t('Related To'),
+            className: 'whitespace-nowrap',
             render: (value: string, row: any) => value ? (
-                <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset bg-blue-50 text-blue-700 ring-blue-600/20">
+                <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset bg-blue-50 text-blue-700 ring-blue-600/20 whitespace-nowrap">
                     {capitalize(value)}
                 </span>
-            ) : '-'
+            ) : <span className="whitespace-nowrap">-</span>
+        },
+        {
+            key: 'attendees',
+            label: t('Attendees'),
+            render: (_: any, row: any) => {
+                const att = resolveAttendees(row);
+                const visible = att.slice(0, 3);
+                const extra = att.length - 3;
+                return visible.length > 0 ? (
+                    <div className="flex -space-x-0 items-center">
+                        {visible.map((a: any, i: number) => (
+                            <TooltipProvider key={i}>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <div className="cursor-pointer">
+                                            {a.type === 'user' ? (
+                                                <Avatar className="h-6 w-6 ring-2 ring-white dark:ring-gray-900">
+                                                    <AvatarImage src={a.avatar} alt={a.name} />
+                                                    <AvatarFallback className="text-[10px]">{getInitials(a.name)}</AvatarFallback>
+                                                </Avatar>
+                                            ) : (
+                                                <div className="h-6 w-6 [&_[data-slot=avatar]]:h-6 [&_[data-slot=avatar]]:w-6 [&_[data-slot=avatar-fallback]]:text-[9px]"><UserInitials name={a.name} /></div>
+                                            )}
+                                        </div>
+                                    </TooltipTrigger>
+                                    <TooltipContent>{a.name}</TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        ))}
+                        {extra > 0 && (
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <div className="h-6 w-6 ring-2 ring-white dark:ring-gray-900 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-[9px] font-semibold text-gray-700 dark:text-gray-200 cursor-pointer">+{extra}</div>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <div className="flex flex-col gap-0.5">
+                                            {att.slice(3).map((a: any, i: number) => <span key={i}>{a.name}</span>)}
+                                        </div>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        )}
+                    </div>
+                ) : <span className="text-muted-foreground text-xs">-</span>;
+            }
         },
         {
             key: 'status',
             label: t('Status'),
+            className: 'whitespace-nowrap',
             render: (value: string) => {
                 const getStatusColor = (status: string) => {
                     switch (status) {
@@ -273,23 +362,19 @@ export default function Calls() {
                     }
                 };
                 return (
-                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${getStatusColor(value)}`}>
+                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset whitespace-nowrap ${getStatusColor(value)}`}>
                         {getStatusLabel(value)}
                     </span>
                 );
             }
         },
-        {
-            key: 'assigned_user',
-            label: t('Assigned To'),
-            render: (value: any) => value?.name || t('Unassigned')
-        },
-        {
-            key: 'created_at',
-            label: t('Created At'),
-            sortable: true,
-            render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
-        }
+        // {
+        //     key: 'created_at',
+        //     label: t('Created At'),
+        //     sortable: true,
+        //     className: 'whitespace-nowrap',
+        //     type: 'date'
+        // }
     ];
 
     const actions = [
@@ -326,12 +411,13 @@ export default function Calls() {
     return (
         <PageTemplate
             title={t("Calls")}
+            description={t("Manage your calls.")}
             url="/calls"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
             noPadding
         >
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -367,28 +453,14 @@ export default function Calls() {
                             ]
                         }
                     ]}
-                    showFilters={showFilters}
-                    setShowFilters={setShowFilters}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
                     onResetFilters={handleResetFilters}
-                    onApplyFilters={applyFilters}
-                    currentPerPage={pageFilters.per_page?.toString() || "10"}
-                    onPerPageChange={(value) => {
-                        router.get(route('calls.index'), {
-                            page: 1,
-                            search: searchTerm || undefined,
-                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-                            sort_field: pageFilters.sort_field || undefined,
-                            sort_direction: pageFilters.sort_direction || undefined,
-                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
-                        }, { preserveState: true, preserveScroll: true });
-                    }}
                 />
             </div>
 
             <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+                <div className="overflow-x-auto">
                 <CrudTable
                     columns={columns}
                     actions={actions}
@@ -406,6 +478,7 @@ export default function Calls() {
                         delete: 'delete-calls'
                     }}
                 />
+                </div>
 
                 <Pagination
                     from={calls?.from || 0}
@@ -414,6 +487,18 @@ export default function Calls() {
                     links={calls?.links}
                     entityName={t("calls")}
                     onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
+                    currentPerPage={pageFilters.per_page?.toString() || "10"}
+                    onPerPageChange={(value) => {
+                        router.get(route('calls.index'), {
+                            page: 1,
+                            search: searchTerm || undefined,
+                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                            sort_field: pageFilters.sort_field || undefined,
+                            sort_direction: pageFilters.sort_direction || undefined,
+                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+                        }, { preserveState: true, preserveScroll: true });
+                    }}
                 />
             </div>
 

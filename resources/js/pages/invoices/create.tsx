@@ -111,7 +111,7 @@ export default function InvoiceCreate() {
     };
 
     const addLine = () => setForm(p => ({ ...p, products: [...p.products, emptyLine()] }));
-    const removeLine = (id: string) => setForm(p => ({ ...p, products: p.products.filter(l => l.id !== id) }));
+    const removeLine = (id: string) => setForm(p => ({ ...p, products: p.products.length <= 1 ? p.products : p.products.filter(l => l.id !== id) }));
 
     const handleSalesOrderChange = useCallback(async (soId: string) => {
         set('sales_order_id', soId);
@@ -285,9 +285,11 @@ export default function InvoiceCreate() {
     return (
         <PageTemplate
             title={t('Create Invoice')}
+            description={t('Fill in the details to create a new invoice')}
             url="/invoices"
             breadcrumbs={breadcrumbs}
             fullWidth
+            noPadding
             actions={[{ label: t('Back'), icon: <ArrowLeft className="h-4 w-4 mr-2" />, variant: 'outline', onClick: () => router.visit(route('invoices.index')) }]}
         >
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -387,12 +389,16 @@ export default function InvoiceCreate() {
 
                         {/* Row 3: Invoice Date, Due Date, Status, Assign To */}
                         <Field label={t('Invoice Date')} required error={errors.invoice_date}>
+                            <div className="cursor-pointer" onClick={(e) => { const input = (e.currentTarget as HTMLElement).querySelector('input'); try { (input as any)?.showPicker?.(); } catch { input?.focus(); } }}>
                             <Input type="date" value={form.invoice_date} onChange={e => set('invoice_date', e.target.value)}
-                                className={errors.invoice_date ? 'border-red-500' : ''} />
+                                className={`cursor-pointer ${errors.invoice_date ? 'border-red-500' : ''}`} />
+                            </div>
                         </Field>
                         <Field label={t('Due Date')} required error={errors.due_date}>
+                            <div className="cursor-pointer" onClick={(e) => { const input = (e.currentTarget as HTMLElement).querySelector('input'); try { (input as any)?.showPicker?.(); } catch { input?.focus(); } }}>
                             <Input type="date" value={form.due_date} onChange={e => set('due_date', e.target.value)}
-                                className={errors.due_date ? 'border-red-500' : ''} />
+                                className={`cursor-pointer ${errors.due_date ? 'border-red-500' : ''}`} />
+                            </div>
                         </Field>
                         <Field label={t('Status')} error={errors.status}>
                             <Select value={form.status} onValueChange={v => set('status', v)}>
@@ -548,10 +554,14 @@ export default function InvoiceCreate() {
                                                         {prod?.tax ? `${prod.tax.name} (${parseFloat(prod.tax.rate).toFixed(2)}%)` : t('No Tax')}
                                                     </span>
                                                 </td>
+                                                <td className="px-4 py-3 text-left font-semibold ">
+                                                    <span className="font-mono">{fmt(c.total)}</span>
+                                                </td>
                                                 <td className="px-4 py-3 text-center">
                                                     <button type="button" onClick={() => removeLine(line.id)}
-                                                        className="p-1.5 rounded text-red-500 hover:bg-red-50">
-                                                        <Trash2 className="h-4 w-4" />
+                                                        disabled={form.products.length <= 1}
+                                                        className="p-1.5 rounded text-gray-500 hover:bg-gray-100 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed">
+                                                        <Trash2 className="h-4 w-4 text-gray-500" />
                                                     </button>
                                                 </td>
                                             </tr>
@@ -567,19 +577,19 @@ export default function InvoiceCreate() {
                                 <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">{t('Invoice Summary')}</h4>
                                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
                                     <span>{t('Subtotal')}</span>
-                                    <span>{fmt(totals.subtotal + totals.discount)}</span>
+                                    <span className="font-mono">{fmt(totals.subtotal + totals.discount)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-red-600">
                                     <span>{t('Discount')}</span>
-                                    <span>-{fmt(totals.discount)}</span>
+                                    <span className="font-mono">-{fmt(totals.discount)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
                                     <span>{t('Tax')}</span>
-                                    <span>{fmt(totals.tax)}</span>
+                                    <span className="font-mono">{fmt(totals.tax)}</span>
                                 </div>
                                 <div className="flex justify-between text-base font-bold text-gray-900 dark:text-gray-100 border-t pt-2">
                                     <span>{t('Total')}</span>
-                                    <span>{fmt(totals.subtotal + totals.tax)}</span>
+                                    <span className="font-mono">{fmt(totals.subtotal + totals.tax)}</span>
                                 </div>
                             </div>
                         </div>

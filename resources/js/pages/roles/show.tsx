@@ -33,6 +33,7 @@ export default function RolesShow() {
     return (
         <PageTemplate
             title={role.label || t('View Role')}
+            description={t('Role details and related information')}
             url={`/roles/${role.id}`}
             actions={pageActions}
             breadcrumbs={breadcrumbs}

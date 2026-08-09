@@ -127,8 +127,10 @@ export default function QuoteEdit() {
     const addProductRow = () =>
         setData('products', [...data.products, { id: crypto.randomUUID(), product_id: '', quantity: '1', unit_price: '0', discount_type: 'none', discount_value: '0' }]);
 
-    const removeProductRow = (rowId: string) =>
+    const removeProductRow = (rowId: string) => {
+        if (data.products.length <= 1) return;
         setData('products', data.products.filter((r) => r.id !== rowId));
+    };
 
     const updateProductRow = (rowId: string, field: string, value: string) => {
         const idx = data.products.findIndex((r) => r.id === rowId);
@@ -167,7 +169,7 @@ export default function QuoteEdit() {
     const totalTax = data.products.reduce((s, r) => s + calcTax(r), 0);
     const grandTotal = subtotal - totalDiscount + totalTax;
 
-    const fmt = (v: number) => window.appSettings?.formatCurrency(v) || `$${v.toFixed(2)}`;
+    const fmt = (v: number) => <span className="font-mono">{window.appSettings?.formatCurrency(v) || `$${v.toFixed(2)}`}</span>;
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -210,6 +212,7 @@ export default function QuoteEdit() {
     return (
         <PageTemplate
             title={t('Edit Quote')}
+            description={t('Update quote details and related information')}
             breadcrumbs={breadcrumbs}
             fullWidth
             actions={[{
@@ -218,6 +221,7 @@ export default function QuoteEdit() {
                 variant: 'outline',
                 onClick: () => router.visit(route('quotes.index')),
             }]}
+            noPadding
         >
             <form onSubmit={handleSubmit} className="space-y-6">
 
@@ -330,12 +334,14 @@ export default function QuoteEdit() {
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium">{t('Valid Until')}</Label>
+                            <div className="cursor-pointer" onClick={(e) => { const input = (e.currentTarget as HTMLElement).querySelector('input'); try { (input as any)?.showPicker?.(); } catch { input?.focus(); } }}>
                             <Input
                                 type="date"
                                 value={data.valid_until}
                                 onChange={(e) => set('valid_until', e.target.value)}
-                                className={errors.valid_until ? 'border-red-500' : ''}
+                                className={`cursor-pointer ${errors.valid_until ? 'border-red-500' : ''}`}
                             />
+                            </div>
                             {errors.valid_until && <p className="text-xs text-red-500">{errors.valid_until}</p>}
                         </div>
 
@@ -459,10 +465,10 @@ export default function QuoteEdit() {
                                                 <td className="px-4 py-3 text-left">
                                                     {(() => { const p = productOptions.find((p: any) => String(p.id) === row.product_id); return (<span className="text-sm font-medium text-muted-foreground">{p?.tax ? `${p.tax.name} (${parseFloat(p.tax.rate).toFixed(2)}%)` : t('No Tax')}</span>); })()}
                                                 </td>
-                                                <td className="px-4 py-3 text-left font-medium">{fmt(total)}</td>
+                                                <td className="px-4 py-3 text-left font-medium font-mono">{fmt(total)}</td>
                                                 <td className="px-4 py-3 text-left">
-                                                    <button type="button" onClick={() => removeProductRow(row.id)} className="p-1.5 rounded text-red-500 hover:bg-red-50">
-                                                        <Trash2 className="h-4 w-4" />
+                                                    <button type="button" onClick={() => removeProductRow(row.id)} disabled={data.products.length <= 1} className="p-1.5 rounded text-gray-500 hover:bg-gray-100 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed">
+                                                        <Trash2 className="h-4 w-4 text-gray-500" />
                                                     </button>
                                                 </td>
                                             </tr>
@@ -477,19 +483,19 @@ export default function QuoteEdit() {
                             <div className="w-64 space-y-2">
                                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
                                     <span>{t('Subtotal')}</span>
-                                    <span className="font-medium">{fmt(subtotal)}</span>
+                                    <span className="font-medium font-mono">{fmt(subtotal)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-red-600">
                                     <span>{t('Discount')}</span>
-                                    <span className="font-medium">-{fmt(totalDiscount)}</span>
+                                    <span className="font-medium font-mono">-{fmt(totalDiscount)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
                                     <span>{t('Tax')}</span>
-                                    <span className="font-medium">{fmt(totalTax)}</span>
+                                    <span className="font-medium font-mono">{fmt(totalTax)}</span>
                                 </div>
                                 <div className="flex justify-between text-base font-bold text-gray-900 dark:text-gray-100 border-t pt-2">
                                     <span>{t('Grand Total')}</span>
-                                    <span className="text-green-600 text-lg">{fmt(grandTotal)}</span>
+                                    <span className="text-green-600 text-lg font-mono">{fmt(grandTotal)}</span>
                                 </div>
                             </div>
                         </div>

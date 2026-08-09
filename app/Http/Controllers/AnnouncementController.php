@@ -25,7 +25,6 @@ class AnnouncementController extends Controller
         $this->updateStatus();
         $announcements = Announcement::with(['creator', 'category'])
             ->where('created_by', createdBy())
-            ->whereIn('status', ['active','expired'])
             ->orderBy('is_featured', 'desc')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -74,10 +73,19 @@ class AnnouncementController extends Controller
         $allCategories = (clone $categoryQuery)->get(['id', 'name']);
         $categories = (clone $categoryQuery)->where('status', 'active')->get(['id', 'name']);
 
+        $statsQuery = Announcement::where('created_by', createdBy());
+        $stats = [
+            'total'    => (clone $statsQuery)->count(),
+            'active'   => (clone $statsQuery)->where('status', 'active')->count(),
+            'inactive' => (clone $statsQuery)->where('status', 'inactive')->count(),
+            'expired'  => (clone $statsQuery)->where('status', 'expired')->count(),
+        ];
+
         return Inertia::render('announcements/index', [
             'announcements' => $announcements,
             'categories' => $categories,
             'allCategories' => $allCategories,
+            'stats' => $stats,
             'filters' => $request->all(['search', 'category', 'status', 'sort_field', 'sort_direction', 'per_page', 'page']),
         ]);
     }

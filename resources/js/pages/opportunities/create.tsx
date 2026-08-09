@@ -52,6 +52,7 @@ export default function OpportunityCreate() {
     };
 
     const removeProductRow = (index: number) => {
+        if (data.products.length <= 1) return;
         setData('products', data.products.filter((_, i) => i !== index));
     };
 
@@ -128,6 +129,7 @@ export default function OpportunityCreate() {
     return (
         <PageTemplate
             title={t('Create Opportunity')}
+            description={t('Fill in the details to create a new opportunity')}
             breadcrumbs={breadcrumbs}
             actions={[{
                 label: t('Back'),
@@ -135,6 +137,7 @@ export default function OpportunityCreate() {
                 variant: 'outline',
                 onClick: () => window.history.back(),
             }]}
+            noPadding
         >
             <form onSubmit={handleSubmit} className="space-y-6">
 
@@ -181,13 +184,15 @@ export default function OpportunityCreate() {
                                     <Label htmlFor="close_date" className="text-sm font-medium">
                                         {t('Close Date')}
                                     </Label>
+                                    <div className="cursor-pointer" onClick={(e) => { const input = (e.currentTarget as HTMLElement).querySelector('input'); try { (input as any)?.showPicker?.(); } catch { input?.focus(); } }}>
                                     <Input
                                         id="close_date"
                                         type="date"
                                         value={data.close_date}
                                         onChange={(e) => handleInputChange('close_date', e.target.value)}
-                                        className={errors.close_date ? 'border-red-500' : ''}
+                                        className={`cursor-pointer ${errors.close_date ? 'border-red-500' : ''}`}
                                     />
+                                    </div>
                                     {errors.close_date && <p className="text-xs text-red-500">{errors.close_date}</p>}
                                 </div>
 
@@ -323,7 +328,7 @@ export default function OpportunityCreate() {
                             <div className="overflow-x-auto">
                                 <table className="w-full text-sm">
                                     <thead>
-                                        <tr className="border-b bg-gray-50 dark:bg-gray-800 text-xs font-semibold text-gray-600 dark:text-gray-400">
+                                        <tr className="border-t border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-xs font-semibold text-gray-600 dark:text-gray-400">
                                             <th className="px-3 py-2 text-left">{t('Product')} <span className="text-red-500">*</span></th>
                                             <th className="px-3 py-2 text-left w-16">{t('Qty')} <span className="text-red-500">*</span></th>
                                             <th className="px-3 py-2 text-left w-20">{t('Unit Price')} <span className="text-red-500">*</span></th>
@@ -379,15 +384,16 @@ export default function OpportunityCreate() {
                                                         </span>
                                                     </td>
                                                     <td className="px-3 py-2 text-left">
-                                                        <span className="text-sm font-medium text-gray-900 dark:text-white">{fmt(lineTotal + taxAmt)}</span>
+                                                        <span className="text-sm font-medium text-gray-900 dark:text-white font-mono">{fmt(lineTotal + taxAmt)}</span>
                                                     </td>
                                                     <td className="px-3 py-2 text-left">
                                                         <button
                                                             type="button"
                                                             onClick={() => removeProductRow(i)}
-                                                            className="h-8 w-8 flex items-center justify-center rounded-md text-red-500 hover:bg-red-50 transition-colors"
+                                                            disabled={data.products.length <= 1}
+                                                            className="h-8 w-8 flex items-center justify-center rounded-md text-gray-500 transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
                                                         >
-                                                            <Trash2 className="h-4 w-4" />
+                                                            <Trash2 className="h-4 w-4 text-gray-500"/>
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -405,15 +411,15 @@ export default function OpportunityCreate() {
                             <div className="w-72 space-y-2">
                                 <div className="flex justify-between items-center">
                                     <span className="text-sm text-gray-500 dark:text-gray-400">{t('Subtotal')}</span>
-                                    <span className="text-sm font-medium text-gray-900 dark:text-white">{fmt(subtotal)}</span>
+                                    <span className="text-sm font-medium text-gray-900 dark:text-white font-mono">{fmt(subtotal)}</span>
                                 </div>
                                 <div className="flex justify-between items-center">
                                     <span className="text-sm text-gray-500 dark:text-gray-400">{t('Tax')}</span>
-                                    <span className="text-sm font-medium text-gray-900 dark:text-white">{fmt(totalTax)}</span>
+                                    <span className="text-sm font-medium text-gray-900 dark:text-white font-mono">{fmt(totalTax)}</span>
                                 </div>
                                 <div className="flex justify-between items-center border-t border-gray-200 dark:border-gray-600 pt-2">
                                     <span className="text-sm font-bold text-gray-900 dark:text-white">{t('Grand Total')}</span>
-                                    <span className="text-base font-bold text-gray-900 dark:text-white">{fmt(grandTotal)}</span>
+                                    <span className="text-base font-bold text-green-600 dark:text-green-400 font-mono">{fmt(grandTotal)}</span>
                                 </div>
                             </div>
                         </div>

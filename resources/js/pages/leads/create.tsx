@@ -95,6 +95,7 @@ export default function LeadCreate() {
     return (
         <PageTemplate
             title={t('Create Lead')}
+            description={t('Fill in the details to create a new lead')}
             breadcrumbs={breadcrumbs}
             actions={[
                 {
@@ -104,6 +105,7 @@ export default function LeadCreate() {
                     onClick: () => window.history.back(),
                 },
             ]}
+            noPadding
         >
             <form onSubmit={handleSubmit} className="space-y-6">
 

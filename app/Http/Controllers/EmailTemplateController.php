@@ -32,7 +32,7 @@ class EmailTemplateController extends Controller
 
         // Pagination
         $perPage = $request->get('per_page', 10);
-        $templates = $query->paginate((int)$perPage);
+        $templates = $query->paginate((int)$perPage)->withQueryString();
 
         return Inertia::render('email-templates/index', [
             'templates' => $templates,

@@ -44,6 +44,7 @@ export default function Index({ modules }: StreamsIndexProps) {
     return (
         <PageWrapper
             title={t('Streams')}
+            description={t('View activity logs for various modules')}
             url={route('stream.index')}
         >
             <Head title={t('Streams')} />

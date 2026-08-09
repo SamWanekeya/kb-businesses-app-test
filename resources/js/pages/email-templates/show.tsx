@@ -68,7 +68,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
     }
 
     const handleSave = () => {
-        alert('Save functionality will be implemented later')
+        toast.info(t('Save functionality will be implemented later'))
     }
 
     // Handle flash messages

@@ -101,7 +101,7 @@ export default function CompanyPlanOrdersPage() {
       breadcrumbs={breadcrumbs}
       noPadding
     >
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+  <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
         <SearchAndFilterBar
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
@@ -117,8 +117,6 @@ export default function CompanyPlanOrdersPage() {
               label: t(option.label)
             })) || []
           })) || []}
-          showFilters={showFilters}
-          setShowFilters={setShowFilters}
           hasActiveFilters={hasActiveFilters}
           activeFilterCount={() => {
             return Object.values(filterValues).filter(v => v && v !== '').length + (searchTerm ? 1 : 0);
@@ -128,23 +126,7 @@ export default function CompanyPlanOrdersPage() {
             setFilterValues({});
             router.get(route('company.plan-orders.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
           }}
-          onApplyFilters={applyFilters}
-          currentPerPage={pageFilters.per_page?.toString() || "10"}
-          onPerPageChange={(value) => {
-            const params: any = { page: 1, per_page: parseInt(value) };
-
-            if (searchTerm) {
-              params.search = searchTerm;
-            }
-
-            Object.entries(filterValues).forEach(([key, val]) => {
-              if (val && val !== '') {
-                params[key] = val;
-              }
-            });
-
-            router.get(route('company.plan-orders.index'), params, { preserveState: true, preserveScroll: true });
-          }}
+         
         />
       </div>
 
@@ -176,6 +158,22 @@ export default function CompanyPlanOrdersPage() {
               }
               router.get(urlObj.toString());
             }
+          }}
+           currentPerPage={pageFilters.per_page?.toString() || "10"}
+          onPerPageChange={(value) => {
+            const params: any = { page: 1, per_page: parseInt(value) };
+
+            if (searchTerm) {
+              params.search = searchTerm;
+            }
+
+            Object.entries(filterValues).forEach(([key, val]) => {
+              if (val && val !== '') {
+                params[key] = val;
+              }
+            });
+
+            router.get(route('company.plan-orders.index'), params, { preserveState: true, preserveScroll: true });
           }}
         />
       </div>

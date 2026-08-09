@@ -78,8 +78,10 @@ export default function AnnouncementShow() {
     return (
         <PageTemplate
             title={announcement.title}
-            breadcrumbs={breadcrumbs}
+            description={t('View announcement details and content')}
             actions={pageActions}
+            breadcrumbs={breadcrumbs}
+            noPadding
         >
             <Head title={announcement.title} />
 

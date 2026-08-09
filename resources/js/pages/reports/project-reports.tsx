@@ -53,10 +53,13 @@ export default function ProjectReports() {
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
   return (
-    <PageTemplate title={t("Project Reports")} url="/reports/projects" breadcrumbs={breadcrumbs} noPadding>
+    <PageTemplate title={t("Project Reports")} 
+    description={t("View and analyze project reports to track performance and progress.")}
+    url="/reports/projects" breadcrumbs={breadcrumbs} noPadding>
+       <SummaryCards cards={summaryCards} />
       <ReportFilters filters={filters} />
 
-      <SummaryCards cards={summaryCards} />
+     
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <ChartCard title={t('Project Trend')}

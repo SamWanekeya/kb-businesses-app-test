@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import TextStyle from '@tiptap/extension-text-style'
@@ -10,6 +11,8 @@ import ListItem from '@tiptap/extension-list-item'
 import Blockquote from '@tiptap/extension-blockquote'
 import { Button } from './button'
 import { Separator } from './separator'
+import { Input } from './input'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from './dialog'
 import {
   Bold,
   Italic,
@@ -112,11 +115,40 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({
     return null
   }
 
+  const [linkModalOpen, setLinkModalOpen] = useState(false)
+  const [linkUrl, setLinkUrl] = useState('')
+  const [linkError, setLinkError] = useState('')
+  const savedSelection = useRef<{ from: number; to: number } | null>(null)
+
   const addLink = () => {
-    const url = window.prompt('Enter URL:')
-    if (url) {
-      editor.chain().focus().setLink({ href: url }).run()
+    const { from, to } = editor.state.selection
+    savedSelection.current = { from, to }
+    setLinkUrl(editor.getAttributes('link').href || '')
+    setLinkError('')
+    setLinkModalOpen(true)
+  }
+
+  const confirmLink = () => {
+    if (!linkUrl.trim()) {
+      setLinkError('URL is required')
+      return
     }
+    try {
+      new URL(linkUrl)
+    } catch {
+      setLinkError('Please enter a valid URL (e.g. https://example.com)')
+      return
+    }
+    if (savedSelection.current) {
+      const { from, to } = savedSelection.current
+      editor.chain().focus().setTextSelection({ from, to }).setLink({ href: linkUrl }).run()
+    } else {
+      editor.chain().focus().setLink({ href: linkUrl }).run()
+    }
+    setLinkModalOpen(false)
+    setLinkUrl('')
+    setLinkError('')
+    savedSelection.current = null
   }
 
   const toggleHtmlView = () => {
@@ -308,6 +340,29 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({
         onClick={() => editor?.commands.focus()}
       />
       )}
+
+      <Dialog open={linkModalOpen} onOpenChange={(open) => { setLinkModalOpen(open); if (!open) setLinkError('') }}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Insert Link</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-1">
+            <Input
+              placeholder="https://example.com"
+              value={linkUrl}
+              onChange={(e) => { setLinkUrl(e.target.value); setLinkError('') }}
+              onKeyDown={(e) => e.key === 'Enter' && confirmLink()}
+              autoFocus
+              className={linkError ? 'border-red-500' : ''}
+            />
+            {linkError && <p className="text-xs text-red-500">{linkError}</p>}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setLinkModalOpen(false)}>Cancel</Button>
+            <Button onClick={confirmLink}>Insert</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 })

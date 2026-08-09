@@ -131,7 +131,7 @@ export function CrudTable({
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
-                                                className={cn("h-8 w-8", action.className)}
+                                                className={cn("h-8 w-8 text-gray-500")}
                                             >
                                                 <IconComponent size={16} />
                                             </Button>
@@ -153,7 +153,7 @@ export function CrudTable({
                                     <Button
                                         variant="ghost"
                                         size="icon"
-                                        className={cn("h-8 w-8", action.className)}
+                                        className={cn("h-8 w-8 text-gray-500")}
                                         onClick={() => onAction(action.action, row)}
                                     >
                                         <IconComponent size={16} />
@@ -218,7 +218,12 @@ export function CrudTable({
                 );
 
             case 'date':
-                return value ? <span className="text-sm">{new Date(value).toLocaleDateString()}</span> : <span>-</span>;
+                return (
+                    <div className="flex items-center gap-2 whitespace-nowrap text-gray-500">
+                        {value && <LucidIcons.Calendar className="h-4 w-4" />}
+                        <span>{window.appSettings?.formatDateTime(value, false) || '-'}</span>
+                    </div>
+                );
 
             case 'currency':
                 return <span className="text-sm">{typeof value === 'number' ?
@@ -272,7 +277,7 @@ export function CrudTable({
                                 </div>
                             </TableHead>
                         ))}
-                        {hasAnyActionPermission && <TableHead className="w-24 py-2.5 text-right font-semibold">{t('Actions')}</TableHead>}
+                        {hasAnyActionPermission && <TableHead className="w-24 py-2.5 text-center font-semibold">{t('Actions')}</TableHead>}
                     </TableRow>
                 </TableHeader>
                 <TableBody>

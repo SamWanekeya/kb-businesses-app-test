@@ -176,7 +176,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
             const passwordPosition = passwordRef.current?.offsetTop || 0;
 
             // Determine active section based on scroll position
-            if (scrollPosition >= passwordPosition) {
+            if (scrollPosition >= passwordPosition && passwordPosition > 0) {
                 setActiveSection('password');
             } else {
                 setActiveSection('profile');
@@ -216,24 +216,35 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
             title={t("Profile Settings")}
             url="/profile"
         >
+            <style>{`
+            main {
+            max-width: 100vw;
+            overflow-x: clip !important;
+            }
+            body {
+            overflow-x: clip !important;
+            }
+        `}</style>
             <div className="flex flex-col md:flex-row gap-8">
                 {/* Sidebar */}
                 <div className="md:w-64 flex-shrink-0">
                     <div className="sticky top-20">
-                        <div className="space-y-1">
-                            {sidebarNavItems.map((item) => (
-                                <Button
-                                    key={item.href}
-                                    variant="ghost"
-                                    className={cn('w-full justify-start text-sm', {
-                                        'bg-muted font-semibold': activeSection === item.href.replace('#', ''),
-                                    })}
-                                    onClick={() => handleNavClick(item.href)}
-                                >
-                                    {item.icon}
-                                    {item.title}
-                                </Button>
-                            ))}
+                        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-3 pr-4">
+                             <div className="flex flex-col gap-2">
+                                {sidebarNavItems.map((item) => (
+                                    <Button
+                                        key={item.href}
+                                        variant="ghost"
+                                        className={cn('w-full justify-start gap-3 rounded-lg text-sm font-normal text-card-foreground hover:bg-muted hover:font-normal', {
+                                            'bg-muted font-medium text-card-foreground': activeSection === item.href.replace('#', ''),
+                                        })}
+                                        onClick={() => handleNavClick(item.href)}
+                                    >
+                                        {item.icon}
+                                        {item.title}
+                                    </Button>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>

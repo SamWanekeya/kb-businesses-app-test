@@ -13,6 +13,7 @@ import { toast } from '@/components/custom-toast';
 import { useTranslation } from 'react-i18next';
 import { Pagination } from '@/components/ui/pagination';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import * as LucidIcons from "lucide-react";
 
 export default function DocumentFolderView() {
     const { t } = useTranslation();
@@ -217,7 +218,9 @@ export default function DocumentFolderView() {
     const total = (docsPagination?.total || docsList.length) + subFolders.length;
 
     return (
-        <PageTemplate title={folder.name} url={`/documents/folder/${folder.id}`} actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
+        <PageTemplate title={folder.name} 
+        description={t('Manage your documents and folders.')}
+        url={`/documents/folder/${folder.id}`} actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
             {/* Outer container */}
             <div className="-mt-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm p-4 space-y-4">
 
@@ -273,7 +276,7 @@ export default function DocumentFolderView() {
                                                     <DropdownMenuContent align="end" className="w-28 z-50">
                                                         {hasPermission(permissions, 'edit-document-folders') && (
                                                             <DropdownMenuItem onClick={() => { setCurrentSubFolder(sf); setFolderFormMode('edit'); setIsFolderModalOpen(true); }}>
-                                                                <Edit className="h-4 w-4 mr-2" />{t('Edit')}
+                                                                <Edit className="h-4 w-4 mr-2 text-gray-500" />{t('Edit')}
                                                             </DropdownMenuItem>
                                                         )}
                                                         {hasPermission(permissions, 'edit-document-folders') && hasPermission(permissions, 'delete-document-folders') && (
@@ -281,7 +284,7 @@ export default function DocumentFolderView() {
                                                         )}
                                                         {hasPermission(permissions, 'delete-document-folders') && (
                                                             <DropdownMenuItem className="text-red-600" onClick={() => { setCurrentSubFolder(sf); setIsFolderDeleteModalOpen(true); }}>
-                                                                <Trash2 className="h-4 w-4 mr-2" />{t('Delete')}
+                                                                <Trash2 className="h-4 w-4 mr-2 text-gray-500" />{t('Delete')}
                                                             </DropdownMenuItem>
                                                         )}
                                                     </DropdownMenuContent>
@@ -320,12 +323,12 @@ export default function DocumentFolderView() {
                                                         <DropdownMenuContent align="end" className="w-28 z-50">
                                                             {hasPermission(permissions, 'view-documents') && doc.attachment_url && (
                                                                 <DropdownMenuItem onClick={() => { const l = document.createElement('a'); l.href = route('documents.download', doc.id); l.download = ''; document.body.appendChild(l); l.click(); document.body.removeChild(l); }}>
-                                                                    <Download className="h-4 w-4 mr-2" />{t('Download')}
+                                                                    <Download className="h-4 w-4 mr-2 text-gray-500" />{t('Download')}
                                                                 </DropdownMenuItem>
                                                             )}
                                                             {hasPermission(permissions, 'edit-documents') && (
                                                                 <DropdownMenuItem onClick={() => { setCurrentDoc(doc); setDocFormMode('edit'); setIsDocModalOpen(true); }}>
-                                                                    <Edit className="h-4 w-4 mr-2" />{t('Edit')}
+                                                                    <Edit className="h-4 w-4 mr-2 text-gray-500" />{t('Edit')}
                                                                 </DropdownMenuItem>
                                                             )}
                                                             {(hasPermission(permissions, 'view-documents') || hasPermission(permissions, 'edit-documents')) && hasPermission(permissions, 'delete-documents') && (
@@ -333,7 +336,7 @@ export default function DocumentFolderView() {
                                                             )}
                                                             {hasPermission(permissions, 'delete-documents') && (
                                                                 <DropdownMenuItem className="text-red-600" onClick={() => { setCurrentDoc(doc); setIsDocDeleteModalOpen(true); }}>
-                                                                    <Trash2 className="h-4 w-4 mr-2" />{t('Delete')}
+                                                                    <Trash2 className="h-4 w-4 mr-2 text-gray-500" />{t('Delete')}
                                                                 </DropdownMenuItem>
                                                             )}
                                                         </DropdownMenuContent>
@@ -373,17 +376,17 @@ export default function DocumentFolderView() {
                             <div className="flex items-center gap-1.5">
                                 {hasPermission(permissions, 'edit-document-folders') && (
                                     <TooltipProvider><Tooltip><TooltipTrigger asChild>
-                                        <button className="h-7 w-7 flex items-center justify-center rounded-lg text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors"
+                                        <button className="h-7 w-7 flex items-center justify-center rounded-lg text-amber-500 transition-colors"
                                             onClick={() => { setCurrentSubFolder(folder); setFolderFormMode('edit'); setIsFolderModalOpen(true); }}>
-                                            <Edit className="h-4 w-4" />
+                                            <Edit className="h-4 w-4 text-gray-500" />
                                         </button>
                                     </TooltipTrigger><TooltipContent>{t('Edit')}</TooltipContent></Tooltip></TooltipProvider>
                                 )}
                                 {hasPermission(permissions, 'delete-document-folders') && (
                                     <TooltipProvider><Tooltip><TooltipTrigger asChild>
-                                        <button className="h-7 w-7 flex items-center justify-center rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                                        <button className="h-7 w-7 flex items-center justify-center rounded-lg text-red-500 transition-colors"
                                             onClick={() => { setCurrentSubFolder(folder); setIsFolderDeleteModalOpen(true); }}>
-                                            <Trash2 className="h-4 w-4" />
+                                            <Trash2 className="h-4 w-4 text-gray-500" />
                                         </button>
                                     </TooltipTrigger><TooltipContent>{t('Delete')}</TooltipContent></Tooltip></TooltipProvider>
                                 )}
@@ -393,7 +396,22 @@ export default function DocumentFolderView() {
                         <div>
                             <PanelRow label={t('Name')} value={folder.name} />
                             <PanelRow label={t('Parent Folder')} value={folder.parent_folder ? folder.parent_folder.name : t('Root Folder')} />
-                            <PanelRow label={t('Created')} value={folder.created_at ? (window.appSettings?.formatDateTime(folder.created_at, false) || new Date(folder.created_at).toLocaleDateString()) : '-'} />
+                       <PanelRow
+    label={t('Created')}
+    value={
+        <div className="flex items-center gap-2 whitespace-nowrap">
+            {folder.created_at && (
+                <LucidIcons.Calendar className="h-4 w-4 text-gray-500" />
+            )}
+            <span>
+                {folder.created_at
+                    ? (window.appSettings?.formatDateTime(folder.created_at, false) ||
+                        new Date(folder.created_at).toLocaleDateString())
+                    : '-'}
+            </span>
+        </div>
+    }
+/>
                         </div>
                         {folder.description && (
                             <div className="px-4 py-3 border-t border-gray-100 dark:border-gray-700">

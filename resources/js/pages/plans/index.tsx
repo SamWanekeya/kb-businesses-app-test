@@ -77,7 +77,7 @@ interface Props {
 
 export default function Plans({ plans: initialPlans, billingCycle: initialBillingCycle = 'monthly', hasDefaultPlan, isAdmin = false, currentPlan, userTrialUsed, paymentMethods = [], currency, currencySymbol }: Props) {
     const { t } = useTranslation();
-    const { flash } = usePage().props as any;
+    const { flash, auth } = usePage().props as any;
     const [plans, setPlans] = useState<Plan[]>(initialPlans);
     const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>(initialBillingCycle);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -643,11 +643,12 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
         { title: t('Dashboard'), href: route('dashboard') },
         { title: t('Plans') }
     ];
+    const isSuperAdmin = auth?.user?.type === 'superadmin';
 
     return (
         <PageTemplate
             title={t("Plans")}
-            description={t("Manage subscription plans for your customers")}
+            description={isSuperAdmin ? t('Manage subscription plans for your customers.') : t('Manage Your Subscription Plan.')}
             url="/plans"
             breadcrumbs={breadcrumbs}
         >
@@ -762,7 +763,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
                                     </h3>
                                     <div className="mb-4">
                                         <div className="flex items-center justify-center">
-                                            <span className="text-4xl font-bold text-gray-900">
+                                            <span className="text-4xl font-bold text-gray-900 font-mono">
                                                 {currencySymbol}{plan.price}
                                             </span>
                                             <span className="text-gray-500 ml-1">
@@ -874,7 +875,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
                                                                     className="text-amber-500 hover:text-amber-700"
                                                                     onClick={() => router.get(route('plans.edit', plan.id))}
                                                                 >
-                                                                    <Edit className="h-4 w-4" />
+                                                                    <Edit className="h-4 w-4 text-gray-500" />
                                                                 </Button>
                                                             </TooltipTrigger>
                                                             <TooltipContent>{t('Edit')}</TooltipContent>
@@ -890,7 +891,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
                                                                         className="text-red-500 hover:text-red-700"
                                                                         onClick={() => handleDelete(plan)}
                                                                     >
-                                                                        <Trash2 className="h-4 w-4" />
+                                                                        <Trash2 className="h-4 w-4 text-gray-500" />
                                                                     </Button>
                                                                 </TooltipTrigger>
                                                                 <TooltipContent>{t('Delete')}</TooltipContent>

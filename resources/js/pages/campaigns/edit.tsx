@@ -70,6 +70,7 @@ export default function CampaignEdit() {
     return (
         <PageTemplate
             title={t('Edit Campaign')}
+            description={t('Update campaign details, related information')}
             breadcrumbs={breadcrumbs}
             actions={[{
                 label: t('Back'),
@@ -77,6 +78,7 @@ export default function CampaignEdit() {
                 variant: 'outline',
                 onClick: () => router.visit(route('campaigns.index')),
             }]}
+            noPadding
         >
             <form onSubmit={handleSubmit} className="space-y-6">
 
@@ -132,23 +134,27 @@ export default function CampaignEdit() {
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium" required>{t('Start Date')}</Label>
+                            <div className="cursor-pointer" onClick={(e) => { const input = (e.currentTarget as HTMLElement).querySelector('input'); try { (input as any)?.showPicker?.(); } catch { input?.focus(); } }}>
                             <Input
                                 type="date"
                                 value={data.start_date}
                                 onChange={e => set('start_date', e.target.value)}
-                                className={errors.start_date ? 'border-red-500' : ''}
+                                className={`cursor-pointer ${errors.start_date ? 'border-red-500' : ''}`}
                             />
+                            </div>
                             {errors.start_date && <p className="text-xs text-red-500">{errors.start_date}</p>}
                         </div>
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium" required>{t('End Date')}</Label>
+                            <div className="cursor-pointer" onClick={(e) => { const input = (e.currentTarget as HTMLElement).querySelector('input'); try { (input as any)?.showPicker?.(); } catch { input?.focus(); } }}>
                             <Input
                                 type="date"
                                 value={data.end_date}
                                 onChange={e => set('end_date', e.target.value)}
-                                className={errors.end_date ? 'border-red-500' : ''}
+                                className={`cursor-pointer ${errors.end_date ? 'border-red-500' : ''}`}
                             />
+                            </div>
                             {errors.end_date && <p className="text-xs text-red-500">{errors.end_date}</p>}
                         </div>
 

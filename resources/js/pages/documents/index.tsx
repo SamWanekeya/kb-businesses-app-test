@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router } from '@inertiajs/react';
-import { Edit, Trash2, MoreHorizontal, Folder, FolderPlus, Search, X } from 'lucide-react';
+import { Plus, Edit, Trash2, MoreHorizontal, Folder, FolderPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { hasPermission } from '@/utils/authorization';
 import { useBrand } from '@/contexts/BrandContext';
 import { THEME_COLORS } from '@/hooks/use-appearance';
@@ -18,9 +18,6 @@ export default function Documents() {
     const { t } = useTranslation();
     const { themeColor, customColor } = useBrand();
     const color = themeColor === 'custom' ? customColor : THEME_COLORS[themeColor as keyof typeof THEME_COLORS];
-    const themeColorValue = typeof window !== 'undefined'
-        ? getComputedStyle(document.documentElement).getPropertyValue('--theme-color').trim() || color
-        : color;
     const {
         auth,
         rootFolders = [],
@@ -43,11 +40,6 @@ export default function Documents() {
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         router.get(route('documents.index'), { search: searchTerm || undefined, page: 1 }, { preserveState: true, preserveScroll: true });
-    };
-
-    const handleReset = () => {
-        setSearchTerm('');
-        router.get(route('documents.index'), {}, { preserveState: true, preserveScroll: true });
     };
 
     const handleFolderFormSubmit = (formData: any) => {
@@ -109,59 +101,45 @@ export default function Documents() {
     const folders = rootFolders?.data || rootFolders || [];
 
     return (
-        <PageTemplate title={t('Documents')} url="/documents" actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
+        <PageTemplate title={t('Documents')} description={t('Manage your documents and organizing them into folders.')} url="/documents" actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
+            {/* Search bar */}
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border border-gray-200 dark:border-gray-700">
+                <SearchAndFilterBar
+                    searchTerm={searchTerm}
+                    onSearchChange={setSearchTerm}
+                    onSearch={handleSearch}
+                    hasActiveFilters={() => false}
+                    activeFilterCount={() => 0}
+                    onResetFilters={() => {}}
+                />
+            </div>
+
+            {/* Folders grid */}
             <div className="bg-white dark:bg-gray-900 rounded-lg shadow border border-gray-200 dark:border-gray-700">
-
-                {/* Search bar */}
-                <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                    <form onSubmit={handleSearch} className="flex gap-2">
-                        <div className="relative max-w-sm w-full">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                            <Input
-                                type="text"
-                                placeholder={t('Search...')}
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="pl-9"
-                            />
-                        </div>
-                        <Button type="submit" variant="default">
-                            <Search className="h-4 w-4 mr-2" />{t('Search')}
-                        </Button>
-                        {searchTerm && (
-                            <Button type="button" variant="outline" onClick={handleReset}>
-                                <X className="h-4 w-4 mr-1" />{t('Reset')}
-                            </Button>
-                        )}
-                    </form>
-                </div>
-
-                {/* Folders grid */}
                 <div className="p-4">
                     {folders.length > 0 ? (
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                        
-                                {folders.map((folder: any) => (
-                                    <div key={folder.id} className="relative group">
-                                        <div
-                                            className="flex flex-col items-center justify-center p-4 pt-6 pb-5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 cursor-pointer transition-all duration-150 select-none min-h-[130px]"
-                                            onMouseEnter={e => {
-                                                e.currentTarget.style.borderColor = color;
-                                                e.currentTarget.style.backgroundColor = `${color}14`;
-                                            }}
-                                            onMouseLeave={e => {
-                                                e.currentTarget.style.borderColor = '';
-                                                e.currentTarget.style.backgroundColor = '';
-                                            }}
-                                            onClick={() => hasPermission(permissions, 'view-documents') ? router.get(route('documents.folder', folder.id)) : toast.error(t('Permission denied.'))}
-                                        >
-                                            <Folder className="h-14 w-14 mb-3" style={{ color }} strokeWidth={1.8} />
-                                            <span className="text-sm text-gray-700 dark:text-gray-300 text-center leading-snug line-clamp-2 w-full">{folder.name}</span>
-                                        </div>
+                            {folders.map((folder: any) => (
+                                <div key={folder.id} className="relative group">
+                                    <div
+                                        className="flex flex-col items-center justify-center p-4 pt-6 pb-5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 cursor-pointer transition-all duration-150 select-none min-h-[130px]"
+                                        onMouseEnter={e => {
+                                            e.currentTarget.style.borderColor = color;
+                                            e.currentTarget.style.backgroundColor = `${color}14`;
+                                        }}
+                                        onMouseLeave={e => {
+                                            e.currentTarget.style.borderColor = '';
+                                            e.currentTarget.style.backgroundColor = '';
+                                        }}
+                                        onClick={() => hasPermission(permissions, 'view-documents') ? router.get(route('documents.folder', folder.id)) : toast.error(t('Permission denied.'))}
+                                    >
+                                        <Folder className="h-14 w-14 mb-3" style={{ color }} strokeWidth={1.8} />
+                                        <span className="text-sm text-gray-700 dark:text-gray-300 text-center leading-snug line-clamp-2 w-full">{folder.name}</span>
+                                    </div>
 
-                                        {/* Three-dot menu */}
-                                        <div className="absolute top-2 right-2" onClick={(e) => e.stopPropagation()}>
-                                            {(hasPermission(permissions, 'edit-document-folders') || hasPermission(permissions, 'delete-document-folders')) ? (
+                                    {/* Three-dot menu */}
+                                    <div className="absolute top-2 right-2" onClick={(e) => e.stopPropagation()}>
+                                        {(hasPermission(permissions, 'edit-document-folders') || hasPermission(permissions, 'delete-document-folders')) ? (
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
                                                     <Button variant="ghost" size="sm" className="p-0 opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 bg-transparent hover:bg-transparent shadow-none border-none">
@@ -184,16 +162,16 @@ export default function Documents() {
                                                     )}
                                                 </DropdownMenuContent>
                                             </DropdownMenu>
-                                            ) : (
+                                        ) : (
                                             <Button variant="ghost" size="sm" className="p-0 opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 bg-transparent hover:bg-transparent shadow-none border-none"
                                                 onClick={() => toast.error(t('Permission denied.'))}>
                                                 <MoreHorizontal className="h-4 w-4" />
                                             </Button>
-                                            )}
-                                        </div>
+                                        )}
                                     </div>
-                                ))}
-                            </div>
+                                </div>
+                            ))}
+                        </div>
                     ) : (
                         <div className="text-center py-16">
                             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700">
@@ -217,6 +195,15 @@ export default function Documents() {
                     links={rootFolders?.links || []}
                     entityName={t('documents')}
                     onPageChange={(url) => router.get(url)}
+                    perPageOptions={[24, 48, 96]}
+                    currentPerPage={pageFilters.per_page?.toString() || '24'}
+                    onPerPageChange={(value) => {
+                        router.get(route('documents.index'), {
+                            search: searchTerm || undefined,
+                            page: 1,
+                            ...(parseInt(value) !== 24 && { per_page: parseInt(value) }),
+                        }, { preserveState: true, preserveScroll: true });
+                    }}
                 />
             </div>
 
@@ -242,8 +229,6 @@ export default function Documents() {
                 itemName={currentFolder?.name || ''}
                 entityName={t('folder')}
             />
-
-
         </PageTemplate>
     );
 }

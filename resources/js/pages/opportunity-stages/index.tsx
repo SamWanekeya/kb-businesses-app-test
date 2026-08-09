@@ -79,11 +79,14 @@ export default function OpportunityStages() {
 
     const hasActiveFilters = () => searchTerm !== '' || selectedStatus !== 'all';
 
-    const applyFilters = () => {
+    const applyFilters = (
+        status = selectedStatus,
+        search = searchTerm
+    ) => {
         router.get(route('opportunity-stages.index'), {
             page: 1,
-            search: searchTerm || undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
+            search: search || undefined,
+            status: status !== 'all' ? status : undefined,
             sort_field: pageFilters.sort_field,
             sort_direction: pageFilters.sort_direction,
             per_page: pageFilters.per_page || 10,
@@ -198,7 +201,7 @@ export default function OpportunityStages() {
     ];
 
     return (
-        <PageTemplate title={t('Opportunity Stages')} url="/opportunity-stages" breadcrumbs={breadcrumbs} noPadding>
+        <PageTemplate title={t('Opportunity Stages')} description={t('Manage opportunity stages for your sales pipeline.')} url="/opportunity-stages" breadcrumbs={breadcrumbs} noPadding>
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
 
                 {/* Left — Form */}
@@ -344,7 +347,10 @@ export default function OpportunityStages() {
                                 )}
                             </div>
                             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                                <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+                                <Select value={selectedStatus} onValueChange={(value) => {
+                                        setSelectedStatus(value);
+                                        applyFilters(value, searchTerm);
+                                    }}>
                                     <SelectTrigger>
                                         <SelectValue placeholder={t('All Statuses')} />
                                     </SelectTrigger>
@@ -362,10 +368,10 @@ export default function OpportunityStages() {
                     <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         {(opportunityStages?.data || []).length > 0 ? (
                             <>
-                                <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
+                                {/* <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
                                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Opportunity Stages')}</h3>
                                     <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{t('Manage opportunity stage categories for your pipeline.')}</p>
-                                </div>
+                                </div> */}
 
                                 {/* Desktop Table */}
                                 <div className="hidden lg:block overflow-x-auto">
@@ -389,7 +395,7 @@ export default function OpportunityStages() {
                                                     </div>
                                                 </th>
                                                 <th className="px-3 py-3 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">{t('Status')}</th>
-                                                <th className="px-4 py-3 text-right text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">{t('Actions')}</th>
+                                                <th className="px-4 py-3 pr-[50px] text-right text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">{t('Actions')}</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
@@ -434,8 +440,8 @@ export default function OpportunityStages() {
                                                                 <TooltipProvider>
                                                                     <Tooltip>
                                                                         <TooltipTrigger asChild>
-                                                                            <Button variant="ghost" size="sm" onClick={() => handleAction('edit', item)} className="h-8 w-8 p-0 text-amber-500 hover:bg-amber-50 hover:text-amber-600 dark:hover:bg-amber-900/20">
-                                                                                <Edit className="h-4 w-4" />
+                                                                            <Button variant="ghost" size="sm" onClick={() => handleAction('edit', item)} className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700">
+                                                                                <Edit className="h-4 w-4 text-gray-500" />
                                                                             </Button>
                                                                         </TooltipTrigger>
                                                                         <TooltipContent>{t('Edit')}</TooltipContent>
@@ -446,8 +452,8 @@ export default function OpportunityStages() {
                                                                 <TooltipProvider>
                                                                     <Tooltip>
                                                                         <TooltipTrigger asChild>
-                                                                            <Button variant="ghost" size="sm" onClick={() => handleAction('toggle-status', item)} className={`h-8 w-8 p-0 ${item.status === 'active' ? 'text-orange-500 hover:bg-orange-50 hover:text-orange-600 dark:hover:bg-orange-900/20' : 'text-green-600 hover:bg-green-50 hover:text-green-700 dark:hover:bg-green-900/20'}`}>
-                                                                                <Lock className="h-4 w-4" />
+                                                                            <Button variant="ghost" size="sm" onClick={() => handleAction('toggle-status', item)} className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700">
+                                                                                <Lock className="h-4 w-4 text-gray-500" />
                                                                             </Button>
                                                                         </TooltipTrigger>
                                                                         <TooltipContent>{item.status === 'active' ? t('Deactivate') : t('Activate')}</TooltipContent>
@@ -458,8 +464,8 @@ export default function OpportunityStages() {
                                                                 <TooltipProvider>
                                                                     <Tooltip>
                                                                         <TooltipTrigger asChild>
-                                                                            <Button variant="ghost" size="sm" onClick={() => handleAction('delete', item)} className="h-8 w-8 p-0 text-red-500 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20">
-                                                                                <Trash2 className="h-4 w-4" />
+                                                                            <Button variant="ghost" size="sm" onClick={() => handleAction('delete', item)} className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700">
+                                                                                <Trash2 className="h-4 w-4 text-gray-500" />
                                                                             </Button>
                                                                         </TooltipTrigger>
                                                                         <TooltipContent>{t('Delete')}</TooltipContent>
@@ -507,7 +513,7 @@ export default function OpportunityStages() {
                                                         <TooltipProvider>
                                                             <Tooltip>
                                                                 <TooltipTrigger asChild>
-                                                                    <Button variant="ghost" size="sm" onClick={() => handleAction('edit', item)} className="h-8 w-8 p-0 text-amber-500"><Edit className="h-4 w-4" /></Button>
+                                                                    <Button variant="ghost" size="sm" onClick={() => handleAction('edit', item)} className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"><Edit className="h-4 w-4" /></Button>
                                                                 </TooltipTrigger>
                                                                 <TooltipContent>{t('Edit')}</TooltipContent>
                                                             </Tooltip>
@@ -517,7 +523,7 @@ export default function OpportunityStages() {
                                                         <TooltipProvider>
                                                             <Tooltip>
                                                                 <TooltipTrigger asChild>
-                                                                    <Button variant="ghost" size="sm" onClick={() => handleAction('toggle-status', item)} className={`h-8 w-8 p-0 ${item.status === 'active' ? 'text-orange-500' : 'text-green-600'}`}><Lock className="h-4 w-4" /></Button>
+                                                                    <Button variant="ghost" size="sm" onClick={() => handleAction('toggle-status', item)} className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"><Lock className="h-4 w-4" /></Button>
                                                                 </TooltipTrigger>
                                                                 <TooltipContent>{item.status === 'active' ? t('Deactivate') : t('Activate')}</TooltipContent>
                                                             </Tooltip>
@@ -527,7 +533,7 @@ export default function OpportunityStages() {
                                                         <TooltipProvider>
                                                             <Tooltip>
                                                                 <TooltipTrigger asChild>
-                                                                    <Button variant="ghost" size="sm" onClick={() => handleAction('delete', item)} className="h-8 w-8 p-0 text-red-500"><Trash2 className="h-4 w-4" /></Button>
+                                                                    <Button variant="ghost" size="sm" onClick={() => handleAction('delete', item)} className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"><Trash2 className="h-4 w-4" /></Button>
                                                                 </TooltipTrigger>
                                                                 <TooltipContent>{t('Delete')}</TooltipContent>
                                                             </Tooltip>
@@ -559,6 +565,7 @@ export default function OpportunityStages() {
                                             total={opportunityStages?.total || 0}
                                             links={opportunityStages?.links}
                                             entityName={t('opportunity stages')}
+                                            hidePerPage={true}
                                             onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
                                         />
                                     </div>

@@ -68,7 +68,8 @@ class LeadController extends Controller
         if ($request->view === 'kanban' || empty($request->view)) {
             $leads = collect(['data' => $query->get()]);
         } else {
-            $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+            $defaultPerPage = $request->view === 'grid' ? 12 : 10;
+            $perPage = max(1, min(200, (int) $request->get('per_page', $defaultPerPage)));
             $leads = $query->paginate($perPage)->withQueryString();
         }
 
@@ -238,7 +239,7 @@ class LeadController extends Controller
 
         return Inertia::render('leads/show', [
             'lead'            => $lead,
-            'streamItems'     => $lead->activities()->orderBy('created_at', 'asc')->get(),
+            'streamItems'     => $lead->activities()->with('user:id,name,avatar')->orderBy('created_at', 'asc')->get(),
             'comments'        => $lead->comments,
             'relatedAccounts' => $relatedAccounts,
             'relatedContacts' => $relatedContacts,
@@ -290,7 +291,6 @@ class LeadController extends Controller
             ->first();
 
         if ($lead) {
-            try {
                 $validated = $request->validate([
                     'name' => 'required|string|max:255',
                     'email' => 'required|email|max:255|unique:leads,email,' . $leadId . ',id,created_by,' . createdBy(),
@@ -309,6 +309,7 @@ class LeadController extends Controller
                     'status' => 'nullable|in:active,inactive',
                     'assigned_to' => 'required|exists:users,id',
                 ]);
+            try {
 
                 $lead->fill($validated);
 
@@ -324,8 +325,6 @@ class LeadController extends Controller
                 $lead->update($validated);
 
                 return redirect()->route('leads.index')->with('success', __('Lead updated successfully.'));
-            } catch (\Illuminate\Validation\ValidationException $e) {
-                throw $e;
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update lead.'));
             }

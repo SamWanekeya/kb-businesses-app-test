@@ -46,12 +46,12 @@ class ReferralController extends Controller
             ->pluck('total', 'month')
             ->toArray();
 
-        $topCompanies = User::select('users.id', 'users.name', 'users.email', 'users.referral_code')
+        $topCompanies = User::select('users.id', 'users.name', 'users.email', 'users.avatar', 'users.referral_code')
             ->selectRaw('COUNT(referrals.id) as referral_count, SUM(referrals.amount) as total_earned')
             ->leftJoin('referrals', 'users.id', '=', 'referrals.company_id')
             ->where('users.type', 'company')
             ->whereNotNull('users.referral_code')
-            ->groupBy('users.id', 'users.name', 'users.email', 'users.referral_code')
+            ->groupBy('users.id', 'users.name', 'users.email', 'users.avatar', 'users.referral_code')
             ->orderByDesc('referral_count')
             ->limit(10)
             ->get();
@@ -148,9 +148,12 @@ class ReferralController extends Controller
             ->limit(5)
             ->get();
 
-        // Generate referral code if not exists
+        // Generate referral code if not exists (same logic as UserObserver)
         if (!$user->referral_code) {
-            $user->referral_code = 'REF' . str_pad($user->id, 6, '0', STR_PAD_LEFT);
+            do {
+                $code = rand(100000, 999999);
+            } while (User::where('referral_code', $code)->exists());
+            $user->referral_code = $code;
             $user->save();
         }
 

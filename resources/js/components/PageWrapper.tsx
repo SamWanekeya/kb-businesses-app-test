@@ -18,6 +18,7 @@ export interface PageButton {
 interface PageWrapperProps {
   title: string;
   url: string;
+    description: string;
   buttons?: PageButton[];
   children: ReactNode;
   breadcrumbs?: BreadcrumbItem[];
@@ -26,6 +27,7 @@ interface PageWrapperProps {
 export function PageWrapper({ 
   title, 
   url,
+  description,
   buttons = [],
   children,
   breadcrumbs
@@ -56,6 +58,7 @@ export function PageWrapper({
     <PageTemplate 
       title={title} 
       url={url}
+      description={description}
       actions={filteredActions}
       breadcrumbs={pageBreadcrumbs}
     >

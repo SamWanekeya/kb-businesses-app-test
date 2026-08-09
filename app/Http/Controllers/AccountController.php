@@ -62,7 +62,8 @@ class AccountController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $defaultPerPage = $request->view === 'grid' ? 12 : 10;
+        $perPage = max(1, min(200, (int) $request->get('per_page', $defaultPerPage)));
         $accounts = $query->paginate($perPage)->withQueryString();
 
         // Get users for assignment dropdown
@@ -253,8 +254,7 @@ class AccountController extends Controller
             ->first();
 
         if ($account) {
-            try {
-                $validated = $request->validate([
+              $validated = $request->validate([
                     'name' => 'required|string|max:255',
                     'email' => 'required|email|max:255|unique:accounts,email,' . $accountId . ',id,created_by,' . createdBy(),
                     'phone' => 'nullable|string|max:255',
@@ -274,15 +274,11 @@ class AccountController extends Controller
                     'status' => 'nullable|in:active,inactive',
                     'assigned_to' => 'required|exists:users,id',
                 ]);
-
+            try {
                 $account->update($validated);
 
                 return redirect()->route('accounts.index')->with('success', __('Account updated successfully'));
-            } 
-            catch (\Illuminate\Validation\ValidationException $e) {
-                throw $e;
-            }
-             catch (\Exception $e) {
+            }catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update account'));
             }
         } else {

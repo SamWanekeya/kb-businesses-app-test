@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, CreditCard } from 'lucide-react';
+import { toast } from '../custom-toast';
 
 interface MolliePaymentFormProps {
   planId: number;
@@ -38,7 +39,7 @@ export function MolliePaymentForm({
   const handleSubmit = (e: React.FormEvent) => {
     if (!customerDetails.firstName || !customerDetails.lastName || !customerDetails.email) {
       e.preventDefault();
-      alert(t('Please fill in all customer details'));
+     toast.error(t('Please fill in all customer details'));
       return;
     }
     setIsProcessing(true);

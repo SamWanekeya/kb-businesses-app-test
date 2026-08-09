@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { router, usePage } from '@inertiajs/react';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { CrudTable } from '@/components/CrudTable';
 import { CrudDeleteModal } from '@/components/CrudDeleteModal';
-import { Mail } from 'lucide-react';
+import { Mail, Calendar } from 'lucide-react';
 import { toast } from '@/components/custom-toast';
 import { useTranslation } from 'react-i18next';
 
@@ -43,9 +43,15 @@ export default function NewslettersIndex() {
         }, { preserveState: true, preserveScroll: true });
     };
 
+    const pageInitialState = useState(true);
+    useEffect(() => {
+        if (pageInitialState[0]) { pageInitialState[1](false); return; }
+        applyFilters();
+    }, [searchTerm]);
+
     const handleResetFilters = () => {
         setSearchTerm('');
-        router.get(route('newsletters.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
+        router.get(route('newsletters.index'));
     };
 
     const handleAction = (action: string, item: any) => {
@@ -84,7 +90,12 @@ export default function NewslettersIndex() {
             key: 'created_at',
             label: t('Subscribed At'),
             sortable: true,
-            render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
+            render: (value: string) => (
+                <div className="flex items-center gap-1.5 text-gray-500 whitespace-nowrap">
+                    <Calendar className="h-3.5 w-3.5 shrink-0" />
+                    <span>{window.appSettings?.formatDateTime(value, false) || '-'}</span>
+                </div>
+            )
         }
     ];
 
@@ -95,35 +106,20 @@ export default function NewslettersIndex() {
     return (
         <PageTemplate
             title={t('Newsletters')}
+            description={t('Manage your newsletter subscriptions.')}
             url="/newsletters"
             breadcrumbs={breadcrumbs}
             noPadding
         >
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
                     onSearch={handleSearch}
                     filters={[]}
-                    showFilters={false}
-                    setShowFilters={() => {}}
                     hasActiveFilters={() => searchTerm !== ''}
                     activeFilterCount={() => searchTerm ? 1 : 0}
                     onResetFilters={handleResetFilters}
-                    onApplyFilters={applyFilters}
-                    currentPerPage={pageFilters.per_page?.toString() || '10'}
-                    onPerPageChange={(value) => {
-                        router.get(route('newsletters.index'), {
-                            page: 1,
-                            search: searchTerm || undefined,
-                            sort_field: pageFilters.sort_field || undefined,
-                            sort_direction: pageFilters.sort_direction || undefined,
-                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) })
-                        }, { preserveState: true, preserveScroll: true });
-                    }}
-                    showViewToggle={false}
-                    activeView="list"
-                    onViewChange={() => {}}
                 />
             </div>
 
@@ -148,6 +144,16 @@ export default function NewslettersIndex() {
                     links={newsletters?.links}
                     entityName={t('subscriptions')}
                     onPageChange={(url) => router.get(url)}
+                    currentPerPage={pageFilters.per_page?.toString() || '10'}
+                    onPerPageChange={(value) => {
+                        router.get(route('newsletters.index'), {
+                            page: 1,
+                            search: searchTerm || undefined,
+                            sort_field: pageFilters.sort_field || undefined,
+                            sort_direction: pageFilters.sort_direction || undefined,
+                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) })
+                        }, { preserveState: true, preserveScroll: true });
+                    }}
                 />
             </div>
 

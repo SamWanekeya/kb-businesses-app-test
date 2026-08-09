@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Head, usePage } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
-import { Printer, Copy, Check, Calendar, DollarSign, Package, User, Building, Truck } from 'lucide-react';
+import { Printer, Copy, Check, Calendar, DollarSign, Package, User, Clock, Tag, TrendingUp, MessageCircle, Truck } from 'lucide-react';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import UserInitials from '@/components/user-initials';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { toast } from '@/components/custom-toast';
 import { hasPermission } from '@/utils/authorization';
 
@@ -50,14 +54,15 @@ interface Quote {
     contact?: {
         id: number;
         name: string;
+        email?: string;
     };
-    billingContact?: {
+    billing_contact?: {
         id: number;
         name: string;
         email?: string;
         phone?: string;
     };
-    shippingContact?: {
+    shipping_contact?: {
         id: number;
         name: string;
         email?: string;
@@ -70,15 +75,22 @@ interface Quote {
     creator?: {
         id: number;
         name: string;
+        email?: string;
+        avatar?: string;
     };
-    assignedUser?: {
+    assigned_user?: {
         id: number;
         name: string;
+        email?: string;
+        avatar?: string;
     };
     activities?: any[];
     products: {
         id: number;
         name: string;
+        sku?: string;
+        main_image_url?: string;
+        category?: { name: string };
         pivot: {
             quantity: number;
             unit_price: number;
@@ -142,7 +154,8 @@ export default function PublicQuote({ quote, templateId = 'template1', color = '
     const template = { primary: currentThemeColor, secondary: currentThemeColor };
 
     const formatCurrency = (amount: number) => {
-        return window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+        const val = window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+        return <span className="font-mono">{val}</span>;
     };
 
     const formatDate = (dateString: string) => {
@@ -322,68 +335,34 @@ export default function PublicQuote({ quote, templateId = 'template1', color = '
                             </div>
                         </div>
 
-                        {/* Summary Cards */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div className="border-l-4 hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border" style={{ borderLeftColor: template.primary }}>
-                                <div className="p-6">
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">{t('Total Amount')}</p>
-                                            <h3 className="mt-2 text-2xl font-bold leading-none" style={{ color: template.primary }}>{formatCurrency(quote.total_amount)}</h3>
-                                        </div>
-                                        <div className="rounded-full p-4" style={{ backgroundColor: `${template.primary}15` }}>
-                                            <svg className="h-5 w-5" style={{ color: template.primary }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="border-l-4 hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border" style={{ borderLeftColor: template.secondary }}>
-                                <div className="p-6">
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">{t('Products')}</p>
-                                            <h3 className="mt-2 text-2xl font-bold leading-none" style={{ color: template.secondary }}>{quote.products?.length || 0}</h3>
-                                        </div>
-                                        <div className="rounded-full p-4" style={{ backgroundColor: `${template.secondary}15` }}>
-                                            <svg className="h-5 w-5" style={{ color: template.secondary }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+                        {/* Summary Cards — blob style */}
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                            {([
+                                { label: t('Total Amount'), value: <span className="font-mono">{formatCurrency(quote.total_amount)}</span>, icon: DollarSign, iconCls: 'text-emerald-600', blobCls: 'bg-emerald-50' },
+                                { label: t('Products'), value: quote.products?.length || 0, icon: Package, iconCls: 'text-blue-600', blobCls: 'bg-blue-50' },
+                                { label: t('Valid Until'), value: formatDate(quote.valid_until), icon: Calendar, iconCls: 'text-orange-600', blobCls: 'bg-orange-50' },
+                                { label: t('Created'), value: formatDate(quote.created_at), icon: Clock, iconCls: 'text-purple-600', blobCls: 'bg-purple-50' },
+                            ] as const).map(({ label, value, icon: Icon, iconCls, blobCls }) => (
+                                <div key={label} className="relative overflow-hidden bg-white rounded-lg shadow-sm border hover:shadow-lg transition-shadow">
+                                    <div className={`absolute top-0 right-0 w-20 h-20 ${blobCls} rounded-bl-full`} />
+                                    <div className="relative p-4">
+                                        <div className="flex items-start justify-between">
+                                            <div className="min-w-0 pr-2">
+                                                <p className="text-xs font-bold text-gray-500  tracking-wide mb-1">{label}</p>
+                                                <p className="text-lg font-bold text-gray-900 truncate leading-snug">{value}</p>
+                                            </div>
+                                            <div className={`relative z-10 p-2.5 ${blobCls} rounded-xl mt-0.5 flex-shrink-0`}>
+                                                <Icon className={`h-5 w-5 ${iconCls}`} />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className="border-l-4 border-l-orange-500 hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border">
-                                <div className="p-6">
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">{t('Valid Until')}</p>
-                                            <h3 className="mt-2 text-lg font-bold text-orange-600 leading-tight">{formatDate(quote.valid_until)}</h3>
-                                        </div>
-                                        <div className="rounded-full bg-orange-100 p-4">
-                                            <svg className="h-5 w-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="border-l-4 border-l-purple-500 hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border">
-                                <div className="p-6">
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">{t('Created')}</p>
-                                            <h3 className="mt-2 text-lg font-bold text-purple-600 leading-tight">{formatDate(quote.created_at)}</h3>
-                                        </div>
-                                        <div className="rounded-full bg-purple-100 p-4">
-                                            <Calendar className="h-5 w-5 text-purple-600" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            ))}
                         </div>
 
                         {/* Quote Information */}
                         <div className="bg-white rounded-lg shadow-sm border">
-                            <div className="bg-gray-50 border-b px-6 py-4">
+                            <div className="border-b px-6 py-4">
                                 <h3 className="text-lg font-semibold">{t('Quote Information')}</h3>
                             </div>
                             <div className="p-6">
@@ -399,17 +378,49 @@ export default function PublicQuote({ quote, templateId = 'template1', color = '
                                         </div>
                                         <div>
                                             <label className="text-sm font-medium text-muted-foreground">{t('Created By')}</label>
-                                            <p className="text-sm mt-1">{quote.creator?.name || t('-')}</p>
+                                            {quote.creator ? (
+                                                <div className="flex items-center gap-2 mt-2">
+                                                    <Avatar className="w-8 h-8 flex-shrink-0">
+                                                        <AvatarImage src={quote.creator.avatar} alt={quote.creator.name} />
+                                                        <AvatarFallback><UserInitials name={quote.creator.name} /></AvatarFallback>
+                                                    </Avatar>
+                                                    <div className="min-w-0">
+                                                        <p className="text-sm font-medium text-gray-900 truncate">{quote.creator.name}</p>
+                                                        {quote.creator.email && <p className="text-xs text-gray-500 truncate">{quote.creator.email}</p>}
+                                                    </div>
+                                                </div>
+                                            ) : <p className="text-sm mt-1 text-gray-500">{t('-')}</p>}
                                         </div>
                                         <div>
                                             <label className="text-sm font-medium text-muted-foreground">{t('Assigned To')}</label>
-                                            <p className="text-sm mt-1">{quote.assignedUser?.name || t('Unassigned')}</p>
+                                            {quote.assigned_user ? (
+                                                <div className="flex items-center gap-2 mt-2">
+                                                    <Avatar className="w-8 h-8 flex-shrink-0">
+                                                        <AvatarImage src={quote.assigned_user.avatar} alt={quote.assigned_user.name} />
+                                                        <AvatarFallback><UserInitials name={quote.assigned_user.name} /></AvatarFallback>
+                                                    </Avatar>
+                                                    <div className="min-w-0">
+                                                        <p className="text-sm font-medium text-gray-900 truncate">{quote.assigned_user.name}</p>
+                                                        {quote.assigned_user.email && <p className="text-xs text-gray-500 truncate">{quote.assigned_user.email}</p>}
+                                                    </div>
+                                                </div>
+                                            ) : <p className="text-sm mt-1 text-gray-500">{t('-')}</p>}
                                         </div>
                                     </div>
                                     <div className="space-y-6">
                                         <div>
                                             <label className="text-sm font-medium text-muted-foreground">{t('Valid Until')}</label>
-                                            <p className="text-sm mt-1">{formatDate(quote.valid_until)}</p>
+                                            <div className="flex items-center gap-2 mt-1">
+                                                <Calendar className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                                                <p className="text-sm">{formatDate(quote.valid_until)}</p>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="text-sm font-medium text-muted-foreground">{t('Created')}</label>
+                                            <div className="flex items-center gap-2 mt-1">
+                                                <Calendar className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                                                <p className="text-sm">{formatDate(quote.created_at)}</p>
+                                            </div>
                                         </div>
                                         <div>
                                             <label className="text-sm font-medium text-muted-foreground">{t('Subtotal')}</label>
@@ -431,32 +442,49 @@ export default function PublicQuote({ quote, templateId = 'template1', color = '
                         {/* Related Data */}
                         {(quote.account || quote.contact || quote.shipping_provider_type) && (
                             <div className="bg-white rounded-lg shadow-sm border">
-                                <div className="bg-gray-50 border-b px-6 py-4">
+                                <div className="border-b px-6 py-4">
                                     <h3 className="flex items-center text-lg font-semibold">
-                                        <svg className="h-5 w-5 mr-3 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+                                        <User className="h-5 w-5 mr-3 text-gray-400" />
                                         {t('Related Data')}
                                     </h3>
                                 </div>
-                                <div className="p-8">
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="p-6">
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                         {quote.account && (
-                                            <div className="p-6 bg-green-50 rounded-xl border border-green-200 hover:shadow-md transition-shadow">
-                                                <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">{t('Account')}</p>
-                                                <p className="text-base font-medium text-green-700">{quote.account.name}</p>
+                                            <div className="p-4 rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
+                                                <p className="text-xs font-medium text-gray-500 mb-3">{t('Account')}</p>
+                                                <div className="flex items-center gap-2">
+                                                    <UserInitials name={quote.account.name} />
+                                                    <div className="min-w-0">
+                                                        <p className="text-sm font-semibold text-gray-900 truncate">{quote.account.name}</p>
+                                                        {quote.account.email && <p className="text-xs text-gray-500 truncate">{quote.account.email}</p>}
+                                                    </div>
+                                                </div>
                                             </div>
                                         )}
-
                                         {quote.contact && (
-                                            <div className="p-6 bg-purple-50 rounded-xl border border-purple-200 hover:shadow-md transition-shadow">
-                                                <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">{t('Contact')}</p>
-                                                <p className="text-base font-medium text-purple-700">{quote.contact.name}</p>
+                                            <div className="p-4 rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
+                                                <p className="text-xs font-medium text-gray-500 mb-3">{t('Contact')}</p>
+                                                <div className="flex items-center gap-2">
+                                                    <UserInitials name={quote.contact.name} />
+                                                    <div className="min-w-0">
+                                                        <p className="text-sm font-semibold text-gray-900 truncate">{quote.contact.name}</p>
+                                                        {quote.contact.email && <p className="text-xs text-gray-500 truncate">{quote.contact.email}</p>}
+                                                    </div>
+                                                </div>
                                             </div>
                                         )}
-
                                         {quote.shipping_provider_type && (
-                                            <div className="p-6 bg-orange-50 rounded-xl border border-orange-200 hover:shadow-md transition-shadow">
-                                                <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">{t('Shipping Provider')}</p>
-                                                <p className="text-base font-medium text-orange-700">{quote.shipping_provider_type.name}</p>
+                                            <div className="p-4 rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
+                                                <p className="text-xs font-medium text-gray-500 mb-3">{t('Shipping Provider')}</p>
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center flex-shrink-0">
+                                                        <Truck className="h-4 w-4 text-orange-500" />
+                                                    </div>
+                                                    <div className="min-w-0">
+                                                        <p className="text-sm font-semibold text-gray-900 truncate">{quote.shipping_provider_type.name}</p>
+                                                    </div>
+                                                </div>
                                             </div>
                                         )}
                                     </div>
@@ -466,80 +494,89 @@ export default function PublicQuote({ quote, templateId = 'template1', color = '
 
                         {/* Billing & Shipping Details */}
                         <div className="bg-white rounded-lg shadow-sm border">
-                            <div className="bg-gray-50 border-b px-6 py-4">
+                            <div className="border-b px-6 py-4">
                                 <h3 className="flex items-center text-lg font-semibold">
                                     <svg className="h-5 w-5 mr-3 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                                     {t('Billing & Shipping Details')}
                                 </h3>
                             </div>
                             <div className="p-6">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    {/* Billing Details */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    {/* Billing */}
                                     <div>
-                                        <h3 className="text-lg font-semibold mb-4 pb-2 border-b border-gray-200">{t('Billing Details')}</h3>
-                                        <div className="space-y-4">
-                                            <div>
-                                                <label className="text-sm font-medium text-muted-foreground">{t('Contact')}</label>
-                                                <p className="text-sm mt-1">{quote.billing_contact?.name || t('-')}</p>
-                                            </div>
-                                            <div>
-                                                <label className="text-sm font-medium text-muted-foreground">{t('Address')}</label>
-                                                <p className="text-sm mt-1">{quote.billing_address || t('-')}</p>
-                                            </div>
-                                            <div className="grid grid-cols-2 gap-4">
-                                                <div>
-                                                    <label className="text-sm font-medium text-muted-foreground">{t('City')}</label>
-                                                    <p className="text-sm mt-1">{quote.billing_city || t('-')}</p>
-                                                </div>
-                                                <div>
-                                                    <label className="text-sm font-medium text-muted-foreground">{t('State')}</label>
-                                                    <p className="text-sm mt-1">{quote.billing_state || t('-')}</p>
+                                        <p className="text-xs font-semibold text-muted-foreground mb-3">{t('Billing Address')}</p>
+                                        {quote.billing_contact && (
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <UserInitials name={quote.billing_contact.name} />
+                                                <div className="min-w-0">
+                                                    <p className="text-sm font-medium text-foreground truncate">{quote.billing_contact.name}</p>
+                                                    {quote.billing_contact.email && <p className="text-xs text-muted-foreground truncate">{quote.billing_contact.email}</p>}
                                                 </div>
                                             </div>
-                                            <div className="grid grid-cols-2 gap-4">
-                                                <div>
-                                                    <label className="text-sm font-medium text-muted-foreground">{t('Postal Code')}</label>
-                                                    <p className="text-sm mt-1">{quote.billing_postal_code || t('-')}</p>
+                                        )}
+                                        <div className="space-y-2">
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <div className="space-y-0.5">
+                                                    <p className="text-xs font-medium text-muted-foreground">{t('Address')}</p>
+                                                    <p className="text-sm font-medium text-foreground">{quote.billing_address || t('-')}</p>
                                                 </div>
-                                                <div>
-                                                    <label className="text-sm font-medium text-muted-foreground">{t('Country')}</label>
-                                                    <p className="text-sm mt-1">{quote.billing_country || t('-')}</p>
+                                                <div className="space-y-0.5">
+                                                    <p className="text-xs font-medium text-muted-foreground">{t('City')}</p>
+                                                    <p className="text-sm font-medium text-foreground">{quote.billing_city || t('-')}</p>
                                                 </div>
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <div className="space-y-0.5">
+                                                    <p className="text-xs font-medium text-muted-foreground">{t('State')}</p>
+                                                    <p className="text-sm font-medium text-foreground">{quote.billing_state || t('-')}</p>
+                                                </div>
+                                                <div className="space-y-0.5">
+                                                    <p className="text-xs font-medium text-muted-foreground">{t('Postal Code')}</p>
+                                                    <p className="text-sm font-medium text-foreground">{quote.billing_postal_code || t('-')}</p>
+                                                </div>
+                                            </div>
+                                            <div className="space-y-0.5">
+                                                <p className="text-xs font-medium text-muted-foreground">{t('Country')}</p>
+                                                <p className="text-sm font-medium text-foreground">{quote.billing_country || t('-')}</p>
                                             </div>
                                         </div>
                                     </div>
-
-                                    {/* Shipping Details */}
-                                    <div>
-                                        <h3 className="text-lg font-semibold mb-4 pb-2 border-b border-gray-200">{t('Shipping Details')}</h3>
-                                        <div className="space-y-4">
-                                            <div>
-                                                <label className="text-sm font-medium text-muted-foreground">{t('Contact')}</label>
-                                                <p className="text-sm mt-1">{quote.shipping_contact?.name || t('-')}</p>
-                                            </div>
-                                            <div>
-                                                <label className="text-sm font-medium text-muted-foreground">{t('Address')}</label>
-                                                <p className="text-sm mt-1">{quote.shipping_address || t('-')}</p>
-                                            </div>
-                                            <div className="grid grid-cols-2 gap-4">
-                                                <div>
-                                                    <label className="text-sm font-medium text-muted-foreground">{t('City')}</label>
-                                                    <p className="text-sm mt-1">{quote.shipping_city || t('-')}</p>
-                                                </div>
-                                                <div>
-                                                    <label className="text-sm font-medium text-muted-foreground">{t('State')}</label>
-                                                    <p className="text-sm mt-1">{quote.shipping_state || t('-')}</p>
+                                    {/* Shipping */}
+                                    <div className="sm:border-s sm:ps-6">
+                                        <p className="text-xs font-semibold text-muted-foreground mb-3">{t('Shipping Address')}</p>
+                                        {quote.shipping_contact && (
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <UserInitials name={quote.shipping_contact.name} />
+                                                <div className="min-w-0">
+                                                    <p className="text-sm font-medium text-foreground truncate">{quote.shipping_contact.name}</p>
+                                                    {quote.shipping_contact.email && <p className="text-xs text-muted-foreground truncate">{quote.shipping_contact.email}</p>}
                                                 </div>
                                             </div>
-                                            <div className="grid grid-cols-2 gap-4">
-                                                <div>
-                                                    <label className="text-sm font-medium text-muted-foreground">{t('Postal Code')}</label>
-                                                    <p className="text-sm mt-1">{quote.shipping_postal_code || t('-')}</p>
+                                        )}
+                                        <div className="space-y-2">
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <div className="space-y-0.5">
+                                                    <p className="text-xs font-medium text-muted-foreground">{t('Address')}</p>
+                                                    <p className="text-sm font-medium text-foreground">{quote.shipping_address || t('-')}</p>
                                                 </div>
-                                                <div>
-                                                    <label className="text-sm font-medium text-muted-foreground">{t('Country')}</label>
-                                                    <p className="text-sm mt-1">{quote.shipping_country || t('-')}</p>
+                                                <div className="space-y-0.5">
+                                                    <p className="text-xs font-medium text-muted-foreground">{t('City')}</p>
+                                                    <p className="text-sm font-medium text-foreground">{quote.shipping_city || t('-')}</p>
                                                 </div>
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <div className="space-y-0.5">
+                                                    <p className="text-xs font-medium text-muted-foreground">{t('State')}</p>
+                                                    <p className="text-sm font-medium text-foreground">{quote.shipping_state || t('-')}</p>
+                                                </div>
+                                                <div className="space-y-0.5">
+                                                    <p className="text-xs font-medium text-muted-foreground">{t('Postal Code')}</p>
+                                                    <p className="text-sm font-medium text-foreground">{quote.shipping_postal_code || t('-')}</p>
+                                                </div>
+                                            </div>
+                                            <div className="space-y-0.5">
+                                                <p className="text-xs font-medium text-muted-foreground">{t('Country')}</p>
+                                                <p className="text-sm font-medium text-foreground">{quote.shipping_country || t('-')}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -549,93 +586,122 @@ export default function PublicQuote({ quote, templateId = 'template1', color = '
 
                         {/* Products Table */}
                         <div className="bg-white rounded-lg shadow-sm border">
-                            <div className="bg-gray-50 border-b px-6 py-4">
+                            <div className="border-b px-6 py-4">
                                 <h3 className="flex items-center text-lg font-semibold">
-                                    <svg className="h-5 w-5 mr-3 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+                                    <Package className="h-5 w-5 mr-3 text-gray-400" />
                                     {t('Products')}
                                 </h3>
                             </div>
                             <div className="p-0">
                                 {quote.products && quote.products.length > 0 ? (
-                                    <div className="overflow-hidden">
-                                        <table className="min-w-full">
-                                            <thead>
-                                                <tr style={{ backgroundColor: template.primary }}>
-                                                    <th className="text-right text-base font-bold text-white py-4 px-6 w-1/3">{t('Product')}</th>
-                                                    <th className="text-right text-base font-bold text-white py-4 px-4">{t('Quantity')}</th>
-                                                    <th className="text-right text-base font-bold text-white py-4 px-4">{t('Unit Price')}</th>
-                                                    <th className="text-right text-base font-bold text-white py-4 px-4">{t('Discount')}</th>
-                                                    <th className="text-right text-base font-bold text-white py-4 px-4">{t('Tax')}</th>
-                                                    <th className="text-right text-base font-bold text-white py-4 px-4 w-1/6">{t('Total')}</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {quote.products.map((product: any, index: number) => {
-                                                    const lineTotal = Number(product.pivot.total_price) || 0;
-                                                    const discountAmount = Number(product.pivot.discount_amount) || 0;
-                                                    const finalTotal = lineTotal - discountAmount;
-
-                                                    return (
-                                                        <tr key={index} className="border-b hover:bg-gray-50">
-                                                            <td className="font-semibold text-base text-gray-900 py-4 px-6">{product.name}</td>
-                                                            <td className="text-right text-base font-medium py-4 px-4">{product.pivot.quantity}</td>
-                                                            <td className="text-right text-base font-semibold py-4 px-4">{formatCurrency(product.pivot.unit_price)}</td>
-                                                            <td className="text-right py-4 px-4">
-                                                                {product.pivot.discount_type && product.pivot.discount_type !== 'none' && product.pivot.discount_value > 0 ? (
-                                                                    <div className="text-base">
-                                                                        <div className="font-semibold text-gray-700">{product.pivot.discount_type === 'percentage' ? `${Number(product.pivot.discount_value)}%` : formatCurrency(Number(product.pivot.discount_value))}</div>
-                                                                        <div className="text-red-600 font-bold">(-{formatCurrency(discountAmount)})</div>
+                                    <>
+                                        <div className="overflow-x-auto">
+                                            <Table>
+                                                <TableHeader>
+                                                    <TableRow className="bg-[#F0F0F1] border-b hover:!bg-[#F0F0F1]">
+                                                        <TableHead className="py-2.5 font-semibold">{t('Product')}</TableHead>
+                                                        <TableHead className="py-2.5 font-semibold text-center">{t('Quantity')}</TableHead>
+                                                        <TableHead className="py-2.5 font-semibold text-center">{t('Unit Price')}</TableHead>
+                                                        <TableHead className="py-2.5 font-semibold text-center">{t('Discount')}</TableHead>
+                                                        <TableHead className="py-2.5 font-semibold text-center">{t('Tax')}</TableHead>
+                                                        <TableHead className="py-2.5 font-semibold text-right">{t('Total')}</TableHead>
+                                                    </TableRow>
+                                                </TableHeader>
+                                                <TableBody>
+                                                    {quote.products.map((product: any, index: number) => {
+                                                        const lineTotal = Number(product.pivot.total_price) || 0;
+                                                        const discountAmount = Number(product.pivot.discount_amount) || 0;
+                                                        const afterDiscount = lineTotal - discountAmount;
+                                                        const taxAmount = product.tax ? (afterDiscount * Number(product.tax.rate)) / 100 : 0;
+                                                        const finalTotal = afterDiscount + taxAmount;
+                                                        return (
+                                                            <TableRow key={index} className="hover:bg-gray-50 border-b">
+                                                                <TableCell className="py-3">
+                                                                    <div className="flex items-center gap-3 min-w-0">
+                                                                        {product.main_image_url ? (
+                                                                            <a href={product.main_image_url} target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
+                                                                                <img src={product.main_image_url} alt={product.name} className="w-11 h-11 rounded-lg object-cover border border-gray-200 hover:opacity-80 transition-opacity cursor-pointer" />
+                                                                            </a>
+                                                                        ) : (
+                                                                            <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0 border border-gray-200">
+                                                                                <Package className="h-4 w-4 text-gray-300" />
+                                                                            </div>
+                                                                        )}
+                                                                        <div className="min-w-0">
+                                                                            <p className="text-sm font-bold text-gray-900 truncate">{product.name}</p>
+                                                                            {product.sku && <p className="text-xs text-gray-500 mt-0.5">SKU: {product.sku}</p>}
+                                                                            {product.category?.name && (
+                                                                                <span className="mt-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-600">
+                                                                                    {product.category.name}
+                                                                                </span>
+                                                                            )}
+                                                                        </div>
                                                                     </div>
-                                                                ) : (
-                                                                    <span className="text-gray-500 font-medium">-</span>
-                                                                )}
-                                                            </td>
-                                                            <td className="text-right text-base py-4 px-4">
-                                                                {product.tax ? (
-                                                                    <div>
-                                                                        <div className="text-sm font-medium text-gray-700">{product.tax.name} ({parseFloat(product.tax.rate).toFixed(2)}%)</div>
-                                                                        <div className="text-sm text-gray-400 font-medium">{(() => { const afterDiscount = (Number(product.pivot.total_price) || 0) - discountAmount; return formatCurrency(product.tax ? (afterDiscount * Number(product.tax.rate)) / 100 : 0); })()}</div>
-                                                                    </div>
-                                                                ) : (
-                                                                    <span className="text-gray-500 font-medium">{t('No Tax')}</span>
-                                                                )}
-                                                            </td>
-                                                            <td className="text-right font-bold text-base py-4 px-4">
-                                                                {(() => {
-                                                                    const afterDiscount = (Number(product.pivot.total_price) || 0) - discountAmount;
-                                                                    const taxAmt = product.tax ? (afterDiscount * Number(product.tax.rate)) / 100 : 0;
-                                                                    return <span className="text-green-600 font-semibold">{formatCurrency(afterDiscount + taxAmt)}</span>;
-                                                                })()}
-                                                            </td>
-                                                        </tr>
-                                                    );
-                                                })}
-                                                <tr style={{ backgroundColor: `${template.primary}10` }}>
-                                                    <td colSpan={4} className="py-3 px-4"></td>
-                                                    <td className="text-right font-semibold text-base py-3 px-4" style={{ color: template.primary }}>{t('Subtotal')}:</td>
-                                                    <td className="text-right font-semibold text-base py-3 px-4" style={{ color: template.primary }}>{formatCurrency(subtotal)}</td>
-                                                </tr>
-                                                <tr style={{ backgroundColor: `${template.primary}10` }}>
-                                                    <td colSpan={4} className="py-3 px-4"></td>
-                                                    <td className="text-right font-semibold text-base py-3 px-4" style={{ color: template.primary }}>{t('Discount')}:</td>
-                                                    <td className="text-right font-semibold text-base py-3 px-4" style={{ color: template.primary }}>-{formatCurrency(totalDiscount)}</td>
-                                                </tr>
-                                                <tr style={{ backgroundColor: `${template.primary}10` }}>
-                                                    <td colSpan={4} className="py-3 px-4"></td>
-                                                    <td className="text-right font-semibold text-base py-3 px-4" style={{ color: template.primary }}>{t('Tax')}:</td>
-                                                    <td className="text-right font-semibold text-base py-3 px-4" style={{ color: template.primary }}>{formatCurrency(totalTax)}</td>
-                                                </tr>
-                                                <tr className="border-t-2" style={{ backgroundColor: `${template.primary}15`, borderTopColor: template.primary }}>
-                                                    <td colSpan={4} className="py-4 px-4"></td>
-                                                    <td className="text-right font-bold text-lg py-4 px-4" style={{ color: template.primary }}>{t('Grand Total')}:</td>
-                                                    <td className="text-right py-4 px-4"><span className="font-bold text-xl" style={{ color: template.primary }}>{formatCurrency(grandTotal)}</span></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                                </TableCell>
+                                                                <TableCell className="py-3 text-center">
+                                                                    <p className="text-sm font-semibold text-gray-900">{product.pivot.quantity}</p>
+                                                                </TableCell>
+                                                                <TableCell className="py-3 text-center">
+                                                                    <p className="text-sm font-semibold font-mono text-gray-900">{formatCurrency(product.pivot.unit_price)}</p>
+                                                                </TableCell>
+                                                                <TableCell className="py-3 text-center">
+                                                                    {product.pivot.discount_type && product.pivot.discount_type !== 'none' && product.pivot.discount_value > 0 ? (
+                                                                        <>
+                                                                            <p className="text-sm font-semibold text-gray-900">
+                                                                                {product.pivot.discount_type === 'percentage' ? `${Number(product.pivot.discount_value)}%` : <span className="font-mono">{formatCurrency(Number(product.pivot.discount_value))}</span>}
+                                                                            </p>
+                                                                            <p className="text-xs font-mono text-red-500 mt-0.5">-{formatCurrency(discountAmount)}</p>
+                                                                        </>
+                                                                    ) : (
+                                                                        <span className="text-xs text-gray-400">—</span>
+                                                                    )}
+                                                                </TableCell>
+                                                                <TableCell className="py-3 text-center">
+                                                                    {product.tax ? (
+                                                                        <>
+                                                                            <p className="text-sm font-semibold text-gray-900">{product.tax.name} ({parseFloat(product.tax.rate).toFixed(2)}%)</p>
+                                                                            <p className="text-xs font-mono text-gray-500 mt-0.5">{formatCurrency(taxAmount)}</p>
+                                                                        </>
+                                                                    ) : (
+                                                                        <span className="text-xs text-gray-400">—</span>
+                                                                    )}
+                                                                </TableCell>
+                                                                <TableCell className="py-3 text-right">
+                                                                    <p className="text-sm font-bold font-mono text-emerald-600">{formatCurrency(finalTotal)}</p>
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        );
+                                                    })}
+                                                </TableBody>
+                                            </Table>
+                                        </div>
+                                        {/* Summary box */}
+                                        <div className="flex justify-end px-6 py-5 border-t bg-gray-50/50">
+                                            <div className="w-full max-w-sm border rounded-xl overflow-hidden">
+                                                <div className="flex items-center justify-between px-4 py-3 border-b">
+                                                    <span className="text-sm text-gray-500 font-medium">{t('Subtotal')}</span>
+                                                    <span className="text-sm font-semibold font-mono text-gray-900">{formatCurrency(subtotal)}</span>
+                                                </div>
+                                                <div className="flex items-center justify-between px-4 py-3 border-b">
+                                                    <span className="text-sm text-gray-500 font-medium">{t('Discount')}</span>
+                                                    <span className="text-sm font-semibold font-mono text-red-500">-{formatCurrency(totalDiscount)}</span>
+                                                </div>
+                                                <div className="flex items-center justify-between px-4 py-3 border-b">
+                                                    <span className="text-sm text-gray-500 font-medium">{t('Total Tax')}</span>
+                                                    <span className="text-sm font-semibold font-mono text-gray-900">{formatCurrency(totalTax)}</span>
+                                                </div>
+                                                <div className="flex items-center justify-between px-4 py-3">
+                                                    <span className="text-sm font-bold text-gray-900">{t('Grand Total')}</span>
+                                                    <span className="text-lg font-bold font-mono text-emerald-600">{formatCurrency(grandTotal)}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
                                 ) : (
                                     <div className="text-center py-16 text-gray-500">
-                                        <svg className="h-16 w-16 mx-auto mb-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+                                        <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center mx-auto mb-4">
+                                            <Package className="h-8 w-8 text-gray-300" />
+                                        </div>
                                         <p className="text-lg font-medium">{t('No products added to this quote')}</p>
                                     </div>
                                 )}
@@ -645,63 +711,61 @@ export default function PublicQuote({ quote, templateId = 'template1', color = '
                         {/* Activity Stream */}
                         {quote.activities && quote.activities.length > 0 && (
                             <div className="bg-white rounded-lg shadow-sm border">
-                                <div className="bg-gray-50 border-b px-6 py-4">
+                                <div className="border-b px-6 py-4">
                                     <h3 className="flex items-center text-lg font-semibold">
-                                        <Calendar className="h-5 w-5 mr-3 text-muted-foreground" />
+                                        <MessageCircle className="h-5 w-5 mr-3 text-gray-400" />
                                         {t('Activity Stream')}
                                     </h3>
                                 </div>
-                                <div className="p-6 max-h-96 overflow-y-auto">
-                                    <div className="space-y-2">
+                                <div className="p-6 max-h-[520px] overflow-y-auto">
+                                    <div className="py-1 space-y-0">
                                         {quote.activities.map((activity: any, index: number) => {
-
+                                            const getActivityBadgeColor = (type: string): string => {
+                                                switch (type) {
+                                                    case 'created': return 'bg-green-50 text-green-700 ring-green-600/20';
+                                                    case 'updated': return 'bg-blue-50 text-blue-700 ring-blue-600/20';
+                                                    case 'deleted': return 'bg-red-50 text-red-700 ring-red-600/20';
+                                                    case 'assigned': return 'bg-purple-50 text-purple-700 ring-purple-600/20';
+                                                    case 'comment': return 'bg-indigo-50 text-indigo-700 ring-indigo-600/20';
+                                                    default: return 'bg-gray-50 text-gray-700 ring-gray-600/20';
+                                                }
+                                            };
+                                            const badgeCls = getActivityBadgeColor(activity.activity_type);
                                             return (
-                                                <div key={activity.id || index} className="flex gap-4">
-                                                    <div className="flex flex-col items-center">
-                                                        <div className="flex-shrink-0 w-8 h-8 rounded-full overflow-hidden border-2 border-gray-200">
-                                                            <img
-                                                                src={activity.user?.avatar || getDisplayUrl('/images/avatar/avatar.png')}
-                                                                alt={activity.user?.name || 'User'}
-                                                                className="w-full h-full object-cover"
-                                                                onError={(e) => {
-                                                                    const target = e.target as HTMLImageElement;
-                                                                    target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(activity.user?.name || 'User')}&background=e5e7eb&color=374151&size=32`;
-                                                                }}
-                                                            />
-                                                        </div>
-                                                        {index < quote.activities.length - 1 && <div className="w-px h-8 bg-gray-200 mt-2" />}
+                                                <div key={activity.id || index} className="relative flex gap-3 pb-4">
+                                                    <div className="flex flex-col items-center flex-shrink-0 w-9">
+                                                        <TooltipProvider delayDuration={200}>
+                                                            <Tooltip>
+                                                                <TooltipTrigger asChild>
+                                                                    <Avatar className="w-9 h-9 flex-shrink-0 relative z-10">
+                                                                        <AvatarImage src={activity.user?.avatar} alt={activity.user?.name || 'U'} />
+                                                                        <AvatarFallback><UserInitials name={activity.user?.name || 'U'} /></AvatarFallback>
+                                                                    </Avatar>
+                                                                </TooltipTrigger>
+                                                                <TooltipContent side="top"><p>{activity.user?.name || t('System')}</p></TooltipContent>
+                                                            </Tooltip>
+                                                        </TooltipProvider>
+                                                        {index < quote.activities.length - 1 && (
+                                                            <div className="absolute left-[18px] top-9 bottom-0 w-px bg-gray-300" />
+                                                        )}
                                                     </div>
-                                                    <div className="flex-1 min-w-0 pb-2">
-                                                        <div className="flex items-center justify-between mb-1">
-                                                            <span className="text-xs text-gray-400">
-                                                                {activity.user?.name || t('System')}
-                                                            </span>
-                                                            <span className="text-xs text-gray-500 font-medium">
-                                                                {formatRelativeTime(activity.created_at)}
-                                                            </span>
-                                                        </div>
-                                                        <div className="bg-white border rounded-lg p-3 shadow-sm">
-                                                            <div className="flex items-center justify-between mb-2">
-                                                                <span className="text-sm font-medium text-gray-900" dangerouslySetInnerHTML={{
-                                                                    __html: activity.title.replace(
-                                                                        new RegExp(`^(${activity.user?.name || 'System'})`, 'g'),
-                                                                        '<span class="font-bold text-sm">$1</span>'
-                                                                    )
-                                                                }} />
-                                                                <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-gray-50 text-gray-700 ring-1 ring-inset ring-gray-600/20">
+                                                    <div className="flex-1 min-w-0 rounded-xl border bg-white shadow-sm overflow-hidden">
+                                                        <div className="flex items-center justify-between gap-2 px-4 py-2.5 border-b">
+                                                            <div className="flex items-center gap-2 flex-wrap">
+                                                                <span className="text-sm font-semibold text-gray-900">{activity.user?.name || t('System')}</span>
+                                                                <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${badgeCls}`}>
                                                                     {activity.activity_type.charAt(0).toUpperCase() + activity.activity_type.slice(1)}
                                                                 </span>
+                                                                <span className="text-xs text-gray-400">{formatRelativeTime(activity.created_at)}</span>
                                                             </div>
-                                                            {activity.description && (
-                                                                <div className="mb-2">
-                                                                    {activity.field_changed === 'status' || activity.field_changed === 'name' || activity.field_changed === 'assigned_to' || activity.description.includes('into') ? (
-                                                                        <p className="text-sm text-gray-600" dangerouslySetInnerHTML={{
-                                                                            __html: activity.description
-                                                                        }} />
-                                                                    ) : (
-                                                                        <p className="text-sm text-gray-600">{activity.description}</p>
-                                                                    )}
-                                                                </div>
+                                                        </div>
+                                                        <div className="px-4 py-3">
+                                                            {activity.description?.includes('into') ? (
+                                                                <p className="text-sm text-gray-500" dangerouslySetInnerHTML={{ __html: activity.description }} />
+                                                            ) : activity.title ? (
+                                                                <p className="text-sm text-gray-500">{activity.title}</p>
+                                                            ) : (
+                                                                <p className="text-sm text-gray-500">{activity.description}</p>
                                                             )}
                                                         </div>
                                                     </div>

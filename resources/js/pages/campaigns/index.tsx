@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router } from '@inertiajs/react';
-import { Plus, Eye, Edit, Trash2, MoreHorizontal, Lock } from 'lucide-react';
+import { Plus, Eye, Edit, Trash2, MoreHorizontal, Lock, Wallet, ListChecks, TrendingUp, ArrowRight,Calendar } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useInitials } from '@/hooks/use-initials';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -12,9 +15,11 @@ import { toast } from '@/components/custom-toast';
 import { useTranslation } from 'react-i18next';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
+import TargetLists from '../target-lists';
 
 export default function Campaigns() {
     const { t } = useTranslation();
+    const getInitials = useInitials();
     const { auth, campaigns, campaignTypes, allCampaignTypes, targetLists, allTargetLists, users, allUsers, filters: pageFilters = {}, flash } = usePage().props as any;
     const permissions = auth?.permissions || [];
 
@@ -29,7 +34,6 @@ export default function Campaigns() {
     const [selectedTargetList, setSelectedTargetList] = useState(pageFilters.target_list_id || 'all');
     const [selectedStatus, setSelectedStatus] = useState(pageFilters.status || 'all');
     const [selectedAssignee, setSelectedAssignee] = useState(pageFilters.assigned_to || 'all');
-    const [showFilters, setShowFilters] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [currentItem, setCurrentItem] = useState<any>(null);
     const [activeView, setActiveView] = useState(
@@ -153,18 +157,19 @@ export default function Campaigns() {
         });
     };
 
+    const pageInitialState = useState(true);
+    useEffect(() => {
+        if (pageInitialState[0]) { pageInitialState[1](false); return; }
+        applyFilters();
+    }, [searchTerm, selectedCampaignType, selectedTargetList, selectedStatus, selectedAssignee]);
+
     const handleResetFilters = () => {
         setSearchTerm('');
         setSelectedCampaignType('all');
         setSelectedTargetList('all');
         setSelectedStatus('all');
         setSelectedAssignee('all');
-        setShowFilters(false);
-
-        router.get(route('campaigns.index'), {
-            view: activeView,
-            page: 1
-        }, { preserveState: true, preserveScroll: true });
+        router.get(route('campaigns.index'), { view: activeView });
     };
 
     // Define page actions
@@ -192,69 +197,88 @@ export default function Campaigns() {
             key: 'name',
             label: t('Name'),
             sortable: true,
-            render: (value: any, row: any) => {
-                return (
+            render: (value: any, row: any) => (
+                <div>
+                    <div className="font-medium whitespace-nowrap">{row.name}</div>
+                    <div className="text-sm text-muted-foreground whitespace-nowrap">{row.campaign_type?.name}</div>
+                </div>
+            )
+        },
+        {
+            key: 'assigned_user',
+            label: t('Assigned To'),
+            className: 'whitespace-nowrap',
+            render: (value: any) => value ? (
+                <div className="flex items-center gap-2">
+                    <Avatar className="h-8 w-8 flex-shrink-0">
+                        <AvatarImage src={value.avatar} alt={value.name} />
+                        <AvatarFallback className="text-xs">{getInitials(value.name)}</AvatarFallback>
+                    </Avatar>
                     <div>
-                        <div className="font-medium">{row.name}</div>
-                        <div className="text-sm text-muted-foreground">{row.campaign_type?.name}</div>
+                        <div className="font-medium whitespace-nowrap">{value.name}</div>
+                        <div className="text-sm text-muted-foreground whitespace-nowrap">{value.email}</div>
                     </div>
-                );
-            }
+                </div>
+            ) : <span className="whitespace-nowrap">{t('Unassigned')}</span>
         },
         {
             key: 'start_date',
-            label: t('Start Date'),
+            label: t('Date'),
             sortable: true,
-            render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
-        },
-        {
-            key: 'end_date',
-            label: t('End Date'),
-            sortable: true,
-            render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
+            render: (value: any, row: any) => (
+                <div className="flex flex-col text-sm text-gray-500">
+                    <div className="flex items-center gap-1.5">
+                        <Calendar className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                        <span className="whitespace-nowrap">{window.appSettings?.formatDateTime(row.start_date, false) || '-'}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 pl-[7px] py-0.5">
+                        <div className="w-px h-3 bg-gray-300" />
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                        <Calendar className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                        <span className="whitespace-nowrap">{window.appSettings?.formatDateTime(row.end_date, false) || '-'}</span>
+                    </div>
+                </div>
+            )
         },
         {
             key: 'budget',
             label: t('Budget'),
             sortable: true,
-            render: (value: any) => value ? (window.appSettings?.formatCurrency(parseFloat(value)) || `$${parseFloat(value).toFixed(2)}`) : '-'
+            render: (value: any) => <span className="whitespace-nowrap font-mono">{value ? (window.appSettings?.formatCurrency(parseFloat(value)) || `$${parseFloat(value).toFixed(2)}`) : '-'}</span>
         },
         {
             key: 'actual_cost',
             label: t('Actual Cost'),
             sortable: true,
-            render: (value: any) => window.appSettings?.formatCurrency(parseFloat(value || 0)) || `$${parseFloat(value || 0).toFixed(2)}`
+            className: 'whitespace-nowrap',
+            render: (value: any) => <span className="whitespace-nowrap font-mono">{window.appSettings?.formatCurrency(parseFloat(value || 0)) || `$${parseFloat(value || 0).toFixed(2)}`}</span>
         },
         {
             key: 'target_list',
             label: t('Target List'),
-            render: (value: any) => value?.name || '-'
-        },
-        {
-            key: 'assigned_user',
-            label: t('Assigned To'),
-            render: (value: any) => value?.name || t('Unassigned')
+            render: (value: any) => <span className="whitespace-nowrap">{value?.name || '-'}</span>
         },
         {
             key: 'status',
             label: t('Status'),
-            render: (value: string) => {
-                return (
-                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${value === 'active'
-                        ? 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20'
-                        : 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20'
-                        }`}>
-                        {value === 'active' ? t('Active') : t('Inactive')}
-                    </span>
-                );
-            }
+            className: 'whitespace-nowrap',
+            render: (value: string) => (
+                <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ${value === 'active'
+                    ? 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20'
+                    : 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20'
+                    }`}>
+                    {value === 'active' ? t('Active') : t('Inactive')}
+                </span>
+            )
         },
-        {
-            key: 'created_at',
-            label: t('Created At'),
-            sortable: true,
-            render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
-        }
+        // {
+        //     key: 'created_at',
+        //     label: t('Created At'),
+        //     sortable: true,
+        //     className: 'whitespace-nowrap',
+        //     type: 'date'
+        // }
     ];
 
     // Define table actions
@@ -315,13 +339,14 @@ export default function Campaigns() {
     return (
         <PageTemplate
             title={t("Campaigns")}
+            description={t("Manage your campaigns.")}
             url="/campaigns"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
             noPadding
         >
             {/* Search and filters section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -367,27 +392,9 @@ export default function Campaigns() {
                             ]
                         }
                     ]}
-                    showFilters={showFilters}
-                    setShowFilters={setShowFilters}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
                     onResetFilters={handleResetFilters}
-                    onApplyFilters={applyFilters}
-                    currentPerPage={pageFilters.per_page?.toString() || "10"}
-                    onPerPageChange={(value) => {
-                        router.get(route('campaigns.index'), {
-                            view: activeView,
-                            page: 1,
-                            search: searchTerm || undefined,
-                            campaign_type_id: selectedCampaignType !== 'all' ? selectedCampaignType : undefined,
-                            target_list_id: selectedTargetList !== 'all' ? selectedTargetList : undefined,
-                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-                            sort_field: pageFilters.sort_field || undefined,
-                            sort_direction: pageFilters.sort_direction || undefined,
-                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
-                        }, { preserveState: true, preserveScroll: true });
-                    }}
                     showViewToggle={true}
                     activeView={activeView}
                     onViewChange={(view) => {
@@ -403,7 +410,7 @@ export default function Campaigns() {
                             sort_field: pageFilters.sort_field || undefined,
                             sort_direction: pageFilters.sort_direction || undefined,
                             ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-                        }, { preserveState: true, preserveScroll: true });
+                        });
                     }}
                 />
             </div>
@@ -411,23 +418,25 @@ export default function Campaigns() {
             {/* Content section */}
             {activeView === 'list' ? (
                 <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
-                    <CrudTable
-                        columns={columns}
-                        actions={actions}
-                        data={campaigns?.data || []}
-                        from={campaigns?.from || 1}
-                        onAction={handleAction}
-                        sortField={pageFilters.sort_field}
-                        sortDirection={pageFilters.sort_direction}
-                        onSort={handleSort}
-                        permissions={permissions}
-                        entityPermissions={{
-                            view: 'view-campaigns',
-                            create: 'create-campaigns',
-                            edit: 'edit-campaigns',
-                            delete: 'delete-campaigns'
-                        }}
-                    />
+                    <div className="overflow-x-auto">
+                        <CrudTable
+                            columns={columns}
+                            actions={actions}
+                            data={campaigns?.data || []}
+                            from={campaigns?.from || 1}
+                            onAction={handleAction}
+                            sortField={pageFilters.sort_field}
+                            sortDirection={pageFilters.sort_direction}
+                            onSort={handleSort}
+                            permissions={permissions}
+                            entityPermissions={{
+                                view: 'view-campaigns',
+                                create: 'create-campaigns',
+                                edit: 'edit-campaigns',
+                                delete: 'delete-campaigns'
+                            }}
+                        />
+                    </div>
 
                     {/* Pagination section */}
                     <Pagination
@@ -437,137 +446,198 @@ export default function Campaigns() {
                         links={campaigns?.links}
                         entityName={t("campaigns")}
                         onPageChange={(url) => router.get(url)}
+                        currentPerPage={pageFilters.per_page?.toString() || "10"}
+                        onPerPageChange={(value) => {
+                            router.get(route('campaigns.index'), {
+                                view: activeView, page: 1,
+                                search: searchTerm || undefined,
+                                campaign_type_id: selectedCampaignType !== 'all' ? selectedCampaignType : undefined,
+                                target_list_id: selectedTargetList !== 'all' ? selectedTargetList : undefined,
+                                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                                sort_field: pageFilters.sort_field || undefined,
+                                sort_direction: pageFilters.sort_direction || undefined,
+                                ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+                            }, { preserveState: true, preserveScroll: true });
+                        }}
                     />
                 </div>
             ) : (
                 <div>
                     {/* Grid View */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                        {campaigns?.data?.map((campaign: any) => (
-                            <Card key={campaign.id} className="bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow">
-                                <div className="p-6">
-                                    <div className="flex items-start justify-between mb-4">
-                                        <div className="flex-1 min-w-0">
-                                            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{campaign.name}</h3>
-                                            <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">{campaign.campaign_type?.name}</p>
-                                            <div className="flex items-center">
-                                                <div className={`h-2 w-2 rounded-full mr-2 ${campaign.status === 'active' ? 'bg-green-500' : 'bg-gray-400'
-                                                    }`}></div>
-                                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {campaigns?.data?.map((campaign: any) => {
+                            const typeColors = [
+                                'bg-blue-50 text-blue-700 ring-blue-600/20',
+                                'bg-purple-50 text-purple-700 ring-purple-600/20',
+                                'bg-amber-50 text-amber-700 ring-amber-600/20',
+                                'bg-rose-50 text-rose-700 ring-rose-600/20',
+                                'bg-teal-50 text-teal-700 ring-teal-600/20',
+                                'bg-orange-50 text-orange-700 ring-orange-600/20',
+                                'bg-indigo-50 text-indigo-700 ring-indigo-600/20',
+                                'bg-cyan-50 text-cyan-700 ring-cyan-600/20',
+                            ];
+                            const typeColor = campaign.campaign_type
+                                ? typeColors[campaign.campaign_type.name.split('').reduce((a: number, c: string) => a + c.charCodeAt(0), 0) % typeColors.length]
+                                : typeColors[0];
+                            const budget = parseFloat(campaign.budget || 0);
+                            const actualCost = parseFloat(campaign.actual_cost || 0);
+                            const spendPct = budget > 0 ? Math.min(Math.round((actualCost / budget) * 100), 100) : 0;
+                            const fmtCur = (v: number) => window.appSettings?.formatCurrency(v) || `$${v.toFixed(2)}`;
+                            const fmtDate = (d: string) => d ? (window.appSettings?.formatDateTime(d, false) || new Date(d).toLocaleDateString()) : '-';
+                            const fmtDuration = (start: string, end: string) => {
+                                if (!start || !end) return null;
+                                return (
+                                    <span className="flex items-center gap-1">
+                                        <span>{fmtDate(start)}</span>
+                                        <ArrowRight className="h-3 w-3 text-gray-500 shrink-0" />
+                                        <span>{fmtDate(end)}</span>
+                                    </span>
+                                );
+                            };
+
+                            return (
+                                <Card key={campaign.id} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col overflow-hidden">
+
+                                    <div className="relative p-4 flex flex-col flex-1">
+
+                                        {/* Dropdown — top right */}
+                                        <div className="absolute top-3 right-3">
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button variant="ghost" size="sm" className="h-7 w-7 p-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                                                        <MoreHorizontal className="h-4 w-4" />
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end" className="w-45 z-50" sideOffset={5}>
+                                                    {hasPermission(permissions, 'view-campaigns') && (
+                                                        <DropdownMenuItem onClick={() => router.visit(route('campaigns.show', campaign.id))}>
+                                                            <Eye className="h-4 w-4 mr-2" /><span>{t('View Campaign')}</span>
+                                                        </DropdownMenuItem>
+                                                    )}
+                                                    {hasPermission(permissions, 'toggle-status-campaigns') && (
+                                                        <DropdownMenuItem onClick={() => handleAction('toggle-status', campaign)}>
+                                                            <Lock className="h-4 w-4 mr-2" /><span>{campaign.status === 'active' ? t('Deactivate') : t('Activate')}</span>
+                                                        </DropdownMenuItem>
+                                                    )}
+                                                    {hasPermission(permissions, 'edit-campaigns') && (
+                                                        <DropdownMenuItem onClick={() => router.visit(route('campaigns.edit', campaign.id))}>
+                                                            <Edit className="h-4 w-4 mr-2" /><span>{t('Edit')}</span>
+                                                        </DropdownMenuItem>
+                                                    )}
+                                                    <DropdownMenuSeparator />
+                                                    {hasPermission(permissions, 'delete-campaigns') && (
+                                                        <DropdownMenuItem onClick={() => handleAction('delete', campaign)} className="text-rose-600">
+                                                            <Trash2 className="h-4 w-4 mr-2" /><span>{t('Delete')}</span>
+                                                        </DropdownMenuItem>
+                                                    )}
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        </div>
+
+                                        {/* Header: name + badges */}
+                                        <div className="mb-3 pr-8">
+                                            <h3 className="text-sm font-semibold text-gray-900 dark:text-white truncate leading-tight">{campaign.name}</h3>
+                                            <div className="flex flex-wrap gap-1 mt-1.5">
+                                                <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                                    campaign.status === 'active'
+                                                        ? 'bg-green-50 text-green-700 ring-green-600/20'
+                                                        : 'bg-red-50 text-red-700 ring-red-600/20'
+                                                }`}>
                                                     {campaign.status === 'active' ? t('Active') : t('Inactive')}
                                                 </span>
+                                                {campaign.campaign_type && (
+                                                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${typeColor}`}>
+                                                        {campaign.campaign_type.name}
+                                                    </span>
+                                                )}
                                             </div>
                                         </div>
 
-                                        {/* Actions dropdown */}
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300">
-                                                    <MoreHorizontal className="h-4 w-4" />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end" className="w-48 z-50" sideOffset={5}>
-                                                {hasPermission(permissions, 'view-campaigns') && (
-                                                    <DropdownMenuItem onClick={() => router.visit(route('campaigns.show', campaign.id))}>
-                                                        <Eye className="h-4 w-4 mr-2" />
-                                                        <span>{t("View Campaign")}</span>
-                                                    </DropdownMenuItem>
-                                                )}
-                                                {hasPermission(permissions, 'toggle-status-campaigns') && (
-                                                    <DropdownMenuItem onClick={() => handleAction('toggle-status', campaign)}>
-                                                        <Lock className="h-4 w-4 mr-2" />
-                                                        <span>{campaign.status === 'active' ? t("Deactivate") : t("Activate")}</span>
-                                                    </DropdownMenuItem>
-                                                )}
-                                                <DropdownMenuSeparator />
-                                                {hasPermission(permissions, 'edit-campaigns') && (
-                                                    <DropdownMenuItem onClick={() => router.visit(route('campaigns.edit', campaign.id))} className="text-amber-600">
-                                                        <Edit className="h-4 w-4 mr-2" />
-                                                        <span>{t("Edit")}</span>
-                                                    </DropdownMenuItem>
-                                                )}
-                                                {hasPermission(permissions, 'delete-campaigns') && (
-                                                    <DropdownMenuItem onClick={() => handleAction('delete', campaign)} className="text-rose-600">
-                                                        <Trash2 className="h-4 w-4 mr-2" />
-                                                        <span>{t("Delete")}</span>
-                                                    </DropdownMenuItem>
-                                                )}
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                    </div>
+                                        {/* Info rows */}
+                                        <div className="space-y-1.5 mb-3">
+                                            <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                                                <Calendar className="h-3.5 w-3.5 text-gray-500 shrink-0" />
+                                                <span className="shrink-0 text-gray-500">{t('Duration')}:</span>
+                                                <span className="truncate text-gray-500">{fmtDuration(campaign.start_date, campaign.end_date) ?? '-'}</span>
+                                            </div>
+                                            {campaign.target_list && (
+                                                <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                                                    <ListChecks className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                                                    <span className="truncate">{campaign.target_list.name}</span>
+                                                </div>
+                                            )}
+                                            <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                                                <Wallet className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                                                <span className="truncate">{t('Budget')}: <span className="font-mono">{budget > 0 ? fmtCur(budget) : '—'}</span></span>
+                                            </div>
+                                            <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                                                <TrendingUp className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                                                <span className="truncate">{t('Spent')}: <span className="font-mono">{fmtCur(actualCost)}</span></span>
+                                            </div>
+                                        </div>
 
-                                    {/* Campaign info */}
-                                    <div className="border border-gray-200 dark:border-gray-700 rounded-md p-3 mb-4">
-                                        <div className="mb-2">
-                                            <span className="text-sm text-gray-600 dark:text-gray-400">
-                                                {t('Duration')}: {window.appSettings?.formatDateTime(campaign.start_date,false)} - {window.appSettings?.formatDateTime(campaign.end_date,false)}
-                                            </span>
-                                        </div>
-                                        <div className="mb-2">
-                                            <span className="text-sm text-gray-600 dark:text-gray-400">
-                                                {t('Budget')}: {campaign.budget ? (window.appSettings?.formatCurrency(parseFloat(campaign.budget)) || `$${parseFloat(campaign.budget).toFixed(2)}`) : '-'}
-                                            </span>
-                                        </div>
-                                        <div className="mb-2">
-                                            <span className="text-sm text-gray-600 dark:text-gray-400">
-                                                {t('Actual Cost')}: {window.appSettings?.formatCurrency(parseFloat(campaign.actual_cost || 0)) || `$${parseFloat(campaign.actual_cost || 0).toFixed(2)}`}
-                                            </span>
-                                        </div>
-                                        {campaign.target_list && (
-                                            <div className="flex flex-wrap gap-1">
-                                                <span className="inline-flex items-center rounded-md bg-blue-50 dark:bg-blue-900/30 px-2 py-1 text-xs font-medium text-blue-700 dark:text-blue-300">
-                                                    {campaign.target_list.name}
-                                                </span>
+                                        {/* Budget spend progress bar */}
+                                        {budget > 0 && (
+                                            <div className="mb-3">
+                                                <div className="flex items-center justify-between mb-1">
+                                                    <span className="text-[10px] text-gray-500">{t('Budget Used')}</span>
+                                                    <span className={`text-[10px] font-semibold ${
+                                                        spendPct >= 90 ? 'text-red-600' : spendPct >= 70 ? 'text-amber-600' : 'text-emerald-600'
+                                                    }`}>{spendPct}%</span>
+                                                </div>
+                                                <div className="h-1.5 w-full rounded-full bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                                                    <div
+                                                        className={`h-full rounded-full transition-all ${
+                                                            'bg-primary'
+                                                        }`}
+                                                        style={{ width: `${spendPct}%` }}
+                                                    />
+                                                </div>
                                             </div>
                                         )}
+
+                                        {/* Footer: duration + assigned user */}
+                                        <div className="mt-auto pt-3 border-t border-border flex items-center justify-between gap-2">
+                                            {campaign.start_date && campaign.end_date && (() => {
+                                                const ms = new Date(campaign.end_date).getTime() - new Date(campaign.start_date).getTime();
+                                                if (ms <= 0) return null;
+                                                const days = Math.floor(ms / 86400000);
+                                                const yrs = Math.floor(days / 365);
+                                                const mos = Math.floor(days / 30);
+                                                const label = days >= 365
+                                                    ? `${yrs} ${t(yrs === 1 ? 'Year' : 'Years')}`
+                                                    : days >= 31
+                                                    ? `${mos} ${t(mos === 1 ? 'Month' : 'Months')}`
+                                                    : `${days} ${t(days === 1 ? 'Day' : 'Days')}`;
+                                                return (
+                                                    <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+                                                        <Calendar className="h-3.5 w-3.5 shrink-0" />
+                                                        <span>{label}</span>
+                                                    </div>
+                                                );
+                                            })()}
+                                            {campaign.assigned_user && (
+                                                <div className="flex items-center gap-1.5">
+                                                    <span className="text-xs text-gray-500 dark:text-gray-400">{t('Assigned to')}</span>
+                                                    <TooltipProvider>
+                                                        <Tooltip>
+                                                            <TooltipTrigger asChild>
+                                                                <Avatar className="h-7 w-7 cursor-pointer shrink-0">
+                                                                    <AvatarImage src={campaign.assigned_user.avatar} alt={campaign.assigned_user.name} />
+                                                                    <AvatarFallback className="text-xs bg-purple-100 text-purple-700 font-medium">{getInitials(campaign.assigned_user.name)}</AvatarFallback>
+                                                                </Avatar>
+                                                            </TooltipTrigger>
+                                                            <TooltipContent side="top"><p>{campaign.assigned_user.name}</p></TooltipContent>
+                                                        </Tooltip>
+                                                    </TooltipProvider>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
-
-                                    {/* Created date */}
-                                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-4">
-                                        {t("Created:")} {window.appSettings?.formatDateTime(campaign.created_at, false) || new Date(campaign.created_at).toLocaleDateString()}
-                                    </div>
-
-                                    {/* Action buttons */}
-                                    <div className="flex gap-2">
-                                        {hasPermission(permissions, 'edit-campaigns') && (
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={() => router.visit(route('campaigns.edit', campaign.id))}
-                                                className="flex-1 h-9 text-sm border-gray-300 dark:border-gray-600 dark:text-gray-200"
-                                            >
-                                                <Edit className="h-4 w-4 mr-2" />
-                                                {t("Edit")}
-                                            </Button>
-                                        )}
-
-                                        {hasPermission(permissions, 'view-campaigns') && (
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={() => router.visit(route('campaigns.show', campaign.id))}
-                                                className="flex-1 h-9 text-sm border-gray-300 dark:border-gray-600 dark:text-gray-200"
-                                            >
-                                                <Eye className="h-4 w-4 mr-2" />
-                                                {t("View")}
-                                            </Button>
-                                        )}
-
-                                        {hasPermission(permissions, 'delete-campaigns') && (
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={() => handleAction('delete', campaign)}
-                                                className="flex-1 h-9 text-sm text-gray-700 border-gray-300 dark:border-gray-600 dark:text-gray-200"
-                                            >
-                                                <Trash2 className="h-4 w-4 mr-2" />
-                                                {t("Delete")}
-                                            </Button>
-                                        )}
-                                    </div>
-                                </div>
-                            </Card>
-                        ))}
+                                </Card>
+                            );
+                        })}
                     </div>
 
                     {/* Pagination for grid view */}
@@ -579,6 +649,21 @@ export default function Campaigns() {
                             links={campaigns?.links}
                             entityName={t("campaigns")}
                             onPageChange={(url) => router.get(url)}
+                            perPageOptions={[12, 24, 48, 96]}
+                            currentPerPage={pageFilters.per_page?.toString() || '12'}
+                            onPerPageChange={(value) => {
+                                router.get(route('campaigns.index'), {
+                                    view: activeView, page: 1,
+                                    search: searchTerm || undefined,
+                                    campaign_type_id: selectedCampaignType !== 'all' ? selectedCampaignType : undefined,
+                                    target_list_id: selectedTargetList !== 'all' ? selectedTargetList : undefined,
+                                    status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                    assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                                    sort_field: pageFilters.sort_field || undefined,
+                                    sort_direction: pageFilters.sort_direction || undefined,
+                                    ...(parseInt(value) !== 12 && { per_page: parseInt(value) }),
+                                }, { preserveState: true, preserveScroll: true });
+                            }}
                         />
                     </div>
                 </div>

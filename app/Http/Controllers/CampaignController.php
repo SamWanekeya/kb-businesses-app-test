@@ -55,8 +55,9 @@ class CampaignController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
-        $campaigns = $query->paginate($perPage);
+        $defaultPerPage = $request->view === 'grid' ? 12 : 10;
+        $perPage = max(1, min(200, (int) $request->get('per_page', $defaultPerPage)));
+        $campaigns = $query->paginate($perPage)->withQueryString();
 
         $userQuery = \App\Models\User::where('created_by', createdBy());
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();

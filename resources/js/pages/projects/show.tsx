@@ -6,9 +6,13 @@ import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
 import { Calendar, DollarSign, User, Building2, AlertTriangle, Clock, LayoutGrid, Edit, ArrowLeft, BarChart3, BanknoteIcon } from 'lucide-react';
 import { hasPermission } from '@/utils/authorization';
+import UserInitials from '@/components/user-initials';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { useInitials } from '@/hooks/use-initials';
 
 export default function ProjectShow() {
     const { t } = useTranslation();
+    const getInitials = useInitials();
     const { auth, project, taskStats = {}, totalTasks = 0, completedTasks = 0, progressPercentage = 0, meetings, taskStatuses = [] } = usePage().props as any;
     const permissions = auth?.permissions || [];
 
@@ -41,7 +45,7 @@ export default function ProjectShow() {
         { title: t('Dashboard'), href: route('dashboard') },
         { title: t('Project Management')},
         { title: t('Projects'), href: route('projects.index') },
-        { title: project.name }
+        { title: t('View Project') }
     ];
 
     const getPriorityColor = (priority: string) => {
@@ -67,26 +71,23 @@ export default function ProjectShow() {
     return (
         <PageTemplate
             title={project.name}
+            description={t('Project details and related information')}
             url={`/projects/${project.id}`}
             actions={pageActions}
             breadcrumbs={breadcrumbs}
+            noPadding
         >
             <div className="space-y-6">
                 {/* Project Header */}
-                <Card className="p-6">
-                    <div className="flex items-start justify-between mb-6">
+                <Card>
+                    <div className="flex items-start justify-between px-6 py-4 border-b">
                         <div>
-                            <h1 className="text-lg font-bold mb-2">
+                            <h1 className="text-lg font-bold">
                                 {project.name}
                             </h1>
                             {project.code && (
-                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                                     {t('Code')}: {project.code}
-                                </p>
-                            )}
-                            {project.description && (
-                                <p className="text-gray-700 dark:text-gray-300 max-w-3xl">
-                                    {project.description}
                                 </p>
                             )}
                         </div>
@@ -109,15 +110,20 @@ export default function ProjectShow() {
                             </span>
                         </div>
                     </div>
+                    {project.description && (
+                        <div className="px-6 py-4">
+                            <p className="text-gray-700 dark:text-gray-300 max-w-3xl">{project.description}</p>
+                        </div>
+                    )}
                 </Card>
 
                 {/* Task Progress Chart */}
                 {totalTasks > 0 && (
-                    <Card className="p-6">
-                        <h3 className="text-lg font-semibold mb-4">
-                            {t('Task Progress')}
-                        </h3>
-                        <div className="space-y-4">
+                    <Card>
+                        <div className="px-6 py-4 border-b">
+                            <h3 className="text-lg font-semibold">{t('Task Progress')}</h3>
+                        </div>
+                        <div className="p-6 space-y-4">
                             <div className="flex items-center justify-between">
                                 <span className="text-sm text-gray-600 dark:text-gray-400">
                                     {t('Overall Progress')}
@@ -152,97 +158,75 @@ export default function ProjectShow() {
                 {/* Project Details Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {/* Account Information */}
-                    <Card className="p-6">
-                        <div className="flex items-center mb-4">
-                            <Building2 className="h-5 w-5 text-gray-400 mr-2" />
-                            <h3 className="text-lg font-semibold">
-                                {t('Account Information')}
-                            </h3>
+                    <Card>
+                        <div className="flex items-center gap-2 px-6 py-4 border-b">
+                            <Building2 className="h-5 w-5 text-gray-400" />
+                            <h3 className="text-lg font-semibold">{t('Account Information')}</h3>
                         </div>
-                        <div className="space-y-3">
-                            <div>
-                                <p className="text-sm font-medium text-muted-foreground">
-                                    {t('Account Name')}
-                                </p>
-                                <p className="text-sm mt-1">
-                                    {project.account?.name || '-'}
-                                </p>
-                            </div>
-                            {project.account?.email && (
-                                <div>
-                                    <p className="text-sm font-medium text-muted-foreground">
-                                        {t('Email')}
-                                    </p>
-                                    <p className="text-sm mt-1">
-                                        {project.account.email}
-                                    </p>
+                        <div className="p-6 space-y-3">
+                            {project.account ? (
+                                <div className="flex items-center gap-3">
+                                    <UserInitials name={project.account.name} />
+                                    <div>
+                                        <p className="text-sm font-medium">{project.account.name}</p>
+                                        <p className="text-xs text-muted-foreground">{project.account.email || '-'}</p>
+                                    </div>
                                 </div>
-                            )}
+                            ) : <p className="text-sm">-</p>}
                             {project.account?.phone && (
                                 <div>
-                                    <p className="text-sm font-medium text-muted-foreground">
-                                        {t('Phone')}
-                                    </p>
-                                    <p className="text-sm mt-1">
-                                        {project.account.phone}
-                                    </p>
+                                    <p className="text-sm font-medium text-muted-foreground">{t('Phone')}</p>
+                                    <p className="text-sm mt-1">{project.account.phone}</p>
                                 </div>
                             )}
                         </div>
                     </Card>
 
                     {/* Project Timeline */}
-                    <Card className="p-6">
-                        <div className="flex items-center mb-4">
-                            <Calendar className="h-5 w-5 text-gray-400 mr-2" />
-                            <h3 className="text-lg font-semibold">
-                                {t('Timeline')}
-                            </h3>
+                    <Card>
+                        <div className="flex items-center gap-2 px-6 py-4 border-b">
+                            <Calendar className="h-5 w-5 text-gray-400" />
+                            <h3 className="text-lg font-semibold">{t('Timeline')}</h3>
                         </div>
-                        <div className="space-y-3">
+                        <div className="p-6 space-y-3">
                             <div>
-                                <p className="text-sm font-medium text-muted-foreground">
-                                    {t('Start Date')}
-                                </p>
-                                <p className="text-sm mt-1">
-                                    {project.start_date ? (window.appSettings?.formatDateTime(project.start_date, false) || new Date(project.start_date).toLocaleDateString()) : 'Not set'}
-                                </p>
+                                <p className="text-sm font-medium text-muted-foreground">{t('Start Date')}</p>
+                                <div className="flex items-center gap-1.5 mt-1">
+                                    <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
+                                    <p className="text-sm">{project.start_date ? (window.appSettings?.formatDateTime(project.start_date, false) || new Date(project.start_date).toLocaleDateString()) : 'Not set'}</p>
+                                </div>
                             </div>
                             <div>
-                                <p className="text-sm font-medium text-muted-foreground">
-                                    {t('End Date')}
-                                </p>
-                                <p className="text-sm mt-1">
-                                    {project.end_date ? (window.appSettings?.formatDateTime(project.end_date, false) || new Date(project.end_date).toLocaleDateString()) : 'Not set'}
-                                </p>
+                                <p className="text-sm font-medium text-muted-foreground">{t('End Date')}</p>
+                                <div className="flex items-center gap-1.5 mt-1">
+                                    <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
+                                    <p className="text-sm">{project.end_date ? (window.appSettings?.formatDateTime(project.end_date, false) || new Date(project.end_date).toLocaleDateString()) : 'Not set'}</p>
+                                </div>
                             </div>
                             <div>
-                                <p className="text-sm font-medium text-muted-foreground">
-                                    {t('Created')}
-                                </p>
-                                <p className="text-sm mt-1">
-                                    {window.appSettings?.formatDateTime(project.created_at, false) || new Date(project.created_at).toLocaleDateString()}
-                                </p>
+                                <p className="text-sm font-medium text-muted-foreground">{t('Created')}</p>
+                                <div className="flex items-center gap-1.5 mt-1">
+                                    <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
+                                    <p className="text-sm">{window.appSettings?.formatDateTime(project.created_at, false) || new Date(project.created_at).toLocaleDateString()}</p>
+                                </div>
                             </div>
                         </div>
                     </Card>
 
                     {/* Budget & Assignment */}
-                    <Card className="p-6">
-                        <div className="flex items-center mb-4">
-                            <DollarSign className="h-5 w-5 text-gray-400 mr-2" />
-                            <h3 className="text-lg font-semibold">
-                                {t('Budget & Assignment')}
-                            </h3>
+                    <Card>
+                        <div className="flex items-center gap-2 px-6 py-4 border-b">
+                            <DollarSign className="h-5 w-5 text-gray-400" />
+                            <h3 className="text-lg font-semibold">{t('Budget & Assignment')}</h3>
                         </div>
-                        <div className="space-y-3">
+                        <div className="p-6 space-y-3">
                             <div>
                                 <p className="text-sm font-medium text-muted-foreground">
                                     {t('Budget')}
                                 </p>
                                 <div className="flex items-center mt-1">
                                     <BanknoteIcon className="h-4 w-4 text-muted-foreground mr-2" />
-                                    <p className="text-sm mt-1">
+                                    <p className="text-sm mt-1 font-mono">
                                         {project.budget ? (window.appSettings?.formatCurrency(project.budget) || `$${project.budget.toLocaleString()}`) : 'Not set'}
                                     </p>
                                 </div>
@@ -251,22 +235,42 @@ export default function ProjectShow() {
                                 <p className="text-sm font-medium text-muted-foreground">
                                     {t('Assigned To')}
                                 </p>
-                                <div className="flex items-center mt-1">
-                                    <User className="h-4 w-4 text-muted-foreground mr-2" />
-                                    <p className="text-sm">
-                                        {project.assigned_user?.name || 'Unassigned'}
-                                    </p>
+                                <div className="flex items-center gap-2 mt-1.5">
+                                    {project.assigned_user ? (
+                                        <>
+                                            <Avatar className="w-7 h-7 flex-shrink-0">
+                                                <AvatarImage src={project.assigned_user.avatar} alt={project.assigned_user.name} />
+                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">{getInitials(project.assigned_user.name || '')}</AvatarFallback>
+                                            </Avatar>
+                                            <div className="min-w-0">
+                                                <p className="text-sm font-medium text-foreground truncate">{project.assigned_user.name}</p>
+                                                {project.assigned_user.email && <p className="text-xs text-muted-foreground truncate">{project.assigned_user.email}</p>}
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <p className="text-sm text-muted-foreground">{t('Unassigned')}</p>
+                                    )}
                                 </div>
                             </div>
                             <div>
                                 <p className="text-sm font-medium text-muted-foreground">
                                     {t('Created By')}
                                 </p>
-                                <div className="flex items-center mt-1">
-                                    <User className="h-4 w-4 text-muted-foreground mr-2" />
-                                    <p className="text-sm">
-                                        {project.creator?.name || 'Unknown'}
-                                    </p>
+                                <div className="flex items-center gap-2 mt-1.5">
+                                    {project.creator ? (
+                                        <>
+                                            <Avatar className="w-7 h-7 flex-shrink-0">
+                                                <AvatarImage src={project.creator.avatar} alt={project.creator.name} />
+                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">{getInitials(project.creator.name || '')}</AvatarFallback>
+                                            </Avatar>
+                                            <div className="min-w-0">
+                                                <p className="text-sm font-medium text-foreground truncate">{project.creator.name}</p>
+                                                {project.creator.email && <p className="text-xs text-muted-foreground truncate">{project.creator.email}</p>}
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <p className="text-sm text-muted-foreground">{t('Unknown')}</p>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -275,11 +279,11 @@ export default function ProjectShow() {
 
                 {/* Activities */}
                 {meetings && meetings.length > 0 && (
-                    <Card className="p-6">
-                        <h3 className="text-lg font-semibold mb-4">
-                            {t('Activities')}
-                        </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <Card>
+                        <div className="px-6 py-4 border-b">
+                            <h3 className="text-lg font-semibold">{t('Activities')}</h3>
+                        </div>
+                        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
                             {/* Meetings Section */}
                             <div>
                                 <div className="flex items-center mb-4">
@@ -363,11 +367,11 @@ export default function ProjectShow() {
 
                 {/* Additional Information */}
                 {project.description && (
-                    <Card className="p-6">
-                        <h3 className="text-lg font-semibold mb-4">
-                            {t('Description')}
-                        </h3>
-                        <div className="prose dark:prose-invert max-w-none">
+                    <Card>
+                        <div className="px-6 py-4 border-b">
+                            <h3 className="text-lg font-semibold">{t('Description')}</h3>
+                        </div>
+                        <div className="p-6 prose dark:prose-invert max-w-none">
                             <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
                                 {project.description}
                             </p>

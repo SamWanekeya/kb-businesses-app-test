@@ -178,7 +178,7 @@ export default function CurrencySettings() {
                                     {/* Live Preview Section */}
                                     <div className="p-4 bg-muted/30 rounded-md border flex flex-col md:flex-row items-center justify-between">
                                         <div className="flex flex-col items-center md:items-start mb-3 md:mb-0">
-                                            <div className="text-2xl font-semibold mb-1">
+                                            <div className="text-2xl font-semibold mb-1 font-mono">
                                                 {formattedPreview()}
                                             </div>
                                             <div className="text-xs text-muted-foreground">

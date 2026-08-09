@@ -184,6 +184,7 @@ export default function CalendarIndex() {
     return (
         <PageTemplate
             title={t('Calendar')}
+            description={t('Manage your calendar and events.')}
             breadcrumbs={breadcrumbs}
             actions={pageActions}
         >

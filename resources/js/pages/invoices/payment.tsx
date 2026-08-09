@@ -42,7 +42,7 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
         event.preventDefault();
 
         if (!stripe || !elements || !cardholderName.trim()) {
-            alert(t('Please fill in all required fields'));
+            toast.error(t('Please fill in all required fields'));
             return;
         }
 
@@ -60,7 +60,7 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
         });
 
         if (error) {
-            alert(error.message || t('Payment failed'));
+            toast.error(error.message || t('Payment failed'));
             setProcessing(false);
             return;
         }

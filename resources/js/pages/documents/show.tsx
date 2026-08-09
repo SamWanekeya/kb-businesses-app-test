@@ -11,6 +11,8 @@ import { toast } from '@/components/custom-toast';
 import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
 import { getDisplayUrl } from '@/utils/helper';
+import { useInitials } from '@/hooks/use-initials';
+import * as LucidIcons from "lucide-react";
 
 export default function DocumentShow() {
     const { t } = useTranslation();
@@ -36,37 +38,38 @@ export default function DocumentShow() {
         }
     }, []);
 
+    const getInitials = useInitials();
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const getExt = (url: string) => url?.split('?')[0].split('.').pop()?.toLowerCase() || '';
-    const isImageExt = (ext: string) => ['jpg','jpeg','png','gif','bmp','webp','svg'].includes(ext);
+    const isImageExt = (ext: string) => ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'].includes(ext);
 
     const extConfig: Record<string, { icon: any; bg: string; color: string }> = {
-        pdf:  { icon: FileText,        bg: 'bg-red-100',    color: 'text-red-600'    },
-        doc:  { icon: FileText,        bg: 'bg-blue-100',   color: 'text-blue-600'   },
-        docx: { icon: FileText,        bg: 'bg-blue-100',   color: 'text-blue-600'   },
-        xls:  { icon: FileSpreadsheet, bg: 'bg-green-100',  color: 'text-green-600'  },
-        xlsx: { icon: FileSpreadsheet, bg: 'bg-green-100',  color: 'text-green-600'  },
-        csv:  { icon: FileSpreadsheet, bg: 'bg-green-100',  color: 'text-green-600'  },
-        txt:  { icon: FileText,        bg: 'bg-gray-100',   color: 'text-gray-600'   },
-        zip:  { icon: FileArchive,     bg: 'bg-yellow-100', color: 'text-yellow-600' },
-        rar:  { icon: FileArchive,     bg: 'bg-yellow-100', color: 'text-yellow-600' },
-        json: { icon: FileCode,        bg: 'bg-purple-100', color: 'text-purple-600' },
-        xml:  { icon: FileCode,        bg: 'bg-purple-100', color: 'text-purple-600' },
+        pdf: { icon: FileText, bg: 'bg-red-100', color: 'text-red-600' },
+        doc: { icon: FileText, bg: 'bg-blue-100', color: 'text-blue-600' },
+        docx: { icon: FileText, bg: 'bg-blue-100', color: 'text-blue-600' },
+        xls: { icon: FileSpreadsheet, bg: 'bg-green-100', color: 'text-green-600' },
+        xlsx: { icon: FileSpreadsheet, bg: 'bg-green-100', color: 'text-green-600' },
+        csv: { icon: FileSpreadsheet, bg: 'bg-green-100', color: 'text-green-600' },
+        txt: { icon: FileText, bg: 'bg-gray-100', color: 'text-gray-600' },
+        zip: { icon: FileArchive, bg: 'bg-yellow-100', color: 'text-yellow-600' },
+        rar: { icon: FileArchive, bg: 'bg-yellow-100', color: 'text-yellow-600' },
+        json: { icon: FileCode, bg: 'bg-purple-100', color: 'text-purple-600' },
+        xml: { icon: FileCode, bg: 'bg-purple-100', color: 'text-purple-600' },
     };
 
     const extIconConfig: Record<string, { icon: any; color: string }> = {
-        doc:  { icon: FileText,        color: 'text-blue-600'   },
-        docx: { icon: FileText,        color: 'text-blue-600'   },
-        xls:  { icon: FileSpreadsheet, color: 'text-green-600'  },
-        xlsx: { icon: FileSpreadsheet, color: 'text-green-600'  },
-        csv:  { icon: FileSpreadsheet, color: 'text-teal-500'   },
-        zip:  { icon: FileArchive,     color: 'text-yellow-600' },
-        rar:  { icon: FileArchive,     color: 'text-yellow-600' },
-        json: { icon: FileCode,        color: 'text-purple-600' },
-        xml:  { icon: FileCode,        color: 'text-purple-600' },
-        txt:  { icon: FileText,        color: 'text-gray-500'   },
+        doc: { icon: FileText, color: 'text-blue-600' },
+        docx: { icon: FileText, color: 'text-blue-600' },
+        xls: { icon: FileSpreadsheet, color: 'text-green-600' },
+        xlsx: { icon: FileSpreadsheet, color: 'text-green-600' },
+        csv: { icon: FileSpreadsheet, color: 'text-teal-500' },
+        zip: { icon: FileArchive, color: 'text-yellow-600' },
+        rar: { icon: FileArchive, color: 'text-yellow-600' },
+        json: { icon: FileCode, color: 'text-purple-600' },
+        xml: { icon: FileCode, color: 'text-purple-600' },
+        txt: { icon: FileText, color: 'text-gray-500' },
     };
 
     const getFileIcon = (url: string, name: string, size = 'h-20 w-20') => {
@@ -172,7 +175,7 @@ export default function DocumentShow() {
     };
 
     return (
-        <PageTemplate title={document.name} url={`/documents/${document.id}`} actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
+        <PageTemplate title={document.name} description={t('Document details and related information')} url={`/documents/${document.id}`} actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
             {/* Outer container */}
             <div className="-mt-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm p-4 space-y-4">
 
@@ -243,7 +246,7 @@ export default function DocumentShow() {
                     {/* (3) Document Details Card */}
                     <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
                         {/* Header */}
-                        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+                        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                             <div className="flex items-center gap-2 text-sm font-bold text-gray-800 dark:text-gray-100">
                                 <FileText className="h-4 w-4 text-gray-500" />
                                 {t('Document Details')}
@@ -252,37 +255,37 @@ export default function DocumentShow() {
                                 {hasPermission(permissions, 'view-documents') && document.attachment_url && (
                                     <TooltipProvider><Tooltip><TooltipTrigger asChild>
                                         <a href={getDisplayUrl(document.attachment_url)} target="_blank" rel="noreferrer">
-                                            <button className="h-7 w-7 flex items-center justify-center rounded-lg text-cyan-500 hover:bg-cyan-50 dark:hover:bg-cyan-900/20 transition-colors">
-                                                <ExternalLink className="h-4 w-4" />
+                                            <button className="h-7 w-7 flex items-center justify-center rounded-lg text-cyan-500 transition-colors">
+                                                <ExternalLink className="h-4 w-4 text-gray-500" />
                                             </button>
                                         </a>
                                     </TooltipTrigger><TooltipContent>{t('Open in new tab')}</TooltipContent></Tooltip></TooltipProvider>
                                 )}
                                 {hasPermission(permissions, 'view-documents') && document.attachment_url && (
                                     <TooltipProvider><Tooltip><TooltipTrigger asChild>
-                                        <button className="h-7 w-7 flex items-center justify-center rounded-lg text-green-500 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors" onClick={handleDownload}>
-                                            <Download className="h-4 w-4" />
+                                        <button className="h-7 w-7 flex items-center justify-center rounded-lg text-green-500 transition-colors" onClick={handleDownload}>
+                                            <Download className="h-4 w-4 text-gray-500" />
                                         </button>
                                     </TooltipTrigger><TooltipContent>{t('Download')}</TooltipContent></Tooltip></TooltipProvider>
                                 )}
                                 {hasPermission(permissions, 'toggle-status-documents') && (
                                     <TooltipProvider><Tooltip><TooltipTrigger asChild>
-                                        <button className="h-7 w-7 flex items-center justify-center rounded-lg text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors" onClick={handleToggleStatus}>
-                                            {isInactive ? <Unlock className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
+                                        <button className="h-7 w-7 flex items-center justify-center rounded-lg text-amber-500 transition-colors" onClick={handleToggleStatus}>
+                                            {isInactive ? <Unlock className="h-4 w-4 text-gray-500" /> : <Lock className="h-4 w-4 text-gray-500" />}
                                         </button>
                                     </TooltipTrigger><TooltipContent>{isInactive ? t('Activate') : t('Toggle Status')}</TooltipContent></Tooltip></TooltipProvider>
                                 )}
                                 {hasPermission(permissions, 'edit-documents') && (
                                     <TooltipProvider><Tooltip><TooltipTrigger asChild>
-                                        <button className="h-7 w-7 flex items-center justify-center rounded-lg text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors" onClick={() => setIsFormModalOpen(true)}>
-                                            <Edit className="h-4 w-4" />
+                                        <button className="h-7 w-7 flex items-center justify-center rounded-lg text-amber-500 transition-colors" onClick={() => setIsFormModalOpen(true)}>
+                                            <Edit className="h-4 w-4 text-gray-500" />
                                         </button>
                                     </TooltipTrigger><TooltipContent>{t('Edit')}</TooltipContent></Tooltip></TooltipProvider>
                                 )}
                                 {hasPermission(permissions, 'delete-documents') && (
                                     <TooltipProvider><Tooltip><TooltipTrigger asChild>
-                                        <button className="h-7 w-7 flex items-center justify-center rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors" onClick={() => setIsDeleteModalOpen(true)}>
-                                            <Trash2 className="h-4 w-4" />
+                                        <button className="h-7 w-7 flex items-center justify-center rounded-lg text-red-500 transition-colors" onClick={() => setIsDeleteModalOpen(true)}>
+                                            <Trash2 className="h-4 w-4 text-gray-500" />
                                         </button>
                                     </TooltipTrigger><TooltipContent>{t('Delete')}</TooltipContent></Tooltip></TooltipProvider>
                                 )}
@@ -290,10 +293,8 @@ export default function DocumentShow() {
                         </div>
                         {/* Rows */}
                         <div>
-                            <DetailRow label={t('Account')} value={document.account?.name} />
                             <DetailRow label={t('Folder')} value={document.folder?.name} />
                             <DetailRow label={t('Type')} value={document.type?.type_name} badge />
-                            <DetailRow label={t('Assigned To')} value={document.assigned_user?.name} />
                             <DetailRow
                                 label={t('Status')}
                                 value={document.status === 'active' ? t('Active') : t('Inactive')}
@@ -307,29 +308,103 @@ export default function DocumentShow() {
                                 badge
                             />
                             {document.publish_date && (
-                                <DetailRow label={t('Publish Date')} value={window.appSettings?.formatDateTime(document.publish_date, false) || new Date(document.publish_date).toLocaleDateString()} />
-                            )}
-                            {document.expiration_date && (
                                 <DetailRow
-                                    label={t('Expiration Date')}
-                                    value={window.appSettings?.formatDateTime(document.expiration_date, false) || new Date(document.expiration_date).toLocaleDateString()}
-                                    expired={isExpired}
+                                    label={t('Publish Date')}
+                                    value={
+                                        <div className="flex items-center gap-2 whitespace-nowrap">
+                                            {document.publish_date && (
+                                                <LucidIcons.Calendar className="h-4 w-4" />
+                                            )}
+                                            <span>
+                                                {window.appSettings?.formatDateTime(document.publish_date, false) ||
+                                                    new Date(document.publish_date).toLocaleDateString()}
+                                            </span>
+                                        </div>
+                                    }
                                 />
                             )}
-                            <DetailRow label={t('Created')} value={window.appSettings?.formatDateTime(document.created_at, false) || new Date(document.created_at).toLocaleDateString()} />
+                            {document.expiration_date && (
+                                // <DetailRow
+                                //     label={t('Expiration Date')}
+                                //     value={window.appSettings?.formatDateTime(document.expiration_date, false) || new Date(document.expiration_date).toLocaleDateString()}
+                                //     expired={isExpired}
+                                // />
+                                <DetailRow
+    label={t('Expiration Date')}
+    value={
+        <div className="flex items-center gap-2 whitespace-nowrap">
+            <LucidIcons.Calendar
+                className={`h-4 w-4 ${
+                    isExpired ? 'text-red-500' : 'text-gray-500'
+                }`}
+            />
+            <span
+                className={isExpired ? 'text-red-500' : ''}
+            >
+                {window.appSettings?.formatDateTime(document.expiration_date, false) ||
+                    new Date(document.expiration_date).toLocaleDateString()}
+            </span>
+        </div>
+    }
+    expired={isExpired}
+/>
+                            )}
+                            <DetailRow label={t('Created At')}
+                                value={
+                                    <div className="flex items-center gap-2 whitespace-nowrap">
+                                        {document.created_at && (
+                                            <LucidIcons.Calendar className="h-4 w-4" />
+                                        )}
+                                        <span>
+                                            {window.appSettings?.formatDateTime(document.created_at, false) ||
+                                                new Date(document.created_at).toLocaleDateString()}
+                                        </span>
+                                    </div>
+                                }
+                            />
                         </div>
-                        {document.opportunity?.name && (
-                            <div className="pl-4 pr-3 py-3 border-t border-gray-100 dark:border-gray-700">
-                                <p className="mb-1 text-sm font-bold text-gray-800 dark:text-gray-100">{t('Opportunity')}</p>
-                                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed break-words">{document.opportunity.name}</p>
-                            </div>
-                        )}
                         {document.description && (
-                            <div className="pl-4 pr-3 py-3 border-t border-gray-100 dark:border-gray-700">
+                            <div className="pl-4 pr-3 py-3 border-t border-gray-200 dark:border-gray-700">
                                 <p className="mb-1 text-sm font-bold text-gray-800 dark:text-gray-100">{t('Description')}</p>
                                 <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed break-words whitespace-pre-wrap">{document.description}</p>
                             </div>
                         )}
+                        {document.opportunity?.name && (
+                            <div className="pl-4 pr-3 py-3 border-t border-gray-200 dark:border-gray-700">
+                                <p className="mb-1 text-sm font-bold text-gray-800 dark:text-gray-100">{t('Opportunity')}</p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed break-words">{document.opportunity.name}</p>
+                            </div>
+                        )}
+                        {document.account ? (
+                            <div className="pl-4 pr-3 py-3 border-t border-gray-200 dark:border-gray-700">
+                                <p className="text-xs font-medium text-muted-foreground mb-1.5">{t('Account')}</p>
+                                <div className="flex items-center gap-2">
+                                    <Avatar className="w-7 h-7 flex-shrink-0">
+                                        <AvatarImage src={document.account.avatar} alt={document.account.name} />
+                                        <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">{getInitials(document.account.name || '')}</AvatarFallback>
+                                    </Avatar>
+                                    <div className="min-w-0">
+                                        <p className="text-sm font-medium text-foreground truncate">{document.account.name}</p>
+                                        {document.account.email && <p className="text-xs text-muted-foreground truncate">{document.account.email}</p>}
+                                    </div>
+                                </div>
+                            </div>
+                        ) : null}
+                        {document.assigned_user ? (
+                            <div className="pl-4 pr-3 py-3 border-t border-gray-200 dark:border-gray-700">
+                                <p className="text-xs font-medium text-muted-foreground mb-1.5">{t('Assigned To')}</p>
+                                <div className="flex items-center gap-2">
+                                    <Avatar className="w-7 h-7 flex-shrink-0">
+                                        <AvatarImage src={document.assigned_user.avatar} alt={document.assigned_user.name} />
+                                        <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">{getInitials(document.assigned_user.name || '')}</AvatarFallback>
+                                    </Avatar>
+                                    <div className="min-w-0">
+                                        <p className="text-sm font-medium text-foreground truncate">{document.assigned_user.name}</p>
+                                        {document.assigned_user.email && <p className="text-xs text-muted-foreground truncate">{document.assigned_user.email}</p>}
+                                    </div>
+                                </div>
+                            </div>
+                        ) : null}
                     </div>
                 </div>
             </div>
@@ -372,9 +447,9 @@ function DetailRow({ label, value, badge = false, badgeColor = 'blue', expired =
     if (!value) return null;
 
     const badgeColors: Record<string, string> = {
-        blue:  'bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20 dark:bg-blue-900/30 dark:text-blue-300',
+        blue: 'bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20 dark:bg-blue-900/30 dark:text-blue-300',
         green: 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20 dark:bg-green-900/30 dark:text-green-300',
-        red:   'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20 dark:bg-red-900/30 dark:text-red-300',
+        red: 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20 dark:bg-red-900/30 dark:text-red-300',
     };
 
     return (

@@ -36,7 +36,7 @@ class StreamController extends Controller
     {
         $streams = AccountActivity::with(['user', 'account'])
             ->where('created_by', createdBy())
-            ->orderBy('created_at', 'desc')->paginate(10);
+            ->orderBy('created_at', 'desc')->get();
 
         return Inertia::render('streams/show', [
             'module' => 'account_activities',
@@ -62,7 +62,7 @@ class StreamController extends Controller
     {
         $streams = InvoiceActivity::with(['user', 'invoice'])
             ->where('created_by', createdBy())
-            ->orderBy('created_at', 'desc')->paginate(10);
+            ->orderBy('created_at', 'desc')->get();
 
         return Inertia::render('streams/show', [
             'module' => 'invoice_activities',
@@ -88,7 +88,7 @@ class StreamController extends Controller
     {
         $streams = LeadActivity::with(['user', 'lead'])
             ->where('created_by', createdBy())
-            ->orderBy('created_at', 'desc')->paginate(10);
+            ->orderBy('created_at', 'desc')->get();
 
         return Inertia::render('streams/show', [
             'module' => 'lead_activities',
@@ -114,7 +114,7 @@ class StreamController extends Controller
     {
         $streams = OpportunityActivity::with(['user', 'opportunity'])
             ->where('created_by', createdBy())
-            ->orderBy('created_at', 'desc')->paginate(10);
+            ->orderBy('created_at', 'desc')->get();
 
         return Inertia::render('streams/show', [
             'module' => 'opportunity_activities',
@@ -140,7 +140,7 @@ class StreamController extends Controller
     {
         $streams = PurchaseOrderActivity::with(['user', 'purchaseOrder'])
             ->where('created_by', createdBy())
-            ->orderBy('created_at', 'desc')->paginate(10);
+            ->orderBy('created_at', 'desc')->get();
 
         return Inertia::render('streams/show', [
             'module' => 'purchase_order_activities',
@@ -166,7 +166,7 @@ class StreamController extends Controller
     {
         $streams = QuoteActivity::with(['user', 'quote'])
             ->where('created_by', createdBy())
-            ->orderBy('created_at', 'desc')->paginate(10);
+            ->orderBy('created_at', 'desc')->get();
 
         return Inertia::render('streams/show', [
             'module' => 'quote_activities',
@@ -192,7 +192,7 @@ class StreamController extends Controller
     {
         $streams = SalesOrderActivity::with(['user', 'salesOrder'])
             ->where('created_by', createdBy())
-            ->orderBy('created_at', 'desc')->paginate(10);
+            ->orderBy('created_at', 'desc')->get();
 
         return Inertia::render('streams/show', [
             'module' => 'sales_order_activities',

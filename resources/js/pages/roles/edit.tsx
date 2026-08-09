@@ -83,6 +83,7 @@ export default function RolesEdit() {
     return (
         <PageTemplate
             title={t('Edit Role')}
+            description={t('Update role details and related information')}
             url={`/roles/${role.id}/edit`}
             actions={pageActions}
             breadcrumbs={breadcrumbs}

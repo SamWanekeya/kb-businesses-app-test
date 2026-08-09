@@ -128,6 +128,7 @@ export default function AccountEdit() {
     return (
         <PageTemplate
             title={t('Edit Account')}
+            description={t('Edit Account details and related information')}
             breadcrumbs={breadcrumbs}
             actions={[{
                 label: t('Back'),
@@ -135,6 +136,7 @@ export default function AccountEdit() {
                 variant: 'outline',
                 onClick: () => router.visit(route('accounts.index')),
             }]}
+            noPadding
         >
             <form onSubmit={handleSubmit} className="space-y-8 bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-6 rounded-lg border border-gray-200 dark:border-gray-700">
 

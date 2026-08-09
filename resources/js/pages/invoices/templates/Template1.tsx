@@ -26,9 +26,9 @@ export default function Template1({ invoice, items, taxesData, settings, color, 
     }, 0) || 0;
     const dueAmount = Math.max(0, (Number(invoice.total_amount) || 0) - paidAmount);
 
-    const formatCurrency = (amount: number | string) => {
+    const formatCurrency = (amount: number | string): React.ReactNode => {
         if (typeof amount === 'string' && amount.startsWith('<')) return amount;
-        return (window as any).appSettings?.formatCurrency(Number(amount)) || `$${Number(amount)}`;
+        const val = (window as any).appSettings?.formatCurrency(Number(amount)) || `$${Number(amount)}`; return <span style={{fontFamily:'monospace'}}>{val}</span>;
     };
 
     const formatValue = (value: any, fallback: string = '') => {

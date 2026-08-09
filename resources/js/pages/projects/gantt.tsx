@@ -386,6 +386,7 @@ const handleFormSubmit = (formData: any) => {
     return (
         <PageTemplate
             title={`${project.name} - ${t('Gantt View')}`}
+            description={t('Visualize project timeline and task dependencies')}
             url={`/projects/${project.id}/gantt`}
             actions={pageActions}
             breadcrumbs={breadcrumbs}

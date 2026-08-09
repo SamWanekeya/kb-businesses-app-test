@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
@@ -17,7 +17,6 @@ export default function RolesPage() {
     const permissions = auth?.permissions || [];
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
-    const [showFilters, setShowFilters] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [currentItem, setCurrentItem] = useState<any>(null);
 
@@ -50,10 +49,14 @@ export default function RolesPage() {
         }, { preserveState: true, preserveScroll: true });
     };
 
+    const pageInitialState = useState(true);
+    useEffect(() => {
+        if (pageInitialState[0]) { pageInitialState[1](false); return; }
+        applyFilters();
+    }, [searchTerm]);
+
     const handleResetFilters = () => {
-        setSearchTerm('');
-        setShowFilters(false);
-        router.get(route('roles.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
+        router.get(route('roles.index'));
     };
 
     const handleAction = (action: string, item: any) => {
@@ -120,7 +123,8 @@ export default function RolesPage() {
             key: 'created_at',
             label: t('Created At'),
             sortable: true,
-            render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
+            type: 'date',
+            // render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
         },
     ];
 
@@ -152,33 +156,31 @@ export default function RolesPage() {
     return (
         <PageTemplate
             title={t('Roles')}
+            description={t('Manage your roles and their associated permissions.')}
             url="/roles"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
             noPadding
         >
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
                     onSearch={handleSearch}
                     filters={[]}
-                    showFilters={showFilters}
-                    setShowFilters={setShowFilters}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
                     onResetFilters={handleResetFilters}
-                    onApplyFilters={applyFilters}
-                    currentPerPage={pageFilters.per_page?.toString() || '10'}
-                    onPerPageChange={(value) => {
-                        router.get(route('roles.index'), {
-                            page: 1,
-                            search: searchTerm || undefined,
-                            sort_field: pageFilters.sort_field || undefined,
-                            sort_direction: pageFilters.sort_direction || undefined,
-                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
-                        }, { preserveState: true, preserveScroll: true });
-                    }}
+                    // currentPerPage={pageFilters.per_page?.toString() || '10'}
+                    // onPerPageChange={(value) => {
+                    //     router.get(route('roles.index'), {
+                    //         page: 1,
+                    //         search: searchTerm || undefined,
+                    //         sort_field: pageFilters.sort_field || undefined,
+                    //         sort_direction: pageFilters.sort_direction || undefined,
+                    //         ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+                    //     }, { preserveState: true, preserveScroll: true });
+                    // }}
                 />
             </div>
 
@@ -208,6 +210,16 @@ export default function RolesPage() {
                     links={roles?.links}
                     entityName={t('roles')}
                     onPageChange={(url) => router.get(url)}
+                    currentPerPage={pageFilters.per_page?.toString() || '10'}
+                    onPerPageChange={(value) => {
+                        router.get(route('roles.index'), {
+                            page: 1,
+                            search: searchTerm || undefined,
+                            sort_field: pageFilters.sort_field || undefined,
+                            sort_direction: pageFilters.sort_direction || undefined,
+                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+                        }, { preserveState: true, preserveScroll: true });
+                    }}
                 />
             </div>
 

@@ -33,7 +33,7 @@ export default function ProductReports() {
     },
     {
       title: t('Total Revenue'),
-      value: window.appSettings?.formatCurrency(summary.total_revenue) || `$${summary.total_revenue.toLocaleString()}`,
+      value: <span className="font-mono">{window.appSettings?.formatCurrency(summary.total_revenue) || `$${summary.total_revenue.toLocaleString()}`}</span>,
       icon: <DollarSign className="h-6 w-6 text-purple-600" />,
       iconColor: 'bg-purple-100'
     },
@@ -48,10 +48,13 @@ export default function ProductReports() {
   const topProducts = productSales.slice(0, 10);
 
   return (
-    <PageTemplate title={t("Product Reports")} url={route('reports.product-reports')} breadcrumbs={breadcrumbs} noPadding>
+    <PageTemplate title={t("Product Reports")} 
+    description={t("View and analyze product reports to track performance and sales.")}
+    url={route('reports.product-reports')} breadcrumbs={breadcrumbs} noPadding>
+         <SummaryCards cards={summaryCards} />
       <ReportFilters filters={filters} />
       
-      <SummaryCards cards={summaryCards} />
+   
 
       <div className="grid grid-cols-1 gap-6 mb-6">
         <ChartCard title={t('Top Products by Revenue')}>
@@ -93,7 +96,7 @@ export default function ProductReports() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {product.quantity.toLocaleString()}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-semibold">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-semibold font-mono">
                     {window.appSettings?.formatCurrency(product.revenue) || `$${product.revenue.toLocaleString()}`}
                   </td>
                 </tr>

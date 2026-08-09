@@ -89,7 +89,7 @@ export default function CompanyPlanRequestsPage() {
 
   const hasActiveFilters = () => {
     return Object.entries(filterValues).some(([key, value]) => {
-      return value && value !== '';
+      return value && value !== '' && value !== 'all';
     }) || searchTerm !== '';
   };
 
@@ -109,7 +109,7 @@ export default function CompanyPlanRequestsPage() {
             name: filter.key,
             label: t(filter.label),
             type: 'select',
-            value: filterValues[filter.key] || '',
+            value: filterValues[filter.key] || 'all',
             onChange: (value) => handleFilterChange(filter.key, value),
             options: filter.options?.map(option => ({
               value: option.value,
@@ -120,7 +120,7 @@ export default function CompanyPlanRequestsPage() {
           setShowFilters={setShowFilters}
           hasActiveFilters={hasActiveFilters}
           activeFilterCount={() => {
-            return Object.values(filterValues).filter(v => v && v !== '').length + (searchTerm ? 1 : 0);
+            return Object.values(filterValues).filter(v => v && v !== '' && v !== 'all').length + (searchTerm ? 1 : 0);
           }}
           onResetFilters={() => {
             setSearchTerm('');

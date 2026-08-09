@@ -1,306 +1,452 @@
+import React, { useState, useMemo } from 'react';
 import { PageTemplate } from '@/components/page-template';
-import { usePage, Link } from '@inertiajs/react';
-import { ArrowLeft, User, Mail, Phone, MapPin, Building, Briefcase } from 'lucide-react';
+import { usePage, Link, router } from '@inertiajs/react';
+import { ArrowLeft, User, Mail, Phone, MapPin, Building, Briefcase, FileText, Calendar, Clock, UserCheck, Eye, Tag } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useTranslation } from 'react-i18next';
+import UserInitials from '@/components/user-initials';
+import { useInitials } from '@/hooks/use-initials';
 import { hasPermission } from '@/utils/authorization';
 
 export default function ContactShow() {
-  const { t } = useTranslation();
-  const { contact, meetings, auth } = usePage().props as any;
-  const permissions = auth?.permissions || [];
+    const { t } = useTranslation();
+    const { contact, meetings, auth } = usePage().props as any;
+    const permissions = auth?.permissions || [];
+    const getInitials = useInitials();
 
-  const breadcrumbs = [
-    { title: t('Dashboard'), href: route('dashboard') },
-    { title: t('Contacts'), href: route('contacts.index') },
-    { title: contact.name }
-  ];
+    const filteredMeetings = useMemo(() => meetings?.filter((m: any) => m.type !== 'call') || [], [meetings]);
+    const filteredCalls = useMemo(() => meetings?.filter((m: any) => m.type === 'call') || [], [meetings]);
 
-  const getStatusBadge = (status: string) => {
-    const statusColors = {
-      active: 'bg-green-50 text-green-700 ring-green-600/20',
-      inactive: 'bg-red-50 text-red-700 ring-red-600/10'
+    const breadcrumbs = [
+        { title: t('Dashboard'), href: route('dashboard') },
+        { title: t('Contact Management') },
+        { title: t('Contacts'), href: route('contacts.index') },
+        { title: t('View Contact') }
+    ];
+
+    const getStatusBadge = (status: string) => {
+        const statusColors = {
+            active: 'bg-green-50 text-green-700 ring-green-600/20',
+            inactive: 'bg-red-50 text-red-700 ring-red-600/10'
+        };
+        return (
+            <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.active}`}>
+                {status?.charAt(0).toUpperCase() + status?.slice(1) || 'Active'}
+            </span>
+        );
+    };
+
+    const formatDate = (dateString: string) => {
+        if (!dateString) return t('-');
+        return window.appSettings?.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
     return (
-      <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.active}`}>
-        {status?.charAt(0).toUpperCase() + status?.slice(1) || t('Active')}
-      </span>
+        <PageTemplate
+            title={contact.name}
+            description={t('Contact details and related information')}
+            breadcrumbs={breadcrumbs}
+            actions={[
+                {
+                    label: t('Back'),
+                    icon: <ArrowLeft className="h-4 w-4 mr-2" />,
+                    variant: 'outline',
+                    onClick: () => router.visit(route('contacts.index'))
+                }
+            ]}
+            noPadding
+        >
+            <div className="mx-auto space-y-6">
+
+                {/* Summary Stat Cards */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                    {([
+                        { label: t('Position'), value: contact.position || '—', icon: Briefcase, iconCls: 'text-blue-600', blobCls: 'bg-blue-50 dark:bg-blue-900/30' },
+                        { label: t('Account'), value: contact.account?.name || '—', icon: Building, iconCls: 'text-orange-600', blobCls: 'bg-orange-50 dark:bg-orange-900/30' },
+                        { label: t('Quotes'), value: `${contact.quotes?.length || 0} `, icon: FileText, iconCls: 'text-purple-600', blobCls: 'bg-purple-50 dark:bg-purple-900/30' },
+                        { label: t('Created'), value: formatDate(contact.created_at), icon: Clock, iconCls: 'text-emerald-600', blobCls: 'bg-emerald-50 dark:bg-emerald-900/30' },
+                    ] as const).map(({ label, value, icon: Icon, iconCls, blobCls }) => (
+                        <Card key={label} className="relative overflow-hidden">
+                            <div className={`absolute top-0 right-0 w-20 h-20 ${blobCls} rounded-bl-full`} />
+                            <CardContent className="relative p-4">
+                                <div className="flex items-start justify-between">
+                                    <div className="min-w-0 pr-2">
+                                        <p className="text-sm font-medium text-muted-foreground mb-1">{label}</p>
+                                        <p className="text-lg font-bold text-foreground truncate leading-snug">{value}</p>
+                                    </div>
+                                    <div className={`relative z-10 p-2.5 ${blobCls} rounded-xl mt-0.5 flex-shrink-0`}>
+                                        <Icon className={`h-5 w-5 ${iconCls}`} />
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+
+                {/* Contact Summary + Contact Info */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                    {/* Contact Summary */}
+                    <Card className="shadow-sm">
+                        <CardHeader className="border-b py-3.5 px-5">
+                            <CardTitle className="flex items-center text-lg font-semibold">
+                                <FileText className="h-5 w-5 mr-3 text-muted-foreground" />
+                                {t('Contact Summary')}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-5">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                                <div className="space-y-0.5">
+                                    <p className="text-xs font-medium text-muted-foreground">{t('Status')}</p>
+                                    <div>{getStatusBadge(contact.status)}</div>
+                                </div>
+                                <div className="space-y-0.5">
+                                    <p className="text-xs font-medium text-muted-foreground">{t('Position')}</p>
+                                    <p className="text-sm font-medium text-foreground">{contact.position || '—'}</p>
+                                </div>
+                            </div>
+                            <div className="pt-4 mt-4 border-t border-border">
+                                <p className="text-xs font-medium text-muted-foreground mb-1.5">{t('Assigned To')}</p>
+                                {contact.assigned_user ? (
+                                    <div className="flex items-center gap-2">
+                                        <Avatar className="w-7 h-7 flex-shrink-0">
+                                            <AvatarImage src={contact.assigned_user.avatar} alt={contact.assigned_user.name} />
+                                            <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">{getInitials(contact.assigned_user.name || '')}</AvatarFallback>
+                                        </Avatar>
+                                        <div className="min-w-0">
+                                            <p className="text-sm font-medium text-foreground truncate">{contact.assigned_user.name}</p>
+                                            {contact.assigned_user.email && (
+                                                <p className="text-xs text-muted-foreground truncate">{contact.assigned_user.email}</p>
+                                            )}
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <p className="text-sm text-muted-foreground">{t('Unassigned')}</p>
+                                )}
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Contact Info */}
+                    <Card className="shadow-sm">
+                        <CardHeader className="border-b py-3.5 px-5">
+                            <CardTitle className="flex items-center text-lg font-semibold">
+                                <User className="h-5 w-5 mr-3 text-muted-foreground" />
+                                {t('Contact Info')}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-5">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                                <div className="space-y-0.5">
+                                    <p className="text-xs font-medium text-muted-foreground">{t('Email')}</p>
+                                    <p className="text-sm font-medium text-foreground truncate">{contact.email || '—'}</p>
+                                </div>
+                                <div className="space-y-0.5">
+                                    <p className="text-xs font-medium text-muted-foreground">{t('Phone')}</p>
+                                    <p className="text-sm font-medium text-foreground">{contact.phone || '—'}</p>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+
+                {/* Address + Related Account */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                    {/* Address */}
+                    <Card className="shadow-sm">
+                        <CardHeader className="border-b py-3.5 px-5">
+                            <CardTitle className="flex items-center text-lg font-semibold">
+                                <MapPin className="h-5 w-5 mr-3 text-muted-foreground" />
+                                {t('Address')}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-5">
+                            <div className="h-[100px] overflow-y-auto">
+                                {contact.address ? (
+                                    <p className="text-sm  text-foreground">{contact.address}</p>
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center h-full text-center">
+                                        <MapPin className="h-8 w-8 text-muted-foreground/20 mb-2" />
+                                        <p className="text-sm text-muted-foreground">{t('No address')}</p>
+                                    </div>
+                                )}
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Related Account */}
+                    <Card className="shadow-sm">
+                        <CardHeader className="border-b py-3.5 px-5">
+                            <CardTitle className="flex items-center text-lg font-semibold">
+                                <Building className="h-5 w-5 mr-3 text-muted-foreground" />
+                                {t('Related Account')}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-5 flex items-center justify-center" style={{ minHeight: '130px' }}>
+                            {contact.account ? (
+                                <div className="flex items-center justify-between p-3.5 rounded-xl border hover:bg-muted/40 transition-colors w-full">
+                                    <div className="flex items-center gap-2.5 min-w-0">
+                                        <UserInitials name={contact.account.name} />
+                                        <div className="min-w-0">
+                                            <p className="text-xs font-medium text-muted-foreground">{t('Account')}</p>
+                                            <p className="text-sm font-semibold text-foreground truncate">{contact.account.name}</p>
+                                            {contact.account.email && <p className="text-xs text-muted-foreground truncate">{contact.account.email}</p>}
+                                        </div>
+                                    </div>
+                                    {hasPermission(permissions, 'view-accounts') && (
+                                        <TooltipProvider delayDuration={200}>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Link href={route('accounts.show', contact.account.id)} className="ml-3 flex-shrink-0">
+                                                        <Eye className="h-4 w-4 text-gray-500" />
+                                                    </Link>
+                                                </TooltipTrigger>
+                                                <TooltipContent side="top"><p>{t('View')}</p></TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                    )}
+                                </div>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center text-center py-8">
+                                    <Building className="h-8 w-8 text-muted-foreground/20 mb-2" />
+                                    <p className="text-sm text-muted-foreground">{t('No account linked')}</p>
+                                </div>
+                            )}
+                        </CardContent>
+                    </Card>
+                </div>
+
+                {/* Quotes + Cases */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                    {/* Quotes */}
+                    <Card className="shadow-sm">
+                        <CardHeader className="border-b py-3.5 px-5">
+                            <CardTitle className="flex items-center text-lg font-semibold">
+                                <FileText className="h-5 w-5 mr-3 text-muted-foreground" />
+                                {t('Quotes')}
+                                {contact.quotes?.length > 0 && (
+                                    <span className="ml-2 inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-xs font-semibold text-muted-foreground">{contact.quotes.length}</span>
+                                )}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-0">
+                            {contact.quotes?.length > 0 ? (
+                <div className="space-y-2 p-2 overflow-y-auto" style={{ height: '305px', overflowY: contact.quotes.length > 4 ? 'auto' : 'hidden' }}>
+                                    {contact.quotes.map((quote: any) => (
+                                        <div key={quote.id} className="flex items-center justify-between p-3.5 rounded-xl border hover:bg-muted/40 transition-colors">
+                                            <div className="flex items-center gap-2.5 min-w-0">
+                                                <UserInitials name={quote.quote_number} />
+                                                <div className="min-w-0">
+                                                    <p className="text-sm font-semibold text-foreground truncate">{quote.quote_number}</p>
+                                                    {quote.name && <p className="text-xs text-muted-foreground truncate">{quote.name}</p>}
+                                                </div>
+                                            </div>
+                                            {hasPermission(permissions, 'view-quotes') && (
+                                                <TooltipProvider delayDuration={200}>
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <Link href={route('quotes.show', quote.id)} className="ml-3 flex-shrink-0">
+                                                                <Eye className="h-4 w-4 text-gray-500" />
+                                                            </Link>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent side="top"><p>{t('View')}</p></TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center text-center py-12">
+                                    <FileText className="h-8 w-8 text-muted-foreground/20 mb-2" />
+                                    <p className="text-sm text-muted-foreground">{t('No quotes linked')}</p>
+                                </div>
+                            )}
+                        </CardContent>
+                    </Card>
+
+                    {/* Cases */}
+                    <Card className="shadow-sm">
+                        <CardHeader className="border-b py-3.5 px-5">
+                            <CardTitle className="flex items-center text-lg font-semibold">
+                                <Tag className="h-5 w-5 mr-3 text-muted-foreground" />
+                                {t('Cases')}
+                                {contact.cases?.length > 0 && (
+                                    <span className="ml-2 inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-xs font-semibold text-muted-foreground">{contact.cases.length}</span>
+                                )}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-0">
+                            {contact.cases?.length > 0 ? (
+                <div className="space-y-2 p-2 overflow-y-auto" style={{ height: '305px', overflowY: contact.cases.length > 4 ? 'auto' : 'hidden' }}>
+                                    {contact.cases.map((caseItem: any) => (
+                                        <div key={caseItem.id} className="flex items-center justify-between p-3.5 rounded-xl border hover:bg-muted/40 transition-colors">
+                                            <div className="flex items-center gap-2.5 min-w-0">
+                                                <UserInitials name={caseItem.subject} />
+                                                <div className="min-w-0">
+                                                    <p className="text-sm font-semibold text-foreground truncate">{caseItem.subject}</p>
+                                                    {caseItem.status && <p className="text-xs text-muted-foreground truncate">{caseItem.status}</p>}
+                                                </div>
+                                            </div>
+                                            {hasPermission(permissions, 'view-cases') && (
+                                                <TooltipProvider delayDuration={200}>
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <Link href={route('cases.show', caseItem.id)} className="ml-3 flex-shrink-0">
+                                                                <Eye className="h-4 w-4 text-gray-500" />
+                                                            </Link>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent side="top"><p>{t('View')}</p></TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center text-center py-12">
+                                    <Tag className="h-8 w-8 text-muted-foreground/20 mb-2" />
+                                    <p className="text-sm text-muted-foreground">{t('No cases linked')}</p>
+                                </div>
+                            )}
+                        </CardContent>
+                    </Card>
+                </div>
+
+                {/* Meetings & Calls */}
+                {meetings?.length > 0 && (() => {
+                    return (
+                        <Card className="shadow-sm">
+                            <CardHeader className="border-b py-3.5 px-5">
+                                <CardTitle className="flex items-center text-lg font-semibold">
+                                    <Calendar className="h-5 w-5 mr-3 text-muted-foreground" />
+                                    {t('Meetings & Calls')}
+                                    <span className="ml-2 inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-xs font-semibold text-muted-foreground">{meetings.length}</span>
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-5">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <Card className="shadow-none border">
+                                        <CardHeader className="border-b py-3 px-4">
+                                            <CardTitle className="flex items-center justify-between text-sm font-semibold text-muted-foreground">
+                                                <div className="flex items-center gap-2"><UserCheck className="h-3.5 w-3.5" />{t('Meetings')}</div>
+                                                <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">{filteredMeetings.length}</span>
+                                            </CardTitle>
+                                        </CardHeader>
+                                        <CardContent className="p-0">
+                                            {filteredMeetings.length === 0 ? (
+                                                <p className="text-sm text-muted-foreground text-center py-6">{t('No meetings found')}</p>
+                                            ) : (
+                                                <div className="space-y-2 p-3 overflow-y-auto" style={{ height: '412px', overflowY: filteredMeetings.length > 5 ? 'auto' : 'hidden' }}>
+                                                    {filteredMeetings.map((meeting: any) => (
+                                                        <div key={meeting.id} className="flex items-center justify-between gap-3 p-3 rounded-lg border border-border">
+                                                            <div className="flex items-center gap-3 min-w-0">
+                                                                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/15 text-primary flex items-center justify-center">
+                                                                    <UserCheck className="h-3.5 w-3.5" />
+                                                                </div>
+                                                                <div className="min-w-0">
+                                                                    <p className="text-sm font-medium text-foreground truncate">{meeting.title}</p>
+                                                                    <div className="flex items-center gap-2 mt-0.5">
+                                                                        <Clock className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                                                                        <span className="text-xs text-muted-foreground truncate">{window.appSettings?.formatDateTime(meeting.start_date, false) || new Date(meeting.start_date).toLocaleDateString()}</span>
+                                                                        {meeting.assigned_user?.name && (
+                                                                            <span className="flex items-center gap-1 flex-shrink-0">
+                                                                                <span className="text-muted-foreground/40">·</span>
+                                                                                <Avatar className="w-6 h-6 flex-shrink-0">
+                                                                                    <AvatarImage src={meeting.assigned_user?.avatar} alt={meeting.assigned_user?.name || 'User'} />
+                                                                                    <AvatarFallback className="bg-primary/15 text-primary text-[9px] font-bold">{getInitials(meeting.assigned_user?.name || 'U')}</AvatarFallback>
+                                                                                </Avatar>
+                                                                                <span className="text-xs text-muted-foreground truncate">{meeting.assigned_user.name}</span>
+                                                                            </span>
+                                                                        )}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {hasPermission(permissions, 'view-meetings') && (
+                                                                <TooltipProvider delayDuration={200}>
+                                                                    <Tooltip>
+                                                                        <TooltipTrigger asChild>
+                                                                            <Link href={route('meetings.show', meeting.id)} className="flex-shrink-0">
+                                                                                <Button variant="ghost" size="sm" className="h-7 w-7 p-0"><Eye className="h-3.5 w-3.5 text-muted-foreground" /></Button>
+                                                                            </Link>
+                                                                        </TooltipTrigger>
+                                                                        <TooltipContent side="top"><p>{t('View')}</p></TooltipContent>
+                                                                    </Tooltip>
+                                                                </TooltipProvider>
+                                                            )}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </CardContent>
+                                    </Card>
+
+                                    <Card className="shadow-none border">
+                                        <CardHeader className="border-b py-3 px-4">
+                                            <CardTitle className="flex items-center justify-between text-sm font-semibold text-muted-foreground">
+                                                <div className="flex items-center gap-2"><Phone className="h-3.5 w-3.5" />{t('Calls')}</div>
+                                                <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">{filteredCalls.length}</span>
+                                            </CardTitle>
+                                        </CardHeader>
+                                        <CardContent className="p-0">
+                                            {filteredCalls.length === 0 ? (
+                                                <p className="text-sm text-muted-foreground text-center py-6">{t('No calls found')}</p>
+                                            ) : (
+                                                <div className="space-y-2 p-3 overflow-y-auto" style={{ height: '412px', overflowY: filteredCalls.length > 5 ? 'auto' : 'hidden' }}>
+                                                    {filteredCalls.map((call: any) => (
+                                                        <div key={call.id} className="flex items-center justify-between gap-3 p-3 rounded-lg border border-border">
+                                                            <div className="flex items-center gap-3 min-w-0">
+                                                                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/15 text-primary flex items-center justify-center">
+                                                                    <Phone className="h-3.5 w-3.5" />
+                                                                </div>
+                                                                <div className="min-w-0">
+                                                                    <p className="text-sm font-medium text-foreground truncate">{call.title}</p>
+                                                                    <div className="flex items-center gap-2 mt-0.5">
+                                                                        <Clock className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                                                                        <span className="text-xs text-muted-foreground truncate">{window.appSettings?.formatDateTime(call.start_date, false) || new Date(call.start_date).toLocaleDateString()}</span>
+                                                                        {call.assigned_user?.name && (
+                                                                            <span className="flex items-center gap-1 flex-shrink-0">
+                                                                                <span className="text-muted-foreground/40">·</span>
+                                                                                <Avatar className="w-6 h-6 flex-shrink-0">
+                                                                                    <AvatarImage src={call.assigned_user?.avatar} alt={call.assigned_user?.name || 'User'} />
+                                                                                    <AvatarFallback className="bg-primary/15 text-primary text-[9px] font-bold">{getInitials(call.assigned_user?.name || 'U')}</AvatarFallback>
+                                                                                </Avatar>
+                                                                                <span className="text-xs text-muted-foreground truncate">{call.assigned_user.name}</span>
+                                                                            </span>
+                                                                        )}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {hasPermission(permissions, 'view-calls') && (
+                                                                <TooltipProvider delayDuration={200}>
+                                                                    <Tooltip>
+                                                                        <TooltipTrigger asChild>
+                                                                            <Link href={route('calls.show', call.id)} className="flex-shrink-0">
+                                                                                <Button variant="ghost" size="sm" className="h-7 w-7 p-0"><Eye className="h-3.5 w-3.5 text-muted-foreground" /></Button>
+                                                                            </Link>
+                                                                        </TooltipTrigger>
+                                                                        <TooltipContent side="top"><p>{t('View')}</p></TooltipContent>
+                                                                    </Tooltip>
+                                                                </TooltipProvider>
+                                                            )}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </CardContent>
+                                    </Card>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    );
+                })()}
+
+            </div>
+        </PageTemplate>
     );
-  };
-
-  const formatDate = (dateString: string) => {
-    if (!dateString) return '-';
-    return window.appSettings?.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
-  };
-
-  return (
-    <PageTemplate
-      title={contact.name}
-      breadcrumbs={breadcrumbs}
-      actions={[
-        {
-          label: t('Back'),
-          icon: <ArrowLeft className="h-4 w-4 mr-2" />,
-          variant: 'outline',
-          onClick: () => window.history.back()
-        }
-      ]}
-    >
-      <div className="mx-auto space-y-6">
-        {/* Header Section */}
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-lg font-bold text-gray-900">{contact.name}</h1>
-              <p className="text-sm text-gray-600 mt-2">{contact.position || t('No position specified')}</p>
-            </div>
-            <div className="text-right">
-              {getStatusBadge(contact.status)}
-            </div>
-          </div>
-        </div>
-
-        {/* Contact Information */}
-        <Card className="shadow-sm">
-          <CardHeader className="bg-gray-50 border-b">
-            <CardTitle className="text-lg font-semibold">{t('Contact Information')}</CardTitle>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-6">
-                <div className="flex items-center space-x-3">
-                  <Mail className="h-5 w-5 text-muted-foreground" />
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">{t('Email')}</label>
-                    <p className="text-sm mt-1">{contact.email || t('-')}</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Phone className="h-5 w-5 text-muted-foreground" />
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">{t('Phone')}</label>
-                    <p className="text-sm mt-1">{contact.phone || t('-')}</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Briefcase className="h-5 w-5 text-muted-foreground" />
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">{t('Position')}</label>
-                    <p className="text-sm mt-1">{contact.position || t('-')}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="space-y-6">
-                <div className="flex items-center space-x-3">
-                  <Building className="h-5 w-5 text-muted-foreground" />
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">{t('Account')}</label>
-                    {contact.account ? (
-                      hasPermission(permissions, 'view-accounts') ? (
-                        <Link
-                          href={route('accounts.show', contact.account.id)}
-                          className="text-sm text-blue-600 hover:text-blue-800 hover:underline mt-1 block"
-                        >
-                          {contact.account.name}
-                        </Link>
-                      ) : (
-                        <p className="text-sm mt-1">{contact.account.name}</p>
-                      )
-                    ) : (
-                      <p className="text-sm mt-1">{t('-')}</p>
-                    )}
-                  </div>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">{t('Assigned To')}</label>
-                  <p className="text-sm mt-1">{contact.assigned_user?.name || t('Unassigned')}</p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Address Information */}
-        {contact.address && (
-          <Card className="shadow-sm">
-            <CardHeader className="bg-gray-50 border-b">
-              <CardTitle className="flex items-center text-lg font-semibold">
-                <MapPin className="h-5 w-5 mr-3 text-muted-foreground" />
-                {t('Address')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6">
-              <p className="text-sm">{contact.address}</p>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Related Records */}
-        {(contact.quotes?.length > 0 || contact.cases?.length > 0) && (
-          <Card className="shadow-sm">
-            <CardHeader className="bg-gray-50 border-b">
-              <CardTitle className="text-lg font-semibold">{t('Related Records')}</CardTitle>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {contact.quotes?.length > 0 && (
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground mb-4">{t('Quotes')} ({contact.quotes.length})</h4>
-                    <div className="space-y-3">
-                      {contact.quotes.slice(0, 5).map((quote: any) => (
-                        <div key={quote.id} className="flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-200">
-                          <span className="text-sm font-medium text-blue-600">{quote.quote_number}</span>
-                          {hasPermission(permissions, 'view-quotes') && (
-                            <Link href={route('quotes.show', quote.id)}>
-                              <Button variant="outline" size="sm" className="bg-white">{t('View')}</Button>
-                            </Link>
-                          )}
-                        </div>
-                      ))}
-                      {contact.quotes.length > 5 && (
-                        <p className="text-sm text-muted-foreground">{t('+{{count}} more', { count: contact.quotes.length - 5 })}</p>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {contact.cases?.length > 0 && (
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground mb-4">{t('Cases')} ({contact.cases.length})</h4>
-                    <div className="space-y-3">
-                      {contact.cases.slice(0, 5).map((caseItem: any) => (
-                        <div key={caseItem.id} className="flex items-center justify-between p-4 bg-orange-50 rounded-lg border border-orange-200">
-                          <span className="text-sm font-medium text-orange-600">{caseItem.subject}</span>
-                          {hasPermission(permissions, 'view-cases') && (
-                            <Link href={route('cases.show', caseItem.id)}>
-                              <Button variant="outline" size="sm" className="bg-white">{t('View')}</Button>
-                            </Link>
-                          )}
-                        </div>
-                      ))}
-                      {contact.cases.length > 5 && (
-                        <p className="text-sm text-muted-foreground">{t('+{{count}} more', { count: contact.cases.length - 5 })}</p>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Activities */}
-        {meetings?.length > 0 && (
-          <Card className="shadow-sm">
-            <CardHeader className="bg-gray-50 border-b">
-              <CardTitle className="text-lg font-semibold">{t('Activities')}</CardTitle>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Meetings Section */}
-                <div>
-                  <div className="flex items-center mb-4">
-                    <svg className="h-5 w-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                    <h4 className="text-sm font-medium text-muted-foreground">{t('Meetings')} ({meetings.filter((m: any) => m.type !== 'call').length})</h4>
-                  </div>
-                  <div className="space-y-3">
-                    {meetings.filter((m: any) => m.type !== 'call').slice(0, 5).map((meeting: any) => (
-                      <div key={meeting.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:shadow-sm transition-shadow">
-                        <div className="flex items-start space-x-3">
-                          <div className="flex-shrink-0 mt-1">
-                            <svg className="h-4 w-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate">{meeting.title}</p>
-                            <p className="text-xs text-gray-500">{window.appSettings?.formatDateTime(meeting.start_date, false) || new Date(meeting.start_date).toLocaleDateString()}</p>
-                            <p className="text-xs text-gray-500">{meeting.assigned_user?.name || t('Unassigned')}</p>
-                          </div>
-                        </div>
-                        {hasPermission(permissions, 'view-meetings') && (
-                          <Link href={route('meetings.show', meeting.id)}>
-                            <Button variant="outline" size="sm">{t('View')}</Button>
-                          </Link>
-                        )}
-                      </div>
-                    ))}
-                    {meetings.filter((m: any) => m.type !== 'call').length > 5 && (
-                      <p className="text-sm text-gray-500 text-center">{t('+{{count}} more meetings', { count: meetings.filter((m: any) => m.type !== 'call').length - 5 })}</p>
-                    )}
-                    {meetings.filter((m: any) => m.type !== 'call').length === 0 && (
-                      <p className="text-sm text-gray-500 text-center py-4">{t('No meetings found')}</p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Calls Section */}
-                <div>
-                  <div className="flex items-center mb-4">
-                    <svg className="h-5 w-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                    </svg>
-                    <h4 className="text-sm font-medium text-muted-foreground">{t('Calls')} ({meetings.filter((m: any) => m.type === 'call').length})</h4>
-                  </div>
-                  <div className="space-y-3">
-                    {meetings.filter((m: any) => m.type === 'call').slice(0, 5).map((call: any) => (
-                      <div key={call.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:shadow-sm transition-shadow">
-                        <div className="flex items-start space-x-3">
-                          <div className="flex-shrink-0 mt-1">
-                            <svg className="h-4 w-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                            </svg>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate">{call.title}</p>
-                            <p className="text-xs text-gray-500">{window.appSettings?.formatDateTime(call.start_date, false) || new Date(call.start_date).toLocaleDateString()}</p>
-                            <p className="text-xs text-gray-500">{call.assigned_user?.name || t('Unassigned')}</p>
-                          </div>
-                        </div>
-                        {hasPermission(permissions, 'view-calls') && (
-                          <Link href={route('calls.show', call.id)}>
-                            <Button variant="outline" size="sm">{t('View')}</Button>
-                          </Link>
-                        )}
-                      </div>
-                    ))}
-                    {meetings.filter((m: any) => m.type === 'call').length > 5 && (
-                      <p className="text-sm text-gray-500 text-center">{t('+{{count}} more calls', { count: meetings.filter((m: any) => m.type === 'call').length - 5 })}</p>
-                    )}
-                    {meetings.filter((m: any) => m.type === 'call').length === 0 && (
-                      <p className="text-sm text-gray-500 text-center py-4">{t('No calls found')}</p>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Timestamps */}
-        <Card className="shadow-sm">
-          <CardHeader className="bg-gray-50 border-b">
-            <CardTitle className="text-lg font-semibold">{t('Record Information')}</CardTitle>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">{t('Created At')}</label>
-                <p className="text-sm mt-1">{formatDate(contact.created_at)}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">{t('Updated At')}</label>
-                <p className="text-sm mt-1">{formatDate(contact.updated_at)}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </PageTemplate>
-  );
 }

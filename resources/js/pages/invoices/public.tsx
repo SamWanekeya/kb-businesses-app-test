@@ -148,7 +148,8 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
     const [paymentAmount, setPaymentAmount] = useState(dueAmount);
 
     const formatCurrency = (amount: number) => {
-        return window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+        const val = window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+        return <span className="font-mono">{val}</span>;
     };
 
     const formatDate = (dateString: string) => {
@@ -335,11 +336,11 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
 
                         {/* Payment Summary Cards */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div className="border-l-4 hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border" style={{ borderLeftColor: template.primary }}>
+                            <div className="hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border">
                                 <div className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">{t('Total Amount')}</p>
+                                            <p className="text-sm font-bold text-gray-500">{t('Total Amount')}</p>
                                             <h3 className="mt-2 text-2xl font-bold leading-none" style={{ color: template.primary }}>{formatCurrency(invoice.total_amount)}</h3>
                                         </div>
                                         <div className="rounded-full p-4" style={{ backgroundColor: `${template.primary}15` }}>
@@ -349,11 +350,11 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
                                 </div>
                             </div>
 
-                            <div className="border-l-4 hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border" style={{ borderLeftColor: template.secondary }}>
+                            <div className="hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border">
                                 <div className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">{t('Paid Amount')}</p>
+                                            <p className="text-sm font-bold text-gray-500">{t('Paid Amount')}</p>
                                             <h3 className="mt-2 text-2xl font-bold leading-none" style={{ color: template.secondary }}>{formatCurrency(paidAmount)}</h3>
                                         </div>
                                         <div className="rounded-full p-4" style={{ backgroundColor: `${template.secondary}15` }}>
@@ -363,11 +364,11 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
                                 </div>
                             </div>
 
-                            <div className="border-l-4 border-l-red-500 hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border">
+                            <div className="hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border">
                                 <div className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">{t('Due Amount')}</p>
+                                            <p className="text-sm font-bold text-gray-500">{t('Due Amount')}</p>
                                             <h3 className="mt-2 text-2xl font-bold text-red-600 leading-none">{formatCurrency(dueAmount)}</h3>
                                         </div>
                                         <div className="rounded-full bg-red-100 p-4">
@@ -380,11 +381,11 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
 
                         {/* Invoice Details Cards */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div className="border-l-4 hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border" style={{ borderLeftColor: template.primary }}>
+                            <div className="hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border">
                                 <div className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">{t('Products')}</p>
+                                            <p className="text-sm font-bold text-gray-500">{t('Products')}</p>
                                             <h3 className="mt-2 text-2xl font-bold leading-none" style={{ color: template.primary }}>{invoice.products?.length || 0}</h3>
                                         </div>
                                         <div className="rounded-full p-4" style={{ backgroundColor: `${template.primary}15` }}>
@@ -394,11 +395,11 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
                                 </div>
                             </div>
 
-                            <div className="border-l-4 hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border" style={{ borderLeftColor: template.secondary }}>
+                            <div className="hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border">
                                 <div className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">{t('Invoice Date')}</p>
+                                            <p className="text-sm font-bold text-gray-500">{t('Invoice Date')}</p>
                                             <h3 className="mt-2 text-lg font-bold leading-tight" style={{ color: template.secondary }}>{formatDate(invoice.invoice_date)}</h3>
                                         </div>
                                         <div className="rounded-full p-4" style={{ backgroundColor: `${template.secondary}15` }}>
@@ -408,11 +409,11 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
                                 </div>
                             </div>
 
-                            <div className="border-l-4 border-l-amber-500 hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border">
+                            <div className="hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border">
                                 <div className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">{t('Due Date')}</p>
+                                            <p className="text-sm font-bold text-gray-500">{t('Due Date')}</p>
                                             <h3 className="mt-2 text-lg font-bold text-amber-600 leading-tight">{formatDate(invoice.due_date)}</h3>
                                         </div>
                                         <div className="rounded-full bg-amber-100 p-4">

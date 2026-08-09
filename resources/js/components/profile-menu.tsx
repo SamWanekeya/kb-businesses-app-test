@@ -9,15 +9,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { getImagePath } from '@/utils/helpers';
 import { Link, router, usePage } from '@inertiajs/react';
-import { LogOut, Settings, User } from 'lucide-react';
+import { ChevronDown, LogOut, Settings, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export function ProfileMenu() {
   const { t } = useTranslation();
   const { auth } = usePage().props as any;
   const user = auth?.user;
-
 
   const handleLogout = () => {
     router.post(route('logout'));
@@ -34,12 +34,16 @@ export function ProfileMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="flex items-center gap-2 h-8 rounded-md">
-          <span className="text-sm font-medium hidden md:inline-block">{user?.name}</span>
+        <Button variant="ghost" className="flex items-center gap-2 h-12 rounded-lg">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={user?.avatar} />
+            <AvatarImage src={user?.avatar} alt={user?.name} />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
+          <div className='flex flex-col text-start'>
+            <span className="text-sm font-medium hidden md:inline-block">{user?.name}</span>
+            <span className="text-xs text-muted-foreground hidden md:inline-block">{user?.email}</span>
+          </div>
+          <ChevronDown/>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>

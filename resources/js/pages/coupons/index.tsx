@@ -1,5 +1,5 @@
 // pages/coupons/index.tsx
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router, Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
@@ -23,26 +23,32 @@ export default function CouponsPage() {
 
     // State
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
-    const [selectedType, setSelectedType] = useState(pageFilters.type || '_empty_');
-    const [selectedStatus, setSelectedStatus] = useState(pageFilters.status || '_empty_');
+    const [selectedType, setSelectedType] = useState(pageFilters.type || 'all');
+    const [selectedStatus, setSelectedStatus] = useState(pageFilters.status || 'all');
     const [dateFrom, setDateFrom] = useState(pageFilters.date_from || '');
     const [dateTo, setDateTo] = useState(pageFilters.date_to || '');
-    const [showFilters, setShowFilters] = useState(false);
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [currentItem, setCurrentItem] = useState<any>(null);
     const [formMode, setFormMode] = useState<'create' | 'edit' | 'view'>('create');
     const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
+    const [pageInitialState, setPageInitialState] = useState(true);
+
+    useEffect(() => {
+        if (pageInitialState) { setPageInitialState(false); return; }
+        applyFilters();
+    }, [selectedType, selectedStatus, dateFrom, dateTo]);
+
     // Check if any filters are active
     const hasActiveFilters = () => {
-        return selectedType !== '_empty_' || selectedStatus !== '_empty_' || dateFrom !== '' || dateTo !== '' || searchTerm !== '';
+        return selectedType !== 'all' || selectedStatus !== 'all' || dateFrom !== '' || dateTo !== '' || searchTerm !== '';
     };
 
     // Count active filters
     const activeFilterCount = () => {
-        return (selectedType !== '_empty_' ? 1 : 0) +
-            (selectedStatus !== '_empty_' ? 1 : 0) +
+        return (selectedType !== 'all' ? 1 : 0) +
+            (selectedStatus !== 'all' ? 1 : 0) +
             (dateFrom !== '' ? 1 : 0) +
             (dateTo !== '' ? 1 : 0) +
             (searchTerm !== '' ? 1 : 0);
@@ -57,8 +63,8 @@ export default function CouponsPage() {
         router.get(route('coupons.index'), {
             page: 1,
             search: searchTerm || undefined,
-            type: selectedType !== '_empty_' ? selectedType : undefined,
-            status: selectedStatus !== '_empty_' ? selectedStatus : undefined,
+            type: selectedType !== 'all' ? selectedType : undefined,
+            status: selectedStatus !== 'all' ? selectedStatus : undefined,
             date_from: dateFrom || undefined,
             date_to: dateTo || undefined,
             ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
@@ -74,8 +80,8 @@ export default function CouponsPage() {
             sort_direction: direction,
             page: 1,
             search: searchTerm || undefined,
-            type: selectedType !== '_empty_' ? selectedType : undefined,
-            status: selectedStatus !== '_empty_' ? selectedStatus : undefined,
+            type: selectedType !== 'all' ? selectedType : undefined,
+            status: selectedStatus !== 'all' ? selectedStatus : undefined,
             date_from: dateFrom || undefined,
             date_to: dateTo || undefined,
             per_page: pageFilters.per_page
@@ -218,14 +224,7 @@ export default function CouponsPage() {
     };
 
     const handleResetFilters = () => {
-        setSearchTerm('');
-        setSelectedType('_empty_');
-        setSelectedStatus('_empty_');
-        setDateFrom('');
-        setDateTo('');
-        setShowFilters(false);
-
-        router.get(route('coupons.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
+        router.get(route('coupons.index'));
     };
 
     const handleToggleStatus = (coupon: any) => {
@@ -322,12 +321,12 @@ export default function CouponsPage() {
         {
             key: 'minimum_spend',
             label: t('Min Spend'),
-            render: (value) => value ? (window.appSettings?.formatCurrency(value) || `$${parseFloat(value).toFixed(2)}`) : '-'
+            render: (value) => value ? <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${parseFloat(value).toFixed(2)}`}</span> : '-'
         },
         {
             key: 'maximum_spend',
             label: t('Max Spend'),
-            render: (value) => value ? (window.appSettings?.formatCurrency(value) || `$${parseFloat(value).toFixed(2)}`) : '-'
+            render: (value) => value ? <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${parseFloat(value).toFixed(2)}`}</span> : '-'
         },
         {
             key: 'discount_amount',
@@ -336,7 +335,7 @@ export default function CouponsPage() {
                 const amount = parseFloat(row.discount_amount);
                 return row.type === 'percentage'
                     ? `${amount}%`
-                    : (window.appSettings?.formatCurrency(amount) || `$${amount.toFixed(2)}`);
+                    : <span className="font-mono">{window.appSettings?.formatCurrency(amount) || `$${amount.toFixed(2)}`}</span>;
             }
         },
         {
@@ -353,7 +352,8 @@ export default function CouponsPage() {
             key: 'expiry_date',
             label: t('Expiry Date'),
             sortable: true,
-            render: (value) => window.appSettings?.formatDateTime(value, false) || '-'
+            type: 'date'
+            // render: (value) => window.appSettings?.formatDateTime(value, false) || '-'
         },
         {
             key: 'status',
@@ -396,13 +396,13 @@ export default function CouponsPage() {
 
     // Prepare filter options
     const typeOptions = [
-        { value: '_empty_', label: t('All Types') },
+        { value: 'all', label: t('All Types') },
         { value: 'percentage', label: t('Percentage') },
         { value: 'flat', label: t('Flat Amount') }
     ];
 
     const statusOptions = [
-        { value: '_empty_', label: t('All Status') },
+        { value: 'all', label: t('All Status') },
         { value: '1', label: t('Active') },
         { value: '0', label: t('Inactive') }
     ];
@@ -413,10 +413,11 @@ export default function CouponsPage() {
             url="/coupons"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
+            description={t('Manage your coupons and discounts.')}
             noPadding
         >
             {/* Search and filters section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -453,25 +454,10 @@ export default function CouponsPage() {
                             onChange: setDateTo
                         }
                     ]}
-                    showFilters={showFilters}
-                    setShowFilters={setShowFilters}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
                     onResetFilters={handleResetFilters}
-                    onApplyFilters={applyFilters}
-                    currentPerPage={pageFilters.per_page?.toString() || "10"}
-                    onPerPageChange={(value) => {
-                        router.get(route('coupons.index'), {
-                            page: 1,
-                            per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
-                            search: searchTerm || undefined,
-                            type: selectedType !== '_empty_' ? selectedType : undefined,
-                            status: selectedStatus !== '_empty_' ? selectedStatus : undefined,
-                            date_from: dateFrom || undefined,
-                            date_to: dateTo || undefined,
-                            ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
-                        }, { preserveState: true, preserveScroll: true });
-                    }}
+
                 />
             </div>
 
@@ -503,6 +489,19 @@ export default function CouponsPage() {
                     links={coupons?.links}
                     entityName={t("coupons")}
                     onPageChange={(url) => router.get(url)}
+                    currentPerPage={pageFilters.per_page?.toString() || "10"}
+                    onPerPageChange={(value) => {
+                        router.get(route('coupons.index'), {
+                            page: 1,
+                            per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
+                            search: searchTerm || undefined,
+                            type: selectedType !== 'all' ? selectedType : undefined,
+                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                            date_from: dateFrom || undefined,
+                            date_to: dateTo || undefined,
+                            ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+                        }, { preserveState: true, preserveScroll: true });
+                    }}
                 />
             </div>
 

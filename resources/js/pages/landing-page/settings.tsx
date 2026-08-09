@@ -190,6 +190,7 @@ export default function LandingPageSettings() {
   return (
     <PageTemplate
       title={t("Landing Page Settings")}
+      description={t('Manage your landing page content, sections, and design settings.')}
       url="/landing-page/settings"
     breadcrumbs={breadcrumbs}
       action={
@@ -205,6 +206,15 @@ export default function LandingPageSettings() {
         </div>
       }
     >
+      <style>{`
+            main {
+            max-width: 100vw;
+            overflow-x: clip !important;
+            }
+            body {
+            overflow-x: clip !important;
+            }
+        `}</style>
       <SettingsSection
         title={t('Landing Page Settings')}
         description={t('Customize your landing page content and appearance')}

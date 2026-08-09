@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router, Link } from '@inertiajs/react';
 import { Plus, Eye, Edit, Trash2, Download, FileDown } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useInitials } from '@/hooks/use-initials';
 import { hasPermission } from '@/utils/authorization';
 import { CrudTable } from '@/components/CrudTable';
 import { CrudFormModal } from '@/components/CrudFormModal';
@@ -14,6 +16,7 @@ import { Button } from '@/components/ui/button';
 
 export default function DeliveryOrders() {
     const { t } = useTranslation();
+    const getInitials = useInitials();
     const { auth, deliveryOrders, allAccounts, salesOrders, allUsers = [], filters: pageFilters = {}, flash = {} } = usePage().props as any;
     const permissions = auth?.permissions || [];
 
@@ -27,7 +30,6 @@ export default function DeliveryOrders() {
     const [selectedAccount, setSelectedAccount] = useState(pageFilters.account_id || 'all');
     const [selectedSalesOrder, setSelectedSalesOrder] = useState(pageFilters.sales_order_id || 'all');
     const [selectedAssignee, setSelectedAssignee] = useState(pageFilters.assigned_to || 'all');
-    const [showFilters, setShowFilters] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
     const [currentItem, setCurrentItem] = useState<any>(null);
@@ -151,14 +153,15 @@ export default function DeliveryOrders() {
 
 
 
+    const pageInitialState = useState(true);
+    useEffect(() => {
+        if (pageInitialState[0]) { pageInitialState[1](false); return; }
+        applyFilters();
+    }, [searchTerm, selectedStatus, selectedAccount, selectedSalesOrder, selectedAssignee]);
+
     const handleResetFilters = () => {
-        setSearchTerm('');
-        setSelectedStatus('all');
-        setSelectedAccount('all');
-        setSelectedSalesOrder('all');
-        setSelectedAssignee('all');
-        setShowFilters(false);
-        router.get(route('delivery-orders.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
+     
+        router.get(route('delivery-orders.index'));
     };
 
     const pageActions = [];
@@ -191,34 +194,51 @@ export default function DeliveryOrders() {
             key: 'delivery_number',
             label: t('Delivery Number'),
             sortable: true,
+            className: 'whitespace-nowrap',
             render: (value: string, item: any) => (
-                <Link
-                    href={route('delivery-orders.show', item.id)}
-                    className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 hover:border-blue-400 transition-colors duration-200 border border-blue-200 cursor-pointer" style={{ color: '#1d4ed8' }} onMouseEnter={e => (e.currentTarget.style.color = '#1d4ed8')} onMouseLeave={e => (e.currentTarget.style.color = '#1d4ed8')}
-                >
-                    {value}
-                </Link>
+                <Link href={route('delivery-orders.show', item.id)} className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 hover:border-blue-400 transition-colors duration-200 border border-blue-200 cursor-pointer whitespace-nowrap" style={{ color: '#1d4ed8' }} onMouseEnter={e => (e.currentTarget.style.color = '#1d4ed8')} onMouseLeave={e => (e.currentTarget.style.color = '#1d4ed8')}>{value}</Link>
             )
         },
         {
             key: 'name',
             label: t('Name'),
-            sortable: true
+            sortable: true,
+            render: (value: string) => <span className="whitespace-nowrap font-medium">{value || '-'}</span>
+        },
+        {
+            key: 'assigned_user',
+            label: t('Assigned To'),
+            className: 'whitespace-nowrap',
+            render: (value: any) => value ? (
+                <div className="flex items-center gap-2">
+                    <Avatar className="h-8 w-8 flex-shrink-0">
+                        <AvatarImage src={value.avatar} alt={value.name} />
+                        <AvatarFallback className="text-xs">{getInitials(value.name)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                        <div className="font-medium whitespace-nowrap">{value.name}</div>
+                        <div className="text-sm text-muted-foreground whitespace-nowrap">{value.email}</div>
+                    </div>
+                </div>
+            ) : <span className="whitespace-nowrap">{t('Unassigned')}</span>
         },
         {
             key: 'sales_order',
             label: t('Sales Order'),
-            render: (value: any) => value ? `${value.order_number} - ${value.name}` : '-'
+            className: 'whitespace-nowrap',
+            render: (value: any) => <span className="whitespace-nowrap">{value?.order_number || t('-')}</span>
         },
         {
             key: 'delivery_date',
             label: t('Delivery Date'),
             sortable: true,
-            render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
+            className: 'whitespace-nowrap',
+            type: 'date'
         },
         {
             key: 'status',
             label: t('Status'),
+            className: 'whitespace-nowrap',
             render: (value: string) => {
                 const statusColors = {
                     pending: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20',
@@ -227,23 +247,19 @@ export default function DeliveryOrders() {
                     cancelled: 'bg-red-50 text-red-700 ring-red-600/20'
                 };
                 return (
-                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[value as keyof typeof statusColors] || statusColors.pending}`}>
+                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset whitespace-nowrap ${statusColors[value as keyof typeof statusColors] || statusColors.pending}`}>
                         {t(value.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()))}
                     </span>
                 );
             }
         },
-        {
-            key: 'assigned_user',
-            label: t('Assigned To'),
-            render: (value: any) => value?.name || t('Unassigned')
-        },
-        {
-            key: 'created_at',
-            label: t('Created At'),
-            sortable: true,
-            render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
-        }
+        // {
+        //     key: 'created_at',
+        //     label: t('Created At'),
+        //     sortable: true,
+        //     className: 'whitespace-nowrap',
+        //     type: 'date'
+        // }
     ];
 
     const actions = [
@@ -293,12 +309,13 @@ export default function DeliveryOrders() {
     return (
         <PageTemplate
             title={t("Delivery Orders")}
+            description={t("Manage your delivery orders.")}
             url="/delivery-orders"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
             noPadding
         >
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -346,30 +363,14 @@ export default function DeliveryOrders() {
                             ]
                         }
                     ]}
-                    showFilters={showFilters}
-                    setShowFilters={setShowFilters}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
                     onResetFilters={handleResetFilters}
-                    onApplyFilters={applyFilters}
-                    currentPerPage={pageFilters.per_page?.toString() || "10"}
-                    onPerPageChange={(value) => {
-                        router.get(route('delivery-orders.index'), {
-                            page: 1,
-                            search: searchTerm || undefined,
-                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                            account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
-                            sales_order_id: selectedSalesOrder !== 'all' ? selectedSalesOrder : undefined,
-                            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-                            sort_field: pageFilters.sort_field || undefined,
-                            sort_direction: pageFilters.sort_direction || undefined,
-                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
-                        }, { preserveState: true, preserveScroll: true });
-                    }}
                 />
             </div>
 
             <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+                <div className="overflow-x-auto">
                 <CrudTable
                     columns={columns}
                     actions={actions}
@@ -387,6 +388,7 @@ export default function DeliveryOrders() {
                         delete: 'delete-delivery-orders'
                     }}
                 />
+                </div>
 
                 <Pagination
                     from={deliveryOrders?.from || 0}
@@ -395,6 +397,20 @@ export default function DeliveryOrders() {
                     links={deliveryOrders?.links}
                     entityName={t("delivery orders")}
                     onPageChange={(url) => router.get(url)}
+                    currentPerPage={pageFilters.per_page?.toString() || "10"}
+                    onPerPageChange={(value) => {
+                        router.get(route('delivery-orders.index'), {
+                            page: 1,
+                            search: searchTerm || undefined,
+                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                            account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                            sales_order_id: selectedSalesOrder !== 'all' ? selectedSalesOrder : undefined,
+                            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                            sort_field: pageFilters.sort_field || undefined,
+                            sort_direction: pageFilters.sort_direction || undefined,
+                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+                        }, { preserveState: true, preserveScroll: true });
+                    }}
                 />
             </div>
 

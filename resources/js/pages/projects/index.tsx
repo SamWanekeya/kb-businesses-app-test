@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router } from '@inertiajs/react';
-import { Plus, Eye, Edit, Trash2, MoreHorizontal, FileDown, RefreshCw, LayoutGrid, Play, PauseCircle, CheckCircle2, AlertCircle, CheckCircle, AlignJustify, Calendar, Filter } from 'lucide-react';
+import { Plus, Eye, Edit, Trash2, MoreHorizontal, FileDown, RefreshCw, LayoutGrid, Play, PauseCircle, CheckCircle2, AlertCircle, CheckCircle, AlignJustify, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { hasPermission } from '@/utils/authorization';
@@ -56,7 +55,6 @@ export default function Projects() {
     const [selectedPriority, setSelectedPriority] = useState(pageFilters.priority || 'all');
     const [selectedAccount, setSelectedAccount] = useState(pageFilters.account_id || 'all');
     const [selectedAssignee, setSelectedAssignee] = useState(pageFilters.assigned_to || 'all');
-    const [showFilters, setShowFilters] = useState(false);
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
@@ -130,9 +128,15 @@ export default function Projects() {
         });
     };
 
+    const [pageInitialState, setPageInitialState] = useState(true);
+    useEffect(() => {
+        if (!pageInitialState) applyFilters();
+        setPageInitialState(false);
+    }, [selectedPriority, selectedAccount, selectedAssignee]);
+
     const handleResetFilters = () => {
-        setSearchTerm(''); setSelectedPriority('all'); setSelectedAccount('all'); setSelectedAssignee('all'); setShowFilters(false);
-        router.get(route('projects.index'), { page: 1, status: selectedStatus !== 'all' ? selectedStatus : undefined }, { preserveState: true, preserveScroll: true });
+        setSearchTerm(''); setSelectedPriority('all'); setSelectedAccount('all'); setSelectedAssignee('all');
+        router.get(route('projects.index'), { status: selectedStatus !== 'all' ? selectedStatus : undefined });
     };
 
     const handleTabChange = (status: string) => {
@@ -152,7 +156,7 @@ export default function Projects() {
     if (hasPermission(permissions, 'create-projects')) {
         const canCreate = !planLimits || planLimits.can_create;
         pageActions.push({
-            label: planLimits && !canCreate ? t('Project Limit Reached ({{current}}/{{max}})', { current: planLimits.current_projects, max: planLimits.max_projects }) : t('New Project'),
+            label: planLimits && !canCreate ? t('Project Limit Reached ({{current}}/{{max}})', { current: planLimits.current_projects, max: planLimits.max_projects }) : t('Add Project'),
             icon: <Plus className="h-4 w-4 mr-2" />,
             variant: canCreate ? 'default' : 'outline',
             onClick: canCreate ? handleAddNew : () => toast.error(t('Project limit exceeded. Your plan allows maximum {{max}} projects. Please upgrade your plan.', { max: planLimits.max_projects })),
@@ -175,7 +179,7 @@ export default function Projects() {
     ];
 
     return (
-        <PageTemplate title={t('Manage Projects')} url="/projects" actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
+        <PageTemplate title={t('Manage Projects')} description={t('Manage your projects.')} url="/projects" actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
 
             {/* Stats Cards */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
@@ -191,42 +195,64 @@ export default function Projects() {
                 ))}
             </div>
 
-            {/* Main wrapper card */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow border border-gray-200 dark:border-gray-700 mb-4">
+            {/* Search & Filter Card */}
+            <div className="bg-white dark:bg-gray-900 rounded-t-lg shadow border border-gray-200 dark:border-gray-700">
+                <SearchAndFilterBar
+                    searchTerm={searchTerm}
+                    onSearchChange={setSearchTerm}
+                    onSearch={handleSearch}
+                    filters={[
+                        {
+                            name: 'priority',
+                            label: t('Priority'),
+                            type: 'select',
+                            value: selectedPriority,
+                            onChange: setSelectedPriority,
+                            options: [
+                                { value: 'all', label: t('All Priorities') },
+                                { value: 'low', label: t('Low') },
+                                { value: 'medium', label: t('Medium') },
+                                { value: 'high', label: t('High') },
+                                { value: 'urgent', label: t('Urgent') },
+                            ]
+                        },
+                        {
+                            name: 'account_id',
+                            label: t('Account'),
+                            type: 'select',
+                            searchable: true,
+                            value: selectedAccount,
+                            onChange: setSelectedAccount,
+                            options: [
+                                { value: 'all', label: t('All Accounts') },
+                                ...allAccounts.map((a: any) => ({ value: a.id.toString(), label: a.name }))
+                            ]
+                        },
+                        {
+                            name: 'assigned_to',
+                            label: t('Assigned To'),
+                            type: 'select',
+                            searchable: true,
+                            value: selectedAssignee,
+                            onChange: setSelectedAssignee,
+                            options: [
+                                { value: 'all', label: t('All Users') },
+                                { value: 'unassigned', label: t('Unassigned') },
+                                ...allUsers.map((u: any) => ({ value: u.id.toString(), label: u.name }))
+                            ]
+                        }
+                    ]}
+                    hasActiveFilters={hasActiveFilters}
+                    activeFilterCount={activeFilterCount}
+                    onResetFilters={handleResetFilters}
+                    hidePerPage={true}
+                />
+            </div>
 
-                {/* Row 1: Search & Filter */}
-                <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                            <SearchAndFilterBar
-                                searchTerm={searchTerm}
-                                onSearchChange={setSearchTerm}
-                                onSearch={handleSearch}
-                                filters={[]}
-                                showFilters={false}
-                                setShowFilters={() => {}}
-                                hasActiveFilters={hasActiveFilters}
-                                activeFilterCount={activeFilterCount}
-                                onResetFilters={handleResetFilters}
-                                hidePerPage={true}
-                            />
-                            <Button variant={hasActiveFilters() ? 'default' : 'outline'} size="sm" className="h-8 px-2 py-1 whitespace-nowrap" onClick={() => setShowFilters(!showFilters)}>
-                                <Filter className="h-4 w-4 mr-1.5" />
-                                {showFilters ? t('Hide Filters') : t('Filters')}
-                                {hasActiveFilters() && <span className="ml-1 bg-primary-foreground text-primary rounded-full w-5 h-5 flex items-center justify-center text-xs">{activeFilterCount()}</span>}
-                            </Button>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <span className="text-xs text-muted-foreground">{t('Per Page:')}</span>
-                            <Select value={pageFilters.per_page?.toString() || '12'} onValueChange={(v) => router.get(route('projects.index'), { ...baseParams(), per_page: parseInt(v) }, { preserveState: true, preserveScroll: true })}>
-                                <SelectTrigger className="w-16 h-8"><SelectValue /></SelectTrigger>
-                                <SelectContent>{[12, 24, 48, 96].map(o => <SelectItem key={o} value={o.toString()}>{o}</SelectItem>)}</SelectContent>
-                            </Select>
-                        </div>
-                    </div>
-                </div>
+            {/* Status Tabs + Content Card */}
+            <div className="bg-white dark:bg-gray-900 rounded-b-lg shadow border border-gray-200 dark:border-gray-700 border-t-0 mb-4">
 
-                {/* Card 2: Status Tabs */}
+                {/* Status Tabs */}
                 <div className="flex items-center gap-1 px-4 border-b border-gray-200 dark:border-gray-700">
                     {([
                         { value: 'all',       label: t('All'),      count: stats.total ?? 0,     icon: <LayoutGrid className="h-3.5 w-3.5" /> },
@@ -255,51 +281,7 @@ export default function Projects() {
                     ))}
                 </div>
 
-                {/* Filter Panel - shown after status tabs */}
-                {showFilters && (
-                    <div className="w-full p-4 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-                        <div className="flex flex-wrap gap-4 items-end">
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium">{t('Priority')}</label>
-                                <Select value={selectedPriority} onValueChange={setSelectedPriority}>
-                                    <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="all">{t('All Priorities')}</SelectItem>
-                                        <SelectItem value="low">{t('Low')}</SelectItem>
-                                        <SelectItem value="medium">{t('Medium')}</SelectItem>
-                                        <SelectItem value="high">{t('High')}</SelectItem>
-                                        <SelectItem value="urgent">{t('Urgent')}</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium">{t('Account')}</label>
-                                <Select value={selectedAccount} onValueChange={setSelectedAccount}>
-                                    <SelectTrigger className="w-40 [&>span]:truncate [&>span]:text-left"><SelectValue /></SelectTrigger>
-                                    <SelectContent searchable>
-                                        <SelectItem value="all">{t('All Accounts')}</SelectItem>
-                                        {allAccounts.map((a: any) => <SelectItem key={a.id} value={a.id.toString()}>{a.name}</SelectItem>)}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium">{t('Assigned To')}</label>
-                                <Select value={selectedAssignee} onValueChange={setSelectedAssignee}>
-                                    <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
-                                    <SelectContent searchable>
-                                        <SelectItem value="all">{t('All Users')}</SelectItem>
-                                        <SelectItem value="unassigned">{t('Unassigned')}</SelectItem>
-                                        {allUsers.map((u: any) => <SelectItem key={u.id} value={u.id.toString()}>{u.name}</SelectItem>)}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <div className="flex gap-2">
-                                <Button size="sm" className="h-9" onClick={applyFilters}>{t('Apply Filters')}</Button>
-                                <Button size="sm" variant="outline" className="h-9" onClick={handleResetFilters} disabled={!hasActiveFilters()}>{t('Reset Filters')}</Button>
-                            </div>
-                        </div>
-                    </div>
-                )}
+
 
                 {/* Row 4: Projects Grid */}
             {(projects?.data?.length ?? 0) === 0 ? (
@@ -404,16 +386,16 @@ export default function Projects() {
 
                                     {/* Footer: status badge + priority + budget */}
                                     <div className="flex items-center gap-1.5 flex-wrap">
-                                        <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ${sCfg.className}`}>
+                                        <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${sCfg.className}`}>
                                             {t(sCfg.label)}
                                         </span>
                                         {project.priority && (
-                                            <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ${pCfg.className}`}>
+                                            <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${pCfg.className}`}>
                                                 {t(pCfg.label)}
                                             </span>
                                         )}
                                         {project.budget && (
-                                            <span className="text-xs text-gray-600 dark:text-gray-300 font-medium ml-auto">
+                                            <span className="text-xs text-gray-600 dark:text-gray-300 font-medium ml-auto font-mono">
                                                 {window.appSettings?.formatCurrency(project.budget) || `$${Number(project.budget).toLocaleString()}`}
                                             </span>
                                         )}
@@ -431,6 +413,15 @@ export default function Projects() {
                     links={projects?.links}
                     entityName={t('projects')}
                     onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
+                    perPageOptions={[12, 24, 48, 96]}
+                    currentPerPage={pageFilters.per_page?.toString() || '12'}
+                    onPerPageChange={(value) => {
+                        router.get(route('projects.index'), {
+                            ...baseParams(),
+                            page: 1,
+                            per_page: parseInt(value) !== 12 ? parseInt(value) : undefined,
+                        }, { preserveState: true, preserveScroll: true });
+                    }}
                 />
             </div>
 

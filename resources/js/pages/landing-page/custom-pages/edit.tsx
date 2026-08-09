@@ -40,9 +40,19 @@ export default function EditCustomPage() {
     is_active: page.is_active,
     sort_order: page.sort_order || 0
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!formData.title.trim()) newErrors.title = t('Page title is required');
+    if (!formData.content.trim()) newErrors.content = t('Content is required');
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
 
     if (!globalSettings?.is_demo) {
       toast.loading(t('Updating page...'));
@@ -115,11 +125,14 @@ export default function EditCustomPage() {
               <Input
                 id="title"
                 value={formData.title}
-                onChange={(e) => setFormData({...formData, title: e.target.value})}
+                onChange={(e) => {
+                  setFormData({...formData, title: e.target.value});
+                  if (errors.title) setErrors({...errors, title: ''});
+                }}
                 placeholder={t('e.g., About Us, Privacy Policy')}
-                required
-                className="w-full"
+                className={`w-full ${errors.title ? 'border-red-500' : ''}`}
               />
+              {errors.title && <p className="text-xs text-red-500">{errors.title}</p>}
               <p className="text-xs text-muted-foreground">
                 {t('Current slug')}: <span className="font-mono">/page/{page.slug}</span>
               </p>

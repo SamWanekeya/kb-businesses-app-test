@@ -106,7 +106,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
         {
             key: 'amount',
             label: t('Amount'),
-            render: (value) => `${currencySymbol}${value}`
+            render: (value) => <span className="font-mono">{currencySymbol}{value}</span>
         },
         {
             key: 'status',
@@ -127,7 +127,8 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
         {
             key: 'created_at',
             label: t('Date'),
-            render: (value) => window.appSettings?.formatDateTime(value, false) || new Date(value).toLocaleDateString()
+            type: 'date',
+            // render: (value) => window.appSettings?.formatDateTime(value, false) || new Date(value).toLocaleDateString()
         }
     ];
 
@@ -182,17 +183,17 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                                         {errors.amount && <p className="text-sm text-red-500">{errors.amount}</p>}
                                     </div>
                                     <div className="text-sm text-muted-foreground">
-                                        <p>{t('Available Balance')}: {currencySymbol}{stats.availableBalance}</p>
-                                        <p>{t('Minimum Amount')}: {currencySymbol}{settings.threshold_amount}</p>
+                                        <p>{t('Available Balance')}: <span className="font-mono">{currencySymbol}{stats.availableBalance}</span></p>
+                                        <p>{t('Minimum Amount')}: <span className="font-mono">{currencySymbol}{settings.threshold_amount}</span></p>
                                     </div>
-                                    <div className="flex justify-end space-x-2">
+                                    <DialogFooter>
                                         <Button type="button" variant="outline" onClick={() => setShowCreateDialog(false)}>
                                             {t('Cancel')}
                                         </Button>
                                         <Button type="submit" disabled={processing}>
                                             {t('Submit Request')}
                                         </Button>
-                                    </div>
+                                    </DialogFooter>
                                 </form>
                             </DialogContent>
                         </Dialog>
@@ -250,7 +251,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                                 />
                             </div>
                         </div>
-                        <DialogFooter className="mt-6">
+                        <DialogFooter>
                             <Button type="button" variant="outline" onClick={() => setIsRejectModalOpen(false)}>
                                 {t('Cancel')}
                             </Button>

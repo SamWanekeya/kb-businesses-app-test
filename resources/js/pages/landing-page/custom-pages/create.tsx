@@ -27,9 +27,19 @@ export default function CreateCustomPage() {
     };
 
     const [formData, setFormData] = useState(defaultData);
+    const [errors, setErrors] = useState<Record<string, string>>({});
+
+    const validate = () => {
+        const newErrors: Record<string, string> = {};
+        if (!formData.title.trim()) newErrors.title = t('Page title is required');
+        if (!formData.content.trim()) newErrors.content = t('Content is required');
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        if (!validate()) return;
 
         if (!globalSettings?.is_demo) {
             toast.loading(t('Creating page...'));
@@ -103,11 +113,14 @@ export default function CreateCustomPage() {
                             <Input
                                 id="title"
                                 value={formData.title}
-                                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                                onChange={(e) => {
+                                    setFormData({ ...formData, title: e.target.value });
+                                    if (errors.title) setErrors({ ...errors, title: '' });
+                                }}
                                 placeholder={t('e.g., About Us, Privacy Policy')}
-                                required
-                                className="w-full"
+                                className={`w-full ${errors.title ? 'border-red-500' : ''}`}
                             />
+                            {errors.title && <p className="text-xs text-red-500">{errors.title}</p>}
                             <p className="text-xs text-muted-foreground">
                                 {t('The title will be used to automatically generate the URL slug')}
                             </p>

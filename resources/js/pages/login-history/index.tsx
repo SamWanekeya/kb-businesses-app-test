@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router } from '@inertiajs/react';
 import { hasPermission, hasRole } from '@/utils/authorization';
@@ -21,6 +21,13 @@ export default function LoginHistory() {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const [currentItem, setCurrentItem] = useState<any>(null);
+
+    const [pageInitialState, setPageInitialState] = useState(true);
+
+    useEffect(() => {
+        if (!pageInitialState) applyFilters();
+        setPageInitialState(false);
+    }, [searchTerm]);
 
     // Check if any filters are active
     const hasActiveFilters = () => {
@@ -101,13 +108,7 @@ export default function LoginHistory() {
     };
 
     const handleResetFilters = () => {
-        setSearchTerm('');
-        setShowFilters(false);
-
-        router.get(route('login-history.index'), {
-            page: 1,
-            per_page: pageFilters.per_page
-        }, { preserveState: true, preserveScroll: true });
+        router.get(route('login-history.index'));
     };
 
     let breadcrumbs = [];
@@ -155,7 +156,8 @@ export default function LoginHistory() {
             key: 'date',
             label: t('Login Date'),
             sortable: true,
-            render: (value) => window.appSettings?.formatDateTime(value, false) || '-'
+            type: 'date',
+            // render: (value) => window.appSettings?.formatDateTime(value, false) || '-'
         },
         {
             key: 'details',
@@ -196,31 +198,22 @@ export default function LoginHistory() {
     return (
         <PageTemplate
             title={t("Login History")}
+            description={t("Manage your login history records.")}
             url="/login-history"
             breadcrumbs={breadcrumbs}
             noPadding
         >
             {/* Search and filters section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
                     onSearch={handleSearch}
                     filters={[]}
-                    showFilters={showFilters}
-                    setShowFilters={setShowFilters}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
                     onResetFilters={handleResetFilters}
-                    onApplyFilters={applyFilters}
-                    currentPerPage={pageFilters.per_page?.toString() || "10"}
-                    onPerPageChange={(value) => {
-                        router.get(route('login-history.index'), {
-                            page: 1,
-                            per_page: parseInt(value),
-                            search: searchTerm || undefined
-                        }, { preserveState: true, preserveScroll: true });
-                    }}
+                   
                 />
             </div>
 
@@ -249,6 +242,14 @@ export default function LoginHistory() {
                     links={loginHistory?.links}
                     entityName={t("login records")}
                     onPageChange={(url) => router.get(url)}
+                     currentPerPage={pageFilters.per_page?.toString() || "10"}
+                    onPerPageChange={(value) => {
+                        router.get(route('login-history.index'), {
+                            page: 1,
+                            per_page: parseInt(value),
+                            search: searchTerm || undefined
+                        }, { preserveState: true, preserveScroll: true });
+                    }}
                 />
             </div>
 

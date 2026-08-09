@@ -65,7 +65,8 @@ class OpportunityController extends Controller
         if ($request->view === 'kanban' || empty($request->view)) {
             $opportunities = collect(['data' => $query->get()]);
         } else {
-            $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+            $defaultPerPage = $request->view === 'grid' ? 12 : 10;
+            $perPage = max(1, min(200, (int) $request->get('per_page', $defaultPerPage)));
             $opportunities = $query->paginate($perPage)->withQueryString();
         }
         // Get data for dropdowns - filter by assigned_to for non-company users

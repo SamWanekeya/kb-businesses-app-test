@@ -84,20 +84,15 @@ export default function LeadEdit() {
         }
 
         toast.loading(t('Updating lead...'));
-
-        put(route('leads.update', lead.id), {
+    put(route('leads.update', lead.id), {
             onSuccess: () => toast.dismiss(),
-            onError: (errors) => {
-                toast.dismiss();
-                const first = Object.values(errors)[0] as string;
-                if (first) toast.error(first);
-            },
-        });
-    };
+            onError: () => toast.dismiss(),
+            })};
 
     return (
         <PageTemplate
             title={t('Edit Lead')}
+            description={t('Edit lead details and related information')}
             breadcrumbs={breadcrumbs}
             actions={[
                 {
@@ -107,6 +102,7 @@ export default function LeadEdit() {
                     onClick: () => router.visit(route('leads.index')),
                 },
             ]}
+            noPadding
         >
             <form onSubmit={handleSubmit} className="space-y-6">
 

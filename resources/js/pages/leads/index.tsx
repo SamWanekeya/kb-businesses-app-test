@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router } from '@inertiajs/react';
-import { Plus, Eye, Edit, Trash2, MoreHorizontal, Building2, User, Users, Download, Upload, FileUp, FileDown, Lock } from 'lucide-react';
+import { Plus, Eye, Edit, Trash2, MoreHorizontal, Building2, User, Users, Download, Upload, FileUp, FileDown, Lock, Banknote } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -16,7 +16,9 @@ import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { useInitials } from '@/hooks/use-initials';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
+import * as LucidIcons from "lucide-react";
+import UserInitials from '@/components/user-initials';
 
 
 export default function Leads() {
@@ -52,6 +54,12 @@ export default function Leads() {
     const [kanbanData, setKanbanData] = useState<any>(null);
     const [kanbanDataRef, setKanbanDataRef] = useState<any>(null);
     const [isLoadingKanban, setIsLoadingKanban] = useState(false);
+    const [pageInitialState, setPageInitialState] = useState(true);
+    useEffect(() => {
+        if (!pageInitialState) applyFilters();
+        setPageInitialState(false);
+    }, [selectedStatus, selectedConverted, selectedAssignee, selectedLeadStatus, selectedLeadSource]);
+
 
     // Check if any filters are active
     const hasActiveFilters = () => {
@@ -82,7 +90,7 @@ export default function Leads() {
             assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
             sort_field: pageFilters.sort_field || undefined,
             sort_direction: pageFilters.sort_direction || undefined,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            ...(parseInt(pageFilters.per_page) !== (activeView === 'grid' ? 12 : 10) && pageFilters.per_page && { per_page: pageFilters.per_page }),
         }, { preserveState: true, preserveScroll: true });
     };
 
@@ -103,7 +111,7 @@ export default function Leads() {
             assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
             sort_field: field,
             sort_direction: direction,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            ...(parseInt(pageFilters.per_page) !== (activeView === 'grid' ? 12 : 10) && pageFilters.per_page && { per_page: pageFilters.per_page }),
         }, { preserveState: true, preserveScroll: true });
     };
 
@@ -216,14 +224,10 @@ export default function Leads() {
     };
 
     const handleResetFilters = () => {
-        setSearchTerm('');
-        setSelectedLeadStatus('all');
-        setSelectedLeadSource('all');
-        setSelectedStatus('all');
-        setSelectedConverted('all');
-        setSelectedAssignee('all');
-        setShowFilters(false);
-        router.get(route('leads.index'), { view: activeView, page: 1 }, { preserveState: true, preserveScroll: true });
+        router.get(route('leads.index'), {
+            view: activeView,
+        });
+
     };
 
     const loadKanbanData = () => {
@@ -300,7 +304,6 @@ export default function Leads() {
             disabled: hasEmptyDropdowns
         });
     }
-
     const breadcrumbs = [
         { title: t('Dashboard'), href: route('dashboard') },
         { title: t('Lead Management') },
@@ -316,9 +319,7 @@ export default function Leads() {
             render: (value: any, row: any) => {
                 return (
                     <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
-                            {getInitials(row.name)}
-                        </div>
+                        <UserInitials name={row.name} />
                         <div>
                             <div className="font-medium">{row.name}</div>
                             <div className="text-sm text-muted-foreground">{row.email || t('No email')}</div>
@@ -328,22 +329,34 @@ export default function Leads() {
             }
         },
         {
+            key: 'assigned_user',
+            label: t('Assigned To'),
+            render: (value: any) => value ? (
+                <div className="flex items-center gap-3">
+                    <Avatar className="h-9 w-9">
+                        <AvatarImage src={value.avatar} />
+                        <AvatarFallback>{getInitials(value.name)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                        <div className="font-medium">{value.name}</div>
+                        <div className="text-sm text-muted-foreground">{value.email}</div>
+                    </div>
+                </div>
+            ) : <span className="text-muted-foreground">{t('Unassigned')}</span>
+        },
+        {
             key: 'value',
             label: t('Value'),
             sortable: true,
-            render: (value: any) => value ? (window.appSettings?.formatCurrency(parseFloat(value)) || `$${parseFloat(value).toFixed(2)}`) : t('-')
+            render: (value: any) => value ? <span className="font-mono">{window.appSettings?.formatCurrency(parseFloat(value)) || `$${parseFloat(value).toFixed(2)}`}</span> : t('-')
         },
         {
             key: 'lead_status',
             label: t('Progress'),
             render: (value: any) => value ? (
-                <div className="flex items-center gap-2">
-                    <div
-                        className="w-3 h-3 rounded-full"
-                        style={{ backgroundColor: value.color }}
-                    ></div>
-                    <span>{value.name}</span>
-                </div>
+                <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset" style={{ backgroundColor: value.color + '20', color: value.color, borderColor: value.color + '40' }}>
+                    {value.name}
+                </span>
             ) : t('-')
         },
         {
@@ -357,11 +370,6 @@ export default function Leads() {
                     {value === 'active' ? t('Active') : t('Inactive')}
                 </span>
             )
-        },
-        {
-            key: 'assigned_user',
-            label: t('Assigned To'),
-            render: (value: any) => value?.name || t('Unassigned')
         },
         {
             key: 'is_converted',
@@ -379,7 +387,7 @@ export default function Leads() {
             key: 'created_at',
             label: t('Created At'),
             sortable: true,
-            render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
+            type: 'date',
         }
     ];
 
@@ -434,14 +442,18 @@ export default function Leads() {
     return (
         <PageTemplate
             title={t("Leads")}
+            description={t("Manage your leads")}
             url="/leads"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
             noPadding
             className={activeView === 'kanban' ? 'overflow-hidden' : ''}
         >
+
             {/* Search and filters section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+            {/* <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4"> */}
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
+
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -491,12 +503,12 @@ export default function Leads() {
                         },
                         {
                             name: 'is_converted',
-                            label: t('Converted'),
+                            label: t('Conversion Status'),
                             type: 'select' as const,
                             value: selectedConverted,
                             onChange: setSelectedConverted,
                             options: [
-                                { value: 'all', label: t('All') },
+                                { value: 'all', label: t('All Leads') },
                                 { value: '1', label: t('Converted') },
                                 { value: '0', label: t('Not Converted') }
                             ]
@@ -517,29 +529,13 @@ export default function Leads() {
                             ]
                         }
                     ]}
-                    showFilters={showFilters}
-                    setShowFilters={setShowFilters}
+                    // showFilters={showFilters}
+                    // setShowFilters={setShowFilters}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
                     onResetFilters={handleResetFilters}
-                    onApplyFilters={applyFilters}
+                    // onApplyFilters={applyFilters}
                     {...(activeView !== 'kanban' && {
-                        currentPerPage: pageFilters.per_page?.toString() || "10",
-                        onPerPageChange: (value) => {
-                            router.get(route('leads.index'), {
-                                page: 1,
-                                view: activeView,
-                                search: searchTerm || undefined,
-                                lead_status_id: selectedLeadStatus !== 'all' ? selectedLeadStatus : undefined,
-                                lead_source_id: selectedLeadSource !== 'all' ? selectedLeadSource : undefined,
-                                status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                                is_converted: selectedConverted !== 'all' ? selectedConverted : undefined,
-                                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-                                sort_field: pageFilters.sort_field || undefined,
-                                sort_direction: pageFilters.sort_direction || undefined,
-                                ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
-                            }, { preserveState: true, preserveScroll: true });
-                        }
                     })}
                     showViewToggle={true}
                     activeView={activeView}
@@ -562,7 +558,7 @@ export default function Leads() {
                     viewOptions={[
                         { value: 'list', label: t('List View'), icon: 'List' },
                         { value: 'kanban', label: t('Kanban View'), icon: 'Columns' },
-                        { value: 'grid', label: t('Grid View'), icon: 'Grid3X3' }
+                        // { value: 'grid', label: t('Grid View'), icon: 'Grid3X3' }
                     ]}
                 />
             </div>
@@ -596,256 +592,245 @@ export default function Leads() {
                         links={leads?.links}
                         entityName={t("leads")}
                         onPageChange={(url) => router.get(url)}
+                        //  {...(activeView !== 'kanban' && {
+                        currentPerPage={pageFilters.per_page?.toString() || "10"}
+                        onPerPageChange={(value) => {
+                            router.get(route('leads.index'), {
+                                page: 1,
+                                view: activeView,
+                                search: searchTerm || undefined,
+                                lead_status_id: selectedLeadStatus !== 'all' ? selectedLeadStatus : undefined,
+                                lead_source_id: selectedLeadSource !== 'all' ? selectedLeadSource : undefined,
+                                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                is_converted: selectedConverted !== 'all' ? selectedConverted : undefined,
+                                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                                sort_field: pageFilters.sort_field || undefined,
+                                sort_direction: pageFilters.sort_direction || undefined,
+                                ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+                            }, { preserveState: true, preserveScroll: true });
+                        }}
+
                     />
                 </div>
             ) : activeView === 'kanban' ? (
                 <>
-                    {/* Kanban Board */}
-                    <div className="w-full">
-                        <style>{`
-              .kanban-scroll {
-                overflow-x: auto;
-                overflow-y: hidden;
-              }
-              .kanban-scroll::-webkit-scrollbar {
-                height: 8px;
-              }
-              .kanban-scroll::-webkit-scrollbar-track {
-                background: #f1f5f9;
-                border-radius: 4px;
-              }
-              .kanban-scroll::-webkit-scrollbar-thumb {
-                background: #cbd5e1;
-                border-radius: 4px;
-              }
-              .kanban-scroll::-webkit-scrollbar-thumb:hover {
-                background: #94a3b8;
-              }
-              main {
-                max-width: 100vw;
-                overflow-x: hidden;
-              }
-              body {
-                overflow-x: hidden !important;
-              }
-            `}</style>
-                        <div className="bg-gray-50 p-4 rounded-lg overflow-hidden">
-                            {isLoadingKanban ? (
-                                <div className="flex items-center justify-center h-full">
-                                    <div className="text-center">
-                                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                                        <p className="text-gray-500 dark:text-gray-400">{t('Loading kanban board...')}</p>
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="flex gap-4 overflow-x-auto pb-4" style={{ height: 'calc(100vh - 280px)', width: '100%' }}>
-                                    {leadStatuses.map((status) => {
-                                        const statusLeads = kanbanData?.[status.id]?.items || [];
-                                        return (
-                                            <div
-                                                key={status.id}
-                                                className="flex-shrink-0"
-                                                style={{ minWidth: 'calc(20% - 16px)', width: 'calc(20% - 16px)' }}
-                                                onDrop={(e) => {
-                                                    e.preventDefault();
-                                                    e.currentTarget.classList.remove('bg-blue-50');
-                                                    const leadId = e.dataTransfer.getData('leadId');
-                                                    if (leadId) {
-                                                        // Check permission before updating
-                                                        if (!hasPermission(permissions, 'edit-leads')) {
-                                                            toast.error(t('Permission denied.'));
-                                                            return;
-                                                        }
-
-                                                        toast.loading('Updating lead status...');
-
-                                                        // Find the lead to get current data
-                                                        const currentLead = Object.values(kanbanData)
-                                                            .flatMap((column: any) => column.items)
-                                                            .find((lead: any) => lead.id.toString() === leadId);
-
-                                                        if (currentLead) {
-                                                            router.put(route('leads.update', leadId), {
-                                                                ...currentLead,
-                                                                lead_status_id: status.id
-                                                            }, {
-                                                                onSuccess: () => {
-                                                                    toast.dismiss();
-                                                                    loadKanbanData();
-                                                                },
-                                                                onError: () => {
-                                                                    toast.dismiss();
-                                                                    toast.error(t('Failed to update lead status'));
-                                                                }
-                                                            });
-                                                        }
-                                                    }
-                                                }}
-                                                onDragOver={(e) => {
-                                                    e.preventDefault();
-                                                    e.currentTarget.classList.add('bg-blue-50');
-                                                }}
-                                                onDragLeave={(e) => {
-                                                    e.currentTarget.classList.remove('bg-blue-50');
-                                                }}
+                    <style>{`
+                        .kanban-col-scroll::-webkit-scrollbar { width: 4px; }
+                        .kanban-col-scroll::-webkit-scrollbar-track { background: transparent; }
+                        .kanban-col-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+                        .kanban-board-scroll::-webkit-scrollbar { height: 6px; }
+                        .kanban-board-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+                        .kanban-board-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+                    `}</style>
+                    <div className="flex gap-4 overflow-x-auto pb-2 kanban-board-scroll" style={{ height: 'calc(100vh - 240px)' }}>
+                        {isLoadingKanban ? (
+                            <div className="flex items-center justify-center w-full">
+                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                            </div>
+                        ) : leadStatuses.map((status: any) => {
+                            const statusLeads = kanbanData?.[status.id]?.items || [];
+                            const colBg = status.color ? `${status.color}12` : '#f8fafc';
+                            const colBorder = status.color ? `${status.color}30` : '#e2e8f0';
+                            return (
+                                <div
+                                    key={status.id}
+                                    className="flex-shrink-0 flex flex-col rounded-xl border"
+                                    style={{ width: '300px', minWidth: '300px', backgroundColor: colBg, borderColor: colBorder, height: '100%' }}
+                                    onDragOver={(e) => e.preventDefault()}
+                                    onDrop={(e) => {
+                                        e.preventDefault();
+                                        const leadId = e.dataTransfer.getData('leadId');
+                                        if (!leadId) return;
+                                        if (!hasPermission(permissions, 'edit-leads')) { toast.error(t('Permission denied.')); return; }
+                                        const currentLead = Object.values(kanbanData).flatMap((c: any) => c.items).find((l: any) => l.id.toString() === leadId);
+                                        if (currentLead) {
+                                            toast.loading(t('Updating...'));
+                                            router.put(route('leads.update', leadId), { ...(currentLead as any), lead_status_id: status.id }, {
+                                                onSuccess: () => { toast.dismiss(); loadKanbanData(); },
+                                                onError: () => { toast.dismiss(); toast.error(t('Failed to update lead status')); }
+                                            });
+                                        }
+                                    }}
+                                >
+                                    {/* Column header */}
+                                    <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: colBorder }}>
+                                        <div className="flex items-center gap-2">
+                                            <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: status.color }}></span>
+                                            <span className="font-semibold text-sm text-gray-800 dark:text-gray-100">{status.name}</span>
+                                            <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: status.color + '22', color: status.color }}>
+                                                {statusLeads.length}
+                                            </span>
+                                        </div>
+                                        {hasPermission(permissions, 'create-leads') && (
+                                            <button
+                                                onClick={() => handleAddLead(status.id.toString())}
+                                                className="w-6 h-6 flex items-center justify-center rounded-md hover:bg-white/60 text-gray-500 hover:text-gray-800 transition-colors cursor-pointer"
+                                                title={t('Add Lead')}
                                             >
-                                                <div className="bg-gray-100 dark:bg-gray-900 rounded-lg h-full flex flex-col">
-                                                    <div className="p-3 border-b border-gray-200">
-                                                        <div className="flex items-center justify-between mb-2">
-                                                            <div className="flex items-center gap-2">
-                                                                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: status.color }}></div>
-                                                                <h3 className="font-semibold text-sm text-gray-700">{status.name}</h3>
+                                                <Plus className="h-4 w-4" />
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    {/* Cards */}
+                                    <div className="flex-1 overflow-y-auto kanban-col-scroll p-3 space-y-3">
+                                        {statusLeads.length === 0 ? (
+                                            <div className="flex flex-col items-center justify-center h-40 text-gray-300">
+                                                <div className="w-14 h-14 rounded-full border-2 border-dashed border-gray-200 flex items-center justify-center mb-2">
+                                                    <User className="h-6 w-6 text-gray-300" />
+                                                </div>
+                                                <p className="text-xs text-gray-400">{t('Drop leads here')}</p>
+                                            </div>
+                                        ) : statusLeads.map((lead: any) => (
+                                            <div
+                                                key={lead.id}
+                                                draggable={hasPermission(permissions, 'edit-leads')}
+                                                onDragStart={(e) => {
+                                                    if (!hasPermission(permissions, 'edit-leads')) { e.preventDefault(); return; }
+                                                    e.dataTransfer.setData('leadId', lead.id.toString());
+                                                    e.currentTarget.classList.add('opacity-50');
+                                                }}
+                                                onDragEnd={(e) => e.currentTarget.classList.remove('opacity-50')}
+                                                className={hasPermission(permissions, 'edit-leads') ? 'cursor-grab active:cursor-grabbing' : ''}
+                                            >
+                                                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow duration-200">
+                                                    <div className="p-3">
+                                                        {/* Top row: avatar + name/email + menu */}
+                                                        <div className="flex items-start gap-2.5 mb-2.5">
+                                                            <UserInitials name={lead.name} />
+                                                            <div className="flex-1 min-w-0">
+                                                                <h4
+                                                                    className="font-semibold text-sm text-gray-900 dark:text-gray-100 leading-tight truncate cursor-pointer hover:text-primary transition-colors"
+                                                                    onClick={() => handleAction('view', lead)}
+                                                                >
+                                                                    {lead.name}
+                                                                </h4>
+                                                                <p className="text-xs text-gray-500 truncate mt-0.5">{lead.email || t('No email')}</p>
                                                             </div>
-                                                            <span className="text-xs text-gray-500 bg-gray-200 dark:bg-gray-900 px-2 py-1 rounded-full">
-                                                                {statusLeads.length}
-                                                            </span>
+                                                            {(hasPermission(permissions, 'view-leads') || hasPermission(permissions, 'edit-leads') || hasPermission(permissions, 'convert-leads') || hasPermission(permissions, 'delete-leads')) && (
+                                                                <DropdownMenu>
+                                                                    <DropdownMenuTrigger asChild>
+                                                                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0 flex-shrink-0 text-gray-400 hover:text-gray-600">
+                                                                            <MoreHorizontal className="h-3.5 w-3.5" />
+                                                                        </Button>
+                                                                    </DropdownMenuTrigger>
+                                                                    <DropdownMenuContent align="end" className="w-40">
+                                                                        {hasPermission(permissions, 'view-leads') && (
+                                                                            <DropdownMenuItem onClick={() => handleAction('view', lead)}>
+                                                                                <Eye className="h-4 w-4 mr-2 tex" />{t('View')}
+                                                                            </DropdownMenuItem>
+                                                                        )}
+                                                                        {hasPermission(permissions, 'edit-leads') && (
+                                                                            <DropdownMenuItem onClick={() => handleAction('edit', lead)}>
+                                                                                <Edit className="h-4 w-4 mr-2" />{t('Edit')}
+                                                                            </DropdownMenuItem>
+                                                                        )}
+                                                                        {hasPermission(permissions, 'convert-leads') && !lead.is_converted && (
+                                                                            <>
+                                                                                <DropdownMenuSeparator />
+                                                                                <DropdownMenuItem onClick={() => handleAction('convert-to-account', lead)} className="text-green-600">
+                                                                                    <Building2 className="h-4 w-4 mr-2" />{t('To Account')}
+                                                                                </DropdownMenuItem>
+                                                                                <DropdownMenuItem onClick={() => handleAction('convert-to-contact', lead)} className="text-blue-600">
+                                                                                    <Users className="h-4 w-4 mr-2" />{t('To Contact')}
+                                                                                </DropdownMenuItem>
+                                                                            </>
+                                                                        )}
+                                                                        {hasPermission(permissions, 'delete-leads') && (
+                                                                            <>
+                                                                                <DropdownMenuSeparator />
+                                                                                <DropdownMenuItem onClick={() => handleAction('delete', lead)} className="text-red-600">
+                                                                                    <Trash2 className="h-4 w-4 mr-2" />{t('Delete')}
+                                                                                </DropdownMenuItem>
+                                                                            </>
+                                                                        )}
+                                                                    </DropdownMenuContent>
+                                                                </DropdownMenu>
+                                                            )}
                                                         </div>
-                                                        {hasPermission(permissions, 'create-leads') && (
-                                                            <button
-                                                                onClick={() => handleAddLead(status.id.toString())}
-                                                                className="w-full text-xs text-gray-600 hover:text-blue-600 hover:bg-blue-50 py-2 px-3 rounded-md border border-dashed border-gray-300 hover:border-blue-300 transition-all duration-200 flex items-center justify-center gap-1 cursor-pointer"
-                                                            >
-                                                                <Plus className="h-3 w-3" />
-                                                                {t('Add Lead')}
-                                                            </button>
-                                                        )}
-                                                    </div>
-                                                    <div className="p-2 space-y-2 overflow-y-auto flex-1" style={{ maxHeight: 'calc(100vh - 350px)' }}>
-                                                        {statusLeads.map((lead) => (
-                                                            <div
-                                                                key={lead.id}
-                                                                draggable={hasPermission(permissions, 'edit-leads')}
-                                                                onDragStart={(e) => {
-                                                                    if (!hasPermission(permissions, 'edit-leads')) {
-                                                                        e.preventDefault();
-                                                                        return;
-                                                                    }
-                                                                    e.dataTransfer.setData('leadId', lead.id.toString());
-                                                                    e.currentTarget.classList.add('opacity-50', 'scale-95');
-                                                                }}
-                                                                onDragEnd={(e) => {
-                                                                    e.currentTarget.classList.remove('opacity-50', 'scale-95');
-                                                                }}
-                                                                className={`transition-all duration-200 ${hasPermission(permissions, 'edit-leads') ? 'cursor-move' : 'cursor-default'}`}
-                                                            >
-                                                                <Card className="hover:shadow-md transition-all duration-200 border-l-4 hover:scale-105" style={{ borderLeftColor: status.color }}>
-                                                                    <div className="p-3">
-                                                                        <div className="space-y-2">
-                                                                            <div className="flex items-start justify-between">
-                                                                                <h4
-                                                                                    className="font-medium text-sm line-clamp-2 hover:text-blue-600 transition-colors cursor-pointer flex-1"
-                                                                                    onClick={() => handleAction('view', lead)}
-                                                                                >
-                                                                                    {lead.name}
-                                                                                </h4>
-                                                                                {(hasPermission(permissions, 'view-leads') || hasPermission(permissions, 'edit-leads') || hasPermission(permissions, 'convert-leads') || hasPermission(permissions, 'delete-leads')) && <DropdownMenu>
-                                                                                    <DropdownMenuTrigger asChild>
-                                                                                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0 text-gray-400 hover:text-gray-600">
-                                                                                            <MoreHorizontal className="h-4 w-4" />
-                                                                                        </Button>
-                                                                                    </DropdownMenuTrigger>
-                                                                                    <DropdownMenuContent align="end" className="w-32">
-                                                                                        {hasPermission(permissions, 'view-leads') && (<DropdownMenuItem onClick={() => handleAction('view', lead)}>
-                                                                                            <Eye className="h-4 w-4 mr-2" />
-                                                                                            {t('View')}
-                                                                                        </DropdownMenuItem>
-                                                                                        )}
-                                                                                        {hasPermission(permissions, 'edit-leads') && (
-                                                                                            <DropdownMenuItem onClick={() => handleAction('edit', lead)}>
-                                                                                                <Edit className="h-4 w-4 mr-2" />
-                                                                                                {t('Edit')}
-                                                                                            </DropdownMenuItem>
-                                                                                        )}
-                                                                                        {hasPermission(permissions, 'convert-leads') && !lead.is_converted && (
-                                                                                            <>
-                                                                                                <DropdownMenuSeparator />
-                                                                                                <DropdownMenuItem onClick={() => handleAction('convert-to-account', lead)} className="text-green-600">
-                                                                                                    <Building2 className="h-4 w-4 mr-2" />
-                                                                                                    {t('Convert to Account')}
-                                                                                                </DropdownMenuItem>
-                                                                                                <DropdownMenuItem onClick={() => handleAction('convert-to-contact', lead)} className="text-blue-600">
-                                                                                                    <Users className="h-4 w-4 mr-2" />
-                                                                                                    {t('Convert to Contact')}
-                                                                                                </DropdownMenuItem>
-                                                                                            </>
-                                                                                        )}
-                                                                                        {hasPermission(permissions, 'delete-leads') && (
-                                                                                            <>
-                                                                                                <DropdownMenuSeparator />
-                                                                                                <DropdownMenuItem onClick={() => handleAction('delete', lead)} className="text-red-600">
-                                                                                                    <Trash2 className="h-4 w-4 mr-2" />
-                                                                                                    {t('Delete')}
-                                                                                                </DropdownMenuItem>
-                                                                                            </>
-                                                                                        )}
-                                                                                    </DropdownMenuContent>
-                                                                                </DropdownMenu>}
-                                                                            </div>
 
-                                                                            <div className="text-xs text-gray-600">
-                                                                                {lead.email && <div>{lead.email}</div>}
-                                                                                {lead.company && <div>{lead.company}</div>}
-                                                                            </div>
-
-                                                                            <div className="flex items-center justify-between">
-                                                                                <div className="text-xs text-gray-500">
-                                                                                    {lead.value ? (window.appSettings?.formatCurrency(parseFloat(lead.value)) || `$${parseFloat(lead.value).toFixed(2)}`) : t('No value')}
-                                                                                </div>
-                                                                                {lead.assigned_user && (
-                                                                                    <Avatar className="h-5 w-5 rounded-full">
-                                                                                        <AvatarImage src={lead.assigned_user.avatar} />
-                                                                                        <AvatarFallback>{getInitials(lead.assigned_user.name)}</AvatarFallback>
-                                                                                    </Avatar>
-                                                                                )}
-                                                                            </div>
-
-                                                                            <div className="flex justify-between items-center text-xs text-gray-500">
-                                                                                <div className="flex items-center gap-2">
-                                                                                    {lead.is_converted && (
-                                                                                        <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20">
-                                                                                            {t('Converted')}
-                                                                                        </span>
-                                                                                    )}
-                                                                                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${lead.status === 'active'
-                                                                                        ? 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20'
-                                                                                        : 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20'
-                                                                                        }`}>
-                                                                                        {lead.status === 'active' ? t('Active') : t('Inactive')}
-                                                                                    </span>
-                                                                                </div>
-                                                                                <span>{window.appSettings?.formatDateTime(lead.created_at, false) || new Date(lead.created_at).toLocaleDateString()}</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </Card>
-                                                            </div>
-                                                        ))}
-                                                        {statusLeads.length === 0 && (
-                                                            <div className="text-center py-8 text-gray-400">
-                                                                <User className="h-8 w-8 mx-auto mb-2" />
-                                                                <p className="text-sm">{t('No leads')}</p>
+                                                        {/* Company */}
+                                                        {lead.company && (
+                                                            <div className="flex items-center gap-1.5 mb-2">
+                                                                <Building2 className="h-3 w-3 text-gray-400 flex-shrink-0" />
+                                                                <span className="text-xs text-gray-500 truncate">{lead.company}</span>
                                                             </div>
                                                         )}
+
+                                                        {/* Value */}
+                                                        {lead.value && (
+                                                            <div className="flex items-center gap-1.5 mb-2">
+                                                                <Banknote className="h-3 w-3 text-gray-400 flex-shrink-0" />
+                                                                <span className="text-xs font-semibold font-mono text-gray-700 dark:text-gray-300">
+                                                                    {window.appSettings?.formatCurrency(parseFloat(lead.value)) || `$${parseFloat(lead.value).toFixed(2)}`}
+                                                                </span>
+                                                            </div>
+                                                        )}
+
+                                                        {/* Source badge + converted badge */}
+                                                        {(lead.lead_source || lead.is_converted) && (
+                                                            <div className="flex flex-wrap gap-1 mb-2.5">
+                                                                {lead.lead_source && (
+                                                                    <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-blue-50 text-blue-700 ring-1 ring-inset ring-gray-600/20">
+                                                                        {lead.lead_source.name}
+                                                                    </span>      
+                                                                )}
+                                                                {lead.is_converted && (
+                                                                    <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20">
+                                                                        {t('Converted')}
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                        )}
+
+                                                        {/* Footer: date + assigned avatar */}
+                                                        <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-700">
+                                                            <div className="flex items-center gap-1 text-xs text-gray-500">
+                                                                <LucidIcons.Calendar className="h-3 w-3" />
+                                                                <span>
+                                                                    {window.appSettings?.formatDateTime(lead.created_at, false) || new Date(lead.created_at).toLocaleDateString()}
+                                                                </span>
+                                                            </div>
+                                                            {lead.assigned_user ? (
+                                                                <TooltipProvider>
+                                                                    <Tooltip>
+                                                                        <TooltipTrigger asChild>
+                                                                            <Avatar className="h-7 w-7 cursor-pointer">
+                                                                                <AvatarImage src={lead.assigned_user.avatar} />
+                                                                                <AvatarFallback className="text-xs" style={{ backgroundColor: status.color + '33', color: status.color }}>
+                                                                                    {getInitials(lead.assigned_user.name)}
+                                                                                </AvatarFallback>
+                                                                            </Avatar>
+                                                                        </TooltipTrigger>
+                                                                        <TooltipContent>{lead.assigned_user.name}</TooltipContent>
+                                                                    </Tooltip>
+                                                                </TooltipProvider>
+                                                            ) : (
+                                                                <div className="h-6 w-6 rounded-full bg-gray-100 flex items-center justify-center">
+                                                                    <User className="h-3 w-3 text-gray-400" />
+                                                                </div>
+                                                            )}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        );
-                                    })}
+                                        ))}
+                                    </div>
                                 </div>
-                            )}
-                        </div>
+                            );
+                        })}
                     </div>
                 </>
             ) : (
                 <div>
                     {/* Grid View */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                         {leads?.data?.map((lead: any) => (
                             <Card key={lead.id} className="bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow">
                                 <div className="p-6">
                                     <div className="flex items-start justify-between mb-4">
                                         <div className="flex items-start space-x-4">
-                                            <div className="h-16 w-16 rounded-full bg-primary text-white flex items-center justify-center text-lg font-bold">
+                                            <div className="h-16 w-16 rounded-full bg-primary/15 text-primary ring-1 ring-primary flex items-center justify-center text-lg font-bold">
                                                 {getInitials(lead.name)}
                                             </div>
                                             <div className="flex-1 min-w-0">
@@ -859,10 +844,10 @@ export default function Leads() {
                                                     </span>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> */}
 
                                         {/* Actions dropdown */}
-                                        {(hasPermission(permissions, 'view-leads') || hasPermission(permissions, 'edit-leads') || hasPermission(permissions, 'convert-leads') || hasPermission(permissions, 'delete-leads') || hasPermission(permissions, 'toggle-status-leads') || hasPermission(permissions, 'edit-leads')) && <DropdownMenu>
+                                        {/* {(hasPermission(permissions, 'view-leads') || hasPermission(permissions, 'edit-leads') || hasPermission(permissions, 'convert-leads') || hasPermission(permissions, 'delete-leads') || hasPermission(permissions, 'toggle-status-leads') || hasPermission(permissions, 'edit-leads')) && <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
                                                 <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300">
                                                     <MoreHorizontal className="h-4 w-4" />
@@ -909,10 +894,10 @@ export default function Leads() {
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                         }
-                                    </div>
+                                    </div> */}
 
                                     {/* Lead info */}
-                                    <div className="border border-gray-200 dark:border-gray-700 rounded-md p-3 mb-4">
+                                    {/* <div className="border border-gray-200 dark:border-gray-700 rounded-md p-3 mb-4">
                                         <div className="mb-2">
                                             <span className="text-sm text-gray-600 dark:text-gray-400">
                                                 {t('Company')}: {lead.company || t('-')}
@@ -939,15 +924,25 @@ export default function Leads() {
                                                 </span>
                                             )}
                                         </div>
-                                    </div>
+                                    </div> */}
 
                                     {/* Created date */}
-                                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-4">
+                                    {/* <div className="text-xs text-gray-500 dark:text-gray-400 mb-4">
                                         {t("Created:")} {window.appSettings?.formatDateTime(lead.created_at, false) || new Date(lead.created_at).toLocaleDateString()}
-                                    </div>
+                                    </div> */}
+                                    {/* <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-4">
+                                        <span>{t("Created:")}</span>
+
+                                        {lead.created_at && <LucidIcons.Calendar className="h-4 w-4" />}
+
+                                        <span>
+                                            {window.appSettings?.formatDateTime(lead.created_at, false) ||
+                                                new Date(lead.created_at).toLocaleDateString()}
+                                        </span>
+                                    </div> */}
 
                                     {/* Action buttons */}
-                                    <div className="flex gap-2">
+                                    {/* <div className="flex gap-2">
                                         {hasPermission(permissions, 'edit-leads') && (
                                             <Button
                                                 variant="outline"
@@ -987,7 +982,7 @@ export default function Leads() {
                                 </div>
                             </Card>
                         ))}
-                    </div>
+                    </div> */}
 
                     {/* Pagination for grid view */}
                     <div className="mt-6 bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
@@ -998,6 +993,23 @@ export default function Leads() {
                             links={leads?.links}
                             entityName={t("leads")}
                             onPageChange={(url) => router.get(url)}
+                            perPageOptions={[12, 24, 48, 96]}
+                            currentPerPage={pageFilters.per_page?.toString() || '12'}
+                            onPerPageChange={(value) => {
+                                router.get(route('leads.index'), {
+                                    page: 1,
+                                    view: activeView,
+                                    search: searchTerm || undefined,
+                                    lead_status_id: selectedLeadStatus !== 'all' ? selectedLeadStatus : undefined,
+                                    lead_source_id: selectedLeadSource !== 'all' ? selectedLeadSource : undefined,
+                                    status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                    is_converted: selectedConverted !== 'all' ? selectedConverted : undefined,
+                                    assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                                    sort_field: pageFilters.sort_field || undefined,
+                                    sort_direction: pageFilters.sort_direction || undefined,
+                                    ...(parseInt(value) !== 12 && { per_page: parseInt(value) }),
+                                }, { preserveState: true, preserveScroll: true });
+                            }}
                         />
                     </div>
                 </div>
@@ -1007,8 +1019,8 @@ export default function Leads() {
             {hasPermission(permissions, 'export-leads') && (
                 <CrudFormModal
                     isOpen={false}
-                    onClose={() => {}}
-                    onSubmit={() => {}}
+                    onClose={() => { }}
+                    onSubmit={() => { }}
                     formConfig={{
                         exportRoute: 'lead.export',
                         fields: []

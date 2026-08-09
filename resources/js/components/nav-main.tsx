@@ -70,7 +70,6 @@ export function NavMain({ items = [], position, searchQuery = '' }: { items: Nav
         try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(newExpandedItems));
         } catch (e) {
-            console.error('Error saving navigation state:', e);
         }
     }, [page.url, items]); // Re-run when URL changes or items change
 
@@ -104,7 +103,6 @@ export function NavMain({ items = [], position, searchQuery = '' }: { items: Nav
         try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(newExpandedItems));
         } catch (e) {
-            console.error('Error saving navigation state:', e);
         }
     };
 
@@ -188,7 +186,7 @@ export function NavMain({ items = [], position, searchQuery = '' }: { items: Nav
                                     ) : (
                                         <Link
                                             href={child.href || '#'}
-                                            prefetch
+                                            preserveState={false}
                                             className={`flex items-center gap-2 ${effectivePosition === 'right' ? 'flex-row-reverse text-right' : 'text-left'}`}
                                         >
                                             <span>{child.title}</span>
@@ -230,7 +228,7 @@ export function NavMain({ items = [], position, searchQuery = '' }: { items: Nav
                             <span>{child.title}</span>
                         </a>
                     ) : (
-                        <Link href={child.href || '#'} prefetch>
+                        <Link href={child.href || '#'} preserveState={false}>
                             <span>{child.title}</span>
                         </Link>
                     )}
@@ -368,7 +366,7 @@ export function NavMain({ items = [], position, searchQuery = '' }: { items: Nav
                                                 ) : (
                                                     <Link
                                                         href={item.href || '#'}
-                                                        prefetch
+                                                        preserveState={false}
                                                         className={`flex items-center gap-2 ${effectivePosition === 'right' ? 'flex-row-reverse text-right' : 'text-left'}`}
                                                     >
                                                         {effectivePosition === 'right' ? (

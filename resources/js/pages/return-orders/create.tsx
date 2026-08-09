@@ -16,8 +16,6 @@ interface ProductRow {
     product_id: string;
     quantity: number;
     unit_price: number;
-    discount_type: string;
-    discount_value: number;
 }
 
 interface SalesOrderItem {
@@ -26,8 +24,6 @@ interface SalesOrderItem {
     product_sku?: string;
     quantity: number;
     unit_price: number;
-    discount_type: string;
-    discount_value: number;
     tax?: { name: string; rate: number } | null;
 }
 
@@ -38,8 +34,6 @@ interface ReturnItem {
     return_qty: number;
     max_qty: number;
     unit_price: number;
-    discount_type: string;
-    discount_value: number;
     tax?: { name: string; rate: number } | null;
     reason: string;
 }
@@ -116,8 +110,6 @@ export default function ReturnOrderCreate() {
                             product_sku: prod?.sku ?? p.sku ?? '',
                             quantity: p.quantity || 1,
                             unit_price: p.unit_price || 0,
-                            discount_type: p.discount_type || 'none',
-                            discount_value: p.discount_value || 0,
                             tax: prod?.tax ?? null,
                         };
                     }));
@@ -126,8 +118,6 @@ export default function ReturnOrderCreate() {
                         product_id: String(p.product_id),
                         quantity: p.quantity || 1,
                         unit_price: p.unit_price || 0,
-                        discount_type: 'none',
-                        discount_value: 0,
                     })));
                 }
                 setErrors(prev => {
@@ -152,8 +142,6 @@ export default function ReturnOrderCreate() {
             return_qty: 1,
             max_qty: item.quantity,
             unit_price: item.unit_price,
-            discount_type: item.discount_type,
-            discount_value: item.discount_value,
             tax: item.tax,
             reason: '',
         }]);
@@ -175,35 +163,21 @@ export default function ReturnOrderCreate() {
     };
 
     const calcReturnLine = (item: ReturnItem) => {
-        const gross = item.return_qty * item.unit_price;
-        const discVal = Number(item.discount_value) || 0;
-        const discount = item.discount_type === 'percentage'
-            ? (gross * discVal) / 100
-            : item.discount_type === 'fixed'
-                ? Math.min(discVal, gross)
-                : 0;
-        const net = gross - discount;
+        const net = item.return_qty * item.unit_price;
         const tax = item.tax ? (net * item.tax.rate) / 100 : 0;
-        return { discount, net, tax };
+        return { net, tax };
     };
 
     const calcAvailLine = (item: SalesOrderItem) => {
-        const gross = item.quantity * item.unit_price;
-        const discVal = Number(item.discount_value) || 0;
-        const discount = item.discount_type === 'percentage'
-            ? (gross * discVal) / 100
-            : item.discount_type === 'fixed'
-                ? Math.min(discVal, gross)
-                : 0;
-        const net = gross - discount;
+        const net = item.quantity * item.unit_price;
         const tax = item.tax ? (net * item.tax.rate) / 100 : 0;
-        return { discount, net, tax };
+        return { net, tax };
     };
 
     const totals = returnItems.reduce((acc, r) => {
         const c = calcReturnLine(r);
-        return { discount: acc.discount + c.discount, subtotal: acc.subtotal + c.net, tax: acc.tax + c.tax };
-    }, { discount: 0, subtotal: 0, tax: 0 });
+        return { subtotal: acc.subtotal + c.net, tax: acc.tax + c.tax };
+    }, { subtotal: 0, tax: 0 });
 
     const handleSubmit = () => {
         const errs: Errors = {};
@@ -227,8 +201,6 @@ export default function ReturnOrderCreate() {
                 product_id: r.product_id,
                 quantity: r.return_qty,
                 unit_price: r.unit_price,
-                discount_type: r.discount_type !== 'none' ? r.discount_type : null,
-                discount_value: r.discount_value,
                 reason: r.reason,
             })),
         }, {
@@ -239,8 +211,8 @@ export default function ReturnOrderCreate() {
     };
 
     return (
-        <PageTemplate title={t('Create Return Order')} breadcrumbs={breadcrumbs} url="/return-orders" fullWidth
-            actions={[{ label: t('Back'), icon: <ArrowLeft className="h-4 w-4 mr-2" />, variant: 'outline', onClick: () => router.visit(route('return-orders.index')) }]}
+        <PageTemplate title={t('Create Return Order')} description={t('Fill in the details to create a new return order')} breadcrumbs={breadcrumbs} url="/return-orders" fullWidth
+noPadding actions={[{ label: t('Back'), icon: <ArrowLeft className="h-4 w-4 mr-2" />, variant: 'outline', onClick: () => router.visit(route('return-orders.index')) }]}
         >
             <div className="space-y-6">
 
@@ -332,12 +304,14 @@ export default function ReturnOrderCreate() {
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium" required>{t('Return Date')}</Label>
+                            <div className="cursor-pointer" onClick={(e) => { const input = (e.currentTarget as HTMLElement).querySelector('input'); try { (input as any)?.showPicker?.(); } catch { input?.focus(); } }}>
                             <Input
                                 type="date"
                                 value={form.return_date}
                                 onChange={e => set('return_date', e.target.value)}
-                                className={errors.return_date ? 'border-red-500' : ''}
+                                className={`cursor-pointer ${errors.return_date ? 'border-red-500' : ''}`}
                             />
+                            </div>
                             {errors.return_date && <p className="text-xs text-red-500">{errors.return_date}</p>}
                         </div>
 
@@ -424,7 +398,7 @@ export default function ReturnOrderCreate() {
                             <table className="w-full text-sm">
                                 <thead>
                                     <tr className="border-b border-gray-200 dark:border-gray-700">
-                                        {['Product', 'Available Qty', 'Unit Price', 'Discount', 'Tax', 'Total', 'Action'].map(h => (
+                                        {['Product', 'Available Qty', 'Unit Price', 'Tax', 'Total', 'Action'].map(h => (
                                             <th key={h} className="text-start text-sm font-medium text-gray-500 dark:text-gray-400 pb-3 pe-6 whitespace-nowrap">{t(h)}</th>
                                         ))}
                                     </tr>
@@ -447,23 +421,13 @@ export default function ReturnOrderCreate() {
                                                     <span className={availableQty === 0 ? 'text-red-500 font-medium' : ''}>{availableQty}</span>
                                                     <span className="text-xs text-gray-400 ml-1">/ {item.quantity}</span>
                                                 </td>
-                                                <td className="py-4 pe-6 text-gray-700 dark:text-gray-300">{fmt(item.unit_price)}</td>
-                                                <td className="py-4 pe-6">
-                                                    {item.discount_type && item.discount_type !== 'none' && Number(item.discount_value) > 0 ? (
-                                                        <div>
-                                                            <div className="text-gray-700 dark:text-gray-300">
-                                                                {item.discount_type === 'percentage' ? `${item.discount_value}%` : fmt(Number(item.discount_value))}
-                                                            </div>
-                                                            <div className="text-xs text-red-500">-{fmt(c.discount)}</div>
-                                                        </div>
-                                                    ) : <span className="text-gray-400">—</span>}
-                                                </td>
+                                                <td className="py-4 pe-6 text-gray-700 dark:text-gray-300 font-mono">{fmt(item.unit_price)}</td>
                                                 <td className="py-4 pe-6">
                                                     {item.tax
                                                         ? <span className="text-xs text-gray-900 dark:text-gray-100">{item.tax.name} ({parseFloat(String(item.tax.rate)).toFixed(2)}%)</span>
                                                         : <span className="text-gray-400 text-xs">{t('No Tax')}</span>}
                                                 </td>
-                                                <td className="py-4 pe-6 font-medium text-gray-900 dark:text-gray-100">{fmt(c.net + c.tax)}</td>
+                                                <td className="py-4 pe-6 font-medium text-gray-900 dark:text-gray-100 font-mono">{fmt(c.net + c.tax)}</td>
                                                 <td className="py-4">
                                                     {isAdded ? (
                                                         <Button type="button" disabled size="sm">{t('Added')}</Button>
@@ -499,7 +463,7 @@ export default function ReturnOrderCreate() {
                             <table className="w-full text-sm">
                                 <thead>
                                     <tr className="border-b border-gray-200 dark:border-gray-700">
-                                        {['Product', 'Return Qty', 'Unit Price', 'Discount', 'Tax', 'Total', 'Action'].map(h => (
+                                        {['Product', 'Return Qty', 'Unit Price', 'Tax', 'Total', 'Action'].map(h => (
                                             <th key={h} className="text-start text-sm font-medium text-gray-500 dark:text-gray-400 pb-3 pe-6 whitespace-nowrap">{t(h)}</th>
                                         ))}
                                     </tr>
@@ -522,27 +486,17 @@ export default function ReturnOrderCreate() {
                                                     />
                                                     {qtyError && <p className="text-xs text-red-500 mt-1">{t('Max')} {item.max_qty}</p>}
                                                 </td>
-                                                <td className="py-4 pe-6 text-gray-700 dark:text-gray-300">{fmt(item.unit_price)}</td>
-                                                <td className="py-4 pe-6">
-                                                    {item.discount_type && item.discount_type !== 'none' && Number(item.discount_value) > 0 ? (
-                                                        <div>
-                                                            <div className="text-gray-700 dark:text-gray-300">
-                                                                {item.discount_type === 'percentage' ? `${item.discount_value}%` : fmt(Number(item.discount_value))}
-                                                            </div>
-                                                            <div className="text-xs text-red-500">-{fmt(c.discount)}</div>
-                                                        </div>
-                                                    ) : <span className="text-gray-400">—</span>}
-                                                </td>
+                                                <td className="py-4 pe-6 text-gray-700 dark:text-gray-300 font-mono">{fmt(item.unit_price)}</td>
                                                 <td className="py-4 pe-6">
                                                     {item.tax
                                                         ? <span className="text-xs text-gray-900 dark:text-gray-100">{item.tax.name} ({parseFloat(String(item.tax.rate)).toFixed(2)}%)</span>
                                                         : <span className="text-gray-400 text-xs">{t('No Tax')}</span>}
                                                 </td>
-                                                <td className="py-4 pe-6 font-medium text-gray-900 dark:text-gray-100">{fmt(c.net + c.tax)}</td>
+                                                <td className="py-4 pe-6 font-medium text-gray-900 dark:text-gray-100 font-mono">{fmt(c.net + c.tax)}</td>
                                                 <td className="py-4">
                                                     <button type="button" onClick={() => removeReturnItem(item.product_id)}
-                                                        className="text-red-500 hover:text-red-700 transition-colors">
-                                                        <Trash2 className="h-4 w-4" />
+                                                        className="text-red-500 hover:text-red-700 transition-colors cursor-pointer">
+                                                        <Trash2 className="h-4 w-4 text-gray-500" />
                                                     </button>
                                                 </td>
                                             </tr>
@@ -558,15 +512,15 @@ export default function ReturnOrderCreate() {
                                 <div className="space-y-1.5 text-sm">
                                     <div className="flex justify-between">
                                         <span className="text-gray-500 dark:text-gray-400">{t('Subtotal')}</span>
-                                        <span className="text-gray-900 dark:text-gray-100">{fmt(totals.subtotal + totals.discount)}</span>
+                                        <span className="text-gray-900 dark:text-gray-100 font-mono">{fmt(totals.subtotal)}</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-gray-500 dark:text-gray-400">{t('Tax')}</span>
-                                        <span className="text-gray-900 dark:text-gray-100">{fmt(totals.tax)}</span>
+                                        <span className="text-gray-900 dark:text-gray-100 font-mono">{fmt(totals.tax)}</span>
                                     </div>
                                     <div className="flex justify-between font-bold border-t border-gray-200 dark:border-gray-700 pt-2 mt-1 text-base">
                                         <span className="text-gray-900 dark:text-white">{t('Total Return Amount')}</span>
-                                        <span className="text-gray-900 dark:text-white">{fmt(totals.subtotal + totals.tax)}</span>
+                                        <span className="text-green-600 dark:text-green-400 font-mono">{fmt(totals.subtotal + totals.tax)}</span>
                                     </div>
                                 </div>
                             </div>

@@ -96,12 +96,16 @@ export default function Login({ status, canResetPassword, demoBusinesses = [] }:
         const url = route('public.vcard.show.direct', slug);
         window.open(url, '_blank');
     };
+  const planExpiredMessage = (errors as any).plan_expired;
+    const displayStatus = planExpiredMessage || status;
+    const displayStatusType = planExpiredMessage ? 'error' : 'success';
 
     return (
-        <AuthLayout
+           <AuthLayout
             title={t("Log in to your account")}
             description={t("Enter your credentials to access your account")}
-            status={status}
+            status={displayStatus}
+            statusType={displayStatusType}
         >
             <form className="space-y-5" onSubmit={submit}>
                 <div className="space-y-4">

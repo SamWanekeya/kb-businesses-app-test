@@ -1,311 +1,282 @@
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router } from '@inertiajs/react';
-import { ArrowLeft, Package, DollarSign, Archive, Tag, Building, User, Calendar, Edit, Trash2, Eye } from 'lucide-react';
-// import { ArrowLeft, Package, DollarSign, Archive, Tag, Building, User, Calendar, Edit, Trash2, Eye, Barcode as BarcodeIcon } from 'lucide-react';
+import { ArrowLeft, Package, ChevronLeft, ChevronRight, ZoomIn, Download, DollarSign, Layers, Tag, Bookmark, FileText, Users } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
-import { hasPermission } from '@/utils/authorization';
-// import { ProductBarcode } from '@/components/Barcode';
+import { useInitials } from '@/hooks/use-initials';
 
 export default function ProductShow() {
-  const { t } = useTranslation();
-  const { product, mainImage, additionalImages, auth } = usePage().props as any;
-  const permissions = auth?.permissions || [];
-  const [selectedImage, setSelectedImage] = useState(mainImage || (additionalImages?.[0]?.url));
+    const { t } = useTranslation();
+    const { product, mainImage, additionalImages } = usePage().props as any;
+    const getInitials = useInitials();
+    const images: any[] = additionalImages || [];
+    const [adIndex, setAdIndex] = useState(0);
 
-  const breadcrumbs = [
-    { title: t('Dashboard'), href: route('dashboard') },
-    { title: t('Products'), href: route('products.index') },
-    { title: product.name }
-  ];
+    const handlePrev = () => setAdIndex((i) => (i - 1 + images.length) % images.length);
+    const handleNext = () => setAdIndex((i) => (i + 1) % images.length);
 
-  const getStatusBadge = (status: string) => {
+    const breadcrumbs = [
+        { title: t('Dashboard'), href: route('dashboard') },
+        { title: t('Items'), href: route('products.index') },
+        { title: t('View Product') },
+    ];
+
+    const formatCurrency = (amount: number) =>
+        window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+
+    const pageActions = [
+        {
+            label: t('Back'),
+            icon: <ArrowLeft className="h-4 w-4 me-2" />,
+            variant: 'outline',
+            onClick: () => router.visit(route('products.index')),
+        },
+    ];
+
     return (
-      <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
-        status === 'active'
-          ? 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20'
-          : 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20'
-      }`}>
-        {status === 'active' ? t('Active') : t('Inactive')}
-      </span>
-    );
-  };
+        <PageTemplate title={product.name} description={t('Product details and related information')} noPadding  breadcrumbs={breadcrumbs} actions={pageActions}>
+            <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-6">
 
-  const formatCurrency = (amount: number) => window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+                {/* ── Left Column ── */}
+                <div className="space-y-4">
 
-  const formatDate = (dateString: string) => {
-    if (!dateString) return '-';
-    return window.appSettings?.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
-  };
+                    {/* Main Image — always fixed */}
+                    <Card className="shadow-sm">
+                        <CardHeader className="pb-2 pt-4 px-4">
+                            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                                <Package className="h-4 w-4" />
+                                {t('Product Image')}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="px-4 pb-4">
+                            <div className="flex items-center justify-center bg-muted rounded-lg min-h-[220px]">
+                                {mainImage ? (
+                                    <img
+                                        src={mainImage}
+                                        alt={product.name}
+                                        className="max-h-[220px] max-w-full object-contain rounded-lg"
+                                    />
+                                ) : (
+                                    <Package className="h-20 w-20 text-muted-foreground/30" />
+                                )}
+                            </div>
+                        </CardContent>
+                    </Card>
 
-  const pageActions = [
-    {
-      label: t('Back'),
-      icon: <ArrowLeft className="h-4 w-4 mr-2" />,
-      variant: 'outline',
-      onClick: () => router.visit(route('products.index'))
-    }
-  ];
-
-  return (
-    <PageTemplate
-      title={product.name}
-      breadcrumbs={breadcrumbs}
-      actions={pageActions}
-    >
-      <div className="mx-auto space-y-6">
-        {/* Header Section */}
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl shadow-sm border p-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                  <Package className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                    {/* Additional Images — independent carousel */}
+                    {images.length > 0 && (
+                        <Card className="shadow-sm">
+                            <CardHeader className="pb-2 pt-4 px-4">
+                                <div className="flex items-center justify-between">
+                                    <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                                        <Package className="h-4 w-4" />
+                                        {t('Additional Images')}
+                                    </CardTitle>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-xs text-muted-foreground">
+                                            {adIndex + 1}/{images.length}
+                                        </span>
+                                        <a
+                                            href={images[adIndex]?.url}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="p-1 hover:bg-muted rounded"
+                                        >
+                                            <ZoomIn className="h-4 w-4 text-muted-foreground" />
+                                        </a>
+                                        <a
+                                            href={images[adIndex]?.url}
+                                            download
+                                            className="p-1 hover:bg-muted rounded"
+                                        >
+                                            <Download className="h-4 w-4 text-muted-foreground" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </CardHeader>
+                            <CardContent className="px-4 pb-4">
+                                {/* Carousel viewer */}
+                                <div className="relative flex items-center justify-center bg-muted rounded-lg min-h-[300px] mb-3">
+                                    {images.length > 1 && (
+                                        <button
+                                            onClick={handlePrev}
+                                            className="absolute start-2 z-10 p-1 bg-card rounded-full shadow hover:bg-muted"
+                                        >
+                                            <ChevronLeft className="h-4 w-4" />
+                                        </button>
+                                    )}
+                                    <img
+                                        src={images[adIndex]?.url}
+                                        alt={`${product.name} ${adIndex + 1}`}
+                                        className="max-h-[300px] max-w-full object-contain rounded-lg"
+                                    />
+                                    {images.length > 1 && (
+                                        <button
+                                            onClick={handleNext}
+                                            className="absolute end-2 z-10 p-1 bg-card rounded-full shadow hover:bg-muted"
+                                        >
+                                            <ChevronRight className="h-4 w-4" />
+                                        </button>
+                                    )}
+                                </div>
+                                {/* Thumbnails */}
+                                <div className="flex gap-2 overflow-x-auto py-1">
+                                    {images.map((img: any, idx: number) => (
+                                        <button
+                                            key={img.id}
+                                            onClick={() => setAdIndex(idx)}
+                                            className={`flex-shrink-0 w-14 h-14 rounded border-2 overflow-hidden transition-all ${
+                                                adIndex === idx
+                                                    ? 'border-primary'
+                                                    : 'border-border hover:border-muted-foreground'
+                                            }`}
+                                        >
+                                            <img
+                                                src={img.thumb_url || img.url}
+                                                alt={`thumb-${idx}`}
+                                                className="w-full h-full object-contain p-1"
+                                            />
+                                        </button>
+                                    ))}
+                                </div>
+                            </CardContent>
+                        </Card>
+                    )}
                 </div>
-                <h1 className="text-lg font-bold text-gray-900 dark:text-white">{product.name}</h1>
-              </div>
-              <p className="text-lg text-gray-600 dark:text-gray-300 font-medium">SKU: {product.sku}</p>
-              {product.description && (
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 max-w-2xl">{product.description}</p>
-              )}
-            </div>
-            <div className="flex flex-col items-end gap-3">
-              {getStatusBadge(product.status)}
-              <div className="text-right">
-                <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                  {formatCurrency(product.price)}
-                </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">
-                  {product.stock_quantity} {product.stock_quantity === 1 ? t('unit') : t('units')} {t('in stock')}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Barcode Section */}
-        {/* <Card className="shadow-sm">
-          <CardHeader className="bg-gray-50 dark:bg-gray-800 border-b">
-            <CardTitle className="text-lg font-semibold flex items-center gap-2">
-              <BarcodeIcon className="h-5 w-5" />
-              {t('Product Barcode')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="flex flex-col items-center justify-center bg-white dark:bg-gray-900 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 p-8">
-              <ProductBarcode value={product.sku} width={2} height={50} fontSize={14} />
-              <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                {t('Scan this barcode to identify the product')}
-              </p>
-            </div>
-          </CardContent>
-        </Card> */}
-        {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Images Section */}
-          <div className="lg:col-span-1">
-            <Card className="shadow-sm">
-              <CardHeader className="bg-gray-50 dark:bg-gray-800 border-b">
-                <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                  <Eye className="h-5 w-5" />
-                  {t('Product Images')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6">
-                {selectedImage ? (
-                  <div className="space-y-4">
-                    <div className="aspect-square bg-gray-100 dark:bg-gray-700 rounded-xl overflow-hidden shadow-inner p-4 flex items-center justify-center">
-                      <img
-                        src={selectedImage}
-                        alt={product.name}
-                        className="max-w-full max-h-full object-contain hover:scale-105 transition-transform duration-300 rounded-lg"
-                      />
-                    </div>
+                {/* ── Right Column ── */}
+                <div className="space-y-4">
 
-                    {(mainImage || additionalImages?.length > 0) && (
-                      <div className="flex gap-2 overflow-x-auto py-2 px-1">
-                        {mainImage && (
-                          <button
-                            onClick={() => setSelectedImage(mainImage)}
-                            className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all duration-200 cursor-pointer ${
-                              selectedImage === mainImage ? 'border-blue-500 shadow-lg scale-105' : 'border-gray-200 hover:border-gray-300'
-                            }`}
-                          >
-                            <img src={mainImage} alt="Main" className="w-full h-full object-contain p-1" />
-                          </button>
-                        )}
-                        {additionalImages?.map((img: any, index: number) => (
-                          <button
-                            key={img.id}
-                            onClick={() => setSelectedImage(img.url)}
-                            className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all duration-200 cursor-pointer ${
-                              selectedImage === img.url ? 'border-blue-500 shadow-lg scale-105' : 'border-gray-200 hover:border-gray-300'
-                            }`}
-                          >
-                            <img src={img.thumb_url || img.url} alt={`Additional ${index + 1}`} className="w-full h-full object-contain p-1" />
-                          </button>
+                    {/* Summary Stat Cards */}
+                    <div className="grid grid-cols-4 gap-3">
+                        {([
+                            { label: t('Sale Price'), value: formatCurrency(product.price), icon: DollarSign, iconCls: 'text-emerald-600', blobCls: 'bg-emerald-50 dark:bg-emerald-900/30' },
+                            { label: t('Brand'), value: product.brand?.name || '—', icon: Bookmark, iconCls: 'text-blue-600', blobCls: 'bg-blue-50 dark:bg-blue-900/30' },
+                            { label: t('Stock'), value: product.stock_quantity ?? '—', icon: Layers, iconCls: 'text-orange-600', blobCls: 'bg-orange-50 dark:bg-orange-900/30' },
+                            { label: t('Category'), value: product.category?.name || '—', icon: Tag, iconCls: 'text-purple-600', blobCls: 'bg-purple-50 dark:bg-purple-900/30' },
+                        ] as const).map(({ label, value, icon: Icon, iconCls, blobCls }) => (
+                            <Card key={label} className="relative overflow-hidden">
+                                <div className={`absolute top-0 end-0 w-20 h-20 ${blobCls} rounded-bl-full`} />
+                                <CardContent className="relative p-3">
+                                    <div className="flex items-start justify-between">
+                                        <div className="min-w-0 pe-1">
+                                            <p className="text-xs font-medium text-muted-foreground mb-1">{label}</p>
+                                            <p className="text-sm font-bold text-foreground truncate leading-snug font-mono">{value}</p>
+                                        </div>
+                                        <div className={`relative z-10 p-2 ${blobCls} rounded-lg mt-0.5 flex-shrink-0`}>
+                                            <Icon className={`h-4 w-4 ${iconCls}`} />
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
                         ))}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 rounded-xl flex items-center justify-center">
-                    <div className="text-center text-muted-foreground">
-                      <Package className="h-20 w-20 mx-auto mb-4 text-gray-400" />
-                      <p className="text-sm font-medium">{t('No image available')}</p>
                     </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
 
-          {/* Product Details */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Quick Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">{t('Price')}</p>
-                      <h3 className="mt-2 text-lg font-bold leading-none">{formatCurrency(product.price)}</h3>
-                    </div>
-                    <div className="rounded-full bg-green-100 p-4">
-                      <DollarSign className="h-5 w-5 text-green-600" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                    {/* Basic Information + Additional Information — side by side */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <Card className="shadow-sm">
+                            <CardHeader className="border-b py-3.5 px-5">
+                                <CardTitle className="flex items-center text-base font-semibold">
+                                    <FileText className="h-4 w-4 me-2 text-muted-foreground" />
+                                    {t('Basic Information')}
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-5 space-y-4">
+                                <div className="space-y-0.5">
+                                    <p className="text-xs font-medium text-muted-foreground">{t('Status')}</p>
+                                    <div>
+                                        <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                            product.status === 'active'
+                                                ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-900/30 dark:text-green-400'
+                                                : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-900/30 dark:text-red-400'
+                                        }`}>
+                                            {product.status === 'active' ? t('Active') : t('Inactive')}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="space-y-0.5">
+                                    <p className="text-xs font-medium text-muted-foreground">{t('SKU')}</p>
+                                    <p className="text-sm font-medium text-foreground font-mono">{product.sku || '—'}</p>
+                                </div>
+                              
+                                {product.tax && (
+                                    <div className="space-y-0.5">
+                                        <p className="text-xs font-medium text-muted-foreground">{t('Tax')}</p>
+                                        <p className="text-sm font-medium text-foreground">
+                                            {product.tax.name}{product.tax.type === 'percentage' ? ` (${product.tax.rate}%)` : ` (`}<span className="font-mono">{product.tax.type !== 'percentage' ? formatCurrency(product.tax.rate) : ''}</span>{product.tax.type !== 'percentage' ? `)` : ''}
+                                        </p>
+                                    </div>
+                                )}
+                            </CardContent>
+                        </Card>
 
-              <Card>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">{t('Stock')}</p>
-                      <h3 className="mt-2 text-lg font-bold leading-none">{product.stock_quantity}</h3>
+                        <Card className="shadow-sm">
+                            <CardHeader className="border-b py-3.5 px-5">
+                                <CardTitle className="flex items-center text-base font-semibold">
+                                    <Users className="h-4 w-4 me-2 text-muted-foreground" />
+                                    {t('Additional Information')}
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-5 space-y-4">
+                                <div>
+                                    <p className="text-xs font-medium text-muted-foreground mb-2">{t('Assigned To')}</p>
+                                    {product.assigned_user ? (
+                                        <div className="flex items-center gap-2">
+                                            <Avatar className="w-8 h-8 flex-shrink-0">
+                                                <AvatarImage src={product.assigned_user.avatar} alt={product.assigned_user.name} />
+                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">{getInitials(product.assigned_user.name || '')}</AvatarFallback>
+                                            </Avatar>
+                                            <div className="min-w-0">
+                                                <p className="text-sm font-medium text-foreground truncate">{product.assigned_user.name}</p>
+                                                {product.assigned_user.email && <p className="text-xs text-muted-foreground truncate">{product.assigned_user.email}</p>}
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <p className="text-sm text-muted-foreground">{t('Unassigned')}</p>
+                                    )}
+                                </div>
+                                <div>
+                                    <p className="text-xs font-medium text-muted-foreground mb-2">{t('Created By')}</p>
+                                    {product.creator ? (
+                                        <div className="flex items-center gap-2">
+                                            <Avatar className="w-8 h-8 flex-shrink-0">
+                                                <AvatarImage src={product.creator.avatar} alt={product.creator.name} />
+                                                <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">{getInitials(product.creator.name || '')}</AvatarFallback>
+                                            </Avatar>
+                                            <div className="min-w-0">
+                                                <p className="text-sm font-medium text-foreground truncate">{product.creator.name}</p>
+                                                {product.creator.email && <p className="text-xs text-muted-foreground truncate">{product.creator.email}</p>}
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <p className="text-sm text-muted-foreground">{t('Unknown')}</p>
+                                    )}
+                                </div>
+                            </CardContent>
+                        </Card>
                     </div>
-                    <div className="rounded-full bg-blue-100 p-4">
-                      <Archive className="h-5 w-5 text-blue-600" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
 
-              <Card>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">{t('Category')}</p>
-                      <h3 className="mt-2 text-lg font-bold leading-tight">{product.category?.name || t('-')}</h3>
-                    </div>
-                    <div className="rounded-full bg-purple-100 p-4">
-                      <Tag className="h-5 w-5 text-purple-600" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">{t('Brand')}</p>
-                      <h3 className="mt-2 text-lg font-bold leading-tight">{product.brand?.name || t('-')}</h3>
-                    </div>
-                    <div className="rounded-full bg-orange-100 p-4">
-                      <Building className="h-5 w-5 text-orange-600" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Detailed Information */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Basic Information */}
-              <Card className="shadow-sm">
-                <CardHeader className="bg-gray-50 dark:bg-gray-800 border-b">
-                  <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                    <Package className="h-5 w-5" />
-                    {t('Basic Information')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-6 space-y-4">
-                  <div className="grid grid-cols-1 gap-4">
-                    <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                      <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">{t('Product Name')}</label>
-                      <p className="text-sm font-medium mt-1">{product.name}</p>
-                    </div>
-                    <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                      <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">{t('SKU')}</label>
-                      <p className="text-sm font-medium mt-1 font-mono">{product.sku}</p>
-                    </div>
+                    {/* Description */}
                     {product.description && (
-                      <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                        <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">{t('Description')}</label>
-                        <p className="text-sm mt-1 whitespace-pre-line leading-relaxed">{product.description}</p>
-                      </div>
+                        <Card className="shadow-sm">
+                            <CardHeader className="border-b py-3.5 px-5">
+                                <CardTitle className="flex items-center text-lg font-semibold">
+                                    <FileText className="h-5 w-5 me-3 text-muted-foreground" />
+                                    {t('Description')}
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-0">
+                                <div className="px-5 py-4 max-h-[150px] overflow-y-auto" style={{ scrollbarGutter: 'stable' }}>
+                                    <p className="text-sm text-muted-foreground whitespace-pre-line leading-relaxed">{product.description}</p>
+                                </div>
+                            </CardContent>
+                        </Card>
                     )}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Additional Details */}
-              <Card className="shadow-sm">
-                <CardHeader className="bg-gray-50 dark:bg-gray-800 border-b">
-                  <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                    <User className="h-5 w-5" />
-                    {t('Additional Details')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-6 space-y-4">
-                  <div className="grid grid-cols-1 gap-4">
-                    <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                      <div className="flex items-center gap-2">
-                        <Tag className="h-4 w-4 text-gray-500" />
-                        <span className="text-sm font-medium">{t('Tax')}</span>
-                      </div>
-                      <span className="text-sm">{product.tax ? `${product.tax.name} (${product.tax.type === 'percentage' ? product.tax.rate+'%' : formatCurrency(product?.tax?.rate)})` : t('-')}</span>
-                    </div>
-                    <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                      <div className="flex items-center gap-2">
-                        <User className="h-4 w-4 text-gray-500" />
-                        <span className="text-sm font-medium">{t('Assigned To')}</span>
-                      </div>
-                      <span className="text-sm">{product.assigned_user?.name || t('Unassigned')}</span>
-                    </div>
-                    <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                      <div className="flex items-center gap-2">
-                        <User className="h-4 w-4 text-gray-500" />
-                        <span className="text-sm font-medium">{t('Created By')}</span>
-                      </div>
-                      <span className="text-sm">{product.creator?.name || t('-')}</span>
-                    </div>
-                    <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-gray-500" />
-                        <span className="text-sm font-medium">{t('Created At')}</span>
-                      </div>
-                      <span className="text-sm">{formatDate(product.created_at)}</span>
-                    </div>
-                    <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-gray-500" />
-                        <span className="text-sm font-medium">{t('Updated At')}</span>
-                      </div>
-                      <span className="text-sm">{formatDate(product.updated_at)}</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </PageTemplate>
-  );
+        </PageTemplate>
+    );
 }

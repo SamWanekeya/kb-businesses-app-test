@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use App\Models\Plan;
 use App\Models\User;
+use Illuminate\Validation\ValidationException;
 
 class CheckPlanAccess
 {
@@ -22,14 +23,24 @@ class CheckPlanAccess
             return $next($request);
         }
 
-        // Only company users need plan checks
-        if ($user->type !== 'company') {
-            $company = User::find($user->created_by);
-            if ($company && $company->type === 'company' && $company->isPlanExpired()) {
+       if ($user->type !== 'company') {
+               $company = User::find($user->created_by);
+            if ($company && $company->type === 'company' && !$company->hasActivePlan()) {
                 auth()->logout();
-                return redirect()->route('login')->with('error', __('Access denied. Only company users can access this area.'));
+                throw ValidationException::withMessages([
+                    'plan_expired' => __("Your company's plan has expired. Please contact your company to renew the plan."),
+                ]);
             }
         }
+
+
+        // if ($user->type !== 'company') {
+        //     $company = User::find($user->created_by);
+        //     if ($company && $company->type === 'company' && $company->isPlanExpired()) {
+        //         auth()->logout();
+        //         return redirect()->route('login')->with('error', __('Access denied. Only company users can access this area.'));
+        //     }
+        // }
 
         // Check if user needs plan subscription
         if ($user->needsPlanSubscription()) {
@@ -50,6 +61,7 @@ class CheckPlanAccess
                         'processed_at' => now()
                     ];
                     createPlanOrder($data);
+                    return $next($request);
                 } else {
                     $user->update([
                         'plan_id' => null,
@@ -57,13 +69,13 @@ class CheckPlanAccess
                         'trial_expire_date' => null
                     ]);
                 }
-            } elseif ($user->isPlanExpired()) {
+            } elseif ($user->isPlanExpired() || !$user->hasActivePlan()) {
                 $message = __('Your plan has expired. Please renew your subscription.');
                 // Reset expired plan
                 $user->update([
                     'plan_id' => null,
+                    'plan_expire_date' => null,
                     'plan_is_active' => 0,
-                    'plan_expire_date' => null
                 ]);
             }
 

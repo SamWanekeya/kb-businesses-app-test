@@ -1,5 +1,5 @@
 // pages/plans/plan-request.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
@@ -18,17 +18,16 @@ export default function PlanRequestsPage() {
 
     // State
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
-    const [selectedStatus, setSelectedStatus] = useState(pageFilters.status || '_empty_');
-    const [showFilters, setShowFilters] = useState(false);
+    const [selectedStatus, setSelectedStatus] = useState(pageFilters.status || 'all');
 
     // Check if any filters are active
     const hasActiveFilters = () => {
-        return selectedStatus !== '_empty_' || searchTerm !== '';
+        return selectedStatus !== 'all' || searchTerm !== '';
     };
 
     // Count active filters
     const activeFilterCount = () => {
-        return (selectedStatus !== '_empty_' ? 1 : 0) +
+        return (selectedStatus !== 'all' ? 1 : 0) +
             (searchTerm !== '' ? 1 : 0);
     };
 
@@ -41,7 +40,7 @@ export default function PlanRequestsPage() {
         router.get(route('plan-requests.index'), {
             page: 1,
             search: searchTerm || undefined,
-            status: selectedStatus !== '_empty_' ? selectedStatus : undefined,
+            status: selectedStatus !== 'all' ? selectedStatus : undefined,
             ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
             ...(pageFilters.per_page && { per_page: pageFilters.per_page }),
         }, { preserveState: true, preserveScroll: true });
@@ -55,7 +54,7 @@ export default function PlanRequestsPage() {
             sort_direction: direction,
             page: 1,
             search: searchTerm || undefined,
-            status: selectedStatus !== '_empty_' ? selectedStatus : undefined,
+            status: selectedStatus !== 'all' ? selectedStatus : undefined,
             per_page: pageFilters.per_page
         }, { preserveState: true, preserveScroll: true });
     };
@@ -118,12 +117,17 @@ export default function PlanRequestsPage() {
         }
     };
 
+    const [pageInitialState, setPageInitialState] = useState(true);
+     useEffect(() => {
+        if (!pageInitialState) applyFilters();
+        setPageInitialState(false);
+    }, [selectedStatus,searchTerm]);  
+
+
     const handleResetFilters = () => {
         setSearchTerm('');
-        setSelectedStatus('_empty_');
-        setShowFilters(false);
-
-        router.get(route('plan-requests.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
+        setSelectedStatus('all');
+        router.get(route('plan-requests.index'));
     };
 
     const breadcrumbs = [
@@ -200,7 +204,8 @@ export default function PlanRequestsPage() {
             key: 'created_at',
             label: t('Request Date'),
             sortable: true,
-            render: (value) => window.appSettings?.formatDateTime(value, false) || '-'
+            type: 'date',
+            // render: (value) => window.appSettings?.formatDateTime(value, false) || '-'
         }
     ];
 
@@ -227,7 +232,7 @@ export default function PlanRequestsPage() {
 
     // Prepare status options for filter
     const statusOptions = [
-        { value: '_empty_', label: t('All Status') },
+        { value: 'all', label: t('All Status') },
         { value: 'pending', label: t('Pending') },
         { value: 'approved', label: t('Approved') },
         { value: 'rejected', label: t('Rejected') }
@@ -238,10 +243,12 @@ export default function PlanRequestsPage() {
             title={t('Plan Requests')}
             url="/plan-requests"
             breadcrumbs={breadcrumbs}
+            // description={t('View and manage all plan requests from companies.')}
+            description={isSuperAdmin ? t('View and manage all plan requests from companies.') : t('View your plan requests.')}
             noPadding
         >
             {/* Search and filters section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+           <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -256,22 +263,9 @@ export default function PlanRequestsPage() {
                             options: statusOptions
                         }
                     ]}
-                    showFilters={showFilters}
-                    setShowFilters={setShowFilters}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
                     onResetFilters={handleResetFilters}
-                    onApplyFilters={applyFilters}
-                    currentPerPage={pageFilters.per_page?.toString() || "10"}
-                    onPerPageChange={(value) => {
-                        router.get(route('plan-requests.index'), {
-                            page: 1,
-                            per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
-                            search: searchTerm || undefined,
-                            status: selectedStatus !== '_empty_' ? selectedStatus : undefined,
-                            ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
-                        }, { preserveState: true, preserveScroll: true });
-                    }}
                 />
             </div>
 
@@ -297,6 +291,16 @@ export default function PlanRequestsPage() {
                     links={planRequests?.links}
                     entityName={t("plan requests")}
                     onPageChange={(url) => router.get(url)}
+                    currentPerPage={pageFilters.per_page?.toString() || "10"}
+                    onPerPageChange={(value) => {
+                        router.get(route('plan-requests.index'), {
+                            page: 1,
+                            per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
+                            search: searchTerm || undefined,
+                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                            ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+                        }, { preserveState: true, preserveScroll: true });
+                    }}
                 />
             </div>
         </PageTemplate>

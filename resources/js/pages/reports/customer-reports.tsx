@@ -44,17 +44,20 @@ export default function CustomerReports() {
     },
     {
       title: t('Contact Lifetime Value'),
-      value: window.appSettings?.formatCurrency(summary.contact_lifetime_value) || `$${summary.contact_lifetime_value.toLocaleString()}`,
+      value: <span className="font-mono">{window.appSettings?.formatCurrency(summary.contact_lifetime_value) || `$${summary.contact_lifetime_value.toLocaleString()}`}</span>,
       icon: <DollarSign className="h-6 w-6 text-orange-600" />,
       iconColor: 'bg-orange-100'
     }
   ];
 
   return (
-    <PageTemplate title={t("Contact Reports")} url="/reports/customers" breadcrumbs={breadcrumbs} noPadding>
+    <PageTemplate title={t("Contact Reports")}
+    description={t("View and analyze customer reports to track performance and engagement.")}
+    url="/reports/customers" breadcrumbs={breadcrumbs} noPadding>
+        <SummaryCards cards={summaryCards} />
       <ReportFilters filters={filters} />
       
-      <SummaryCards cards={summaryCards} />
+    
 
       <div className="grid grid-cols-1 gap-6 mb-6">
         <ChartCard title={t('Contact Growth')} 
@@ -112,7 +115,7 @@ export default function CustomerReports() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {contact.name}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-semibold">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-semibold font-mono">
                     {window.appSettings?.formatCurrency(contact.total_spent) || `$${contact.total_spent.toLocaleString()}`}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

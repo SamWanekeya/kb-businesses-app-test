@@ -8,7 +8,7 @@ import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Card } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Plus, Eye, Edit, Trash2, KeyRound, Lock, Unlock, ArrowUpRight, CreditCard, History, Info } from 'lucide-react';
+import { Plus, Eye, Edit, Trash2, KeyRound, Lock, Unlock, ArrowUpRight, CreditCard, History, Info, Calendar } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { toast } from '@/components/custom-toast';
 import { useInitials } from '@/hooks/use-initials';
@@ -36,7 +36,6 @@ export default function Companies() {
     const [startDate, setStartDate] = useState<Date | undefined>(pageFilters.start_date ? new Date(pageFilters.start_date) : undefined);
     const [endDate, setEndDate] = useState<Date | undefined>(pageFilters.end_date ? new Date(pageFilters.end_date) : undefined);
     const [selectedStatus, setSelectedStatus] = useState(pageFilters.status || 'all');
-    const [showFilters, setShowFilters] = useState(false);
 
     // Modal state
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -50,6 +49,14 @@ export default function Companies() {
 
 
     const [formMode, setFormMode] = useState<'create' | 'edit' | 'view'>('create');
+
+    const [pageInitialState, setPageInitialState] = useState(true);
+
+    useEffect(() => {
+        if (!pageInitialState) applyFilters();
+        setPageInitialState(false);
+    }, [selectedStatus,startDate,endDate,searchTerm]);
+
 
     // Check if any filters are active
     const hasActiveFilters = () => {
@@ -377,11 +384,15 @@ export default function Companies() {
             key: 'created_at',
             label: t('Created At'),
             sortable: true,
-            render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
+            render: (value: string) => (
+                <div className="flex items-center gap-1.5 text-gray-500 whitespace-nowrap">
+                    <Calendar className="h-3.5 w-3.5 shrink-0" />
+                    <span>{window.appSettings?.formatDateTime(value, false) || '-'}</span>
+                </div>
+            )
         }
     ];
 
-    // Define table actions
     const actions = [
         {
             label: t('Login as Company'),
@@ -430,13 +441,14 @@ export default function Companies() {
     return (
         <PageTemplate
             title={t("Companies")}
+            description={t("Manage and view all companies in the system.")}
             url="/companies"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
             noPadding
         >
             {/* Search and filters section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -469,25 +481,10 @@ export default function Companies() {
                             onChange: (date) => setEndDate(date)
                         }
                     ]}
-                    showFilters={showFilters}
-                    setShowFilters={setShowFilters}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
                     onResetFilters={handleResetFilters}
-                    onApplyFilters={applyFilters}
-                    currentPerPage={pageFilters.per_page?.toString() || "10"}
-                    onPerPageChange={(value) => {
-                        router.get(route('companies.index'), {
-                            view: activeView,
-                            page: 1,
-                            per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
-                            search: searchTerm || undefined,
-                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                            start_date: startDate ? startDate.toISOString().split('T')[0] : undefined,
-                            end_date: endDate ? endDate.toISOString().split('T')[0] : undefined,
-                            ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
-                        }, { preserveState: true, preserveScroll: true });
-                    }}
+
                     showViewToggle={true}
                     activeView={activeView}
                     onViewChange={(view) => {
@@ -536,6 +533,19 @@ export default function Companies() {
                         links={companies?.links}
                         entityName={t("companies")}
                         onPageChange={(url) => router.get(url)}
+                        currentPerPage={pageFilters.per_page?.toString() || "10"}
+                        onPerPageChange={(value) => {
+                            router.get(route('companies.index'), {
+                                view: activeView,
+                                page: 1,
+                                per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
+                                search: searchTerm || undefined,
+                                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                start_date: startDate ? startDate.toISOString().split('T')[0] : undefined,
+                                end_date: endDate ? endDate.toISOString().split('T')[0] : undefined,
+                                ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+                            }, { preserveState: true, preserveScroll: true });
+                        }}
                     />
                 </div>
             ) : (
@@ -620,7 +630,7 @@ export default function Companies() {
                                                         onClick={() => handleAction('login-as', company)}
                                                         className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20"
                                                     >
-                                                        <ArrowUpRight className="h-4 w-4" />
+                                                        <ArrowUpRight className="h-4 w-4 text-gray-500" />
                                                     </Button>
                                                 </TooltipTrigger>
                                                 <TooltipContent>{t("Login as Company")}</TooltipContent>
@@ -634,7 +644,7 @@ export default function Companies() {
                                                         onClick={() => handleAction('company-info', company)}
                                                         className="h-8 w-8 p-0 text-gray-600 hover:text-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"
                                                     >
-                                                        <Info className="h-4 w-4" />
+                                                        <Info className="h-4 w-4 text-gray-500" />
                                                     </Button>
                                                 </TooltipTrigger>
                                                 <TooltipContent>{t("Company Info")}</TooltipContent>
@@ -648,7 +658,7 @@ export default function Companies() {
                                                         onClick={() => handleAction('edit', company)}
                                                         className="h-8 w-8 p-0 text-amber-600 hover:text-amber-700 hover:bg-amber-50 dark:hover:bg-amber-900/20"
                                                     >
-                                                        <Edit className="h-4 w-4" />
+                                                        <Edit className="h-4 w-4 text-gray-500" />
                                                     </Button>
                                                 </TooltipTrigger>
                                                 <TooltipContent>{t("Edit")}</TooltipContent>
@@ -668,19 +678,19 @@ export default function Companies() {
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end" className="w-48 z-50" sideOffset={5}>
                                                 <DropdownMenuItem onClick={() => handleAction('reset-password', company)}>
-                                                    <KeyRound className="h-4 w-4 mr-2" />
+                                                    <KeyRound className="h-4 w-4 mr-2 text-gray-500" />
                                                     <span>{t("Reset Password")}</span>
                                                 </DropdownMenuItem>
                                                 <DropdownMenuItem onClick={() => handleAction('toggle-status', company)}>
                                                     {company.status === 'active' ?
-                                                        <Lock className="h-4 w-4 mr-2" /> :
-                                                        <Unlock className="h-4 w-4 mr-2" />
+                                                        <Lock className="h-4 w-4 mr-2 text-gray-500" /> :
+                                                        <Unlock className="h-4 w-4 mr-2 text-gray-500" />
                                                     }
                                                     <span>{company.status === 'active' ? t("Disable Login") : t("Enable Login")}</span>
                                                 </DropdownMenuItem>
                                                 <DropdownMenuSeparator />
                                                 <DropdownMenuItem onClick={() => handleAction('delete', company)} className="text-red-600 focus:text-red-600">
-                                                    <Trash2 className="h-4 w-4 mr-2" />
+                                                    <Trash2 className="h-4 w-4 mr-2 text-gray-500" />
                                                     <span>{t("Delete")}</span>
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
@@ -721,6 +731,18 @@ export default function Companies() {
                                 links={companies?.links}
                                 entityName={t("companies")}
                                 onPageChange={(url) => router.get(url)}
+                                perPageOptions={[12, 24, 48, 96]}
+                                currentPerPage={pageFilters.per_page?.toString() || '12'}
+                                onPerPageChange={(value) => {
+                                    router.get(route('companies.index'), {
+                                        view: activeView, page: 1,
+                                        search: searchTerm || undefined,
+                                        status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                        sort_field: pageFilters.sort_field || undefined,
+                                        sort_direction: pageFilters.sort_direction || undefined,
+                                        ...(parseInt(value) !== 12 && { per_page: parseInt(value) }),
+                                    }, { preserveState: true, preserveScroll: true });
+                                }}
                             />
                         </div>
                     </div>

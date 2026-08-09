@@ -53,11 +53,14 @@ export default function LeadReports() {
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
   return (
-    <PageTemplate title={t("Lead Reports")} url="/reports/leads" breadcrumbs={breadcrumbs} noPadding>
+    <PageTemplate title={t("Lead Reports")}
+    description={t("View and analyze lead reports to track performance and conversion rates.")}
+    url="/reports/leads" breadcrumbs={breadcrumbs} noPadding>
+         <SummaryCards cards={summaryCards} />
+
       <ReportFilters filters={filters} />
 
-      <SummaryCards cards={summaryCards} />
-
+   
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <ChartCard title={t('Lead Trend')}
           actions={

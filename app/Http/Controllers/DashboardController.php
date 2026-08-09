@@ -2,12 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-use App\Models\User;
+use App\Models\Announcement;
+use App\Models\Asset;
+use App\Models\AttendanceRecord;
+use App\Models\Branch;
+use App\Models\Candidate;
+use App\Models\Department;
+use App\Models\Employee;
+use App\Models\EmployeeContract;
+use App\Models\EmployeeTraining;
+use App\Models\Holiday;
+use App\Models\JobPosting;
+use App\Models\LeaveApplication;
+use App\Models\LeaveType;
+use App\Models\Meeting;
+use App\Models\Coupon;
+use App\Models\PayrollRun;
 use App\Models\Plan;
 use App\Models\PlanOrder;
-use App\Models\Coupon;
+use App\Models\PlanRequest;
+use App\Models\Shift;
+use App\Models\User;
+use App\Models\Warning;
+use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 
 
@@ -80,190 +97,135 @@ class DashboardController extends Controller
 
     private function renderSuperAdminDashboard()
     {
+        $revenueYear = (int) request('revenueYear', now()->year);
+        $companiesYear = (int) request('companiesYear', now()->year);
+
         $totalCompanies = User::where('type', 'company')->count();
-        $totalUsers = User::where('type', '!=', 'superadmin')->count();
+        $totalActivePlanCompanies = User::where('type', 'company')->where('plan_is_active', '1')->count();
+        $totalUsers = User::where('type', '!=', 'superadmin')->where('type', '!=', 'super admin')->count();
+        $totalRevenue = PlanOrder::where('status', 'approved')->sum('final_price') ?? 0;
         $activePlans = Plan::where('is_plan_enable', 'on')->count();
-        $activeCoupons = isDemo() ? Coupon::count() : (Coupon::where('status', 1)->whereNull('expiry_date')
-            ->orWhereDate('expiry_date', '>', \Carbon\Carbon::today())
-            ->count());
-        $totalSubscriptions = 0;
-        $totalRevenue = 0;
+        $pendingRequests = PlanRequest::where('status', 'pending')->count();
+        $activeCoupons = Coupon::where('status', true)->count();
 
-        try {
-            $totalSubscriptions = PlanOrder::where('status', 'approved')->count();
-            $totalRevenue = PlanOrder::where('status', 'approved')->sum('final_price') ?? 0;
-        } catch (\Exception $e) {
-            // PlanOrder table might not exist or be empty
-        }
-
-        $activeCompanies = User::where('type', 'company')->where('plan_is_active', 1)->count();
-        $inactiveCompanies = $totalCompanies - $activeCompanies;
-
-        $currentMonthCompanies = User::where('type', 'company')
-            ->whereMonth('created_at', now()->month)
-            ->whereYear('created_at', now()->year)
-            ->count();
-        $previousMonthCompanies = User::where('type', 'company')
-            ->whereMonth('created_at', now()->subMonth()->month)
-            ->whereYear('created_at', now()->subMonth()->year)
-            ->count();
-        $monthlyGrowth = isDemo() ? 50 : ($previousMonthCompanies > 0
-            ? round((($currentMonthCompanies - $previousMonthCompanies) / $previousMonthCompanies) * 100, 1)
-            : ($currentMonthCompanies > 0 ? 100 : 0));
-
-        $companyGrowthData = [];
-        $revenueData = [];
-        for ($i = 5; $i >= 0; $i--) {
-            $date = now()->subMonths($i);
-            $companiesCount = User::where('type', 'company')
-                ->whereDate('created_at', '<=', $date->endOfMonth())
-                ->count();
-
-            $monthRevenue = 0;
-            try {
-                $monthRevenue = PlanOrder::where('status', 'approved')
-                    ->whereMonth('created_at', $date->month)
-                    ->whereYear('created_at', $date->year)
-                    ->sum('final_price') ?? 0;
-            } catch (\Exception $e) {
-                // Handle missing table
-            }
-
-            $companyGrowthData[] = ['month' => $date->format('M'), 'companies' => $companiesCount];
-            $revenueData[] = ['month' => $date->format('M'), 'revenue' => $monthRevenue];
-        }
-
-        $subscriptionDistribution = [];
-        try {
-            $plans = Plan::where('is_plan_enable', 'on')->get();
-            $colors = ['#3b82f6', '#10b77f', '#f59e0b', '#ef4444', '#8b5cf6'];
-
-            foreach ($plans as $index => $plan) {
-                $userCount = User::where('plan_id', $plan->id)->count();
-                if ($userCount > 0) {
-                    $subscriptionDistribution[] = [
-                        'name' => $plan->name,
-                        'value' => $userCount,
-                        'color' => $colors[$index % count($colors)]
-                    ];
-                }
-            }
-        } catch (\Exception $e) {
-            // Handle missing Plan table or relationship
-        }
-
-        $recentCompanies = User::where('type', 'company')
-            ->latest()
-            ->take(2)
-            ->get(['id', 'name', 'created_at']);
-
-        $recentOrders = collect();
-        $recentPlanRequests = collect();
-        try {
-            $recentOrders = PlanOrder::where('status', 'approved')
-                ->with('user:id,name', 'plan:id,name')
-                ->latest()
-                ->take(2)
-                ->get(['id', 'user_id', 'plan_id', 'final_price', 'created_at']);
-
-            $recentPlanRequests = \App\Models\PlanRequest::with('user:id,name', 'plan:id,name')
-                ->latest()
-                ->take(2)
-                ->get(['id', 'user_id', 'plan_id', 'status', 'created_at']);
-        } catch (\Exception $e) {
-            // Handle missing tables
-        }
-
-        $recentActivity = [];
-        foreach ($recentCompanies as $company) {
-            $recentActivity[] = [
-                'id' => $company->id,
-                'type' => 'company',
-                'message' => 'New company registered: ' . $company->name,
-                'time' => $company->created_at->diffForHumans(),
-                'status' => 'success',
-                'created_at' => $company->created_at
-            ];
-        }
-        foreach ($recentOrders as $order) {
-            $recentActivity[] = [
-                'id' => $order->id,
-                'type' => 'subscription',
-                'message' => ($order->user->name ?? 'Company') . ' subscribed to ' . ($order->plan->name ?? 'Plan') . ' ($' . $order->final_price . ')',
-                'time' => $order->created_at->diffForHumans(),
-                'status' => 'success',
-                'created_at' => $order->created_at
-            ];
-        }
-        foreach ($recentPlanRequests as $request) {
-            $statusColor = $request->status === 'approved' ? 'success' : ($request->status === 'rejected' ? 'error' : 'warning');
-            $recentActivity[] = [
-                'id' => $request->id,
-                'type' => 'plan',
-                'message' => 'Plan request ' . $request->status . ': ' . ($request->plan->name ?? 'Plan') . ' by ' . ($request->user->name ?? 'User'),
-                'time' => $request->created_at->diffForHumans(),
-                'status' => $statusColor,
-                'created_at' => $request->created_at
-            ];
-        }
-
-        // Sort by created_at if available
-        usort($recentActivity, function ($a, $b) {
-            $timeA = isset($a['created_at']) ? strtotime($a['created_at']) : 0;
-            $timeB = isset($b['created_at']) ? strtotime($b['created_at']) : 0;
-            return $timeB - $timeA;
-        });
-        $recentActivity = array_slice($recentActivity, 0, 4);
-
-        // Top performing plans
-        $topPlans = [];
-        try {
-            $plans = Plan::where('is_plan_enable', 'on')->get();
-            foreach ($plans as $plan) {
-                $subscribers = User::where('plan_id', $plan->id)->count();
-                $revenue = PlanOrder::where('plan_id', $plan->id)
-                    ->where('status', 'approved')
-                    ->sum('final_price') ?? 0;
-
-                $topPlans[] = [
-                    'name' => $plan->name,
-                    'subscribers' => $subscribers,
-                    'revenue' => $revenue
+        if (isDemo()) {
+            $demoRevenue = [4200, 5800, 3900, 7100, 6400, 8900, 7600, 9200, 8100, 10500, 9800, 12400];
+            $monthlyRevenue = [];
+            for ($i = 1; $i <= 12; $i++) {
+                $monthlyRevenue[] = [
+                    'month' => date('F Y', mktime(0, 0, 0, $i, 1, $revenueYear)),
+                    'short' => date('M', mktime(0, 0, 0, $i, 1, $revenueYear)),
+                    'revenue' => (float) $demoRevenue[$i - 1],
                 ];
             }
-
-            // Sort by revenue descending and take top 5
-            usort($topPlans, function ($a, $b) {
-                return $b['revenue'] <=> $a['revenue'];
-            });
-            $topPlans = array_slice($topPlans, 0, 5);
-        } catch (\Exception $e) {
-            // Handle missing relationships
+        } else {
+            $monthlyRevenue = [];
+            for ($i = 1; $i <= 12; $i++) {
+                $revenue = PlanOrder::where('status', 'approved')
+                    ->whereMonth('processed_at', $i)
+                    ->whereYear('processed_at', $revenueYear)
+                    ->sum('final_price') ?? 0;
+                $monthlyRevenue[] = [
+                    'month' => date('F Y', mktime(0, 0, 0, $i, 1, $revenueYear)),
+                    'short' => date('M', mktime(0, 0, 0, $i, 1, $revenueYear)),
+                    'revenue' => (float) $revenue,
+                ];
+            }
         }
+
+        if (isDemo()) {
+            $demoCompanies = [3, 5, 4, 7, 6, 9, 8, 11, 7, 13, 10, 15];
+            $monthlyCompanies = [];
+            for ($i = 1; $i <= 12; $i++) {
+                $monthlyCompanies[] = [
+                    'month' => date('F Y', mktime(0, 0, 0, $i, 1, $companiesYear)),
+                    'short' => date('M', mktime(0, 0, 0, $i, 1, $companiesYear)),
+                    'count' => $demoCompanies[$i - 1],
+                ];
+            }
+        } else {
+            $monthlyCompanies = [];
+            for ($i = 1; $i <= 12; $i++) {
+                $count = User::where('type', 'company')
+                    ->whereMonth('created_at', $i)
+                    ->whereYear('created_at', $companiesYear)
+                    ->count();
+                $monthlyCompanies[] = [
+                    'month' => date('F Y', mktime(0, 0, 0, $i, 1, $companiesYear)),
+                    'short' => date('M', mktime(0, 0, 0, $i, 1, $companiesYear)),
+                    'count' => $count,
+                ];
+            }
+        }
+
+        $firstCompanyYear = User::where('type', 'company')->min('created_at')
+            ? (int) date('Y', strtotime(User::where('type', 'company')->min('created_at')))
+            : now()->year;
+        $availableCompanyYears = range(now()->year, $firstCompanyYear);
+
+        if (isDemo()) {
+            $monthlyGrowth = 55;
+        } else {
+            $currentMonthCompanies = User::where('type', 'company')
+                ->whereMonth('created_at', now()->month)
+                ->whereYear('created_at', now()->year)
+                ->count();
+            $previousMonthCompanies = User::where('type', 'company')
+                ->whereMonth('created_at', now()->subMonth()->month)
+                ->whereYear('created_at', now()->subMonth()->year)
+                ->count();
+            $monthlyGrowth = $previousMonthCompanies > 0
+                ? round((($currentMonthCompanies - $previousMonthCompanies) / $previousMonthCompanies) * 100, 1)
+                : ($currentMonthCompanies > 0 ? 100 : 0);
+        }
+
+        $availableYears = range(now()->year + 2, now()->year - 4);
 
         $dashboardData = [
             'stats' => [
-                'totalCompanies' => $totalCompanies,
-                'totalUsers' => $totalUsers,
-                'activePlans' => $activePlans,
-                'activeCoupons' => $activeCoupons,
-                'totalSubscriptions' => $totalSubscriptions,
-                'totalRevenue' => $totalRevenue,
-                'activeCompanies' => $activeCompanies,
-                'inactiveCompanies' => $inactiveCompanies,
-                'monthlyGrowth' => $monthlyGrowth,
+                'totalCompanies'          => $totalCompanies,
+                'totalActivePlanCompanies' => $totalActivePlanCompanies,
+                'totalUsers'              => $totalUsers,
+                'totalRevenue'            => $totalRevenue,
+                'activePlans'             => $activePlans,
+                'pendingRequests'         => $pendingRequests,
+                'monthlyGrowth'           => $monthlyGrowth,
+                'activeCoupons'           => $activeCoupons,
             ],
-            'charts' => [
-                'companyGrowth' => $companyGrowthData,
-                'subscriptionDistribution' => $subscriptionDistribution,
-                'revenueByMonth' => $revenueData,
-            ],
-            'recentActivity' => $recentActivity,
-            'topPlans' => $topPlans
+            'recentActivity' => User::where('type', 'company')
+                ->orderBy('created_at', 'desc')
+                ->take(5)
+                ->get(['id', 'name', 'email', 'avatar', 'created_at'])
+                ->map(function ($company) {
+                    return [
+                        'id'            => $company->id,
+                        'name'          => $company->name,
+                        'email'         => $company->email,
+                        'avatar'        => check_file($company->getRawOriginal('avatar')) ? get_file($company->getRawOriginal('avatar')) : null,
+                        'registered_at' => $company->created_at->diffForHumans(),
+                        'status'        => 'active',
+                    ];
+                }),
+            'monthlyRevenue'       => $monthlyRevenue,
+            'revenueYear'          => $revenueYear,
+            'availableYears'       => $availableYears,
+            'monthlyCompanies'     => $monthlyCompanies,
+            'availableCompanyYears' => $availableCompanyYears,
+            'topPlans' => Plan::withCount('users')
+                ->orderBy('users_count', 'desc')
+                ->take(3)
+                ->get()
+                ->map(function ($plan) {
+                    return [
+                        'name'        => $plan->name,
+                        'subscribers' => $plan->users_count,
+                        'revenue'     => $plan->users_count * $plan->price,
+                    ];
+                }),
         ];
 
-        return Inertia::render('superadmin/dashboard', [
-            'dashboardData' => $dashboardData
+        return Inertia::render('superadmin/dashboard', props: [
+            'dashboardData' => $dashboardData,
         ]);
     }
 
@@ -274,6 +236,7 @@ class DashboardController extends Controller
 
         $totalEmployees = User::where('created_by', $companyId)->count();
         $totalLeads = 0;
+        $totalOpportunities = 0;
         $totalSales = 0;
         $totalCustomers = 0;
         $totalProjects = 0;
@@ -282,6 +245,13 @@ class DashboardController extends Controller
         try {
             if (class_exists('\App\Models\Lead')) {
                 $totalLeads = \App\Models\Lead::where('created_by', $companyId)->count();
+            }
+        } catch (\Exception $e) {
+        }
+
+        try {
+            if (class_exists('\App\Models\Opportunity')) {
+                $totalOpportunities = \App\Models\Opportunity::where('created_by', $companyId)->count();
             }
         } catch (\Exception $e) {
         }
@@ -348,77 +318,45 @@ class DashboardController extends Controller
 
         $salesTrendsData = [];
         $leadConversionsData = [];
+        $revenueChartData = [];
         if (IsDemo()) {
-            $salesTrendsData = [
-                [
-                    "month" => "Jul",
-                    "sales" => 0
-                ],
-                [
-                    "month" => "Aug",
-                    "sales" => 12
-                ],
-                [
-                    "month" => "Sep",
-                    "sales" => 15
-                ],
-                [
-                    "month" => "Oct",
-                    "sales" => 10
-                ],
-                [
-                    "month" => "Nov",
-                    "sales" => 12
-                ],
-                [
-                    "month" => "Dec",
-                    "sales" => 13
-                ]
-            ];
-            $leadConversionsData = [
-                [
-                    "month" => "Jul",
-                    "leads" => 5,
-                    "conversions" => 5
-                ],
-                [
-                    "month" => "Aug",
-                    "leads" => 12,
-                    "conversions" => 10
-                ],
-                [
-                    "month" => "Sep",
-                    "leads" => 15,
-                    "conversions" => 17
-                ],
-                [
-                    "month" => "Oct",
-                    "leads" => 10,
-                    "conversions" => 8
-                ],
-                [
-                    "month" => "Nov",
-                    "leads" => 12,
-                    "conversions" => 14
-                ],
-                [
-                    "month" => "Dec",
-                    "leads" => 13,
-                    "conversions" => 13
-                ]
-            ];
+            $demoSales        = [3, 7, 5, 9, 6, 11, 8, 12, 10, 15, 13, 18];
+            $demoLeads        = [5, 9, 7, 12, 8, 14, 10, 16, 13, 18, 15, 20];
+            $demoConversions  = [3, 6, 5, 9, 6, 11, 8, 13, 10, 14, 12, 17];
+            $demoRevenue      = [1200, 2100, 1800, 3200, 2800, 4100, 3600, 4800, 4200, 5500, 4900, 6200];
+            for ($i = 1; $i <= 12; $i++) {
+                $salesTrendsData[] = [
+                    'month' => date('F', mktime(0, 0, 0, $i, 1)),
+                    'short' => date('M', mktime(0, 0, 0, $i, 1)),
+                    'sales' => $demoSales[$i - 1],
+                ];
+                $leadConversionsData[] = [
+                    'month'       => date('F', mktime(0, 0, 0, $i, 1)),
+                    'short'       => date('M', mktime(0, 0, 0, $i, 1)),
+                    'leads'       => $demoLeads[$i - 1],
+                    'conversions' => $demoConversions[$i - 1],
+                ];
+                $revenueChartData[] = [
+                    'month'   => date('F', mktime(0, 0, 0, $i, 1)),
+                    'short'   => date('M', mktime(0, 0, 0, $i, 1)),
+                    'revenue' => $demoRevenue[$i - 1],
+                ];
+            }
         } else {
-            for ($i = 5; $i >= 0; $i--) {
-                $date = now()->subMonths($i);
+            $chartYear = (int) request('chart_year', now()->year);
+            $leadYear  = (int) request('lead_year', now()->year);
+            for ($m = 1; $m <= 12; $m++) {
+                $date = \Carbon\Carbon::create($chartYear, $m, 1);
                 $monthlySales = 0;
                 $monthlyLeads = 0;
                 $monthlyConversions = 0;
+                $monthlyRevenue = 0;
 
                 try {
                     if (class_exists('\App\Models\SalesOrder')) {
                         $monthlySales = \App\Models\SalesOrder::where('created_by', $companyId)
-                            ->whereMonth('created_at', $date->month)
-                            ->whereYear('created_at', $date->year)
+                            ->whereMonth('created_at', $m)
+                            ->whereYear('created_at', $chartYear)
                             ->count();
                     }
                 } catch (\Exception $e) {
@@ -427,26 +365,38 @@ class DashboardController extends Controller
                 try {
                     if (class_exists('\App\Models\Lead')) {
                         $monthlyLeads = \App\Models\Lead::where('created_by', $companyId)
-                            ->whereMonth('created_at', $date->month)
-                            ->whereYear('created_at', $date->year)
+                            ->whereMonth('created_at', $m)
+                            ->whereYear('created_at', $leadYear)
                             ->count();
 
-                        // Converted leads (Lead → Account)
                         $monthlyConversions = \App\Models\Lead::where('created_by', $companyId)
                             ->where('is_converted', 1)
-                            ->whereMonth('updated_at', $date->month)
-                            ->whereYear('updated_at', $date->year)
+                            ->whereMonth('updated_at', $m)
+                            ->whereYear('updated_at', $leadYear)
                             ->count();
                     }
                 } catch (\Exception $e) {
                 }
 
-                $salesTrendsData[] = ['month' => $date->format('M'), 'sales' => $monthlySales];
+                try {
+                    if (class_exists('\App\Models\Invoice')) {
+                        $monthlyRevenue = \App\Models\Invoice::where('created_by', $companyId)
+                            ->whereIn('status', ['paid', 'partial_paid'])
+                            ->whereMonth('created_at', $m)
+                            ->whereYear('created_at', $chartYear)
+                            ->sum('total_amount') ?? 0;
+                    }
+                } catch (\Exception $e) {
+                }
+
+                $salesTrendsData[] = ['month' => $date->format('F'), 'short' => $date->format('M'), 'sales' => $monthlySales];
                 $leadConversionsData[] = [
-                    'month' => $date->format('M'),
+                    'month' => $date->format('F'),
+                    'short' => $date->format('M'),
                     'leads' => $monthlyLeads,
-                    'conversions' => $monthlyConversions
+                    'conversions' => $monthlyConversions,
                 ];
+                $revenueChartData[] = ['month' => $date->format('F'), 'short' => $date->format('M'), 'revenue' => (float) $monthlyRevenue];
             }
         }
 
@@ -515,8 +465,8 @@ class DashboardController extends Controller
         try {
             if (class_exists('\App\Models\Project')) {
                 $recentProjects = \App\Models\Project::where('created_by', $companyId)
+                    ->whereIn('status', ['active', 'in_progress', 'in progress'])
                     ->latest()
-                    ->take(5)
                     ->get(['id', 'name', 'status', 'created_at']);
             }
         } catch (\Exception $e) {
@@ -528,7 +478,7 @@ class DashboardController extends Controller
                     ->with('accountType:id,name')
                     ->latest()
                     ->take(5)
-                    ->get(['id', 'name', 'account_type_id', 'created_at']);
+                    ->get(['id', 'name', 'email', 'account_type_id', 'created_at']);
             }
         } catch (\Exception $e) {
         }
@@ -578,6 +528,7 @@ class DashboardController extends Controller
             'stats' => [
                 'totalEmployees' => $totalEmployees,
                 'totalLeads' => $totalLeads,
+                'totalOpportunities' => $totalOpportunities,
                 'totalSales' => $totalSales,
                 'totalCustomers' => $totalCustomers,
                 'totalProjects' => $totalProjects,
@@ -593,6 +544,7 @@ class DashboardController extends Controller
             'charts' => [
                 'salesTrends' => $salesTrendsData,
                 'leadConversions' => $leadConversionsData,
+                'revenueChart' => $revenueChartData,
                 'customerDistribution' => $customerDistribution,
                 'employeeDistribution' => $employeeDistribution,
             ],
@@ -627,6 +579,7 @@ class DashboardController extends Controller
                     return [
                         'id' => $customer->id,
                         'name' => $customer->name,
+                        'email' => $customer->email,
                         'type' => $customer->accountType->name ?? 'customer',
                         'created_at' => $customer->created_at->toISOString()
                     ];

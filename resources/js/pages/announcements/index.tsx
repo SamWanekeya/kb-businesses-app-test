@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router } from '@inertiajs/react';
-import { Plus, PanelsTopLeft } from 'lucide-react';
+import { Plus, PanelsTopLeft, LayoutGrid, CheckCircle, AlertCircle, Clock, Tag } from 'lucide-react';
 import { hasPermission } from '@/utils/authorization';
 import { CrudTable } from '@/components/CrudTable';
 import { CrudFormModal } from '@/components/CrudFormModal';
@@ -15,13 +15,25 @@ import { capitalize } from '@/utils/helper';
 
 export default function Announcements() {
     const { t } = useTranslation();
-    const { auth, announcements, categories = [], allCategories = [], filters: pageFilters = {} } = usePage().props as any;
+    const { auth, announcements, categories = [], allCategories = [], stats = {}, filters: pageFilters = {} } = usePage().props as any;
     const permissions = auth?.permissions || [];
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
     const [selectedCategory, setSelectedCategory] = useState(pageFilters.category || 'all');
     const [selectedStatus, setSelectedStatus] = useState(pageFilters.status || 'all');
-    const [showFilters, setShowFilters] = useState(false);
+
+    const handleTabChange = (status: string) => {
+        setSelectedStatus(status);
+        router.get(route('announcements.index'), {
+            search: searchTerm || undefined,
+            category: selectedCategory !== 'all' ? selectedCategory : undefined,
+            status: status !== 'all' ? status : undefined,
+            page: 1,
+            sort_field: pageFilters.sort_field || undefined,
+            sort_direction: pageFilters.sort_direction || undefined,
+            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+        }, { preserveState: true, preserveScroll: true });
+    };
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
@@ -41,20 +53,19 @@ export default function Announcements() {
         }, { preserveState: true, preserveScroll: true });
     };
 
-    const hasActiveFilters = () => {
-        return searchTerm !== '' || selectedCategory !== 'all' || selectedStatus !== 'all';
-    };
+    const hasActiveFilters = () => searchTerm !== '' || selectedCategory !== 'all';
 
-    const activeFilterCount = () => {
-        return (searchTerm ? 1 : 0) + (selectedCategory !== 'all' ? 1 : 0) + (selectedStatus !== 'all' ? 1 : 0);
-    };
+    const activeFilterCount = () => (searchTerm ? 1 : 0) + (selectedCategory !== 'all' ? 1 : 0);
+
+    const pageInitialState = useState(true);
+    useEffect(() => {
+        if (pageInitialState[0]) { pageInitialState[1](false); return; }
+        applyFilters();
+    }, [searchTerm, selectedCategory]);
 
     const handleResetFilters = () => {
-        setSearchTerm('');
-        setSelectedCategory('all');
-        setSelectedStatus('all');
-        setShowFilters(false);
-        router.get(route('announcements.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
+        setSearchTerm(''); setSelectedCategory('all');
+        router.get(route('announcements.index'), { status: selectedStatus !== 'all' ? selectedStatus : undefined });
     };
 
     const handleSort = (field: string) => {
@@ -171,8 +182,22 @@ export default function Announcements() {
     };
 
     const columns = [
-        { key: 'title', label: t('Title'), sortable: true },
-        { key: 'category', label: t('Category'), render: (value: any) => value?.name || '-' },
+        {
+            key: 'title',
+            label: t('Title'),
+            sortable: true,
+            render: (value: string, row: any) => (
+                <div className="flex flex-col gap-1">
+                    <span className="font-medium text-gray-900 dark:text-white">{value}</span>
+                    {row.category?.name && (
+                        <span className="inline-flex items-center gap-1 w-fit rounded-md px-2 py-1 text-[10px] font-medium bg-blue-50 text-blue-700 ring-1 ring-inset ring-gray-600/20">
+                            <Tag className="h-2.5 w-2.5" />
+                            {row.category.name}
+                        </span>
+                    )}
+                </div>
+            )
+        },
         {
             key: 'is_featured',
             label: t('Featured'),
@@ -185,7 +210,10 @@ export default function Announcements() {
             label: t('Status'),
             render: (value: string, row: any) => (getStatusBadge(value))
         },
-        { key: 'created_at', label: t('Created At'), sortable: true, render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-' }
+        { key: 'created_at', label: t('Created At'), sortable: true,
+            type: 'date',
+            //  render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-' 
+            }
     ];
 
     const actions = [
@@ -198,6 +226,7 @@ export default function Announcements() {
     return (
         <PageTemplate
             title={t("Announcements")}
+            description={t("Manage announcements.")}
             actions={[
                 ...(hasPermission(permissions, 'manage-announcements') ? [{
                     label: t('Dashboard View'),
@@ -212,8 +241,9 @@ export default function Announcements() {
                 }] : [])
             ]}
             breadcrumbs={[{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Announcements') }]}
+            noPadding
         >
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+            <div className="bg-white dark:bg-gray-900 rounded-t-lg shadow border border-gray-200 dark:border-gray-700">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -231,26 +261,64 @@ export default function Announcements() {
                                 ...allCategories.map((cat: any) => ({ value: cat.id.toString(), label: cat.name }))
                             ]
                         },
-                        {
-                            name: 'status',
-                            label: t('Status'),
-                            type: 'select' as const,
-                            value: selectedStatus,
-                            onChange: setSelectedStatus,
-                            options: [
-                                { value: 'all', label: t('All Status') },
-                                { value: 'active', label: t('Active') },
-                                { value: 'inactive', label: t('Inactive') },
-                                { value: 'expired', label: t('Expired') }
-                            ]
-                        }
                     ]}
-                    showFilters={showFilters}
-                    setShowFilters={setShowFilters}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
                     onResetFilters={handleResetFilters}
-                    onApplyFilters={applyFilters}
+                />
+            </div>
+
+            <div className="bg-white dark:bg-gray-900 rounded-b-lg shadow border border-gray-200 dark:border-gray-700 border-t-0 overflow-hidden mb-4">
+                {/* Status Tabs */}
+                <div className="flex items-center gap-1 px-4 border-b border-gray-200 dark:border-gray-700">
+                    {([
+                        { value: 'all',      label: t('All'),      count: stats.total    ?? 0, icon: <LayoutGrid className="h-3.5 w-3.5" /> },
+                        { value: 'active',   label: t('Active'),   count: stats.active   ?? 0, icon: <CheckCircle className="h-3.5 w-3.5" /> },
+                        { value: 'inactive', label: t('Inactive'), count: stats.inactive ?? 0, icon: <AlertCircle className="h-3.5 w-3.5" /> },
+                        { value: 'expired',  label: t('Expired'),  count: stats.expired  ?? 0, icon: <Clock className="h-3.5 w-3.5" /> },
+                    ] as const).map((tab) => (
+                        <button
+                            key={tab.value}
+                            onClick={() => handleTabChange(tab.value)}
+                            className={`flex items-center gap-1.5 px-3 py-2 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                                selectedStatus === tab.value
+                                    ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
+                                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                            }`}
+                        >
+                            {tab.icon}
+                            {tab.label}
+                            <span className={`ml-0.5 inline-flex items-center justify-center rounded-full px-1.5 py-0.5 text-xs font-semibold min-w-[1.25rem] ${
+                                selectedStatus === tab.value
+                                    ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400'
+                                    : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'
+                            }`}>{tab.count}</span>
+                        </button>
+                    ))}
+                </div>
+
+                <CrudTable
+                    data={announcements.data}
+                    columns={columns}
+                    actions={actions}
+                    from={announcements?.from || 1}
+                    onAction={handleAction}
+                    sortField={pageFilters.sort_field}
+                    sortDirection={pageFilters.sort_direction}
+                    onSort={handleSort}
+                    pagination={announcements}
+                    permissions={permissions}
+                />
+            </div>
+
+            <div className="mt-0 bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+                <Pagination
+                    from={announcements?.from || 0}
+                    to={announcements?.to || 0}
+                    total={announcements?.total || 0}
+                    links={announcements?.links}
+                    entityName={t('announcements')}
+                    onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
                     currentPerPage={pageFilters.per_page?.toString() || "10"}
                     onPerPageChange={(value) => {
                         router.get(route('announcements.index'), {
@@ -263,30 +331,6 @@ export default function Announcements() {
                             ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
                         }, { preserveState: true, preserveScroll: true });
                     }}
-                />
-            </div>
-
-            <CrudTable
-                data={announcements.data}
-                columns={columns}
-                actions={actions}
-                from={announcements?.from || 1}
-                onAction={handleAction}
-                sortField={pageFilters.sort_field}
-                sortDirection={pageFilters.sort_direction}
-                onSort={handleSort}
-                pagination={announcements}
-                permissions={permissions}
-            />
-
-            <div className="mt-4 bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
-                <Pagination
-                    from={announcements?.from || 0}
-                    to={announcements?.to || 0}
-                    total={announcements?.total || 0}
-                    links={announcements?.links}
-                    entityName={t('announcements')}
-                    onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
                 />
             </div>
 

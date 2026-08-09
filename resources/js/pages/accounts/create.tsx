@@ -114,6 +114,7 @@ export default function AccountCreate() {
     return (
         <PageTemplate
             title={t('Create Account')}
+            description={t('Fill in the details to create a new account')}
             breadcrumbs={breadcrumbs}
             actions={[{
                 label: t('Back'),
@@ -121,6 +122,7 @@ export default function AccountCreate() {
                 variant: 'outline',
                 onClick: () => window.history.back(),
             }]}
+            noPadding
         >
             <form onSubmit={handleSubmit} className="space-y-8 bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-6 rounded-lg border border-gray-200 dark:border-gray-700">
 

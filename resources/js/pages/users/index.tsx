@@ -37,7 +37,6 @@ export default function Users() {
     );
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
     const [selectedRole, setSelectedRole] = useState(pageFilters.role || 'all');
-    const [showFilters, setShowFilters] = useState(false);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -247,11 +246,16 @@ export default function Users() {
         });
     };
 
+    const pageInitialState = useState(true);
+    useEffect(() => {
+        if (pageInitialState[0]) { pageInitialState[1](false); return; }
+        applyFilters();
+    }, [searchTerm, selectedRole]);
+
     const handleResetFilters = () => {
         setSelectedRole('all');
         setSearchTerm('');
-        setShowFilters(false);
-        router.get(route('users.index'), { view: activeView, page: 1 }, { preserveState: true, preserveScroll: true });
+        router.get(route('users.index'), { view: activeView });
     };
 
     // Define page actions
@@ -321,7 +325,8 @@ export default function Users() {
             key: 'created_at',
             label: t('Joined'),
             sortable: true,
-            render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
+            type:'date',
+            // render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
         },
     ];
 
@@ -367,13 +372,14 @@ export default function Users() {
     return (
         <PageTemplate
             title={t("Users")}
+            description={t("Manage your users.")}
             url="/users"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
             noPadding
         >
             {/* Search and filters section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -395,24 +401,9 @@ export default function Users() {
                             ]
                         }
                     ]}
-                    showFilters={showFilters}
-                    setShowFilters={setShowFilters}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
                     onResetFilters={handleResetFilters}
-                    onApplyFilters={applyFilters}
-                    currentPerPage={pageFilters.per_page?.toString() || "10"}
-                    onPerPageChange={(value) => {
-                        router.get(route('users.index'), {
-                            view: activeView,
-                            page: 1,
-                            search: searchTerm || undefined,
-                            role: selectedRole !== 'all' ? selectedRole : undefined,
-                            sort_field: pageFilters.sort_field || undefined,
-                            sort_direction: pageFilters.sort_direction || undefined,
-                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
-                        }, { preserveState: true, preserveScroll: true });
-                    }}
                     showViewToggle={true}
                     activeView={activeView}
                     onViewChange={(view) => {
@@ -425,7 +416,7 @@ export default function Users() {
                             sort_field: pageFilters.sort_field || undefined,
                             sort_direction: pageFilters.sort_direction || undefined,
                             ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-                        }, { preserveState: true, preserveScroll: true });
+                        });
                     }}
                 />
             </div>
@@ -459,6 +450,17 @@ export default function Users() {
                         links={users?.links}
                         entityName={t("users")}
                         onPageChange={(url) => router.get(url)}
+                        currentPerPage={pageFilters.per_page?.toString() || "10"}
+                        onPerPageChange={(value) => {
+                            router.get(route('users.index'), {
+                                view: activeView, page: 1,
+                                search: searchTerm || undefined,
+                                role: selectedRole !== 'all' ? selectedRole : undefined,
+                                sort_field: pageFilters.sort_field || undefined,
+                                sort_direction: pageFilters.sort_direction || undefined,
+                                ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+                            }, { preserveState: true, preserveScroll: true });
+                        }}
                     />
                 </div>
             ) : (
@@ -509,7 +511,7 @@ export default function Users() {
                                                     <TooltipTrigger asChild>
                                                         <Button variant="ghost" size="sm" onClick={() => handleAction('view', user)}
                                                             className="h-8 w-8 p-0 text-blue-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20">
-                                                            <Eye className="h-4 w-4" />
+                                                            <Eye className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
                                                     <TooltipContent>{t('View')}</TooltipContent>
@@ -520,7 +522,7 @@ export default function Users() {
                                                     <TooltipTrigger asChild>
                                                         <Button variant="ghost" size="sm" onClick={() => handleAction('edit', user)}
                                                             className="h-8 w-8 p-0 text-amber-500 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/20">
-                                                            <Edit className="h-4 w-4" />
+                                                            <Edit className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
                                                     <TooltipContent>{t('Edit')}</TooltipContent>
@@ -531,7 +533,7 @@ export default function Users() {
                                                     <TooltipTrigger asChild>
                                                         <Button variant="ghost" size="sm" onClick={() => handleAction('reset-password', user)}
                                                             className="h-8 w-8 p-0 text-blue-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20">
-                                                            <KeyRound className="h-4 w-4" />
+                                                            <KeyRound className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
                                                     <TooltipContent>{t('Reset Password')}</TooltipContent>
@@ -542,7 +544,7 @@ export default function Users() {
                                                     <TooltipTrigger asChild>
                                                         <Button variant="ghost" size="sm" onClick={() => handleAction('toggle-status', user)}
                                                             className="h-8 w-8 p-0 text-amber-500 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/20">
-                                                            {user.status === 'active' ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />}
+                                                            {user.status === 'active' ? <Lock className="h-4 w-4 text-gray-500" /> : <Unlock className="h-4 w-4 text-gray-500" />}
                                                         </Button>
                                                     </TooltipTrigger>
                                                     <TooltipContent>{user.status === 'active' ? t('Disable User') : t('Enable User')}</TooltipContent>
@@ -553,7 +555,7 @@ export default function Users() {
                                                     <TooltipTrigger asChild>
                                                         <Button variant="ghost" size="sm" onClick={() => handleAction('delete', user)}
                                                             className="h-8 w-8 p-0 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20">
-                                                            <Trash2 className="h-4 w-4" />
+                                                            <Trash2 className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
                                                     <TooltipContent>{t('Delete')}</TooltipContent>
@@ -604,6 +606,18 @@ export default function Users() {
                                 links={users?.links}
                                 entityName={t('users')}
                                 onPageChange={(url) => router.get(url)}
+                                perPageOptions={[12, 24, 48, 96]}
+                                currentPerPage={pageFilters.per_page?.toString() || '12'}
+                                onPerPageChange={(value) => {
+                                    router.get(route('users.index'), {
+                                        view: activeView, page: 1,
+                                        search: searchTerm || undefined,
+                                        role: selectedRole !== 'all' ? selectedRole : undefined,
+                                        sort_field: pageFilters.sort_field || undefined,
+                                        sort_direction: pageFilters.sort_direction || undefined,
+                                        ...(parseInt(value) !== 12 && { per_page: parseInt(value) }),
+                                    }, { preserveState: true, preserveScroll: true });
+                                }}
                             />
                         </div>
                     </div>

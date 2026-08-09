@@ -56,18 +56,23 @@ export default function CouponDetailsPage() {
         {
             key: 'amount',
             label: t('Order Amount'),
-            render: (value: number) => window.appSettings?.formatCurrency(value) || `$${value.toFixed(2)}`
+            render: (value: number) => <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${value.toFixed(2)}`}</span>
         },
         {
             key: 'discount_amount',
             label: t('Discount Applied'),
-            render: (value: number) => window.appSettings?.formatCurrency(value) || `$${value.toFixed(2)}`
+            render: (value: number) => <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${value.toFixed(2)}`}</span>
         },
         {
             key: 'used_at',
             label: t('Used At'),
             sortable: true,
-            render: (value: string) => window.appSettings?.formatDateTime(value, false) || value
+            render: (value: string) => (
+                <div className="flex items-center gap-1.5 text-gray-500 whitespace-nowrap">
+                    <Calendar className="h-3.5 w-3.5 shrink-0" />
+                    <span>{window.appSettings?.formatDateTime(value, false) || value}</span>
+                </div>
+            )
         }
     ];
 
@@ -127,7 +132,7 @@ export default function CouponDetailsPage() {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-sm font-medium text-muted-foreground">{t('Discount Value')}</p>
-                                    <h3 className="mt-2 text-xl font-semibold">{formatDiscount(coupon.type, coupon.discount_amount)}</h3>
+                                    <h3 className="mt-2 text-xl font-semibold font-mono">{formatDiscount(coupon.type, coupon.discount_amount)}</h3>
                                 </div>
                                 <div className="rounded-full bg-blue-100 p-3 dark:bg-blue-900">
                                     <DollarSign className="h-5 w-5 text-blue-600 dark:text-blue-400" />
@@ -201,13 +206,13 @@ export default function CouponDetailsPage() {
                             {coupon.minimum_spend && (
                                 <div>
                                     <label className="text-sm font-bold">{t('Minimum Spend')}</label>
-                                    <p className="mt-1 text-sm py-2">{window.appSettings?.formatCurrency(coupon.minimum_spend) || `$${coupon.minimum_spend.toFixed(2)}`}</p>
+                                    <p className="mt-1 text-sm py-2 font-mono">{window.appSettings?.formatCurrency(coupon.minimum_spend) || `$${coupon.minimum_spend.toFixed(2)}`}</p>
                                 </div>
                             )}
                             {coupon.maximum_spend && (
                                 <div>
                                     <label className="text-sm font-bold">{t('Maximum Spend')}</label>
-                                    <p className="mt-1 text-sm py-2">{window.appSettings?.formatCurrency(coupon.maximum_spend) || `$${coupon.maximum_spend.toFixed(2)}`}</p>
+                                    <p className="mt-1 text-sm py-2 font-mono">{window.appSettings?.formatCurrency(coupon.maximum_spend) || `$${coupon.maximum_spend.toFixed(2)}`}</p>
                                 </div>
                             )}
                         </div>

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router, Link } from '@inertiajs/react';
 import { Plus, Download, FileDown } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useInitials } from '@/hooks/use-initials';
 import { hasPermission } from '@/utils/authorization';
 import { CrudTable } from '@/components/CrudTable';
 import { CrudDeleteModal } from '@/components/CrudDeleteModal';
@@ -12,6 +14,7 @@ import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 
 export default function ReturnOrders() {
   const { t } = useTranslation();
+  const getInitials = useInitials();
   const { auth, returnOrders, allUsers = [], filters: pageFilters = {}, flash = {} } = usePage().props as any;
   const permissions = auth?.permissions || [];
 
@@ -23,7 +26,6 @@ export default function ReturnOrders() {
   const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
   const [selectedStatus, setSelectedStatus] = useState(pageFilters.status || 'all');
   const [selectedAssignee, setSelectedAssignee] = useState(pageFilters.assigned_to || 'all');
-  const [showFilters, setShowFilters] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState<any>(null);
 
@@ -104,12 +106,15 @@ router.delete(route('return-orders.destroy', currentItem.id), {
 });
   };
 
+  const pageInitialState = useState(true);
+  useEffect(() => {
+      if (pageInitialState[0]) { pageInitialState[1](false); return; }
+      applyFilters();
+  }, [searchTerm, selectedStatus, selectedAssignee]);
+
   const handleResetFilters = () => {
-    setSearchTerm('');
-    setSelectedStatus('all');
-    setSelectedAssignee('all');
-    setShowFilters(false);
-    router.get(route('return-orders.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
+
+    router.get(route('return-orders.index'));
   };
 
   const pageActions = [];
@@ -142,28 +147,44 @@ router.delete(route('return-orders.destroy', currentItem.id), {
       key: 'return_number',
       label: t('Return Number'),
       sortable: true,
+      className: 'whitespace-nowrap',
       render: (value: string, item: any) => (
-        <Link
-          href={route('return-orders.show', item.id)}
-          className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 hover:border-blue-400 transition-colors duration-200 border border-blue-200 cursor-pointer" style={{ color: '#1d4ed8' }} onMouseEnter={e => (e.currentTarget.style.color = '#1d4ed8')} onMouseLeave={e => (e.currentTarget.style.color = '#1d4ed8')}
-        >
-          {value}
-        </Link>
+        <Link href={route('return-orders.show', item.id)} className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 hover:border-blue-400 transition-colors duration-200 border border-blue-200 cursor-pointer whitespace-nowrap" style={{ color: '#1d4ed8' }} onMouseEnter={e => (e.currentTarget.style.color = '#1d4ed8')} onMouseLeave={e => (e.currentTarget.style.color = '#1d4ed8')}>{value}</Link>
       )
     },
     {
       key: 'name',
       label: t('Name'),
       sortable: true,
+      render: (value: string) => <span className="whitespace-nowrap font-medium">{value || '-'}</span>
+    },
+    {
+      key: 'assigned_user',
+      label: t('Assigned To'),
+      className: 'whitespace-nowrap',
+      render: (value: any) => value ? (
+        <div className="flex items-center gap-2">
+          <Avatar className="h-8 w-8 flex-shrink-0">
+            <AvatarImage src={value.avatar} alt={value.name} />
+            <AvatarFallback className="text-xs">{getInitials(value.name)}</AvatarFallback>
+          </Avatar>
+          <div>
+            <div className="font-medium whitespace-nowrap">{value.name}</div>
+            <div className="text-sm text-muted-foreground whitespace-nowrap">{value.email}</div>
+          </div>
+        </div>
+      ) : <span className="whitespace-nowrap">{t('Unassigned')}</span>
     },
     {
       key: 'sales_order',
       label: t('Sales Order'),
-      render: (value: any) => value?.order_number || t('-')
+      className: 'whitespace-nowrap',
+      render: (value: any) => <span className="whitespace-nowrap">{value?.order_number || t('-')}</span>
     },
     {
       key: 'status',
       label: t('Status'),
+      className: 'whitespace-nowrap',
       render: (value: string) => {
         const statusColors = {
           pending: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20',
@@ -173,9 +194,8 @@ router.delete(route('return-orders.destroy', currentItem.id), {
           processed: 'bg-green-50 text-green-700 ring-green-600/20',
           cancelled: 'bg-red-50 text-red-700 ring-red-600/20'
         };
-
         return (
-          <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[value as keyof typeof statusColors] || statusColors.pending}`}>
+          <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset whitespace-nowrap ${statusColors[value as keyof typeof statusColors] || statusColors.pending}`}>
             {t(value?.charAt(0).toUpperCase() + value?.slice(1)) || t('Pending')}
           </span>
         );
@@ -184,18 +204,15 @@ router.delete(route('return-orders.destroy', currentItem.id), {
     {
       key: 'total_amount',
       label: t('Total Amount'),
-      render: (value: any) => window.appSettings?.formatCurrency(Number(value || 0)) || `$${Number(value || 0).toFixed(2)}`
+      className: 'whitespace-nowrap',
+      render: (value: any) => <span className="whitespace-nowrap font-mono">{window.appSettings?.formatCurrency(Number(value || 0)) || `$${Number(value || 0).toFixed(2)}`}</span>
     },
     {
       key: 'return_date',
       label: t('Return Date'),
       sortable: true,
-      render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
-    },
-    {
-      key: 'assigned_user',
-      label: t('Assigned To'),
-      render: (value: any) => value?.name || t('Unassigned')
+      className: 'whitespace-nowrap',
+      type: 'date'
     }
   ];
 
@@ -236,12 +253,13 @@ router.delete(route('return-orders.destroy', currentItem.id), {
   return (
     <PageTemplate
       title={t("Return Orders")}
+      description={t("Manage your return orders.")}
       url="/return-orders"
       actions={pageActions}
       breadcrumbs={breadcrumbs}
       noPadding
     >
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+      <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
         <SearchAndFilterBar
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
@@ -268,28 +286,14 @@ router.delete(route('return-orders.destroy', currentItem.id), {
               ]
             }
           ]}
-          showFilters={showFilters}
-          setShowFilters={setShowFilters}
           hasActiveFilters={hasActiveFilters}
           activeFilterCount={activeFilterCount}
           onResetFilters={handleResetFilters}
-          onApplyFilters={applyFilters}
-          currentPerPage={pageFilters.per_page?.toString() || "10"}
-          onPerPageChange={(value) => {
-            router.get(route('return-orders.index'), {
-              page: 1,
-              search: searchTerm || undefined,
-              status: selectedStatus !== 'all' ? selectedStatus : undefined,
-              assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-              sort_field: pageFilters.sort_field || undefined,
-              sort_direction: pageFilters.sort_direction || undefined,
-              ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
-            }, { preserveState: true, preserveScroll: true });
-          }}
         />
       </div>
 
       <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+        <div className="overflow-x-auto">
         <CrudTable
           columns={columns}
           actions={actions}
@@ -307,6 +311,7 @@ router.delete(route('return-orders.destroy', currentItem.id), {
             delete: 'delete-return-orders'
           }}
         />
+        </div>
 
         <Pagination
           from={returnOrders?.from || 0}
@@ -315,6 +320,18 @@ router.delete(route('return-orders.destroy', currentItem.id), {
           links={returnOrders?.links}
           entityName={t("return orders")}
           onPageChange={(url) => router.get(url)}
+          currentPerPage={pageFilters.per_page?.toString() || "10"}
+          onPerPageChange={(value) => {
+            router.get(route('return-orders.index'), {
+              page: 1,
+              search: searchTerm || undefined,
+              status: selectedStatus !== 'all' ? selectedStatus : undefined,
+              assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+              sort_field: pageFilters.sort_field || undefined,
+              sort_direction: pageFilters.sort_direction || undefined,
+              ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+            }, { preserveState: true, preserveScroll: true });
+          }}
         />
       </div>
 

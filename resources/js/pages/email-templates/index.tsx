@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Head, router, usePage } from '@inertiajs/react'
 import { PageTemplate } from '@/components/page-template'
 import { Pagination } from '@/components/ui/pagination'
@@ -11,7 +11,13 @@ export default function EmailTemplatesIndex() {
   const { templates, filters: pageFilters = {} } = usePage().props as any
 
   const [searchTerm, setSearchTerm] = useState(pageFilters.search || '')
-  const [showFilters, setShowFilters] = useState(false)
+
+  const [pageInitialState, setPageInitialState] = useState(true);
+
+    useEffect(() => {
+        if (!pageInitialState) applyFilters();
+        setPageInitialState(false);
+    }, [searchTerm]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -75,6 +81,7 @@ export default function EmailTemplatesIndex() {
   return (
     <PageTemplate
       title={t('Email Templates')}
+      description={t('Manage your email templates.')}
       url={route('email-templates.index')}
       breadcrumbs={breadcrumbs}
       noPadding
@@ -82,26 +89,19 @@ export default function EmailTemplatesIndex() {
       <Head title="Email Templates" />
 
       {/* Search section */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+     <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
         <SearchAndFilterBar
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
           onSearch={handleSearch}
           filters={[]}
-          showFilters={showFilters}
-          setShowFilters={setShowFilters}
+
+
           hasActiveFilters={() => searchTerm !== ''}
           activeFilterCount={() => searchTerm ? 1 : 0}
           onResetFilters={handleResetFilters}
-          onApplyFilters={applyFilters}
-          currentPerPage={pageFilters.per_page?.toString() || '10'}
-          onPerPageChange={(value) => {
-            router.get(route('email-templates.index'), {
-              page: 1,
-              search: searchTerm || undefined,
-              ...(parseInt(value) !== 10 && { per_page: parseInt(value) })
-            }, { preserveState: true, preserveScroll: true })
-          }}
+
+
         />
       </div>
 
@@ -133,6 +133,14 @@ export default function EmailTemplatesIndex() {
           links={templates?.links}
           entityName={t('templates')}
           onPageChange={(url) => router.get(url)}
+          currentPerPage={pageFilters.per_page?.toString() || '10'}
+          onPerPageChange={(value) => {
+            router.get(route('email-templates.index'), {
+              page: 1,
+              search: searchTerm || undefined,
+              ...(parseInt(value) !== 10 && { per_page: parseInt(value) })
+            }, { preserveState: true, preserveScroll: true })
+          }}
         />
       </div>
     </PageTemplate>

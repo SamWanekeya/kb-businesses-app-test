@@ -8,6 +8,7 @@ use Tighten\Ziggy\Ziggy;
 use App\Models\Currency;
 use App\Models\User;
 use App\Models\Setting;
+use App\Models\PlanOrder;
 use App\Services\StorageConfigService;
 use Closure;
 
@@ -196,8 +197,18 @@ class HandleInertiaRequests extends Middleware
             if (config('app.is_demo')) {
                 $globalSettings['layoutDirection'] = $request->cookie('layoutDirection', 'left');
             } else {
-                $globalSettings['layoutDirection'] = $globalSettings['layoutDirection'] ?? 'left';
+                // $globalSettings['layoutDirection'] = $globalSettings['layoutDirection'] ?? 'left';
+             $globalSettings['layoutDirection'] = getSetting('layoutDirection', $settings['layoutDirection'] ?? 'left', auth()?->id());
+
             }
+            if (auth()->user() && auth()->user()->hasRole('company')) {
+                $lastPlanOrder = PlanOrder::where('user_id', auth()->id())->orderByDesc('processed_at')->first();
+                if($lastPlanOrder){
+                    $globalSettings['planExirationDate'] = $lastPlanOrder->billing_cycle == 'monthly' ? ($lastPlanOrder?->processed_at?->addMonth() ?? null) : ($lastPlanOrder?->processed_at?->addYear()?? null);
+             
+                    }
+            }
+
         }
 
         return [

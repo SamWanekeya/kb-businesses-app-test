@@ -183,7 +183,7 @@ export default function SalesOrderCreate() {
 
     const removeLine = (id: string) => setForm(p => ({
         ...p,
-        products: p.products.filter(l => l.id !== id)
+        products: p.products.length <= 1 ? p.products : p.products.filter(l => l.id !== id)
     }));
 
     const handleQuoteChange = useCallback(async (quoteId: string) => {
@@ -324,8 +324,8 @@ export default function SalesOrderCreate() {
     }));
 
     return (
-        <PageTemplate title={t('Create Sales Order')} url="/sales-orders" breadcrumbs={breadcrumbs} fullWidth
-            actions={[{ label: t('Back'), icon: <ArrowLeft className="h-4 w-4 mr-2" />, variant: 'outline', onClick: () => router.visit(route('sales-orders.index')) }]}
+        <PageTemplate title={t('Create Sales Order')} description={t('Fill in the details to create a new sales order')} url="/sales-orders" breadcrumbs={breadcrumbs} fullWidth
+            noPadding actions={[{ label: t('Back'), icon: <ArrowLeft className="h-4 w-4 mr-2" />, variant: 'outline', onClick: () => router.visit(route('sales-orders.index')) }]}
         >
             <form onSubmit={handleSubmit} className="space-y-6">
 
@@ -376,11 +376,15 @@ export default function SalesOrderCreate() {
                             {accounts.length === 0 && <p className="text-xs mt-1">{t('Click here to add')} <a href={route('accounts.index')} className="underline font-medium">{t('Accounts')}</a></p>}
                         </Field>
                         <Field label={t('Order Date')} required error={errors.order_date}>
+                            <div className="cursor-pointer" onClick={(e) => { const input = (e.currentTarget as HTMLElement).querySelector('input'); try { (input as any)?.showPicker?.(); } catch { input?.focus(); } }}>
                             <Input type="date" value={form.order_date} onChange={e => set('order_date', e.target.value)}
-                                className={errors.order_date ? 'border-red-500' : ''} />
+                                className={`cursor-pointer ${errors.order_date ? 'border-red-500' : ''}`} />
+                            </div>
                         </Field>
                         <Field label={t('Delivery Date')} error={errors.delivery_date}>
-                            <Input type="date" value={form.delivery_date} onChange={e => set('delivery_date', e.target.value)} />
+                            <div className="cursor-pointer" onClick={(e) => { const input = (e.currentTarget as HTMLElement).querySelector('input'); try { (input as any)?.showPicker?.(); } catch { input?.focus(); } }}>
+                            <Input type="date" value={form.delivery_date} onChange={e => set('delivery_date', e.target.value)} className="cursor-pointer" />
+                            </div>
                         </Field>
                         <Field label={t('Status')} error={errors.status}>
                             <Select value={form.status} onValueChange={v => set('status', v)}>
@@ -528,11 +532,12 @@ export default function SalesOrderCreate() {
                                                 <td className="px-4 py-3 text-left whitespace-nowrap">
                                                     {(() => { const prod = products?.find((p: any) => String(p.id) === String(line.product_id)); return (<span className="text-sm font-medium text-muted-foreground">{prod?.tax ? `${prod.tax.name} (${parseFloat(prod.tax.rate).toFixed(2)}%)` : t('No Tax')}</span>); })()}
                                                 </td>
-                                                <td className="px-4 py-3 text-left font-medium">{fmt(c.net + c.tax)}</td>
+                                                <td className="px-4 py-3 text-left font-medium font-mono">{fmt(c.net + c.tax)}</td>
                                                 <td className="px-4 py-3 text-left">
                                                     <button type="button" onClick={() => removeLine(line.id)}
-                                                        className="p-1.5 rounded text-red-500 hover:bg-red-50">
-                                                        <Trash2 className="h-4 w-4" />
+                                                        disabled={form.products.length <= 1}
+                                                        className="p-1.5 rounded text-gray-500 hover:bg-gray-100 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed">
+                                                        <Trash2 className="h-4 w-4 text-gray-500" />
                                                     </button>
                                                 </td>
                                             </tr>
@@ -546,19 +551,19 @@ export default function SalesOrderCreate() {
                             <div className="w-64 space-y-2">
                                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
                                     <span>{t('Subtotal')}</span>
-                                    <span className="font-medium">{fmt(totals.subtotal + totals.discount)}</span>
+                                    <span className="font-medium font-mono">{fmt(totals.subtotal + totals.discount)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-red-600">
                                     <span>{t('Discount')}</span>
-                                    <span className="font-medium">-{fmt(totals.discount)}</span>
+                                    <span className="font-medium font-mono">-{fmt(totals.discount)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
                                     <span>{t('Tax')}</span>
-                                    <span className="font-medium">{fmt(totals.tax)}</span>
+                                    <span className="font-medium font-mono">{fmt(totals.tax)}</span>
                                 </div>
                                 <div className="flex justify-between text-base font-bold text-gray-900 dark:text-gray-100 border-t pt-2">
                                     <span>{t('Grand Total')}</span>
-                                    <span className="text-green-600 text-lg">{fmt(totals.subtotal + totals.tax)}</span>
+                                    <span className="text-green-600 text-lg font-mono">{fmt(totals.subtotal + totals.tax)}</span>
                                 </div>
                             </div>
                         </div>

@@ -72,10 +72,13 @@ export default function CampaignTypes() {
 
     const hasActiveFilters = () => searchTerm !== '' || selectedStatus !== 'all';
 
-    const applyFilters = () => {
+    const applyFilters = (
+        status = selectedStatus,
+        search = searchTerm
+    ) => {
         router.get(route('campaign-types.index'), {
-            page: 1, search: searchTerm || undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
+            page: 1, search: search || undefined,
+            status: status !== 'all' ? status : undefined,
             sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction,
             per_page: pageFilters.per_page || 10,
         }, { preserveState: true, preserveScroll: true });
@@ -161,7 +164,7 @@ export default function CampaignTypes() {
     ];
 
     return (
-        <PageTemplate title={t('Campaign Types')} url="/campaign-types" breadcrumbs={breadcrumbs} noPadding>
+        <PageTemplate title={t('Campaign Types')} description={t('Manage campaign type categories for your campaigns.')} url="/campaign-types" breadcrumbs={breadcrumbs} noPadding>
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
 
                 {/* Left — Form */}
@@ -221,7 +224,10 @@ export default function CampaignTypes() {
                                 {hasActiveFilters() && <Button onClick={handleResetFilters} variant="outline"><X className="mr-2 h-4 w-4" />{t('Reset')}</Button>}
                             </div>
                             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                                <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+                                <Select value={selectedStatus} onValueChange={(value) => {
+                                        setSelectedStatus(value);
+                                        applyFilters(value, searchTerm);
+                                    }}>
                                     <SelectTrigger><SelectValue placeholder={t('All Statuses')} /></SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="all">{t('All Statuses')}</SelectItem>
@@ -236,10 +242,10 @@ export default function CampaignTypes() {
                     <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         {(campaignTypes?.data || []).length > 0 ? (
                             <>
-                                <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
+                                {/* <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
                                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Campaign Types')}</h3>
                                     <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{t('Manage campaign type categories for your campaigns.')}</p>
-                                </div>
+                                </div> */}
                                 {/* Desktop Table */}
                                 <div className="hidden lg:block overflow-x-auto">
                                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -249,7 +255,7 @@ export default function CampaignTypes() {
                                                     <div className="flex items-center gap-1">{t('Campaign Type')}{pageFilters.sort_field === 'name' ? (pageFilters.sort_direction === 'asc' ? ' ↑' : ' ↓') : <span className="opacity-40">↕</span>}</div>
                                                 </th>
                                                 <th className="px-3 py-3 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">{t('Status')}</th>
-                                                <th className="px-4 py-3 text-right text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">{t('Actions')}</th>
+                                                <th className="px-4 py-3  pr-[50px] stext-right text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">{t('Actions')}</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
@@ -280,9 +286,9 @@ export default function CampaignTypes() {
                                                     </td>
                                                     <td className="px-4 py-4 text-right whitespace-nowrap">
                                                         <div className="flex items-center justify-end gap-2">
-                                                            {canEdit && <TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant="ghost" size="sm" onClick={() => handleAction('edit', item)} className="h-8 w-8 p-0 text-amber-500 hover:bg-amber-50 hover:text-amber-600 dark:hover:bg-amber-900/20"><Edit className="h-4 w-4" /></Button></TooltipTrigger><TooltipContent>{t('Edit')}</TooltipContent></Tooltip></TooltipProvider>}
-                                                            {canToggleStatus && <TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant="ghost" size="sm" onClick={() => handleAction('toggle-status', item)} className={`h-8 w-8 p-0 ${item.status === 'active' ? 'text-orange-500 hover:bg-orange-50 hover:text-orange-600 dark:hover:bg-orange-900/20' : 'text-green-600 hover:bg-green-50 hover:text-green-700 dark:hover:bg-green-900/20'}`}><Lock className="h-4 w-4" /></Button></TooltipTrigger><TooltipContent>{item.status === 'active' ? t('Deactivate') : t('Activate')}</TooltipContent></Tooltip></TooltipProvider>}
-                                                            {canDelete && <TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant="ghost" size="sm" onClick={() => handleAction('delete', item)} className="h-8 w-8 p-0 text-red-500 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20"><Trash2 className="h-4 w-4" /></Button></TooltipTrigger><TooltipContent>{t('Delete')}</TooltipContent></Tooltip></TooltipProvider>}
+                                                            {canEdit && <TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant="ghost" size="sm" onClick={() => handleAction('edit', item)} className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"><Edit className="h-4 w-4 text-gray-500" /></Button></TooltipTrigger><TooltipContent>{t('Edit')}</TooltipContent></Tooltip></TooltipProvider>}
+                                                            {canToggleStatus && <TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant="ghost" size="sm" onClick={() => handleAction('toggle-status', item)} className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"><Lock className="h-4 w-4 text-gray-500" /></Button></TooltipTrigger><TooltipContent>{item.status === 'active' ? t('Deactivate') : t('Activate')}</TooltipContent></Tooltip></TooltipProvider>}
+                                                            {canDelete && <TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant="ghost" size="sm" onClick={() => handleAction('delete', item)} className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"><Trash2 className="h-4 w-4 text-gray-500" /></Button></TooltipTrigger><TooltipContent>{t('Delete')}</TooltipContent></Tooltip></TooltipProvider>}
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -314,9 +320,9 @@ export default function CampaignTypes() {
                                                     </div>
                                                 </div>
                                                 <div className="ml-4 flex justify-end gap-1">
-                                                    {canEdit && <TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant="ghost" size="sm" onClick={() => handleAction('edit', item)} className="h-8 w-8 p-0 text-amber-500"><Edit className="h-4 w-4" /></Button></TooltipTrigger><TooltipContent>{t('Edit')}</TooltipContent></Tooltip></TooltipProvider>}
-                                                    {canToggleStatus && <TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant="ghost" size="sm" onClick={() => handleAction('toggle-status', item)} className={`h-8 w-8 p-0 ${item.status === 'active' ? 'text-orange-500' : 'text-green-600'}`}><Lock className="h-4 w-4" /></Button></TooltipTrigger><TooltipContent>{item.status === 'active' ? t('Deactivate') : t('Activate')}</TooltipContent></Tooltip></TooltipProvider>}
-                                                    {canDelete && <TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant="ghost" size="sm" onClick={() => handleAction('delete', item)} className="h-8 w-8 p-0 text-red-500"><Trash2 className="h-4 w-4" /></Button></TooltipTrigger><TooltipContent>{t('Delete')}</TooltipContent></Tooltip></TooltipProvider>}
+                                                    {canEdit && <TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant="ghost" size="sm" onClick={() => handleAction('edit', item)} className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"><Edit className="h-4 w-4 text-gray-500" /></Button></TooltipTrigger><TooltipContent>{t('Edit')}</TooltipContent></Tooltip></TooltipProvider>}
+                                                    {canToggleStatus && <TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant="ghost" size="sm" onClick={() => handleAction('toggle-status', item)} className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"><Lock className="h-4 w-4 text-gray-500" /></Button></TooltipTrigger><TooltipContent>{item.status === 'active' ? t('Deactivate') : t('Activate')}</TooltipContent></Tooltip></TooltipProvider>}
+                                                    {canDelete && <TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant="ghost" size="sm" onClick={() => handleAction('delete', item)} className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"><Trash2 className="h-4 w-4 text-gray-500" /></Button></TooltipTrigger><TooltipContent>{t('Delete')}</TooltipContent></Tooltip></TooltipProvider>}
                                                 </div>
                                             </div>
                                             <div className="mt-3 grid grid-cols-2 gap-4 border-t border-gray-100 pt-3 dark:border-gray-700">
@@ -327,7 +333,7 @@ export default function CampaignTypes() {
                                 </div>
                                 {campaignTypes?.total > (campaignTypes?.per_page || 10) && (
                                     <div className="border-t border-gray-200 dark:border-gray-700">
-                                        <Pagination from={campaignTypes?.from || 0} to={campaignTypes?.to || 0} total={campaignTypes?.total || 0} links={campaignTypes?.links} entityName={t('campaign types')} onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })} />
+                                        <Pagination from={campaignTypes?.from || 0} to={campaignTypes?.to || 0} total={campaignTypes?.total || 0} links={campaignTypes?.links} entityName={t('campaign types')} hidePerPage={true} onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })} />
                                     </div>
                                 )}
                             </>

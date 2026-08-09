@@ -26,7 +26,7 @@ export default function SalesReports() {
   const summaryCards = [
     {
       title: t('Total Sales'),
-      value: window.appSettings?.formatCurrency(summary.total_sales) || `$${summary.total_sales.toLocaleString()}`,
+      value: <span className="font-mono">{window.appSettings?.formatCurrency(summary.total_sales) || `$${summary.total_sales.toLocaleString()}`}</span>,
       icon: <DollarSign className="h-6 w-6 text-green-600" />,
       iconColor: 'bg-green-100'
     },
@@ -38,7 +38,7 @@ export default function SalesReports() {
     },
     {
       title: t('Average Order Value'),
-      value: window.appSettings?.formatCurrency(summary.avg_order_value) || `$${summary.avg_order_value.toLocaleString()}`,
+      value: <span className="font-mono">{window.appSettings?.formatCurrency(summary.avg_order_value) || `$${summary.avg_order_value.toLocaleString()}`}</span>,
       icon: <Target className="h-6 w-6 text-purple-600" />,
       iconColor: 'bg-purple-100'
     },
@@ -51,10 +51,13 @@ export default function SalesReports() {
   ];
 
   return (
-    <PageTemplate title={t("Sales Reports")} url="/reports/sales" breadcrumbs={breadcrumbs} noPadding>
+    <PageTemplate title={t("Sales Reports")} 
+    description={t("View and analyze sales reports to track revenue and performance.")}
+    url="/reports/sales" breadcrumbs={breadcrumbs} noPadding>
+         <SummaryCards cards={summaryCards} />
       <ReportFilters filters={filters} />
 
-      <SummaryCards cards={summaryCards} />
+   
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <ChartCard title={t('Sales Trend')}

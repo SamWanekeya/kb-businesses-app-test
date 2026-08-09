@@ -253,7 +253,7 @@ function PlansSection({ plans, settings, sectionData, brandColor = '#3b82f6' }: 
                   </h3>
                   <div className="flex items-baseline gap-1.5 mb-3">
                     <span
-                      className="text-3xl font-extrabold dark:text-white"
+                      className="text-3xl font-extrabold dark:text-white font-mono"
                       style={{ color: plan.is_popular ? brandColor : 'inherit' }}
                     >
                       {getPrice(plan) === 0 ? '$0' : formatCurrency(getPrice(plan))}

@@ -15,7 +15,7 @@ import { getDisplayUrl } from '@/utils/helper';
 
 export function AppSidebar() {
     const { t, i18n } = useTranslation();
-    const { auth } = usePage().props as any;
+    const { auth, globalSettings } = usePage().props as any;
     const userRole = auth.user?.type || auth.user?.role;
     const permissions = auth?.permissions || [];
 
@@ -518,13 +518,12 @@ export function AppSidebar() {
                 {/* Business Switcher removed */}
             </SidebarHeader>
 
-            <SidebarContent>
-                <div style={sidebarStyle} className={`h-full overflow-auto ${style !== 'plain' ? 'sidebar-styled' : ''}`}>
-                    <NavMain searchQuery={searchQuery} items={filteredNavItems} position={effectivePosition} />
-                </div>
+            <SidebarContent style={sidebarStyle} className={`h-full ${style !== 'plain' ? 'sidebar-styled' : ''}`}>
+                <NavMain searchQuery={searchQuery} items={filteredNavItems} position={effectivePosition} />
             </SidebarContent>
 
-            <SidebarFooter className="p-0 gap-0">
+
+           <SidebarFooter className='p-3'>
                 {/* Plan Active UI — SaaS + Company only */}
                 {userRole === 'company' && (() => {
                     const user = auth.user;
@@ -534,8 +533,7 @@ export function AppSidebar() {
                     const isActive = user?.plan_is_active === 1;
                     const isTrial = user?.is_trial;
 
-                    const expireDate = isTrial == 1 ? user?.trial_expire_date : user?.plan_expire_date;
-
+                    const expireDate = isTrial == 1 ? user?.trial_expire_date : (user?.plan_expire_date ||  globalSettings?.planExirationDate);
                     const daysLeft = expireDate
                         ? Math.ceil((new Date(expireDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
                         : null;
@@ -545,8 +543,7 @@ export function AppSidebar() {
                     return (
                         <div className="group-data-[collapsible=icon]:hidden">
                             <div
-                                className="relative rounded-tl-xl rounded-tr-xl overflow-hidden"
-                                style={{ backgroundColor: 'var(--primary)', borderTop: '1px solid color-mix(in srgb, var(--primary), white 20%)' }}
+                                className={`relative rounded-xl overflow-hidden ${isExpired ? 'rounded-lg border bg-card text-card-foreground shadow-sm bg-gradient-to-r from-red-500 to-red-400' : 'bg-primary border-t border-t-[color-mix(in_srgb,var(--primary),white_20%)]'}`}
                             >
                                 {/* Decorative circles */}
                                 <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }} />
@@ -582,16 +579,16 @@ export function AppSidebar() {
                                             <>
                                                 <div className="flex items-center justify-between">
                                                     <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.9)' }}>
-                                                        {isTrial == 1 ? t('Trial expires') : t('Plan expires')}
+                                                        {isExpired ? t('Expired on') : isTrial == 1 ? t('Trial expires') : t('Plan expires')}
                                                     </span>
                                                     <span className="text-xs font-bold text-white">
                                                         {window.appSettings?.formatDateTime(expireDate, false) || new Date(expireDate).toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' })}
                                                     </span>
                                                 </div>
                                                 <div className="flex items-center justify-between">
-                                                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.9)' }}>{t('Days left')}</span>
+                                                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.9)' }}>{!isExpired ? t('Days left') : t('Days since expiration')}</span>
                                                     <span className="text-xs font-bold text-white">
-                                                        {isExpired ? t('Expired') : `${daysLeft} ${t('days')}`}
+                                                        {isExpired ? -daysLeft : daysLeft} {t('days')}
                                                     </span>
                                                 </div>
                                                 {/* Progress bar */}
@@ -619,8 +616,8 @@ export function AppSidebar() {
                                     {/* Upgrade button */}
                                     <Link
                                         href={route('plans.index')}
-                                        className="flex items-center justify-center gap-1.5 w-full text-xs font-semibold py-2 px-3 rounded-lg transition-all duration-200"
-                                        style={{ backgroundColor: 'rgba(255,255,255,0.95)', color: 'var(--primary)' }}
+                                        className={`flex items-center justify-center gap-1.5 w-full text-xs font-semibold py-2 px-3 rounded-lg transition-all duration-200 ${isExpired? 'text-red-500 hover:!text-red-500' : 'text-primary hover:text-primary'}`}
+                                        style={{ backgroundColor: 'rgba(255,255,255,0.95)'}}
                                         onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'white')}
                                         onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.95)')}
                                     >
@@ -633,6 +630,7 @@ export function AppSidebar() {
                     );
                 })()}
             </SidebarFooter>
+
         </Sidebar>
     );
 }

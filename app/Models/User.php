@@ -149,11 +149,14 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
      */
     public function hasActivePlan()
     {
+        if(!$this->isTrialExpired())
+        {
+            return true;
+        }
         return $this->plan_id &&
             $this->plan_is_active &&
-            ($this->plan_expire_date === null || $this->plan_expire_date > now());
+            ($this->plan_expire_date !== null && $this->plan_expire_date > now());
     }
-
     /**
      * Check if user's plan has expired
      */
@@ -198,6 +201,10 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
             return true;
         }
 
+        // Check if plan is active
+        if (!$this->hasActivePlan()) {
+            return true;
+        }
         return false;
     }
 
@@ -300,9 +307,6 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
         parent::boot();
 
         static::creating(function ($user) {
-
-
-
             // Assign default plan to company users if no default plan exists
             if ($user->type === 'company' && !$user->plan_id) {
                 $defaultPlan = Plan::getDefaultPlan();
@@ -310,19 +314,13 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
                     $user->plan_id = $defaultPlan->id;
                     $user->plan_is_active = 1;
                     $user->plan_expire_date = now()->addMonth();
-            
                 }
-            }
-            if ($user->type === 'company' && !$user->referral_code) {
-                if (!$user->referral_code) {
-                        $user->referral_code = str_pad($user->id, 6, '0', STR_PAD_LEFT);
-                    }
             }
         });
 
         static::created(function ($user) {
             // Skip for superadmin
-            if($user->type === 'superadmin') {
+            if ($user->type === 'superadmin') {
                 return;
             }
 
@@ -331,6 +329,15 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
             $companySettings = settings();
             $userLang = isset($companySettings['defaultLanguage']) ? $companySettings['defaultLanguage'] : ($authUser?->lang ?? 'en');
             $user->lang = $userLang ?? 'en';
+
+            // Generate referral code for company users (same logic as UserObserver)
+            if ($user->type === 'company' && !$user->referral_code) {
+                do {
+                    $code = rand(100000, 999999);
+                } while (User::where('referral_code', $code)->exists());
+                $user->referral_code = $code;
+            }
+
             $user->save();
 
             // Set layout direction based on language

@@ -14,52 +14,84 @@ class MeetingController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Meeting::query()
+        // Resolve selected date (default today) and selected month/year
+        $selectedDate = $request->filled('date')
+            ? \Carbon\Carbon::parse($request->date)->format('Y-m-d')
+            : \Carbon\Carbon::today()->format('Y-m-d');
+
+        $selectedYear  = $request->filled('year')  ? (int) $request->year  : (int) \Carbon\Carbon::parse($selectedDate)->format('Y');
+        $selectedMonth = $request->filled('month') ? (int) $request->month : (int) \Carbon\Carbon::parse($selectedDate)->format('n');
+
+        // Base query scoped to tenant
+        $baseQuery = Meeting::query()
             ->with(['creator', 'assignedUser', 'attendees'])
             ->where('created_by', createdBy());
 
-        if ($request->has('search') && !empty($request->search)) {
-            $query->where(function ($q) use ($request) {
-                $q->where('title', 'like', '%' . $request->search . '%')
-                    ->orWhere('description', 'like', '%' . $request->search . '%')
-                    ->orWhere('location', 'like', '%' . $request->search . '%');
-            });
-        }
+        $monthStart = \Carbon\Carbon::create($selectedYear, $selectedMonth, 1)->startOfMonth();
+        $monthEnd   = $monthStart->copy()->endOfMonth();
 
-        if ($request->has('status') && !empty($request->status) && $request->status !== 'all') {
-            $query->where('status', $request->status);
-        }
-
-        if ($request->has('assigned_to') && !empty($request->assigned_to) && $request->assigned_to !== 'all') {
-            if ($request->assigned_to === 'unassigned') {
-                $query->whereNull('assigned_to');
-            } else {
-                $query->where('assigned_to', $request->assigned_to);
+        if (IsDemo()) {
+            // Pick 10 record to show a spread of demo data
+            $meetings  = (clone $baseQuery)->take(10)->get();
+            // Every day of the visible month gets a dot
+            $meetingDates = collect();
+            $cursor = $monthStart->copy();
+            while ($cursor->lte($monthEnd)) {
+                $meetingDates->push($cursor->format('Y-m-d'));
+                $cursor->addDay();
             }
+            $meetingDates = $meetingDates->toArray();
+        } else {
+            // --- Date filter: filter meetings where selected date falls within start_date and end_date ---
+            $meetings = (clone $baseQuery)
+                ->whereDate('start_date', '<=', $selectedDate)
+                ->whereDate('end_date', '>=', $selectedDate)
+                ->get();
+
+            // --- Meeting dates for the selected month (for calendar dots, including multi-day) ---
+            $meetingRanges = Meeting::where('created_by', createdBy())
+                ->where('start_date', '<=', $monthEnd->format('Y-m-d'))
+                ->where('end_date', '>=', $monthStart->format('Y-m-d'))
+                ->get(['start_date', 'end_date']);
+
+            $meetingDates = collect();
+            foreach ($meetingRanges as $m) {
+                $cursor = \Carbon\Carbon::parse($m->start_date)->max($monthStart->copy());
+                $end    = \Carbon\Carbon::parse($m->end_date)->min($monthEnd->copy());
+                while ($cursor->lte($end)) {
+                    $meetingDates->push($cursor->format('Y-m-d'));
+                    $cursor->addDay();
+                }
+            }
+            $meetingDates = $meetingDates->unique()->values()->toArray();
         }
 
-        $sortField = $request->input('sort_field', 'id');
-        $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'title', 'start_date', 'created_at'];
-        $allowedDirection = ['asc', 'desc'];
-        if (!in_array($sortDirection, $allowedDirection)) {
-            $sortDirection = 'desc';
-        }
-        $query->orderBy(in_array($sortField, $allowedSorts) ? $sortField : 'id', $sortDirection);
+        // Build summary from the already-fetched collection (same as reference)
+        $summary = [
+            'planned'  => $meetings->where('status', 'planned')->count(),
+            'held'     => $meetings->where('status', 'held')->count(),
+            'not_held' => $meetings->where('status', 'not_held')->count(),
+        ];
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
-        $meetings = $query->paginate($perPage)->withQueryString();
-
-        $userQuery = \App\Models\User::where('created_by', createdBy());
-        $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
-        $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
+        $userQuery   = \App\Models\User::where('created_by', createdBy());
+        $allUsers    = (clone $userQuery)->select('id', 'name', 'email', 'avatar')->get();
+        $users       = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
+        $allContacts = \App\Models\Contact::where('created_by', createdBy())->select('id', 'name')->get();
+        $allLeads    = \App\Models\Lead::where('created_by', createdBy())->select('id', 'name')->get();
 
         return Inertia::render('meetings/index', [
-            'meetings' => $meetings,
-            'users' => $users,
-            'allUsers' => $allUsers,
-            'filters' => $request->all(['search', 'status', 'assigned_to', 'sort_field', 'sort_direction', 'per_page', 'page']),
-            'settings' => settings(createdBy()),
+            'meetings'      => $meetings,
+            'users'         => $users,
+            'allUsers'      => $allUsers,
+            'allContacts'   => $allContacts,
+            'allLeads'      => $allLeads,
+            'summary'       => $summary,
+            'meetingDates'  => $meetingDates,
+            'selectedDate'  => $selectedDate,
+            'selectedMonth' => $selectedMonth,
+            'selectedYear'  => $selectedYear,
+            'filters'       => $request->all(['search', 'status', 'assigned_to', 'sort_field', 'sort_direction', 'date', 'month', 'year']),
+            'settings'      => settings(createdBy()),
         ]);
     }
 
@@ -120,7 +152,7 @@ class MeetingController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:65535',
-            'location' => 'nullable|string|max:255',
+            'location' => 'required|string|max:255',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'start_time' => 'required|date_format:H:i',
@@ -307,7 +339,7 @@ class MeetingController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:65535',
-            'location' => 'nullable|string|max:255',
+            'location' => 'required|string|max:255',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'start_time' => 'required|date_format:H:i',

@@ -1,8 +1,5 @@
 import { useState } from 'react';
-import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useTranslation } from 'react-i18next';
 import { router } from '@inertiajs/react';
@@ -44,32 +41,42 @@ export function ReportFilters({ filters, additionalFilters }: ReportFiltersProps
     };
 
     return (
-        <Card className="mb-6 p-4">
-            <form onSubmit={handleFilterSubmit} className="flex items-end gap-4">
-                <div className="flex-1">
-                    <Label htmlFor="date_from">{t('From Date')}</Label>
-                    <DatePicker
-                        id="date_from"
-                        selected={dateFrom}
-                        onChange={(e) => setDateFrom(e)}
-                        className='w-full'
-                        required
-                    />
+        <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
+            <form onSubmit={handleFilterSubmit} className="flex items-center gap-2 p-3">
+                <div className="flex flex-1 items-center gap-2 w-full">
+                    <div className="flex flex-1 items-center gap-2">
+                        <p className="text-sm font-medium shrink-0">{t('From Date :')}</p>
+                        <div className="flex-1" style={{ minWidth: 0 }}>
+                            <DatePicker
+                                id="date_from"
+                                selected={dateFrom}
+                                onChange={(e) => setDateFrom(e)}
+                                placeholder={t('From Date')}
+                                className="!w-full"
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div className="flex flex-1 items-center gap-2">
+                        <p className="text-sm font-medium shrink-0">{t('To Date :')}</p>
+                        <div className="flex-1" style={{ minWidth: 0 }}>
+                            <DatePicker
+                                id="date_to"
+                                selected={dateTo}
+                                onChange={(e) => setDateTo(e)}
+                                placeholder={t('To Date')}
+                                className="!w-full"
+                                required
+                            />
+                        </div>
+                    </div>
+                    {additionalFilters}
                 </div>
-                <div className="flex-1">
-                    <Label htmlFor="date_to">{t('To Date')}</Label>
-                    <DatePicker
-                        id="date_to"
-                        selected={dateTo}
-                        onChange={(e) => setDateTo(e)}
-                        className='w-full'
-                        required
-                    />
+                <div className="flex items-center gap-2 shrink-0">
+                    <Button type="submit" size="sm" className="h-9">{t('Apply Filters')}</Button>
+                    <Button type="button" size="sm" className="h-9" variant="outline" onClick={handleClearFilters}>{t('Clear Filters')}</Button>
                 </div>
-                {additionalFilters}
-                <Button type="submit">{t('Apply Filters')}</Button>
-                <Button type="button" variant="outline" onClick={handleClearFilters}>{t('Clear Filters')}</Button>
             </form>
-        </Card>
+        </div>
     );
 }

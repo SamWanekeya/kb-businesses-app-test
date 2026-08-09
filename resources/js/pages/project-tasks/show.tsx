@@ -4,11 +4,14 @@ import { Edit, ArrowLeft, CheckCircle, Clock, User, Calendar, BarChart3, FileTex
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { hasPermission } from '@/utils/authorization';
 import { useTranslation } from 'react-i18next';
+import { useInitials } from '@/hooks/use-initials';
 
 export default function ProjectTaskShow() {
   const { t } = useTranslation();
+  const getInitials = useInitials();
   const { auth, task, taskStatuses = [] } = usePage().props as any;
   const permissions = auth?.permissions || [];
 
@@ -38,11 +41,20 @@ export default function ProjectTaskShow() {
     { title: t('Dashboard'), href: route('dashboard') },
     { title: t('Project Management')},
     { title: t('Project Tasks'), href: route('project-tasks.index') },
-    { title: task.title }
+    { title: t('View Project Task') }
   ];
 
   const getTaskStatus = (taskStatusId: number) => {
     return taskStatuses.find((ts: any) => ts.id === taskStatusId);
+  };
+
+  const getStatusBadgeClass = (name: string) => {
+    const n = (name || '').toLowerCase();
+    if (n === 'done') return 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20';
+    if (n === 'in_progress' || n === 'in progress') return 'bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20';
+    if (n === 'review') return 'bg-yellow-50 text-yellow-700 ring-1 ring-inset ring-yellow-600/20';
+    if (n === 'todo') return 'bg-gray-50 text-gray-700 ring-1 ring-inset ring-gray-600/20';
+    return 'bg-gray-50 text-gray-700 ring-1 ring-inset ring-gray-600/20';
   };
 
   const getPriorityColor = (priority: string) => {
@@ -58,14 +70,16 @@ export default function ProjectTaskShow() {
   return (
     <PageTemplate
       title={task.title}
+      description={t('Task details and related information')}
       url={`/project-tasks/${task.id}`}
       actions={pageActions}
       breadcrumbs={breadcrumbs}
+      noPadding
     >
       <div className="space-y-6">
         {/* Task Overview */}
         <Card>
-          <CardHeader>
+          <CardHeader className="border-b">
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center gap-2">
                 <FileText className="h-5 w-5" />
@@ -75,13 +89,9 @@ export default function ProjectTaskShow() {
                 {(() => {
                   const taskStatus = getTaskStatus(task.task_status_id);
                   return taskStatus ? (
-                    <div className="flex items-center gap-2">
-                      <div
-                        className="w-3 h-3 rounded-full"
-                        style={{ backgroundColor: taskStatus.color }}
-                      ></div>
-                      <span className="text-sm font-medium">{taskStatus.name}</span>
-                    </div>
+                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${getStatusBadgeClass(taskStatus.name)}`}>
+                      {taskStatus.name}
+                    </span>
                   ) : (
                     <span className="text-sm text-gray-500">{t('No Status')}</span>
                   );
@@ -97,7 +107,7 @@ export default function ProjectTaskShow() {
               </div>
             </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div>
@@ -129,11 +139,21 @@ export default function ProjectTaskShow() {
 
                 <div>
                   <label className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('Assigned To')}</label>
-                  <div className="mt-1 flex items-center gap-2">
-                    <User className="h-4 w-4 text-gray-400" />
-                    <span className="text-gray-900 dark:text-white">
-                      {task.assigned_user?.name || t('Unassigned')}
-                    </span>
+                  <div className="mt-1.5 flex items-center gap-2">
+                    {task.assigned_user ? (
+                      <>
+                        <Avatar className="w-7 h-7 flex-shrink-0">
+                          <AvatarImage src={task.assigned_user.avatar} alt={task.assigned_user.name} />
+                          <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">{getInitials(task.assigned_user.name || '')}</AvatarFallback>
+                        </Avatar>
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-foreground truncate">{task.assigned_user.name}</p>
+                          {task.assigned_user.email && <p className="text-xs text-muted-foreground truncate">{task.assigned_user.email}</p>}
+                        </div>
+                      </>
+                    ) : (
+                      <p className="text-sm text-muted-foreground">{t('Unassigned')}</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -164,7 +184,6 @@ export default function ProjectTaskShow() {
                       </span>
                     </div>
                   </div>
-
                   <div>
                     <label className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('Due Date')}</label>
                     <div className="mt-1 flex items-center gap-2">
@@ -186,7 +205,6 @@ export default function ProjectTaskShow() {
                       </span>
                     </div>
                   </div>
-
                   <div>
                     <label className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('Actual Hours')}</label>
                     <div className="mt-1 flex items-center gap-2">
@@ -200,11 +218,21 @@ export default function ProjectTaskShow() {
 
                 <div>
                   <label className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('Created By')}</label>
-                  <div className="mt-1 flex items-center gap-2">
-                    <User className="h-4 w-4 text-gray-400" />
-                    <span className="text-gray-900 dark:text-white">
-                      {task.creator?.name || t('Unknown')}
-                    </span>
+                  <div className="mt-1.5 flex items-center gap-2">
+                    {task.creator ? (
+                      <>
+                        <Avatar className="w-7 h-7 flex-shrink-0">
+                          <AvatarImage src={task.creator.avatar} alt={task.creator.name} />
+                          <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">{getInitials(task.creator.name || '')}</AvatarFallback>
+                        </Avatar>
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-foreground truncate">{task.creator.name}</p>
+                          {task.creator.email && <p className="text-xs text-muted-foreground truncate">{task.creator.email}</p>}
+                        </div>
+                      </>
+                    ) : (
+                      <p className="text-sm text-muted-foreground">{t('Unknown')}</p>
+                    )}
                   </div>
                 </div>
 
@@ -225,13 +253,13 @@ export default function ProjectTaskShow() {
         {/* Subtasks */}
         {task.subtasks && task.subtasks.length > 0 && (
           <Card>
-            <CardHeader>
+            <CardHeader className="border-b">
               <CardTitle className="flex items-center gap-2">
                 <FileText className="h-5 w-5" />
                 {t('Subtasks')} ({task.subtasks.length})
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               <div className="space-y-3">
                 {task.subtasks.map((subtask: any) => (
                   <div key={subtask.id} className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
@@ -251,7 +279,7 @@ export default function ProjectTaskShow() {
                       {(() => {
                         const subtaskStatus = getTaskStatus(subtask.task_status_id);
                         return subtaskStatus ? (
-                          <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-gray-50 text-gray-700 ring-1 ring-inset ring-gray-600/20">
+                          <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${getStatusBadgeClass(subtaskStatus.name)}`}>
                             {subtaskStatus.name}
                           </span>
                         ) : (
@@ -277,29 +305,29 @@ export default function ProjectTaskShow() {
         {/* Time Tracking Summary */}
         {(task.estimated_hours || task.actual_hours) && (
           <Card>
-            <CardHeader>
+            <CardHeader className="border-b">
               <CardTitle className="flex items-center gap-2">
                 <BarChart3 className="h-5 w-5" />
                 {t('Time Tracking')}
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
                   <div className="flex items-center justify-center gap-2 text-2xl font-bold text-blue-600 dark:text-blue-400">
                     <Clock className="h-5 w-5" />
                     {task.estimated_hours || 0}h
                   </div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">{t('Estimated')}</div>
                 </div>
-                <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
                   <div className="flex items-center justify-center gap-2 text-2xl font-bold text-green-600 dark:text-green-400">
                     <CheckCircle className="h-5 w-5" />
                     {task.actual_hours || 0}h
                   </div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">{t('Actual')}</div>
                 </div>
-                <div className="text-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+                <div className="text-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-800">
                   <div className="flex items-center justify-center gap-2 text-2xl font-bold text-orange-600 dark:text-orange-400">
                     <BarChart3 className="h-5 w-5" />
                     {task.estimated_hours && task.actual_hours

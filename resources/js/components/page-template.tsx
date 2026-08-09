@@ -17,7 +17,7 @@ export interface PageAction {
 
 export interface PageTemplateProps {
     title: string;
-    description: string;
+    description?: string;
     url: string;
     actions?: PageAction[];
     children: ReactNode;
@@ -45,12 +45,14 @@ export function PageTemplate({
     return (
         <AppLayout breadcrumbs={pageBreadcrumbs}>
             <Head title={`${title} - ${(usePage().props as any).globalSettings?.titleText || 'Sales SaaS'}`} />
-
             <div className="flex flex-1 flex-col gap-4 pt-4 pb-[50px] px-[50px]">
                 {/* <div className="flex h-full flex-1 flex-col gap-4 p-4"> */}
                 {/* Header with action buttons */}
                 <div className="flex items-center justify-between">
-                    <h1 className="text-xl font-semibold">{title}</h1>
+                    <div>
+                        <h1 className="text-xl font-semibold">{title}</h1>
+                        {description && <div className="text-xs text-muted-foreground">{description}</div>}
+                    </div>
                     {actions && actions.length > 0 && (
                         <div className="flex items-center gap-2">
                             {actions.map((action, index) => {

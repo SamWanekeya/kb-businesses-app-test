@@ -220,8 +220,9 @@ export default function ReceiptOrderEdit() {
     };
 
     return (
-        <PageTemplate title={t('Edit Receipt Order')} breadcrumbs={breadcrumbs} url="/receipt-orders"
-            actions={[{ label: t('Back'), icon: <ArrowLeft className="h-4 w-4 mr-2" />, variant: 'outline', onClick: () => router.visit(route('receipt-orders.index')) }]}
+        <PageTemplate title={t('Edit Receipt Order')} description={t('Update receipt order details and related information')} breadcrumbs={breadcrumbs} url="/receipt-orders"
+           
+        noPadding actions={[{ label: t('Back'), icon: <ArrowLeft className="h-4 w-4 mr-2" />, variant: 'outline', onClick: () => router.visit(route('receipt-orders.index')) }]}
         >
             <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-900">
 
@@ -335,12 +336,14 @@ export default function ReceiptOrderEdit() {
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
                                 {t('Receipt Date')} <span className="text-red-500">*</span>
                             </Label>
+                            <div className="cursor-pointer" onClick={(e) => { const input = (e.currentTarget as HTMLElement).querySelector('input'); try { (input as any)?.showPicker?.(); } catch { input?.focus(); } }}>
                             <Input
                                 type="date"
                                 value={form.receipt_date}
                                 onChange={e => set('receipt_date', e.target.value)}
-                                className={errors.receipt_date ? 'border-red-500' : ''}
+                                className={`cursor-pointer ${errors.receipt_date ? 'border-red-500' : ''}`}
                             />
+                            </div>
                             <FieldError message={errors.receipt_date} />
                         </div>
 
@@ -348,12 +351,14 @@ export default function ReceiptOrderEdit() {
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
                                 {t('Expected Date')}
                             </Label>
+                            <div className="cursor-pointer" onClick={(e) => { const input = (e.currentTarget as HTMLElement).querySelector('input'); try { (input as any)?.showPicker?.(); } catch { input?.focus(); } }}>
                             <Input
                                 type="date"
                                 value={form.expected_date}
                                 onChange={e => set('expected_date', e.target.value)}
-                                className={errors.expected_date ? 'border-red-500' : ''}
+                                className={`cursor-pointer ${errors.expected_date ? 'border-red-500' : ''}`}
                             />
+                            </div>
                             <FieldError message={errors.expected_date} />
                         </div>
 
@@ -397,14 +402,14 @@ export default function ReceiptOrderEdit() {
                 </div>
 
                 {/* Products */}
-                <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
+                <div className="border-b border-gray-200 dark:border-gray-700">
+                    <div className="flex items-center justify-between px-6 py-3 border-b bg-gray-50 dark:bg-gray-800">
+                        <h2 className="text-base font-semibold text-gray-900 dark:text-white">
                             {t('Products')}
                             {errors.products && <span className="text-xs text-red-500 font-normal ml-2">{errors.products}</span>}
                         </h2>
                         <Button type="button" size="sm" onClick={addProductRow}>
-                            <Plus className="h-4 w-4 mr-1.5" />{t('Add Product')}
+                            <Plus className="h-4 w-4 mr-1" /> {t('Add Product')}
                         </Button>
                     </div>
 
@@ -412,20 +417,23 @@ export default function ReceiptOrderEdit() {
                         <div className="overflow-x-auto max-h-72 overflow-y-auto">
                             <table className="w-full text-sm">
                                 <thead className="sticky top-0 z-10">
-                                    <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
-                                        {['Product', 'Qty', 'Unit Price', 'Discount Type', 'Discount Value', 'Tax', 'Line Total', ''].map(h => (
-                                            <th key={h} className="text-start text-xs font-medium text-gray-500 dark:text-gray-400 pb-3 pe-3 whitespace-nowrap">
-                                                {h === 'Product' ? <>{t(h)} <span className="text-red-500">*</span></> : h === 'Qty' ? <>{t(h)} <span className="text-red-500">*</span></> : h === 'Unit Price' ? <>{t(h)} <span className="text-red-500">*</span></> : h ? t(h) : ''}
-                                            </th>
-                                        ))}
+                                    <tr className="border-b bg-gray-50 dark:bg-gray-800 text-xs font-semibold text-gray-600 dark:text-gray-400">
+                                        <th className="px-4 py-3 text-left min-w-[200px]">{t('Product')} <span className="text-red-500">*</span></th>
+                                        <th className="px-4 py-3 text-left w-24">{t('Qty')} <span className="text-red-500">*</span></th>
+                                        <th className="px-4 py-3 text-left w-32">{t('Unit Price')} <span className="text-red-500">*</span></th>
+                                        <th className="px-4 py-3 text-left w-32">{t('Discount Type')}</th>
+                                        <th className="px-4 py-3 text-left w-28">{t('Discount Value')}</th>
+                                        <th className="px-4 py-3 text-left w-28">{t('Tax')}</th>
+                                        <th className="px-4 py-3 text-left w-28">{t('Line Total')}</th>
+                                        <th className="px-4 py-3 w-12"></th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                                     {productRows.map((row, i) => {
                                         const c = calcLine(row);
                                         return (
-                                            <tr key={row.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                                                <td className="py-2.5 pe-3 min-w-[200px]">
+                                            <tr key={row.id} className="border-b hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                                <td className="px-4 py-3 min-w-[200px]">
                                                     <Select value={row.product_id} onValueChange={v => setRow(row.id, 'product_id', v)}>
                                                         <SelectTrigger>
                                                             <SelectValue placeholder={t('Select product')} />
@@ -442,7 +450,7 @@ export default function ReceiptOrderEdit() {
                                                     {i === 0 && products.length === 0 && <p className="text-xs mt-1">{t('Click here to add')} <a href={route('products.index')} className="underline font-medium">{t('Products')}</a></p>}
                                                 </td>
 
-                                                <td className="py-2.5 pe-3 w-24">
+                                                <td className="px-4 py-3 w-24">
                                                     <Input
                                                         type="number" min="1"
                                                         value={row.quantity}
@@ -450,7 +458,7 @@ export default function ReceiptOrderEdit() {
                                                     />
                                                 </td>
 
-                                                <td className="py-2.5 pe-3 w-28">
+                                                <td className="px-4 py-3 w-28">
                                                     <Input
                                                         type="number" min="0" step="0.01"
                                                         value={row.unit_price}
@@ -458,7 +466,7 @@ export default function ReceiptOrderEdit() {
                                                     />
                                                 </td>
 
-                                                <td className="py-2.5 pe-3 w-36">
+                                                <td className="px-4 py-3 w-36">
                                                     <Select value={row.discount_type} onValueChange={v => setRow(row.id, 'discount_type', v)}>
                                                         <SelectTrigger><SelectValue /></SelectTrigger>
                                                         <SelectContent>
@@ -469,7 +477,7 @@ export default function ReceiptOrderEdit() {
                                                     </Select>
                                                 </td>
 
-                                                <td className="py-2.5 pe-3 w-28">
+                                                <td className="px-4 py-3 w-28">
                                                     <Input
                                                         type="number" min="0" step="0.01"
                                                         value={row.discount_value}
@@ -480,21 +488,20 @@ export default function ReceiptOrderEdit() {
                                                     />
                                                 </td>
 
-                                                <td className="py-2.5 pe-3 w-36 whitespace-nowrap">
+                                                <td className="px-4 py-3 w-36 whitespace-nowrap">
                                                     {(() => { const prod = products.find((p: any) => String(p.id) === String(row.product_id)); return (<span className="text-sm font-medium text-muted-foreground">{prod?.tax ? `${prod.tax.name} (${parseFloat(prod.tax.rate).toFixed(2)}%)` : t('No Tax')}</span>); })()}
                                                 </td>
 
-                                                <td className="py-2.5 pe-3 w-28">
-                                                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{fmt(c.net + c.tax)}</span>
-                                                </td>
+                                                <td className="px-4 py-3 w-28 font-medium font-mono">{fmt(c.net + c.tax)}</td>
 
-                                                <td className="py-2.5 w-10">
+                                                <td className="px-4 py-3 w-10">
                                                     <button
                                                         type="button"
-                                                        onClick={() => setProductRows(p => p.filter(r => r.id !== row.id))}
-                                                        className="p-1 text-red-600 "
+                                                        onClick={() => setProductRows(p => p.length <= 1 ? p : p.filter(r => r.id !== row.id))}
+                                                        disabled={productRows.length <= 1}
+                                                        className="p-1 rounded text-gray-500 hover:bg-gray-100 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
                                                     >
-                                                        <Trash2 className="h-4 w-4" />
+                                                        <Trash2 className="h-4 w-4 text-gray-500" />
                                                     </button>
                                                 </td>
                                             </tr>
@@ -506,23 +513,23 @@ export default function ReceiptOrderEdit() {
                     )}
 
                     {productRows.length > 0 && (
-                        <div className="flex justify-end mt-4">
-                            <div className="w-64 space-y-2 text-sm">
-                                <div className="flex justify-between">
-                                    <span className="text-gray-600 dark:text-gray-400">{t('Subtotal')}:</span>
-                                    <span className="font-medium">{fmt(totals.subtotal + totals.discount)}</span>
+                        <div className="flex justify-end p-4 border-t">
+                            <div className="w-64 space-y-2">
+                                <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                                    <span>{t('Subtotal')}</span>
+                                    <span className="font-medium font-mono">{fmt(totals.subtotal + totals.discount)}</span>
                                 </div>
-                                <div className="flex justify-between text-red-600">
-                                    <span>{t('Discount')}:</span>
-                                    <span className="font-medium">-{fmt(totals.discount)}</span>
+                                <div className="flex justify-between text-sm text-red-600">
+                                    <span>{t('Discount')}</span>
+                                    <span className="font-medium font-mono">-{fmt(totals.discount)}</span>
                                 </div>
-                                <div className="flex justify-between">
-                                    <span className="text-gray-600 dark:text-gray-400">{t('Tax')}:</span>
-                                    <span className="font-medium">{fmt(totals.tax)}</span>
+                                <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                                    <span>{t('Tax')}</span>
+                                    <span className="font-medium font-mono">{fmt(totals.tax)}</span>
                                 </div>
-                                <div className="flex justify-between font-bold border-t pt-2">
-                                    <span>{t('Grand Total')}:</span>
-                                    <span className="text-primary">{fmt(totals.subtotal + totals.tax)}</span>
+                                <div className="flex justify-between text-base font-bold text-gray-900 dark:text-gray-100 border-t pt-2">
+                                    <span>{t('Grand Total')}</span>
+                                    <span className="text-green-600 text-lg font-mono">{fmt(totals.subtotal + totals.tax)}</span>
                                 </div>
                             </div>
                         </div>

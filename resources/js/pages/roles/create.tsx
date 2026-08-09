@@ -79,6 +79,7 @@ export default function RolesCreate() {
     return (
         <PageTemplate
             title={t('Add Role')}
+            description={t('Fill in the details to create a new role')}
             url="/roles/create"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
