@@ -88,7 +88,7 @@ export default function TestimonialsSection({ testimonials, settings, sectionDat
             {sectionData?.title || t('What Our Clients Say')}
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium">
-            {sectionData?.subtitle || t("Don't just take our word for it — hear from businesses using our Sales SaaS.")}
+            {sectionData?.subtitle || t("Don't just take our word for it — hear from businesses using our Kakbima.")}
           </p>
         </div>
 

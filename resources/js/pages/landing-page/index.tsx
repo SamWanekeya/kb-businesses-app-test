@@ -380,7 +380,7 @@ export default function LandingPage() {
     };
     const seo = settings.config_sections?.seo;
     // const globalSettings = (usePage().props as any).globalSettings;
-    const pageTitle = seo?.meta_title || globalSettings?.title_text || 'Sales SaaS';
+    const pageTitle = seo?.meta_title || globalSettings?.title_text || 'Kakbima';
     return (
         <>
             <Head title={pageTitle}>

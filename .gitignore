@@ -1,29 +1,48 @@
-/.phpunit.cache
-/bootstrap/ssr
-/node_modules
-/public/build
-/public/hot
-/public/storage
-/storage/*.key
-/storage/pail
-/vendor
-.env.backup
-.env.production
-.phpactor.json
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
+# Node & Package Management
+/node_modules/
+/vendor/
+/composer1.phar
 npm-debug.log
 yarn-error.log
-/auth.json
-/.fleet
-/.idea
-/.nova
-/.vscode
-/.zed
-/storage/logs
-/storage/uploads
-/storage/framework
+yarn-debug.log
+# Laravel Specific
+/public/hot
+/public/storage
+/public/static
+/public/sitemap.xml
+/storage/*.key
+/storage/*.index
+/storage/app/analytics-api.json
+/storage/logs/
+/storage/uploads/
+/storage/framework/
+/storage/pail
+# Environment Files
 .env
-/vcardv5-refer
-/public/screenshots
+.env.backup
+.env.production
+.env.demo
+# Laravel Debug & Cache
+.phpunit.result.cache
+.phpunit.cache
+.php-cs-fixer.cache
+auth.json
+debug_paytabs.log
+error_log
+laravel-echo-server.json
+# IDEs & Tooling
+/.idea/
+/.vscode/
+/.phpactor.json
+/.fleet/
+/.nova/
+/.zed/
+# Docker & Homestead
+docker-compose.override.yml
+Homestead.json
+Homestead.yaml
+.vagrant
+# Misc
+.sass-cache/
+.DS_Store
+/bootstrap/ssr

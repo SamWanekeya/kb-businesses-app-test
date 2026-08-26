@@ -1,25 +1,104 @@
+# Only supports Apache 2.4+
 <IfModule mod_rewrite.c>
+    # Block access to directories without a default document.
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
-
     RewriteEngine On
-
-    # Handle Authorization Header
+    # ----------------------------------------------------------------------
+    # |                       CORE REDIRECTS AND ROUTING                   |
+    # ----------------------------------------------------------------------
+    # Rewrite requests for assets, storage to the public directory if the requested file or directory does not exist and the URI does not already start with /public/
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(assets|storage|static)/(.*)$ public/$1/$2 [L,NC]
+    # Redirect HTTP to HTTPS but EXCLUDE .well-known/acme-challenge/
+	# RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/ [NC]
+    # RewriteCond %{HTTPS} off
+    # RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+    # ----------------------------------------------------------------------
+    # |                       SECURITY RULES                   |
+    # ----------------------------------------------------------------------
+    # Block access to hidden files and directories except .well-known
+	RewriteCond %{REQUEST_URI} !^/\.well-known/ [NC]
+	RewriteCond %{SCRIPT_FILENAME} -d [OR]
+	RewriteCond %{SCRIPT_FILENAME} -f
+	RewriteRule "(^|/)\." - [F]
+    # Deny access to specific files/folders and redirect to root of current domain
+    RewriteCond %{REQUEST_URI} /(error_log\.log|README\.md|README\.html|README\.txt|license\.txt|php\.ini|php5\.ini|htaccess\.th|manifest\.json) [NC]
+    RewriteCond %{REQUEST_URI} !^/$
+    RewriteRule ^ / [L,R=302]
+    # Handle Authorization Header for internal use
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
-    # Handle X-XSRF-Token Header
-    RewriteCond %{HTTP:x-xsrf-token} .
-    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
-
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
-
+    # Disabling the TRACE method from the web server to prevent cross-site tracing attacks
+    RewriteCond %{REQUEST_METHOD} ^TRACE
+    RewriteRule .* - [F]
     # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_URI} !(\.css|\.js|\.png|\.jpg|\.jpeg|\.gif|\.pdf|robots\.txt|\.ico|\.woff|\.woff2|.ttf|\.svg)$ [NC]
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+    # Handle X-XSRF-Token Header
+    RewriteCond %{HTTP:x-xsrf-token} .
+    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
+    # ----------------------------------------------------------------------
+    # |                       PERFORMANCE OPTIMIZATIONS                   |
+    # ----------------------------------------------------------------------
+	<IfModule mod_deflate.c>
+        # Enable Gzip compression for a wide range of text-based and web font file types.
+        AddOutputFilterByType DEFLATE text/html text/richtext text/plain text/css text/x-script text/x-component text/x-java-source text/x-markdown application/javascript application/x-javascript text/javascript text/js image/x-icon application/x-perl application/x-httpd-cgi text/xml application/xml application/xml+rss application/json multipart/bag multipart/mixed application/xhtml+xml font/ttf font/otf font/x-woff image/svg+xml application/vnd.ms-fontobject application/ttf application/x-ttf application/otf application/x-otf application/truetype application/opentype application/x-opentype application/font-woff application/eot application/font application/font-sfnt application/wasm
+    </IfModule>
+    # This block sets all the necessary HTTP headers to improve security, caching, and SEO.
+    <IfModule mod_headers.c>
+        # Make sure proxies don’t deliver the wrong content
+        Header append Vary User-Agent env=!dont-vary
+        # Leverage browser caching for static assets (images, fonts, scripts, styles) for 1 YEAR (365 * 24 * 60 * 60)
+        <FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf|eot|otf|tt[cf]|woff|woff2|svg|webp|mp4|mpeg|webm)$">
+            Header set Cache-Control "max-age=31536000, public, immutable"
+        </FilesMatch>
+        # Inform the browsers if the client can handle the compressed version of the website
+        <FilesMatch "\.(js|css|xml|gz|html|ttf|atom|rss)$">
+            Header append Vary: Accept-Encoding
+        </FilesMatch>
+        # Leverage browser caching for pre-rendered HTML files for a shorter period(2 hours), with revalidation
+        <FilesMatch "\.(html|htm|xml|txt|rss|atom)$">
+            Header set Cache-Control "max-age=7200, must-revalidate"
+        </FilesMatch>
+        # Allow web fonts to be loaded from all domains.
+        <FilesMatch "\.(eot|otf|tt[cf]|woff|woff2|svg)$">
+            Header set Access-Control-Allow-Origin "*"
+        </FilesMatch>
+        # Turn off the server signature to hide the Apache version on error pages.
+        ServerSignature Off
+        # Force Internet Explorer to render pages in the highest available mode
+        Header set X-UA-Compatible "IE=edge"
+        # Unset headers that may reveal server information for security through obscurity.
+        # The `always` directive ensures these are removed from all responses, including errors.
+        Header always unset X-Powered-By
+        Header always unset Server
+        Header always unset Host-Header
+        # Enforce HTTPS connections using HTTP Strict Transport Security (HSTS).
+        # This header tells browsers to only connect over HTTPS, preventing downgrade attacks.
+        # The `max-age` sets the duration in seconds (2 years), and `preload` enables listing on public HSTS preload lists.
+        Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+        # Prevent clickjacking attacks by forbidding the site from being embedded in a frame.
+        # `X-Frame-Options` is a simple, widely-supported header that serves as a fallback for older browsers.
+        Header always set X-Frame-Options "DENY"
+        # Mitigate MIME-sniffing attacks by forcing browsers to use the MIME-type declared by the server.
+        # This prevents malicious files from being executed as scripts.
+        Header always set X-Content-Type-Options "nosniff"
+        # Enable the browser's built-in XSS protection filter.
+        # `1; mode=block` instructs the browser to enable the filter and block the page if a cross-site scripting attack is detected.
+        Header always set X-XSS-Protection "1; mode=block"
+        # Control the Referrer header to protect user privacy.
+        # `strict-origin-when-cross-origin` is the recommended modern default.
+        # It sends full referrer information for same-origin requests, the origin only for cross-origin requests, and nothing when downgrading from HTTPS to HTTP.
+        Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    </IfModule>
 </IfModule>

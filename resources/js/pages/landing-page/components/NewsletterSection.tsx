@@ -67,7 +67,7 @@ export default function NewsletterSection({ flash, settings, sectionData, brandC
                     </div>
 
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                        {sectionData?.title || t('Stay Updated with Sales SaaS')}
+                        {sectionData?.title || t('Stay Updated with Kakbima')}
                     </h2>
                     <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed font-medium" id="newsletter-description">
                         {sectionData?.subtitle || t('Get the latest sales strategies, product updates, and growth insights.')}

@@ -85,7 +85,7 @@ export default function WhyChooseUs({ settings, sectionData, brandColor = '#3b82
           {/* Left Content */}
           <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              {sectionData.title || t('Why Choose Our Sales SaaS?')}
+              {sectionData.title || t('Why Choose Our Kakbima?')}
             </h2>
             <p className="text-lg text-gray-600 mb-8 leading-relaxed font-medium">
               {sectionData.subtitle || t('We\'re more than just CRM — we\'re your complete sales growth platform.')}

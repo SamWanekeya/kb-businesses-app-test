@@ -1,0 +1,70 @@
+version = 1
+
+exclude_patterns = [
+    ".phpstorm.meta.php",
+    "_ide_helper.php",
+    "_ide_helper_models.php",
+    "resources/js/**/*.d.ts",
+    "bootstrap/cache/**",
+    "storage/**",
+    "*.min.js",
+    "*.min.css",
+    "composer.lock",
+    "yarn.lock",
+    "package-lock.json",
+    "pnpm-lock.yaml"
+]
+
+[[checks]]
+type = "phpcs"
+version = ">=1.0.0"
+[checks.config]
+standard = "PSR12"
+paths = ["app"]
+
+[[checks]]
+type = "phpmd"
+version = ">=1.0.0"
+[checks.config]
+rulesets = ["cleancode", "codesize", "design", "naming"]
+paths = ["app", "tests"]
+
+[[checks]]
+type = "larastan"
+version = ">=1.0.0"
+[checks.config]
+level = "max"
+paths = ["app", "tests"]
+
+[[checks]]
+type = "eslint"
+version = ">=8"
+paths = ["resources/js"]
+
+[[analyzers]]
+name = "shell"
+
+[[analyzers]]
+name = "php"
+enabled = true
+
+[[analyzers]]
+name = "javascript"
+enabled = true
+
+[analyzers.meta]
+plugins = ["react"]
+module_system = "es-modules"
+environment = ["nodejs", "browser"]
+cyclomatic_complexity_threshold = "medium"
+
+[[transformers]]
+name = "php-cs-fixer"
+[transformers.config]
+preset = "laravel"
+
+style_guide = "standard"
+
+[[code_formatters]]
+name = "prettier"
+enabled = true

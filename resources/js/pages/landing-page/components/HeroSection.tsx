@@ -86,7 +86,7 @@ export default function HeroSection({ settings, sectionData, brandColor = '#3b82
         role="banner"
         aria-label="Main heading"
       >
-        {sectionData.title || t('All-in-One Sales SaaS to Power Your Business Growth')}
+        {sectionData.title || t('All-in-One Kakbima to Power Your Business Growth')}
       </h1>
       <p
         className={`text-lg md:text-xl leading-relaxed font-medium ${

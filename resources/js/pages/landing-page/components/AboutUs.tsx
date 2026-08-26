@@ -142,7 +142,7 @@ export default function AboutUs({ settings, sectionData, brandColor = '#3b82f6' 
         {sectionData.story_title || t('Empowering Sales Teams Since 2020')}
       </h3>
       <div className="dark:text-gray-400 mb-8 leading-relaxed" dangerouslySetInnerHTML={{
-        __html: (sectionData.story_content || t('Founded by a group of sales professionals and technology experts, our Sales SaaS was created to solve the common challenges businesses face in managing leads, orders, invoices, and projects. Today, we power thousands of businesses worldwide with a reliable, scalable, and easy-to-use platform.')).replace(/\n/g, '</p><p className="mb-6">')
+        __html: (sectionData.story_content || t('Founded by a group of sales professionals and technology experts, our Kakbima was created to solve the common challenges businesses face in managing leads, orders, invoices, and projects. Today, we power thousands of businesses worldwide with a reliable, scalable, and easy-to-use platform.')).replace(/\n/g, '</p><p className="mb-6">')
       }} />
       {stats.length > 0 && (
         <div className={`flex items-center gap-8 ${centered ? 'justify-center' : ''}`}>
@@ -176,7 +176,7 @@ export default function AboutUs({ settings, sectionData, brandColor = '#3b82f6' 
                   {sectionData.story_title || t('Empowering Sales Teams Since 2020')}
                 </h3>
                 <div className="mb-6 leading-relaxed opacity-90" dangerouslySetInnerHTML={{
-                  __html: (sectionData.story_content || t('Founded by a group of sales professionals and technology experts, our Sales SaaS was created to solve the common challenges businesses face in managing leads, orders, invoices, and projects. Today, we power thousands of businesses worldwide with a reliable, scalable, and easy-to-use platform.')).replace(/\n/g, '</p><p className="mb-6">')
+                  __html: (sectionData.story_content || t('Founded by a group of sales professionals and technology experts, our Kakbima was created to solve the common challenges businesses face in managing leads, orders, invoices, and projects. Today, we power thousands of businesses worldwide with a reliable, scalable, and easy-to-use platform.')).replace(/\n/g, '</p><p className="mb-6">')
                 }} />
                 {stats.length > 0 && (
                   <div className="flex items-center justify-center gap-8">
@@ -253,7 +253,7 @@ export default function AboutUs({ settings, sectionData, brandColor = '#3b82f6' 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className={`text-center mb-8 sm:mb-12 lg:mb-16 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <h2 className="text-3xl md:text-4xl font-bold dark:text-gray-400 mb-4">
-            {sectionData.title || t('About Sales SaaS')}
+            {sectionData.title || t('About Kakbima')}
           </h2>
           <p className="text-lg dark:text-gray-400 max-w-3xl mx-auto leading-relaxed font-medium">
             {sectionData.description || t('We are dedicated to simplifying and automating the entire sales lifecycle for businesses of all sizes.')}

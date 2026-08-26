@@ -1,3 +1,2 @@
-resources/js/components/ui/*
-resources/js/ziggy.js
-resources/views/mail/*
+resources/data/blocked_email_domains.json
+resources/data/blocked_email_keywords.json

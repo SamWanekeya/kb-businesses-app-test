@@ -44,7 +44,7 @@ export function PageTemplate({
 
     return (
         <AppLayout breadcrumbs={pageBreadcrumbs}>
-            <Head title={`${title} - ${(usePage().props as any).globalSettings?.titleText || 'Sales SaaS'}`} />
+            <Head title={`${title} - ${(usePage().props as any).globalSettings?.titleText || 'Kakbima'}`} />
             <div className="flex flex-1 flex-col gap-4 pt-4 pb-[50px] px-[50px]">
                 {/* <div className="flex h-full flex-1 flex-col gap-4 p-4"> */}
                 {/* Header with action buttons */}

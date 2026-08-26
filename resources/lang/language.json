@@ -1,98 +1,77 @@
 [
-    {
-        "code": "en",
-        "name": "English",
-        "countryCode": "GB",
-        "enabled": true
-    },
-    {
-        "code": "es",
-        "name": "Español",
-        "countryCode": "ES",
-        "enabled": true
-    },
-    {
-        "code": "ar",
-        "name": "العربية",
-        "countryCode": "SA",
-        "enabled": true
-    },
-    {
-        "code": "da",
-        "name": "Dansk",
-        "countryCode": "DK",
-        "enabled": true
-    },
-    {
-        "code": "de",
-        "name": "Deutsch",
-        "countryCode": "DE",
-        "enabled": true
-    },
-    {
-        "code": "fr",
-        "name": "Français",
-        "countryCode": "FR",
-        "enabled": true
-    },
-    {
-        "code": "he",
-        "name": "עברית",
-        "countryCode": "IL",
-        "enabled": true
-    },
-    {
-        "code": "it",
-        "name": "Italiano",
-        "countryCode": "IT",
-        "enabled": true
-    },
-    {
-        "code": "ja",
-        "name": "日本語",
-        "countryCode": "JP",
-        "enabled": true
-    },
-    {
-        "code": "nl",
-        "name": "Nederlands",
-        "countryCode": "NL",
-        "enabled": true
-    },
-    {
-        "code": "pl",
-        "name": "Polski",
-        "countryCode": "PL",
-        "enabled": true
-    },
-    {
-        "code": "pt",
-        "name": "Português",
-        "countryCode": "PT",
-        "enabled": true
-    },
-    {
-        "code": "pt-BR",
-        "name": "Português do Brasil",
-        "countryCode": "BR",
-        "enabled": true
-    },
-    {
-        "code": "ru",
-        "name": "Русский",
-        "countryCode": "RU",
-        "enabled": true
-    },
-    {
-        "code": "tr",
-        "name": "Türkçe",
-        "countryCode": "TR",
-        "enabled": true
-    },
-    {
-        "code": "zh",
-        "name": "中文",
-        "countryCode": "CN",
-        "enabled": true
-    }
+    { "code": "af-za", "name": "Afrikaans", "countryCode": "ZA" },
+    { "code": "am-et", "name": "አማርኛ", "countryCode": "ET" },
+    { "code": "ar", "name": "العربية", "countryCode": "SA" },
+    { "code": "ar-ae", "name": "العربية (الإمارات)", "countryCode": "AE" },
+    { "code": "ar-dz", "name": "العربية (الجزائر)", "countryCode": "DZ" },
+    { "code": "ar-eg", "name": "العربية (مصر)", "countryCode": "EG" },
+    { "code": "ar-lb", "name": "العربية (لبنان)", "countryCode": "LB" },
+    { "code": "ar-ma", "name": "العربية (المغرب)", "countryCode": "MA" },
+    { "code": "ar-qa", "name": "العربية (قطر)", "countryCode": "QA" },
+    { "code": "ar-sa", "name": "العربية (السعودية)", "countryCode": "SA" },
+    { "code": "bn", "name": "বাংলা", "countryCode": "BD" },
+    { "code": "bn-bd", "name": "বাংলা (বাংলাদেশ)", "countryCode": "BD" },
+    { "code": "bn-in", "name": "বাংলা (ভারত)", "countryCode": "IN" },
+    { "code": "da", "name": "Dansk", "countryCode": "DK" },
+    { "code": "de", "name": "Deutsch", "countryCode": "DE" },
+    { "code": "de-at", "name": "Deutsch (Österreich)", "countryCode": "AT" },
+    { "code": "de-ch", "name": "Deutsch (Schweiz)", "countryCode": "CH" },
+    { "code": "de-de", "name": "Deutsch (Deutschland)", "countryCode": "DE" },
+    { "code": "de-lu", "name": "Deutsch (Luxemburg)", "countryCode": "LU" },
+    { "code": "en", "name": "English", "countryCode": "GB" },
+    { "code": "en-ca", "name": "English (Canada)", "countryCode": "CA" },
+    { "code": "en-gb", "name": "English (United Kingdom)", "countryCode": "GB" },
+    { "code": "en-gh", "name": "English (Ghana)", "countryCode": "GH" },
+    { "code": "en-ke", "name": "English (Kenya)", "countryCode": "KE" },
+    { "code": "en-ng", "name": "English (Nigeria)", "countryCode": "NG" },
+    { "code": "en-ug", "name": "English (Uganda)", "countryCode": "UG" },
+    { "code": "en-us", "name": "English (United States)", "countryCode": "US" },
+    { "code": "en-za", "name": "English (South Africa)", "countryCode": "ZA" },
+    { "code": "en-zm", "name": "English (Zambia)", "countryCode": "ZM" },
+    { "code": "en-zw", "name": "English (Zimbabwe)", "countryCode": "ZW" },
+    { "code": "es", "name": "Español", "countryCode": "ES" },
+    { "code": "es-ar", "name": "Español (Argentina)", "countryCode": "AR" },
+    { "code": "es-cl", "name": "Español (Chile)", "countryCode": "CL" },
+    { "code": "es-co", "name": "Español (Colombia)", "countryCode": "CO" },
+    { "code": "es-es", "name": "Español (España)", "countryCode": "ES" },
+    { "code": "es-mx", "name": "Español (México)", "countryCode": "MX" },
+    { "code": "es-pe", "name": "Español (Perú)", "countryCode": "PE" },
+    { "code": "es-us", "name": "Español (Estados Unidos)", "countryCode": "US" },
+    { "code": "fr", "name": "Français", "countryCode": "FR" },
+    { "code": "fr-be", "name": "Français (Belgique)", "countryCode": "BE" },
+    { "code": "fr-ca", "name": "Français (Canada)", "countryCode": "CA" },
+    { "code": "fr-ch", "name": "Français (Suisse)", "countryCode": "CH" },
+    { "code": "fr-fr", "name": "Français (France)", "countryCode": "FR" },
+    { "code": "fr-lu", "name": "Français (Luxembourg)", "countryCode": "LU" },
+    { "code": "ga-ie", "name": "Gaeilge", "countryCode": "IE" },
+    { "code": "ha", "name": "Hausa", "countryCode": "NG" },
+    { "code": "ha-gh", "name": "Hausa (Ghana)", "countryCode": "GH" },
+    { "code": "ha-ne", "name": "Hausa (Niger)", "countryCode": "NE" },
+    { "code": "ha-ng", "name": "Hausa (Nigeria)", "countryCode": "NG" },
+    { "code": "he-il", "name": "עברית", "countryCode": "IL" },
+    { "code": "hi-in", "name": "हिन्दी", "countryCode": "IN" },
+    { "code": "it", "name": "Italiano", "countryCode": "IT" },
+    { "code": "it-it", "name": "Italiano (Italia)", "countryCode": "IT" },
+    { "code": "ja-jp", "name": "日本語", "countryCode": "JP" },
+    { "code": "ko-kr", "name": "한국어", "countryCode": "KR" },
+    { "code": "pl-pl", "name": "Polski", "countryCode": "PL" },
+    { "code": "pt", "name": "Português", "countryCode": "PT" },
+    { "code": "pt-br", "name": "Português do Brasil", "countryCode": "BR" },
+    { "code": "pt-mz", "name": "Português (Moçambique)", "countryCode": "MZ" },
+    { "code": "pt-pt", "name": "Português (Portugal)", "countryCode": "PT" },
+    { "code": "ru", "name": "Русский", "countryCode": "RU" },
+    { "code": "ru-kz", "name": "Русский (Казахстан)", "countryCode": "KZ" },
+    { "code": "ru-ru", "name": "Русский (Россия)", "countryCode": "RU" },
+    { "code": "ru-ua", "name": "Русский (Украина)", "countryCode": "UA" },
+    { "code": "sn-zw", "name": "Shona", "countryCode": "ZW" },
+    { "code": "so-so", "name": "Af-Soomaali", "countryCode": "SO" },
+    { "code": "sw", "name": "Kiswahili", "countryCode": "TZ" },
+    { "code": "sw-ke", "name": "Kiswahili (Kenya)", "countryCode": "KE" },
+    { "code": "sw-tz", "name": "Kiswahili (Tanzania)", "countryCode": "TZ" },
+    { "code": "tr-tr", "name": "Türkçe", "countryCode": "TR" },
+    { "code": "xh-za", "name": "isiXhosa", "countryCode": "ZA" },
+    { "code": "yo-ng", "name": "Yorùbá", "countryCode": "NG" },
+    { "code": "zh-cn", "name": "中文 (简体)", "countryCode": "CN" },
+    { "code": "zh-tw", "name": "中文 (繁體)", "countryCode": "TW" },
+    { "code": "zu-za", "name": "isiZulu", "countryCode": "ZA" }
 ]

@@ -137,7 +137,7 @@ export default function Footer({ settings, sectionData = {}, brandColor = '#3b82
                                 })()}
                             </Link>
                             <p className="text-gray-400 mb-8 leading-relaxed">
-                                {sectionData.description || t('Empowering businesses to boost sales and grow faster with our all-in-one Sales SaaS platform.')}
+                                {sectionData.description || t('Empowering businesses to boost sales and grow faster with our all-in-one Kakbima platform.')}
                             </p>
 
                             {/* Contact Info */}

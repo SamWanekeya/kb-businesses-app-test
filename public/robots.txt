@@ -1,2 +1,3 @@
 User-agent: *
-Disallow:
+Disallow: /.well-known/
+Disallow: /cdn-cgi/

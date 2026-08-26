@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'system' => 'Sales SaaS',
+    'system' => 'Kakbima',
     'system_version' => '8.0',
 ];

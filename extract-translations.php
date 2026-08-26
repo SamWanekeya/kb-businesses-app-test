@@ -1,13 +1,44 @@
 <?php
+/**
+ * Translation Extraction Script
+ *
+ * Scans application source directories for translation keys used via
+ * `translate()` and `__()` helpers, and compiles them into a single
+ * JSON language file (`resources/lang/en.json`).
+ *
+ * This script is intended to keep translation files in sync with actual
+ * usage across frontend (JS/TS/JSX/TSX) and backend (PHP/Blade) layers.
+ *
+ * Responsibilities:
+ * - Recursively traverse predefined project directories
+ * - Extract translation keys from supported file types
+ * - Merge with existing translations (preserving prior entries)
+ * - Normalize keys by using the original string as the default value
+ * - Sort and persist the result to a JSON language file
+ *
+ * Constraints / Assumptions:
+ * - Only matches direct string literals (no dynamic expressions)
+ * - Supports `translate()` and `__()` helpers with single or double quotes
+ * - Ignores non-supported file extensions
+ *
+ * Side Effects:
+ * - Reads from multiple directories across the codebase
+ * - Writes (overwrites) `resources/lang/en.json`
+ * - Creates the lang directory if it does not exist
+ *
+ * Output:
+ * - JSON file containing key-value pairs of translation strings
+ * - CLI output indicating total extracted strings
+ */
 
 // Define the directories to scan
 $directories = [
     __DIR__ . '/resources/js/pages',
-    __DIR__ . '/resources/js/pages/config',
+    __DIR__ . '/resources/js/config',
     __DIR__ . '/resources/js/components',
     __DIR__ . '/resources/js/layouts',
     __DIR__ . '/resources/views',
-    __DIR__ . '/app'
+    __DIR__ . '/app',
 ];
 $outputFile = __DIR__ . '/resources/lang/en.json';
 
@@ -17,12 +48,21 @@ $translations = [];
 // Load existing translations if the file exists
 if (file_exists($outputFile)) {
     $existingContent = file_get_contents($outputFile);
-    $translations = json_decode($existingContent, true) ?: [];
+    $translations = json_decode($existingContent, true) ?:[];
 }
 
-// Function to recursively scan directories
-function scanDirectory($dir, &$translations)
-{
+/**
+ * Recursively scans a directory for translatable strings.
+ *
+ * Traverses all nested directories and processes supported file types,
+ * delegating extraction to `extractTranslations()`.
+ *
+ * @param string $dir Absolute path to the directory being scanned
+ * @param array<string, string> $translations Accumulator for discovered translation keys
+ *
+ * @return void
+ */
+function scanDirectory($dir, &$translations) {
     if (!is_dir($dir)) {
         return;
     }
@@ -30,7 +70,7 @@ function scanDirectory($dir, &$translations)
     $files = scandir($dir);
 
     foreach ($files as $file) {
-        if ($file === '.' || $file === '..') {
+        if ($file==='.' || $file==='..') {
             continue;
         }
 
@@ -40,23 +80,38 @@ function scanDirectory($dir, &$translations)
             scanDirectory($path, $translations);
         } else {
             $extension = pathinfo($path, PATHINFO_EXTENSION);
-            if (in_array($extension, ['tsx', 'jsx', 'php', 'blade.php', 'ts'])) {
+            if (in_array($extension, ['ts', 'tsx', 'jsx', 'php', 'blade.php'])) {
                 extractTranslations($path, $translations);
             }
         }
     }
 }
 
-// Function to extract translations from a file
-function extractTranslations($file, &$translations)
-{
+/**
+ * Extracts translation keys from a file's contents.
+ *
+ * Identifies string literals passed to `translate()` and `__()` helpers
+ * using regex patterns, and registers them in the translations array.
+ *
+ * Business Rules:
+ * - Only captures static string arguments
+ * - Ensures function name is not part of another identifier
+ * - Uses the extracted string as both key and default value
+ * - Deduplicates automatically via associative array keys
+ *
+ * @param string $file Absolute path to the file being processed
+ * @param array<string, string> $translations Accumulator for discovered translation keys
+ *
+ * @return void
+ */
+function extractTranslations($file, &$translations) {
     $content = file_get_contents($file);
 
-    // Match t("...") pattern - ensure it's the t function, not part of another word
-    preg_match_all('/(?<![a-zA-Z0-9_])t\("([^"]*)"\)/', $content, $doubleQuoteMatches);
+    // Match translate("...") pattern - ensure it's the function, not part of another word
+    preg_match_all('/(?<![a-zA-Z0-9_])translate\("([^"]*)"\)/', $content, $doubleQuoteMatches);
 
-    // Match t('...') pattern - ensure it's the t function, not part of another word
-    preg_match_all("/(?<![a-zA-Z0-9_])t\('([^']*)'\)/", $content, $singleQuoteMatches);
+    // Match translate('...') pattern - ensure it's the function, not part of another word
+    preg_match_all("/(?<![a-zA-Z0-9_])translate\('([^']*)'\)/", $content, $singleQuoteMatches);
 
     // Match __("...") pattern
     preg_match_all('/__\("([^"]*)"\)/', $content, $doubleQuoteMatchesUnderscore);
@@ -90,7 +145,7 @@ foreach ($directories as $directory) {
 // Sort translations alphabetically
 ksort($translations);
 
-// Create directory if it doesn't exist
+// Create directory if it doesn’t exist
 $outputDir = dirname($outputFile);
 if (!is_dir($outputDir)) {
     mkdir($outputDir, 0755, true);

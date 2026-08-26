@@ -9,7 +9,7 @@ export const defaultLandingPageSections = {
     },
     {
       key: 'hero',
-      title: 'All-in-One Sales SaaS to Power Your Business Growth',
+      title: 'All-in-One Kakbima to Power Your Business Growth',
       subtitle: 'Manage leads, opportunities, quotes, orders, invoices, projects, and reports — all from one platform.',
       announcement_text: '🚀 Smart Reports & Advanced Analytics',
       primary_button_text: 'Start Free Trial',
@@ -69,12 +69,12 @@ export const defaultLandingPageSections = {
     },
     {
       key: 'screenshots',
-      title: 'See Our Sales SaaS in Action',
+      title: 'See Our Kakbima in Action',
       subtitle: 'Explore the modern interface and powerful modules that make managing your sales process effortless',
       screenshots_list: [
         {
           src: '/screenshots/dashboard.png',
-          alt: 'Sales SaaS Dashboard Overview',
+          alt: 'Kakbima Dashboard Overview',
           title: 'Dashboard Overview',
           description: 'Get a complete view of leads, employees, projects, sales, projects, and performance insights in one place'
         },
@@ -112,7 +112,7 @@ export const defaultLandingPageSections = {
     },
     {
       key: 'why_choose_us',
-      title: 'Why Choose Our Sales SaaS?',
+      title: 'Why Choose Our Kakbima?',
       subtitle: 'We\'re more than just CRM — we\'re your complete sales growth platform.',
       reasons: [
         {
@@ -167,10 +167,10 @@ export const defaultLandingPageSections = {
     // },
     {
       key: 'about',
-      title: 'About Our Sales SaaS',
+      title: 'About Our Kakbima',
       description: 'We are dedicated to simplifying and automating the entire sales lifecycle for businesses of all sizes.',
       story_title: 'Empowering Sales Teams Since 2020',
-      story_content: 'Founded by a group of sales professionals and technology experts, our Sales SaaS was created to solve the common challenges businesses face in managing leads, orders, invoices, and projects. Today, we power thousands of businesses worldwide with a reliable, scalable, and easy-to-use platform.',
+      story_content: 'Founded by a group of sales professionals and technology experts, our Kakbima was created to solve the common challenges businesses face in managing leads, orders, invoices, and projects. Today, we power thousands of businesses worldwide with a reliable, scalable, and easy-to-use platform.',
       image: '',
       background_color: '#f9fafb',
       layout: 'image-right',
@@ -197,7 +197,7 @@ export const defaultLandingPageSections = {
     {
       key: 'testimonials',
       title: 'What Our Clients Say',
-      subtitle: 'Don\'t just take our word for it — hear from businesses using our Sales SaaS.',
+      subtitle: 'Don\'t just take our word for it — hear from businesses using our Kakbima.',
       trust_title: 'Trusted by Businesses Worldwide',
       trust_stats: [
         { value: '4.9/5', label: 'Average Rating', color: 'blue' },
@@ -268,7 +268,7 @@ export const defaultLandingPageSections = {
     },
     {
       key: 'newsletter',
-      title: 'Stay Updated with Sales SaaS',
+      title: 'Stay Updated with Kakbima',
       subtitle: 'Get the latest sales strategies, product updates, and growth insights.',
       privacy_text: 'We value your privacy — no spam, unsubscribe anytime.',
       benefits: [
@@ -291,8 +291,8 @@ export const defaultLandingPageSections = {
     },
     {
       key: 'contact',
-      title: 'Connect with Sales SaaS',
-      subtitle: 'Have questions about Sales SaaS? Our team is here to help you succeed.',
+      title: 'Connect with Kakbima',
+      subtitle: 'Have questions about Kakbima? Our team is here to help you succeed.',
       form_title: 'Send us a Message',
       info_title: 'Contact Information',
       info_description: 'We\'re here to help and answer any question you might have.',
@@ -301,7 +301,7 @@ export const defaultLandingPageSections = {
     },
     {
       key: 'footer',
-      description: 'Empowering businesses to boost sales and grow faster with our all-in-one Sales SaaS platform.',
+      description: 'Empowering businesses to boost sales and grow faster with our all-in-one Kakbima platform.',
       newsletter_title: 'Stay Ahead',
       newsletter_subtitle: 'Subscribe for sales tips, product updates, and growth insights.',
       links: {
@@ -331,8 +331,8 @@ export const defaultLandingPageSections = {
     favicon: ''
   },
   seo: {
-    meta_title: 'Sales SaaS - Boost Your Sales & Grow Faster',
-    meta_description: 'All-in-one Sales SaaS platform to manage leads, close deals, and scale your business effortlessly.',
+    meta_title: 'Kakbima - Boost Your Sales & Grow Faster',
+    meta_description: 'All-in-one Kakbima platform to manage leads, close deals, and scale your business effortlessly.',
     meta_keywords: 'sales software, CRM, lead management, deal tracking, sales automation, SaaS'
   },
   custom_css: '',
