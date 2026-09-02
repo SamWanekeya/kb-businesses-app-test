@@ -78,7 +78,7 @@ export function InvoicePaymentProcessor({
         const methods = [];
         const paymentSettings = invoice.paymentMethods;
 
-        if (paymentSettings?.is_bank_enabled === true || paymentSettings?.is_bank_enabled === '1') {
+        if (paymentSettings?.is_bank_payment_mode_enabled === true || paymentSettings?.is_bank_payment_mode_enabled === '1') {
             methods.push({
                 id: 'bank',
                 name: 'Bank Transfer',
@@ -87,7 +87,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_stripe_enabled === true || paymentSettings?.is_stripe_enabled === '1') {
+        if (paymentSettings?.is_stripe_payment_mode_enabled === true || paymentSettings?.is_stripe_payment_mode_enabled === '1') {
             methods.push({
                 id: 'stripe',
                 name: 'Stripe',
@@ -96,7 +96,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_paypal_enabled === true || paymentSettings?.is_paypal_enabled === '1') {
+        if (paymentSettings?.is_paypal_payment_mode_enabled === true || paymentSettings?.is_paypal_payment_mode_enabled === '1') {
             methods.push({
                 id: 'paypal',
                 name: 'PayPal',
@@ -105,7 +105,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_razorpay_enabled === true || paymentSettings?.is_razorpay_enabled === '1') {
+        if (paymentSettings?.is_razorpay_payment_mode_enabled === true || paymentSettings?.is_razorpay_payment_mode_enabled === '1') {
             methods.push({
                 id: 'razorpay',
                 name: 'Razorpay',
@@ -114,7 +114,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_mercadopago_enabled === true || paymentSettings?.is_mercadopago_enabled === '1') {
+        if (paymentSettings?.is_mercadopago_payment_mode_enabled === true || paymentSettings?.is_mercadopago_payment_mode_enabled === '1') {
             methods.push({
                 id: 'mercadopago',
                 name: 'MercadoPago',
@@ -123,7 +123,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_paystack_enabled === true || paymentSettings?.is_paystack_enabled === '1') {
+        if (paymentSettings?.is_paystack_payment_mode_enabled === true || paymentSettings?.is_paystack_payment_mode_enabled === '1') {
             methods.push({
                 id: 'paystack',
                 name: 'Paystack',
@@ -132,7 +132,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_flutterwave_enabled === true || paymentSettings?.is_flutterwave_enabled === '1') {
+        if (paymentSettings?.is_flutterwave_payment_mode_enabled === true || paymentSettings?.is_flutterwave_payment_mode_enabled === '1') {
             methods.push({
                 id: 'flutterwave',
                 name: 'Flutterwave',
@@ -141,7 +141,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_paytabs_enabled === true || paymentSettings?.is_paytabs_enabled === '1') {
+        if (paymentSettings?.is_paytabs_payment_mode_enabled === true || paymentSettings?.is_paytabs_payment_mode_enabled === '1') {
             methods.push({
                 id: 'paytabs',
                 name: 'PayTabs',
@@ -150,7 +150,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_skrill_enabled === true || paymentSettings?.is_skrill_enabled === '1') {
+        if (paymentSettings?.is_skrill_payment_mode_enabled === true || paymentSettings?.is_skrill_payment_mode_enabled === '1') {
             methods.push({
                 id: 'skrill',
                 name: 'Skrill',
@@ -159,7 +159,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_coingate_enabled === true || paymentSettings?.is_coingate_enabled === '1') {
+        if (paymentSettings?.is_coingate_payment_mode_enabled === true || paymentSettings?.is_coingate_payment_mode_enabled === '1') {
             methods.push({
                 id: 'coingate',
                 name: 'Coingate',
@@ -168,7 +168,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_payfast_enabled === true || paymentSettings?.is_payfast_enabled === '1') {
+        if (paymentSettings?.is_payfast_payment_mode_enabled === true || paymentSettings?.is_payfast_payment_mode_enabled === '1') {
             methods.push({
                 id: 'payfast',
                 name: 'PayFast',
@@ -177,7 +177,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_tap_enabled === true || paymentSettings?.is_tap_enabled === '1') {
+        if (paymentSettings?.is_tap_payment_mode_enabled === true || paymentSettings?.is_tap_payment_mode_enabled === '1') {
             methods.push({
                 id: 'tap',
                 name: 'Tap',
@@ -186,7 +186,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_xendit_enabled === true || paymentSettings?.is_xendit_enabled === '1') {
+        if (paymentSettings?.is_xendit_payment_mode_enabled === true || paymentSettings?.is_xendit_payment_mode_enabled === '1') {
             methods.push({
                 id: 'xendit',
                 name: 'Xendit',
@@ -195,7 +195,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_paytr_enabled === true || paymentSettings?.is_paytr_enabled === '1') {
+        if (paymentSettings?.is_paytr_payment_mode_enabled === true || paymentSettings?.is_paytr_payment_mode_enabled === '1') {
             methods.push({
                 id: 'paytr',
                 name: 'PayTR',
@@ -204,7 +204,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_mollie_enabled === true || paymentSettings?.is_mollie_enabled === '1') {
+        if (paymentSettings?.is_mollie_payment_mode_enabled === true || paymentSettings?.is_mollie_payment_mode_enabled === '1') {
             methods.push({
                 id: 'mollie',
                 name: 'Mollie',
@@ -213,7 +213,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_toyyibpay_enabled === true || paymentSettings?.is_toyyibpay_enabled === '1') {
+        if (paymentSettings?.is_toyyibpay_payment_mode_enabled === true || paymentSettings?.is_toyyibpay_payment_mode_enabled === '1') {
             methods.push({
                 id: 'toyyibpay',
                 name: 'ToyyibPay',
@@ -222,7 +222,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_benefit_enabled === true || paymentSettings?.is_benefit_enabled === '1') {
+        if (paymentSettings?.is_benefit_payment_mode_enabled === true || paymentSettings?.is_benefit_payment_mode_enabled === '1') {
             methods.push({
                 id: 'benefit',
                 name: 'Benefit',
@@ -231,7 +231,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_iyzipay_enabled === true || paymentSettings?.is_iyzipay_enabled === '1') {
+        if (paymentSettings?.is_iyzipay_payment_mode_enabled === true || paymentSettings?.is_iyzipay_payment_mode_enabled === '1') {
             methods.push({
                 id: 'iyzipay',
                 name: 'Iyzipay',
@@ -240,7 +240,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_aamarpay_enabled === true || paymentSettings?.is_aamarpay_enabled === '1') {
+        if (paymentSettings?.is_aamarpay_payment_mode_enabled === true || paymentSettings?.is_aamarpay_payment_mode_enabled === '1') {
             methods.push({
                 id: 'aamarpay',
                 name: 'Aamarpay',
@@ -249,7 +249,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_midtrans_enabled === true || paymentSettings?.is_midtrans_enabled === '1') {
+        if (paymentSettings?.is_midtrans_payment_mode_enabled === true || paymentSettings?.is_midtrans_payment_mode_enabled === '1') {
             methods.push({
                 id: 'midtrans',
                 name: 'Midtrans',
@@ -258,7 +258,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_yookassa_enabled === true || paymentSettings?.is_yookassa_enabled === '1') {
+        if (paymentSettings?.is_yookassa_payment_mode_enabled === true || paymentSettings?.is_yookassa_payment_mode_enabled === '1') {
             methods.push({
                 id: 'yookassa',
                 name: 'YooKassa',
@@ -267,7 +267,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_paiement_enabled === true || paymentSettings?.is_paiement_enabled === '1') {
+        if (paymentSettings?.is_paiement_payment_mode_enabled === true || paymentSettings?.is_paiement_payment_mode_enabled === '1') {
             methods.push({
                 id: 'paiement',
                 name: 'Paiement Pro',
@@ -276,7 +276,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_cinetpay_enabled === true || paymentSettings?.is_cinetpay_enabled === '1') {
+        if (paymentSettings?.is_cinetpay_payment_mode_enabled === true || paymentSettings?.is_cinetpay_payment_mode_enabled === '1') {
             methods.push({
                 id: 'cinetpay',
                 name: 'CinetPay',
@@ -285,7 +285,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_payhere_enabled === true || paymentSettings?.is_payhere_enabled === '1') {
+        if (paymentSettings?.is_payhere_payment_mode_enabled === true || paymentSettings?.is_payhere_payment_mode_enabled === '1') {
             methods.push({
                 id: 'payhere',
                 name: 'PayHere',
@@ -294,7 +294,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_fedapay_enabled === true || paymentSettings?.is_fedapay_enabled === '1') {
+        if (paymentSettings?.is_fedapay_payment_mode_enabled === true || paymentSettings?.is_fedapay_payment_mode_enabled === '1') {
             methods.push({
                 id: 'fedapay',
                 name: 'FedaPay',
@@ -304,7 +304,7 @@ export function InvoicePaymentProcessor({
         }
 
 
-        if (paymentSettings?.is_authorizenet_enabled === true || paymentSettings?.is_authorizenet_enabled === '1') {
+        if (paymentSettings?.is_authorizenet_payment_mode_enabled === true || paymentSettings?.is_authorizenet_payment_mode_enabled === '1') {
             methods.push({
                 id: 'authorizenet',
                 name: 'AuthorizeNet',
@@ -313,7 +313,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_khalti_enabled === true || paymentSettings?.is_khalti_enabled === '1') {
+        if (paymentSettings?.is_khalti_payment_mode_enabled === true || paymentSettings?.is_khalti_payment_mode_enabled === '1') {
             methods.push({
                 id: 'khalti',
                 name: 'Khalti',
@@ -322,7 +322,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_easebuzz_enabled === true || paymentSettings?.is_easebuzz_enabled === '1') {
+        if (paymentSettings?.is_easebuzz_payment_mode_enabled === true || paymentSettings?.is_easebuzz_payment_mode_enabled === '1') {
             methods.push({
                 id: 'easebuzz',
                 name: 'Easebuzz',
@@ -331,7 +331,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_ozow_enabled === true || paymentSettings?.is_ozow_enabled === '1') {
+        if (paymentSettings?.is_ozow_payment_mode_enabled === true || paymentSettings?.is_ozow_payment_mode_enabled === '1') {
             methods.push({
                 id: 'ozow',
                 name: 'Ozow',
@@ -340,7 +340,7 @@ export function InvoicePaymentProcessor({
             });
         }
 
-        if (paymentSettings?.is_cashfree_enabled === true || paymentSettings?.is_cashfree_enabled === '1') {
+        if (paymentSettings?.is_cashfree_payment_mode_enabled === true || paymentSettings?.is_cashfree_payment_mode_enabled === '1') {
             methods.push({
                 id: 'cashfree',
                 name: 'Cashfree',

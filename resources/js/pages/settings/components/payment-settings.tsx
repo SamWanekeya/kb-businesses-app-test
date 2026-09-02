@@ -21,110 +21,110 @@ import { PaymentModeSelector } from '@/components/payment/payment-mode-selector'
 interface PaymentSettings {
   currency: string;
   currency_symbol: string;
-  is_manually_enabled: boolean;
-  is_bank_enabled: boolean;
+  is_manual_payment_mode_enabled: boolean;
+  is_bank_payment_mode_enabled: boolean;
   bank_detail: string;
-  is_stripe_enabled: boolean;
+  is_stripe_payment_mode_enabled: boolean;
   stripe_key: string;
   stripe_secret: string;
-  is_paypal_enabled: boolean;
+  is_paypal_payment_mode_enabled: boolean;
   paypal_mode: 'sandbox' | 'live';
   paypal_client_id: string;
   paypal_secret_key: string;
-  is_razorpay_enabled: boolean;
+  is_razorpay_payment_mode_enabled: boolean;
   razorpay_key: string;
   razorpay_secret: string;
-  is_mercadopago_enabled: boolean;
+  is_mercadopago_payment_mode_enabled: boolean;
   mercadopago_mode: 'sandbox' | 'live';
   mercadopago_access_token: string;
-  is_paystack_enabled: boolean;
+  is_paystack_payment_mode_enabled: boolean;
   paystack_public_key: string;
   paystack_secret_key: string;
-  is_flutterwave_enabled: boolean;
+  is_flutterwave_payment_mode_enabled: boolean;
   flutterwave_public_key: string;
   flutterwave_secret_key: string;
-  is_tap_enabled: boolean;
+  is_tap_payment_mode_enabled: boolean;
   tap_secret_key: string;
-  is_xendit_enabled: boolean;
+  is_xendit_payment_mode_enabled: boolean;
   xendit_api_key: string;
-  is_paytr_enabled: boolean;
+  is_paytr_payment_mode_enabled: boolean;
   paytr_merchant_id: string;
   paytr_merchant_key: string;
   paytr_merchant_salt: string;
-  is_mollie_enabled: boolean;
+  is_mollie_payment_mode_enabled: boolean;
   mollie_api_key: string;
-  is_toyyibpay_enabled: boolean;
+  is_toyyibpay_payment_mode_enabled: boolean;
   toyyibpay_category_code: string;
   toyyibpay_secret_key: string;
-  is_benefit_enabled: boolean;
+  is_benefit_payment_mode_enabled: boolean;
   benefit_mode: string;
   benefit_secret_key: string;
   benefit_public_key: string;
-  is_iyzipay_enabled: boolean;
+  is_iyzipay_payment_mode_enabled: boolean;
   iyzipay_mode: string;
   iyzipay_secret_key: string;
   iyzipay_public_key: string;
-  is_aamarpay_enabled: boolean;
+  is_aamarpay_payment_mode_enabled: boolean;
   aamarpay_store_id: string;
   aamarpay_signature: string;
-  is_midtrans_enabled: boolean;
+  is_midtrans_payment_mode_enabled: boolean;
   midtrans_mode: string;
   midtrans_secret_key: string;
-  is_yookassa_enabled: boolean;
+  is_yookassa_payment_mode_enabled: boolean;
   yookassa_shop_id: string;
   yookassa_secret_key: string;
-  is_nepalste_enabled: boolean;
+  is_nepalste_payment_mode_enabled: boolean;
   nepalste_mode: string;
   nepalste_secret_key: string;
   nepalste_public_key: string;
-  is_paiement_enabled: boolean;
+  is_paiement_payment_mode_enabled: boolean;
   paiement_merchant_id: string;
-  is_cinetpay_enabled: boolean;
+  is_cinetpay_payment_mode_enabled: boolean;
   cinetpay_site_id: string;
   cinetpay_api_key: string;
   cinetpay_secret_key: string;
-  is_payhere_enabled: boolean;
+  is_payhere_payment_mode_enabled: boolean;
   payhere_mode: string;
   payhere_merchant_id: string;
   payhere_merchant_secret: string;
   payhere_app_id: string;
   payhere_app_secret: string;
-  is_fedapay_enabled: boolean;
+  is_fedapay_payment_mode_enabled: boolean;
   fedapay_mode: string;
   fedapay_secret_key: string;
   fedapay_public_key: string;
-  is_authorizenet_enabled: boolean;
+  is_authorizenet_payment_mode_enabled: boolean;
   authorizenet_mode: string;
   authorizenet_merchant_id: string;
   authorizenet_transaction_key: string;
-  is_khalti_enabled: boolean;
+  is_khalti_payment_mode_enabled: boolean;
   khalti_secret_key: string;
   khalti_public_key: string;
-  is_easebuzz_enabled: boolean;
+  is_easebuzz_payment_mode_enabled: boolean;
   easebuzz_merchant_key: string;
   easebuzz_salt_key: string;
   easebuzz_environment: string;
-  is_ozow_enabled: boolean;
+  is_ozow_payment_mode_enabled: boolean;
   ozow_mode: string;
   ozow_site_key: string;
   ozow_private_key: string;
   ozow_api_key: string;
-  is_cashfree_enabled: boolean;
+  is_cashfree_payment_mode_enabled: boolean;
   cashfree_mode: string;
   cashfree_secret_key: string;
   cashfree_public_key: string;
-  is_paytabs_enabled: boolean;
+  is_paytabs_payment_mode_enabled: boolean;
   paytabs_profile_id: string;
   paytabs_server_key: string;
   paytabs_region: string;
   paytabs_mode: 'sandbox' | 'live';
-  is_skrill_enabled: boolean;
+  is_skrill_payment_mode_enabled: boolean;
   skrill_merchant_id: string;
   skrill_secret_word: string;
-  is_coingate_enabled: boolean;
+  is_coingate_payment_mode_enabled: boolean;
   coingate_api_token: string;
   coingate_mode: 'sandbox' | 'live';
-  is_payfast_enabled: boolean;
+  is_payfast_payment_mode_enabled: boolean;
   payfast_merchant_id: string;
   payfast_merchant_key: string;
   payfast_passphrase: string;
@@ -144,110 +144,110 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
   const { data, setData, post, processing, errors } = useForm<PaymentSettings>({
     currency: settings.currency || 'USD',
     currency_symbol: settings.currency_symbol || '$',
-    is_manually_enabled: settings.is_manually_enabled === true || settings.is_manually_enabled === '1',
-    is_bank_enabled: settings.is_bank_enabled === true || settings.is_bank_enabled === '1',
+    is_manual_payment_mode_enabled: settings.is_manual_payment_mode_enabled === true || settings.is_manual_payment_mode_enabled === '1',
+    is_bank_payment_mode_enabled: settings.is_bank_payment_mode_enabled === true || settings.is_bank_payment_mode_enabled === '1',
     bank_detail: settings.bank_detail || '',
-    is_stripe_enabled: settings.is_stripe_enabled === true || settings.is_stripe_enabled === '1',
+    is_stripe_payment_mode_enabled: settings.is_stripe_payment_mode_enabled === true || settings.is_stripe_payment_mode_enabled === '1',
     stripe_key: settings.stripe_key || '',
     stripe_secret: settings.stripe_secret || '',
-    is_paypal_enabled: settings.is_paypal_enabled === true || settings.is_paypal_enabled === '1',
+    is_paypal_payment_mode_enabled: settings.is_paypal_payment_mode_enabled === true || settings.is_paypal_payment_mode_enabled === '1',
     paypal_mode: settings.paypal_mode || 'sandbox',
     paypal_client_id: settings.paypal_client_id || '',
     paypal_secret_key: settings.paypal_secret_key || '',
-    is_razorpay_enabled: settings.is_razorpay_enabled === true || settings.is_razorpay_enabled === '1',
+    is_razorpay_payment_mode_enabled: settings.is_razorpay_payment_mode_enabled === true || settings.is_razorpay_payment_mode_enabled === '1',
     razorpay_key: settings.razorpay_key || '',
     razorpay_secret: settings.razorpay_secret || '',
-    is_mercadopago_enabled: settings.is_mercadopago_enabled === true || settings.is_mercadopago_enabled === '1',
+    is_mercadopago_payment_mode_enabled: settings.is_mercadopago_payment_mode_enabled === true || settings.is_mercadopago_payment_mode_enabled === '1',
     mercadopago_mode: settings.mercadopago_mode || 'sandbox',
     mercadopago_access_token: settings.mercadopago_access_token || '',
-    is_paystack_enabled: settings.is_paystack_enabled === true || settings.is_paystack_enabled === '1',
+    is_paystack_payment_mode_enabled: settings.is_paystack_payment_mode_enabled === true || settings.is_paystack_payment_mode_enabled === '1',
     paystack_public_key: settings.paystack_public_key || '',
     paystack_secret_key: settings.paystack_secret_key || '',
-    is_flutterwave_enabled: settings.is_flutterwave_enabled === true || settings.is_flutterwave_enabled === '1',
+    is_flutterwave_payment_mode_enabled: settings.is_flutterwave_payment_mode_enabled === true || settings.is_flutterwave_payment_mode_enabled === '1',
     flutterwave_public_key: settings.flutterwave_public_key || '',
     flutterwave_secret_key: settings.flutterwave_secret_key || '',
-    is_tap_enabled: settings.is_tap_enabled === true || settings.is_tap_enabled === '1',
+    is_tap_payment_mode_enabled: settings.is_tap_payment_mode_enabled === true || settings.is_tap_payment_mode_enabled === '1',
     tap_secret_key: settings.tap_secret_key || '',
-    is_xendit_enabled: settings.is_xendit_enabled === true || settings.is_xendit_enabled === '1',
+    is_xendit_payment_mode_enabled: settings.is_xendit_payment_mode_enabled === true || settings.is_xendit_payment_mode_enabled === '1',
     xendit_api_key: settings.xendit_api_key || '',
-    is_paytr_enabled: settings.is_paytr_enabled === true || settings.is_paytr_enabled === '1',
+    is_paytr_payment_mode_enabled: settings.is_paytr_payment_mode_enabled === true || settings.is_paytr_payment_mode_enabled === '1',
     paytr_merchant_id: settings.paytr_merchant_id || '',
     paytr_merchant_key: settings.paytr_merchant_key || '',
     paytr_merchant_salt: settings.paytr_merchant_salt || '',
-    is_mollie_enabled: settings.is_mollie_enabled === true || settings.is_mollie_enabled === '1',
+    is_mollie_payment_mode_enabled: settings.is_mollie_payment_mode_enabled === true || settings.is_mollie_payment_mode_enabled === '1',
     mollie_api_key: settings.mollie_api_key || '',
-    is_toyyibpay_enabled: settings.is_toyyibpay_enabled === true || settings.is_toyyibpay_enabled === '1',
+    is_toyyibpay_payment_mode_enabled: settings.is_toyyibpay_payment_mode_enabled === true || settings.is_toyyibpay_payment_mode_enabled === '1',
     toyyibpay_category_code: settings.toyyibpay_category_code || '',
     toyyibpay_secret_key: settings.toyyibpay_secret_key || '',
-    is_benefit_enabled: settings.is_benefit_enabled === true || settings.is_benefit_enabled === '1',
+    is_benefit_payment_mode_enabled: settings.is_benefit_payment_mode_enabled === true || settings.is_benefit_payment_mode_enabled === '1',
     benefit_mode: settings.benefit_mode || 'sandbox',
     benefit_secret_key: settings.benefit_secret_key || '',
     benefit_public_key: settings.benefit_public_key || '',
-    is_iyzipay_enabled: settings.is_iyzipay_enabled === true || settings.is_iyzipay_enabled === '1',
+    is_iyzipay_payment_mode_enabled: settings.is_iyzipay_payment_mode_enabled === true || settings.is_iyzipay_payment_mode_enabled === '1',
     iyzipay_mode: settings.iyzipay_mode || 'sandbox',
     iyzipay_secret_key: settings.iyzipay_secret_key || '',
     iyzipay_public_key: settings.iyzipay_public_key || '',
-    is_aamarpay_enabled: settings.is_aamarpay_enabled === true || settings.is_aamarpay_enabled === '1',
+    is_aamarpay_payment_mode_enabled: settings.is_aamarpay_payment_mode_enabled === true || settings.is_aamarpay_payment_mode_enabled === '1',
     aamarpay_store_id: settings.aamarpay_store_id || '',
     aamarpay_signature: settings.aamarpay_signature || '',
-    is_midtrans_enabled: settings.is_midtrans_enabled === true || settings.is_midtrans_enabled === '1',
+    is_midtrans_payment_mode_enabled: settings.is_midtrans_payment_mode_enabled === true || settings.is_midtrans_payment_mode_enabled === '1',
     midtrans_mode: settings.midtrans_mode || 'sandbox',
     midtrans_secret_key: settings.midtrans_secret_key || '',
-    is_yookassa_enabled: settings.is_yookassa_enabled === true || settings.is_yookassa_enabled === '1',
+    is_yookassa_payment_mode_enabled: settings.is_yookassa_payment_mode_enabled === true || settings.is_yookassa_payment_mode_enabled === '1',
     yookassa_shop_id: settings.yookassa_shop_id || '',
     yookassa_secret_key: settings.yookassa_secret_key || '',
-    is_nepalste_enabled: settings.is_nepalste_enabled === true || settings.is_nepalste_enabled === '1',
+    is_nepalste_payment_mode_enabled: settings.is_nepalste_payment_mode_enabled === true || settings.is_nepalste_payment_mode_enabled === '1',
     nepalste_mode: settings.nepalste_mode || 'sandbox',
     nepalste_secret_key: settings.nepalste_secret_key || '',
     nepalste_public_key: settings.nepalste_public_key || '',
-    is_paiement_enabled: settings.is_paiement_enabled === true || settings.is_paiement_enabled === '1',
+    is_paiement_payment_mode_enabled: settings.is_paiement_payment_mode_enabled === true || settings.is_paiement_payment_mode_enabled === '1',
     paiement_merchant_id: settings.paiement_merchant_id || '',
-    is_cinetpay_enabled: settings.is_cinetpay_enabled === true || settings.is_cinetpay_enabled === '1',
+    is_cinetpay_payment_mode_enabled: settings.is_cinetpay_payment_mode_enabled === true || settings.is_cinetpay_payment_mode_enabled === '1',
     cinetpay_site_id: settings.cinetpay_site_id || '',
     cinetpay_api_key: settings.cinetpay_api_key || '',
     cinetpay_secret_key: settings.cinetpay_secret_key || '',
-    is_payhere_enabled: settings.is_payhere_enabled === true || settings.is_payhere_enabled === '1',
+    is_payhere_payment_mode_enabled: settings.is_payhere_payment_mode_enabled === true || settings.is_payhere_payment_mode_enabled === '1',
     payhere_mode: settings.payhere_mode || 'sandbox',
     payhere_merchant_id: settings.payhere_merchant_id || '',
     payhere_merchant_secret: settings.payhere_merchant_secret || '',
     payhere_app_id: settings.payhere_app_id || '',
     payhere_app_secret: settings.payhere_app_secret || '',
-    is_fedapay_enabled: settings.is_fedapay_enabled === true || settings.is_fedapay_enabled === '1',
+    is_fedapay_payment_mode_enabled: settings.is_fedapay_payment_mode_enabled === true || settings.is_fedapay_payment_mode_enabled === '1',
     fedapay_mode: settings.fedapay_mode || 'sandbox',
     fedapay_secret_key: settings.fedapay_secret_key || '',
     fedapay_public_key: settings.fedapay_public_key || '',
-    is_authorizenet_enabled: settings.is_authorizenet_enabled === true || settings.is_authorizenet_enabled === '1',
+    is_authorizenet_payment_mode_enabled: settings.is_authorizenet_payment_mode_enabled === true || settings.is_authorizenet_payment_mode_enabled === '1',
     authorizenet_mode: settings.authorizenet_mode || 'sandbox',
     authorizenet_merchant_id: settings.authorizenet_merchant_id || '',
     authorizenet_transaction_key: settings.authorizenet_transaction_key || '',
-    is_khalti_enabled: settings.is_khalti_enabled === true || settings.is_khalti_enabled === '1',
+    is_khalti_payment_mode_enabled: settings.is_khalti_payment_mode_enabled === true || settings.is_khalti_payment_mode_enabled === '1',
     khalti_secret_key: settings.khalti_secret_key || '',
     khalti_public_key: settings.khalti_public_key || '',
-    is_easebuzz_enabled: settings.is_easebuzz_enabled === true || settings.is_easebuzz_enabled === '1',
+    is_easebuzz_payment_mode_enabled: settings.is_easebuzz_payment_mode_enabled === true || settings.is_easebuzz_payment_mode_enabled === '1',
     easebuzz_merchant_key: settings.easebuzz_merchant_key || '',
     easebuzz_salt_key: settings.easebuzz_salt_key || '',
     easebuzz_environment: settings.easebuzz_environment || '',
-    is_ozow_enabled: settings.is_ozow_enabled === true || settings.is_ozow_enabled === '1',
+    is_ozow_payment_mode_enabled: settings.is_ozow_payment_mode_enabled === true || settings.is_ozow_payment_mode_enabled === '1',
     ozow_mode: settings.ozow_mode || 'sandbox',
     ozow_site_key: settings.ozow_site_key || '',
     ozow_private_key: settings.ozow_private_key || '',
     ozow_api_key: settings.ozow_api_key || '',
-    is_cashfree_enabled: settings.is_cashfree_enabled === true || settings.is_cashfree_enabled === '1',
+    is_cashfree_payment_mode_enabled: settings.is_cashfree_payment_mode_enabled === true || settings.is_cashfree_payment_mode_enabled === '1',
     cashfree_mode: settings.cashfree_mode || 'sandbox',
     cashfree_secret_key: settings.cashfree_secret_key || '',
     cashfree_public_key: settings.cashfree_public_key || '',
-    is_paytabs_enabled: settings.is_paytabs_enabled === true || settings.is_paytabs_enabled === '1',
+    is_paytabs_payment_mode_enabled: settings.is_paytabs_payment_mode_enabled === true || settings.is_paytabs_payment_mode_enabled === '1',
     paytabs_profile_id: settings.paytabs_profile_id || '',
     paytabs_server_key: settings.paytabs_server_key || '',
     paytabs_region: settings.paytabs_region || 'ARE',
     paytabs_mode: settings.paytabs_mode || 'sandbox',
-    is_skrill_enabled: settings.is_skrill_enabled === true || settings.is_skrill_enabled === '1',
+    is_skrill_payment_mode_enabled: settings.is_skrill_payment_mode_enabled === true || settings.is_skrill_payment_mode_enabled === '1',
     skrill_merchant_id: settings.skrill_merchant_id || '',
     skrill_secret_word: settings.skrill_secret_word || '',
-    is_coingate_enabled: settings.is_coingate_enabled === true || settings.is_coingate_enabled === '1',
+    is_coingate_payment_mode_enabled: settings.is_coingate_payment_mode_enabled === true || settings.is_coingate_payment_mode_enabled === '1',
     coingate_api_token: settings.coingate_api_token || '',
     coingate_mode: settings.coingate_mode || 'sandbox',
-    is_payfast_enabled: settings.is_payfast_enabled === true || settings.is_payfast_enabled === '1',
+    is_payfast_payment_mode_enabled: settings.is_payfast_payment_mode_enabled === true || settings.is_payfast_payment_mode_enabled === '1',
     payfast_merchant_id: settings.payfast_merchant_id || '',
     payfast_merchant_key: settings.payfast_merchant_key || '',
     payfast_passphrase: settings.payfast_passphrase || '',
@@ -469,8 +469,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.BANK])}
                 icon={<Banknote className="h-5 w-5" />}
-                enabled={data.is_bank_enabled}
-                onToggle={(checked) => setData('is_bank_enabled', checked)}
+                enabled={data.is_bank_payment_mode_enabled}
+                onToggle={(checked) => setData('is_bank_payment_mode_enabled', checked)}
               >
                 <div className="space-y-2">
                   <Label htmlFor="bank_detail">{t("Bank Details")}</Label>
@@ -496,8 +496,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.STRIPE])}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_stripe_enabled}
-                onToggle={(checked) => setData('is_stripe_enabled', checked)}
+                enabled={data.is_stripe_payment_mode_enabled}
+                onToggle={(checked) => setData('is_stripe_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.STRIPE]}
                 helpText={t("Get your Stripe API keys from your")}
               >
@@ -528,8 +528,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYPAL])}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_paypal_enabled}
-                onToggle={(checked) => setData('is_paypal_enabled', checked)}
+                enabled={data.is_paypal_payment_mode_enabled}
+                onToggle={(checked) => setData('is_paypal_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.PAYPAL]}
                 helpText={t("Get your PayPal API credentials from your")}
               >
@@ -567,8 +567,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.RAZORPAY])}
                 icon={<IndianRupee className="h-5 w-5" />}
-                enabled={data.is_razorpay_enabled}
-                onToggle={(checked) => setData('is_razorpay_enabled', checked)}
+                enabled={data.is_razorpay_payment_mode_enabled}
+                onToggle={(checked) => setData('is_razorpay_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.RAZORPAY]}
                 helpText={t("Get your Razorpay API credentials from your")}
               >
@@ -599,8 +599,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.MERCADOPAGO])}
                 icon={<Wallet className="h-5 w-5" />}
-                enabled={data.is_mercadopago_enabled}
-                onToggle={(checked) => setData('is_mercadopago_enabled', checked)}
+                enabled={data.is_mercadopago_payment_mode_enabled}
+                onToggle={(checked) => setData('is_mercadopago_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.MERCADOPAGO]}
                 helpText={t("Get your Mercado Pago API credentials from your")}
               >
@@ -637,8 +637,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYSTACK])}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_paystack_enabled}
-                onToggle={(checked) => setData('is_paystack_enabled', checked)}
+                enabled={data.is_paystack_payment_mode_enabled}
+                onToggle={(checked) => setData('is_paystack_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.PAYSTACK]}
                 helpText={t("Get your Paystack API credentials from your")}
               >
@@ -669,8 +669,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.FLUTTERWAVE])}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_flutterwave_enabled}
-                onToggle={(checked) => setData('is_flutterwave_enabled', checked)}
+                enabled={data.is_flutterwave_payment_mode_enabled}
+                onToggle={(checked) => setData('is_flutterwave_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.FLUTTERWAVE]}
                 helpText={t("Get your Flutterwave API credentials from your")}
               >
@@ -701,8 +701,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYTABS])}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_paytabs_enabled}
-                onToggle={(checked) => setData('is_paytabs_enabled', checked)}
+                enabled={data.is_paytabs_payment_mode_enabled}
+                onToggle={(checked) => setData('is_paytabs_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.PAYTABS]}
                 helpText={t("Get your PayTabs API credentials from your")}
               >
@@ -760,8 +760,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.SKRILL])}
                 icon={<Wallet className="h-5 w-5" />}
-                enabled={data.is_skrill_enabled}
-                onToggle={(checked) => setData('is_skrill_enabled', checked)}
+                enabled={data.is_skrill_payment_mode_enabled}
+                onToggle={(checked) => setData('is_skrill_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.SKRILL]}
                 helpText={t("Get your Skrill merchant credentials from your")}
               >
@@ -792,8 +792,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.COINGATE])}
                 icon={<Coins className="h-5 w-5" />}
-                enabled={data.is_coingate_enabled}
-                onToggle={(checked) => setData('is_coingate_enabled', checked)}
+                enabled={data.is_coingate_payment_mode_enabled}
+                onToggle={(checked) => setData('is_coingate_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.COINGATE]}
                 helpText={t("Get your CoinGate API credentials from your")}
               >
@@ -821,8 +821,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYFAST])}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_payfast_enabled}
-                onToggle={(checked) => setData('is_payfast_enabled', checked)}
+                enabled={data.is_payfast_payment_mode_enabled}
+                onToggle={(checked) => setData('is_payfast_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.PAYFAST]}
                 helpText={t("Get your Payfast merchant credentials from your")}
               >
@@ -868,8 +868,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.TAP])}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_tap_enabled}
-                onToggle={(checked) => setData('is_tap_enabled', checked)}
+                enabled={data.is_tap_payment_mode_enabled}
+                onToggle={(checked) => setData('is_tap_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.TAP]}
                 helpText={t("Get your Tap API credentials from your")}
               >
@@ -890,8 +890,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.XENDIT])}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_xendit_enabled}
-                onToggle={(checked) => setData('is_xendit_enabled', checked)}
+                enabled={data.is_xendit_payment_mode_enabled}
+                onToggle={(checked) => setData('is_xendit_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.XENDIT]}
                 helpText={t("Get your Xendit API credentials from your")}
               >
@@ -912,8 +912,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYTR])}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_paytr_enabled}
-                onToggle={(checked) => setData('is_paytr_enabled', checked)}
+                enabled={data.is_paytr_payment_mode_enabled}
+                onToggle={(checked) => setData('is_paytr_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.PAYTR]}
                 helpText={t("Get your PayTR merchant credentials from your")}
               >
@@ -953,8 +953,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.MOLLIE])}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_mollie_enabled}
-                onToggle={(checked) => setData('is_mollie_enabled', checked)}
+                enabled={data.is_mollie_payment_mode_enabled}
+                onToggle={(checked) => setData('is_mollie_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.MOLLIE]}
                 helpText={t("Get your Mollie API credentials from your")}
               >
@@ -975,8 +975,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.TOYYIBPAY])}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_toyyibpay_enabled}
-                onToggle={(checked) => setData('is_toyyibpay_enabled', checked)}
+                enabled={data.is_toyyibpay_payment_mode_enabled}
+                onToggle={(checked) => setData('is_toyyibpay_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.TOYYIBPAY]}
                 helpText={t("Get your toyyibPay credentials from your")}
               >
@@ -1007,8 +1007,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t('Benefit')}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_benefit_enabled}
-                onToggle={(checked) => setData('is_benefit_enabled', checked)}
+                enabled={data.is_benefit_payment_mode_enabled}
+                onToggle={(checked) => setData('is_benefit_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.BENEFIT]}
                 helpText={t("Get your Benefit API credentials from your")}
               >
@@ -1044,8 +1044,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t('Iyzipay')}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_iyzipay_enabled}
-                onToggle={(checked) => setData('is_iyzipay_enabled', checked)}
+                enabled={data.is_iyzipay_payment_mode_enabled}
+                onToggle={(checked) => setData('is_iyzipay_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.IYZIPAY]}
                 helpText={t("Get your Iyzipay API credentials from your")}
               >
@@ -1081,8 +1081,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t('Aamarpay')}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_aamarpay_enabled}
-                onToggle={(checked) => setData('is_aamarpay_enabled', checked)}
+                enabled={data.is_aamarpay_payment_mode_enabled}
+                onToggle={(checked) => setData('is_aamarpay_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.AAMARPAY]}
                 helpText={t("Get your Aamarpay API credentials from your")}
               >
@@ -1113,8 +1113,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t('Midtrans')}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_midtrans_enabled}
-                onToggle={(checked) => setData('is_midtrans_enabled', checked)}
+                enabled={data.is_midtrans_payment_mode_enabled}
+                onToggle={(checked) => setData('is_midtrans_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.MIDTRANS]}
                 helpText={t("Get your Midtrans API credentials from your")}
               >
@@ -1140,8 +1140,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t('YooKassa')}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_yookassa_enabled}
-                onToggle={(checked) => setData('is_yookassa_enabled', checked)}
+                enabled={data.is_yookassa_payment_mode_enabled}
+                onToggle={(checked) => setData('is_yookassa_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.YOOKASSA]}
                 helpText={t("Get your YooKassa API credentials from your")}
               >
@@ -1172,8 +1172,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t('Nepalste')}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_nepalste_enabled}
-                onToggle={(checked) => setData('is_nepalste_enabled', checked)}
+                enabled={data.is_nepalste_payment_mode_enabled}
+                onToggle={(checked) => setData('is_nepalste_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.NEPALSTE]}
                 helpText={t("Get your Nepalste API credentials from your")}
               >
@@ -1209,8 +1209,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t('Paiement Pro')}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_paiement_enabled}
-                onToggle={(checked) => setData('is_paiement_enabled', checked)}
+                enabled={data.is_paiement_payment_mode_enabled}
+                onToggle={(checked) => setData('is_paiement_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.PAIEMENT]}
                 helpText={t("Get your Paiement Pro API credentials from your")}
               >
@@ -1230,8 +1230,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t('CinetPay')}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_cinetpay_enabled}
-                onToggle={(checked) => setData('is_cinetpay_enabled', checked)}
+                enabled={data.is_cinetpay_payment_mode_enabled}
+                onToggle={(checked) => setData('is_cinetpay_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.CINETPAY]}
                 helpText={t("Get your CinetPay API credentials from your")}
               >
@@ -1270,8 +1270,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t('PayHere')}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_payhere_enabled}
-                onToggle={(checked) => setData('is_payhere_enabled', checked)}
+                enabled={data.is_payhere_payment_mode_enabled}
+                onToggle={(checked) => setData('is_payhere_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.PAYHERE]}
                 helpText={t("Get your PayHere API credentials from your")}
               >
@@ -1324,8 +1324,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t('FedaPay')}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_fedapay_enabled}
-                onToggle={(checked) => setData('is_fedapay_enabled', checked)}
+                enabled={data.is_fedapay_payment_mode_enabled}
+                onToggle={(checked) => setData('is_fedapay_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.FEDAPAY]}
                 helpText={t("Get your FedaPay API credentials from your")}
               >
@@ -1361,8 +1361,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t('AuthorizeNet')}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_authorizenet_enabled}
-                onToggle={(checked) => setData('is_authorizenet_enabled', checked)}
+                enabled={data.is_authorizenet_payment_mode_enabled}
+                onToggle={(checked) => setData('is_authorizenet_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.AUTHORIZENET]}
                 helpText={t("Get your AuthorizeNet API credentials from your")}
               >
@@ -1398,8 +1398,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t('Khalti')}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_khalti_enabled}
-                onToggle={(checked) => setData('is_khalti_enabled', checked)}
+                enabled={data.is_khalti_payment_mode_enabled}
+                onToggle={(checked) => setData('is_khalti_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.KHALTI]}
                 helpText={t("Get your Khalti API credentials from your")}
               >
@@ -1430,8 +1430,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t('Easebuzz')}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_easebuzz_enabled}
-                onToggle={(checked) => setData('is_easebuzz_enabled', checked)}
+                enabled={data.is_easebuzz_payment_mode_enabled}
+                onToggle={(checked) => setData('is_easebuzz_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.EASEBUZZ]}
                 helpText={t("Get your Easebuzz API credentials from your")}
               >
@@ -1470,8 +1470,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t('Ozow')}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_ozow_enabled}
-                onToggle={(checked) => setData('is_ozow_enabled', checked)}
+                enabled={data.is_ozow_payment_mode_enabled}
+                onToggle={(checked) => setData('is_ozow_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.OZOW]}
                 helpText={t("Get your Ozow API credentials from your")}
               >
@@ -1515,8 +1515,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
               <PaymentMethodCard
                 title={t('Cashfree')}
                 icon={<CreditCard className="h-5 w-5" />}
-                enabled={data.is_cashfree_enabled}
-                onToggle={(checked) => setData('is_cashfree_enabled', checked)}
+                enabled={data.is_cashfree_payment_mode_enabled}
+                onToggle={(checked) => setData('is_cashfree_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.CASHFREE]}
                 helpText={t("Get your Cashfree API credentials from your")}
               >

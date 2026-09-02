@@ -198,7 +198,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
     const formatPaymentMethods = (paymentSettings: any) => {
         const methods = [];
 
-        if (paymentSettings?.is_bank_enabled === true || paymentSettings?.is_bank_enabled === '1') {
+        if (paymentSettings?.is_bank_payment_mode_enabled === true || paymentSettings?.is_bank_payment_mode_enabled === '1') {
             methods.push({
                 id: 'bank',
                 name: t('Bank Transfer'),
@@ -207,7 +207,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_stripe_enabled === true || paymentSettings?.is_stripe_enabled === '1') {
+        if (paymentSettings?.is_stripe_payment_mode_enabled === true || paymentSettings?.is_stripe_payment_mode_enabled === '1') {
             methods.push({
                 id: 'stripe',
                 name: t('Stripe'),
@@ -216,7 +216,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_paypal_enabled === true || paymentSettings?.is_paypal_enabled === '1') {
+        if (paymentSettings?.is_paypal_payment_mode_enabled === true || paymentSettings?.is_paypal_payment_mode_enabled === '1') {
             methods.push({
                 id: 'paypal',
                 name: t('PayPal'),
@@ -225,7 +225,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_razorpay_enabled === true || paymentSettings?.is_razorpay_enabled === '1') {
+        if (paymentSettings?.is_razorpay_payment_mode_enabled === true || paymentSettings?.is_razorpay_payment_mode_enabled === '1') {
             methods.push({
                 id: 'razorpay',
                 name: t('Razorpay'),
@@ -234,7 +234,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if ((paymentSettings?.is_mercadopago_enabled === true || paymentSettings?.is_mercadopago_enabled === '1')) {
+        if ((paymentSettings?.is_mercadopago_payment_mode_enabled === true || paymentSettings?.is_mercadopago_payment_mode_enabled === '1')) {
             methods.push({
                 id: 'mercadopago',
                 name: t('MercadoPago'),
@@ -243,7 +243,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_paystack_enabled === true || paymentSettings?.is_paystack_enabled === '1') {
+        if (paymentSettings?.is_paystack_payment_mode_enabled === true || paymentSettings?.is_paystack_payment_mode_enabled === '1') {
             methods.push({
                 id: 'paystack',
                 name: t('Paystack'),
@@ -252,7 +252,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_flutterwave_enabled === true || paymentSettings?.is_flutterwave_enabled === '1') {
+        if (paymentSettings?.is_flutterwave_payment_mode_enabled === true || paymentSettings?.is_flutterwave_payment_mode_enabled === '1') {
             methods.push({
                 id: 'flutterwave',
                 name: t('Flutterwave'),
@@ -261,7 +261,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_paytabs_enabled === true || paymentSettings?.is_paytabs_enabled === '1') {
+        if (paymentSettings?.is_paytabs_payment_mode_enabled === true || paymentSettings?.is_paytabs_payment_mode_enabled === '1') {
             methods.push({
                 id: 'paytabs',
                 name: t('PayTabs'),
@@ -270,7 +270,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_skrill_enabled === true || paymentSettings?.is_skrill_enabled === '1') {
+        if (paymentSettings?.is_skrill_payment_mode_enabled === true || paymentSettings?.is_skrill_payment_mode_enabled === '1') {
             methods.push({
                 id: 'skrill',
                 name: t('Skrill'),
@@ -279,7 +279,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_coingate_enabled === true || paymentSettings?.is_coingate_enabled === '1') {
+        if (paymentSettings?.is_coingate_payment_mode_enabled === true || paymentSettings?.is_coingate_payment_mode_enabled === '1') {
             methods.push({
                 id: 'coingate',
                 name: t('CoinGate'),
@@ -288,7 +288,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_payfast_enabled === true || paymentSettings?.is_payfast_enabled === '1') {
+        if (paymentSettings?.is_payfast_payment_mode_enabled === true || paymentSettings?.is_payfast_payment_mode_enabled === '1') {
             methods.push({
                 id: 'payfast',
                 name: t('Payfast'),
@@ -297,7 +297,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_tap_enabled === true || paymentSettings?.is_tap_enabled === '1') {
+        if (paymentSettings?.is_tap_payment_mode_enabled === true || paymentSettings?.is_tap_payment_mode_enabled === '1') {
             methods.push({
                 id: 'tap',
                 name: t('Tap'),
@@ -306,7 +306,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_xendit_enabled === true || paymentSettings?.is_xendit_enabled === '1') {
+        if (paymentSettings?.is_xendit_payment_mode_enabled === true || paymentSettings?.is_xendit_payment_mode_enabled === '1') {
             methods.push({
                 id: 'xendit',
                 name: t('Xendit'),
@@ -315,7 +315,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_paytr_enabled === true || paymentSettings?.is_paytr_enabled === '1') {
+        if (paymentSettings?.is_paytr_payment_mode_enabled === true || paymentSettings?.is_paytr_payment_mode_enabled === '1') {
             methods.push({
                 id: 'paytr',
                 name: t('PayTR'),
@@ -324,7 +324,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_mollie_enabled === true || paymentSettings?.is_mollie_enabled === '1') {
+        if (paymentSettings?.is_mollie_payment_mode_enabled === true || paymentSettings?.is_mollie_payment_mode_enabled === '1') {
             methods.push({
                 id: 'mollie',
                 name: t('Mollie'),
@@ -333,7 +333,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_toyyibpay_enabled === true || paymentSettings?.is_toyyibpay_enabled === '1') {
+        if (paymentSettings?.is_toyyibpay_payment_mode_enabled === true || paymentSettings?.is_toyyibpay_payment_mode_enabled === '1') {
             methods.push({
                 id: 'toyyibpay',
                 name: t('toyyibPay'),
@@ -342,7 +342,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_cashfree_enabled === true || paymentSettings?.is_cashfree_enabled === '1') {
+        if (paymentSettings?.is_cashfree_payment_mode_enabled === true || paymentSettings?.is_cashfree_payment_mode_enabled === '1') {
             methods.push({
                 id: 'cashfree',
                 name: t('Cashfree'),
@@ -351,7 +351,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_khalti_enabled === true || paymentSettings?.is_khalti_enabled === '1') {
+        if (paymentSettings?.is_khalti_payment_mode_enabled === true || paymentSettings?.is_khalti_payment_mode_enabled === '1') {
             methods.push({
                 id: 'khalti',
                 name: t('Khalti'),
@@ -360,7 +360,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_iyzipay_enabled === true || paymentSettings?.is_iyzipay_enabled === '1') {
+        if (paymentSettings?.is_iyzipay_payment_mode_enabled === true || paymentSettings?.is_iyzipay_payment_mode_enabled === '1') {
             methods.push({
                 id: 'iyzipay',
                 name: t('Iyzipay'),
@@ -369,7 +369,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_benefit_enabled === true || paymentSettings?.is_benefit_enabled === '1') {
+        if (paymentSettings?.is_benefit_payment_mode_enabled === true || paymentSettings?.is_benefit_payment_mode_enabled === '1') {
             methods.push({
                 id: 'benefit',
                 name: t('Benefit'),
@@ -378,7 +378,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_ozow_enabled === true || paymentSettings?.is_ozow_enabled === '1') {
+        if (paymentSettings?.is_ozow_payment_mode_enabled === true || paymentSettings?.is_ozow_payment_mode_enabled === '1') {
             methods.push({
                 id: 'ozow',
                 name: t('Ozow'),
@@ -387,7 +387,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_easebuzz_enabled === true || paymentSettings?.is_easebuzz_enabled === '1') {
+        if (paymentSettings?.is_easebuzz_payment_mode_enabled === true || paymentSettings?.is_easebuzz_payment_mode_enabled === '1') {
             methods.push({
                 id: 'easebuzz',
                 name: t('Easebuzz'),
@@ -396,7 +396,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_authorizenet_enabled === true || paymentSettings?.is_authorizenet_enabled === '1') {
+        if (paymentSettings?.is_authorizenet_payment_mode_enabled === true || paymentSettings?.is_authorizenet_payment_mode_enabled === '1') {
             methods.push({
                 id: 'authorizenet',
                 name: t('AuthorizeNet'),
@@ -405,7 +405,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_fedapay_enabled === true || paymentSettings?.is_fedapay_enabled === '1') {
+        if (paymentSettings?.is_fedapay_payment_mode_enabled === true || paymentSettings?.is_fedapay_payment_mode_enabled === '1') {
             methods.push({
                 id: 'fedapay',
                 name: t('FedaPay'),
@@ -414,7 +414,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_payhere_enabled === true || paymentSettings?.is_payhere_enabled === '1') {
+        if (paymentSettings?.is_payhere_payment_mode_enabled === true || paymentSettings?.is_payhere_payment_mode_enabled === '1') {
             methods.push({
                 id: 'payhere',
                 name: t('PayHere'),
@@ -423,7 +423,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_cinetpay_enabled === true || paymentSettings?.is_cinetpay_enabled === '1') {
+        if (paymentSettings?.is_cinetpay_payment_mode_enabled === true || paymentSettings?.is_cinetpay_payment_mode_enabled === '1') {
             methods.push({
                 id: 'cinetpay',
                 name: t('CinetPay'),
@@ -432,7 +432,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_paiement_enabled === true || paymentSettings?.is_paiement_enabled === '1') {
+        if (paymentSettings?.is_paiement_payment_mode_enabled === true || paymentSettings?.is_paiement_payment_mode_enabled === '1') {
             methods.push({
                 id: 'paiement',
                 name: t('Paiement Pro'),
@@ -441,7 +441,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_nepalste_enabled === true || paymentSettings?.is_nepalste_enabled === '1') {
+        if (paymentSettings?.is_nepalste_payment_mode_enabled === true || paymentSettings?.is_nepalste_payment_mode_enabled === '1') {
             methods.push({
                 id: 'nepalste',
                 name: t('Nepalste'),
@@ -450,7 +450,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_yookassa_enabled === true || paymentSettings?.is_yookassa_enabled === '1') {
+        if (paymentSettings?.is_yookassa_payment_mode_enabled === true || paymentSettings?.is_yookassa_payment_mode_enabled === '1') {
             methods.push({
                 id: 'yookassa',
                 name: t('YooKassa'),
@@ -459,7 +459,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_aamarpay_enabled === true || paymentSettings?.is_aamarpay_enabled === '1') {
+        if (paymentSettings?.is_aamarpay_payment_mode_enabled === true || paymentSettings?.is_aamarpay_payment_mode_enabled === '1') {
             methods.push({
                 id: 'aamarpay',
                 name: t('Aamarpay'),
@@ -468,7 +468,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
             });
         }
 
-        if (paymentSettings?.is_midtrans_enabled === true || paymentSettings?.is_midtrans_enabled === '1') {
+        if (paymentSettings?.is_midtrans_payment_mode_enabled === true || paymentSettings?.is_midtrans_payment_mode_enabled === '1') {
             methods.push({
                 id: 'midtrans',
                 name: t('Midtrans'),

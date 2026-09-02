@@ -49,7 +49,7 @@ export function PaymentFormWrapper({
 
       const methods: PaymentMethod[] = [];
 
-      if (data.is_stripe_enabled) {
+      if (data.is_stripe_payment_mode_enabled) {
         methods.push({
           id: 'stripe',
           name: 'Credit Card (Stripe)',
@@ -61,7 +61,7 @@ export function PaymentFormWrapper({
         });
       }
 
-      if (data.is_paypal_enabled) {
+      if (data.is_paypal_payment_mode_enabled) {
         methods.push({
           id: 'paypal',
           name: 'PayPal',
@@ -74,7 +74,7 @@ export function PaymentFormWrapper({
         });
       }
 
-      if (data.is_razorpay_enabled) {
+      if (data.is_razorpay_payment_mode_enabled) {
         methods.push({
           id: 'razorpay',
           name: 'Razorpay',
@@ -86,7 +86,7 @@ export function PaymentFormWrapper({
         });
       }
 
-      if (data.is_mercadopago_enabled) {
+      if (data.is_mercadopago_payment_mode_enabled) {
         methods.push({
           id: 'mercadopago',
           name: 'Mercado Pago',
@@ -98,7 +98,7 @@ export function PaymentFormWrapper({
         });
       }
 
-      if (data.is_bank_enabled) {
+      if (data.is_bank_payment_mode_enabled) {
         methods.push({
           id: 'bank',
           name: 'Bank Transfer',
