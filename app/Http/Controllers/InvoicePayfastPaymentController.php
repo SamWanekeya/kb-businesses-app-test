@@ -34,8 +34,8 @@ class InvoicePayfastPaymentController extends Controller
                 return response()->json(['success' => false, 'error' => $validation['message']]);
             }
 
-            $companyId = $invoice->created_by;
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['payfast_merchant_id']) || !isset($settings['payment_settings']['payfast_merchant_key'])) {
                 return response()->json(['success' => false, 'error' => __('PayFast not configured')]);
@@ -110,8 +110,8 @@ class InvoicePayfastPaymentController extends Controller
                     $invoice = Invoice::find($invoiceId);
 
                     if ($invoice) {
-                        $companyId = $invoice->created_by;
-                        $settings = $this->getInvoicePaymentSettings($companyId);
+                        $organizationId = $invoice->created_by;
+                        $settings = $this->getInvoicePaymentSettings($organizationId);
 
                         // Verify signature
                         if (!$this->verifyPayfastSignature($pfData, $settings['payment_settings']['payfast_passphrase'] ?? '')) {
@@ -191,11 +191,11 @@ class InvoicePayfastPaymentController extends Controller
         return $request->validate(array_merge($baseRules, $additionalRules));
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 

@@ -29,9 +29,9 @@ class InvoiceCashfreePaymentController extends Controller
                 return response()->json(['error' => $validation['message']], 400);
             }
 
-            $companyId = $invoice->created_by;
-            $company = User::findOrFail($companyId);
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $organization = User::findOrFail($organizationId);
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['cashfree_public_key']) || !isset($settings['payment_settings']['cashfree_secret_key'])) {
                 \Log::error('Cashfree payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
@@ -58,7 +58,7 @@ class InvoiceCashfreePaymentController extends Controller
                 'customer_details' => [
                     'customer_id' => 'inv_customer_' . $invoice->id,
                     'customer_name' => $invoice->name ?: 'Customer',
-                    'customer_email' => $invoice->email ?: $company->email,
+                    'customer_email' => $invoice->email ?: $organization->email,
                     'customer_phone' => $phone
                 ],
                 'order_meta' => [
@@ -100,8 +100,8 @@ class InvoiceCashfreePaymentController extends Controller
 
         try {
             $invoice = Invoice::findOrFail($validated['invoice_id']);
-            $companyId = $invoice->created_by;
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             $orderData = $this->makeCashfreeApiCall('get', '/orders/' . $validated['order_id'], null, $settings['payment_settings']);
 
@@ -224,11 +224,11 @@ class InvoiceCashfreePaymentController extends Controller
         return $request->validate(array_merge($baseRules, $additionalRules));
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 }

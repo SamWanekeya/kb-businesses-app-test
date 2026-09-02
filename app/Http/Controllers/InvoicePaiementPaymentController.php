@@ -29,9 +29,9 @@ class InvoicePaiementPaymentController extends Controller
                 return response()->json(['error' => $validation['message']], 400);
             }
 
-            $companyId = $invoice->created_by;
-            $company = User::findOrFail($companyId);
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $organization = User::findOrFail($organizationId);
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['paiement_merchant_id'])) {
                 \Log::error('Paiement Pro payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
@@ -47,7 +47,7 @@ class InvoicePaiementPaymentController extends Controller
                 'channel' => 'CARD',
                 'countryCurrencyCode' => '952',
                 'referenceNumber' => $transactionId,
-                'customerEmail' => $invoice->email ?? $company->email,
+                'customerEmail' => $invoice->email ?? $organization->email,
                 'customerFirstName' => $invoice->name ?? 'Customer',
                 'customerLastname' => $invoice->name ?? 'User',
                 'customerPhoneNumber' => $invoice->phone ?? '01234567',
@@ -145,14 +145,14 @@ class InvoicePaiementPaymentController extends Controller
 
             if ($transactionId && $status === 'success') {
                 $parts = explode('-', $transactionId);
-                
+
                 if (count($parts) >= 3) {
                     $invoiceId = end($parts);
                     $invoice = Invoice::find($invoiceId);
 
                     if ($invoice) {
                         $remainingAmount = $invoice->getRemainingAmount();
-                        
+
                         InvoicePayment::storePayment([
                             'invoice_id' => $invoice->id,
                             'amount' => $remainingAmount,
@@ -190,11 +190,11 @@ class InvoicePaiementPaymentController extends Controller
         return $request->validate(array_merge($baseRules, $additionalRules));
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 }

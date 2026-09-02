@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('opportunity_products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('opportunity_id')->constrained('opportunities')->onDelete('cascade');
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->foreignId('opportunity_id')->constrained('opportunities')->cascadeOnDelete();
+            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
             $table->integer('quantity')->default(1);
-            $table->decimal('unit_price', 15, 2);
-            $table->decimal('total_price', 15, 2);
+            $table->decimal('unit_price', total: 19, places: 7);
+            $table->decimal('total_price', total: 19, places: 7);
             $table->timestamps();
         });
     }

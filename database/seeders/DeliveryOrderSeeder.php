@@ -17,33 +17,33 @@ class DeliveryOrderSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $companyUsers = User::where('type', 'company')->get();
-        
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        $organizationUsers = User::where('type', 'organization')->get();
+
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
-        
+
         $statuses = ['pending', 'in_transit', 'delivered', 'cancelled'];
-        
-        foreach ($companyUsers as $company) {
-            $accounts = Account::where('created_by', $company->id)->get();
-            $contacts = Contact::where('created_by', $company->id)->get();
-            $products = Product::where('created_by', $company->id)->get();
-            $salesOrders = SalesOrder::where('created_by', $company->id)->get();
-            $shippingTypes = ShippingProviderType::where('created_by', $company->id)->get();
-            $staffUsers = User::where('created_by', $company->id)->get();
-            
+
+        foreach ($organizationUsers as $organization) {
+            $accounts = Account::where('created_by', $organization->id)->get();
+            $contacts = Contact::where('created_by', $organization->id)->get();
+            $products = Product::where('created_by', $organization->id)->get();
+            $salesOrders = SalesOrder::where('created_by', $organization->id)->get();
+            $shippingTypes = ShippingProviderType::where('created_by', $organization->id)->get();
+            $staffUsers = User::where('created_by', $organization->id)->get();
+
             if ($accounts->isEmpty() || $contacts->isEmpty() || $products->isEmpty()) {
                 continue;
             }
-            
+
             for ($i = 1; $i <= 15; $i++) {
                 $account = $accounts->random();
                 $contact = $contacts->where('account_id', $account->id)->first() ?? $contacts->random();
                 $deliveryDate = $faker->dateTimeBetween('-1 month', '+1 month');
                 $expectedDeliveryDate = $faker->dateTimeBetween('now', '+2 weeks');
-                
+
                 $deliveryOrder = DeliveryOrder::create([
                     'name' => 'Delivery ' . $i,
                     'description' => $faker->sentence(5),
@@ -62,28 +62,28 @@ class DeliveryOrderSeeder extends Seeder
                     'tracking_number' => strtoupper($faker->bothify('??########')),
                     'delivery_notes' => $faker->sentence(8),
                     'shipping_cost' => $faker->randomFloat(2, 10, 100),
-                    'created_by' => $company->id,
+                    'created_by' => $organization->id,
                     'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
                     'created_at' => $faker->dateTimeBetween('-1 month', 'now'),
                 ]);
-                
+
                 $selectedProducts = $products->random(random_int(1, 3));
                 foreach ($selectedProducts as $product) {
                     $quantity = random_int(1, 5);
                     $unitWeight = $faker->randomFloat(2, 0.5, 10);
                     $totalWeight = $quantity * $unitWeight;
-                    
+
                     $deliveryOrder->products()->attach($product->id, [
                         'quantity' => $quantity,
                         'unit_weight' => $unitWeight,
                         'total_weight' => $totalWeight,
                     ]);
                 }
-                
+
                 $deliveryOrder->calculateTotalWeight();
             }
         }
-        
-        $this->command->info('Delivery orders created for all company users!');
+
+        $this->command->info('Delivery orders created for all organization users!');
     }
 }

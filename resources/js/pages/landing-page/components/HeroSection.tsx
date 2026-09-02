@@ -26,13 +26,13 @@ interface HeroSectionProps {
     card?: {
       name: string;
       title: string;
-      company: string;
+      organization: string;
       initials: string;
     };
   };
 }
 
-export default function HeroSection({ settings, sectionData, brandColor = '#3b82f6' }: HeroSectionProps) {
+export default function HeroSection({ settings, sectionData, brandColor = '#A12582' }: HeroSectionProps) {
   const { t } = useTranslation();
   const { globalSettings } = usePage().props as any;
   const isDemo = isDemoMode();
@@ -122,10 +122,10 @@ export default function HeroSection({ settings, sectionData, brandColor = '#3b82
           href={route('login')}
           className="border px-8 py-4 rounded-lg transition-colors font-semibold text-base flex items-center justify-center gap-2 hover:bg-white/10"
           style={{ borderColor: brandColor, color: brandColor }}
-          aria-label="Login to existing Sales account"
+          aria-label="Sign in to existing Sales account"
         >
           <Play size={18} />
-          {sectionData.secondary_button_text || t('Login')}
+          {sectionData.secondary_button_text || t('Sign in')}
         </Link>
       </div>
       {sectionData.stats && sectionData.stats.length > 0 && (

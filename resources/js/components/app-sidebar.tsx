@@ -33,8 +33,8 @@ export function AppSidebar() {
         },
 
         {
-            title: t('Companies'),
-            href: route('companies.index'),
+            title: t('Organizations'),
+            href: route('organizations.index'),
             icon: Briefcase,
             group: t('Management'),
         },
@@ -121,7 +121,7 @@ export function AppSidebar() {
         }
     ];
 
-    const getCompanyNavItems = (): NavItem[] => {
+    const getOrganizationNavItems = (): NavItem[] => {
         const items: NavItem[] = [];
 
         // ── 1. Overview ──────────────────────────────────────────────
@@ -376,7 +376,7 @@ export function AppSidebar() {
         return items;
     };
 
-    const mainNavItems = userRole === 'superadmin' ? getSuperAdminNavItems() : getCompanyNavItems();
+    const mainNavItems = userRole === 'super_admin' ? getSuperAdminNavItems() : getOrganizationNavItems();
 
     const { position, effectivePosition } = useLayout();
     const { variant, collapsible, style } = useSidebarSettings();
@@ -464,7 +464,7 @@ export function AppSidebar() {
                                     />
                                 ) : (
                                     <div className="h-12 text-inherit font-semibold flex items-center text-lg tracking-tight">
-                                        WorkDo
+                                        Kakbima
                                     </div>
                                 );
                             })()}
@@ -524,18 +524,18 @@ export function AppSidebar() {
 
 
            <SidebarFooter className='p-3'>
-                {/* Plan Active UI — SaaS + Company only */}
-                {userRole === 'company' && (() => {
+                {/* Plan Active UI — SaaS + Organization only */}
+                {userRole === 'organization' && (() => {
                     const user = auth.user;
                     const plan = user?.plan;
 
                     const planName = plan?.name ?? t('No Plan');
-                    const isActive = user?.plan_is_active === 1;
+                    const isActive = user?.is_plan_active === 1;
                     const isTrial = user?.is_trial;
 
-                    const expireDate = isTrial == 1 ? user?.trial_expire_date : (user?.plan_expire_date ||  globalSettings?.planExirationDate);
-                    const daysLeft = expireDate
-                        ? Math.ceil((new Date(expireDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+                    const expiryDate = isTrial == 1 ? user?.trial_expiry_date : (user?.plan_expiry_date ||  globalSettings?.planExirationDate);
+                    const daysLeft = expiryDate
+                        ? Math.ceil((new Date(expiryDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
                         : null;
                     const isExpired = daysLeft == null || daysLeft <= 0;
                     const isExpiringSoon = daysLeft !== null && daysLeft > 0 && daysLeft <= 7;
@@ -575,14 +575,14 @@ export function AppSidebar() {
 
                                     {/* Expiry info */}
                                     <div className="mb-3 space-y-1.5">
-                                        {expireDate ? (
+                                        {expiryDate ? (
                                             <>
                                                 <div className="flex items-center justify-between">
                                                     <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.9)' }}>
                                                         {isExpired ? t('Expired on') : isTrial == 1 ? t('Trial expires') : t('Plan expires')}
                                                     </span>
                                                     <span className="text-xs font-bold text-white">
-                                                        {window.appSettings?.formatDateTime(expireDate, false) || new Date(expireDate).toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' })}
+                                                        {window.appSettings?.formatDateTime(expiryDate, false) || new Date(expiryDate).toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' })}
                                                     </span>
                                                 </div>
                                                 <div className="flex items-center justify-between">

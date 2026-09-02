@@ -15,16 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->decimal('amount', 15, 2)->nullable();
+            $table->decimal('amount', total: 19, places: 7)->nullable();
             $table->date('close_date')->nullable();
             $table->text('notes')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->foreignId('account_id')->constrained('accounts')->onDelete('cascade');
-            $table->foreignId('contact_id')->nullable()->constrained('contacts')->onDelete('set null');
-            $table->foreignId('opportunity_stage_id')->constrained('opportunity_stages')->onDelete('cascade');
-            $table->foreignId('opportunity_source_id')->constrained('opportunity_sources')->onDelete('cascade');
-            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
-            $table->foreignId('assigned_to')->nullable()->constrained('users')->onDelete('set null');
+            $table->foreignId('account_id')->constrained('accounts')->cascadeOnDelete();
+            $table->foreignId('contact_id')->nullable()->constrained('contacts')->nullOnDelete();
+            $table->foreignId('opportunity_stage_id')->constrained('opportunity_stages')->cascadeOnDelete();
+            $table->foreignId('opportunity_source_id')->constrained('opportunity_sources')->cascadeOnDelete();
+            $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('assigned_to')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
     }

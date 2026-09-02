@@ -131,8 +131,8 @@ class ProjectController extends Controller
         $currentProjectCount = Project::where('created_by', $user->id)->count();
         $planLimits = [
             'current_projects' => $currentProjectCount,
-            'max_projects' => $plan->max_projects,
-            'can_create' => $currentProjectCount < $plan->max_projects
+            'maximum_projects' => $plan->maximum_projects,
+            'can_create' => $currentProjectCount < $plan->maximum_projects
         ];
 
         return Inertia::render('projects/index', [
@@ -223,16 +223,16 @@ class ProjectController extends Controller
             'assigned_to' => 'required|exists:users,id',
         ]);
 
-        // Check project limit for company users
-        if (auth()->user()->type === 'company') {
+        // Check project limit for organization users
+        if (auth()->user()->type === 'organization') {
             $user = auth()->user();
             $plan = $user->getCurrentPlan();
 
-            if ($plan && $plan->max_projects > 0) {
+            if ($plan && $plan->maximum_projects > 0) {
                 $currentProjectCount = Project::where('created_by', $user->id)->count();
 
-                if ($currentProjectCount >= $plan->max_projects) {
-                    return redirect()->back()->with('error', __('Project limit exceeded. Your plan allows maximum :limit projects.', ['limit' => $plan->max_projects]));
+                if ($currentProjectCount >= $plan->maximum_projects) {
+                    return redirect()->back()->with('error', __('Project limit exceeded. Your plan allows maximum :limit projects.', ['limit' => $plan->maximum_projects]));
                 }
             }
         }

@@ -13,12 +13,12 @@ export interface ThemeSettings {
 const DEFAULT_THEME: ThemeSettings = {
     appearance: 'system',
     themeColor: 'green',
-    customColor: '#3b82f6', // Default blue color
+    customColor: '#A12582', // Default blue color
 };
 
 // Preset theme colors
 export const THEME_COLORS = {
-    blue: '#3b82f6',
+    blue: '#A12582',
     green: '#10b77f',
     purple: '#8b5cf6',
     orange: '#f97316',

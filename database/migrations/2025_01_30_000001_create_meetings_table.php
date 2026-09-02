@@ -23,8 +23,9 @@ return new class extends Migration
             $table->string('parent_module')->nullable(); // lead, account, contact, opportunity, case, project
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->enum('status', ['planned', 'held', 'not_held'])->default('planned');
-            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
-            $table->foreignId('assigned_to')->nullable()->constrained('users')->onDelete('set null');
+            $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('assigned_to')->nullable()->constrained('users')->nullOnDelete();
+            $table->string('google_calendar_event_id')->nullable();
             $table->timestamps();
         });
     }

@@ -31,7 +31,7 @@ interface Plan {
     storage: string;
   };
   is_popular?: boolean;
-  is_plan_enable: string;
+  is_plan_enabled: string;
 }
 
 interface PlansSectionProps {
@@ -45,13 +45,13 @@ interface PlansSectionProps {
   };
 }
 
-function PlansSection({ plans, settings, sectionData, brandColor = '#3b82f6' }: PlansSectionProps) {
+function PlansSection({ plans, settings, sectionData, brandColor = '#A12582' }: PlansSectionProps) {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
   const { ref, isVisible } = useScrollAnimation();
   const { t } = useTranslation();
 
   // Filter enabled plans
-  const enabledPlans = plans.filter(plan => plan.is_plan_enable === 'on');
+  const enabledPlans = plans.filter(plan => plan.is_plan_enabled === 'on');
 
   // Default plans if none provided
   const defaultPlans = [
@@ -77,7 +77,7 @@ function PlansSection({ plans, settings, sectionData, brandColor = '#3b82f6' }: 
         storage: '1GB'
       },
       is_popular: false,
-      is_plan_enable: 'on'
+      is_plan_enabled: 'on'
     },
     {
       id: 2,
@@ -103,7 +103,7 @@ function PlansSection({ plans, settings, sectionData, brandColor = '#3b82f6' }: 
         storage: '10GB'
       },
       is_popular: true,
-      is_plan_enable: 'on'
+      is_plan_enabled: 'on'
     },
     {
       id: 3,
@@ -130,7 +130,7 @@ function PlansSection({ plans, settings, sectionData, brandColor = '#3b82f6' }: 
         storage: '100GB'
       },
       is_popular: false,
-      is_plan_enable: 'on'
+      is_plan_enabled: 'on'
     }
   ];
 

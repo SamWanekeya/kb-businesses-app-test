@@ -149,8 +149,8 @@ export default function PublicQuote({ quote, templateId = 'template1', color = '
     }, [props.flash, t]);
 
 
-    const themeColors = { blue: '#3b82f6', green: '#10b77f', purple: '#8b5cf6', orange: '#f97316', red: '#ef4444' };
-    const currentThemeColor = themeColor === 'custom' ? customColor : themeColors[themeColor as keyof typeof themeColors] || '#3b82f6';
+    const themeColors = { blue: '#A12582', green: '#10b77f', purple: '#8b5cf6', orange: '#f97316', red: '#ef4444' };
+    const currentThemeColor = themeColor === 'custom' ? customColor : themeColors[themeColor as keyof typeof themeColors] || '#A12582';
     const template = { primary: currentThemeColor, secondary: currentThemeColor };
 
     const formatCurrency = (amount: number) => {

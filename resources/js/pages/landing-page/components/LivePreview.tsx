@@ -20,7 +20,7 @@ export default function LivePreview({ data, activeSection }: LivePreviewProps) {
 
   const getCompletionStatus = () => {
     const requiredFields = [
-      { key: 'company_name', value: data.company_name, label: t('Company Name') },
+      { key: 'organization_name', value: data.organization_name, label: t('Organization Name') },
       { key: 'hero_title', value: getSectionData('hero').title, label: t('Hero Title') },
       { key: 'contact_email', value: data.contact_email, label: t('Contact Email') }
     ];
@@ -47,7 +47,7 @@ export default function LivePreview({ data, activeSection }: LivePreviewProps) {
                 {heroData.subtitle || 'Your hero subtitle will appear here...'}
               </div>
               <div className="flex gap-1">
-                <div className="px-2 py-1 text-xs rounded" style={{ backgroundColor: data.config_sections?.theme?.primary_color || '#3b82f6', color: 'white' }}>
+                <div className="px-2 py-1 text-xs rounded" style={{ backgroundColor: data.config_sections?.theme?.primary_color || '#A12582', color: 'white' }}>
                   {heroData.primary_button_text || 'Primary Button'}
                 </div>
                 <div className="px-2 py-1 text-xs border rounded">
@@ -176,7 +176,7 @@ export default function LivePreview({ data, activeSection }: LivePreviewProps) {
           <div className="flex flex-col items-center gap-1">
             <div
               className="w-8 h-8 rounded-lg shadow-sm border-2 border-white"
-              style={{ backgroundColor: data.config_sections?.theme?.primary_color || '#3b82f6' }}
+              style={{ backgroundColor: data.config_sections?.theme?.primary_color || '#A12582' }}
             ></div>
             <span className="text-xs text-gray-500 dark:text-gray-400">{t("Primary")}</span>
           </div>

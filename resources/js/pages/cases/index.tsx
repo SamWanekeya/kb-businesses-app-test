@@ -704,7 +704,7 @@ export default function Cases() {
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
-                        { name: 'subject', label: t('Subject'), type: 'text', required: true, placeholder: t('e.g. Login page not loading, Billing issue') },
+                        { name: 'subject', label: t('Subject'), type: 'text', required: true, placeholder: t('e.g. Sign in page not loading, Billing issue') },
                         { name: 'description', label: t('Description'), type: 'textarea', placeholder: t('Describe the issue in detail...') },
                         {
                             name: 'account_id',
@@ -835,4 +835,4 @@ export default function Cases() {
             />
         </PageTemplate>
     );
-} 
+}

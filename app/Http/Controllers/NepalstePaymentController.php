@@ -17,7 +17,7 @@ class NepalstePaymentController extends Controller
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
             $settings = getPaymentGatewaySettings();
-            
+
             if (!isset($settings['payment_settings']['nepalste_public_key']) || !isset($settings['payment_settings']['nepalste_secret_key'])) {
                 return back()->withErrors(['error' => __('Nepalste not configured')]);
             }
@@ -50,7 +50,7 @@ class NepalstePaymentController extends Controller
             $plan = Plan::findOrFail($validated['plan_id']);
             $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null);
             $settings = getPaymentGatewaySettings();
-            
+
             if (!isset($settings['payment_settings']['nepalste_public_key']) || !isset($settings['payment_settings']['nepalste_secret_key'])) {
                 return response()->json(['error' => __('Nepalste not configured')], 400);
             }
@@ -72,8 +72,8 @@ class NepalstePaymentController extends Controller
                 'website_url' => route('plans.index'),
             ];
 
-            $baseUrl = $settings['payment_settings']['nepalste_mode'] === 'live' 
-                ? 'https://nepalste.com.np/pay/api/v1' 
+            $baseUrl = $settings['payment_settings']['nepalste_mode'] === 'live'
+                ? 'https://nepalste.com.np/pay/api/v1'
                 : 'https://nepalste.com.np/pay/sandbox/api/v1';
 
             $response = $this->initiateNepalstePayment($baseUrl . '/payment/initiate', $paymentData, $accessToken);
@@ -100,17 +100,17 @@ class NepalstePaymentController extends Controller
             $orderId = $request->input('order_id');
             $planId = $request->input('plan_id');
             $billingCycle = $request->input('billing_cycle');
-            
+
             if ($orderId && $planId) {
                 $plan = Plan::find($planId);
                 $user = auth()->user();
-                
+
                 if ($plan && $user) {
                     // Assign plan to user
                     $user->plan_id = $plan->id;
-                    $user->plan_expire_date = $billingCycle === 'yearly' ? now()->addYear() : now()->addMonth();
+                    $user->plan_expiry_date = $billingCycle === 'yearly' ? now()->addYear() : now()->addMonth();
                     $user->save();
-                    
+
                     processPaymentSuccess([
                         'user_id' => $user->id,
                         'plan_id' => $plan->id,
@@ -118,13 +118,13 @@ class NepalstePaymentController extends Controller
                         'payment_method' => 'nepalste',
                         'payment_id' => $orderId,
                     ]);
-                    
+
                     return redirect()->route('plans.index')->with('success', 'Payment successful and plan activated');
                 }
             }
-            
+
             return redirect()->route('plans.index')->with('error', 'Payment verification failed');
-            
+
         } catch (\Exception $e) {
             \Log::error('Nepalste success error: ' . $e->getMessage());
             return redirect()->route('plans.index')->with('error', 'Payment processing failed');
@@ -136,22 +136,22 @@ class NepalstePaymentController extends Controller
         try {
             $orderId = $request->input('purchase_order_id');
             $status = $request->input('status');
-            
+
             if ($orderId && $status === 'completed') {
                 $parts = explode('_', $orderId);
-                
+
                 if (count($parts) >= 3) {
                     $planId = $parts[1];
                     $userId = $parts[2];
-                    
+
                     $plan = Plan::find($planId);
                     $user = \App\Models\User::find($userId);
-                    
+
                     if ($plan && $user) {
                         $user->plan_id = $plan->id;
-                        $user->plan_expire_date = now()->addMonth();
+                        $user->plan_expiry_date = now()->addMonth();
                         $user->save();
-                        
+
                         processPaymentSuccess([
                             'user_id' => $user->id,
                             'plan_id' => $plan->id,
@@ -174,8 +174,8 @@ class NepalstePaymentController extends Controller
     private function getAccessToken($settings)
     {
         try {
-            $baseUrl = $settings['nepalste_mode'] === 'live' 
-                ? 'https://nepalste.com.np/pay/api/v1' 
+            $baseUrl = $settings['nepalste_mode'] === 'live'
+                ? 'https://nepalste.com.np/pay/api/v1'
                 : 'https://nepalste.com.np/pay/sandbox/api/v1';
 
             $ch = curl_init();
@@ -196,7 +196,7 @@ class NepalstePaymentController extends Controller
             curl_close($ch);
 
             \Log::info('Nepalste Access Token Response', [
-                'response' => $response, 
+                'response' => $response,
                 'http_code' => $httpCode
             ]);
 
@@ -232,7 +232,7 @@ class NepalstePaymentController extends Controller
             curl_close($ch);
 
             \Log::info('Nepalste Payment Response', [
-                'response' => $response, 
+                'response' => $response,
                 'http_code' => $httpCode,
                 'url' => $url,
                 'data' => $data

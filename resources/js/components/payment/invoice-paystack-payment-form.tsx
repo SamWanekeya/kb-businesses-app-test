@@ -31,19 +31,19 @@ export function InvoicePaystackPaymentForm({
         const script = document.createElement('script');
         script.src = 'https://js.paystack.co/v1/inline.js';
         script.async = true;
-        
+
         script.onload = () => {
             initialized.current = true;
-            
+
             // Hide parent modal temporarily
             const modalBackdrop = document.querySelector('[data-radix-dialog-overlay]');
             if (modalBackdrop) {
                 (modalBackdrop as HTMLElement).style.display = 'none';
             }
-            
+
             const handler = (window as any).PaystackPop.setup({
                 key: paystackKey,
-                email: 'customer@example.com', // Should be dynamic if available
+                email: 'customer@kakbima.dev', // Should be dynamic if available
                 amount: Math.round(Number(amount) * 100), // Convert to kobo as integer
                 currency: currency.toUpperCase(),
                 callback: function(response: any) {
@@ -51,7 +51,7 @@ export function InvoicePaystackPaymentForm({
                     if (modalBackdrop) {
                         (modalBackdrop as HTMLElement).style.display = '';
                     }
-                    
+
                     // Process payment on server
                     axios.post(route('invoice.paystack.payment'), {
                         invoice_id: invoiceId,
@@ -75,7 +75,7 @@ export function InvoicePaystackPaymentForm({
                     onCancel();
                 }
             });
-            
+
             handler.openIframe();
         };
 

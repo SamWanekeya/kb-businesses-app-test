@@ -13,10 +13,10 @@ return new class extends Migration
             $table->string('delivery_number')->unique();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->foreignId('sales_order_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('account_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('contact_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('shipping_provider_type_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('sales_order_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('account_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('contact_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('shipping_provider_type_id')->nullable()->constrained()->nullOnDelete();
             $table->text('delivery_address')->nullable();
             $table->string('delivery_city')->nullable();
             $table->string('delivery_state')->nullable();
@@ -27,10 +27,10 @@ return new class extends Migration
             $table->enum('status', ['pending', 'in_transit', 'delivered', 'cancelled'])->default('pending');
             $table->text('tracking_number')->nullable();
             $table->text('delivery_notes')->nullable();
-            $table->decimal('total_weight', 10, 2)->default(0);
-            $table->decimal('shipping_cost', 15, 2)->default(0);
-            $table->foreignId('assigned_to')->nullable()->constrained('users')->onDelete('set null');
-            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
+            $table->decimal('total_weight', total: 19, places: 7)->default(0);
+            $table->decimal('shipping_cost', total: 19, places: 7)->default(0);
+            $table->foreignId('assigned_to')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }

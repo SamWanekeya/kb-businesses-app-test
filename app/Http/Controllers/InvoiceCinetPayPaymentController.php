@@ -30,9 +30,9 @@ class InvoiceCinetPayPaymentController extends Controller
                 return response()->json(['error' => $validation['message']], 400);
             }
 
-            $companyId = $invoice->created_by;
-            $company = User::findOrFail($companyId);
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $organization = User::findOrFail($organizationId);
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['cinetpay_site_id']) || !isset($settings['payment_settings']['cinetpay_api_key'])) {
                 \Log::error('CinetPay payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
@@ -62,7 +62,7 @@ class InvoiceCinetPayPaymentController extends Controller
                 ]),
                 'customer_name' => $invoice->name ?? 'Customer',
                 'customer_surname' => $invoice->name ?? 'User',
-                'customer_email' => $invoice->email ?? $company->email,
+                'customer_email' => $invoice->email ?? $organization->email,
                 'customer_phone_number' => $invoice->phone ?? '+2250000000000',
                 'customer_address' => $invoice->billing_address ?? 'Abidjan',
                 'customer_city' => $invoice->billing_city ?? 'Abidjan',
@@ -222,11 +222,11 @@ class InvoiceCinetPayPaymentController extends Controller
         return $request->validate(array_merge($baseRules, $additionalRules));
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 }

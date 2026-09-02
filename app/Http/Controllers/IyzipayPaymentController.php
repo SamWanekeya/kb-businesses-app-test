@@ -120,7 +120,7 @@ class IyzipayPaymentController extends Controller
             $buyer->setLastLoginDate(now()->format('Y-m-d H:i:s'));
             $buyer->setRegistrationDate($user->created_at->format('Y-m-d H:i:s'));
             $buyer->setRegistrationAddress('123 Main Street');
-            $buyer->setIp($request->ip());
+            $buyer->setIp($request->ip_address());
             $buyer->setCity('New York');
             $buyer->setCountry('United States');
             $buyer->setZipCode('10001');
@@ -239,7 +239,7 @@ class IyzipayPaymentController extends Controller
             }
 
             // Get settings without authentication dependency
-            $superAdmin = User::where('type', 'superadmin')->first();
+            $superAdmin = User::where('type', 'super_admin')->first();
             $settings = $superAdmin ? getPaymentGatewaySettings($superAdmin->id) : getPaymentGatewaySettings();
 
             // Retrieve payment result from Iyzipay

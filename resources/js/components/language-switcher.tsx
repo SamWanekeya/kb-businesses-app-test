@@ -41,10 +41,10 @@ export const LanguageSwitcher: React.FC = () => {
 
     const isAuthenticated = auth?.user;
     const userRoles = auth?.roles || [];
-    const isSuperAdmin = isAuthenticated && hasRole('superadmin', userRoles);
+    const isSuperAdmin = isAuthenticated && hasRole('super_admin', userRoles);
 
-    // Allow company users to manage languages when not in SaaS mode
-    const isCompanyUser = userRoles.includes('company');
+    // Allow organization users to manage languages when not in SaaS mode
+    const isOrganizationUser = userRoles.includes('organization');
 
     // RTL languages list
     const rtlLanguages = ['ar', 'he'];

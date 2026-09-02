@@ -41,7 +41,7 @@ const iconMap: Record<string, React.ComponentType<any>> = {
     'trending-up': TrendingUp
 };
 
-export default function FeaturesSection({ settings, sectionData, brandColor = '#3b82f6' }: FeaturesSectionProps) {
+export default function FeaturesSection({ settings, sectionData, brandColor = '#A12582' }: FeaturesSectionProps) {
     const { ref, isVisible } = useScrollAnimation();
     const { t } = useTranslation();
 

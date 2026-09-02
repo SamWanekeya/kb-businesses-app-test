@@ -22,7 +22,7 @@ class CheckInstallation
         $request->is('installer/*')) {
             return $next($request);
         }
-        
+
         // Check only on dashboard, login, register routes
         if (!$request->is('/*') && !$request->is('dashboard*') && !$request->is('login') && !$request->is('register')) {
             return $next($request);
@@ -33,8 +33,8 @@ class CheckInstallation
             return redirect('/install');
         }
 
-        // If logged in as superadmin and migrations needed, redirect to /update
-        if (auth()->check() && auth()->user()->hasRole('superadmin') && $this->needsMigration()) {
+        // If logged in as super_admin and migrations needed, redirect to /update
+        if (auth()->check() && auth()->user()->hasRole('super_admin') && $this->needsMigration()) {
             return redirect('/update');
         }
 

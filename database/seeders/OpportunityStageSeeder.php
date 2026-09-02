@@ -13,10 +13,10 @@ class OpportunityStageSeeder extends Seeder
      */
     public function run(): void
     {
-        $companyUsers = User::where('type', 'company')->get();
+        $organizationUsers = User::where('type', 'organization')->get();
 
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
@@ -29,22 +29,22 @@ class OpportunityStageSeeder extends Seeder
             ['name' => 'Closed Lost', 'color' => '#EF4444', 'probability' => 0, 'description' => 'Opportunity lost or cancelled']
         ];
 
-        foreach ($companyUsers as $company) {
+        foreach ($organizationUsers as $organization) {
             foreach ($stageTemplates as $template) {
                 OpportunityStage::firstOrCreate(
-                    ['name' => $template['name'], 'created_by' => $company->id],
+                    ['name' => $template['name'], 'created_by' => $organization->id],
                     [
                         'name' => $template['name'],
                         'color' => $template['color'],
                         'probability' => $template['probability'],
                         'description' => $template['description'],
                         'status' => 'active',
-                        'created_by' => $company->id,
+                        'created_by' => $organization->id,
                     ]
                 );
             }
         }
 
-        $this->command->info('Opportunity stages created for all company users!');
+        $this->command->info('Opportunity stages created for all organization users!');
     }
 }

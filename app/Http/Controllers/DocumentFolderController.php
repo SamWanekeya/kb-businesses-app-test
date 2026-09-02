@@ -18,10 +18,10 @@ class DocumentFolderController extends Controller
         $query = DocumentFolder::query()
             ->with(['parentFolder', 'creator'])
             ->where(function($q) {
-                if (auth()->user()->type === 'company') {
+                if (auth()->user()->type === 'organization') {
                     $q->where('created_by', createdBy());
                 } else {
-                    // Staff users can see folders created by their company
+                    // Staff users can see folders created by their organization
                     $q->where('created_by', createdBy());
                 }
             });
@@ -81,7 +81,7 @@ class DocumentFolderController extends Controller
         ]);
     }
 
-   
+
     public function create()
     {
         $parentFolders = DocumentFolder::where('created_by', createdBy())
@@ -92,7 +92,7 @@ class DocumentFolderController extends Controller
         ]);
     }
 
-   
+
 
     public function store(Request $request)
     {
@@ -112,10 +112,10 @@ class DocumentFolderController extends Controller
             return redirect()->back()->withErrors(['name' => __('A folder with this name already exists in the selected location.')])->withInput();
         }
 
-        // Set created_by to company ID for both company and staff users
+        // Set created_by to organization ID for both organization and staff users
         $validated['created_by'] = createdBy();
 
-        // Validate parent folder belongs to same company if specified
+        // Validate parent folder belongs to same organization if specified
         if (!empty($validated['parent_folder_id'])) {
             $parentFolder = DocumentFolder::where('id', $validated['parent_folder_id'])
                 ->where('created_by', createdBy())
@@ -185,7 +185,7 @@ class DocumentFolderController extends Controller
             'parentFolders' => $parentFolders,
         ]);
     }
-    
+
     public function update(Request $request, $documentFolderId)
     {
         $documentFolder = DocumentFolder::where('id', $documentFolderId)

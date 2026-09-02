@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('document_folders', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('parent_folder_id')->nullable()->constrained('document_folders')->onDelete('cascade');
+            $table->foreignId('parent_folder_id')->nullable()->constrained('document_folders')->cascadeOnDelete();
             $table->text('description')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
+            $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }

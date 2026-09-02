@@ -24,14 +24,14 @@ class MediaController extends Controller
             $mediaQuery = $item->getMedia('images');
 
             // SuperAdmin can see all media
-            if ($user->hasRole('superadmin')) {
-                // No user_id filter for superadmin
+            if ($user->hasRole('super_admin')) {
+                // No user_id filter for super_admin
             }
             // Users with manage-any-media can see all media
             elseif ($user->hasPermissionTo('manage-any-media')) {
                 // Filter for manage-any-media
-                $companyUsersIds = User::where('created_by', createdBy())->orWhere('id', createdBy())->pluck('id');
-                $mediaQuery = $mediaQuery->whereIn('user_id', $companyUsersIds);
+                $organizationUsersIds = User::where('created_by', createdBy())->orWhere('id', createdBy())->pluck('id');
+                $mediaQuery = $mediaQuery->whereIn('user_id', $organizationUsersIds);
             } elseif ($user->hasPermissionTo('manage-own-media')) {
                 // Can only see their own media
                 $mediaQuery = $mediaQuery->where('user_id', $user->id);
@@ -147,7 +147,7 @@ class MediaController extends Controller
         // Normalize allowed file types to handle case sensitivity
         $allowedTypes = $config['allowed_file_types'];
         $normalizedTypes = strtolower($allowedTypes);
-        $maxSizeKB =  (int)($config['storage_max_upload_size'] ?? 2048);
+        $maxSizeKB =  (int)($config['storage_maximum_upload_size'] ?? 2048);
         $maxSizeMB = round($maxSizeKB / 1024, 2);
         $validationRules = StorageConfigService::getFileValidationRules();
 
@@ -167,12 +167,12 @@ class MediaController extends Controller
                 'message' => __('File validation failed'),
                 'errors' => $validator->errors()->all(),
                 'allowed_types' => $config['allowed_file_types'],
-                'max_size_mb' => $maxSizeMB
+                'maximum_size_mb' => $maxSizeMB
             ], 422);
         }
 
         // Set max file size for Spatie Media Library (in bytes)
-        config(['media-library.max_file_size' => $maxSizeKB * 1024]);
+        config(['media-library.maximum_file_size' => $maxSizeKB * 1024]);
 
         $uploadedMedia = [];
         $errors = [];
@@ -190,8 +190,8 @@ class MediaController extends Controller
                 $media->save();
 
                 // Update user storage usage
-                $company = User::find(createdBy());
-                $this->updateStorageUsage($company, $media->size);
+                $organization = User::find(createdBy());
+                $this->updateStorageUsage($organization, $media->size);
 
                 // Force thumbnail generationAdd commentMore actions
                 try {
@@ -256,7 +256,7 @@ class MediaController extends Controller
         $query = Media::where('id', $id);
 
         // SuperAdmin and users with manage-any-media can download any media
-        if ($user->type !== 'superadmin' && !$user->hasPermissionTo('manage-any-media')) {
+        if ($user->type !== 'super_admin' && !$user->hasPermissionTo('manage-any-media')) {
             $query->where('user_id', $user->id);
         }
 
@@ -281,7 +281,7 @@ class MediaController extends Controller
         $query = Media::where('id', $id);
 
         // SuperAdmin and users with manage-any-media can delete any media
-        if ($user->type !== 'superadmin' && !$user->hasPermissionTo('manage-any-media')) {
+        if ($user->type !== 'super_admin' && !$user->hasPermissionTo('manage-any-media')) {
             $query->where('user_id', $user->id);
         }
 
@@ -298,8 +298,8 @@ class MediaController extends Controller
         }
 
         // Update user storage usage
-        $company = User::find(createdBy());
-        $this->updateStorageUsage($company, -$fileSize);
+        $organization = User::find(createdBy());
+        $this->updateStorageUsage($organization, -$fileSize);
 
         // Delete the MediaItem if it has no more media files
         if ($mediaItem && $mediaItem->getMedia()->count() === 0) {
@@ -312,7 +312,7 @@ class MediaController extends Controller
     private function checkStorageLimit($files)
     {
         $user = auth()->user();
-        if ($user->type === 'superadmin') return null;
+        if ($user->type === 'super_admin') return null;
 
         $limit = $this->getUserStorageLimit($user);
         if (!$limit) return null;
@@ -332,14 +332,14 @@ class MediaController extends Controller
 
     private function getUserStorageLimit($user)
     {
-        if ($user->type === 'company' && $user->plan) {
+        if ($user->type === 'organization' && $user->plan) {
             return $user->plan->storage_limit * 1024 * 1024 * 1024;
         }
 
         if ($user->created_by) {
-            $company = User::find($user->created_by);
-            if ($company && $company->plan) {
-                return $company->plan->storage_limit * 1024 * 1024 * 1024;
+            $organization = User::find($user->created_by);
+            if ($organization && $organization->plan) {
+                return $organization->plan->storage_limit * 1024 * 1024 * 1024;
             }
         }
 
@@ -348,18 +348,18 @@ class MediaController extends Controller
 
     private function getUserStorageUsage($user)
     {
-        if ($user->type === 'company') {
-            // Get storage usage for company and all its staff
-            $companyUsers = User::where('created_by', $user->id)->pluck('id')->push($user->id);
-            return Media::whereIn('user_id', $companyUsers)->sum('size');
+        if ($user->type === 'organization') {
+            // Get storage usage for organization and all its staff
+            $organizationUsers = User::where('created_by', $user->id)->pluck('id')->push($user->id);
+            return Media::whereIn('user_id', $organizationUsers)->sum('size');
         }
 
         if ($user->created_by) {
-            // Get storage usage for entire company
-            $company = User::find($user->created_by);
-            if ($company) {
-                $companyUsers = User::where('created_by', $company->id)->pluck('id')->push($company->id);
-                return Media::whereIn('user_id', $companyUsers)->sum('size');
+            // Get storage usage for entire organization
+            $organization = User::find($user->created_by);
+            if ($organization) {
+                $organizationUsers = User::where('created_by', $organization->id)->pluck('id')->push($organization->id);
+                return Media::whereIn('user_id', $organizationUsers)->sum('size');
             }
         }
 

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,12 +12,10 @@ return new class extends Migration
     {
         Schema::create('user_email_templates', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('template_id');
-            $table->unsignedBigInteger('user_id');
-            $table->boolean('is_active')->default(0);
+            $table->foreignId('template_id')->constrained('email_templates')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->boolean('is_active')->default(1);
             $table->timestamps();
-            
-            $table->foreign('template_id')->references('id')->on('email_templates')->onDelete('cascade');
         });
     }
 

@@ -10,11 +10,11 @@ return new class extends Migration
     {
         Schema::create('delivery_order_products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('delivery_order_id')->constrained()->onDelete('cascade');
-            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->foreignId('delivery_order_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->integer('quantity');
-            $table->decimal('unit_weight', 10, 2)->default(0);
-            $table->decimal('total_weight', 10, 2)->default(0);
+            $table->decimal('unit_weight', total: 19, places: 7)->default(0);
+            $table->decimal('total_weight', total: 19, places: 7)->default(0);
             $table->timestamps();
         });
     }

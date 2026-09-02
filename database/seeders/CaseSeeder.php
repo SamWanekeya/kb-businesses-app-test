@@ -14,28 +14,28 @@ class CaseSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $companyUsers = User::where('type', 'company')->get();
-        
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        $organizationUsers = User::where('type', 'organization')->get();
+
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
         $priorities = ['low', 'medium', 'high', 'urgent'];
         $statuses = ['new', 'in_progress', 'pending', 'resolved', 'closed'];
         $caseTypes = ['support', 'bug', 'feature_request', 'complaint', 'inquiry'];
-        
-        foreach ($companyUsers as $company) {
-            $accounts = Account::where('created_by', $company->id)->get();
-            $contacts = Contact::where('created_by', $company->id)->get();
-            $staffUsers = User::where('created_by', $company->id)->get();
+
+        foreach ($organizationUsers as $organization) {
+            $accounts = Account::where('created_by', $organization->id)->get();
+            $contacts = Contact::where('created_by', $organization->id)->get();
+            $staffUsers = User::where('created_by', $organization->id)->get();
 
             if ($accounts->isEmpty()) {
                 continue;
             }
 
             $caseSubjects = [
-                'Login Issues with CRM System',
+                'Sign in Issues with CRM System',
                 'Data Export Not Working Properly',
                 'Integration Error with Email Platform',
                 'Report Generation Taking Too Long',
@@ -51,7 +51,7 @@ class CaseSeeder extends Seeder
                 'Two-Factor Authentication Problems',
                 'Bulk Import Data Validation Errors'
             ];
-            
+
             $caseDescriptions = [
                 'Customer is experiencing difficulties accessing their account and needs immediate assistance with login credentials.',
                 'The data export feature is not functioning correctly and returns incomplete results when generating reports.',
@@ -83,13 +83,13 @@ class CaseSeeder extends Seeder
                     'case_type' => $faker->randomElement($caseTypes),
                     'account_id' => $account->id,
                     'contact_id' => $contact?->id,
-                    'created_by' => $company->id,
+                    'created_by' => $organization->id,
                     'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
                     'created_at' => $createdDate,
                 ]);
             }
         }
-        
-        $this->command->info('Cases created for all company users!');
+
+        $this->command->info('Cases created for all organization users!');
     }
 }

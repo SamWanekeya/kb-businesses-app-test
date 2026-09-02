@@ -31,9 +31,9 @@ class InvoiceMidtransPaymentController extends Controller
                 return response()->json(['error' => $validation['message']], 400);
             }
 
-            $companyId = $invoice->created_by;
-            $company = User::findOrFail($companyId);
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $organization = User::findOrFail($organizationId);
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['midtrans_secret_key'])) {
                 return response()->json(['error' => __('Midtrans not configured')], 400);
@@ -51,8 +51,8 @@ class InvoiceMidtransPaymentController extends Controller
                     'secure' => true
                 ],
                 'customer_details' => [
-                    'first_name' => $company->name ?? 'Customer',
-                    'email' => $company->email,
+                    'first_name' => $organization->name ?? 'Customer',
+                    'email' => $organization->email,
                     'billing_address' => [
                         'address' => $invoice->billing_address ?? '',
                         'city' => $invoice->billing_city ?? '',
@@ -200,11 +200,11 @@ class InvoiceMidtransPaymentController extends Controller
         }
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 }

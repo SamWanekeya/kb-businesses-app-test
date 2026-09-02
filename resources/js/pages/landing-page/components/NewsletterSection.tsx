@@ -23,7 +23,7 @@ interface NewsletterSectionProps {
     };
 }
 
-export default function NewsletterSection({ flash, settings, sectionData, brandColor = '#3b82f6' }: NewsletterSectionProps) {
+export default function NewsletterSection({ flash, settings, sectionData, brandColor = '#A12582' }: NewsletterSectionProps) {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const { t } = useTranslation();
 

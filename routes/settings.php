@@ -6,11 +6,11 @@ use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\EmailSettingController;
 use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\Settings\SystemSettingsController;
-use App\Http\Controllers\Settings\CompanySystemSettingsController;
+use App\Http\Controllers\Settings\OrganizationSystemSettingsController;
 use App\Http\Controllers\Settings\CurrencySettingController;
 use App\Http\Controllers\PlanOrderController;
 use App\Http\Controllers\Settings\PaymentSettingController;
-use App\Http\Controllers\Settings\CompanyPaymentSettingController;
+use App\Http\Controllers\Settings\OrganizationPaymentSettingController;
 use App\Http\Controllers\Settings\WebhookController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\InvoiceStripePaymentController;
@@ -39,9 +39,9 @@ Route::middleware(['auth', 'verified', 'plan.access'])->group(function () {
     // Payment Settings (admin only)
     Route::post('/payment-settings', [PaymentSettingController::class, 'store'])->name('payment.settings');
 
-    // Company Payment Settings (uses same as admin)
-    Route::post('/company-payment-settings', [CompanyPaymentSettingController::class, 'store'])->name('company.payment.settings');
-    Route::get('/company-payment-methods', [CompanyPaymentSettingController::class, 'getCompanyPaymentMethods'])->name('company.payment.methods');
+    // Organization Payment Settings (uses same as admin)
+    Route::post('/organization-payment-settings', [OrganizationPaymentSettingController::class, 'store'])->name('organization.payment.settings');
+    Route::get('/organization-payment-methods', [OrganizationPaymentSettingController::class, 'getOrganizationPaymentMethods'])->name('organization.payment.methods');
 
     // Invoice Stripe Payment
     Route::post('/invoice-stripe-payment', [InvoiceStripePaymentController::class, 'processPayment'])->name('settings.invoice.stripe.payment');
@@ -68,15 +68,15 @@ Route::middleware(['auth', 'verified', 'plan.access'])->group(function () {
     Route::post('settings/email/update', [EmailSettingController::class, 'updateEmailSettings'])->name('settings.email.update');
     Route::post('settings/email/test', [EmailSettingController::class, 'sendTestEmail'])->name('settings.email.test');
 
-    // General settings page with system and company settings
+    // General settings page with system and organization settings
     Route::get('settings', [SettingsController::class, 'index'])->name('settings');
 
-    // System Settings routes (Super Admin)
+    // System Settings routes (Super Administrator)
     Route::post('settings/system', [SystemSettingsController::class, 'update'])->name('settings.system.update');
     Route::post('settings/brand', [SystemSettingsController::class, 'updateBrand'])->name('settings.brand.update');
 
-    // Company System Settings routes
-    Route::post('settings/company/system', [CompanySystemSettingsController::class, 'update'])->name('settings.company.system.update');
+    // Organization System Settings routes
+    Route::post('settings/organization/system', [OrganizationSystemSettingsController::class, 'update'])->name('settings.organization.system.update');
 
     Route::post('settings/recaptcha', [SystemSettingsController::class, 'updateRecaptcha'])->name('settings.recaptcha.update');
     Route::post('settings/chatgpt', [SystemSettingsController::class, 'updateChatgpt'])->name('settings.chatgpt.update');

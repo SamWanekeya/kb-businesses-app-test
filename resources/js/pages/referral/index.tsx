@@ -39,7 +39,7 @@ export default function Referral() {
       href: '#payout-requests',
       icon: <DollarSign className="h-4 w-4 mr-2" />,
     },
-    ...(userType === 'superadmin' ? [{
+    ...(userType === 'super_admin' ? [{
       title: t('Settings'),
       href: '#settings',
       icon: <SettingsIcon className="h-4 w-4 mr-2" />,
@@ -58,7 +58,7 @@ export default function Referral() {
       const scrollPosition = window.scrollY + 120;
 
       const refs = [
-        ...(userType === 'superadmin' ? [{ id: 'settings', ref: settingsRef }] : []),
+        ...(userType === 'super_admin' ? [{ id: 'settings', ref: settingsRef }] : []),
         { id: 'payout-requests', ref: payoutRequestsRef },
         { id: 'referred-users', ref: referredUsersRef },
         { id: 'dashboard', ref: dashboardRef },
@@ -174,7 +174,7 @@ export default function Referral() {
             />
           </section>
 
-          {userType === 'superadmin' && (
+          {userType === 'super_admin' && (
             <section id="settings" ref={settingsRef} className="mb-8">
               <h2 className="text-xl font-semibold mb-4">{t('Settings')}</h2>
               <ReferralSettings settings={settings} currencySymbol={currencySymbol} globalSettings={globalSettings} />

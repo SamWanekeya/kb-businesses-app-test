@@ -13,7 +13,7 @@ export const defaultLandingPageSections = {
       subtitle: 'Manage leads, opportunities, quotes, orders, invoices, projects, and reports — all from one platform.',
       announcement_text: '🚀 Smart Reports & Advanced Analytics',
       primary_button_text: 'Start Free Trial',
-      secondary_button_text: 'Login',
+      secondary_button_text: 'Sign in',
       image: '',
       background_color: '#f8fafc',
       text_color: '#1f2937',
@@ -207,21 +207,21 @@ export const defaultLandingPageSections = {
         {
           name: "Alex Thompson",
           role: "Sales Director",
-          company: "TechCorp Inc.",
+          organization: "TechCorp Inc.",
           content: "This platform has transformed how we manage leads and opportunities. Our conversion rate has doubled since adopting it!",
           rating: "5"
         },
         {
           name: "Maria Lopez",
           role: "Operations Manager",
-          company: "Global Enterprises",
+          organization: "Global Enterprises",
           content: "Invoices and orders are now automated, saving us hours every week. The reports feature gives us clear insights into performance.",
           rating: "5"
         },
         {
           name: "Ravi Patel",
           role: "Founder & CEO",
-          company: "StartUp Hub",
+          organization: "StartUp Hub",
           content: "This platform has transformed how we manage leads and opportunities. Our conversion rate has doubled since adopting it!",
           rating: "5"
         }
@@ -306,7 +306,7 @@ export const defaultLandingPageSections = {
       newsletter_subtitle: 'Subscribe for sales tips, product updates, and growth insights.',
       links: {
         product: [{ name: 'Features', href: '#features' }, { name: 'Pricing', href: '#pricing' }, { name: 'Integrations', href: '#integrations' }],
-        company: [{ name: 'About Us', href: '#about' }, { name: 'Careers', href: '#careers' }, { name: 'Contact', href: '#contact' }],
+        organization: [{ name: 'About Us', href: '#about' }, { name: 'Careers', href: '#careers' }, { name: 'Contact', href: '#contact' }],
         support: [{ name: 'Help Center', href: '#help-center' }, { name: 'FAQs', href: '#faqs' }],
         legal: [{ name: 'Privacy Policy', href: '#privacy-policy' }, { name: 'Terms of Service', href: '#terms-of-service' }],
       },
@@ -318,7 +318,7 @@ export const defaultLandingPageSections = {
       ],
       section_titles: {
         product: 'Product',
-        company: 'Company'
+        organization: 'Organization'
       }
     }
   ],

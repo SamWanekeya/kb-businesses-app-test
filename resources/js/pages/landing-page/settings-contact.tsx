@@ -69,7 +69,7 @@ export default function ContactSection({ data, setData, errors, handleInputChang
               type="email"
               value={data.contact_email}
               onChange={handleInputChange}
-              placeholder="contact@yourcompany.com"
+              placeholder="contact@yourorganization.com"
             />
             {errors.contact_email && (
               <p className="text-red-600 text-sm">{errors.contact_email}</p>

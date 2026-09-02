@@ -511,7 +511,7 @@ export default function Notes() {
                     fields: [
                         { name: 'title', label: t('Title'), type: 'text', required: true, placeholder: t('e.g. Meeting Notes, Project Ideas, Follow-up Tasks') },
                         {
-                            name: 'content',
+                            name: 'notes_content',
                             label: t('Content'),
                             type: 'rich-textbox',
                             required: true,

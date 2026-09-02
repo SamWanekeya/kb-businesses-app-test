@@ -157,7 +157,7 @@ export function StripePaymentForm({ planId, couponCode, billingCycle, stripeKey,
     return (
       <div className="p-4 text-center border rounded-md bg-muted/50">
         <p className="text-sm text-muted-foreground mb-2">{t('Stripe not configured')}</p>
-        <p className="text-xs text-muted-foreground">{t('Please contact the company to configure Stripe payment settings.')}</p>
+        <p className="text-xs text-muted-foreground">{t('Please contact the organization to configure Stripe payment settings.')}</p>
       </div>
     );
   }

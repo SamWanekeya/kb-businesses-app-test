@@ -54,9 +54,9 @@ class NotificationTemplateController extends Controller
 
     public function show(NotificationTemplate $notificationTemplate)
     {
-        // Load company-specific content
+        // Load organization-specific content
         $template = $notificationTemplate->load(['notificationTemplateLangs' => function ($query) {
-            if (auth()->user()->type === 'company') {
+            if (auth()->user()->type === 'organization') {
                 $query->where('created_by', createdBy());
             }
         }]);
@@ -72,7 +72,7 @@ class NotificationTemplateController extends Controller
         if ($template->name === 'Lead Create') {
             $variables = [
                 '{lead_name}' => 'Lead Name',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
         } elseif ($template->name === 'Opportunity create') {
             $variables = [
@@ -80,13 +80,13 @@ class NotificationTemplateController extends Controller
                 '{amount}' => 'Opportunity Amount',
                 '{account_name}' => 'Account Name',
                 '{close_date}' => 'Close Date',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
 
             ];
         } elseif ($template->name === 'Account create') {
             $variables = [
                 '{account_name}' => 'Account Name',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
 
             ];
         } elseif ($template->name === 'Quote Create') {
@@ -95,12 +95,12 @@ class NotificationTemplateController extends Controller
                 '{account_name}' => 'Account Name',
                 '{total_amount}' => 'Total Amount',
                 '{valid_until}' => 'Valid Until Date',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
         } elseif ($template->name === 'Case Create') {
             $variables = [
                 '{case_subject}' => 'Case Subject',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
         } elseif ($template->name === 'Meeting Create') {
             $variables = [
@@ -108,7 +108,7 @@ class NotificationTemplateController extends Controller
                 '{meeting_date}' => 'Meeting Date',
                 '{meeting_time}' => 'Meeting Time',
                 '{attendee_count}' => 'Attendee Count',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
         }
 
@@ -127,7 +127,7 @@ class NotificationTemplateController extends Controller
             $request->validate([
                 'lang' => 'required|string|max:10',
                 'title' => 'required|string|max:255',
-                'content' => 'required|string'
+                'notification_template_content' => 'required|string'
             ]);
 
             $notificationTemplate->notificationTemplateLangs()
@@ -141,7 +141,7 @@ class NotificationTemplateController extends Controller
                     ],
                     [
                         'title' => $request->title,
-                        'content' => $request->content
+                        'notification_template_content' => $request->notification_template_content
                     ]
                 );
 

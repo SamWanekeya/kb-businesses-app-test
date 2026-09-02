@@ -261,7 +261,7 @@ export default function PlanOrdersPage() {
 
     // Define table actions - only visible to super admin
     const getInitials = useInitials();
-    const isSuperAdmin = auth?.user?.type === 'superadmin';
+    const isSuperAdmin = auth?.user?.type === 'super_admin';
     const actions = isSuperAdmin ? [
         {
             label: t('View'),
@@ -303,7 +303,7 @@ export default function PlanOrdersPage() {
             title={t('Plan Orders')}
             url="/plan-orders"
             breadcrumbs={breadcrumbs}
-            description={isSuperAdmin ? t('View and manage all plan orders from companies.') : t('View your plan orders.')}
+            description={isSuperAdmin ? t('View and manage all plan orders from organizations.') : t('View your plan orders.')}
             noPadding
         >
             {/* Search and filters section */}

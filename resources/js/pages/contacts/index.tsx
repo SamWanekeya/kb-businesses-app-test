@@ -109,7 +109,7 @@ export default function Contacts() {
 
     const handleAddNew = () => {
         if (planLimits && !planLimits.can_create) {
-            toast.error(t('Contact limit reached. Your plan allows maximum {{max}} contacts.', { max: planLimits.max_contacts }));
+            toast.error(t('Contact limit reached. Your plan allows maximum {{max}} contacts.', { max: planLimits.maximum_contacts }));
             return;
         }
 
@@ -235,7 +235,7 @@ export default function Contacts() {
     if (hasPermission(permissions, 'create-contacts')) {
         const isDisabled = planLimits && !planLimits.can_create;
         pageActions.push({
-            label: isDisabled ? t('Contact Limit Reached ({{current}}/{{max}})', { current: planLimits?.current_contacts || 0, max: planLimits?.max_contacts || 0 }) : t('Add Contact'),
+            label: isDisabled ? t('Contact Limit Reached ({{current}}/{{max}})', { current: planLimits?.current_contacts || 0, max: planLimits?.maximum_contacts || 0 }) : t('Add Contact'),
             icon: <Plus className="h-4 w-4 mr-2" />,
             variant: isDisabled ? 'outline' : 'default',
             disabled: isDisabled,
@@ -550,7 +550,7 @@ export default function Contacts() {
 
                                     {/* Footer: date left, assigned avatar right */}
                                     <div className="mt-auto pt-3 border-t border-border flex items-center justify-between">
-                                        
+
                                         <div className="flex items-center gap-2 text-xs font-medium text-gray-600 dark:text-gray-400">
                                             <Calendar className="h-3.5 w-3.5 text-gray-500 shrink-0" />
                                             <span>{window.appSettings?.formatDateTime(contact.created_at, false) || new Date(contact.created_at).toLocaleDateString()}</span>
@@ -615,7 +615,7 @@ export default function Contacts() {
                 formConfig={{
                     fields: [
                         { name: 'name', label: t('Contact Name'), type: 'text', required: true, placeholder: t('eg. John Smith') },
-                        { name: 'email', label: t('Email'), type: 'email', required: true, placeholder: t('eg. john@example.com') },
+                        { name: 'email', label: t('Email'), type: 'email', required: true, placeholder: t('eg. john@kakbima.dev') },
                         { name: 'phone', label: t('Phone'), type: 'text', placeholder: t('eg. +1 234 567 8900') },
                         { name: 'position', label: t('Position'), type: 'text', placeholder: t('eg. CEO, Manager, Developer') },
                         {

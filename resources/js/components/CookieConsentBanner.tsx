@@ -43,8 +43,8 @@ export default function CookieConsentBanner() {
         }
 
         if (isDemoMode) {
-            // Only show cookie popup if user is company type and on dashboard
-            if (authUser?.type === 'company' && isDashboard) {
+            // Only show cookie popup if user is organization type and on dashboard
+            if (authUser?.type === 'organization' && isDashboard) {
                 const consent = localStorage.getItem('cookie-consent');
                 if (!consent) {
                     setIsVisible(true);

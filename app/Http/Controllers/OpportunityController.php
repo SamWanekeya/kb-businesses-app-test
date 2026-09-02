@@ -69,7 +69,7 @@ class OpportunityController extends Controller
             $perPage = max(1, min(200, (int) $request->get('per_page', $defaultPerPage)));
             $opportunities = $query->paginate($perPage)->withQueryString();
         }
-        // Get data for dropdowns - filter by assigned_to for non-company users
+        // Get data for dropdowns - filter by assigned_to for non-organization users
         $accountQuery = Account::where('created_by', createdBy());
         $allAccounts = (clone $accountQuery)->get(['id', 'name']);
         $accounts = (clone $accountQuery)->where('status', 'active')->get(['id', 'name']);

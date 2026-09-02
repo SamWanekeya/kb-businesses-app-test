@@ -12,7 +12,7 @@ class Note extends BaseModel
 
     protected $fillable = [
         'title',
-        'content',
+        'note_content',
         'created_by',
     ];
 

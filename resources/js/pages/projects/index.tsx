@@ -156,10 +156,10 @@ export default function Projects() {
     if (hasPermission(permissions, 'create-projects')) {
         const canCreate = !planLimits || planLimits.can_create;
         pageActions.push({
-            label: planLimits && !canCreate ? t('Project Limit Reached ({{current}}/{{max}})', { current: planLimits.current_projects, max: planLimits.max_projects }) : t('Add Project'),
+            label: planLimits && !canCreate ? t('Project Limit Reached ({{current}}/{{max}})', { current: planLimits.current_projects, max: planLimits.maximum_projects }) : t('Add Project'),
             icon: <Plus className="h-4 w-4 mr-2" />,
             variant: canCreate ? 'default' : 'outline',
-            onClick: canCreate ? handleAddNew : () => toast.error(t('Project limit exceeded. Your plan allows maximum {{max}} projects. Please upgrade your plan.', { max: planLimits.max_projects })),
+            onClick: canCreate ? handleAddNew : () => toast.error(t('Project limit exceeded. Your plan allows maximum {{max}} projects. Please upgrade your plan.', { max: planLimits.maximum_projects })),
             disabled: !canCreate
         });
     }
@@ -494,4 +494,4 @@ export default function Projects() {
         </PageTemplate>
     );
 }
- 
+

@@ -24,7 +24,7 @@ class SlackMeetingCreateListener
                 '{meeting_date}' => date('Y-m-d', strtotime($meeting->start_date)) ?? '-',
                 '{meeting_time}' => $meeting->start_time ?? '-',
                 '{attendee_count}' => count($meeting->attendees),
-                '{company_name}' => getCompanyName(),
+                '{organization_name}' => getOrganizationName(),
             ];
 
             try {

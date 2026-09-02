@@ -83,7 +83,7 @@ export default function ForgotPassword({ status, error }: { status?: string; err
                             style={{ color: primaryColor }}
                             tabIndex={3}
                         >
-                            {t("Back to login")}
+                            {t("Back to sign in")}
                         </TextLink>
                     </p>
                 </div>

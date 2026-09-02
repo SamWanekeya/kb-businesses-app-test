@@ -23,7 +23,7 @@ class NoteController extends Controller
         if ($request->has('search') && !empty($request->search)) {
             $query->where(function ($q) use ($request) {
                 $q->where('title', 'like', '%' . $request->search . '%')
-                    ->orWhere('content', 'like', '%' . $request->search . '%');
+                    ->orWhere('note_content', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -93,7 +93,7 @@ class NoteController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'required|nullable|string',
+            'note_content' => 'required|nullable|string',
             'shared_users' => 'nullable|array',
             'shared_users.*' => 'required|exists:users,id',
         ]);
@@ -117,7 +117,7 @@ class NoteController extends Controller
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'required|nullable|string',
+            'note_content' => 'required|nullable|string',
             'shared_users' => 'nullable|array',
             'shared_users.*' => 'required|exists:users,id',
         ]);

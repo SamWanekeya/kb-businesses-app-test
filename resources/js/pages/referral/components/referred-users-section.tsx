@@ -138,7 +138,7 @@ export default function ReferredUsersSection({ referredUsers, usersWithPlans, to
                             <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                             <p className="text-base font-semibold text-muted-foreground mb-2">{t('No referred users yet')}</p>
                             <p className="text-sm text-muted-foreground">
-                                {userType === 'superadmin'
+                                {userType === 'super_admin'
                                     ? t('No users have registered using referral codes yet.')
                                     : t('Share your referral link to start earning commissions.')
                                 }

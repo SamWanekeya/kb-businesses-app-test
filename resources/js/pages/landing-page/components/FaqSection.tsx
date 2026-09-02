@@ -24,7 +24,7 @@ interface FaqSectionProps {
   };
 }
 
-export default function FaqSection({ faqs, settings, sectionData, brandColor = '#3b82f6' }: FaqSectionProps) {
+export default function FaqSection({ faqs, settings, sectionData, brandColor = '#A12582' }: FaqSectionProps) {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const { t } = useTranslation();
 

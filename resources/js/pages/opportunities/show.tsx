@@ -20,7 +20,7 @@ export default function OpportunityShow() {
     const { t } = useTranslation();
     const getInitials = useInitials();
     const { opportunity, streamItems, auth, meetings } = usePage().props as any;
-    const isCompany = auth?.user?.type === 'company';
+    const isOrganization = auth?.user?.type === 'organization';
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isDeleteAllModalOpen, setIsDeleteAllModalOpen] = useState(false);
     const [currentActivity, setCurrentActivity] = useState<any>(null);
@@ -501,7 +501,7 @@ export default function OpportunityShow() {
                                     </div>
                                 </div>
 
-                                
+
                             </>
                         ) : (
                             <div className="flex flex-col items-center justify-center py-16 text-center">

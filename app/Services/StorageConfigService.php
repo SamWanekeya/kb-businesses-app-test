@@ -31,7 +31,7 @@ class StorageConfigService
         $config = self::getStorageConfig();
 
         $allowedTypes = $config['allowed_file_types'] ?? '';
-        $maxSize = ($config['max_file_size_mb'] ?? 2) * 1024; // Convert MB to KB
+        $maxSize = ($config['maximum_file_size_mb'] ?? 2) * 1024; // Convert MB to KB
 
         return [
             'mimes:' . $allowedTypes,
@@ -73,20 +73,20 @@ class StorageConfigService
     private static function loadStorageConfigFromDB(): array
     {
         try {
-            $superadminId = DB::table('users')
-                ->where('type', 'superadmin')
+            $superAdminId = DB::table('users')
+                ->where('type', 'super_admin')
                 ->value('id');
 
-            if (!$superadminId) {
+            if (!$superAdminId) {
                 return self::getDefaultConfig();
             }
 
             $settings = DB::table('settings')
-                ->where('user_id', $superadminId)
+                ->where('user_id', $superAdminId)
                 ->whereIn('key', [
                     'storage_type',
                     'storage_file_types',
-                    'storage_max_upload_size',
+                    'storage_maximum_upload_size',
                     'aws_access_key_id',
                     'aws_secret_access_key',
                     'aws_default_region',
@@ -103,7 +103,7 @@ class StorageConfigService
                 ->pluck('value', 'key')
                 ->toArray();
 
-            \Log::info('Storage settings loaded', ['user_id' => $superadminId, 'settings' => $settings]);
+            \Log::info('Storage settings loaded', ['user_id' => $superAdminId, 'settings' => $settings]);
 
             // If no settings found, return default
             if (empty($settings)) {
@@ -122,7 +122,7 @@ class StorageConfigService
             return [
                 'disk' => $diskName,
                 'allowed_file_types' => $settings['storage_file_types'] ?? 'jpg,png,webp,gif',
-                'max_file_size_mb' => (int)($settings['storage_max_upload_size'] ?? 2),
+                'maximum_file_size_mb' => (int)($settings['storage_maximum_upload_size'] ?? 2),
                 's3' => [
                     'key' => $settings['aws_access_key_id'] ?? '',
                     'secret' => $settings['aws_secret_access_key'] ?? '',
@@ -154,7 +154,7 @@ class StorageConfigService
         return [
             'disk' => 'public',
             'allowed_file_types' => 'jpg,png,webp,gif',
-            'max_file_size_mb' => 2,
+            'maximum_file_size_mb' => 2,
             's3' => [],
             'wasabi' => []
         ];

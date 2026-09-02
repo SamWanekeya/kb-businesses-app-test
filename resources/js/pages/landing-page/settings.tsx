@@ -27,7 +27,7 @@ import { getDisplayUrl } from '@/utils/helper';
 
 
 interface Settings {
-  company_name: string;
+  organization_name: string;
   contact_email: string;
   contact_phone: string;
   contact_address: string;
@@ -71,7 +71,7 @@ export default function LandingPageSettings() {
   };
 
   const { data, setData, post, processing, errors } = useForm<Settings>({
-    company_name: settings.company_name,
+    organization_name: settings.organization_name,
     contact_email: settings.contact_email,
     contact_phone: settings.contact_phone,
     contact_address: settings.contact_address,
@@ -552,7 +552,7 @@ export default function LandingPageSettings() {
                   <p className="text-sm text-gray-500 dark:text-gray-400">
                     {(() => {
                       const sectionDescriptions = {
-                        general: t('Configure basic company information and theme colors'),
+                        general: t('Configure basic organization information and theme colors'),
                         order: t('Drag and drop to reorder sections on your landing page'),
                         advanced: t('SEO settings, custom CSS and JavaScript'),
                         header: t('Customize header appearance and navigation'),
@@ -561,13 +561,13 @@ export default function LandingPageSettings() {
                         features: t('Showcase your product features and benefits'),
                         screenshots: t('Display application screenshots and demos'),
                         whychooseus: t('Highlight reasons why customers should choose you'),
-                        about: t('Tell your company story and mission'),
+                        about: t('Tell your organization story and mission'),
                         team: t('Showcase your team members and their roles'),
                         testimonials: t('Display customer reviews and testimonials'),
                         plans: t('Configure pricing plans and features'),
                         faq: t('Frequently asked questions and answers'),
                         newsletter: t('Newsletter subscription and benefits'),
-                        contact: t('Contact form and company information')
+                        contact: t('Contact form and organization information')
                       };
                       return sectionDescriptions[activeSection] || t('Customize your landing page');
                     })()}
@@ -585,30 +585,30 @@ export default function LandingPageSettings() {
                       <Type className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{t('Company Information')}</h3>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">{t('Basic company details for your landing page')}</p>
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{t('Organization Information')}</h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{t('Basic organization details for your landing page')}</p>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-3">
-                      <Label htmlFor="company_name" className="text-sm font-medium text-gray-900 dark:text-gray-100 flex items-center gap-2" required>
+                      <Label htmlFor="organization_name" className="text-sm font-medium text-gray-900 dark:text-gray-100 flex items-center gap-2" required>
                         <SettingsIcon className="h-4 w-4" style={{ color: brandColor }} />
-                        {t('Company Name')}
+                        {t('Organization Name')}
                       </Label>
                       <Input
-                        id="company_name"
-                        name="company_name"
-                        value={data.company_name}
+                        id="organization_name"
+                        name="organization_name"
+                        value={data.organization_name}
                         onChange={handleInputChange}
-                        placeholder={t('Your Company Name')}
+                        placeholder={t('Your Organization Name')}
                         className="h-10 border-gray-200 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
                         style={{ '--tw-ring-color': brandColor + '33' } as React.CSSProperties}
                       />
-                      {errors.company_name && (
+                      {errors.organization_name && (
                         <div className="flex items-center gap-2 text-red-600 text-sm bg-red-50 p-2 rounded-md border border-red-200">
                           <X className="h-4 w-4" />
-                          {errors.company_name}
+                          {errors.organization_name}
                         </div>
                       )}
                     </div>
@@ -621,7 +621,7 @@ export default function LandingPageSettings() {
                         type="email"
                         value={data.contact_email}
                         onChange={handleInputChange}
-                        placeholder={t('support@company.com')}
+                        placeholder={t('support@organization.com')}
                       />
                     </div>
 
@@ -657,14 +657,14 @@ export default function LandingPageSettings() {
                           <Input
                             id="general_primary_color"
                             type="color"
-                            value={data.config_sections?.theme?.primary_color || '#3b82f6'}
+                            value={data.config_sections?.theme?.primary_color || '#A12582'}
                             onChange={(e) => updateThemeData({ primary_color: e.target.value })}
                             className="w-16 h-10 p-1 cursor-pointer"
                           />
                           <Input
-                            value={data.config_sections?.theme?.primary_color || '#3b82f6'}
+                            value={data.config_sections?.theme?.primary_color || '#A12582'}
                             onChange={(e) => updateThemeData({ primary_color: e.target.value })}
-                            placeholder="#3b82f6"
+                            placeholder="#A12582"
                           />
                         </div>
                       </div>
@@ -945,7 +945,7 @@ export default function LandingPageSettings() {
                           id="hero_secondary_button_text"
                           value={getSectionData('hero').secondary_button_text || ''}
                           onChange={(e) => updateSectionData('hero', { secondary_button_text: e.target.value })}
-                          placeholder={t("Login")}
+                          placeholder={t("Sign in")}
                         />
                       </div>
                     </div>
@@ -1815,7 +1815,7 @@ export default function LandingPageSettings() {
                                 newMembers[index] = { ...newMembers[index], email: e.target.value };
                                 updateSectionData('team', { members: newMembers });
                               }}
-                              placeholder="john@company.com"
+                              placeholder="john@organization.com"
                             />
                           </div>
                         </div>
@@ -2097,16 +2097,16 @@ export default function LandingPageSettings() {
                           </div>
 
                           <div className="space-y-3">
-                            <Label htmlFor={`testimonial_${index}_company`}>{t("Company")}</Label>
+                            <Label htmlFor={`testimonial_${index}_organization`}>{t("Organization")}</Label>
                             <Input
-                              id={`testimonial_${index}_company`}
-                              value={testimonial.company || ''}
+                              id={`testimonial_${index}_organization`}
+                              value={testimonial.organization || ''}
                               onChange={(e) => {
                                 const newTestimonials = [...(getSectionData('testimonials').testimonials || [])];
-                                newTestimonials[index] = { ...newTestimonials[index], company: e.target.value };
+                                newTestimonials[index] = { ...newTestimonials[index], organization: e.target.value };
                                 updateSectionData('testimonials', { testimonials: newTestimonials });
                               }}
-                              placeholder={t("Company Name")}
+                              placeholder={t("Organization Name")}
                             />
                           </div>
 
@@ -2154,7 +2154,7 @@ export default function LandingPageSettings() {
                       className="w-full border-2"
                       style={{ color: brandColor, borderColor: brandColor }}
                       onClick={() => {
-                        const newTestimonials = [...(getSectionData('testimonials').testimonials || []), { name: '', role: '', company: '', content: '', rating: 5 }];
+                        const newTestimonials = [...(getSectionData('testimonials').testimonials || []), { name: '', role: '', organization: '', content: '', rating: 5 }];
                         updateSectionData('testimonials', { testimonials: newTestimonials });
                       }}
                     >
@@ -2628,7 +2628,7 @@ export default function LandingPageSettings() {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900">{t('Contact Information')}</h3>
-                      <p className="text-sm text-gray-500">{t('Company contact details')}</p>
+                      <p className="text-sm text-gray-500">{t('Organization contact details')}</p>
                     </div>
                   </div>
 
@@ -2776,7 +2776,7 @@ export default function LandingPageSettings() {
 
                   <div className="grid grid-cols-1 gap-4">
                     <div className="space-y-3">
-                      <Label htmlFor="footer_description">{t('Company Description')}</Label>
+                      <Label htmlFor="footer_description">{t('Organization Description')}</Label>
                       <Textarea
                         id="footer_description"
                         value={getSectionData('footer').description || ''}
@@ -2920,7 +2920,7 @@ export default function LandingPageSettings() {
                   </div>
 
                   <div className="space-y-6">
-                    {['product', 'company', 'support', 'legal'].map((category) => (
+                    {['product', 'organization', 'support', 'legal'].map((category) => (
                       <div key={category} className="space-y-4">
                         <div className="space-y-3">
                           <Label htmlFor={`${category}_title`}>{t("Section Title")}</Label>
@@ -3025,14 +3025,14 @@ export default function LandingPageSettings() {
                         <Input
                           id="primary_color"
                           type="color"
-                          value={data.config_sections?.theme?.primary_color || '#3b82f6'}
+                          value={data.config_sections?.theme?.primary_color || '#A12582'}
                           onChange={(e) => updateThemeData({ primary_color: e.target.value })}
                           className="w-16 h-10 p-1 cursor-pointer"
                         />
                         <Input
-                          value={data.config_sections?.theme?.primary_color || '#3b82f6'}
+                          value={data.config_sections?.theme?.primary_color || '#A12582'}
                           onChange={(e) => updateThemeData({ primary_color: e.target.value })}
-                          placeholder="#3b82f6"
+                          placeholder="#A12582"
                         />
                       </div>
                     </div>

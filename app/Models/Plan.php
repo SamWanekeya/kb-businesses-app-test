@@ -12,20 +12,20 @@ class Plan extends Model
         'yearly_price',
         'duration',
         'description',
-        'max_users',
-        'max_projects',
-        'max_contacts',
-        'max_accounts',
+        'maximum_users',
+        'maximum_projects',
+        'maximum_contacts',
+        'maximum_accounts',
         'enable_branding',
-        'enable_chatgpt',
+        'enable_kakbima_intelligence',
         'storage_limit',
         'is_trial',
-        'trial_day',
-        'is_plan_enable',
+        'trial_days',
+        'is_plan_enabled',
         'is_default',
         'module',
     ];
-    
+
     protected $casts = [
         'themes' => 'array',
         'module' => 'array',
@@ -33,7 +33,7 @@ class Plan extends Model
         'price' => 'float',
         'yearly_price' => 'float',
     ];
-    
+
     /**
      * Get the default plan
      *
@@ -43,7 +43,7 @@ class Plan extends Model
     {
         return self::where('is_default', true)->first();
     }
-    
+
     /**
      * Check if the plan is the default plan
      *
@@ -53,7 +53,7 @@ class Plan extends Model
     {
         return (bool) $this->is_default;
     }
-    
+
     /**
      * Get the price based on billing cycle
      *
@@ -65,10 +65,10 @@ class Plan extends Model
         if ($cycle === 'yearly' && $this->yearly_price) {
             return $this->yearly_price;
         }
-        
+
         return $this->price;
     }
-    
+
     /**
      * Get users subscribed to this plan
      */
@@ -76,7 +76,7 @@ class Plan extends Model
     {
         return $this->hasMany(User::class);
     }
-    
+
     /**
      * Get plan orders for this plan
      */

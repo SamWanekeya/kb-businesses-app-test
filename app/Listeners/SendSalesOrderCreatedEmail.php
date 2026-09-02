@@ -42,7 +42,7 @@ class SendSalesOrderCreatedEmail
                 '{order_status}' => ucfirst($salesOrder->status ?? 'draft'),
                 '{assigned_user_name}' => $assignedUser->name ?? '-',
                 '{assigned_user_email}' => $assignedUser->email ?? '-',
-                '{company_name}' => getCompanyName(),
+                '{organization_name}' => getOrganizationName(),
             ];
 
             try {
@@ -78,7 +78,7 @@ class SendSalesOrderCreatedEmail
                     !str_contains($errorMessage, '550 5.7.0') &&
                     !str_contains($errorMessage, 'rate limit')
                 ) {
-                    session()->flash('email_error', 'Email template not enabled in company settings.');
+                    session()->flash('email_error', 'Email template not enabled in organization settings.');
                 }
             }
         }

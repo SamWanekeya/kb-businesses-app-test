@@ -19,17 +19,17 @@ interface Plan {
     yearly_price: number | null;
     duration: string;
     description: string | null;
-    max_users: number;
-    max_projects: number;
-    max_contacts: number;
-    max_accounts: number;
+    maximum_users: number;
+    maximum_projects: number;
+    maximum_contacts: number;
+    maximum_accounts: number;
     storage_limit: number;
     enable_branding: string;
-    enable_chatgpt: string;
+    enable_kakbima_intelligence: string;
     module: string[] | null;
     is_trial: string | null;
-    trial_day: number;
-    is_plan_enable: string;
+    trial_days: number;
+    is_plan_enabled: string;
     is_default: boolean;
 }
 
@@ -50,16 +50,16 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
         yearly_price: plan?.yearly_price || '',
         duration: plan?.duration || 'monthly',
         description: plan?.description || '',
-        max_users: plan?.max_users || 0,
-        max_projects: plan?.max_projects || 0,
-        max_contacts: plan?.max_contacts || 0,
-        max_accounts: plan?.max_accounts || 0,
+        maximum_users: plan?.maximum_users || 0,
+        maximum_projects: plan?.maximum_projects || 0,
+        maximum_contacts: plan?.maximum_contacts || 0,
+        maximum_accounts: plan?.maximum_accounts || 0,
         storage_limit: plan?.storage_limit || 0,
         enable_branding: plan?.enable_branding || 'on',
-        enable_chatgpt: plan?.enable_chatgpt || 'off',
+        enable_kakbima_intelligence: plan?.enable_kakbima_intelligence || 'off',
         is_trial: plan?.is_trial || 'off',
-        trial_day: plan?.trial_day || 0,
-        is_plan_enable: plan?.is_plan_enable || 'on',
+        trial_days: plan?.trial_days || 0,
+        is_plan_enabled: plan?.is_plan_enabled || 'on',
         is_default: plan?.is_default || false,
     });
 
@@ -171,59 +171,59 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
 
                         <div className="space-y-4">
                             <div>
-                                <Label htmlFor="max_users" required>{t("Maximum Users")}</Label>
+                                <Label htmlFor="maximum_users" required>{t("Maximum Users")}</Label>
                                 <Input
-                                    id="max_users"
-                                    name="max_users"
+                                    id="maximum_users"
+                                    name="maximum_users"
                                     type="number"
-                                    value={data.max_users}
+                                    value={data.maximum_users}
                                     onChange={handleChange}
                                     placeholder="eg. 10"
-                                    className={errors.max_users ? 'border-red-500' : ''}
+                                    className={errors.maximum_users ? 'border-red-500' : ''}
                                 />
-                                <InputError message={errors.max_users} />
+                                <InputError message={errors.maximum_users} />
                             </div>
 
                             <div>
-                                <Label htmlFor="max_projects" required>{t("Maximum Projects")}</Label>
+                                <Label htmlFor="maximum_projects" required>{t("Maximum Projects")}</Label>
                                 <Input
-                                    id="max_projects"
-                                    name="max_projects"
+                                    id="maximum_projects"
+                                    name="maximum_projects"
                                     type="number"
-                                    value={data.max_projects}
+                                    value={data.maximum_projects}
                                     onChange={handleChange}
                                     placeholder="eg. 20"
-                                    className={errors.max_projects ? 'border-red-500' : ''}
+                                    className={errors.maximum_projects ? 'border-red-500' : ''}
                                 />
-                                <InputError message={errors.max_projects} />
+                                <InputError message={errors.maximum_projects} />
                             </div>
 
                             <div>
-                                <Label htmlFor="max_contacts" required>{t("Maximum Contacts")}</Label>
+                                <Label htmlFor="maximum_contacts" required>{t("Maximum Contacts")}</Label>
                                 <Input
-                                    id="max_contacts"
-                                    name="max_contacts"
+                                    id="maximum_contacts"
+                                    name="maximum_contacts"
                                     type="number"
-                                    value={data.max_contacts}
+                                    value={data.maximum_contacts}
                                     onChange={handleChange}
                                     placeholder="eg. 500"
-                                    className={errors.max_contacts ? 'border-red-500' : ''}
+                                    className={errors.maximum_contacts ? 'border-red-500' : ''}
                                 />
-                                <InputError message={errors.max_contacts} />
+                                <InputError message={errors.maximum_contacts} />
                             </div>
 
                             <div>
-                                <Label htmlFor="max_accounts" required>{t("Maximum Accounts")}</Label>
+                                <Label htmlFor="maximum_accounts" required>{t("Maximum Accounts")}</Label>
                                 <Input
-                                    id="max_accounts"
-                                    name="max_accounts"
+                                    id="maximum_accounts"
+                                    name="maximum_accounts"
                                     type="number"
-                                    value={data.max_accounts}
+                                    value={data.maximum_accounts}
                                     onChange={handleChange}
                                     placeholder="eg. 100"
-                                    className={errors.max_accounts ? 'border-red-500' : ''}
+                                    className={errors.maximum_accounts ? 'border-red-500' : ''}
                                 />
-                                <InputError message={errors.max_accounts} />
+                                <InputError message={errors.maximum_accounts} />
                             </div>
 
                             <div>
@@ -242,17 +242,17 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                             </div>
 
                             <div>
-                                <Label htmlFor="trial_day">{t("Trial Days")}</Label>
+                                <Label htmlFor="trial_days">{t("Trial Days")}</Label>
                                 <Input
-                                    id="trial_day"
-                                    name="trial_day"
+                                    id="trial_days"
+                                    name="trial_days"
                                     type="number"
-                                    value={data.trial_day}
+                                    value={data.trial_days}
                                     onChange={handleChange}
                                     placeholder="eg. 14"
-                                    className={errors.trial_day ? 'border-red-500' : ''}
+                                    className={errors.trial_days ? 'border-red-500' : ''}
                                 />
-                                <InputError message={errors.trial_day} />
+                                <InputError message={errors.trial_days} />
                             </div>
                         </div>
                     </div>
@@ -263,11 +263,11 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                             <div className="flex items-center justify-between">
-                                <Label htmlFor="enable_chatgpt">{t("AI Integration")}</Label>
+                                <Label htmlFor="enable_kakbima_intelligence">{t("Kakbima Intelligence")}</Label>
                                 <Switch
-                                    id="enable_chatgpt"
-                                    checked={data.enable_chatgpt === 'on'}
-                                    onCheckedChange={(checked) => handleSwitchChange('enable_chatgpt', checked)}
+                                    id="enable_kakbima_intelligence"
+                                    checked={data.enable_kakbima_intelligence === 'on'}
+                                    onCheckedChange={(checked) => handleSwitchChange('enable_kakbima_intelligence', checked)}
                                 />
                             </div>
 
@@ -289,11 +289,11 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="flex items-center justify-between">
-                                <Label htmlFor="is_plan_enable">{t("Active")}</Label>
+                                <Label htmlFor="is_plan_enabled">{t("Active")}</Label>
                                 <Switch
-                                    id="is_plan_enable"
-                                    checked={data.is_plan_enable === 'on'}
-                                    onCheckedChange={(checked) => handleSwitchChange('is_plan_enable', checked)}
+                                    id="is_plan_enabled"
+                                    checked={data.is_plan_enabled === 'on'}
+                                    onCheckedChange={(checked) => handleSwitchChange('is_plan_enabled', checked)}
                                 />
                             </div>
 

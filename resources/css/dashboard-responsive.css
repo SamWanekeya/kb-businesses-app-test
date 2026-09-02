@@ -7,34 +7,34 @@
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   /* Mobile: Reduce card padding */
   .dashboard-card {
     padding: 1rem;
   }
-  
+
   /* Mobile: Smaller text sizes */
   .dashboard-metric-title {
     font-size: 1.5rem;
   }
-  
+
   /* Mobile: Stack chart sections */
   .dashboard-charts {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   /* Mobile: Reduce chart height */
   .dashboard-chart {
     height: 200px;
   }
-  
+
   /* Mobile: Stack activity sections */
   .dashboard-activities {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   /* Mobile: Limit activity height */
   .dashboard-activity-list {
     max-height: 250px;
@@ -48,13 +48,13 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
-  
+
   /* Tablet: 2 columns for charts */
   .dashboard-charts {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }
-  
+
   /* Tablet: 2 columns for activities */
   .dashboard-activities {
     grid-template-columns: repeat(2, 1fr);
@@ -69,13 +69,13 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
   }
-  
+
   /* Desktop: 3 columns for charts */
   .dashboard-charts {
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
   }
-  
+
   /* Desktop: 2 columns for activities */
   .dashboard-activities {
     grid-template-columns: repeat(2, 1fr);
@@ -86,13 +86,13 @@
 /* Large Desktop Styles */
 @media (min-width: 1280px) {
   /* Large Desktop: 6 columns for super admin metrics */
-  .superadmin-metrics {
+  .super_admin-metrics {
     grid-template-columns: repeat(6, 1fr);
     gap: 1rem;
   }
-  
-  /* Large Desktop: 6 columns for company metrics */
-  .company-metrics {
+
+  /* Large Desktop: 6 columns for organization metrics */
+  .organization-metrics {
     grid-template-columns: repeat(6, 1fr);
     gap: 1rem;
   }
@@ -216,11 +216,11 @@
   .dashboard-no-print {
     display: none !important;
   }
-  
+
   .dashboard-print-break {
     page-break-after: always;
   }
-  
+
   .dashboard-card {
     break-inside: avoid;
   }

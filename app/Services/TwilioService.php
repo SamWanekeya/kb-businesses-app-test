@@ -42,7 +42,7 @@ class TwilioService
             }
 
             // Replace variables in content
-            $message = $this->replaceVariables($templateLang->content, $variables);
+            $message = $this->replaceVariables($templateLang->template_content, $variables);
 
             // Send SMS
             return $this->sendSMS($toPhone, $message);

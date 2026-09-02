@@ -10,10 +10,10 @@ class WebhookSeeder extends Seeder
 {
     public function run(): void
     {
-        $users = User::where('type', 'company')->take(3)->get();
+        $users = User::where('type', 'organization')->take(3)->get();
 
         if ($users->isEmpty()) {
-            $this->command->warn('No company users found. Please seed users first.');
+            $this->command->warn('No organization users found. Please seed users first.');
             return;
         }
 
@@ -22,43 +22,43 @@ class WebhookSeeder extends Seeder
                 'user_id' => $users->first()->id,
                 'module' => 'New User',
                 'method' => 'POST',
-                'url' => 'https://example.com/webhooks/new-user'
+                'url' => 'https://accounts.kakbima.dev/webhooks/new-user'
             ],
             [
                 'user_id' => $users->first()->id,
                 'module' => 'Lead Assigned',
                 'method' => 'POST',
-                'url' => 'https://example.com/webhooks/lead-assigned'
+                'url' => 'https://accounts.kakbima.dev/webhooks/lead-assigned'
             ],
             [
                 'user_id' => $users->first()->id,
                 'module' => 'Case Created',
                 'method' => 'POST',
-                'url' => 'https://example.com/webhooks/case-created'
+                'url' => 'https://accounts.kakbima.dev/webhooks/case-created'
             ],
             [
                 'user_id' => $users->skip(1)->first()->id,
                 'module' => 'Meeting Invitation',
                 'method' => 'GET',
-                'url' => 'https://company2.com/api/meeting-invitation'
+                'url' => 'https://organization2.com/api/meeting-invitation'
             ],
             [
                 'user_id' => $users->skip(1)->first()->id,
                 'module' => 'Opportunity Created',
                 'method' => 'POST',
-                'url' => 'https://company2.com/webhooks/opportunity-created'
+                'url' => 'https://organization2.com/webhooks/opportunity-created'
             ],
             [
                 'user_id' => $users->last()->id,
                 'module' => 'Quote Created',
                 'method' => 'POST',
-                'url' => 'https://company3.com/webhooks/quote-created'
+                'url' => 'https://organization3.com/webhooks/quote-created'
             ],
             [
                 'user_id' => $users->last()->id,
                 'module' => 'Task Assigned',
                 'method' => 'POST',
-                'url' => 'https://company3.com/webhooks/task-assigned'
+                'url' => 'https://organization3.com/webhooks/task-assigned'
             ]
         ];
 

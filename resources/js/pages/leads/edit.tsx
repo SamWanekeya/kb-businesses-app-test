@@ -24,7 +24,7 @@ export default function LeadEdit() {
         name: lead.name || '',
         email: lead.email || '',
         phone: lead.phone || '',
-        company: lead.company || '',
+        organization: lead.organization || '',
         account_name: lead.account_name || '',
         account_industry_id: String(lead.account_industry_id || ''),
         website: lead.website || '',
@@ -55,7 +55,7 @@ export default function LeadEdit() {
         { name: 'name', label: t('Lead Name') },
         { name: 'email', label: t('Email') },
         { name: 'phone', label: t('Phone') },
-        { name: 'company', label: t('Company') },
+        { name: 'organization', label: t('Organization') },
         { name: 'value', label: t('Lead Value') },
         { name: 'account_industry_id', label: t('Account Industry') },
         { name: 'lead_status_id', label: t('Lead Status') },
@@ -140,7 +140,7 @@ export default function LeadEdit() {
                                         value={data.email}
                                         onChange={(e) => handleInputChange('email', e.target.value)}
                                         className={errors.email ? 'border-red-500' : ''}
-                                        placeholder={t('eg. john@example.com')}
+                                        placeholder={t('eg. john@kakbima.dev')}
                                     />
                                     {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
                                 </div>
@@ -174,17 +174,17 @@ export default function LeadEdit() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="company" className="text-sm font-medium" required>
-                                        {t('Company')}
+                                    <Label htmlFor="organization" className="text-sm font-medium" required>
+                                        {t('Organization')}
                                     </Label>
                                     <Input
-                                        id="company"
-                                        value={data.company}
-                                        onChange={(e) => handleInputChange('company', e.target.value)}
-                                        className={errors.company ? 'border-red-500' : ''}
+                                        id="organization"
+                                        value={data.organization}
+                                        onChange={(e) => handleInputChange('organization', e.target.value)}
+                                        className={errors.organization ? 'border-red-500' : ''}
                                         placeholder={t('eg. Acme Corp')}
                                     />
-                                    {errors.company && <p className="text-xs text-red-500">{errors.company}</p>}
+                                    {errors.organization && <p className="text-xs text-red-500">{errors.organization}</p>}
                                 </div>
 
                                 <div className="space-y-2">

@@ -12,7 +12,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { hasPermission } from '@/utils/authorization';
 
-interface CompanyDashboardData {
+interface OrganizationDashboardData {
     stats: {
         totalEmployees: number;
         totalLeads: number;
@@ -20,7 +20,7 @@ interface CompanyDashboardData {
         totalSales: number;
         totalCustomers: number;
         totalProjects: number;
-        companyRevenue: number;
+        organizationRevenue: number;
         monthlyGrowth: number;
         conversionRate: number;
         storageUsed: number;
@@ -45,7 +45,7 @@ interface CompanyDashboardData {
     };
 }
 
-export default function Dashboard({ dashboardData }: { dashboardData: CompanyDashboardData }) {
+export default function Dashboard({ dashboardData }: { dashboardData: OrganizationDashboardData }) {
     const { t } = useTranslation();
     const { auth } = usePage().props as any;
     const [isRefreshing, setIsRefreshing] = React.useState(false);
@@ -55,7 +55,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: CompanyDas
     const recentActivities = dashboardData?.recentActivities || { leads: [], sales: [], projects: [], customers: [], announcements: [] };
 
     const [mounted, setMounted] = React.useState(false);
-    const [primaryColor, setPrimaryColor] = React.useState('#3b82f6');
+    const [primaryColor, setPrimaryColor] = React.useState('#A12582');
     const [chartYear, setChartYear] = React.useState<number>(() => new Date().getFullYear());
     const [leadYear, setLeadYear] = React.useState<number>(() => new Date().getFullYear());
     const [salesTab, setSalesTab] = React.useState<'sales' | 'revenue'>('sales');
@@ -123,7 +123,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: CompanyDas
     return (
         <PageTemplate
             title={t('Dashboard')}
-            description={t('Overview of company performance, metrics, and recent activities.')}
+            description={t('Overview of organization performance, metrics, and recent activities.')}
             url={route('dashboard')}
             actions={[{
                 label: t('Refresh'),
@@ -315,7 +315,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: CompanyDas
                     </Link>
                     )}
 
-                    {/* Company Revenue */}
+                    {/* Organization Revenue */}
                     {hasPermission(auth?.permissions, 'manage-invoices') && (
                     <div className="group">
                         <Card className="h-full border border-emerald-300 dark:border-emerald-800 shadow-sm bg-emerald-50 dark:bg-emerald-950/40 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
@@ -327,8 +327,8 @@ export default function Dashboard({ dashboardData }: { dashboardData: CompanyDas
                                         <Banknote className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                                     </div>
                                 </div>
-                                <p className="text-emerald-700 dark:text-emerald-400 text-xs mb-1">{t('Company Revenue')}</p>
-                                <p className="text-emerald-900 dark:text-emerald-100 text-2xl font-bold tracking-tight font-mono">{window.appSettings?.formatCurrency(stats.companyRevenue || 0) ?? `$${(stats.companyRevenue || 0).toLocaleString()}`}</p>
+                                <p className="text-emerald-700 dark:text-emerald-400 text-xs mb-1">{t('Organization Revenue')}</p>
+                                <p className="text-emerald-900 dark:text-emerald-100 text-2xl font-bold tracking-tight font-mono">{window.appSettings?.formatCurrency(stats.organizationRevenue || 0) ?? `$${(stats.organizationRevenue || 0).toLocaleString()}`}</p>
                                 <p className="text-emerald-600 dark:text-emerald-500 text-[11px] mt-1.5">{stats?.monthlyGrowth > 0 ? '+' : ''}{stats.monthlyGrowth || 0}% {t('growth')}</p>
                             </CardContent>
                         </Card>
@@ -337,7 +337,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: CompanyDas
 
                 </div>
 
-              
+
 
                 {/* ── Storage Usage ── */}
                 {/* {hasPermission(auth?.permissions, 'manage-dashboard') && (
@@ -423,7 +423,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: CompanyDas
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <p className="text-sm font-semibold truncate leading-tight">{lead.name}</p>
-                                                    <p className="text-xs text-muted-foreground truncate mt-0.5">{lead.email || lead.company || ''}</p>
+                                                    <p className="text-xs text-muted-foreground truncate mt-0.5">{lead.email || lead.organization || ''}</p>
                                                 </div>
                                                 <div className="flex flex-col items-end gap-1 shrink-0">
                                                     <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${getStatusColor(lead.status)}`}>
@@ -444,7 +444,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: CompanyDas
                                     </div>
                                 )}
                             </CardContent>
-                            
+
                         </Card>
                     )}
 
@@ -511,7 +511,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: CompanyDas
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <CardTitle className="text-base font-semibold">{t('Announcements')}</CardTitle>
-                                        <p className="text-xs text-muted-foreground mt-0.5">{t('Latest company announcements')}</p>
+                                        <p className="text-xs text-muted-foreground mt-0.5">{t('Latest organization announcements')}</p>
                                     </div>
                                     {hasPermission(auth?.permissions, 'view-announcements') && (
                                         <Link href={route('announcements.index')} className="flex items-center gap-1 text-xs text-primary font-medium shrink-0 hover:gap-1.5 transition-all duration-150">
@@ -771,8 +771,8 @@ export default function Dashboard({ dashboardData }: { dashboardData: CompanyDas
                                                 labelFormatter={(label, payload) => payload?.[0]?.payload?.month ?? label}
                                             />
                                             <Legend wrapperStyle={{ paddingTop: '20px', fontSize: '12px' }} iconType="rect" />
-                                            <Bar dataKey="leads" fill="#3b82f6" name={t('Total Leads')} radius={[4, 4, 0, 0]} maxBarSize={30} opacity={0.7}>
-                                                <LabelList dataKey="leads" position="top" style={{ fontSize: 11, fill: '#3b82f6', fontWeight: 600 }} formatter={(v: number) => v > 0 ? v : ''} />
+                                            <Bar dataKey="leads" fill="#A12582" name={t('Total Leads')} radius={[4, 4, 0, 0]} maxBarSize={30} opacity={0.7}>
+                                                <LabelList dataKey="leads" position="top" style={{ fontSize: 11, fill: '#A12582', fontWeight: 600 }} formatter={(v: number) => v > 0 ? v : ''} />
                                             </Bar>
                                             <Bar dataKey="conversions" fill="#10b981" name={t('Conversions')} radius={[4, 4, 0, 0]} maxBarSize={30}>
                                                 <LabelList dataKey="conversions" position="top" style={{ fontSize: 11, fill: '#10b981', fontWeight: 600 }} formatter={(v: number) => v > 0 ? v : ''} />

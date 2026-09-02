@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,36 +11,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        if (!IsDemo()) {
+        if (config('app.demo')) {
             $this->call([
-                // Core system seeders
                 PermissionSeeder::class,
                 RoleSeeder::class,
                 PlanSeeder::class,
-
-                //Company and User seeders
                 UserSeeder::class,
+                OrganizationSeeder::class,
                 StaffRoleSeeder::class,
-
-                EmailTemplateSeeder::class,
-                NotificationTemplateSeeder::class,
-
-                LandingPageCustomPageSeeder::class,
-                CurrencySeeder::class,
-            ]);
-        } else {
-            $this->call([
-                // Core system seeders
-                PermissionSeeder::class,
-                RoleSeeder::class,
-                PlanSeeder::class,
-
-                //Company and User seeders
-                UserSeeder::class,
-                CompanySeeder::class,
-                StaffRoleSeeder::class,
-
-                // System configuration seeders
                 CouponSeeder::class,
                 PlanOrderSeeder::class,
                 PlanRequestSeeder::class,
@@ -52,7 +29,6 @@ class DatabaseSeeder extends Seeder
                 LeadSourceSeeder::class,
                 TaskStatusSeeder::class,
                 OpportunityStageSeeder::class,
-
                 // ReferralProgramSeeder::class,
                 TaxSeeder::class,
                 BrandSeeder::class,
@@ -86,22 +62,27 @@ class DatabaseSeeder extends Seeder
                 DocumentFolderSeeder::class,
                 DocumentTypeSeeder::class,
                 DocumentSeeder::class,
-
-                // // Assign specific data to Sarah Johnson
                 SarahJohnsonDataSeeder::class,
-
-                // Removed seeders
                 WebhookSeeder::class,
-
                 EmailTemplateSeeder::class,
                 NotificationTemplateSeeder::class,
                 NoteSeeder::class,
                 AnnouncementSeeder::class,
-
                 ContactMessageSeeder::class,
                 NewsletterSeeder::class,
-
-                LoginHistorySeeder::class,
+                SignInHistorySeeder::class,
+            ]);
+        } else {
+            $this->call([
+                PermissionSeeder::class,
+                RoleSeeder::class,
+                PlanSeeder::class,
+                UserSeeder::class,
+                StaffRoleSeeder::class,
+                EmailTemplateSeeder::class,
+                NotificationTemplateSeeder::class,
+                LandingPageCustomPageSeeder::class,
+                CurrencySeeder::class,
             ]);
         }
     }

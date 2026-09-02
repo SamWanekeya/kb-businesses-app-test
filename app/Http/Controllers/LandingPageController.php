@@ -27,9 +27,9 @@ class LandingPageController extends Controller
 
         $landingSettings = LandingPageSetting::getSettings();
 
-        $plans = Plan::where('is_plan_enable', 'on')->get()->map(function ($plan) {
+        $plans = Plan::where('is_plan_enabled', 'on')->get()->map(function ($plan) {
             $features = [];
-            if ($plan->enable_chatgpt === 'on') $features[] = 'AI Integration';
+            if ($plan->enable_kakbima_intelligence === 'on') $features[] = 'Kakbima Intelligence';
 
 
             return [
@@ -41,13 +41,13 @@ class LandingPageController extends Controller
                 'description' => $plan->description,
                 'features' => array_slice($features, 0, 6), // Limit to 6 features
                 'stats' => [
-                    'users' => $plan->max_users == -1 ? 'Unlimited' : $plan->max_users,
-                    'projects' => $plan->max_projects == -1 ? 'Unlimited' : $plan->max_projects,
-                    'contacts' => $plan->max_contacts == -1 ? 'Unlimited' : $plan->max_contacts,
-                    'accounts' => $plan->max_accounts == -1 ? 'Unlimited' : $plan->max_accounts,
+                    'users' => $plan->maximum_users == -1 ? 'Unlimited' : $plan->maximum_users,
+                    'projects' => $plan->maximum_projects == -1 ? 'Unlimited' : $plan->maximum_projects,
+                    'contacts' => $plan->maximum_contacts == -1 ? 'Unlimited' : $plan->maximum_contacts,
+                    'accounts' => $plan->maximum_accounts == -1 ? 'Unlimited' : $plan->maximum_accounts,
                     'storage' => $plan->storage_limit . ' GB'
                 ],
-                'is_plan_enable' => $plan->is_plan_enable,
+                'is_plan_enabled' => $plan->is_plan_enabled,
                 'is_popular' => false // Will be set based on subscriber count
             ];
         });
@@ -128,7 +128,7 @@ class LandingPageController extends Controller
     public function updateSettings(Request $request)
     {
         $request->validate([
-            'company_name' => 'required|string|max:255',
+            'organization_name' => 'required|string|max:255',
             'contact_email' => 'required|email|max:255',
             'contact_phone' => 'required|string|max:255',
             'contact_address' => 'required|string|max:255',

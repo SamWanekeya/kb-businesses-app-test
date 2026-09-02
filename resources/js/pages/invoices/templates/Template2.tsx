@@ -187,7 +187,7 @@ export default function Template2({ invoice, items, taxesData, settings, color, 
                                     </p>
                                 </td>
                                 <td className="text-right" style={{ verticalAlign: 'top', textAlign: 'right' }}>
-                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{t('Company')}:</strong>
+                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{t('Organization')}:</strong>
                                     <p style={{ margin: 0, lineHeight: '1.5' }}>
                                         {formatValue(invoice.creator?.name)}<br />
                                         {formatValue(invoice.creator?.email)}<br />

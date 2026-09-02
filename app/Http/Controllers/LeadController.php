@@ -26,7 +26,7 @@ class LeadController extends Controller
                 $q->where('name', 'like', '%' . $request->search . '%')
                     ->orWhere('email', 'like', '%' . $request->search . '%')
                     ->orWhere('phone', 'like', '%' . $request->search . '%')
-                    ->orWhere('company', 'like', '%' . $request->search . '%');
+                    ->orWhere('organization', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -149,7 +149,7 @@ class LeadController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:leads,email,NULL,id,created_by,' . createdBy(),
             'phone' => 'nullable|string|max:255',
-            'company' => 'nullable|string|max:255',
+            'organization' => 'nullable|string|max:255',
             'account_name' => 'nullable|string|max:255',
             'account_industry_id' => 'required|exists:account_industries,id',
             'website' => 'nullable|string|max:255',
@@ -295,7 +295,7 @@ class LeadController extends Controller
                     'name' => 'required|string|max:255',
                     'email' => 'required|email|max:255|unique:leads,email,' . $leadId . ',id,created_by,' . createdBy(),
                     'phone' => 'nullable|string|max:255',
-                    'company' => 'nullable|string|max:255',
+                    'organization' => 'nullable|string|max:255',
                     'account_name' => 'nullable|string|max:255',
                     'account_industry_id' => 'required|exists:account_industries,id',
                     'website' => 'nullable|string|max:255',
@@ -428,7 +428,7 @@ class LeadController extends Controller
                 $q->where('name', 'like', '%' . $request->search . '%')
                     ->orWhere('email', 'like', '%' . $request->search . '%')
                     ->orWhere('phone', 'like', '%' . $request->search . '%')
-                    ->orWhere('company', 'like', '%' . $request->search . '%');
+                    ->orWhere('organization', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -490,7 +490,7 @@ class LeadController extends Controller
         ]);
 
         $account = \App\Models\Account::create([
-            'name'                 => $lead->company ?: $lead->name,
+            'name'                 => $lead->organization ?: $lead->name,
             'email'                => $lead->email,
             'phone'                => $lead->phone,
             'website'              => $validated['website'] ?? $lead->website,

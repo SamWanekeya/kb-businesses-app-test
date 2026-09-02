@@ -16,10 +16,10 @@ class DocumentSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $companyUsers = User::where('type', 'company')->get();
-        
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        $organizationUsers = User::where('type', 'organization')->get();
+
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
@@ -40,7 +40,7 @@ class DocumentSeeder extends Seeder
             'Business Continuity Plan',
             'Customer Feedback Analysis'
         ];
-        
+
         $documentDescriptions = [
             'Standard sales agreement template for new client contracts',
             'Detailed product specifications and technical requirements',
@@ -59,12 +59,12 @@ class DocumentSeeder extends Seeder
             'Customer feedback analysis and improvement recommendations'
         ];
 
-        foreach ($companyUsers as $company) {
-            $accounts = Account::where('created_by', $company->id)->get();
-            $folders = DocumentFolder::where('created_by', $company->id)->get();
+        foreach ($organizationUsers as $organization) {
+            $accounts = Account::where('created_by', $organization->id)->get();
+            $folders = DocumentFolder::where('created_by', $organization->id)->get();
             $types = DocumentType::all();
-            $opportunities = Opportunity::where('created_by', $company->id)->get();
-            $staffUsers = User::where('created_by', $company->id)->get();
+            $opportunities = Opportunity::where('created_by', $organization->id)->get();
+            $staffUsers = User::where('created_by', $organization->id)->get();
 
             for ($i = 0; $i < 15; $i++) {
                 Document::create([
@@ -77,13 +77,13 @@ class DocumentSeeder extends Seeder
                     'publish_date' => $faker->dateTimeBetween('-2 months', 'now'),
                     'expiration_date' => $faker->boolean(70) ? $faker->dateTimeBetween('now', '+6 months') : null,
                     'description' => $documentDescriptions[$i],
-                    'created_by' => $company->id,
+                    'created_by' => $organization->id,
                     'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
                     'created_at' => $faker->dateTimeBetween('-1 month', 'now'),
                 ]);
             }
         }
-        
-        $this->command->info('Documents created for all company users!');
+
+        $this->command->info('Documents created for all organization users!');
     }
 }

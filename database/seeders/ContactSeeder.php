@@ -13,19 +13,19 @@ class ContactSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $companyUsers = User::where('type', 'company')->get();
-        
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        $organizationUsers = User::where('type', 'organization')->get();
+
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
         $positions = ['CEO', 'CTO', 'VP Sales', 'IT Director', 'Operations Manager', 'Marketing Director', 'Procurement Manager'];
 
-        foreach ($companyUsers as $company) {
-            $accounts = Account::where('created_by', $company->id)->get();
-            $staffUsers = User::where('created_by', $company->id)->get();
-            
+        foreach ($organizationUsers as $organization) {
+            $accounts = Account::where('created_by', $organization->id)->get();
+            $staffUsers = User::where('created_by', $organization->id)->get();
+
             if ($accounts->isEmpty()) {
                 continue;
             }
@@ -34,22 +34,22 @@ class ContactSeeder extends Seeder
                 $account = $accounts->random();
                 $firstName = $faker->firstName;
                 $lastName = $faker->lastName;
-                
+
                 Contact::create([
                     'name' => $firstName . ' ' . $lastName,
-                    'email' => strtolower($firstName . '.' . $lastName . '.' . $company->id) . '@' . $faker->domainName,
+                    'email' => strtolower($firstName . '.' . $lastName . '.' . $organization->id) . '@' . $faker->domainName,
                     'phone' => $faker->phoneNumber,
                     'position' => $faker->randomElement($positions),
                     'address' => $faker->address,
                     'status' => $faker->randomElement(['active', 'active', 'active', 'inactive']), // 75% active
                     'account_id' => $account->id,
-                    'created_by' => $company->id,
+                    'created_by' => $organization->id,
                     'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
                     'created_at' => $faker->dateTimeBetween('-6 months', 'now'),
                 ]);
             }
         }
-        
-        $this->command->info('Contacts created for all company users!');
+
+        $this->command->info('Contacts created for all organization users!');
     }
 }

@@ -57,9 +57,9 @@ class InvoiceIyzipayPaymentController extends Controller
                 return response()->json(['error' => $validation['message']], 400);
             }
 
-            $companyId = $invoice->created_by;
-            $company = User::findOrFail($companyId);
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $organization = User::findOrFail($organizationId);
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['iyzipay_secret_key']) || !isset($settings['payment_settings']['iyzipay_public_key'])) {
                 return response()->json(['error' => __('Iyzipay not configured')], 400);
@@ -83,16 +83,16 @@ class InvoiceIyzipayPaymentController extends Controller
 
             // Set buyer information
             $buyer = new Buyer();
-            $buyer->setId($company->id);
-            $buyer->setName($company->name ?? 'Customer');
+            $buyer->setId($organization->id);
+            $buyer->setName($organization->name ?? 'Customer');
             $buyer->setSurname('User');
             $buyer->setGsmNumber('+1234567890');
-            $buyer->setEmail($company->email);
+            $buyer->setEmail($organization->email);
             $buyer->setIdentityNumber('11111111111');
             $buyer->setLastLoginDate(now()->format('Y-m-d H:i:s'));
-            $buyer->setRegistrationDate($company->created_at->format('Y-m-d H:i:s'));
+            $buyer->setRegistrationDate($organization->created_at->format('Y-m-d H:i:s'));
             $buyer->setRegistrationAddress($invoice->billing_address ?? '123 Main Street');
-            $buyer->setIp($request->ip());
+            $buyer->setIp($request->ip_address());
             $buyer->setCity($invoice->billing_city ?? 'New York');
             $buyer->setCountry($invoice->billing_country ?? 'United States');
             $buyer->setZipCode($invoice->billing_postal_code ?? '10001');
@@ -100,7 +100,7 @@ class InvoiceIyzipayPaymentController extends Controller
 
             // Set shipping address
             $shippingAddress = new Address();
-            $shippingAddress->setContactName($company->name ?? 'Customer User');
+            $shippingAddress->setContactName($organization->name ?? 'Customer User');
             $shippingAddress->setCity($invoice->billing_city ?? 'New York');
             $shippingAddress->setCountry($invoice->billing_country ?? 'United States');
             $shippingAddress->setAddress($invoice->billing_address ?? '123 Main Street');
@@ -109,7 +109,7 @@ class InvoiceIyzipayPaymentController extends Controller
 
             // Set billing address
             $billingAddress = new Address();
-            $billingAddress->setContactName($company->name ?? 'Customer User');
+            $billingAddress->setContactName($organization->name ?? 'Customer User');
             $billingAddress->setCity($invoice->billing_city ?? 'New York');
             $billingAddress->setCountry($invoice->billing_country ?? 'United States');
             $billingAddress->setAddress($invoice->billing_address ?? '123 Main Street');
@@ -162,8 +162,8 @@ class InvoiceIyzipayPaymentController extends Controller
             }
 
             $invoice = Invoice::findOrFail($invoiceId);
-            $companyId = $invoice->created_by;
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             // Retrieve payment result from Iyzipay
             $paymentResult = $this->retrieveIyzipayPayment($token, $settings['payment_settings']);
@@ -214,11 +214,11 @@ class InvoiceIyzipayPaymentController extends Controller
         }
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 }

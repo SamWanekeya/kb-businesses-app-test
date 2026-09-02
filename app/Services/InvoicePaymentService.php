@@ -124,9 +124,9 @@ class InvoicePaymentService
     /**
      * Validate payment method configuration
      */
-    public function validatePaymentMethodConfig($paymentMethod, $companyId)
+    public function validatePaymentMethodConfig($paymentMethod, $organizationId)
     {
-        $settings = \App\Models\PaymentSetting::getUserSettings($companyId);
+        $settings = \App\Models\PaymentSetting::getUserSettings($organizationId);
         switch ($paymentMethod) {
             case 'stripe':
                 return isset($settings['stripe_secret']) && isset($settings['stripe_key'])

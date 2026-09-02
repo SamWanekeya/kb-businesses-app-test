@@ -10,10 +10,10 @@ class TaskStatusSeeder extends Seeder
 {
     public function run(): void
     {
-        $companyUsers = User::where('type', 'company')->get();
+        $organizationUsers = User::where('type', 'organization')->get();
 
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
@@ -24,18 +24,18 @@ class TaskStatusSeeder extends Seeder
             ['name' => 'Done', 'color' => '#10b77f', 'description' => 'Completed tasks'],
         ];
 
-        foreach ($companyUsers as $company) {
+        foreach ($organizationUsers as $organization) {
             foreach ($taskStatusesData as $taskStatusData) {
                 TaskStatus::create([
                     'name' => $taskStatusData['name'],
                     'color' => $taskStatusData['color'],
                     'description' => $taskStatusData['description'],
                     'status' => 'active',
-                    'created_by' => $company->id,
+                    'created_by' => $organization->id,
                 ]);
             }
         }
 
-        $this->command->info('Task statuses created for all company users!');
+        $this->command->info('Task statuses created for all organization users!');
     }
 }

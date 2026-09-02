@@ -351,10 +351,10 @@ export default function MediaLibraryDemo() {
     const canCreate = !planLimits || planLimits.can_create;
     const pageActions = hasPermission(permissions, 'create-media') ? [
         {
-            label: planLimits && !canCreate ? t('Storage Limit Reached ({{current}}/{{max}})', { current: formatFileSize(planLimits.current_storage), max: formatFileSize(planLimits.max_storage) }) : t('Upload Media'),
+            label: planLimits && !canCreate ? t('Storage Limit Reached ({{current}}/{{max}})', { current: formatFileSize(planLimits.current_storage), max: formatFileSize(planLimits.maximum_storage) }) : t('Upload Media'),
             icon: <Plus className="h-4 w-4" />,
             variant: canCreate ? 'default' as const : 'outline' as const,
-            onClick: canCreate ? () => setIsUploadModalOpen(true) : () => toast.error(t('Storage limit exceeded. Your plan allows maximum {{max}} storage. Please upgrade your plan.', { max: formatFileSize(planLimits.max_storage) })),
+            onClick: canCreate ? () => setIsUploadModalOpen(true) : () => toast.error(t('Storage limit exceeded. Your plan allows maximum {{max}} storage. Please upgrade your plan.', { max: formatFileSize(planLimits.maximum_storage) })),
             disabled: !canCreate
         },
     ] : [];

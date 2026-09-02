@@ -19,7 +19,7 @@ class UserController extends BaseController
     {
         $authUser     = Auth::user();
         $authUserRole = $authUser->roles->first()?->name;
-        // Allow superadmin, admin, product-manager, contact-manager, viewer
+        // Allow super_admin, admin, product-manager, contact-manager, viewer
         if (!$authUser->hasPermissionTo('manage-users')) {
             abort(403, 'Unauthorized Access Prevented');
         }
@@ -66,24 +66,24 @@ class UserController extends BaseController
         $users = $userQuery->paginate($perPage)->withQueryString();
 
         # Roles listing - Get roles based on user type
-        if ($authUser->type === 'company') {
+        if ($authUser->type === 'organization') {
             $roles = Role::where('created_by', $authUser->id)->get();
-        } elseif ($authUser->type === 'superadmin') {
+        } elseif ($authUser->type === 'super_admin') {
             $roles = Role::get();
         } else {
-            // Staff users see roles from their company
+            // Staff users see roles from their organization
             $roles = Role::where('created_by', $authUser->created_by)->get();
         }
 
-        // Get plan limits for company users and staff users
+        // Get plan limits for organization users and staff users
         $planLimits = null;
-        $companyUser = User::find(createdBy());
-        if ($companyUser && $companyUser->plan) {
-            $currentUserCount = User::where('created_by', $companyUser->id)->count();
+        $organizationUser = User::find(createdBy());
+        if ($organizationUser && $organizationUser->plan) {
+            $currentUserCount = User::where('created_by', $organizationUser->id)->count();
             $planLimits = [
                 'current_users' => $currentUserCount,
-                'max_users' => $companyUser->plan->max_users,
-                'can_create' => $currentUserCount < $companyUser->plan->max_users
+                'maximum_users' => $organizationUser->plan->maximum_users,
+                'can_create' => $currentUserCount < $organizationUser->plan->maximum_users
             ];
         }
 
@@ -100,31 +100,31 @@ class UserController extends BaseController
      */
     public function store(UserRequest $request)
     {
-        // Set user language same as creator (company)
+        // Set user language same as creator (organization)
         $authUser = Auth::user();
-        // Check plan limits for company users
-        if ($authUser->type === 'company' && $authUser->plan) {
+        // Check plan limits for organization users
+        if ($authUser->type === 'organization' && $authUser->plan) {
             $currentUserCount = User::where('created_by', $authUser->id)->count();
-            $maxUsers = $authUser->plan->max_users;
+            $maxUsers = $authUser->plan->maximum_users;
 
             if ($currentUserCount >= $maxUsers) {
                 return redirect()->back()->with('error', __('User limit exceeded. Your plan allows maximum :max users. Please upgrade your plan.', ['max' => $maxUsers]));
             }
         }
-        // Check plan limits for staff users (created by company users)
-        elseif ($authUser->type !== 'superadmin' && $authUser->created_by) {
-            $companyUser = User::find($authUser->created_by);
-            if ($companyUser && $companyUser->type === 'company' && $companyUser->plan) {
-                $currentUserCount = User::where('created_by', $companyUser->id)->count();
-                $maxUsers = $companyUser->plan->max_users;
+        // Check plan limits for staff users (created by organization users)
+        elseif ($authUser->type !== 'super_admin' && $authUser->created_by) {
+            $organizationUser = User::find($authUser->created_by);
+            if ($organizationUser && $organizationUser->type === 'organization' && $organizationUser->plan) {
+                $currentUserCount = User::where('created_by', $organizationUser->id)->count();
+                $maxUsers = $organizationUser->plan->maximum_users;
 
                 if ($currentUserCount >= $maxUsers) {
-                    return redirect()->back()->with('error', __('User limit exceeded. Your company plan allows maximum :max users. Please contact your administrator.', ['max' => $maxUsers]));
+                    return redirect()->back()->with('error', __('User limit exceeded. Your organization plan allows maximum :max users. Please contact your administrator.', ['max' => $maxUsers]));
                 }
             }
         }
 
-        if (!in_array(auth()->user()->type, ['superadmin', 'company'])) {
+        if (!in_array(auth()->user()->type, ['super_admin', 'organization'])) {
             $created_by = auth()->user()->created_by;
         } else {
             $created_by = auth()->id();
@@ -172,7 +172,7 @@ class UserController extends BaseController
 
             // find and syncing role
             if ($request->roles) {
-                if (!in_array(auth()->user()->type, ['superadmin', 'company'])) {
+                if (!in_array(auth()->user()->type, ['super_admin', 'organization'])) {
                     $created_by = auth()->user()->created_by;
                 } else {
                     $created_by = auth()->id();
@@ -257,19 +257,19 @@ class UserController extends BaseController
     {
         $authUser = Auth::user();
 
-        if ($authUser->type === 'superadmin') {
-            // For superadmin: show superadmin logs and company type logs created by superadmin
-            $loginHistoriesQuery = \App\Models\LoginHistory::whereHas('user', function ($q) {
-                $q->where('type', 'superadmin')
+        if ($authUser->type === 'super_admin') {
+            // For super_admin: show super_admin logs and organization type logs created by super_admin
+            $ipAddressHistoriesQuery = \App\Models\SignInHistory::whereHas('user', function ($q) {
+                $q->where('type', 'super_admin')
                     ->orWhere(function ($subQ) {
-                        $subQ->where('type', 'company');
+                        $subQ->where('type', 'organization');
                     });
             })
                 ->with('user')
                 ->orderBy('created_at', 'desc');
         } else {
             // For other users: show logs created by current user
-            $loginHistoriesQuery = \App\Models\LoginHistory::where('created_by', createdBy())
+            $ipAddressHistoriesQuery = \App\Models\SignInHistory::where('created_by', createdBy())
                 ->with('user')
                 ->orderBy('created_at', 'desc');
         }
@@ -277,8 +277,8 @@ class UserController extends BaseController
         // Handle search
         if ($request->has('search') && !empty($request->search)) {
             $search = $request->search;
-            $loginHistoriesQuery->where(function ($q) use ($search) {
-                $q->where('ip', 'like', "%{$search}%")
+            $ipAddressHistoriesQuery->where(function ($q) use ($search) {
+                $q->where('ip_address', 'like', "%{$search}%")
                     ->orWhereHas('user', function ($userQuery) use ($search) {
                         $userQuery->where('name', 'like', "%{$search}%")
                             ->orWhere('email', 'like', "%{$search}%");
@@ -288,10 +288,10 @@ class UserController extends BaseController
 
         // Handle pagination
         $perPage = $request->get('per_page', 10);
-        $loginHistories = $loginHistoriesQuery->paginate((int)$perPage)->withQueryString();
+        $ipAddressHistories = $ipAddressHistoriesQuery->paginate((int)$perPage)->withQueryString();
 
         return Inertia::render('users/all-logs', [
-            'loginHistories' => $loginHistories,
+            'signInHistories' => $ipAddressHistories,
             'filters' => [
                 'search' => $request->search ?? '',
                 'per_page' => $perPage,

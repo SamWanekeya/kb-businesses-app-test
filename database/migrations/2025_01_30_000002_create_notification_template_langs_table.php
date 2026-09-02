@@ -13,12 +13,11 @@ return new class extends Migration
             $table->unsignedBigInteger('parent_id');
             $table->string('lang', 10);
             $table->string('title');
-            $table->text('content');
-            $table->unsignedBigInteger('created_by');
+            $table->text('notification_template_content');
+            $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
 
-            $table->foreign('parent_id')->references('id')->on('notification_templates')->onDelete('cascade');
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('parent_id')->references('id')->on('notification_templates')->cascadeOnDelete();
             $table->unique(['parent_id', 'lang', 'created_by']);
         });
     }

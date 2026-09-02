@@ -37,7 +37,7 @@ class LeadImport implements ToModel, WithHeadingRow, WithEvents
             'name' => $row['name'] ?? '',
             'email' => $row['email'] ?? '',
             'phone' => $row['phone'] ?? '',
-            'company' => $row['company'] ?? '',
+            'organization' => $row['organization'] ?? '',
             'account_name' => $row['account_name'] ?? '',
             'website' => $row['website'] ?? '',
             'position' => $row['position'] ?? '',

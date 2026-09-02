@@ -813,7 +813,7 @@ export function InvoicePaymentProcessor({
                             {t('No payment methods configured')}
                         </p>
                         <p className="text-xs text-muted-foreground">
-                            {t('Please contact the company to set up payment methods.')}
+                            {t('Please contact the organization to set up payment methods.')}
                         </p>
                     </div>
                 ) : (

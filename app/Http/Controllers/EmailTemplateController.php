@@ -55,7 +55,7 @@ class EmailTemplateController extends Controller
                 '{user_email}' => 'User Email',
                 '{user_password}' => 'User Password',
                 '{user_type}' => 'User Type',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
         } elseif ($template->name === 'Lead Assigned') {
             $variables = [
@@ -63,8 +63,8 @@ class EmailTemplateController extends Controller
                 '{assigned_user_name}' => 'Assign User',
                 '{lead_email}' => 'Lead Email',
                 '{lead_phone}' => 'Lead Phone',
-                '{lead_company}' => 'Lead Company',
-                '{company_name}' => 'Company Name'
+                '{lead_organization}' => 'Lead Organization',
+                '{organization_name}' => 'Organization Name'
             ];
         } elseif ($template->name === 'Lead Moved') {
             $variables = [
@@ -74,8 +74,8 @@ class EmailTemplateController extends Controller
                 '{new_lead_stage}' => 'New Status',
                 '{lead_email}' => 'Lead Email',
                 '{lead_phone}' => 'Lead Phone',
-                '{lead_company}' => 'Lead Company',
-                '{company_name}' => 'Company Name'
+                '{lead_organization}' => 'Lead Organization',
+                '{organization_name}' => 'Organization Name'
             ];
         } elseif ($template->name === 'Quote Created') {
             $variables = [
@@ -88,7 +88,7 @@ class EmailTemplateController extends Controller
                 '{quote_status}' => 'Quote Status',
                 '{assigned_user_name}' => 'Assigned User Name',
                 '{assigned_user_email}' => 'Assigned User Email',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
         } elseif ($template->name === 'Quote Status Changed') {
             $variables = [
@@ -102,7 +102,7 @@ class EmailTemplateController extends Controller
                 '{new_quote_status}' => 'New Quote Status',
                 '{assigned_user_name}' => 'Assigned User Name',
                 '{assigned_user_email}' => 'Assigned User Email',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
         } elseif ($template->name === 'Task Assigned') {
             $variables = [
@@ -116,7 +116,7 @@ class EmailTemplateController extends Controller
                 '{task_description}' => 'Task Description',
                 '{creator_name}' => 'Creator Name',
                 '{creator_email}' => 'Creator Email',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
         } elseif ($template->name === 'Meeting Invitation') {
             $variables = [
@@ -127,7 +127,7 @@ class EmailTemplateController extends Controller
                 '{meeting_end_time}' => 'Meeting End Time',
                 '{meeting_location}' => 'Meeting Location',
                 '{meeting_description}' => 'Meeting Description',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
         } elseif ($template->name === 'Case Created') {
             $variables = [
@@ -139,7 +139,7 @@ class EmailTemplateController extends Controller
                 '{case_description}' => 'Case Description',
                 '{assigned_user_name}' => 'Assigned User Name',
                 '{assigned_user_email}' => 'Assigned User Email',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
         } elseif ($template->name === 'Opportunity Created') {
             $variables = [
@@ -152,7 +152,7 @@ class EmailTemplateController extends Controller
                 '{opportunity_description}' => 'Opportunity Description',
                 '{assigned_user_name}' => 'Assigned User Name',
                 '{assigned_user_email}' => 'Assigned User Email',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
         } elseif ($template->name === 'Opportunity Status Changed') {
             $variables = [
@@ -166,7 +166,7 @@ class EmailTemplateController extends Controller
                 '{opportunity_description}' => 'Opportunity Description',
                 '{assigned_user_name}' => 'Assigned User Name',
                 '{assigned_user_email}' => 'Assigned User Email',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
         } elseif ($template->name === 'Invoice Payment Reminder') {
             $variables = [
@@ -177,7 +177,7 @@ class EmailTemplateController extends Controller
                 '{invoice_total}' => 'Invoice Total Amount',
                 '{invoice_amount_due}' => 'Invoice Amount Due',
                 '{invoice_payment_link}' => 'Invoice Payment Link',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
         } elseif ($template->name === 'Invoice Created') {
             $variables = [
@@ -191,7 +191,7 @@ class EmailTemplateController extends Controller
                 '{invoice_status}' => 'Invoice Status',
                 '{assigned_user_name}' => 'Assigned User Name',
                 '{assigned_user_email}' => 'Assigned User Email',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
         } elseif ($template->name === 'Purchase Order Created') {
             $variables = [
@@ -205,7 +205,7 @@ class EmailTemplateController extends Controller
                 '{purchase_order_status}' => 'Purchase Order Status',
                 '{assigned_user_name}' => 'Assigned User Name',
                 '{assigned_user_email}' => 'Assigned User Email',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
         } elseif ($template->name === 'Receipt Order Created') {
             $variables = [
@@ -219,7 +219,7 @@ class EmailTemplateController extends Controller
                 '{receipt_status}' => 'Receipt Status',
                 '{assigned_user_name}' => 'Assigned User Name',
                 '{assigned_user_email}' => 'Assigned User Email',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
         } elseif ($template->name === 'Return Order Created') {
             $variables = [
@@ -234,7 +234,7 @@ class EmailTemplateController extends Controller
                 '{tracking_number}' => 'Tracking Number',
                 '{assigned_user_name}' => 'Assigned User Name',
                 '{assigned_user_email}' => 'Assigned User Email',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
         } elseif ($template->name === 'Sales Order Created') {
             $variables = [
@@ -248,7 +248,7 @@ class EmailTemplateController extends Controller
                 '{order_status}' => 'Order Status',
                 '{assigned_user_name}' => 'Assigned User Name',
                 '{assigned_user_email}' => 'Assigned User Email',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
         } elseif ($template->name === 'Delivery Order Created') {
             $variables = [
@@ -262,7 +262,7 @@ class EmailTemplateController extends Controller
                 '{tracking_number}' => 'Tracking Number',
                 '{assigned_user_name}' => 'Assigned User Name',
                 '{assigned_user_email}' => 'Assigned User Email',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
         }
 
@@ -296,14 +296,14 @@ class EmailTemplateController extends Controller
             $request->validate([
                 'lang' => 'required|string|max:10',
                 'subject' => 'required|string|max:255',
-                'content' => 'required|string'
+                'email_template_content' => 'required|string'
             ]);
 
             $emailTemplate->emailTemplateLangs()->updateOrCreate(
                 ['lang' => $request->lang],
                 [
                     'subject' => $request->subject,
-                    'content' => $request->content,
+                    'email_template_content' => $request->email_template_content,
                 ]
             );
 

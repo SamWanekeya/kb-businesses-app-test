@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class LandingPageSetting extends Model
 {
     protected $fillable = [
-        'company_name',
+        'organization_name',
         'contact_email',
         'contact_phone',
         'contact_address',
@@ -15,7 +15,7 @@ class LandingPageSetting extends Model
     ];
 
     protected $attributes = [
-        'company_name' => 'Kakbima',
+        'organization_name' => 'Kakbima',
         'contact_email' => 'support@sales.com',
         'contact_phone' => '+1 (555) 123-4567',
         'contact_address' => 'San Francisco, CA'
@@ -46,7 +46,7 @@ class LandingPageSetting extends Model
                         'subtitle' => 'Manage leads, opportunities, quotes, orders, invoices, projects, and reports — all from one platform.',
                         'announcement_text' => '🚀 Smart Reports & Advanced Analytics',
                         'primary_button_text' => 'Start Free Trial',
-                        'secondary_button_text' => 'Login',
+                        'secondary_button_text' => 'Sign in',
                         'image' => '',
                         'background_color' => '#f8fafc',
                         'text_color' => '#1f2937',
@@ -241,9 +241,9 @@ class LandingPageSetting extends Model
                             ['value' => '10K+', 'label' => 'Happy Businesses', 'color' => 'green']
                         ],
                         'testimonials' => [
-                            ['name' => 'Alex Thompson', 'role' => 'Sales Director', 'company' => 'TechCorp Inc.', 'content' => 'This platform has transformed how we manage leads and opportunities. Our conversion rate has doubled since adopting it!', 'rating' => 5],
-                            ['name' => 'Maria Lopez', 'role' => 'Operations Manager', 'company' => 'Global Enterprises', 'content' => 'Invoices and orders are now automated, saving us hours every week. The reports feature gives us clear insights into performance.', 'rating' => 5],
-                            ['name' => 'Ravi Patel', 'role' => 'Founder & CEO', 'company' => 'StartUp Hub', 'content' => 'As a growing business, we needed a scalable CRM and project management tool. This SaaS delivers everything in one place!', 'rating' => 5]
+                            ['name' => 'Alex Thompson', 'role' => 'Sales Director', 'organization' => 'TechCorp Inc.', 'content' => 'This platform has transformed how we manage leads and opportunities. Our conversion rate has doubled since adopting it!', 'rating' => 5],
+                            ['name' => 'Maria Lopez', 'role' => 'Operations Manager', 'organization' => 'Global Enterprises', 'content' => 'Invoices and orders are now automated, saving us hours every week. The reports feature gives us clear insights into performance.', 'rating' => 5],
+                            ['name' => 'Ravi Patel', 'role' => 'Founder & CEO', 'organization' => 'StartUp Hub', 'content' => 'As a growing business, we needed a scalable CRM and project management tool. This SaaS delivers everything in one place!', 'rating' => 5]
                         ]
                     ],
                     [
@@ -318,7 +318,7 @@ class LandingPageSetting extends Model
                                 ['name' => 'Pricing', 'href' => '#pricing'],
                                 ['name' => 'Integrations', 'href' => '#integrations']
                             ],
-                            'company' => [
+                            'organization' => [
                                 ['name' => 'About Us', 'href' => '#about'],
                                 ['name' => 'Careers', 'href' => '#careers'],
                                 ['name' => 'Contact', 'href' => '#contact']
@@ -340,7 +340,7 @@ class LandingPageSetting extends Model
                         ],
                         'section_titles' => [
                             'product' => 'Product',
-                            'company' => 'Company'
+                            'organization' => 'Organization'
                         ]
                     ]
                 ],
@@ -381,7 +381,7 @@ class LandingPageSetting extends Model
                 'config_sections' => $defaultConfig
             ]);
         }
-        $superAdminId = User::where('type', 'superadmin')->first()->id;
+        $superAdminId = User::where('type', 'super_admin')->first()->id;
 
         $landingPageSettings = $settings;
 

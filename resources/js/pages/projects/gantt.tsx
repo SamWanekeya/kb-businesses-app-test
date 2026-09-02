@@ -280,7 +280,7 @@ export default function ProjectGantt() {
     const { t } = useTranslation();
     const { auth, project, tasks = [], taskStatuses = [], users = [], filters: pageFilters = {} } = usePage().props as any;
     const permissions = auth?.permissions || [];
-    const isCompany = auth?.user?.type === 'company';
+    const isOrganization = auth?.user?.type === 'organization';
 
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
     const [currentItem, setCurrentItem] = useState<any>(null);
@@ -493,7 +493,7 @@ const handleFormSubmit = (formData: any) => {
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
-                        { name: 'title', label: t('Task Title'), type: 'text', required: true, placeholder: t('e.g. Design homepage mockup, Fix login bug') },
+                        { name: 'title', label: t('Task Title'), type: 'text', required: true, placeholder: t('e.g. Design homepage mockup, Fix sign in bug') },
                         { name: 'description', label: t('Description'), type: 'textarea', placeholder: t('Enter task description...') },
                         { name: 'start_date', label: t('Start Date'), type: 'date' },
                         { name: 'due_date', label: t('Due Date'), type: 'date' },
@@ -524,7 +524,7 @@ const handleFormSubmit = (formData: any) => {
                         },
                         { name: 'estimated_hours', label: t('Estimated Hours'), type: 'number', step: '0.5', placeholder: t('e.g. 8') },
                         { name: 'progress', label: t('Progress (%)'), type: 'number', min: '0', max: '100', defaultValue: '0', placeholder: t('e.g. 50') },
-                        ...(isCompany ? [{
+                        ...(isOrganization ? [{
                             name: 'assigned_to',
                             label: t('Assign To'),
                             type: 'select',

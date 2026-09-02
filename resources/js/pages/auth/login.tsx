@@ -61,7 +61,7 @@ export default function Login({ status, canResetPassword, demoBusinesses = [] }:
         // Set default credentials if in demo mode
         if (isDemoMode) {
             setData({
-                email: 'company@example.com',
+                email: 'organization@kakbima.dev',
                 password: 'password',
                 remember: false
             });
@@ -194,7 +194,7 @@ export default function Login({ status, canResetPassword, demoBusinesses = [] }:
                     className="w-full text-white py-2.5 text-sm font-medium tracking-wide transition-all duration-200 rounded-md shadow-md hover:shadow-lg transform hover:scale-[1.02]"
                     style={{ backgroundColor: primaryColor }}
                 >
-                    {t("Login")}
+                    {t("Sign in")}
                 </AuthButton>
                 {isRegistrationEnabled() && <div className="text-center">
                     <p className="text-sm text-gray-500">{t("Don't have an account?")}{' '}
@@ -228,7 +228,7 @@ export default function Login({ status, canResetPassword, demoBusinesses = [] }:
                                     onClick={() => {
                                         if (recaptchaEnabled && !recaptchaToken) return;
                                         router.post(route('login'), {
-                                            email: 'superadmin@example.com',
+                                            email: 'rootadmin@kakbima.dev',
                                             password: 'password',
                                             remember: false,
                                             recaptcha_token: recaptchaToken
@@ -238,7 +238,7 @@ export default function Login({ status, canResetPassword, demoBusinesses = [] }:
                                     className="group relative py-2 px-4 border text-[13px] font-medium text-white transition-all duration-200 rounded-md shadow-sm hover:shadow-md transform hover:scale-[1.02]"
                                     style={{ backgroundColor: primaryColor, borderColor: primaryColor }}
                                 >
-                                    {t('Login as Super Admin')}
+                                    {t('Sign in as Super Administrator')}
                                 </Button>
 
                                 <Button
@@ -246,7 +246,7 @@ export default function Login({ status, canResetPassword, demoBusinesses = [] }:
                                     onClick={() => {
                                         if (recaptchaEnabled && !recaptchaToken) return;
                                         router.post(route('login'), {
-                                            email: 'company@example.com',
+                                            email: 'organization@kakbima.dev',
                                             password: 'password',
                                             remember: false,
                                             recaptcha_token: recaptchaToken
@@ -256,7 +256,7 @@ export default function Login({ status, canResetPassword, demoBusinesses = [] }:
                                     className="group relative py-2 px-4 border text-[13px] font-medium text-white transition-all duration-200 rounded-md shadow-sm hover:shadow-md transform hover:scale-[1.02]"
                                     style={{ backgroundColor: primaryColor, borderColor: primaryColor }}
                                 >
-                                    {t('Login as Company')}
+                                    {t('Sign in as Organization')}
                                 </Button>
 
                                 <Button
@@ -264,7 +264,7 @@ export default function Login({ status, canResetPassword, demoBusinesses = [] }:
                                     onClick={() => {
                                         if (recaptchaEnabled && !recaptchaToken) return;
                                         router.post(route('login'), {
-                                            email: 'sarahjohnson@example.com',
+                                            email: 'sarahjohnson@kakbima.dev',
                                             password: 'password',
                                             remember: false,
                                             recaptcha_token: recaptchaToken
@@ -274,7 +274,7 @@ export default function Login({ status, canResetPassword, demoBusinesses = [] }:
                                     className="group relative py-2 px-4 border text-[13px] font-medium text-white transition-all duration-200 rounded-md shadow-sm hover:shadow-md transform hover:scale-[1.02]"
                                     style={{ backgroundColor: primaryColor, borderColor: primaryColor }}
                                 >
-                                    {t('Login as User')}
+                                    {t('Sign in as User')}
                                 </Button>
                             </div>
                         </div>

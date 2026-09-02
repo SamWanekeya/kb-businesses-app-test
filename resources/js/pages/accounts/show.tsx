@@ -19,7 +19,7 @@ export default function AccountShow() {
   const { t } = useTranslation();
   const { account, streamItems, auth, meetings } = usePage().props as any;
   const permissions = auth?.permissions || [];
-  const isCompany = auth?.user?.type === 'company';
+  const isOrganization = auth?.user?.type === 'organization';
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleteAllModalOpen, setIsDeleteAllModalOpen] = useState(false);
   const [currentActivity, setCurrentActivity] = useState<any>(null);

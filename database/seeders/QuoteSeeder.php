@@ -17,22 +17,22 @@ class QuoteSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $companyUsers = User::where('type', 'company')->get();
-        
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        $organizationUsers = User::where('type', 'organization')->get();
+
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
         $statuses = ['draft', 'sent', 'accepted', 'rejected', 'expired'];
 
-        foreach ($companyUsers as $company) {
-            $opportunities = Opportunity::where('created_by', $company->id)->get();
-            $accounts = Account::where('created_by', $company->id)->get();
-            $contacts = Contact::where('created_by', $company->id)->get();
-            $products = Product::where('created_by', $company->id)->get();
-            $shippingTypes = ShippingProviderType::where('created_by', $company->id)->get();
-            $staffUsers = User::where('created_by', $company->id)->get();
+        foreach ($organizationUsers as $organization) {
+            $opportunities = Opportunity::where('created_by', $organization->id)->get();
+            $accounts = Account::where('created_by', $organization->id)->get();
+            $contacts = Contact::where('created_by', $organization->id)->get();
+            $products = Product::where('created_by', $organization->id)->get();
+            $shippingTypes = ShippingProviderType::where('created_by', $organization->id)->get();
+            $staffUsers = User::where('created_by', $organization->id)->get();
 
             if ($accounts->isEmpty() || $contacts->isEmpty()) {
                 continue;
@@ -45,9 +45,9 @@ class QuoteSeeder extends Seeder
                 $validUntil = $faker->dateTimeBetween($createdDate, '+2 months');
                 $subtotal = $faker->numberBetween(5000, 50000);
                 $totalAmount = $subtotal + ($subtotal * 0.1); // Add 10% for taxes/fees
-                
+
                 $quote = Quote::create([
-                    'quote_number' => 'QUO-' . $company->id . '-' . str_pad($i, 4, '0', STR_PAD_LEFT),
+                    'quote_number' => 'QUO-' . $organization->id . '-' . str_pad($i, 4, '0', STR_PAD_LEFT),
                     'name' => 'Quote for ' . $account->name . ' - Project ' . $i,
                     'description' => $faker->sentence(10),
                     'opportunity_id' => $opportunities->isNotEmpty() ? $opportunities->random()->id : null,
@@ -69,8 +69,8 @@ class QuoteSeeder extends Seeder
                     'shipping_country' => 'USA',
                     'status' => $faker->randomElement($statuses),
                     'valid_until' => $validUntil,
-                    'created_by' => $company->id,
-                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : $company->id,
+                    'created_by' => $organization->id,
+                    'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : $organization->id,
                     'created_at' => $createdDate,
                 ]);
 
@@ -88,7 +88,7 @@ class QuoteSeeder extends Seeder
                 }
             }
         }
-        
-        $this->command->info('Quotes created for all company users!');
+
+        $this->command->info('Quotes created for all organization users!');
     }
 }

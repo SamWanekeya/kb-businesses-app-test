@@ -40,10 +40,10 @@ export const DEFAULT_BRAND_SETTINGS: BrandSettings = {
     logoDark: 'logo/logo-dark.png',
     logoLight: 'logo/logo-light.png',
     favicon: 'logo/favicon.png',
-    titleText: 'WorkDo',
-    footerText: '© 2026 WorkDo. All rights reserved.',
+    titleText: 'Kakbima',
+    footerText: '© 2026 Kakbima. All rights reserved.',
     themeColor: 'green',
-    customColor: '#3b82f6',
+    customColor: '#A12582',
     sidebarVariant: 'inset',
     sidebarStyle: 'plain',
     layoutDirection: 'left',
@@ -439,7 +439,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                 name="titleText"
                                                 value={settings.titleText}
                                                 onChange={handleInputChange}
-                                                placeholder="WorkDo"
+                                                placeholder="Kakbima"
                                             />
                                             <p className="text-xs text-muted-foreground">
                                                 {t("Application title displayed in the browser tab")}
@@ -453,7 +453,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                 name="footerText"
                                                 value={settings.footerText}
                                                 onChange={handleInputChange}
-                                                placeholder="© 2026 WorkDo. All rights reserved."
+                                                placeholder="© 2026 Kakbima. All rights reserved."
                                             />
                                             <p className="text-xs text-muted-foreground">
                                                 {t("Text displayed in the footer")}
@@ -476,7 +476,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                             <Separator className="my-2" />
 
                                             <div className="grid grid-cols-6 gap-2">
-                                                {Object.entries({ blue: '#3b82f6', green: '#10b77f', purple: '#8b5cf6', orange: '#f97316', red: '#ef4444' }).map(([color, hex]) => (
+                                                {Object.entries({ blue: '#A12582', green: '#10b77f', purple: '#8b5cf6', orange: '#f97316', red: '#ef4444' }).map(([color, hex]) => (
                                                     <Button
                                                         key={color}
                                                         type="button"
@@ -528,7 +528,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                             type="text"
                                                             value={settings.customColor}
                                                             onChange={(e) => handleCustomColorChange(e.target.value)}
-                                                            placeholder="#3b82f6"
+                                                            placeholder="#A12582"
                                                         />
                                                     </div>
                                                 </div>

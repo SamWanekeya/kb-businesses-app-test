@@ -61,13 +61,13 @@ class PayTRPaymentController extends Controller
 
             // Generate hash according to PayTR documentation
             $hashStr = $credentials['merchant_id'] .
-                      $request->ip() .
+                      $request->ip_address() .
                       $merchant_oid .
                       $validated['user_email'] .
                       $payment_amount .
                       $user_basket .
                       '1' . // no_installment
-                      '0' . // max_installment
+                      '0' . // maximum_installment
                       $credentials['currency'] .
                       '1' . // test_mode
                       $credentials['merchant_salt'];
@@ -76,14 +76,14 @@ class PayTRPaymentController extends Controller
 
             $post_data = [
                 'merchant_id' => $credentials['merchant_id'],
-                'user_ip' => $request->ip(),
+                'user_ip' => $request->ip_address(),
                 'merchant_oid' => $merchant_oid,
                 'email' => $validated['user_email'],
                 'payment_amount' => $payment_amount,
                 'paytr_token' => $paytr_token,
                 'user_basket' => $user_basket,
                 'no_installment' => 1,
-                'max_installment' => 0,
+                'maximum_installment' => 0,
                 'user_name' => $validated['user_name'],
                 'user_address' => $validated['user_address'] ?? 'Turkey',
                 'user_phone' => $validated['user_phone'],

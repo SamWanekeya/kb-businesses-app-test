@@ -178,7 +178,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                                                     id={`title-${code}`}
                                                     value={templateLangs[code]?.title || ''}
                                                     onChange={(e) => handleTitleChange(code, e.target.value)}
-                                                    placeholder={t("Enter notification title (you can use variables like {company_name})")}
+                                                    placeholder={t("Enter notification title (you can use variables like {organization_name})")}
                                                     className="focus:ring-2 focus:ring-primary"
                                                 />
                                             </div>

@@ -47,7 +47,7 @@ class RegisteredUserController extends Controller
 
         if ($referralCode) {
             $referrer = User::where('referral_code', $referralCode)
-                ->where('type', 'company')
+                ->where('type', 'organization')
                 ->first();
         }
 
@@ -80,21 +80,21 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'type' => 'company',
+            'type' => 'organization',
             'is_active' => 1,
-            'is_enable_login' => 1,
+            'is_sign_in_enabled' => 1,
             'created_by' => 1,
-            'plan_is_active' => 0,
+            'is_plan_active' => 0,
         ];
 
         // Handle referral code
         if ($request->referral_code) {
             $referrer = User::where('referral_code', $request->referral_code)
-                ->where('type', 'company')
+                ->where('type', 'organization')
                 ->first();
 
             if ($referrer) {
-                $userData['used_referral_code'] = $request->referral_code;
+                $userData['referral_code_used'] = $request->referral_code;
             }
         }
 
@@ -163,7 +163,7 @@ class RegisteredUserController extends Controller
             return;
         }
 
-        $referrer = User::where('referral_code', $user->used_referral_code)->first();
+        $referrer = User::where('referral_code', $user->referral_code_used)->first();
         if (!$referrer || !$user->plan) {
             return;
         }
@@ -175,7 +175,7 @@ class RegisteredUserController extends Controller
         if ($commissionAmount > 0) {
             Referral::create([
                 'user_id' => $user->id,
-                'company_id' => $referrer->id,
+                'organization_id' => $referrer->id,
                 'commission_percentage' => $settings->commission_percentage,
                 'amount' => $commissionAmount,
                 'plan_id' => $user->plan_id,
@@ -184,7 +184,7 @@ class RegisteredUserController extends Controller
     }
 
     /**
-     * Create default lead statuses for new company
+     * Create default lead statuses for new organization
      */
     private function createDefaultLeadStatuses($userId): void
     {
@@ -208,7 +208,7 @@ class RegisteredUserController extends Controller
     }
 
     /**
-     * Create default opportunity stages for new company
+     * Create default opportunity stages for new organization
      */
     private function createDefaultOpportunityStages($userId): void
     {
@@ -233,7 +233,7 @@ class RegisteredUserController extends Controller
     }
 
     /**
-     * Create default task statuses for new company
+     * Create default task statuses for new organization
      */
     private function createDefaultTaskStatuses($userId): void
     {

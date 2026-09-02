@@ -27,10 +27,10 @@ class Payment extends Reference implements Tap{
 
   public function card(Request $request,$data){
     $this->cardValidator($data);
-    $IP = $request->ip();
+    $IP = $request->ip_address();
     $curl = curl_init();
     curl_setopt_array($curl, array(
-      CURLOPT_URL => "https://api.tap.company/v2/tokens",
+      CURLOPT_URL => "https://api.tap.organization/v2/tokens",
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_ENCODING => "",
       CURLOPT_MAXREDIRS => 10,
@@ -39,7 +39,7 @@ class Payment extends Reference implements Tap{
       CURLOPT_CUSTOMREQUEST => "POST",
       CURLOPT_POSTFIELDS => "{\"card\":{\"number\": ".$this->CARD_VARS['number']." ,\"exp_month\":".$this->CARD_VARS['exp_month'].",\"exp_year\":".$this->CARD_VARS['exp_year'].",\"cvc\":".$this->CARD_VARS['cvc'].",\"name\":\"".$this->CARD_VARS['name']."\",\"address\":{\"country\":\" ".$this->CARD_VARS['country']." \",\"line1\":\" ".$this->CARD_VARS['line1']." \",\"city\":\"".$this->CARD_VARS['city']."\",\"street\":\"".$this->CARD_VARS['street']."\",\"avenue\":\"".$this->CARD_VARS['avenue']."\"}},\"client_ip\":\"".$IP."\"}",
       CURLOPT_HTTPHEADER => array(
-        "authorization: Bearer ".$this->CONFIG_VARS['company_tap_secret_key']." ",
+        "authorization: Bearer ".$this->CONFIG_VARS['organization_tap_secret_key']." ",
         "content-type: application/json"
       ),
     ));
@@ -75,7 +75,7 @@ class Payment extends Reference implements Tap{
     $curl = curl_init();
     if($this->CARD_SET){
       curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://api.tap.company/v2/charges",
+        CURLOPT_URL => "https://api.tap.organization/v2/charges",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => "",
         CURLOPT_MAXREDIRS => 10,
@@ -93,13 +93,13 @@ class Payment extends Reference implements Tap{
           \"source\":{\"object\":\"token\",\"id\":\"".$this->CHARGE_VARS['source']['id']."\"},\"post\":{\"url\":\"".$this->CHARGE_VARS['post']['url']."\"},
           \"redirect\":{\"url\":\"".$this->CHARGE_VARS['redirect']['url']."\"}}",
         CURLOPT_HTTPHEADER => array(
-          "authorization: Bearer ".$this->CONFIG_VARS['company_tap_secret_key']." ",
+          "authorization: Bearer ".$this->CONFIG_VARS['organization_tap_secret_key']." ",
           "content-type: application/json"
         ),
       ));
     }else{
       curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://api.tap.company/v2/charges",
+        CURLOPT_URL => "https://api.tap.organization/v2/charges",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => "",
         CURLOPT_MAXREDIRS => 10,
@@ -117,7 +117,7 @@ class Payment extends Reference implements Tap{
           \"source\":{\"id\":\"".$this->CHARGE_VARS['source']['id']."\"},\"post\":{\"url\":\"".$this->CHARGE_VARS['post']['url']."\"},
           \"redirect\":{\"url\":\"".$this->CHARGE_VARS['redirect']['url']."\"}}",
         CURLOPT_HTTPHEADER => array(
-          "authorization: Bearer ".$this->CONFIG_VARS['company_tap_secret_key']." ",
+          "authorization: Bearer ".$this->CONFIG_VARS['organization_tap_secret_key']." ",
           "content-type: application/json"
         ),
       ));
@@ -153,7 +153,7 @@ class Payment extends Reference implements Tap{
     if ($charge_id != null) {
       $curl = curl_init();
       curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://api.tap.company/v2/charges/$charge_id",
+        CURLOPT_URL => "https://api.tap.organization/v2/charges/$charge_id",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => "",
         CURLOPT_MAXREDIRS => 10,
@@ -162,7 +162,7 @@ class Payment extends Reference implements Tap{
         CURLOPT_CUSTOMREQUEST => "GET",
         CURLOPT_POSTFIELDS => "{}",
         CURLOPT_HTTPHEADER => array(
-          "authorization: Bearer ".$this->CONFIG_VARS['company_tap_secret_key']." ",
+          "authorization: Bearer ".$this->CONFIG_VARS['organization_tap_secret_key']." ",
         ),
       ));
 
@@ -192,7 +192,7 @@ class Payment extends Reference implements Tap{
     $this->chargesListValidator($options);
     $curl = curl_init();
     curl_setopt_array($curl, array(
-      CURLOPT_URL => "https://api.tap.company/v2/charges/list",
+      CURLOPT_URL => "https://api.tap.organization/v2/charges/list",
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_ENCODING => "",
       CURLOPT_MAXREDIRS => 10,
@@ -201,7 +201,7 @@ class Payment extends Reference implements Tap{
       CURLOPT_CUSTOMREQUEST => "POST",
       CURLOPT_POSTFIELDS => "{\"period\":{\"date\":{\"from\":".$this->CHARGES_FILTER['period']['date']['from'].",\"to\":".$this->CHARGES_FILTER['period']['date']['to']."}},\"status\":\" ".$this->CHARGES_FILTER['status']." \",\"limit\":".$this->CHARGES_FILTER['limit']."}",
       CURLOPT_HTTPHEADER => array(
-        "authorization: Bearer ".$this->CONFIG_VARS['company_tap_secret_key']." ",
+        "authorization: Bearer ".$this->CONFIG_VARS['organization_tap_secret_key']." ",
         "content-type: application/json"
       ),
     ));
@@ -232,7 +232,7 @@ class Payment extends Reference implements Tap{
     $this->refungValidator($data);
     $curl = curl_init();
     curl_setopt_array($curl, array(
-      CURLOPT_URL => "https://api.tap.company/v2/refunds",
+      CURLOPT_URL => "https://api.tap.organization/v2/refunds",
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_ENCODING => "",
       CURLOPT_MAXREDIRS => 10,
@@ -242,7 +242,7 @@ class Payment extends Reference implements Tap{
       CURLOPT_POSTFIELDS => "{\"charge_id\":\"".$this->REFUND_VARS['charge_id']."\",\"amount\":".$this->REFUND_VARS['amount'].",\"currency\":\"".$this->REFUND_VARS['currency']."\",\"description\":\"".$this->REFUND_VARS['description']."\",\"reason\":\"".$this->REFUND_VARS['reason']."\",
         \"reference\":{\"merchant\":\"".$this->REFUND_VARS['reference']['merchant']."\"},\"metadata\":{\"udf1\":\"".$this->REFUND_VARS['metadata']['udf1']."\",\"udf2\":\"".$this->REFUND_VARS['metadata']['udf2']."\"},\"post\":{\"url\":\"".$this->REFUND_VARS['post']['url']."\"}}",
       CURLOPT_HTTPHEADER => array(
-        "authorization: Bearer ".$this->CONFIG_VARS['company_tap_secret_key']." ",
+        "authorization: Bearer ".$this->CONFIG_VARS['organization_tap_secret_key']." ",
         "content-type: application/json"
       ),
     ));
@@ -276,7 +276,7 @@ class Payment extends Reference implements Tap{
     }
     $curl = curl_init();
     curl_setopt_array($curl, array(
-      CURLOPT_URL => "https://api.tap.company/v2/refunds/$refund_id",
+      CURLOPT_URL => "https://api.tap.organization/v2/refunds/$refund_id",
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_ENCODING => "",
       CURLOPT_MAXREDIRS => 10,
@@ -285,7 +285,7 @@ class Payment extends Reference implements Tap{
       CURLOPT_CUSTOMREQUEST => "GET",
       CURLOPT_POSTFIELDS => "{}",
       CURLOPT_HTTPHEADER => array(
-        "authorization: Bearer ".$this->CONFIG_VARS['company_tap_secret_key']." ",
+        "authorization: Bearer ".$this->CONFIG_VARS['organization_tap_secret_key']." ",
       ),
     ));
 
@@ -315,7 +315,7 @@ class Payment extends Reference implements Tap{
     $this->refundsListValidator($options);
     $curl = curl_init();
     curl_setopt_array($curl, array(
-      CURLOPT_URL => "https://api.tap.company/v2/refunds/list",
+      CURLOPT_URL => "https://api.tap.organization/v2/refunds/list",
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_ENCODING => "",
       CURLOPT_MAXREDIRS => 10,
@@ -324,7 +324,7 @@ class Payment extends Reference implements Tap{
       CURLOPT_CUSTOMREQUEST => "POST",
       CURLOPT_POSTFIELDS => "{\"period\":{\"date\":{\"from\":".$this->REFUNDS_FILTER['period']['date']['from'].",\"to\":".$this->REFUNDS_FILTER['period']['date']['to']."}},\"starting_after\":\"\",\"limit\":".$this->REFUNDS_FILTER['limit']."}",
       CURLOPT_HTTPHEADER => array(
-        "authorization: Bearer ".$this->CONFIG_VARS['company_tap_secret_key']." ",
+        "authorization: Bearer ".$this->CONFIG_VARS['organization_tap_secret_key']." ",
         "content-type: application/json"
       ),
     ));

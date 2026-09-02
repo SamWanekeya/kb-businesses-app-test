@@ -37,7 +37,7 @@ class SendMeetingInvitationEmail
                 '{meeting_start_time}' => $meeting->start_time ?? '-',
                 '{meeting_end_time}' => $meeting->end_time ?? '-',
                 '{meeting_status}' => $meeting->status ?? '-',
-                '{company_name}' => getCompanyName(),
+                '{organization_name}' => getOrganizationName(),
             ];
 
             try {

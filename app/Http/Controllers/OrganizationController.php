@@ -13,12 +13,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 
-class CompanyController extends Controller
+class OrganizationController extends Controller
 {
     public function index(Request $request)
     {
         $query = User::query()
-            ->where('type', 'company')
+            ->where('type', 'organization')
             ->with('plan');
 
         // Apply search filter
@@ -64,28 +64,28 @@ class CompanyController extends Controller
         if (!is_numeric($perPage) || $perPage < 1 || $perPage > 200) {
             $perPage = $defaultPerPage;
         }
-        $companies = $query->paginate((int)$perPage)->withQueryString();
+        $organizations = $query->paginate((int)$perPage)->withQueryString();
 
         // Transform data for frontend
-        $companies->getCollection()->transform(function ($company) {
+        $organizations->getCollection()->transform(function ($organization) {
             return [
-                'id' => $company->id,
-                'name' => $company->name,
-                'email' => $company->email,
-                'avatar' => $company->avatar,
-                'status' => $company->status,
-                'created_at' => $company->created_at,
-                'plan_id' => $company->plan_id,
-                'plan_name' => $company->plan ? $company->plan->name : __('No Plan'),
-                'plan_expiry_date' => $company->plan_expire_date,
+                'id' => $organization->id,
+                'name' => $organization->name,
+                'email' => $organization->email,
+                'avatar' => $organization->avatar,
+                'status' => $organization->status,
+                'created_at' => $organization->created_at,
+                'plan_id' => $organization->plan_id,
+                'plan_name' => $organization->plan ? $organization->plan->name : __('No Plan'),
+                'plan_expiry_date' => $organization->plan_expiry_date,
             ];
         });
 
         // Get plans for dropdown
         $plans = Plan::all(['id', 'name']);
 
-        return Inertia::render('companies/index', [
-            'companies' => $companies,
+        return Inertia::render('organizations/index', [
+            'organizations' => $organizations,
             'plans' => $plans,
             'filters' => $request->only(['search', 'status', 'start_date', 'end_date', 'sort_field', 'sort_direction', 'per_page', 'view', 'page'])
         ]);
@@ -100,152 +100,152 @@ class CompanyController extends Controller
             'status' => 'required|in:active,inactive',
         ]);
 
-        $company = new User();
-        $company->name = $validated['name'];
-        $company->email = $validated['email'];
+        $organization = new User();
+        $organization->name = $validated['name'];
+        $organization->email = $validated['email'];
 
         // Only set password if provided
         if (isset($validated['password'])) {
-            $company->password = Hash::make($validated['password']);
+            $organization->password = Hash::make($validated['password']);
         }
 
-        $company->type = 'company';
-        $company->status = $validated['status'];
-        $company->created_by = createdBy() ?? 1;
+        $organization->type = 'organization';
+        $organization->status = $validated['status'];
+        $organization->created_by = createdBy() ?? 1;
 
         // Assign default plan
         $defaultPlan = Plan::where('is_default', true)->first();
         if ($defaultPlan) {
-            $company->plan_id = $defaultPlan->id;
+            $organization->plan_id = $defaultPlan->id;
 
             // Set plan expiry date based on plan duration
             if ($defaultPlan->duration === 'yearly') {
-                $company->plan_expire_date = now()->addYear();
+                $organization->plan_expiry_date = now()->addYear();
             } else {
-                $company->plan_expire_date = now()->addMonth();
+                $organization->plan_expiry_date = now()->addMonth();
             }
 
             // Set plan is active
-            $company->plan_is_active = 1;
+            $organization->is_plan_active = 1;
         }
 
-        $company->save();
+        $organization->save();
 
         // Assign role and settings to the user
-        defaultRoleAndSetting($company);
+        defaultRoleAndSetting($organization);
 
-        // Create default lead statuses for the company
-        $this->createDefaultLeadStatuses($company->id);
+        // Create default lead statuses for the organization
+        $this->createDefaultLeadStatuses($organization->id);
 
-        // Create default opportunity stages for the company
-        $this->createDefaultOpportunityStages($company->id);
+        // Create default opportunity stages for the organization
+        $this->createDefaultOpportunityStages($organization->id);
 
-        // Create default task statuses for the company
-        $this->createDefaultTaskStatuses($company->id);
+        // Create default task statuses for the organization
+        $this->createDefaultTaskStatuses($organization->id);
 
         // Trigger email notification
         if (!IsDemo()) {
-            event(new \App\Events\UserCreated($company, $validated['password'] ?? ''));
+            event(new \App\Events\UserCreated($organization, $validated['password'] ?? ''));
         }
 
         // Check for email errors
         if (session()->has('email_error')) {
-            return redirect()->back()->with('warning', __('Company created successfully, but welcome email failed: ') . session('email_error'));
+            return redirect()->back()->with('warning', __('Organization created successfully, but welcome email failed: ') . session('email_error'));
         }
 
-        return redirect()->back()->with('success', __('Company created successfully'));
+        return redirect()->back()->with('success', __('Organization created successfully'));
     }
 
-    public function update(Request $request, User $company)
+    public function update(Request $request, User $organization)
     {
-        // Ensure this is a company type user
-        if ($company->type !== 'company') {
-            return redirect()->back()->with('error', __('Invalid company record'));
+        // Ensure this is a organization type user
+        if ($organization->type !== 'organization') {
+            return redirect()->back()->with('error', __('Invalid organization record'));
         }
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $company->id,
+            'email' => 'required|string|email|max:255|unique:users,email,' . $organization->id,
             // 'status' => 'required|in:active,inactive',
         ]);
 
-        $company->name = $validated['name'];
-        $company->email = $validated['email'];
-        // $company->status = $validated['status'];
+        $organization->name = $validated['name'];
+        $organization->email = $validated['email'];
+        // $organization->status = $validated['status'];
         // // Only set password if provided
         // if (isset($validated['password'])) {
-        //     $company->password = Hash::make($validated['password']);
+        //     $organization->password = Hash::make($validated['password']);
         // }
 
-        $company->save();
+        $organization->save();
 
-        return redirect()->back()->with('success', __('Company updated successfully'));
+        return redirect()->back()->with('success', __('Organization updated successfully'));
     }
 
-    public function destroy(User $company)
+    public function destroy(User $organization)
     {
-        // Ensure this is a company type user
-        if ($company->type !== 'company') {
-            return redirect()->back()->with('error', __('Invalid company record'));
+        // Ensure this is a organization type user
+        if ($organization->type !== 'organization') {
+            return redirect()->back()->with('error', __('Invalid organization record'));
         }
 
-        $company->delete();
+        $organization->delete();
 
-        return redirect()->back()->with('success', __('Company deleted successfully'));
+        return redirect()->back()->with('success', __('Organization deleted successfully'));
     }
 
-    public function resetPassword(Request $request, User $company)
+    public function resetPassword(Request $request, User $organization)
     {
-        // Ensure this is a company type user
-        if ($company->type !== 'company') {
-            return redirect()->back()->with('error', __('Invalid company record'));
+        // Ensure this is a organization type user
+        if ($organization->type !== 'organization') {
+            return redirect()->back()->with('error', __('Invalid organization record'));
         }
 
         $validated = $request->validate([
             'password' => ['required', 'string', 'min:8'],
         ]);
 
-        $company->password = Hash::make($validated['password']);
-        $company->save();
+        $organization->password = Hash::make($validated['password']);
+        $organization->save();
 
         return redirect()->back()->with('success', __('Password reset successfully'));
     }
 
-    public function toggleStatus(User $company)
+    public function toggleStatus(User $organization)
     {
-        // Ensure this is a company type user
-        if ($company->type !== 'company') {
-            return redirect()->back()->with('error', __('Invalid company record'));
+        // Ensure this is a organization type user
+        if ($organization->type !== 'organization') {
+            return redirect()->back()->with('error', __('Invalid organization record'));
         }
 
-        $company->status = $company->status === 'active' ? 'inactive' : 'active';
-        $company->save();
+        $organization->status = $organization->status === 'active' ? 'inactive' : 'active';
+        $organization->save();
 
-        return redirect()->back()->with('success', __('Company status updated successfully'));
+        return redirect()->back()->with('success', __('Organization status updated successfully'));
     }
 
     /**
      * Get available plans for upgrade
      */
-    public function getPlans(User $company)
+    public function getPlans(User $organization)
     {
-        // Ensure this is a company type user
-        if ($company->type !== 'company') {
-            return response()->json(['error' => __('Invalid company record')], 400);
+        // Ensure this is a organization type user
+        if ($organization->type !== 'organization') {
+            return response()->json(['error' => __('Invalid organization record')], 400);
         }
 
-        $plans = Plan::where('is_plan_enable', 'on')->get();
+        $plans = Plan::where('is_plan_enabled', 'on')->get();
 
-        // Determine the company's current billing cycle from their latest approved plan order
-        $latestPlanOrder = $company->planOrders()
+        // Determine the organization's current billing cycle from their latest approved plan order
+        $latestPlanOrder = $organization->planOrders()
             ->where('status', 'approved')
-            ->where('plan_id', $company->plan_id)
+            ->where('plan_id', $organization->plan_id)
             ->latest('processed_at')
             ->first();
 
         $currentBillingCycle = $latestPlanOrder ? $latestPlanOrder->billing_cycle : 'monthly';
 
-        if ($company->is_trial) {
+        if ($organization->is_trial) {
             $currentBillingCycle = 'monthly';
         }
 
@@ -257,7 +257,7 @@ class CompanyController extends Controller
             if ($plan->features) {
                 $enabledFeatures = $plan->getEnabledFeatures();
                 $featureLabels = [
-                    'ai_integration' => __('AI Integration'),
+                    'kakbima_intelligence' => __('Kakbima Intelligence'),
                     'password_protection' => __('Password Protection')
                 ];
                 foreach ($enabledFeatures as $feature) {
@@ -267,7 +267,7 @@ class CompanyController extends Controller
                 }
             } else {
                 // Fallback to legacy columns
-                if ($plan->enable_chatgpt === 'on') $features[] = __('AI Integration');
+                if ($plan->enable_kakbima_intelligence === 'on') $features[] = __('Kakbima Intelligence');
             }
 
             // Monthly plan
@@ -278,17 +278,17 @@ class CompanyController extends Controller
                 'duration' => 'Monthly',
                 'description' => $plan->description,
                 'features' => $features,
-                'max_users' => $plan->max_users,
-                'max_projects' => $plan->max_projects,
-                'max_contacts' => $plan->max_contacts,
-                'max_accounts' => $plan->max_accounts,
+                'maximum_users' => $plan->maximum_users,
+                'maximum_projects' => $plan->maximum_projects,
+                'maximum_contacts' => $plan->maximum_contacts,
+                'maximum_accounts' => $plan->maximum_accounts,
                 'storage_limit' => $plan->storage_limit,
                 'enable_branding' => $plan->enable_branding,
-                'enable_chatgpt' => $plan->enable_chatgpt,
+                'enable_kakbima_intelligence' => $plan->enable_kakbima_intelligence,
                 'module' => json_decode($plan->module, true),
                 'is_trial' => $plan->is_trial,
-                'trial_day' => $plan->trial_day,
-                'is_current' => $company->plan_id === $plan->id && ($currentBillingCycle === 'monthly'),
+                'trial_days' => $plan->trial_days,
+                'is_current' => $organization->plan_id === $plan->id && ($currentBillingCycle === 'monthly'),
                 'is_default' => $plan->is_default
             ];
 
@@ -301,37 +301,37 @@ class CompanyController extends Controller
                 'duration' => 'Yearly',
                 'description' => $plan->description,
                 'features' => $features,
-                'max_users' => $plan->max_users,
-                'max_projects' => $plan->max_projects,
-                'max_contacts' => $plan->max_contacts,
-                'max_accounts' => $plan->max_accounts,
+                'maximum_users' => $plan->maximum_users,
+                'maximum_projects' => $plan->maximum_projects,
+                'maximum_contacts' => $plan->maximum_contacts,
+                'maximum_accounts' => $plan->maximum_accounts,
                 'storage_limit' => $plan->storage_limit,
                 'enable_branding' => $plan->enable_branding,
-                'enable_chatgpt' => $plan->enable_chatgpt,
+                'enable_kakbima_intelligence' => $plan->enable_kakbima_intelligence,
                 'module' => json_decode($plan->module, true),
                 'is_trial' => $plan->is_trial,
-                'trial_day' => $plan->trial_day,
-                'is_current' => $company->plan_id === $plan->id && ($currentBillingCycle === 'yearly'),
+                'trial_days' => $plan->trial_days,
+                'is_current' => $organization->plan_id === $plan->id && ($currentBillingCycle === 'yearly'),
                 'is_default' => $plan->is_default
             ];
         }
 
         return response()->json([
             'plans' => $formattedPlans,
-            'company' => [
-                'id' => $company->id,
-                'name' => $company->name,
-                'current_plan_id' => $company->plan_id
+            'organization' => [
+                'id' => $organization->id,
+                'name' => $organization->name,
+                'current_plan_id' => $organization->plan_id
             ]
         ]);
     }
 
 
-    public function upgradePlan(Request $request, User $company)
+    public function upgradePlan(Request $request, User $organization)
     {
-        // Ensure this is a company type user
-        if ($company->type !== 'company') {
-            return back()->with('error', __('Invalid company record'));
+        // Ensure this is a organization type user
+        if ($organization->type !== 'organization') {
+            return back()->with('error', __('Invalid organization record'));
         }
 
         $validated = $request->validate([
@@ -347,7 +347,7 @@ class CompanyController extends Controller
 
         // Create plan order entry for tracking
         $planOrder = new PlanOrder();
-        $planOrder->user_id = $company->id;
+        $planOrder->user_id = $organization->id;
         $planOrder->plan_id = $plan->id;
         $planOrder->billing_cycle = $request->duration === 'yearly' ? 'yearly' : 'monthly';
         $planOrder->original_price = $request->duration === 'yearly' ? ($plan->yearly_price ?? 0) : $plan->price;
@@ -360,16 +360,16 @@ class CompanyController extends Controller
         $planOrder->processed_by = auth()->id();
         $planOrder->notes = 'Plan upgraded by super admin';
         $planOrder->save();
-        // Update company plan
-        assignPlanToUser($company, $plan, $validated['duration']);
+        // Update organization plan
+        assignPlanToUser($organization, $plan, $validated['duration']);
 
         return back()->with('success', __('Plan upgraded successfully'));
     }
 
     /**
-     * Create default lead statuses for a new company
+     * Create default lead statuses for a new organization
      */
-    private function createDefaultLeadStatuses($companyId)
+    private function createDefaultLeadStatuses($organizationId)
     {
         $defaultStatuses = [
             ['name' => 'New', 'color' => '#3B82F6'],
@@ -384,15 +384,15 @@ class CompanyController extends Controller
             LeadStatus::create([
                 'name' => $status['name'],
                 'color' => $status['color'],
-                'created_by' => $companyId,
+                'created_by' => $organizationId,
             ]);
         }
     }
 
     /**
-     * Create default opportunity stages for a new company
+     * Create default opportunity stages for a new organization
      */
-    private function createDefaultOpportunityStages($companyId)
+    private function createDefaultOpportunityStages($organizationId)
     {
         $defaultStages = [
             ['name' => 'Prospecting', 'color' => '#6B7280', 'probability' => 10],
@@ -409,15 +409,15 @@ class CompanyController extends Controller
                 'color' => $stage['color'],
                 'probability' => $stage['probability'],
                 'status' => 'active',
-                'created_by' => $companyId,
+                'created_by' => $organizationId,
             ]);
         }
     }
 
     /**
-     * Create default task statuses for a new company
+     * Create default task statuses for a new organization
      */
-    private function createDefaultTaskStatuses($companyId)
+    private function createDefaultTaskStatuses($organizationId)
     {
         $defaultStatuses = [
             ['name' => 'To Do', 'color' => '#6B7280'],
@@ -431,7 +431,7 @@ class CompanyController extends Controller
                 'name' => $status['name'],
                 'color' => $status['color'],
                 'status' => 'active',
-                'created_by' => $companyId,
+                'created_by' => $organizationId,
             ]);
         }
     }

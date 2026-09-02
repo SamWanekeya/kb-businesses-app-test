@@ -262,12 +262,12 @@ export default function Users() {
     const pageActions = [];
 
     // Add User Logs button
-    if (hasPermission(permissions, 'manage-login-history')) {
+    if (hasPermission(permissions, 'manage-sign-in-history')) {
         pageActions.push({
             icon: <History className="h-4 w-4 mx-auto" />,
             variant: 'outline',
-            onClick: () => router.visit(route('login-history.index')),
-            tooltip: t('Login History')
+            onClick: () => router.visit(route('sign-in-history.index')),
+            tooltip: t('Sign in History')
         });
     }
 
@@ -275,10 +275,10 @@ export default function Users() {
     if (hasPermission(permissions, 'create-users')) {
         const canCreate = !planLimits || planLimits.can_create;
         pageActions.push({
-            label: planLimits && !canCreate ? t('User Limit Reached ({{current}}/{{max}})', { current: planLimits.current_users, max: planLimits.max_users }) : t('Add User'),
+            label: planLimits && !canCreate ? t('User Limit Reached ({{current}}/{{max}})', { current: planLimits.current_users, max: planLimits.maximum_users }) : t('Add User'),
             icon: <Plus className="h-4 w-4 mr-2" />,
             variant: canCreate ? 'default' : 'outline',
-            onClick: canCreate ? () => handleAddNew() : () => toast.error(t('User limit exceeded. Your plan allows maximum {{max}} users. Please upgrade your plan.', { max: planLimits.max_users })),
+            onClick: canCreate ? () => handleAddNew() : () => toast.error(t('User limit exceeded. Your plan allows maximum {{max}} users. Please upgrade your plan.', { max: planLimits.maximum_users })),
             disabled: !canCreate
         });
     }
@@ -637,7 +637,7 @@ export default function Users() {
                 formConfig={{
                     fields: [
                         { name: 'name', label: t('Name'), type: 'text', required: true, placeholder: t('eg. John Smith') },
-                        { name: 'email', label: t('Email'), type: 'email', required: true, placeholder: t('eg. john@example.com') },
+                        { name: 'email', label: t('Email'), type: 'email', required: true, placeholder: t('eg. john@kakbima.dev') },
                         {
                             name: 'password',
                             label: t('Password'),

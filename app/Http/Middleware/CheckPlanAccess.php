@@ -13,7 +13,7 @@ class CheckPlanAccess
     public function handle(Request $request, Closure $next)
     {
         $user = auth()->user();
-        
+
         if (!$user) {
             return $next($request);
         }
@@ -23,22 +23,22 @@ class CheckPlanAccess
             return $next($request);
         }
 
-       if ($user->type !== 'company') {
-               $company = User::find($user->created_by);
-            if ($company && $company->type === 'company' && !$company->hasActivePlan()) {
+       if ($user->type !== 'organization') {
+               $organization = User::find($user->created_by);
+            if ($organization && $organization->type === 'organization' && !$organization->hasActivePlan()) {
                 auth()->logout();
                 throw ValidationException::withMessages([
-                    'plan_expired' => __("Your company's plan has expired. Please contact your company to renew the plan."),
+                    'plan_expired' => __("Your organization's plan has expired. Please contact your organization to renew the plan."),
                 ]);
             }
         }
 
 
-        // if ($user->type !== 'company') {
-        //     $company = User::find($user->created_by);
-        //     if ($company && $company->type === 'company' && $company->isPlanExpired()) {
+        // if ($user->type !== 'organization') {
+        //     $organization = User::find($user->created_by);
+        //     if ($organization && $organization->type === 'organization' && $organization->isPlanExpired()) {
         //         auth()->logout();
-        //         return redirect()->route('login')->with('error', __('Access denied. Only company users can access this area.'));
+        //         return redirect()->route('login')->with('error', __('Access denied. Only organization users can access this area.'));
         //     }
         // }
 
@@ -66,7 +66,7 @@ class CheckPlanAccess
                     $user->update([
                         'plan_id' => null,
                         'is_trial' => 0,
-                        'trial_expire_date' => null
+                        'trial_expiry_date' => null
                     ]);
                 }
             } elseif ($user->isPlanExpired() || !$user->hasActivePlan()) {
@@ -74,8 +74,8 @@ class CheckPlanAccess
                 // Reset expired plan
                 $user->update([
                     'plan_id' => null,
-                    'plan_expire_date' => null,
-                    'plan_is_active' => 0,
+                    'plan_expiry_date' => null,
+                    'is_plan_active' => 0,
                 ]);
             }
 

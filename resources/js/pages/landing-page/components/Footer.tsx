@@ -9,7 +9,7 @@ import { toast } from '@/components/custom-toast';
 interface FooterProps {
     brandColor?: string;
     settings: {
-        company_name: string;
+        organization_name: string;
         contact_email: string;
         contact_phone: string;
         contact_address: string;
@@ -38,14 +38,14 @@ interface FooterProps {
         }>;
         section_titles?: {
             product: string;
-            company: string;
+            organization: string;
             support: string;
             legal: string;
         };
     };
 }
 
-export default function Footer({ settings, sectionData = {}, brandColor = '#3b82f6' }: FooterProps) {
+export default function Footer({ settings, sectionData = {}, brandColor = '#A12582' }: FooterProps) {
     const currentYear = new Date().getFullYear();
     const { t } = useTranslation();
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -59,7 +59,7 @@ export default function Footer({ settings, sectionData = {}, brandColor = '#3b82
             { name: t('Pricing'), href: '#pricing' },
             { name: t('Integrations'), href: '#integrations' }
         ],
-        company: [
+        organization: [
             { name: t('About Us'), href: '#about' },
             { name: t('Careers'), href: '#careers' },
             { name: t('Contact'), href: '#contact' }
@@ -115,7 +115,7 @@ export default function Footer({ settings, sectionData = {}, brandColor = '#3b82
                 {/* Main Footer Content */}
                 <div className="py-12 sm:py-16">
                     <div className="grid lg:grid-cols-6 gap-8 sm:gap-12">
-                        {/* Company Info */}
+                        {/* Organization Info */}
                         <div className="lg:col-span-2">
                             <Link href="/" className="text-2xl font-bold mb-4 lg:max-w-[180px] max-w-[140px] inline-block">
                                 {(() => {
@@ -126,7 +126,7 @@ export default function Footer({ settings, sectionData = {}, brandColor = '#3b82
                                         <img
                                             key={`${currentLogo}-${Date.now()}`}
                                             src={displayUrl}
-                                            alt={settings.company_name || 'Sales Saas'}
+                                            alt={settings.organization_name || 'Sales Saas'}
                                             className="h-8 w-auto transition-all duration-200"
                                         />
                                     ) : (
@@ -174,11 +174,11 @@ export default function Footer({ settings, sectionData = {}, brandColor = '#3b82
                             </ul>
                         </div>
 
-                        {/* Company Links */}
+                        {/* Organization Links */}
                         <div>
-                            <h3 className="text-white font-semibold mb-4">{sectionData.section_titles?.company || t('Company')}</h3>
+                            <h3 className="text-white font-semibold mb-4">{sectionData.section_titles?.organization || t('Organization')}</h3>
                             <ul className="space-y-3">
-                                {(footerLinks.company || []).map((link) => (
+                                {(footerLinks.organization || []).map((link) => (
                                     <li key={link.name}>
                                         <a
                                             href={link.href}

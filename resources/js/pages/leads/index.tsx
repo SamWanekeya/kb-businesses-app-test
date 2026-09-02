@@ -248,7 +248,7 @@ export default function Leads() {
                         lead.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         lead.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         lead.phone?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        lead.company?.toLowerCase().includes(searchTerm.toLowerCase());
+                        lead.organization?.toLowerCase().includes(searchTerm.toLowerCase());
                     const matchesSource = selectedLeadSource === 'all' || lead.lead_source_id?.toString() === selectedLeadSource;
                     const matchesActiveStatus = selectedStatus === 'all' || lead.status === selectedStatus;
                     const matchesConverted = selectedConverted === 'all' ||
@@ -749,11 +749,11 @@ export default function Leads() {
                                                             )}
                                                         </div>
 
-                                                        {/* Company */}
-                                                        {lead.company && (
+                                                        {/* Organization */}
+                                                        {lead.organization && (
                                                             <div className="flex items-center gap-1.5 mb-2">
                                                                 <Building2 className="h-3 w-3 text-gray-400 flex-shrink-0" />
-                                                                <span className="text-xs text-gray-500 truncate">{lead.company}</span>
+                                                                <span className="text-xs text-gray-500 truncate">{lead.organization}</span>
                                                             </div>
                                                         )}
 
@@ -773,7 +773,7 @@ export default function Leads() {
                                                                 {lead.lead_source && (
                                                                     <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-blue-50 text-blue-700 ring-1 ring-inset ring-gray-600/20">
                                                                         {lead.lead_source.name}
-                                                                    </span>      
+                                                                    </span>
                                                                 )}
                                                                 {lead.is_converted && (
                                                                     <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20">
@@ -900,7 +900,7 @@ export default function Leads() {
                                     {/* <div className="border border-gray-200 dark:border-gray-700 rounded-md p-3 mb-4">
                                         <div className="mb-2">
                                             <span className="text-sm text-gray-600 dark:text-gray-400">
-                                                {t('Company')}: {lead.company || t('-')}
+                                                {t('Organization')}: {lead.organization || t('-')}
                                             </span>
                                         </div>
                                         <div className="mb-2">
@@ -1179,7 +1179,7 @@ export default function Leads() {
                     { key: 'name', required: true },
                     { key: 'email', required: true },
                     { key: 'phone' },
-                    { key: 'company' },
+                    { key: 'organization' },
                     { key: 'account_name' },
                     { key: 'account_industry' },
                     { key: 'website' },

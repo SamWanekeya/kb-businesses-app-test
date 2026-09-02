@@ -14,20 +14,20 @@ return new class extends Migration
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
             $table->string('name',100)->unique();
-            $table->float('price',30, 2)->default(0); // Monthly price
-            $table->float('yearly_price',30, 2)->nullable(); // Yearly price
-            $table->string('duration',100);
-            $table->integer('max_users')->default(0);
-            $table->integer('max_projects')->default(0);
-            $table->integer('max_contacts')->default(0);
-            $table->integer('max_accounts')->default(0);
+            $table->decimal('price', total: 19, places: 7)->default(0); // Monthly price
+            $table->decimal('yearly_price', total: 19, places: 7)->nullable(); // Yearly price
+            $table->enum('duration', ['monthly', 'quarterly', 'yearly'])->default('monthly');
+            $table->integer('maximum_users')->default(0);
+            $table->integer('maximum_projects')->default(0);
+            $table->integer('maximum_contacts')->default(0);
+            $table->integer('maximum_accounts')->default(0);
             $table->text('description')->nullable();
-            $table->string('enable_branding',255)->default('on');
-            $table->string('enable_chatgpt',255)->default('on');
-            $table->float('storage_limit',15, 2)->default('0.00');
-            $table->string('is_trial')->nullable();
-            $table->integer('trial_day')->default(0);
-            $table->string('is_plan_enable')->default('on');
+            $table->enum('enable_branding', ['on', 'off']);
+            $table->enum('enable_kakbima_intelligence', ['on', 'off']);
+            $table->decimal('storage_limit', total: 19, places: 7)->default(0);
+            $table->enum('is_trial', ['on', 'off'])->nullable();
+            $table->integer('trial_days')->default(0);
+            $table->enum('is_plan_enabled', ['on', 'off'])->default('on');
             $table->boolean('is_default')->default(false);
             $table->text('module')->nullable();
             $table->timestamps();

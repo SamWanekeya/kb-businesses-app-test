@@ -79,15 +79,15 @@ class AccountController extends Controller
         $allAccountIndustries = (clone $accountIndustryQuery)->get(['id', 'name']);
         $accountIndustries = (clone $accountIndustryQuery)->where('status', 'active')->get(['id', 'name']);
 
-        // Get plan limits for company users
+        // Get plan limits for organization users
         $planLimits = null;
-        $company = \App\Models\User::find(createdBy());
-        if ($company && $company->plan) {
+        $organization = \App\Models\User::find(createdBy());
+        if ($organization && $organization->plan) {
             $currentAccountsCount = Account::where('created_by', createdBy())->count();
             $planLimits = [
-                'max_accounts' => $company->plan->max_accounts,
+                'maximum_accounts' => $organization->plan->maximum_accounts,
                 'current_accounts' => $currentAccountsCount,
-                'can_create' => $currentAccountsCount < $company->plan->max_accounts
+                'can_create' => $currentAccountsCount < $organization->plan->maximum_accounts
             ];
         }
 
@@ -128,13 +128,13 @@ class AccountController extends Controller
 
     public function store(Request $request)
     {
-        // Check plan limits for company users
-        if (auth()->user()->type === 'company') {
-            $company = \App\Models\User::find(createdBy());
-            if ($company && $company->plan) {
+        // Check plan limits for organization users
+        if (auth()->user()->type === 'organization') {
+            $organization = \App\Models\User::find(createdBy());
+            if ($organization && $organization->plan) {
                 $currentAccountsCount = Account::where('created_by', createdBy())->count();
-                if ($currentAccountsCount >= $company->plan->max_accounts) {
-                    return redirect()->back()->with('error', __('Account limit reached. Your plan allows maximum :max accounts.', ['max' => $company->plan->max_accounts]));
+                if ($currentAccountsCount >= $organization->plan->maximum_accounts) {
+                    return redirect()->back()->with('error', __('Account limit reached. Your plan allows maximum :max accounts.', ['max' => $organization->plan->maximum_accounts]));
                 }
             }
         }

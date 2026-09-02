@@ -56,7 +56,7 @@ export default function ManageLanguagePage() {
     const [isToggling, setIsToggling] = useState(false);
 
     const userRoles = auth?.roles || [];
-    const isSuperAdmin = hasRole('superadmin', userRoles);
+    const isSuperAdmin = hasRole('super_admin', userRoles);
 
     // Update selectedLang when defaultLang changes (from Inertia navigation)
     useEffect(() => {

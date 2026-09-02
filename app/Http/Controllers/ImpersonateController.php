@@ -17,19 +17,19 @@ class ImpersonateController extends Controller
         Log::info('Impersonation started', [
             'acting_user_id' => auth()->id(),
             'impersonated_user_id' => $userId,
-            'ip_address' => $request->ip(),
+            'ip_address' => $request->ip_address(),
             'timestamp' => now()
         ]);
 
         $originalUserId = auth()->id();
-        
-        // Login as the target user first
+
+        // Sign in as the target user first
         auth()->loginUsingId($userId);
         // Then store original user ID in session
         session()->put('impersonated_user_id', $userId);
         session()->put('impersonated_by', $originalUserId);
         session()->save();
-        
+
         return redirect('/dashboard')->with('success', __('Now impersonating :name', ['name' => $user->name]));
     }
 
@@ -46,7 +46,7 @@ class ImpersonateController extends Controller
             session()->forget('impersonated_user_id');
             session()->save();
         }
-        
-        return redirect('/companies')->with('success', __('Returned to admin panel'));
+
+        return redirect('/organizations')->with('success', __('Returned to admin panel'));
     }
 }

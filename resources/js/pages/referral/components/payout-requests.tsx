@@ -93,13 +93,13 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
 
     // Define table columns
     const columns = [
-        ...(userType === 'superadmin' ? [{
-            key: 'company.name',
-            label: t('Company'),
+        ...(userType === 'super_admin' ? [{
+            key: 'organization.name',
+            label: t('Organization'),
             render: (_, row) => (
                 <div>
-                    <p className="text-sm font-semibold">{row.company?.name}</p>
-                    <p className="text-xs text-muted-foreground">{row.company?.email}</p>
+                    <p className="text-sm font-semibold">{row.organization?.name}</p>
+                    <p className="text-xs text-muted-foreground">{row.organization?.email}</p>
                 </div>
             )
         }] : []),
@@ -133,7 +133,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
     ];
 
     // Define table actions
-    const actions = userType === 'superadmin' ? [
+    const actions = userType === 'super_admin' ? [
         {
             label: t('Approve'),
             icon: 'Check',
@@ -152,7 +152,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
 
     return (
         <div className="space-y-6">
-            {userType === 'company' && (
+            {userType === 'organization' && (
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between">
                         <CardTitle className="text-base font-semibold">{t('Create Payout Request')}</CardTitle>
@@ -211,7 +211,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
             <Card>
                 <CardHeader>
                     <CardTitle className="text-base font-semibold">
-                        {userType === 'superadmin' ? t('All Payout Requests') : t('Your Payout Requests')}
+                        {userType === 'super_admin' ? t('All Payout Requests') : t('Your Payout Requests')}
                     </CardTitle>
                 </CardHeader>
                 <CardContent>

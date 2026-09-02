@@ -20,7 +20,7 @@ export default function LeadShow() {
   const { t } = useTranslation();
   const { lead, streamItems, auth, relatedAccounts, relatedContacts, meetings } = usePage().props as any;
   const comments = lead.comments || [];
-  const isCompany = auth?.user?.type === 'company';
+  const isOrganization = auth?.user?.type === 'organization';
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleteAllModalOpen, setIsDeleteAllModalOpen] = useState(false);
   const [currentActivity, setCurrentActivity] = useState<any>(null);
@@ -195,8 +195,8 @@ export default function LeadShow() {
                   <p className="text-sm font-medium text-foreground">{lead.phone || '—'}</p>
                 </div>
                 <div className="space-y-0.5">
-                  <p className="text-xs font-medium text-muted-foreground">{t('Company')}</p>
-                  <p className="text-sm font-medium text-foreground">{lead.company || '—'}</p>
+                  <p className="text-xs font-medium text-muted-foreground">{t('Organization')}</p>
+                  <p className="text-sm font-medium text-foreground">{lead.organization || '—'}</p>
                 </div>
                 <div className="space-y-0.5">
                   <p className="text-xs font-medium text-muted-foreground">{t('Position')}</p>

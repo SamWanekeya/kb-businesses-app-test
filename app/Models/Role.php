@@ -27,7 +27,7 @@ class Role extends BaseSpatieRole
      */
     public function getIsSystemRoleAttribute()
     {
-        $systemRoles = ['superadmin', 'super-admin', 'company'];
+        $systemRoles = ['super_admin', 'super-admin', 'organization'];
         return in_array(strtolower($this->name), $systemRoles);
     }
 }

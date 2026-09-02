@@ -18,24 +18,24 @@ class InvoiceSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $companyUsers = User::where('type', 'company')->get();
+        $organizationUsers = User::where('type', 'organization')->get();
 
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
         $statuses = ['draft', 'sent', 'pending', 'paid', 'partially_paid', 'overdue', 'cancelled'];
         $paymentMethods = ['stripe', 'paypal', 'bank_transfer'];
 
-        foreach ($companyUsers as $company) {
-            $accounts = Account::where('created_by', $company->id)->get();
-            $contacts = Contact::where('created_by', $company->id)->get();
-            $products = Product::where('created_by', $company->id)->get();
-            $salesOrders = SalesOrder::where('created_by', $company->id)->get();
-            $quotes = Quote::where('created_by', $company->id)->get();
-            $opportunities = Opportunity::where('created_by', $company->id)->get();
-            $staffUsers = User::where('created_by', $company->id)->get();
+        foreach ($organizationUsers as $organization) {
+            $accounts = Account::where('created_by', $organization->id)->get();
+            $contacts = Contact::where('created_by', $organization->id)->get();
+            $products = Product::where('created_by', $organization->id)->get();
+            $salesOrders = SalesOrder::where('created_by', $organization->id)->get();
+            $quotes = Quote::where('created_by', $organization->id)->get();
+            $opportunities = Opportunity::where('created_by', $organization->id)->get();
+            $staffUsers = User::where('created_by', $organization->id)->get();
 
             if ($accounts->isEmpty() || $contacts->isEmpty() || $products->isEmpty()) {
                 continue;
@@ -66,7 +66,7 @@ class InvoiceSeeder extends Seeder
                     'notes' => $faker->sentence(8),
                     'terms' => 'Payment due within 30 days',
                     'payment_method' => $faker->randomElement($paymentMethods),
-                    'created_by' => $company->id,
+                    'created_by' => $organization->id,
                     'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
                     'created_at' => $invoiceDate,
                 ]);
@@ -91,6 +91,6 @@ class InvoiceSeeder extends Seeder
             }
         }
 
-        $this->command->info('Invoices created for all company users!');
+        $this->command->info('Invoices created for all organization users!');
     }
 }

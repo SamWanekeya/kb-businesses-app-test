@@ -20,7 +20,7 @@ class SkrillPaymentController extends Controller
         ]);
 
         try {
-            $userID = User::where('type', 'superadmin')->first()?->id;
+            $userID = User::where('type', 'super_admin')->first()?->id;
             $settings = getPaymentMethodConfig('skrill',$userID);
             // $settings = getPaymentMethodConfig('skrill');
 

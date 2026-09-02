@@ -10,10 +10,10 @@ class DocumentFolderSeeder extends Seeder
 {
     public function run(): void
     {
-        $companyUsers = User::where('type', 'company')->get();
-        
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        $organizationUsers = User::where('type', 'organization')->get();
+
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
@@ -25,7 +25,7 @@ class DocumentFolderSeeder extends Seeder
             ['name' => 'Project Files', 'description' => 'Project documentation and deliverables'],
         ];
 
-        foreach ($companyUsers as $company) {
+        foreach ($organizationUsers as $organization) {
             $createdFolders = [];
 
             foreach ($foldersData as $folderData) {
@@ -34,7 +34,7 @@ class DocumentFolderSeeder extends Seeder
                     'parent_folder_id' => null,
                     'description' => $folderData['description'],
                     'status' => 'active',
-                    'created_by' => $company->id,
+                    'created_by' => $organization->id,
                 ]);
 
                 $createdFolders[] = $folder;
@@ -52,11 +52,11 @@ class DocumentFolderSeeder extends Seeder
                     'parent_folder_id' => $createdFolders[$subFolderData['parent_idx']]->id,
                     'description' => $subFolderData['description'],
                     'status' => 'active',
-                    'created_by' => $company->id,
+                    'created_by' => $organization->id,
                 ]);
             }
         }
-        
-        $this->command->info('Document folders created for all company users!');
+
+        $this->command->info('Document folders created for all organization users!');
     }
 }

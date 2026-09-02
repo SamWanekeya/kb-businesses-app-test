@@ -26,10 +26,10 @@ class NotificationTemplate extends Model
         return $this->hasMany(UserNotificationTemplate::class, 'template_id');
     }
 
-    public function getContentForCompany($companyId = null)
+    public function getContentForOrganization($organizationId = null)
     {
-        $companyId = $companyId ?? createdBy();
-        return $this->notificationTemplateLangs()->where('created_by', $companyId);
+        $organizationId = $organizationId ?? createdBy();
+        return $this->notificationTemplateLangs()->where('created_by', $organizationId);
     }
 
     /**

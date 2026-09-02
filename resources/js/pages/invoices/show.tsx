@@ -22,7 +22,7 @@ import { useInitials } from '@/hooks/use-initials';
 export default function InvoiceShow() {
     const { t } = useTranslation();
     const { invoice, streamItems, pendingPayments, invoiceReminders, availableSalesOrders, auth, flash } = usePage().props as any;
-    const isCompany = auth?.user?.type === 'company';
+    const isOrganization = auth?.user?.type === 'organization';
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();
     const [isAssignSalesOrderModalOpen, setIsAssignSalesOrderModalOpen] = useState(false);
@@ -223,7 +223,7 @@ export default function InvoiceShow() {
                                 <CardTitle className="text-lg font-bold">{invoice.name}</CardTitle>
                                 <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">{invoice.description || t('No description provided')}</p>
                             </div>
-                           
+
                         </div>
                     </CardHeader>
                     <CardContent className="p-5">
@@ -253,7 +253,7 @@ export default function InvoiceShow() {
                     </CardContent>
                 </Card>
 
-               
+
 
                 {/* Products */}
                 <Card className="shadow-sm overflow-hidden">
@@ -820,7 +820,7 @@ export default function InvoiceShow() {
                                 </div>
                                 <div className="flex flex-col items-end gap-1.5">
                                     {getStatusBadge(invoice.status)}
-                                    
+
                                 </div>
                             </div>
                             {/* Payment Progress Bar */}
@@ -941,7 +941,7 @@ export default function InvoiceShow() {
                                     <p className="text-xs text-muted-foreground">{t('Invoice Number')}</p>
                                     <div className="flex items-center gap-2">
                                         <p className="text-sm font-medium text-foreground">{invoice.invoice_number}</p>
-                                      
+
                                     </div>
                                 </div>
                             </div>
@@ -959,7 +959,7 @@ export default function InvoiceShow() {
                                     <p className="text-sm font-medium text-foreground">{formatDate(invoice.due_date)}</p>
                                 </div>
                             </div>
-                          
+
                             {invoice.assigned_user && (
                                 <div className="border-t pt-3">
                                     <p className="text-xs text-muted-foreground mb-2">{t('Assigned To')}</p>

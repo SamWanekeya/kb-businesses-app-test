@@ -28,14 +28,14 @@ interface Plan {
     duration: string;
     features?: string[];
     is_popular?: boolean;
-    is_plan_enable: string;
+    is_plan_enabled: string;
 }
 
 interface Testimonial {
     id: number;
     name: string;
     role: string;
-    company?: string;
+    organization?: string;
     content: string;
     avatar?: string;
     rating: number;
@@ -48,7 +48,7 @@ interface Faq {
 }
 
 interface LandingSettings {
-    company_name: string;
+    organization_name: string;
     contact_email: string;
     contact_phone: string;
     contact_address: string;

@@ -45,13 +45,13 @@ if (! function_exists('settings')) {
 
         if (is_null($user_id)) {
             if (auth()->user()) {
-                if (!in_array(auth()->user()->type, ['superadmin', 'company'])) {
+                if (!in_array(auth()->user()->type, ['super_admin', 'organization'])) {
                     $user_id = auth()->user()->created_by;
                 } else {
                     $user_id = auth()->id();
                 }
             } else {
-                $user = User::where('type', 'superadmin')->first();
+                $user = User::where('type', 'super_admin')->first();
                 $user_id = $user ? $user->id : null;
             }
         }
@@ -62,9 +62,9 @@ if (! function_exists('settings')) {
 
         $userSettings = Setting::where('user_id', $user_id)->pluck('value', 'key')->toArray();
 
-        // If user is not superadmin, merge with superadmin settings for specific keys
-        if (auth()->check() && auth()->user()->type !== 'superadmin') {
-            $superAdmin = User::where('type', 'superadmin')->first();
+        // If user is not super_admin, merge with super_admin settings for specific keys
+        if (auth()->check() && auth()->user()->type !== 'super_admin') {
+            $superAdmin = User::where('type', 'super_admin')->first();
             if ($superAdmin) {
                 $superAdminKeys = ['dateFormat', 'timeFormat', 'calendarStartDay', 'defaultTimezone', 'defaultLanguage'];
                 $superAdminSettings = Setting::where('user_id', $superAdmin->id)
@@ -118,13 +118,13 @@ if (! function_exists('updateSetting')) {
     {
         if (is_null($user_id)) {
             if (auth()->user()) {
-                if (!in_array(auth()->user()->type, ['superadmin', 'company'])) {
+                if (!in_array(auth()->user()->type, ['super_admin', 'organization'])) {
                     $user_id = auth()->user()->created_by;
                 } else {
                     $user_id = auth()->id();
                 }
             } else {
-                $user = User::where('type', 'superadmin')->first();
+                $user = User::where('type', 'super_admin')->first();
                 $user_id = $user ? $user->id : null;
             }
         }
@@ -157,23 +157,23 @@ if (! function_exists('isRegistrationEnabled')) {
 if (! function_exists('defaultRoleAndSetting')) {
     function defaultRoleAndSetting($user)
     {
-        $companyRole = Role::where('name', 'company')->first();
+        $organizationRole = Role::where('name', 'organization')->first();
 
-        if ($companyRole) {
-            $user->assignRole($companyRole);
+        if ($organizationRole) {
+            $user->assignRole($organizationRole);
         }
 
         // Create default settings for the user
-        if ($user->type === 'superadmin') {
+        if ($user->type === 'super_admin') {
             createDefaultSettings($user->id);
             createDefaultEmailTemplateSettings($user->id);
             createDefaultNotificationTemplateSettings($user->id);
-        } elseif ($user->type === 'company') {
+        } elseif ($user->type === 'organization') {
             copySettingsFromSuperAdmin($user->id);
             createDefaultNotificationTemplates($user->id);
             createDefaultEmailTemplateSettings($user->id);
             createDefaultNotificationTemplateSettings($user->id);
-            $user->companyDefaultData($user);
+            $user->organizationDefaultData($user);
         }
 
         return true;
@@ -874,12 +874,12 @@ if (! function_exists('assignPlanToUser')) {
 
         $updated = $user->update([
             'plan_id' => $plan->id,
-            'plan_expire_date' => $expiresAt,
-            'plan_is_active' => 1,
+            'plan_expiry_date' => $expiresAt,
+            'is_plan_active' => 1,
             // Clear trial status when assigning paid plan
             'is_trial' => $user->is_trial == 1 ? 0 : $user->is_trial,
-            'trial_day' => 0,
-            'trial_expire_date' => null,
+            'trial_days' => 0,
+            'trial_expiry_date' => null,
         ]);
 
         \Log::info('Plan assignment result: ' . ($updated ? 'success' : 'failed'));
@@ -909,7 +909,7 @@ if (! function_exists('processPaymentSuccess')) {
 if (! function_exists('getPaymentGatewaySettings')) {
     function getPaymentGatewaySettings()
     {
-        $superAdminId = User::where('type', 'superadmin')->first()?->id;
+        $superAdminId = User::where('type', 'super_admin')->first()?->id;
 
         return [
             'payment_settings' => PaymentSetting::getUserSettings($superAdminId),
@@ -974,7 +974,7 @@ if (! function_exists('defaultSettings')) {
             // Storage Settings
             'storage_type' => 'local',
             'storage_file_types' => 'jpg,png,webp,gif,pdf,doc,docx,txt,csv',
-            'storage_max_upload_size' => '2048',
+            'storage_maximum_upload_size' => '2048',
             'aws_access_key_id' => '',
             'aws_secret_access_key' => '',
             'aws_default_region' => 'us-east-1',
@@ -1038,20 +1038,20 @@ if (! function_exists('createDefaultSettings')) {
 
 if (! function_exists('copySettingsFromSuperAdmin')) {
     /**
-     * Copy system and brand settings from superadmin to company user
+     * Copy system and brand settings from super_admin to organization user
      *
-     * @param int $companyUserId
+     * @param int $organizationUserId
      * @return void
      */
-    function copySettingsFromSuperAdmin($companyUserId)
+    function copySettingsFromSuperAdmin($organizationUserId)
     {
-        $superAdmin = User::where('type', 'superadmin')->first();
+        $superAdmin = User::where('type', 'super_admin')->first();
         if (!$superAdmin) {
-            createDefaultSettings($companyUserId);
+            createDefaultSettings($organizationUserId);
             return;
         }
 
-        // Settings to copy from superadmin (system and brand settings only)
+        // Settings to copy from super_admin (system and brand settings only)
         $settingsToCopy = [
             'defaultLanguage',
             'dateFormat',
@@ -1082,7 +1082,7 @@ if (! function_exists('copySettingsFromSuperAdmin')) {
             'contactUsUrl'
         ];
 
-        // Currency settings - use defaults for company (not copied from superadmin)
+        // Currency settings - use defaults for organization (not copied from super_admin)
         $currencyDefaults = [
             'decimalFormat' => '2',
             'defaultCurrency' => 'USD',
@@ -1099,10 +1099,10 @@ if (! function_exists('copySettingsFromSuperAdmin')) {
 
         $settingsData = [];
 
-        // Only copy existing superadmin settings
+        // Only copy existing super_admin settings
         foreach ($superAdminSettings as $setting) {
             $settingsData[] = [
-                'user_id' => $companyUserId,
+                'user_id' => $organizationUserId,
                 'key' => $setting->key,
                 'value' => $setting->value,
                 'created_at' => now(),
@@ -1110,10 +1110,10 @@ if (! function_exists('copySettingsFromSuperAdmin')) {
             ];
         }
 
-        // Add currency defaults for company
+        // Add currency defaults for organization
         foreach ($currencyDefaults as $key => $value) {
             $settingsData[] = [
-                'user_id' => $companyUserId,
+                'user_id' => $organizationUserId,
                 'key' => $key,
                 'value' => $value,
                 'created_at' => now(),
@@ -1125,24 +1125,24 @@ if (! function_exists('copySettingsFromSuperAdmin')) {
     }
 }
 
-if (! function_exists('getCompanyName')) {
-    function getCompanyName()
+if (! function_exists('getOrganizationName')) {
+    function getOrganizationName()
     {
-        $company = User::find(createdBy());
-        if ($company) {
-            return $company->name;
+        $organization = User::find(createdBy());
+        if ($organization) {
+            return $organization->name;
         } else {
             return 'Sales';
         }
     }
 }
 
-if (! function_exists('getCompanyLogo')) {
-    function getCompanyLogo()
+if (! function_exists('getOrganizationLogo')) {
+    function getOrganizationLogo()
     {
-        $company = getSetting('logoDark', 'logo/logo-dark.png', createdBy());
-        if ($company) {
-            return $company;
+        $organization = getSetting('logoDark', 'logo/logo-dark.png', createdBy());
+        if ($organization) {
+            return $organization;
         } else {
             return 'logo/logo-dark.png';
         }
@@ -1152,9 +1152,9 @@ if (! function_exists('getCompanyLogo')) {
 if (! function_exists('createdBy')) {
     function createdBy()
     {
-        if (Auth::user()->type == 'superadmin') {
+        if (Auth::user()->type == 'super_admin') {
             return Auth::user()->id;
-        } else if (Auth::user()->type == 'company') {
+        } else if (Auth::user()->type == 'organization') {
             return Auth::user()->id;
         } else {
             return  Auth::user()->created_by;
@@ -1175,12 +1175,12 @@ if (! function_exists('IsDemo')) {
 
 if (! function_exists('createDefaultNotificationTemplates')) {
     /**
-     * Create default notification templates for a new company
+     * Create default notification templates for a new organization
      *
-     * @param int $companyId
+     * @param int $organizationId
      * @return void
      */
-    function createDefaultNotificationTemplates($companyId)
+    function createDefaultNotificationTemplates($organizationId)
     {
         $languages = json_decode(file_get_contents(resource_path('lang/language.json')), true);
         $langCodes = collect($languages)->pluck('code')->toArray();
@@ -1191,7 +1191,7 @@ if (! function_exists('createDefaultNotificationTemplates')) {
             foreach ($langCodes as $langCode) {
                 $existingContent = \App\Models\NotificationTemplateLang::where('parent_id', $template->id)
                     ->where('lang', $langCode)
-                    ->where('created_by', $companyId)
+                    ->where('created_by', $organizationId)
                     ->first();
 
                 if ($existingContent) {
@@ -1208,8 +1208,8 @@ if (! function_exists('createDefaultNotificationTemplates')) {
                         'parent_id' => $template->id,
                         'lang' => $langCode,
                         'title' => $globalContent->title,
-                        'content' => $globalContent->content,
-                        'created_by' => $companyId
+                        'notification_template_content' => $globalContent->notification_template_content,
+                        'created_by' => $organizationId
                     ]);
                 }
             }
@@ -1372,7 +1372,7 @@ if (!function_exists('getDemoCalendarData')) {
                 ];
 
                 if ($type === 'meeting') {
-                    $event['backgroundColor'] = '#3b82f6';
+                    $event['backgroundColor'] = '#A12582';
                     $event['borderColor']     = '#2563eb';
                     $event['meeting_id']      = $eventId;
                     $event['location']        = $locations[$eventId % count($locations)];
@@ -1412,7 +1412,7 @@ if (!function_exists('isDisabledEditRole')) {
 if (!function_exists('getSuperAdminSettings')) {
     function getSuperAdminSettings()
     {
-        $superAdmin = User::where('type', 'superadmin')->first();
+        $superAdmin = User::where('type', 'super_admin')->first();
         if ($superAdmin) {
             $superAdminSettings = Setting::where('user_id', $superAdmin->id)
                 ->pluck('value', 'key')
@@ -1443,7 +1443,7 @@ if (! function_exists('upload_file')) {
                             'filesystems.disks.wasabi.visibility' => 'public',
                         ]
                     );
-                    $max_size = ! empty($storage_settings['storage_max_upload_size']) ? $storage_settings['storage_max_upload_size'] : '2048';
+                    $maximum_size = ! empty($storage_settings['storage_maximum_upload_size']) ? $storage_settings['storage_maximum_upload_size'] : '2048';
                     $mimes = ! empty($storage_settings['storage_file_types']) ? $storage_settings['storage_file_types'] : 'jpeg,jpg,png,svg,zip,txt,gif,docx';
                 } elseif ($storage_settings['storage_type'] == 'aws_s3') {
                     config(
@@ -1459,10 +1459,10 @@ if (! function_exists('upload_file')) {
                             'filesystems.disks.s3.visibility' => 'public',
                         ]
                     );
-                    $max_size = ! empty($storage_settings['storage_max_upload_size']) ? $storage_settings['storage_max_upload_size'] : '2048';
+                    $maximum_size = ! empty($storage_settings['storage_maximum_upload_size']) ? $storage_settings['storage_maximum_upload_size'] : '2048';
                     $mimes = ! empty($storage_settings['storage_file_types']) ? $storage_settings['storage_file_types'] : 'jpeg,jpg,png,svg,zip,txt,gif,docx';
                 } else {
-                    $max_size = ! empty($storage_settings['storage_max_upload_size']) ? $storage_settings['storage_max_upload_size'] : '2048';
+                    $maximum_size = ! empty($storage_settings['storage_maximum_upload_size']) ? $storage_settings['storage_maximum_upload_size'] : '2048';
                     $mimes = ! empty($storage_settings['storage_file_types']) ? $storage_settings['storage_file_types'] : 'jpeg,jpg,png,svg,zip,txt,gif,docx';
                 }
                 $file = $request->$key_name;
@@ -1482,7 +1482,7 @@ if (! function_exists('upload_file')) {
                 } else {
                     $validation = [
                         'mimes:' . $mimes,
-                        'max:' . $max_size,
+                        'max:' . $maximum_size,
                     ];
                 }
                 $validator = Validator::make($request->all(), [

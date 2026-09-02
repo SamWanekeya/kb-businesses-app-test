@@ -33,8 +33,8 @@ class SendAssignLeadEmail
                 '{lead_email}' => $lead->email ?? '-',
                 '{assigned_user_name}' => $assignedUser->name ?? '-',
                 '{lead_phone}' => $lead->phone ?? '-',
-                '{lead_company}' => $lead->company ?? '-',
-                '{company_name}' => getCompanyName(),
+                '{lead_organization}' => $lead->organization ?? '-',
+                '{organization_name}' => getOrganizationName(),
             ];
 
             try {

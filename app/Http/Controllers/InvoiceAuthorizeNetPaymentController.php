@@ -37,11 +37,11 @@ class InvoiceAuthorizeNetPaymentController extends Controller
                 return back()->withErrors(['error' => $validation['message']]);
             }
 
-            $companyId = $invoice->created_by;
-            $company = User::findOrFail($companyId);
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $organization = User::findOrFail($organizationId);
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
-            if (!isset($settings['payment_settings']['authorizenet_merchant_id']) || 
+            if (!isset($settings['payment_settings']['authorizenet_merchant_id']) ||
                 !isset($settings['payment_settings']['authorizenet_transaction_key'])) {
                 \Log::error('AuthorizeNet payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
                 return back()->withErrors(['error' => __('AuthorizeNet not configured')]);
@@ -52,7 +52,7 @@ class InvoiceAuthorizeNetPaymentController extends Controller
                 return back()->withErrors(['error' => __('Minimum payment amount is $0.50')]);
             }
 
-            $result = $this->createAuthorizeNetTransaction($validated, $invoice, $company, $settings);
+            $result = $this->createAuthorizeNetTransaction($validated, $invoice, $organization, $settings);
 
             if ($result['success']) {
                 InvoicePayment::storePayment([
@@ -85,7 +85,7 @@ class InvoiceAuthorizeNetPaymentController extends Controller
         }
     }
 
-    private function createAuthorizeNetTransaction($paymentData, $invoice, $company, $settings)
+    private function createAuthorizeNetTransaction($paymentData, $invoice, $organization, $settings)
     {
         try {
             $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
@@ -94,7 +94,7 @@ class InvoiceAuthorizeNetPaymentController extends Controller
 
             $creditCard = new AnetAPI\CreditCardType();
             $creditCard->setCardNumber(preg_replace('/\s+/', '', $paymentData['card_number']));
-            
+
             $expiryYear = 2000 + intval($paymentData['expiry_year']);
             $expiryMonth = str_pad($paymentData['expiry_month'], 2, '0', STR_PAD_LEFT);
             $creditCard->setExpirationDate($expiryYear . '-' . $expiryMonth);
@@ -115,7 +115,7 @@ class InvoiceAuthorizeNetPaymentController extends Controller
             $billTo->setCity($invoice->billing_city ?? '-');
             $billTo->setState($invoice->billing_state ?? '-');
             $billTo->setZip($invoice->billing_postal_code ?? '00000');
-            $billTo->setCountry($company->country ?? 'US');
+            $billTo->setCountry($organization->country ?? 'US');
 
             $transactionRequestType = new AnetAPI\TransactionRequestType();
             $transactionRequestType->setTransactionType('authCaptureTransaction');
@@ -129,15 +129,15 @@ class InvoiceAuthorizeNetPaymentController extends Controller
             $request->setTransactionRequest($transactionRequestType);
 
             $controller = new AnetController\CreateTransactionController($request);
-            
-            $environment = ($settings['payment_settings']['authorizenet_mode'] === 'sandbox') 
-                ? \net\authorize\api\constants\ANetEnvironment::SANDBOX 
+
+            $environment = ($settings['payment_settings']['authorizenet_mode'] === 'sandbox')
+                ? \net\authorize\api\constants\ANetEnvironment::SANDBOX
                 : \net\authorize\api\constants\ANetEnvironment::PRODUCTION;
-                
+
             $response = $controller->executeWithApiResponse($environment);
 
             return $this->handleAuthorizeNetResponse($response);
-            
+
         } catch (\Exception $e) {
             return [
                 'success' => false,
@@ -154,28 +154,28 @@ class InvoiceAuthorizeNetPaymentController extends Controller
         }
 
         $messages = $response->getMessages();
-        
+
         if ($messages->getResultCode() !== 'Ok') {
             $errorMessage = __('Payment gateway error');
             if ($messages->getMessage() && count($messages->getMessage()) > 0) {
                 $errorMessage = $messages->getMessage()[0]->getText();
             }
-            
+
             return ['success' => false, 'error' => $errorMessage, 'transaction_id' => null];
         }
 
         $tresponse = $response->getTransactionResponse();
-        
+
         if ($tresponse === null) {
             return ['success' => false, 'error' => __('Invalid transaction response'), 'transaction_id' => null];
         }
 
         $responseCode = $tresponse->getResponseCode();
-        
+
         switch ($responseCode) {
             case '1':
                 return ['success' => true, 'error' => null, 'transaction_id' => $tresponse->getTransId()];
-                
+
             case '2':
             case '3':
                 $errorMessage = 'Transaction declined';
@@ -183,10 +183,10 @@ class InvoiceAuthorizeNetPaymentController extends Controller
                     $errorMessage = $tresponse->getErrors()[0]->getErrorText();
                 }
                 return ['success' => false, 'error' => $errorMessage, 'transaction_id' => null];
-                
+
             case '4':
                 return ['success' => false, 'error' => __('Transaction is being reviewed. Please contact support.'), 'transaction_id' => $tresponse->getTransId()];
-                
+
             default:
                 return ['success' => false, 'error' => __('Unknown transaction response'), 'transaction_id' => null];
         }
@@ -203,11 +203,11 @@ class InvoiceAuthorizeNetPaymentController extends Controller
         return $request->validate(array_merge($baseRules, $additionalRules));
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 }

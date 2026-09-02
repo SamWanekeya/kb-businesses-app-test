@@ -37,7 +37,7 @@ class SlackService
                 throw new Exception("No content found for template '{$templateName}'");
             }
 
-            $message = $this->replaceVariables($templateLang->content, $variables);
+            $message = $this->replaceVariables($templateLang->template_content, $variables);
 
             return $this->sendMessage($message);
         } catch (Exception $e) {

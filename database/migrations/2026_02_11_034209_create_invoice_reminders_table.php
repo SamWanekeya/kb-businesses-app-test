@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('invoice_reminders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invoice_id')->constrained()->onDelete('cascade');
-            $table->foreignId('sent_by')->constrained('users')->onDelete('cascade');
-            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
+            $table->foreignId('invoice_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('sent_by')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
             $table->string('type')->nullable();
             $table->timestamps();
         });

@@ -25,10 +25,7 @@ return new class extends Migration
             $table->json('generated_conversions');
             $table->json('responsive_images');
             $table->unsignedInteger('order_column')->nullable()->index();
-            $table->unsignedBigInteger('user_id')->nullable();
-            
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
-
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->nullableTimestamps();
         });
     }

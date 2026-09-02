@@ -24,7 +24,7 @@ interface PageProps {
   page: CustomPage;
   customPages: CustomPageData[];
   settings: {
-    company_name: string;
+    organization_name: string;
     contact_email?: string;
     contact_phone?: string;
     contact_address?: string;
@@ -88,7 +88,7 @@ export default function CustomPage() {
     }
   `;
   const { page, customPages = [], settings } = usePage<PageProps>().props;
-  const primaryColor = settings?.config_sections?.theme?.primary_color || '#3b82f6';
+  const primaryColor = settings?.config_sections?.theme?.primary_color || '#A12582';
   const secondaryColor = settings?.config_sections?.theme?.secondary_color || '#8b5cf6';
   const accentColor = settings?.config_sections?.theme?.accent_color || '#10b77f';
   const globalSettings = (usePage().props as any).globalSettings;

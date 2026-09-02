@@ -46,7 +46,7 @@ class TranslationController extends BaseController
                 //         'value' => $direction
                 //     ]
                 // );
-                
+
                 // if (in_array($locale, ['ar', 'he'])) {
                 //     Setting::updateOrCreate(
                 //         [
@@ -60,8 +60,8 @@ class TranslationController extends BaseController
                 // }
 
             } else {
-                // For unauthenticated users on auth pages, use superadmin's language
-                $superAdmin = User::where('type', 'superadmin')->first();
+                // For unauthenticated users on auth pages, use super_admin's language
+                $superAdmin = User::where('type', 'super_admin')->first();
                 if ($superAdmin && request()->is('login', 'register', 'password/*', 'email/*')) {
                     $locale = $superAdmin->lang ?? 'en';
                     $path = resource_path("lang/{$locale}.json");
@@ -71,7 +71,7 @@ class TranslationController extends BaseController
                         $locale = 'en';
                     }
 
-                    // Re-determine direction based on superadmin's locale
+                    // Re-determine direction based on super_admin's locale
                     $direction = in_array($locale, ['ar', 'he']) ? 'right' : 'left';
                     $layoutDirection = in_array($locale, ['ar', 'he']) ? 'rtl' : 'ltr';
                 }
@@ -106,8 +106,8 @@ class TranslationController extends BaseController
         if (auth()->check()) {
             $locale = auth()->user()->lang ?? 'en';
         } elseif (request()->is('login', 'register', 'password/*', 'email/*')) {
-            // For auth pages, get from superadmin
-            $superAdmin = User::where('type', 'superadmin')->first();
+            // For auth pages, get from super_admin
+            $superAdmin = User::where('type', 'super_admin')->first();
             $locale = $superAdmin->lang ?? 'en';
         } else {
             $locale = 'en';

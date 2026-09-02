@@ -38,7 +38,7 @@ const iconMap: Record<string, React.ComponentType<any>> = {
   'award': Award
 };
 
-export default function WhyChooseUs({ settings, sectionData, brandColor = '#3b82f6' }: WhyChooseUsProps) {
+export default function WhyChooseUs({ settings, sectionData, brandColor = '#A12582' }: WhyChooseUsProps) {
   const { ref, isVisible } = useScrollAnimation();
   const { t } = useTranslation();
   // Default data if none provided

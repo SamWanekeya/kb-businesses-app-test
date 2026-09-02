@@ -63,21 +63,21 @@ class RoleController extends BaseController
     private function getFilteredPermissions()
     {
         $user = Auth::user();
-        $userType = $user->type ?? 'company';
+        $userType = $user->type ?? 'organization';
 
         // Superadmin can see all permissions
-        if ($userType === 'superadmin' || $userType === 'super admin') {
+        if ($userType === 'super_admin' || $userType === 'super admin') {
             return Permission::all()->groupBy('module');
         }
 
-        // Get allowed modules - use company config for both company and staff users
-        $allowedModules = config('role-permissions.company');
+        // Get allowed modules - use organization config for both organization and staff users
+        $allowedModules = config('role-permissions.organization');
 
         // Filter permissions by allowed modules
         $query = Permission::whereIn('module', $allowedModules);
 
-        // For company users, exclude notification template permissions from role management
-        if ($userType === 'company') {
+        // For organization users, exclude notification template permissions from role management
+        if ($userType === 'organization') {
             $query->where(function ($q) {
                 $q->where('module', '!=', 'settings')
                     ->where('module', '!=', 'notification_templates')
@@ -100,22 +100,22 @@ class RoleController extends BaseController
     private function validatePermissions(array $permissionNames)
     {
         $user = Auth::user();
-        $userType = $user->type ?? 'company';
+        $userType = $user->type ?? 'organization';
 
         // Superadmin can assign any permission
-        if ($userType === 'superadmin' || $userType === 'super admin') {
+        if ($userType === 'super_admin' || $userType === 'super admin') {
             return $permissionNames;
         }
 
         // Get allowed modules for current user role
-        $allowedModules = config('role-permissions.' . $userType, config('role-permissions.company'));
+        $allowedModules = config('role-permissions.' . $userType, config('role-permissions.organization'));
 
         // Build query to get valid permissions
         $query = Permission::whereIn('module', $allowedModules)
             ->whereIn('name', $permissionNames);
 
-        // For company users, restrict settings and notification template permissions
-        if ($userType === 'company') {
+        // For organization users, restrict settings and notification template permissions
+        if ($userType === 'organization') {
             $query->where(function ($q) {
                 $q->where('module', '!=', 'settings')
                     ->where('module', '!=', 'notification_templates')

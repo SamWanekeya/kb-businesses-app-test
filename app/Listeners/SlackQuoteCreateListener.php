@@ -25,7 +25,7 @@ class SlackQuoteCreateListener
                 '{account_name}' => $account->name ?? '-',
                 '{total_amount}' => $quote->total_amount ? number_format($quote->total_amount, 2) : '0.00',
                 '{valid_until}' => $quote->valid_until ? date('Y-m-d', strtotime($quote->valid_until)) : '-',
-                '{company_name}' => getCompanyName()
+                '{organization_name}' => getOrganizationName()
             ];
 
             try {

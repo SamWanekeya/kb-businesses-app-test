@@ -42,7 +42,7 @@ export function InvoiceFlutterwavePaymentForm({
                 currency: currency.toUpperCase(),
                 payment_options: 'card,mobilemoney,ussd',
                 customer: {
-                    email: 'customer@example.com', // Should be dynamic if available
+                    email: 'customer@kakbima.dev', // Should be dynamic if available
                     phone_number: '',
                     name: 'Customer',
                 },

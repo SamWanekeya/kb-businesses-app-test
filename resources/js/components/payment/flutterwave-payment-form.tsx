@@ -49,7 +49,7 @@ export function FlutterwavePaymentForm({
         currency: currency.toUpperCase(),
         payment_options: 'card,mobilemoney,ussd',
         customer: {
-          email: 'user@example.com', // Should be dynamic
+          email: 'user@kakbima.dev', // Should be dynamic
           phone_number: '',
           name: 'Customer',
         },

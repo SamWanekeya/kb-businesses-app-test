@@ -25,7 +25,7 @@ interface TeamSectionProps {
     };
 }
 
-export default function TeamSection({ settings, sectionData, brandColor = '#3b82f6' }: TeamSectionProps) {
+export default function TeamSection({ settings, sectionData, brandColor = '#A12582' }: TeamSectionProps) {
     const [imgErrors, setImgErrors] = useState<Set<number>>(new Set());
 
     const handleImgError = (index: number) => {

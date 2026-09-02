@@ -13,15 +13,15 @@ class LeadSourceSeeder extends Seeder
      */
     public function run(): void
     {
-        $companyUsers = User::where('type', 'company')->get();
-        
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        $organizationUsers = User::where('type', 'organization')->get();
+
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
         $sourceTemplates = [
-            ['name' => 'Website', 'description' => 'Leads from company website'],
+            ['name' => 'Website', 'description' => 'Leads from organization website'],
             ['name' => 'Social Media', 'description' => 'Leads from social media platforms'],
             ['name' => 'Email Campaign', 'description' => 'Leads from email marketing campaigns'],
             ['name' => 'Referral', 'description' => 'Leads from customer referrals'],
@@ -29,20 +29,20 @@ class LeadSourceSeeder extends Seeder
             ['name' => 'Trade Show', 'description' => 'Leads from trade shows and events']
         ];
 
-        foreach ($companyUsers as $company) {
+        foreach ($organizationUsers as $organization) {
             foreach ($sourceTemplates as $template) {
                 LeadSource::firstOrCreate(
-                    ['name' => $template['name'], 'created_by' => $company->id],
+                    ['name' => $template['name'], 'created_by' => $organization->id],
                     [
                         'name' => $template['name'],
                         'description' => $template['description'],
                         'status' => 'active',
-                        'created_by' => $company->id,
+                        'created_by' => $organization->id,
                     ]
                 );
             }
         }
-        
-        $this->command->info('Lead sources created for all company users!');
+
+        $this->command->info('Lead sources created for all organization users!');
     }
 }

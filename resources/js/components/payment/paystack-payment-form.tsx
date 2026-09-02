@@ -14,15 +14,15 @@ interface PaystackPaymentFormProps {
   onCancel: () => void;
 }
 
-export function PaystackPaymentForm({ 
-  planId, 
+export function PaystackPaymentForm({
+  planId,
   planPrice,
-  couponCode, 
-  billingCycle, 
+  couponCode,
+  billingCycle,
   paystackKey,
   currency,
-  onSuccess, 
-  onCancel 
+  onSuccess,
+  onCancel
 }: PaystackPaymentFormProps) {
   const { t } = useTranslation();
   const initialized = useRef(false);
@@ -38,19 +38,19 @@ export function PaystackPaymentForm({
     const script = document.createElement('script');
     script.src = 'https://js.paystack.co/v1/inline.js';
     script.async = true;
-    
+
     script.onload = () => {
       initialized.current = true;
-      
+
       // Hide parent modal temporarily
       const modalBackdrop = document.querySelector('[data-radix-dialog-overlay]');
       if (modalBackdrop) {
         (modalBackdrop as HTMLElement).style.display = 'none';
       }
-      
+
       const handler = window.PaystackPop.setup({
         key: paystackKey,
-        email: 'user@example.com', // Should be dynamic
+        email: 'user@kakbima.dev', // Should be dynamic
         amount: Math.round(Number(planPrice) * 100), // Convert to kobo as integer
         currency: currency.toUpperCase(),
         callback: function(response: any) {
@@ -73,7 +73,7 @@ export function PaystackPaymentForm({
           onCancel();
         }
       });
-      
+
       handler.openIframe();
     };
 

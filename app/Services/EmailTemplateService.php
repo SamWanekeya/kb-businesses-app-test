@@ -44,7 +44,7 @@ class EmailTemplateService
 
             // Replace variables in subject and content
             $subject = $this->replaceVariables($templateLang->subject, $variables);
-            $content = $this->replaceVariables($templateLang->content, $variables);
+            $content = $this->replaceVariables($templateLang->email_template_content, $variables);
             $fromName = $this->replaceVariables($template->from, $variables);
 
             // Configure SMTP settings
@@ -115,7 +115,7 @@ class EmailTemplateService
 
             // Replace variables in subject and content
             $subject = $this->replaceVariables($templateLang->subject, $variables);
-            $content = $this->replaceVariables($templateLang->content, $variables);
+            $content = $this->replaceVariables($templateLang->email_template_content, $variables);
             $fromName = $this->replaceVariables($template->from, $variables);
 
             // Configure SMTP settings

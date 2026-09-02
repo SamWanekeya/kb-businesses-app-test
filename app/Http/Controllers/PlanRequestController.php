@@ -13,7 +13,7 @@ class PlanRequestController extends BaseController
     {
         $query = PlanRequest::with(['user', 'plan', 'approver', 'rejector']);
 
-        if (Auth::user()->hasRole('company')) {
+        if (Auth::user()->hasRole('organization')) {
             $query->where('user_id', Auth::user()->id);
         }
 

@@ -16,22 +16,22 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create Super Admin User
+        // Create Super Administrator User
         $superAdmin = User::firstOrCreate(
-            ['email' => 'superadmin@example.com'],
+            ['email' => 'super_admin@kakbima.dev'],
             [
-                'name' => 'Super Admin',
+                'name' => 'Super Administrator',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
-                'type' => 'superadmin',
+                'password' => Hash::make('Kakbima@DemoAccount2026'),
+                'type' => 'super_admin',
                 'lang' => 'en'
             ]
         );
 
         // Assign super admin role
-        $superAdmin->assignRole('superadmin');
+        $superAdmin->assignRole('super_admin');
 
-        // Create default settings for superadmin if not exists
+        // Create default settings for super_admin if not exists
         if (!Setting::where('user_id', $superAdmin->id)->exists()) {
             createDefaultSettings($superAdmin->id);
         }
@@ -39,14 +39,14 @@ class UserSeeder extends Seeder
         // Get default plan
         $defaultPlan = Plan::where('is_default', true)->first();
 
-        // Create Company User
-        $company = User::firstOrCreate(
-            ['email' => 'company@example.com'],
+        // Create Organization User
+        $organization = User::firstOrCreate(
+            ['email' => 'organization@kakbima.dev'],
             [
-                'name' => 'Company',
+                'name' => 'Organization',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
-                'type' => 'company',
+                'password' => Hash::make('Kakbima@DemoAccount2026'),
+                'type' => 'organization',
                 'lang' => 'en',
                 // 'plan_id' => $defaultPlan ? $defaultPlan->id : null,
                 'referral_code' => rand(100000, 999999),
@@ -54,17 +54,17 @@ class UserSeeder extends Seeder
             ]
         );
 
-        // Assign company role
-        $company->assignRole('company');
+        // Assign organization role
+        $organization->assignRole('organization');
 
-        // Create default settings for company user if not exists
-        if (!Setting::where('user_id', $company->id)->exists()) {
-            copySettingsFromSuperAdmin($company->id);
+        // Create default settings for organization user if not exists
+        if (!Setting::where('user_id', $organization->id)->exists()) {
+            copySettingsFromSuperAdmin($organization->id);
         }
 
-        // Assign default plan to all company users with null plan_id
+        // Assign default plan to all organization users with null plan_id
         if ($defaultPlan) {
-            User::where('type', 'company')
+            User::where('type', 'organization')
                 ->whereNull('plan_id')
                 ->update(['plan_id' => $defaultPlan->id]);
         }

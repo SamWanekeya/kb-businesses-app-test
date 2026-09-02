@@ -96,10 +96,10 @@ export default function TemplatePreview() {
                                     <td>
                                         <strong>From:</strong>
                                         <p style={{ margin: '10px 0 0 0' }}>
-                                            {settings?.companyName || 'Your Company'}<br />
-                                            {settings?.companyAddress || '123 Business St'}<br />
-                                            {settings?.companyCity || 'City'}, {settings?.companyState || 'State'} {settings?.companyZipcode || '12345'}<br />
-                                            {settings?.companyCountry || 'Country'}
+                                            {settings?.organizationName || 'Your Organization'}<br />
+                                            {settings?.organizationAddress || '123 Business St'}<br />
+                                            {settings?.organizationCity || 'City'}, {settings?.organizationState || 'State'} {settings?.organizationZipcode || '12345'}<br />
+                                            {settings?.organizationCountry || 'Country'}
                                         </p>
                                     </td>
                                     <td className="text-right">

@@ -29,9 +29,9 @@ class InvoiceBenefitPaymentController extends Controller
                 return response()->json(['success' => false, 'message' => $validation['message']], 400);
             }
 
-            $companyId = $invoice->created_by;
-            $company = User::findOrFail($companyId);
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $organization = User::findOrFail($organizationId);
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['benefit_secret_key']) || !isset($settings['payment_settings']['benefit_public_key'])) {
                 return response()->json(['success' => false, 'message' => __('Benefit payment not configured')], 400);
@@ -53,7 +53,7 @@ class InvoiceBenefitPaymentController extends Controller
                     "first_name" => $invoice->customer_name ?? 'Customer',
                     "middle_name" => "",
                     "last_name" => "",
-                    "email" => $invoice->customer_email ?? 'customer@example.com',
+                    "email" => $invoice->customer_email ?? 'customer@kakbima.dev',
                     "phone" => ["country_code" => "973", "number" => "33123456"]
                 ],
                 "source" => ["id" => "src_bh.benefit"],
@@ -70,7 +70,7 @@ class InvoiceBenefitPaymentController extends Controller
                 'Authorization' => 'Bearer ' . $settings['payment_settings']['benefit_secret_key'],
                 'accept' => 'application/json',
                 'content-type' => 'application/json',
-            ])->post('https://api.tap.company/v2/charges', $userData);
+            ])->post('https://api.tap.organization/v2/charges', $userData);
 
             if ($response->successful()) {
                 $res = $response->json();
@@ -172,11 +172,11 @@ class InvoiceBenefitPaymentController extends Controller
         return $request->validate(array_merge($baseRules, $additionalRules));
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 }

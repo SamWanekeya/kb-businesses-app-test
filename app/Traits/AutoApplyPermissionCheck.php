@@ -33,26 +33,26 @@ trait AutoApplyPermissionCheck
         }
 
         $user = auth()->user();
-        
-        // Check if user is superadmin - they can see everything
-        if ($user->hasRole(['superadmin'])) {
+
+        // Check if user is super_admin - they can see everything
+        if ($user->hasRole(['super_admin'])) {
             return $query;
         }
-        
-        // For company users, show only their created records
-        if ($user->hasRole(['company'])) {
+
+        // For organization users, show only their created records
+        if ($user->hasRole(['organization'])) {
             if (Schema::hasColumn($query->getModel()->getTable(), 'created_by')) {
                 return $query->where('created_by', $user->id);
             }
         }
-        
-        // For staff users, show records from their company
-        if ($user->type !== 'superadmin' && $user->created_by) {
+
+        // For staff users, show records from their organization
+        if ($user->type !== 'super_admin' && $user->created_by) {
             if (Schema::hasColumn($query->getModel()->getTable(), 'created_by')) {
                 return $query->where('created_by', $user->created_by);
             }
         }
-        
+
         try {
             // If user has permission to list all items, return the query without filtering
             if ($user->hasPermissionTo("manage-any-{$module}")) {
@@ -68,7 +68,7 @@ trait AutoApplyPermissionCheck
                 return $query;
             }
         }
-        
+
         try {
             // If user has permission to list only their own items, filter by created_by
             if ($user->hasPermissionTo("manage-own-{$module}")) {
@@ -87,7 +87,7 @@ trait AutoApplyPermissionCheck
                 return $query;
             }
         }
-        
+
         // If user doesn't have any relevant permissions, return no results
         return $query;
     }

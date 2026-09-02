@@ -17,23 +17,23 @@ class ReturnOrderSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $companyUsers = User::where('type', 'company')->get();
+        $organizationUsers = User::where('type', 'organization')->get();
 
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
         $statuses = ['pending', 'approved', 'shipped', 'received', 'processed', 'cancelled'];
         $reasons = ['defective', 'wrong_item', 'damaged', 'not_needed', 'other'];
 
-        foreach ($companyUsers as $company) {
-            $salesOrders = SalesOrder::where('created_by', $company->id)->get();
-            $accounts = Account::where('created_by', $company->id)->get();
-            $contacts = Contact::where('created_by', $company->id)->get();
-            $products = Product::where('created_by', $company->id)->get();
-            $shippingTypes = ShippingProviderType::where('created_by', $company->id)->get();
-            $staffUsers = User::where('created_by', $company->id)->get();
+        foreach ($organizationUsers as $organization) {
+            $salesOrders = SalesOrder::where('created_by', $organization->id)->get();
+            $accounts = Account::where('created_by', $organization->id)->get();
+            $contacts = Contact::where('created_by', $organization->id)->get();
+            $products = Product::where('created_by', $organization->id)->get();
+            $shippingTypes = ShippingProviderType::where('created_by', $organization->id)->get();
+            $staffUsers = User::where('created_by', $organization->id)->get();
 
             if ($salesOrders->isEmpty() || $accounts->isEmpty() || $products->isEmpty()) {
                 continue;
@@ -57,7 +57,7 @@ class ReturnOrderSeeder extends Seeder
                     'reason_description' => $faker->sentence(8),
                     'return_date' => $faker->dateTimeBetween('-1 month', '+1 month'),
                     'notes' => $faker->sentence(10),
-                    'created_by' => $company->id,
+                    'created_by' => $organization->id,
                     'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
                     'created_at' => $faker->dateTimeBetween('-1 month', 'now'),
                 ]);
@@ -79,6 +79,6 @@ class ReturnOrderSeeder extends Seeder
             }
         }
 
-        $this->command->info('Return orders created for all company users!');
+        $this->command->info('Return orders created for all organization users!');
     }
 }

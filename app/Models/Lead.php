@@ -13,7 +13,7 @@ class Lead extends BaseModel
         'name',
         'email',
         'phone',
-        'company',
+        'organization',
         'account_name',
         'account_industry_id',
         'website',

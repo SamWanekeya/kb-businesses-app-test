@@ -22,17 +22,17 @@ class ReferralController extends Controller
         if ($user->isSuperAdmin()) {
             return $this->superAdminView($settings);
         } else {
-            return $this->companyView($user, $settings);
+            return $this->organizationView($user, $settings);
         }
     }
 
     private function superAdminView($settings)
     {
-        $totalReferralUsers = User::whereNotNull('used_referral_code')->where('used_referral_code', '!=', 0)->count();
+        $totalReferralUsers = User::whereNotNull('referral_code_used')->where('referral_code_used', '!=', 0)->count();
         $pendingPayouts = PayoutRequest::where('status', 'pending')->count();
         $totalCommissionPaid = PayoutRequest::where('status', 'approved')->sum('amount');
 
-        $monthlyReferrals = User::whereNotNull('used_referral_code')
+        $monthlyReferrals = User::whereNotNull('referral_code_used')
             ->selectRaw('MONTH(created_at) as month, COUNT(*) as count')
             ->whereYear('created_at', date('Y'))
             ->groupBy('month')
@@ -46,21 +46,21 @@ class ReferralController extends Controller
             ->pluck('total', 'month')
             ->toArray();
 
-        $topCompanies = User::select('users.id', 'users.name', 'users.email', 'users.avatar', 'users.referral_code')
+        $topOrganizations = User::select('users.id', 'users.name', 'users.email', 'users.avatar', 'users.referral_code')
             ->selectRaw('COUNT(referrals.id) as referral_count, SUM(referrals.amount) as total_earned')
-            ->leftJoin('referrals', 'users.id', '=', 'referrals.company_id')
-            ->where('users.type', 'company')
+            ->leftJoin('referrals', 'users.id', '=', 'referrals.organization_id')
+            ->where('users.type', 'organization')
             ->whereNotNull('users.referral_code')
             ->groupBy('users.id', 'users.name', 'users.email', 'users.avatar', 'users.referral_code')
             ->orderByDesc('referral_count')
             ->limit(10)
             ->get();
 
-        $payoutRequests = PayoutRequest::with('company')
+        $payoutRequests = PayoutRequest::with('organization')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
         // Always use super admin currency for plan pricing
-        $superAdmin = User::where('type', 'superadmin')->first();
+        $superAdmin = User::where('type', 'super_admin')->first();
         $superAdminSettings = settings($superAdmin->id);
         $currency = $superAdminSettings ? ($superAdminSettings['defaultCurrency'] ?? 'USD') : 'USD';
         $currencySymbol = '$';
@@ -69,21 +69,21 @@ class ReferralController extends Controller
             $currencySymbol = $currencyData ? $currencyData->symbol : '$';
         }
 
-        // $referredUsers = User::whereNotNull('used_referral_code')
+        // $referredUsers = User::whereNotNull('referral_code_used')
         //     ->with(['plan', 'referrals', 'planOrders' => function ($query) {
         //         $query->where('status', 'approved')->orderBy('created_at', 'desc')->limit(1);
         //     }])
-        //     ->where('used_referral_code', '!=', 0)
+        //     ->where('referral_code_used', '!=', 0)
         //     ->orderBy('created_at', 'desc')
         //     ->paginate(5)
         //     ->withQueryString();
 
-        // Get all referred users for the company with pagination
-        $referredUsersQuery = User::whereNotNull('used_referral_code')
+        // Get all referred users for the organization with pagination
+        $referredUsersQuery = User::whereNotNull('referral_code_used')
             ->with(['plan', 'referrals', 'planOrders' => function ($query) {
                 $query->where('status', 'approved')->orderBy('created_at', 'desc')->limit(1);
             }])
-            ->where('used_referral_code', '!=', 0)
+            ->where('referral_code_used', '!=', 0)
             ->orderBy('created_at', 'desc');
 
         $usersWithPlans = (clone $referredUsersQuery)->whereHas('plan', function ($query) {
@@ -101,7 +101,7 @@ class ReferralController extends Controller
             ->withQueryString();
 
         return Inertia::render('referral/index', [
-            'userType' => 'superadmin',
+            'userType' => 'super_admin',
             'settings' => $settings,
             'stats' => [
                 'totalReferralUsers' => $totalReferralUsers,
@@ -109,7 +109,7 @@ class ReferralController extends Controller
                 'totalCommissionPaid' => $totalCommissionPaid,
                 'monthlyReferrals' => $monthlyReferrals,
                 'monthlyPayouts' => $monthlyPayouts,
-                'topCompanies' => $topCompanies,
+                'topOrganizations' => $topOrganizations,
             ],
             'payoutRequests' => $payoutRequests,
             'usersWithPlans' => $usersWithPlans,
@@ -120,27 +120,27 @@ class ReferralController extends Controller
         ]);
     }
 
-    private function companyView($user, $settings)
+    private function organizationView($user, $settings)
     {
-        $totalReferrals = Referral::where('company_id', $user->id)->count();
-        $totalEarned = Referral::where('company_id', $user->id)->sum('amount');
-        $totalPayoutRequests = PayoutRequest::where('company_id', $user->id)->count();
-        $pendingAmount = PayoutRequest::where('company_id', $user->id)
+        $totalReferrals = Referral::where('organization_id', $user->id)->count();
+        $totalEarned = Referral::where('organization_id', $user->id)->sum('amount');
+        $totalPayoutRequests = PayoutRequest::where('organization_id', $user->id)->count();
+        $pendingAmount = PayoutRequest::where('organization_id', $user->id)
             ->where('status', 'pending')
             ->sum('amount');
-        $availableBalance = $totalEarned - PayoutRequest::where('company_id', $user->id)
+        $availableBalance = $totalEarned - PayoutRequest::where('organization_id', $user->id)
             ->whereIn('status', ['pending', 'approved'])
             ->sum('amount');
 
-        $payoutRequests = PayoutRequest::where('company_id', $user->id)
+        $payoutRequests = PayoutRequest::where('organization_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        // Get referred users count (users who used this company's referral code)
-        $referredUsersCount = User::where('used_referral_code', $user->referral_code)->count();
+        // Get referred users count (users who used this organization's referral code)
+        $referredUsersCount = User::where('referral_code_used', $user->referral_code)->count();
 
         // Get recent referred users
-        $recentReferredUsers = User::where('used_referral_code', $user->referral_code)
+        $recentReferredUsers = User::where('referral_code_used', $user->referral_code)
             ->with(['plan', 'planOrders' => function ($query) {
                 $query->where('status', 'approved')->orderBy('created_at', 'desc')->limit(1);
             }])
@@ -159,8 +159,8 @@ class ReferralController extends Controller
 
         $referralLink = url('/register?ref=' . $user->referral_code);
 
-        // Get all referred users for the company with pagination
-        $referredUsersQuery = User::where('used_referral_code', $user->referral_code)
+        // Get all referred users for the organization with pagination
+        $referredUsersQuery = User::where('referral_code_used', $user->referral_code)
             ->with(['plan', 'referrals', 'planOrders' => function ($query) {
                 $query->where('status', 'approved')->orderBy('created_at', 'desc')->limit(1);
             }])
@@ -181,7 +181,7 @@ class ReferralController extends Controller
             ->withQueryString();
 
         // Always use super admin currency for plan pricing
-        $superAdmin = User::where('type', 'superadmin')->first();
+        $superAdmin = User::where('type', 'super_admin')->first();
         $superAdminSettings = settings($superAdmin->id);
         $currency = $superAdminSettings ? ($superAdminSettings['defaultCurrency'] ?? 'USD') : 'USD';
         $currencySymbol = '$';
@@ -191,7 +191,7 @@ class ReferralController extends Controller
         }
 
         return Inertia::render('referral/index', [
-            'userType' => 'company',
+            'userType' => 'organization',
             'settings' => $settings,
             'stats' => [
                 'totalReferrals' => $totalReferrals,
@@ -236,8 +236,8 @@ class ReferralController extends Controller
             'amount' => 'required|numeric|min:1',
         ]);
 
-        $totalEarned = Referral::where('company_id', $user->id)->sum('amount');
-        $totalRequested = PayoutRequest::where('company_id', $user->id)
+        $totalEarned = Referral::where('organization_id', $user->id)->sum('amount');
+        $totalRequested = PayoutRequest::where('organization_id', $user->id)
             ->whereIn('status', ['pending', 'approved'])
             ->sum('amount');
         $availableBalance = $totalEarned - $totalRequested;
@@ -251,7 +251,7 @@ class ReferralController extends Controller
         }
 
         PayoutRequest::create([
-            'company_id' => $user->id,
+            'organization_id' => $user->id,
             'amount' => $request->amount,
             'status' => 'pending',
         ]);
@@ -279,7 +279,7 @@ class ReferralController extends Controller
     {
         $user = Auth::user();
         // Always use super admin currency for plan pricing
-        $superAdmin = User::where('type', 'superadmin')->first();
+        $superAdmin = User::where('type', 'super_admin')->first();
         $superAdminSettings = settings($superAdmin->id);
         $currency = $superAdminSettings ? ($superAdminSettings['defaultCurrency'] ?? 'USD') : 'USD';
         $currencySymbol = '$';
@@ -289,17 +289,17 @@ class ReferralController extends Controller
         }
         if ($user->isSuperAdmin()) {
             // Super admin can see all referred users
-            $referredUsers = User::whereNotNull('used_referral_code')
+            $referredUsers = User::whereNotNull('referral_code_used')
                 ->with(['plan', 'referrals', 'planOrders' => function ($query) {
                     $query->where('status', 'approved')->orderBy('created_at', 'desc')->limit(1);
                 }])
-                ->where('used_referral_code', '!=', 0)
+                ->where('referral_code_used', '!=', 0)
                 ->orderBy('created_at', 'desc')
                 ->paginate(15)
                 ->withQueryString();
         } else {
-            // Company can see users who used their referral code
-            $referredUsers = User::where('used_referral_code', $user->referral_code)
+            // Organization can see users who used their referral code
+            $referredUsers = User::where('referral_code_used', $user->referral_code)
                 ->with(['plan', 'referrals', 'planOrders' => function ($query) {
                     $query->where('status', 'approved')->orderBy('created_at', 'desc')->limit(1);
                 }])
@@ -309,7 +309,7 @@ class ReferralController extends Controller
         }
         return Inertia::render('referral/referred-users', [
             'referredUsers' => $referredUsers,
-            'userType' => $user->isSuperAdmin() ? 'superadmin' : 'company',
+            'userType' => $user->isSuperAdmin() ? 'super_admin' : 'organization',
             'currency' => $currency,
             'currencySymbol' => $currencySymbol
         ]);
@@ -322,7 +322,7 @@ class ReferralController extends Controller
     {
         $settings = ReferralSetting::current();
 
-        if (!$settings->is_enabled || !$user->used_referral_code || !$user->plan) {
+        if (!$settings->is_enabled || !$user->referral_code_used || !$user->plan) {
             return;
         }
 
@@ -335,8 +335,8 @@ class ReferralController extends Controller
             return; // Already created
         }
 
-        $referrer = User::where('referral_code', $user->used_referral_code)
-            ->where('type', 'company')
+        $referrer = User::where('referral_code', $user->referral_code_used)
+            ->where('type', 'organization')
             ->first();
 
         if (!$referrer) {
@@ -363,7 +363,7 @@ class ReferralController extends Controller
         if ($commissionAmount > 0) {
             Referral::create([
                 'user_id' => $user->id,
-                'company_id' => $referrer->id,
+                'organization_id' => $referrer->id,
                 'commission_percentage' => $settings->commission_percentage,
                 'amount' => $commissionAmount,
                 'plan_id' => $user->plan_id,

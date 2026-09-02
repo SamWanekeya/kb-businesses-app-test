@@ -5,8 +5,8 @@ namespace App\Package;
 
 class Reference
 {
-  protected $REQUIRED_CONFIG_VARS = ['company_tap_secret_key'=>true];
-  protected $CONFIG_VARS = ['company_tap_secret_key'=>null];
+  protected $REQUIRED_CONFIG_VARS = ['organization_tap_secret_key'=>true];
+  protected $CONFIG_VARS = ['organization_tap_secret_key'=>null];
   protected $CARD_VARS = ['number' => null,'exp_month' => null,'exp_year' => null,'cvc' => null,'name'=>null,'country'=>null,'line1'=>null,'city'=>null,'street'=>null,'avenue'=>null];
   protected $REQUIRED_CUSTOMER_VARS = ['name'];
   protected $REQUIRED_CARD_VARS = ['number' => true,'exp_month' => true,'exp_year' => true,'cvc' => true];
@@ -18,7 +18,7 @@ class Reference
       ]
     ],
     'address' => [
-      'country' => false,'city' => false,'line1' => false,'ip' => false
+      'country' => false,'city' => false,'line1' => false,'ip_address' => false
     ],
     'amount' => true,'currency' => true,'save_card' => false,'threeDSecure' => true,'description' => true,'statement_descriptor' => false,
     'metadata' => [
@@ -51,7 +51,7 @@ class Reference
       ]
     ],
     'address' => [
-      'country' => null,'city' => null,'line1' => null,'ip' => null
+      'country' => null,'city' => null,'line1' => null,'ip_address' => null
     ],
     'amount' => null,'currency' => null,'save_card' => 'false','description' => null,'threeDSecure' => 'true','statement_descriptor' => null,
     'metadata' => [

@@ -17,11 +17,11 @@ class UserService
     {
         try {
             if (empty($user->type)) {
-                $user->type = 'company';
+                $user->type = 'organization';
                 $user->save();
                 return true;
             }
-            
+
             return false;
         } catch (\Exception $e) {
             \Log::error('Failed to assign default role: ' . $e->getMessage());
@@ -30,27 +30,27 @@ class UserService
     }
 
     /**
-     * Assign company role and permissions to user
+     * Assign organization role and permissions to user
      *
      * @param User $user
      * @return bool
      */
-    public static function assignCompanyPermissions(User $user): bool
+    public static function assignOrganizationPermissions(User $user): bool
     {
         try {
-            // Get company role
-            $companyRole = Role::where('name', 'company')->first();
-            
-            if ($companyRole) {
-                $user->assignRole($companyRole);
-                $user->type = 'company';
+            // Get organization role
+            $organizationRole = Role::where('name', 'organization')->first();
+
+            if ($organizationRole) {
+                $user->assignRole($organizationRole);
+                $user->type = 'organization';
                 $user->save();
                 return true;
             }
-            
+
             return false;
         } catch (\Exception $e) {
-            \Log::error('Failed to assign company role: ' . $e->getMessage());
+            \Log::error('Failed to assign organization role: ' . $e->getMessage());
             return false;
         }
     }

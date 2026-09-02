@@ -14,9 +14,9 @@ class PlanController extends Controller
     {
         $user = auth()->user();
 
-        // Company users see only active plans
-        if ($user->type !== 'superadmin') {
-            return $this->companyPlansView($request);
+        // Organization users see only active plans
+        if ($user->type !== 'super_admin') {
+            return $this->organizationPlansView($request);
         }
 
         // Admin view
@@ -27,7 +27,7 @@ class PlanController extends Controller
         $settings = settings();
 
         // Always use super admin currency for plan pricing
-        $superAdmin = User::where('type', 'superadmin')->first();
+        $superAdmin = User::where('type', 'super_admin')->first();
         $superAdminSettings = settings($superAdmin->id);
         $currency = $superAdminSettings ? ($superAdminSettings['defaultCurrency'] ?? 'USD') : 'USD';
         $currencySymbol = '$';
@@ -39,7 +39,7 @@ class PlanController extends Controller
         $plans = $dbPlans->map(function ($plan) use ($billingCycle) {
             // Determine features based on plan attributes
             $features = [];
-            if ($plan->enable_chatgpt === 'on') $features[] = 'AI Integration';
+            if ($plan->enable_kakbima_intelligence === 'on') $features[] = 'Kakbima Intelligence';
 
             // Get price based on billing cycle
             $price = $billingCycle === 'yearly' ? $plan->yearly_price : $plan->price;
@@ -48,7 +48,7 @@ class PlanController extends Controller
             $formattedPrice = '$' . number_format($price, 2);
 
             // Set duration based on billing cycle
-            $duration = $billingCycle === 'yearly' ? 'Yearly' : 'Monthly';
+            $duration = $billingCycle === 'yearly' ? 'yearly' : 'monthly';
 
             return [
                 'id' => $plan->id,
@@ -57,16 +57,16 @@ class PlanController extends Controller
                 'formattedPrice' => $formattedPrice,
                 'duration' => $duration,
                 'description' => $plan->description,
-                'trial_days' => $plan->trial_day,
+                'trial_days' => $plan->trial_days,
                 'features' => $features,
                 'stats' => [
-                    'users' => $plan->max_users,
-                    'projects' => $plan->max_projects,
-                    'contacts' => $plan->max_contacts,
-                    'accounts' => $plan->max_accounts,
+                    'users' => $plan->maximum_users,
+                    'projects' => $plan->maximum_projects,
+                    'contacts' => $plan->maximum_contacts,
+                    'accounts' => $plan->maximum_accounts,
                     'storage' => $plan->storage_limit . ' GB'
                 ],
-                'status' => $plan->is_plan_enable === 'on',
+                'status' => $plan->is_plan_enabled === 'on',
                 'is_default' => $plan->is_default,
                 'recommended' => false // Default to false
             ];
@@ -103,10 +103,10 @@ class PlanController extends Controller
      */
     public function toggleStatus(Plan $plan)
     {
-        $plan->is_plan_enable = $plan->is_plan_enable === 'on' ? 'off' : 'on';
+        $plan->is_plan_enabled = $plan->is_plan_enabled === 'on' ? 'off' : 'on';
         $plan->save();
 
-        $status = $plan->is_plan_enable === 'on' ? 'activated' : 'deactivated';
+        $status = $plan->is_plan_enabled === 'on' ? 'activated' : 'deactivated';
         return back()->with('success', __('Plan :status successfully', ['status' => $status]));
     }
 
@@ -131,27 +131,27 @@ class PlanController extends Controller
             'name' => 'required|string|max:100|unique:plans',
             'price' => 'required|numeric|min:0',
             'yearly_price' => 'nullable|numeric|min:0',
-            'duration' => 'required|string',
+            'duration' => 'required|string|in:monthly,quarterly,yearly',
             'description' => 'nullable|string',
-            'max_users' => 'required|integer|min:0',
-            'max_projects' => 'required|integer|min:0',
-            'max_contacts' => 'required|integer|min:0',
-            'max_accounts' => 'required|integer|min:0',
+            'maximum_users' => 'required|integer|min:0',
+            'maximum_projects' => 'required|integer|min:0',
+            'maximum_contacts' => 'required|integer|min:0',
+            'maximum_accounts' => 'required|integer|min:0',
             'storage_limit' => 'required|numeric|min:0',
             'enable_branding' => 'nullable|in:on,off',
-            'enable_chatgpt' => 'nullable|in:on,off',
+            'enable_kakbima_intelligence' => 'nullable|in:on,off',
             'module' => 'nullable|array',
             'is_trial' => 'nullable|in:on,off',
-            'trial_day' => 'nullable|integer|min:0',
-            'is_plan_enable' => 'nullable|in:on,off',
+            'trial_days' => 'nullable|integer|min:0',
+            'is_plan_enabled' => 'nullable|in:on,off',
             'is_default' => 'nullable|boolean',
         ]);
 
         // Set default values for nullable fields
         $validated['enable_branding'] = $validated['enable_branding'] ?? 'on';
-        $validated['enable_chatgpt'] = $validated['enable_chatgpt'] ?? 'off';
+        $validated['enable_kakbima_intelligence'] = $validated['enable_kakbima_intelligence'] ?? 'off';
         $validated['is_trial'] = $validated['is_trial'] ?? null;
-        $validated['is_plan_enable'] = $validated['is_plan_enable'] ?? 'on';
+        $validated['is_plan_enabled'] = $validated['is_plan_enabled'] ?? 'on';
         $validated['is_default'] = $validated['is_default'] ?? false;
 
         // If yearly_price is not provided, calculate it as 80% of monthly price * 12
@@ -194,27 +194,27 @@ class PlanController extends Controller
             'name' => 'required|string|max:100|unique:plans,name,' . $plan->id,
             'price' => 'required|numeric|min:0',
             'yearly_price' => 'nullable|numeric|min:0',
-            'duration' => 'required|string',
+            'duration' => 'required|string|in:monthly,quarterly,yearly',
             'description' => 'nullable|string',
-            'max_users' => 'required|integer|min:0',
-            'max_projects' => 'required|integer|min:0',
-            'max_contacts' => 'required|integer|min:0',
-            'max_accounts' => 'required|integer|min:0',
+            'maximum_users' => 'required|integer|min:0',
+            'maximum_projects' => 'required|integer|min:0',
+            'maximum_contacts' => 'required|integer|min:0',
+            'maximum_accounts' => 'required|integer|min:0',
             'storage_limit' => 'required|numeric|min:0',
             'enable_branding' => 'nullable|in:on,off',
-            'enable_chatgpt' => 'nullable|in:on,off',
+            'enable_kakbima_intelligence' => 'nullable|in:on,off',
             'module' => 'nullable|array',
             'is_trial' => 'nullable|in:on,off',
-            'trial_day' => 'nullable|integer|min:0',
-            'is_plan_enable' => 'nullable|in:on,off',
+            'trial_days' => 'nullable|integer|min:0',
+            'is_plan_enabled' => 'nullable|in:on,off',
             'is_default' => 'nullable|boolean',
         ]);
 
         // Set default values for nullable fields
         $validated['enable_branding'] = $validated['enable_branding'] ?? 'on';
-        $validated['enable_chatgpt'] = $validated['enable_chatgpt'] ?? 'off';
+        $validated['enable_kakbima_intelligence'] = $validated['enable_kakbima_intelligence'] ?? 'off';
         $validated['is_trial'] = $validated['is_trial'] ?? null;
-        $validated['is_plan_enable'] = $validated['is_plan_enable'] ?? 'on';
+        $validated['is_plan_enabled'] = $validated['is_plan_enabled'] ?? 'on';
         $validated['is_default'] = $validated['is_default'] ?? false;
 
         // If yearly_price is not provided, calculate it as 80% of monthly price * 12
@@ -245,7 +245,7 @@ class PlanController extends Controller
 
         // Don't allow deleting plans assigned to users
         if ($plan->users()->count() > 0) {
-            return back()->with('error', __('The company has subscribed to this plan, so it cannot be deleted.'));
+            return back()->with('error', __('The organization has subscribed to this plan, so it cannot be deleted.'));
         }
 
         $plan->delete();
@@ -253,15 +253,15 @@ class PlanController extends Controller
         return redirect()->route('plans.index')->with('success', __('Plan deleted successfully.'));
     }
 
-    private function companyPlansView(Request $request)
+    private function organizationPlansView(Request $request)
     {
         $user = auth()->user();
         $billingCycle = $request->input('billing_cycle', 'monthly');
 
-        $dbPlans = Plan::where('is_plan_enable', 'on')->get();
+        $dbPlans = Plan::where('is_plan_enabled', 'on')->get();
 
         // Always use super admin currency for plan pricing
-        $superAdmin = User::where('type', 'superadmin')->first();
+        $superAdmin = User::where('type', 'super_admin')->first();
         $superAdminSettings = settings($superAdmin->id);
         $currency = $superAdminSettings ? ($superAdminSettings['defaultCurrency'] ?? 'USD') : 'USD';
         $currencySymbol = '$';
@@ -270,7 +270,7 @@ class PlanController extends Controller
             $currencySymbol = $currencyData ? $currencyData->symbol : '$';
         }
 
-        // Determine the company's current billing cycle from their latest approved plan order
+        // Determine the organization's current billing cycle from their latest approved plan order
         $latestPlanOrder = $user->planOrders()
             ->where('status', 'approved')
             ->where('plan_id', $user->plan_id)
@@ -290,22 +290,22 @@ class PlanController extends Controller
             $price = $billingCycle === 'yearly' ? $plan->yearly_price : $plan->price;
 
             $features = [];
-            if ($plan->enable_chatgpt === 'on') $features[] = 'AI Integration';
+            if ($plan->enable_kakbima_intelligence === 'on') $features[] = 'Kakbima Intelligence';
 
             return [
                 'id' => $plan->id,
                 'name' => $plan->name,
                 'price' => $price,
                 'formatted_price' => '$' . number_format($price, 2),
-                'duration' => $billingCycle === 'yearly' ? 'Yearly' : 'Monthly',
+                'duration' => $billingCycle === 'yearly' ? 'yearly' : 'monthly',
                 'description' => $plan->description,
-                'trial_days' => $plan->trial_day,
+                'trial_days' => $plan->trial_days,
                 'features' => $features,
                 'stats' => [
-                    'users' => $plan->max_users,
-                    'projects' => $plan->max_projects,
-                    'contacts' => $plan->max_contacts,
-                    'accounts' => $plan->max_accounts,
+                    'users' => $plan->maximum_users,
+                    'projects' => $plan->maximum_projects,
+                    'contacts' => $plan->maximum_contacts,
+                    'accounts' => $plan->maximum_accounts,
                     'storage' => $plan->storage_limit . ' GB'
                 ],
                 'is_current' => $user->plan_id === $plan->id && ($currentBillingCycle === $billingCycle),
@@ -399,8 +399,8 @@ class PlanController extends Controller
         $user->update([
             'plan_id' => $plan->id,
             'is_trial' => 1,
-            'trial_day' => $plan->trial_day,
-            'trial_expire_date' => now()->addDays($plan->trial_day)
+            'trial_days' => $plan->trial_days,
+            'trial_expiry_date' => now()->addDays($plan->trial_days)
         ]);
 
         return back()->with('success', __('Trial started successfully'));

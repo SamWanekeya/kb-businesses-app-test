@@ -20,7 +20,7 @@ class PaymentSettingController extends Controller
 
     public function getPaymentMethods()
     {
-        $superAdminId = \App\Models\User::where('type', 'superadmin')->first()?->id;
+        $superAdminId = \App\Models\User::where('type', 'super_admin')->first()?->id;
 
         if (!$superAdminId) {
             return response()->json([]);

@@ -34,9 +34,9 @@ class InvoiceStripePaymentController extends Controller
                 return back()->withErrors(['error' => $validation['message']]);
             }
 
-            $companyId = $invoice->created_by;
-            $company = User::findOrFail($companyId);
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $organization = User::findOrFail($organizationId);
+            $settings = $this->getInvoicePaymentSettings($organizationId);
             $currency = $settings['general_settings']['defaultCurrency'] ?? 'usd';
 
             if (!isset($settings['payment_settings']['stripe_secret']) || !isset($settings['payment_settings']['stripe_key'])) {
@@ -66,7 +66,7 @@ class InvoiceStripePaymentController extends Controller
                         'city' => $invoice->billing_city ?? 'Not provided',
                         'state' => $invoice->billing_state ?? 'Not provided',
                         'postal_code' => $invoice->billing_postal_code ?? '000000',
-                        'country' => $company->country ?? 'US',
+                        'country' => $organization->country ?? 'US',
                     ],
                 ],
             ]);
@@ -116,11 +116,11 @@ class InvoiceStripePaymentController extends Controller
         return $request->validate(array_merge($baseRules, $additionalRules));
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 

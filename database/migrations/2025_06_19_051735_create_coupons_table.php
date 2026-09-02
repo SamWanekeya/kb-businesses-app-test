@@ -15,19 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->enum('type', ['percentage', 'flat']);
-            $table->decimal('minimum_spend', 10, 2)->nullable();
-            $table->decimal('maximum_spend', 10, 2)->nullable();
-            $table->decimal('discount_amount', 10, 2);
+            $table->decimal('minimum_spend', total: 19, places: 7)->nullable();
+            $table->decimal('maximum_spend', total: 19, places: 7)->nullable();
+            $table->decimal('discount_amount', total: 19, places: 7);
             $table->integer('use_limit_per_coupon')->nullable();
             $table->integer('use_limit_per_user')->nullable();
             $table->date('expiry_date')->nullable();
             $table->string('code')->unique();
             $table->enum('code_type', ['manual', 'auto'])->default('manual');
             $table->boolean('status')->default(true);
-            $table->unsignedBigInteger('created_by');
+            $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
-
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

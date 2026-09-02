@@ -40,7 +40,7 @@ class SendOpportunityCreatedEmail
                 '{opportunity_description}' => $opportunity->description ?? '-',
                 '{assigned_user_name}' => $assignedUser->name ?? '-',
                 '{assigned_user_email}' => $assignedUser->email ?? '-',
-                '{company_name}' => getCompanyName(),
+                '{organization_name}' => getOrganizationName(),
             ];
 
             try {

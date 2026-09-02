@@ -39,8 +39,8 @@ class SendLeadStatusChangedEmail
                 '{new_lead_stage}' => $new_status ?? '-',
                 '{lead_email}' => $lead->email ?? '-',
                 '{lead_phone}' => $lead->phone ?? '-',
-                '{lead_company}' => $lead->company ?? '-',
-                '{company_name}' => getCompanyName(),
+                '{lead_organization}' => $lead->organization ?? '-',
+                '{organization_name}' => getOrganizationName(),
             ];
 
             try {

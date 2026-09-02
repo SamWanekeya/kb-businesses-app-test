@@ -159,7 +159,7 @@ export default function AnnouncementCategories() {
                         <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="name" required>{t('Name')}</Label>
-                                <Input id="name" type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder={t('e.g. Product Updates, Company News, Events')} className={formErrors.name ? 'border-red-500' : ''} disabled={!canCreate && !canEdit} required />
+                                <Input id="name" type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder={t('e.g. Product Updates, Organization News, Events')} className={formErrors.name ? 'border-red-500' : ''} disabled={!canCreate && !canEdit} required />
                                 {formErrors.name && <p className="text-sm text-red-500">{formErrors.name}</p>}
                             </div>
                             <div className="space-y-2">

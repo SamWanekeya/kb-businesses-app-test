@@ -17,8 +17,8 @@ class InvoiceRazorpayPaymentController extends Controller
 
         try {
             $invoice = Invoice::findOrFail($validated['invoice_id']);
-            $companyId = $invoice->created_by;
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['razorpay_key']) || !isset($settings['payment_settings']['razorpay_secret'])) {
                 return response()->json(['error' => __('Razorpay not configured')], 400);
@@ -29,7 +29,7 @@ class InvoiceRazorpayPaymentController extends Controller
             // Convert to smallest unit (paise) and ensure it's an integer
             $amount = floatval($validated['amount']);
             $amountInSmallestUnit = round($amount * 100);
-            
+
             // Check Razorpay amount limits (minimum 1 INR, maximum 15,00,000 INR)
             if ($amountInSmallestUnit < 100) {
                 return response()->json(['error' => __('Minimum payment amount is ₹1')], 400);
@@ -86,8 +86,8 @@ class InvoiceRazorpayPaymentController extends Controller
                 return back()->withErrors(['error' => $validation['message']]);
             }
 
-            $companyId = $invoice->created_by;
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['razorpay_key']) || !isset($settings['payment_settings']['razorpay_secret'])) {
                 \Log::error('Razorpay payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
@@ -142,11 +142,11 @@ class InvoiceRazorpayPaymentController extends Controller
         return $request->validate(array_merge($baseRules, $additionalRules));
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 

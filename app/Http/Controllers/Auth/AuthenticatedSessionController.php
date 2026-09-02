@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Models\LoginHistory;
+use App\Models\SignInHistory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +20,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(Request $request): Response
     {
-       return Inertia::render('auth/login', [
+       return Inertia::render('auth/sign-in', [
             'canResetPassword' => Route::has('password.request'),
             'status' => $request->session()->get('status'),
             'settings' => settings()
@@ -36,7 +36,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $this->logLoginHistory($request);
+        $this->logsignInHistory($request);
 
         // Check if email verification is enabled and user is not verified
         $emailVerificationEnabled = getSetting('emailVerification', false);
@@ -60,10 +60,10 @@ class AuthenticatedSessionController extends Controller
         return redirect('/');
     }
 
-    private function logLoginHistory(Request $request): void
+    private function logsignInHistory(Request $request): void
     {
-        $ip = $request->ip();
-        $locationData = $this->getLocationData($ip);
+        $ipAddress = $request->ip_address();
+        $locationData = $this->getLocationData($ipAddress);
         $userAgent = $request->userAgent();
         $browserData = parseBrowserData($userAgent);
         $details = array_merge($locationData, $browserData, [
@@ -71,20 +71,20 @@ class AuthenticatedSessionController extends Controller
             'referrer_host' => $request->headers->get('referer') ? parse_url($request->headers->get('referer'), PHP_URL_HOST) : null,
             'referrer_path' => $request->headers->get('referer') ? parse_url($request->headers->get('referer'), PHP_URL_PATH) : null,
         ]);
-        $loginHistory             = new LoginHistory();
-        $loginHistory->user_id    = Auth::id();
-        $loginHistory->ip         = $ip;
-        $loginHistory->date       = now()->toDateString();
-        $loginHistory->details    = $details;
-        $loginHistory->type       = Auth::user()->type;
-        $loginHistory->created_by = createdBy();
-        $loginHistory->save();
+        $ipAddressHistory             = new signInHistory();
+        $ipAddressHistory->user_id    = Auth::id();
+        $ipAddressHistory->ip_address         = $ipAddress;
+        $ipAddressHistory->date       = now()->toDateString();
+        $ipAddressHistory->details    = $details;
+        $ipAddressHistory->type       = Auth::user()->type;
+        $ipAddressHistory->created_by = createdBy();
+        $ipAddressHistory->save();
     }
 
-    private function getLocationData(string $ip): array
+    private function getLocationData(string $ipAddress): array
     {
         try {
-            $response = Http::timeout(5)->get("http://ip-api.com/json/{$ip}");
+            $response = Http::timeout(5)->get("http://ip-api.com/json/{$ipAddress}");
             if ($response->successful()) {
                 $data = $response->json();
                 return [
@@ -100,12 +100,12 @@ class AuthenticatedSessionController extends Controller
                     'isp' => $data['isp'] ?? null,
                     'org' => $data['org'] ?? null,
                     'as' => $data['as'] ?? null,
-                    'query' => $data['query'] ?? $ip,
+                    'query' => $data['query'] ?? $ipAddress,
                 ];
             }
         } catch (\Exception $e) {
             // Ignore API errors
         }
-        return ['query' => $ip];
+        return ['query' => $ipAddress];
     }
 }

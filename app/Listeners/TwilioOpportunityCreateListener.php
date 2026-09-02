@@ -33,7 +33,7 @@ class TwilioOpportunityCreateListener
                 '{amount}' => $opportunity->amount ?? '-',
                 '{account_name}' => $account->name ?? '-',
                 '{close_date}' => $opportunity->close_date ?? '-',
-                '{company_name}' => getCompanyName(),
+                '{organization_name}' => getOrganizationName(),
             ];
 
             try {

@@ -26,7 +26,7 @@ class SlackOpportunityCreateListener
                 '{amount}' => $opportunity->amount ?? '-',
                 '{account_name}' => $account->name ?? '-',
                 '{close_date}' => date('Y-m-d', strtotime( $opportunity->close_date)) ?? '-',
-                '{company_name}' => getCompanyName(),
+                '{organization_name}' => getOrganizationName(),
             ];
 
             try {

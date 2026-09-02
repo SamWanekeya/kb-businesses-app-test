@@ -42,7 +42,7 @@ class SendTaskAssignedEmail
                 '{task_description}' => $task->description,
                 '{creator_name}' => $creator->name ?? '-',
                 '{creator_email}' => $creator->email ?? '-',
-                '{company_name}' => getCompanyName(),
+                '{organization_name}' => getOrganizationName(),
             ];
 
             try {

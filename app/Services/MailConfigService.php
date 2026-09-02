@@ -14,9 +14,9 @@ class MailConfigService
         if (!$user) {
             return;
         }
-        if ($user->type == 'superadmin') {
-            $user = User::where('type', 'superadmin')->first();
-        } else if ($user->type == 'company') {
+        if ($user->type == 'super_admin') {
+            $user = User::where('type', 'super_admin')->first();
+        } else if ($user->type == 'organization') {
             $user = User::where('id', $user->created_by)->first();
         } else {
             $user = User::where('id', $user->created_by)->first();
@@ -31,8 +31,8 @@ class MailConfigService
         //     'username' => getSetting('email_username', ''),
         //     'password' => getSetting('email_password', ''),
         //     'encryption' => getSetting('email_encryption', 'tls'),
-        //     'fromAddress' => getSetting('email_from_address', 'noreply@example.com'),
-        //     'fromName' => getSetting('email_from_name', 'WorkDo System')
+        //     'fromAddress' => getSetting('email_from_address', 'noreply@kakbima.dev'),
+        //     'fromName' => getSetting('email_from_name', 'Kakbima')
         // ];
         $settings = [
             'driver' => $getSettings['email_driver'] ?? 'smtp',
@@ -41,8 +41,8 @@ class MailConfigService
             'username' => $getSettings['email_username'] ?? '',
             'password' => $getSettings['email_password'] ?? '',
             'encryption' => $getSettings['email_encryption'] ?? 'tls',
-            'fromAddress' => $getSettings['email_from_address'] ?? 'noreply@example.com',
-            'fromName' => $getSettings['email_from_name'] ?? 'WorkDo System'
+            'fromAddress' => $getSettings['email_from_address'] ?? 'noreply@kakbima.dev',
+            'fromName' => $getSettings['email_from_name'] ?? 'Kakbima'
         ];
 
         Config::set([

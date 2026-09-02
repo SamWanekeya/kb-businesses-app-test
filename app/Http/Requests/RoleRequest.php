@@ -44,15 +44,15 @@ class RoleRequest extends FormRequest
     private function validatePermissionAccess($permissionName, $fail)
     {
         $user = Auth::user();
-        $userType = $user->type ?? 'company';
+        $userType = $user->type ?? 'organization';
 
         // Superadmin can assign any permission
-        if ($userType === 'superadmin' || $userType === 'super admin') {
+        if ($userType === 'super_admin' || $userType === 'super admin') {
             return;
         }
 
         // Get allowed modules for current user role
-        $allowedModules = config('role-permissions.' . $userType, config('role-permissions.company'));
+        $allowedModules = config('role-permissions.' . $userType, config('role-permissions.organization'));
 
         // Check if permission belongs to allowed module
         $permission = Permission::where('name', $permissionName)->first();
@@ -68,14 +68,14 @@ class RoleRequest extends FormRequest
     private function validateSystemRole($label, $fail)
     {
         $user = Auth::user();
-        $userType = $user->type ?? 'company';
+        $userType = $user->type ?? 'organization';
 
         // Superadmin can create/edit any role
-        if ($userType === 'superadmin' || $userType === 'super admin') {
+        if ($userType === 'super_admin' || $userType === 'super admin') {
             return;
         }
 
-        $systemRoles = ['superadmin', 'super admin', 'company'];
+        $systemRoles = ['super_admin', 'super admin', 'organization'];
         $slug = \Illuminate\Support\Str::slug($label);
 
         if (in_array(strtolower($label), array_map('strtolower', $systemRoles)) ||

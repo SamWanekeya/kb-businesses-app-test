@@ -7,7 +7,7 @@ interface Testimonial {
   id: number;
   name: string;
   role: string;
-  company?: string;
+  organization?: string;
   content: string;
   avatar?: string;
   rating: number;
@@ -29,14 +29,14 @@ interface TestimonialsSectionProps {
     default_testimonials?: Array<{
       name: string;
       role: string;
-      company?: string;
+      organization?: string;
       content: string;
       rating: number;
     }>;
   };
 }
 
-export default function TestimonialsSection({ testimonials, settings, sectionData, brandColor = '#3b82f6' }: TestimonialsSectionProps) {
+export default function TestimonialsSection({ testimonials, settings, sectionData, brandColor = '#A12582' }: TestimonialsSectionProps) {
   const { ref, isVisible } = useScrollAnimation();
   const { t } = useTranslation();
   // Fallback testimonials if none provided
@@ -47,21 +47,21 @@ export default function TestimonialsSection({ testimonials, settings, sectionDat
       {
         name: "Alex Thompson",
         role: t("Sales Director"),
-        company: "TechCorp Inc.",
+        organization: "TechCorp Inc.",
         content: t("This platform has transformed how we manage leads and opportunities. Our conversion rate has doubled since adopting it!"),
         rating: "5"
       },
       {
         name: "Maria Lopez",
         role: t("Operations Manager"),
-        company: "Global Enterprises",
+        organization: "Global Enterprises",
         content: t("Invoices and orders are now automated, saving us hours every week. The reports feature gives us clear insights into performance."),
         rating: "5"
       },
       {
         name: "Ravi Patel",
         role: t("Founder & CEO"),
-        company: "StartUp Hub",
+        organization: "StartUp Hub",
         content: t("This platform has transformed how we manage leads and opportunities. Our conversion rate has doubled since adopting it!"),
         rating: "5"
       }
@@ -136,8 +136,8 @@ export default function TestimonialsSection({ testimonials, settings, sectionDat
                   </h4>
                   <p className="text-sm text-gray-600">
                     {testimonial.role}
-                    {testimonial.company && (
-                      <span className="text-gray-400"> • {testimonial.company}</span>
+                    {testimonial.organization && (
+                      <span className="text-gray-400"> • {testimonial.organization}</span>
                     )}
                   </p>
                 </div>

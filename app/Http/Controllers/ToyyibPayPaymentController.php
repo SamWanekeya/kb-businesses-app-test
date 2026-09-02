@@ -17,7 +17,7 @@ class ToyyibPayPaymentController extends Controller
 
     public function __construct()
     {
-        $userID = User::where('type', 'superadmin')->first()?->id;
+        $userID = User::where('type', 'super_admin')->first()?->id;
         $settings = getPaymentMethodConfig('toyyibpay',$userID);
         // $settings = getPaymentMethodConfig('toyyibpay');
         $this->secretKey = $settings['secret_key'] ?? '';

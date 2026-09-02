@@ -29,7 +29,7 @@ class TapPaymentController extends Controller
             require_once app_path('Libraries/Tap/Reference.php');
             require_once app_path('Libraries/Tap/Payment.php');
             $tap = new \App\Package\Payment([
-                'company_tap_secret_key' => $settings['payment_settings']['tap_secret_key']
+                'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key']
             ]);
 
             $chargeData = [
@@ -85,7 +85,7 @@ class TapPaymentController extends Controller
                     require_once app_path('Libraries/Tap/Reference.php');
                     require_once app_path('Libraries/Tap/Payment.php');
                     $tap = new \App\Package\Payment([
-                        'company_tap_secret_key' => $settings['payment_settings']['tap_secret_key']
+                        'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key']
                     ]);
 
                     // Get charge details from Tap API

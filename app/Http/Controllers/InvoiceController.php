@@ -431,7 +431,7 @@ class InvoiceController extends Controller
 
         return response()->json(['reminders' => $reminders]);
     }
-    
+
     public function toggleStatus(Request $request, $invoiceId)
     {
         $invoice = Invoice::where('id', $invoiceId)
@@ -585,15 +585,15 @@ class InvoiceController extends Controller
                 $invoice->update(['status' => 'overdue']);
             }
 
-            // Get company's payment settings like plan subscription
-            $companyId = $invoice->created_by;
-            $paymentSettings = getPaymentSettings($companyId);
+            // Get organization's payment settings like plan subscription
+            $organizationId = $invoice->created_by;
+            $paymentSettings = getPaymentSettings($organizationId);
 
             // Add payment methods to invoice object like plan subscription
             $invoice->paymentMethods = $paymentSettings;
 
 
-            $settings = settings($companyId);
+            $settings = settings($organizationId);
             $templateId = $settings['invoiceTemplate'] ?? 'template1';
             $color = $settings['invoiceColor'] ?? 'ffffff';
             $qrEnabled = ($settings['invoiceQrEnabled'] ?? 'off') === 'on';
@@ -680,7 +680,7 @@ class InvoiceController extends Controller
 
         $invoice = Invoice::findOrFail($invoiceId);
 
-        // Get company's payment settings using helper function
+        // Get organization's payment settings using helper function
         $paymentSettings = getPaymentMethodConfig('stripe', $invoice->created_by);
 
         // Get currency from settings or default
@@ -917,7 +917,7 @@ class InvoiceController extends Controller
             'total_amount' => 1100,
             'account' => (object) [
                 'name' => 'Sample Client',
-                'email' => 'client@example.com',
+                'email' => 'client@kakbima.dev',
                 'phone' => '(555) 123-4567'
             ],
             'billing_address' => '456 Client Avenue',

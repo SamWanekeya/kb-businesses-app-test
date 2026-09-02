@@ -33,22 +33,21 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
         'lang',
         'delete_status',
         'plan_id',
-        'plan_expire_date',
+        'plan_expiry_date',
         'requested_plan',
-        'plan_is_active',
-        'is_enable_login',
+        'is_plan_active',
+        'is_sign_in_enabled',
         'storage_limit',
         'mode',
         'created_by',
         'referral_code',
-        'used_referral_code',
-        'google2fa_enable',
+        'referral_code_used',
+        'google2fa_enabled',
         'google2fa_secret',
         'status',
         'is_trial',
-        'trial_day',
-        'trial_expire_date',
-        'active_module',
+        'trial_days',
+        'trial_expiry_date',
         'commission_amount',
         'invoice_template'
     ];
@@ -74,12 +73,12 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'plan_expire_date' => 'date',
-            'trial_expire_date' => 'date',
-            'plan_is_active' => 'integer',
+            'plan_expiry_date' => 'date',
+            'trial_expiry_date' => 'date',
+            'is_plan_active' => 'integer',
             'is_active' => 'integer',
-            'is_enable_login' => 'integer',
-            'google2fa_enable' => 'integer',
+            'is_sign_in_enabled' => 'integer',
+            'google2fa_enabled' => 'integer',
             'storage_limit' => 'float',
         ];
     }
@@ -89,9 +88,9 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
      */
     public function creatorId()
     {
-        if ($this->type == 'superadmin' || $this->type == 'super admin' || $this->type == 'admin') {
+        if ($this->type == 'super_admin' || $this->type == 'super admin' || $this->type == 'admin') {
             return $this->id;
-        } elseif ($this->type == 'company') {
+        } elseif ($this->type == 'organization') {
             return $this->id;
         } else {
             return $this->created_by;
@@ -103,7 +102,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
      */
     public function isSuperAdmin()
     {
-        return $this->type === 'superadmin' || $this->type === 'super admin';
+        return $this->type === 'super_admin' || $this->type === 'super admin';
     }
 
     /**
@@ -154,15 +153,15 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
             return true;
         }
         return $this->plan_id &&
-            $this->plan_is_active &&
-            ($this->plan_expire_date !== null && $this->plan_expire_date > now());
+            $this->is_plan_active &&
+            ($this->plan_expiry_date !== null && $this->plan_expiry_date > now());
     }
     /**
      * Check if user's plan has expired
      */
     public function isPlanExpired()
     {
-        return $this->plan_expire_date && $this->plan_expire_date < now();
+        return $this->plan_expiry_date && $this->plan_expiry_date < now();
     }
 
     /**
@@ -170,7 +169,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
      */
     public function isTrialExpired()
     {
-        return $this->is_trial && $this->trial_expire_date && $this->trial_expire_date < now();
+        return $this->is_trial && $this->trial_expiry_date && $this->trial_expiry_date < now();
     }
 
     /**
@@ -182,7 +181,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
             return false;
         }
 
-        if ($this->type !== 'company') {
+        if ($this->type !== 'organization') {
             return false;
         }
 
@@ -218,7 +217,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
      */
     public function canBeImpersonated()
     {
-        return $this->type === 'company';
+        return $this->type === 'organization';
     }
 
     /**
@@ -230,7 +229,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get referrals made by this company
+     * Get referrals made by this organization
      */
     public function referrals()
     {
@@ -238,11 +237,11 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get payout requests made by this company
+     * Get payout requests made by this organization
      */
     public function payoutRequests()
     {
-        return $this->hasMany(PayoutRequest::class, 'company_id');
+        return $this->hasMany(PayoutRequest::class, 'organization_id');
     }
 
     /**
@@ -270,7 +269,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get referral balance for company
+     * Get referral balance for organization
      */
     public function getReferralBalance()
     {
@@ -307,31 +306,31 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
         parent::boot();
 
         static::creating(function ($user) {
-            // Assign default plan to company users if no default plan exists
-            if ($user->type === 'company' && !$user->plan_id) {
+            // Assign default plan to organization users if no default plan exists
+            if ($user->type === 'organization' && !$user->plan_id) {
                 $defaultPlan = Plan::getDefaultPlan();
                 if ($defaultPlan) {
                     $user->plan_id = $defaultPlan->id;
-                    $user->plan_is_active = 1;
-                    $user->plan_expire_date = now()->addMonth();
+                    $user->is_plan_active = 1;
+                    $user->plan_expiry_date = now()->addMonth();
                 }
             }
         });
 
         static::created(function ($user) {
-            // Skip for superadmin
-            if ($user->type === 'superadmin') {
+            // Skip for super_admin
+            if ($user->type === 'super_admin') {
                 return;
             }
 
-            // Set language for new users based on company owner
+            // Set language for new users based on organization owner
             $authUser = auth()->user();
-            $companySettings = settings();
-            $userLang = isset($companySettings['defaultLanguage']) ? $companySettings['defaultLanguage'] : ($authUser?->lang ?? 'en');
+            $organizationSettings = settings();
+            $userLang = isset($organizationSettings['defaultLanguage']) ? $organizationSettings['defaultLanguage'] : ($authUser?->lang ?? 'en');
             $user->lang = $userLang ?? 'en';
 
-            // Generate referral code for company users (same logic as UserObserver)
-            if ($user->type === 'company' && !$user->referral_code) {
+            // Generate referral code for organization users (same logic as UserObserver)
+            if ($user->type === 'organization' && !$user->referral_code) {
                 do {
                     $code = rand(100000, 999999);
                 } while (User::where('referral_code', $code)->exists());
@@ -356,7 +355,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
         });
     }
 
-    public function companyDefaultData($company)
+    public function organizationDefaultData($organization)
     {
         $roles = [
             'sales-manager' => [
@@ -371,12 +370,12 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
                 [
                     'name' => $name,
                     'guard_name' => 'web',
-                    'created_by' => $company->id,
+                    'created_by' => $organization->id,
                 ],
                 [
                     'label' => $data['label'],
                     'description' => $data['description'],
-                    'created_by' => $company->id,
+                    'created_by' => $organization->id,
                 ]
             );
 

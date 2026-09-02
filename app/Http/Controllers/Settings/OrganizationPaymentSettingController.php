@@ -7,12 +7,12 @@ use App\Models\PaymentSetting;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class CompanyPaymentSettingController extends Controller
+class OrganizationPaymentSettingController extends Controller
 {
     public function index()
     {
         $paymentSettings = getPaymentSettings();
-        
+
         return Inertia::render('settings/index', [
             'paymentSettings' => $paymentSettings,
         ]);
@@ -25,17 +25,17 @@ class CompanyPaymentSettingController extends Controller
         return $paymentController->store($request);
     }
 
-    public function getCompanyPaymentMethods()
+    public function getOrganizationPaymentMethods()
     {
         $paymentSettings = getPaymentSettings();
-        
+
         // Use the same filtering logic as PaymentSettingController
         $paymentController = new \App\Http\Controllers\Settings\PaymentSettingController();
         $reflection = new \ReflectionClass($paymentController);
         $method = $reflection->getMethod('filterSensitiveData');
         $method->setAccessible(true);
         $safeSettings = $method->invoke($paymentController, $paymentSettings);
-        
+
         return response()->json($safeSettings);
     }
 }

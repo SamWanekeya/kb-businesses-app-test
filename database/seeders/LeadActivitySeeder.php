@@ -13,10 +13,10 @@ class LeadActivitySeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $companyUsers = User::where('type', 'company')->get();
-        
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        $organizationUsers = User::where('type', 'organization')->get();
+
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
@@ -30,10 +30,10 @@ class LeadActivitySeeder extends Seeder
             'Decision maker identified. Moving forward.'
         ];
 
-        foreach ($companyUsers as $company) {
-            $leads = Lead::where('created_by', $company->id)->get();
-            $users = User::where('created_by', $company->id)->orWhere('id', $company->id)->get();
-            
+        foreach ($organizationUsers as $organization) {
+            $leads = Lead::where('created_by', $organization->id)->get();
+            $users = User::where('created_by', $organization->id)->orWhere('id', $organization->id)->get();
+
             if ($leads->isEmpty() || $users->isEmpty()) {
                 continue;
             }
@@ -83,7 +83,7 @@ class LeadActivitySeeder extends Seeder
                 ]);
             }
         }
-        
-        $this->command->info('Lead activities created for all company users!');
+
+        $this->command->info('Lead activities created for all organization users!');
     }
 }

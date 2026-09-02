@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 
 class InvoiceToyyibPayPaymentController extends Controller
 {
-    private function getToyyibPayCredentials($companyId)
+    private function getToyyibPayCredentials($organizationId)
     {
-        $settings = $this->getInvoicePaymentSettings($companyId);
+        $settings = $this->getInvoicePaymentSettings($organizationId);
 
         return [
             'secret_key' => $settings['payment_settings']['toyyibpay_secret_key'] ?? null,
@@ -104,7 +104,7 @@ class InvoiceToyyibPayPaymentController extends Controller
 
             if (isset($responseData[0]['BillCode'])) {
                 $redirectUrl = 'https://toyyibpay.com/' . $responseData[0]['BillCode'];
-                
+
                 \Log::info('ToyyibPay invoice payment created', [
                     'invoice_id' => $invoice->id,
                     'payment_id' => $paymentId,
@@ -238,11 +238,11 @@ class InvoiceToyyibPayPaymentController extends Controller
         return $request->validate(array_merge($baseRules, $additionalRules));
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 }

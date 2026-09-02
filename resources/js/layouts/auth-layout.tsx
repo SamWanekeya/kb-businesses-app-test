@@ -205,7 +205,7 @@ export default function AuthLayout({
                         <div className="lg:px-9 lg:relative lg:inline-flex">
                             <div className="inline-flex items-center space-x-2 bg-white backdrop-blur-sm rounded-md px-4 py-2 border border-gray-200">
                                 {/* <div className="w-1 h-1 rounded-full" style={{ backgroundColor: primaryColor }}></div> */}
-                                <p className="text-sm text-gray-500">{globalSettings?.footerText || `© ${new Date().getFullYear()} ${globalSettings?.company_name || 'Kakbima'}`}</p>
+                                <p className="text-sm text-gray-500">{globalSettings?.footerText || `© ${new Date().getFullYear()} ${globalSettings?.organization_name || 'Kakbima'}`}</p>
                                 {/* <div className="w-1 h-1 rounded-full" style={{ backgroundColor: primaryColor }}></div> */}
                             </div>
                         </div>

@@ -10,7 +10,7 @@ class NoteSeeder extends Seeder
 {
     public function run(): void
     {
-        $users = User::where('type', '!=', 'superadmin')->get();
+        $users = User::where('type', '!=', 'super_admin')->get();
 
         $noteTitles = [
             'Meeting Notes - Q1 Planning Session',
@@ -53,13 +53,13 @@ class NoteSeeder extends Seeder
                 ? $user->created_by
                 : $user->id;
 
-            $companyUsers = User::where('created_by', $createdBy)
+            $organizationUsers = User::where('created_by', $createdBy)
                 ->orWhere('id', $createdBy)
                 ->where('id', '!=', $user->id)
                 ->pluck('id');
 
             // Create 2-5 shared notes
-            if ($companyUsers->isNotEmpty()) {
+            if ($organizationUsers->isNotEmpty()) {
                 $sharedCount = 5;
                 for ($i = 0; $i < $sharedCount; $i++) {
                     $notesExists = Note::where('created_by', $user->id)->exists();
@@ -69,12 +69,12 @@ class NoteSeeder extends Seeder
                     $randomIndex = array_rand($noteTitles);
                     $note = Note::create([
                         'title' => $noteTitles[$randomIndex],
-                        'content' => $noteContents[$randomIndex],
+                        'note_content' => $noteContents[$randomIndex],
                         'created_by' => $user->id,
                     ]);
 
-                    $shareCount = min(rand(1, 3), $companyUsers->count());
-                    $note->sharedUsers()->sync($companyUsers->random($shareCount));
+                    $shareCount = min(rand(1, 3), $organizationUsers->count());
+                    $note->sharedUsers()->sync($organizationUsers->random($shareCount));
                 }
             }
         }
@@ -89,7 +89,7 @@ class NoteSeeder extends Seeder
                 $randomIndex = array_rand($noteTitles);
                 Note::create([
                     'title' => $noteTitles[$randomIndex],
-                    'content' => $noteContents[$randomIndex],
+                    'note_content' => $noteContents[$randomIndex],
                     'created_by' => $user->id,
                 ]);
             }

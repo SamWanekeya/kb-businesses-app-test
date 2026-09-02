@@ -18,7 +18,7 @@ export default function ProjectKanban() {
     const { t } = useTranslation();
     const { auth, project, kanbanData, statuses, users = [], filters: pageFilters = {} } = usePage().props as any;
     const permissions = auth?.permissions || [];
-    const isCompany = auth?.user?.type === 'company';
+    const isOrganization = auth?.user?.type === 'organization';
 
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -465,7 +465,7 @@ export default function ProjectKanban() {
                         },
                         { name: 'estimated_hours', label: t('Estimated Hours'), type: 'number', step: '0.5' },
                         { name: 'progress', label: t('Progress (%)'), type: 'number', min: '0', max: '100', defaultValue: '0' },
-                        ...(isCompany ? [{
+                        ...(isOrganization ? [{
                             name: 'assigned_to',
                             label: t('Assign To'),
                             type: 'select',

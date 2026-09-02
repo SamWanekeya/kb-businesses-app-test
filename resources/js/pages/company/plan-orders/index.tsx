@@ -1,6 +1,6 @@
 import { PageTemplate } from '@/components/page-template';
 import { CrudTable } from '@/components/CrudTable';
-import { companyPlanOrdersConfig } from '@/config/crud/company-plan-orders';
+import { organizationPlanOrdersConfig } from '@/config/crud/organization-plan-orders';
 import { useEffect, useState } from 'react';
 import { usePage, router } from '@inertiajs/react';
 import { toast } from '@/components/custom-toast';
@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 
-export default function CompanyPlanOrdersPage() {
+export default function OrganizationPlanOrdersPage() {
   const { t } = useTranslation();
   const { flash, planOrders, filters: pageFilters = {}, auth } = usePage().props as any;
   const permissions = auth?.permissions || [];
@@ -28,7 +28,7 @@ export default function CompanyPlanOrdersPage() {
 
   useEffect(() => {
     const initialFilters: Record<string, any> = {};
-    companyPlanOrdersConfig.filters?.forEach(filter => {
+    organizationPlanOrdersConfig.filters?.forEach(filter => {
       initialFilters[filter.key] = pageFilters[filter.key] || 'all';
     });
     setFilterValues(initialFilters);
@@ -56,7 +56,7 @@ export default function CompanyPlanOrdersPage() {
       params.per_page = pageFilters.per_page;
     }
 
-    router.get(route("company.plan-orders.index"), params, { preserveState: true, preserveScroll: true });
+    router.get(route("organization.plan-orders.index"), params, { preserveState: true, preserveScroll: true });
   };
 
   const handleFilterChange = (key: string, value: any) => {
@@ -79,7 +79,7 @@ export default function CompanyPlanOrdersPage() {
       params.per_page = pageFilters.per_page;
     }
 
-    router.get(route("company.plan-orders.index"), params, { preserveState: true, preserveScroll: true });
+    router.get(route("organization.plan-orders.index"), params, { preserveState: true, preserveScroll: true });
   };
 
   const breadcrumbs = [
@@ -97,7 +97,7 @@ export default function CompanyPlanOrdersPage() {
   return (
     <PageTemplate
       title={t('Plan Orders')}
-      url="/company/plan-orders"
+      url="/organization/plan-orders"
       breadcrumbs={breadcrumbs}
       noPadding
     >
@@ -106,7 +106,7 @@ export default function CompanyPlanOrdersPage() {
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
           onSearch={handleSearch}
-          filters={companyPlanOrdersConfig.filters?.map(filter => ({
+          filters={organizationPlanOrdersConfig.filters?.map(filter => ({
             name: filter.key,
             label: t(filter.label),
             type: 'select',
@@ -124,15 +124,15 @@ export default function CompanyPlanOrdersPage() {
           onResetFilters={() => {
             setSearchTerm('');
             setFilterValues({});
-            router.get(route('company.plan-orders.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
+            router.get(route('organization.plan-orders.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
           }}
-         
+
         />
       </div>
 
       <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
         <CrudTable
-          columns={companyPlanOrdersConfig.table.columns.map(col => ({
+          columns={organizationPlanOrdersConfig.table.columns.map(col => ({
             ...col,
             label: t(col.label)
           }))}
@@ -141,7 +141,7 @@ export default function CompanyPlanOrdersPage() {
           from={planOrders?.from || 1}
           onAction={() => {}}
           permissions={permissions}
-          entityPermissions={companyPlanOrdersConfig.entity.permissions}
+          entityPermissions={organizationPlanOrdersConfig.entity.permissions}
         />
 
         <Pagination
@@ -173,7 +173,7 @@ export default function CompanyPlanOrdersPage() {
               }
             });
 
-            router.get(route('company.plan-orders.index'), params, { preserveState: true, preserveScroll: true });
+            router.get(route('organization.plan-orders.index'), params, { preserveState: true, preserveScroll: true });
           }}
         />
       </div>

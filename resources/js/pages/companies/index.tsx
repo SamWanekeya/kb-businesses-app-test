@@ -1,4 +1,4 @@
-// pages/companies/index.tsx
+// pages/organizations/index.tsx
 import { useEffect, useState } from 'react';
 import { PageTemplate } from '@/components/page-template';
 import { usePage, router } from '@inertiajs/react';
@@ -22,9 +22,9 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { capitalize, getDisplayUrl } from '@/utils/helper';
 import ViewPopup from './view';
 
-export default function Companies() {
+export default function Organizations() {
     const { t } = useTranslation();
-    const { auth, companies, plans, filters: pageFilters = {} } = usePage().props as any;
+    const { auth, organizations, plans, filters: pageFilters = {} } = usePage().props as any;
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();
 
@@ -44,7 +44,7 @@ export default function Companies() {
     const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
     const [isUpgradePlanModalOpen, setIsUpgradePlanModalOpen] = useState(false);
 
-    const [currentCompany, setCurrentCompany] = useState<any>(null);
+    const [currentOrganization, setCurrentOrganization] = useState<any>(null);
     const [availablePlans, setAvailablePlans] = useState<any[]>([]);
 
 
@@ -77,7 +77,7 @@ export default function Companies() {
     };
 
     const applyFilters = () => {
-        router.get(route('companies.index'), {
+        router.get(route('organizations.index'), {
             view: activeView,
             page: 1,
             search: searchTerm || undefined,
@@ -96,7 +96,7 @@ export default function Companies() {
     const handleSort = (field: string) => {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'desc' ? 'asc' : 'desc';
 
-        router.get(route('companies.index'), {
+        router.get(route('organizations.index'), {
             view: activeView,
             sort_field: field,
             sort_direction: direction,
@@ -109,25 +109,25 @@ export default function Companies() {
         }, { preserveState: true, preserveScroll: true });
     };
 
-    const handleAction = (action: string, company: any) => {
-        setCurrentCompany(company);
+    const handleAction = (action: string, organization: any) => {
+        setCurrentOrganization(organization);
 
         switch (action) {
-            case 'login-as':
-                router.get(route("impersonate.start", company.id));
+            case 'sign-in-as':
+                router.get(route("impersonate.start", organization.id));
                 break;
-            case 'company-info':
+            case 'organization-info':
                 setIsViewModalOpen(true);
                 break;
             case 'upgrade-plan':
-                handleUpgradePlan(company);
+                handleUpgradePlan(organization);
                 break;
 
             case 'reset-password':
                 setIsResetPasswordModalOpen(true);
                 break;
             case 'toggle-status':
-                handleToggleStatus(company);
+                handleToggleStatus(organization);
                 break;
             case 'edit':
                 setFormMode('edit');
@@ -142,16 +142,16 @@ export default function Companies() {
     };
 
     const handleAddNew = () => {
-        setCurrentCompany(null);
+        setCurrentOrganization(null);
         setFormMode('create');
         setIsFormModalOpen(true);
     };
 
     const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
-            toast.loading(t('Creating company...'));
+            toast.loading(t('Creating organization...'));
 
-            router.post(route('companies.store'), formData, {
+            router.post(route('organizations.store'), formData, {
                 forceFormData: true,
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
@@ -167,14 +167,14 @@ export default function Companies() {
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
-                        toast.error(`Failed to create company: ${Object.values(errors).join(', ')}`);
+                        toast.error(`Failed to create organization: ${Object.values(errors).join(', ')}`);
                     }
                 }
             });
         } else if (formMode === 'edit') {
-            toast.loading(t('Updating company...'));
+            toast.loading(t('Updating organization...'));
 
-            router.put(route('companies.update', currentCompany.id), formData, {
+            router.put(route('organizations.update', currentOrganization.id), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
                     toast.dismiss();
@@ -189,7 +189,7 @@ export default function Companies() {
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
-                        toast.error(`Failed to update company: ${Object.values(errors).join(', ')}`);
+                        toast.error(`Failed to update organization: ${Object.values(errors).join(', ')}`);
                     }
                 }
             });
@@ -197,9 +197,9 @@ export default function Companies() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting company...'));
+        toast.loading(t('Deleting organization...'));
 
-        router.delete(route("companies.destroy", currentCompany.id), {
+        router.delete(route("organizations.destroy", currentOrganization.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
                 toast.dismiss();
@@ -214,7 +214,7 @@ export default function Companies() {
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
-                    toast.error(`Failed to delete company: ${Object.values(errors).join(', ')}`);
+                    toast.error(`Failed to delete organization: ${Object.values(errors).join(', ')}`);
                 }
             }
         });
@@ -223,7 +223,7 @@ export default function Companies() {
     const handleResetPasswordConfirm = (data: { password: string }) => {
         toast.loading(t('Resetting password...'));
 
-        router.put(route('companies.reset-password', currentCompany.id), data, {
+        router.put(route('organizations.reset-password', currentOrganization.id), data, {
             onSuccess: (page) => {
                 setIsResetPasswordModalOpen(false);
                 toast.dismiss();
@@ -244,10 +244,10 @@ export default function Companies() {
         });
     };
 
-    const handleToggleStatus = (company: any) => {
+    const handleToggleStatus = (organization: any) => {
         toast.loading(t('Updating status...'));
 
-        router.put(route('companies.toggle-status', company.id), {}, {
+        router.put(route('organizations.toggle-status', organization.id), {}, {
             onSuccess: (page) => {
                 toast.dismiss();
                 if (page.props.flash.success) {
@@ -274,18 +274,18 @@ export default function Companies() {
         setEndDate(undefined);
         setShowFilters(false);
 
-        router.get(route('companies.index'), {
+        router.get(route('organizations.index'), {
             view: activeView,
             page: 1
         }, { preserveState: true, preserveScroll: true });
     };
 
-    const handleUpgradePlan = (company: any) => {
-        setCurrentCompany(company);
+    const handleUpgradePlan = (organization: any) => {
+        setCurrentOrganization(organization);
 
         // Fetch available plans
         toast.loading(t('Loading plans...'));
-        fetch(route('companies.plans', company.id))
+        fetch(route('organizations.plans', organization.id))
             .then(res => res.json())
             .then(data => {
                 setAvailablePlans(data.plans);
@@ -302,7 +302,7 @@ export default function Companies() {
         toast.loading(t('Upgrading plan...'));
 
         // Use Inertia router to handle the request
-        router.put(route('companies.upgrade-plan', currentCompany.id), {
+        router.put(route('organizations.upgrade-plan', currentOrganization.id), {
             plan_id: planId,
             duration: duration
 
@@ -332,18 +332,18 @@ export default function Companies() {
     // Define page actions
     const pageActions = [];
 
-    // Add User Logs button for superadmin
-    if (auth?.user?.type === 'superadmin' && hasPermission(permissions, 'manage-login-history')) {
+    // Add User Logs button for super_admin
+    if (auth?.user?.type === 'super_admin' && hasPermission(permissions, 'manage-sign-in-history')) {
         pageActions.push({
             icon: <History className="h-4 w-4 mx-auto" />,
             variant: 'outline',
-            onClick: () => router.visit(route('login-history.index')),
-            tooltip: t('Login History')
+            onClick: () => router.visit(route('sign-in-history.index')),
+            tooltip: t('Sign in History')
         });
     }
 
     pageActions.push({
-        label: t('Add Company'),
+        label: t('Add Organization'),
         icon: <Plus className="h-4 w-4 mr-2" />,
         variant: 'default',
         onClick: () => handleAddNew()
@@ -351,7 +351,7 @@ export default function Companies() {
 
     const breadcrumbs = [
         { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Companies') }
+        { title: t('Organizations') }
     ];
 
     // Define table columns
@@ -395,15 +395,15 @@ export default function Companies() {
 
     const actions = [
         {
-            label: t('Login as Company'),
+            label: t('Sign in as Organization'),
             icon: 'ArrowUpRight',
-            action: 'login-as',
+            action: 'sign-in-as',
             className: 'text-blue-500'
         },
         {
-            label: t('Company Info'),
+            label: t('Organization Info'),
             icon: 'Info',
-            action: 'company-info',
+            action: 'organization-info',
             className: 'text-blue-500'
         },
         {
@@ -440,9 +440,9 @@ export default function Companies() {
 
     return (
         <PageTemplate
-            title={t("Companies")}
-            description={t("Manage and view all companies in the system.")}
-            url="/companies"
+            title={t("Organizations")}
+            description={t("Manage and view all organizations in the system.")}
+            url="/organizations"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
             noPadding
@@ -489,7 +489,7 @@ export default function Companies() {
                     activeView={activeView}
                     onViewChange={(view) => {
                         setActiveView(view);
-                        router.get(route('companies.index'), {
+                        router.get(route('organizations.index'), {
                             view,
                             page: pageFilters.page || 1,
                             search: searchTerm || undefined,
@@ -510,32 +510,32 @@ export default function Companies() {
                     <CrudTable
                         columns={columns}
                         actions={actions}
-                        data={companies?.data || []}
-                        from={companies?.from || 1}
+                        data={organizations?.data || []}
+                        from={organizations?.from || 1}
                         onAction={handleAction}
                         sortField={pageFilters.sort_field}
                         sortDirection={pageFilters.sort_direction}
                         onSort={handleSort}
                         permissions={permissions}
                         entityPermissions={{
-                            view: 'view-companies',
-                            create: 'create-companies',
-                            edit: 'edit-companies',
-                            delete: 'delete-companies'
+                            view: 'view-organizations',
+                            create: 'create-organizations',
+                            edit: 'edit-organizations',
+                            delete: 'delete-organizations'
                         }}
                     />
 
                     {/* Pagination section */}
                     <Pagination
-                        from={companies?.from || 0}
-                        to={companies?.to || 0}
-                        total={companies?.total || 0}
-                        links={companies?.links}
-                        entityName={t("companies")}
+                        from={organizations?.from || 0}
+                        to={organizations?.to || 0}
+                        total={organizations?.total || 0}
+                        links={organizations?.links}
+                        entityName={t("organizations")}
                         onPageChange={(url) => router.get(url)}
                         currentPerPage={pageFilters.per_page?.toString() || "10"}
                         onPerPageChange={(value) => {
-                            router.get(route('companies.index'), {
+                            router.get(route('organizations.index'), {
                                 view: activeView,
                                 page: 1,
                                 per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
@@ -552,27 +552,27 @@ export default function Companies() {
                 <div>
                     {/* Grid View */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {companies?.data?.map((company: any) => (
-                            <Card key={company.id} className="group relative overflow-hidden bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300">
+                        {organizations?.data?.map((organization: any) => (
+                            <Card key={organization.id} className="group relative overflow-hidden bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300">
                                 {/* Status Badge */}
                                 <div className="absolute top-4 right-4 z-10">
-                                    <div className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${company.status === 'active'
+                                    <div className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${organization.status === 'active'
                                         ? 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20'
                                         : 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20'
                                         }`}>
-                                        {company.status === 'active' ? t('Active') : t('Inactive')}
+                                        {organization.status === 'active' ? t('Active') : t('Inactive')}
                                     </div>
                                 </div>
 
                                 {/* Card Content */}
                                 <div className="p-6">
-                                    {/* Company Header */}
+                                    {/* Organization Header */}
                                     <div className="flex items-start space-x-4 mb-6">
                                         <div className="relative">
                                             <Avatar className="h-14 w-14 rounded-full object-cover shadow-sm">
                                                 <AvatarImage
-                                                    src={company.avatar}
-                                                    alt={company?.name || 'Avatar'}
+                                                    src={organization.avatar}
+                                                    alt={organization?.name || 'Avatar'}
                                                     onError={(e) => {
                                                         // Fallback to default avatar on error
                                                         const target = e.target as HTMLImageElement;
@@ -580,16 +580,16 @@ export default function Companies() {
                                                     }}
                                                 />
                                                 <AvatarFallback className="text-lg">
-                                                    {company.name?.charAt(0)?.toUpperCase() || 'U'}
+                                                    {organization.name?.charAt(0)?.toUpperCase() || 'U'}
                                                 </AvatarFallback>
                                             </Avatar>
                                         </div>
                                         <div className="flex-1 min-w-0 max-w-80">
                                             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1 line-clamp-1 mr-10">
-                                                {company.name}
+                                                {organization.name}
                                             </h3>
                                             <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
-                                                {company.email}
+                                                {organization.email}
                                             </p>
                                         </div>
                                     </div>
@@ -600,21 +600,21 @@ export default function Companies() {
                                             <div className="flex items-center">
                                                 <CreditCard className="h-4 w-4 text-primary mr-2" />
                                                 <span className="text-sm font-medium text-gray-900 dark:text-white">
-                                                    {company.plan_name}
+                                                    {organization.plan_name}
                                                 </span>
                                             </div>
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
-                                                onClick={() => handleAction('upgrade-plan', company)}
+                                                onClick={() => handleAction('upgrade-plan', organization)}
                                                 className="h-6 px-2 text-xs text-primary hover:text-primary hover:bg-primary/10"
                                             >
                                                 {t("Upgrade")}
                                             </Button>
                                         </div>
-                                        {company.plan_expiry_date && (
+                                        {organization.plan_expiry_date && (
                                             <div className="text-xs text-gray-500 dark:text-gray-400">
-                                                {t("Expires")}: {window.appSettings?.formatDateTime(company.plan_expiry_date, false) || new Date(company.plan_expiry_date).toLocaleDateString()}
+                                                {t("Expires")}: {window.appSettings?.formatDateTime(organization.plan_expiry_date, false) || new Date(organization.plan_expiry_date).toLocaleDateString()}
                                             </div>
                                         )}
                                     </div>
@@ -627,13 +627,13 @@ export default function Companies() {
                                                     <Button
                                                         variant="ghost"
                                                         size="sm"
-                                                        onClick={() => handleAction('login-as', company)}
+                                                        onClick={() => handleAction('sign-in-as', organization)}
                                                         className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20"
                                                     >
                                                         <ArrowUpRight className="h-4 w-4 text-gray-500" />
                                                     </Button>
                                                 </TooltipTrigger>
-                                                <TooltipContent>{t("Login as Company")}</TooltipContent>
+                                                <TooltipContent>{t("Sign in as Organization")}</TooltipContent>
                                             </Tooltip>
 
                                             <Tooltip>
@@ -641,13 +641,13 @@ export default function Companies() {
                                                     <Button
                                                         variant="ghost"
                                                         size="sm"
-                                                        onClick={() => handleAction('company-info', company)}
+                                                        onClick={() => handleAction('organization-info', organization)}
                                                         className="h-8 w-8 p-0 text-gray-600 hover:text-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"
                                                     >
                                                         <Info className="h-4 w-4 text-gray-500" />
                                                     </Button>
                                                 </TooltipTrigger>
-                                                <TooltipContent>{t("Company Info")}</TooltipContent>
+                                                <TooltipContent>{t("Organization Info")}</TooltipContent>
                                             </Tooltip>
 
                                             <Tooltip>
@@ -655,7 +655,7 @@ export default function Companies() {
                                                     <Button
                                                         variant="ghost"
                                                         size="sm"
-                                                        onClick={() => handleAction('edit', company)}
+                                                        onClick={() => handleAction('edit', organization)}
                                                         className="h-8 w-8 p-0 text-amber-600 hover:text-amber-700 hover:bg-amber-50 dark:hover:bg-amber-900/20"
                                                     >
                                                         <Edit className="h-4 w-4 text-gray-500" />
@@ -677,19 +677,19 @@ export default function Companies() {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end" className="w-48 z-50" sideOffset={5}>
-                                                <DropdownMenuItem onClick={() => handleAction('reset-password', company)}>
+                                                <DropdownMenuItem onClick={() => handleAction('reset-password', organization)}>
                                                     <KeyRound className="h-4 w-4 mr-2 text-gray-500" />
                                                     <span>{t("Reset Password")}</span>
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem onClick={() => handleAction('toggle-status', company)}>
-                                                    {company.status === 'active' ?
+                                                <DropdownMenuItem onClick={() => handleAction('toggle-status', organization)}>
+                                                    {organization.status === 'active' ?
                                                         <Lock className="h-4 w-4 mr-2 text-gray-500" /> :
                                                         <Unlock className="h-4 w-4 mr-2 text-gray-500" />
                                                     }
-                                                    <span>{company.status === 'active' ? t("Disable Login") : t("Enable Login")}</span>
+                                                    <span>{organization.status === 'active' ? t("Disable Sign in") : t("Enable Sign in")}</span>
                                                 </DropdownMenuItem>
                                                 <DropdownMenuSeparator />
-                                                <DropdownMenuItem onClick={() => handleAction('delete', company)} className="text-red-600 focus:text-red-600">
+                                                <DropdownMenuItem onClick={() => handleAction('delete', organization)} className="text-red-600 focus:text-red-600">
                                                     <Trash2 className="h-4 w-4 mr-2 text-gray-500" />
                                                     <span>{t("Delete")}</span>
                                                 </DropdownMenuItem>
@@ -702,7 +702,7 @@ export default function Companies() {
                             </Card>
                         ))}
 
-                        {(!companies?.data || companies.data.length === 0) && (
+                        {(!organizations?.data || organizations.data.length === 0) && (
                             <div className="col-span-full">
                                 <div className="text-center py-12">
                                     <div className="mx-auto h-24 w-24 text-gray-300 dark:text-gray-600 mb-4">
@@ -710,11 +710,11 @@ export default function Companies() {
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                         </svg>
                                     </div>
-                                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">{t("No companies found")}</h3>
-                                    <p className="text-gray-500 dark:text-gray-400 mb-6">{t("Get started by creating your first company")}</p>
+                                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">{t("No organizations found")}</h3>
+                                    <p className="text-gray-500 dark:text-gray-400 mb-6">{t("Get started by creating your first organization")}</p>
                                     <Button onClick={handleAddNew} className="inline-flex items-center">
                                         <Plus className="h-4 w-4 mr-2" />
-                                        {t("Add Company")}
+                                        {t("Add Organization")}
                                     </Button>
                                 </div>
                             </div>
@@ -725,16 +725,16 @@ export default function Companies() {
                     <div className="mt-8">
                         <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                             <Pagination
-                                from={companies?.from || 0}
-                                to={companies?.to || 0}
-                                total={companies?.total || 0}
-                                links={companies?.links}
-                                entityName={t("companies")}
+                                from={organizations?.from || 0}
+                                to={organizations?.to || 0}
+                                total={organizations?.total || 0}
+                                links={organizations?.links}
+                                entityName={t("organizations")}
                                 onPageChange={(url) => router.get(url)}
                                 perPageOptions={[12, 24, 48, 96]}
                                 currentPerPage={pageFilters.per_page?.toString() || '12'}
                                 onPerPageChange={(value) => {
-                                    router.get(route('companies.index'), {
+                                    router.get(route('organizations.index'), {
                                         view: activeView, page: 1,
                                         search: searchTerm || undefined,
                                         status: selectedStatus !== 'all' ? selectedStatus : undefined,
@@ -751,7 +751,7 @@ export default function Companies() {
 
             {/* View Modal */}
             <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
-                {currentCompany && <ViewPopup record={currentCompany} />}
+                {currentOrganization && <ViewPopup record={currentOrganization} />}
             </Dialog>
 
             {/* Form Modal */}
@@ -759,24 +759,24 @@ export default function Companies() {
                 isOpen={isFormModalOpen}
                 onClose={() => setIsFormModalOpen(false)}
                 onSubmit={(data) => {
-                    // If login_enabled is false, remove password field
-                    if (data.login_enabled === false) {
+                    // If sign_in_enabled is false, remove password field
+                    if (data.sign_in_enabled === false) {
                         delete data.password;
                     }
-                    // Set status based on login_enabled
-                    data.status = data.login_enabled ? 'active' : 'inactive';
+                    // Set status based on sign_in_enabled
+                    data.status = data.sign_in_enabled ? 'active' : 'inactive';
 
-                    // Remove login_enabled field as it's not needed in the backend
-                    delete data.login_enabled;
+                    // Remove sign_in_enabled field as it's not needed in the backend
+                    delete data.sign_in_enabled;
                     handleFormSubmit(data);
                 }}
                 formConfig={{
                     fields: [
-                        { name: 'name', label: t('Company Name'), type: 'text', placeholder: t('eg. Acme Corp'), required: true },
+                        { name: 'name', label: t('Organization Name'), type: 'text', placeholder: t('eg. Acme Corp'), required: true },
                         { name: 'email', label: t('Email'), type: 'email', placeholder: t('eg. admin@acmecorp.com'), required: true },
                         {
-                            name: 'login_enabled',
-                            label: t('Enable Login'),
+                            name: 'sign_in_enabled',
+                            label: t('Enable Sign in'),
                             placeholder: '', // Empty placeholder to prevent duplicate label
                             type: 'switch',
                             defaultValue: true,
@@ -789,20 +789,20 @@ export default function Companies() {
                             placeholder: t('Enter Password'),
                             required: (mode) => mode === 'create',
                             conditional: (mode, data) => {
-                                return mode !== 'edit' && data?.login_enabled === true;
+                                return mode !== 'edit' && data?.sign_in_enabled === true;
                             }
                         }
                     ],
                     modalSize: 'lg'
                 }}
                 initialData={{
-                    ...currentCompany,
-                    login_enabled: currentCompany?.status === 'active'
+                    ...currentOrganization,
+                    sign_in_enabled: currentOrganization?.status === 'active'
                 }}
                 title={
                     formMode === 'create'
-                        ? t('Add Company')
-                        : t('Edit Company')
+                        ? t('Add Organization')
+                        : t('Edit Organization')
                 }
                 mode={formMode}
             />
@@ -812,8 +812,8 @@ export default function Companies() {
                 isOpen={isDeleteModalOpen}
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
-                itemName={currentCompany?.name || ''}
-                entityName="company"
+                itemName={currentOrganization?.name || ''}
+                entityName="organization"
             />
 
             {/* Reset Password Modal */}
@@ -828,7 +828,7 @@ export default function Companies() {
                     modalSize: 'sm'
                 }}
                 initialData={{}}
-                title={`Reset Password for ${currentCompany?.name || 'Company'}`}
+                title={`Reset Password for ${currentOrganization?.name || 'Organization'}`}
                 mode="edit"
             />
 
@@ -838,8 +838,8 @@ export default function Companies() {
                 onClose={() => setIsUpgradePlanModalOpen(false)}
                 onConfirm={handleUpgradePlanConfirm}
                 plans={availablePlans}
-                currentPlanId={currentCompany?.plan_id}
-                companyName={currentCompany?.name || ''}
+                currentPlanId={currentOrganization?.plan_id}
+                organizationName={currentOrganization?.name || ''}
             />
 
 

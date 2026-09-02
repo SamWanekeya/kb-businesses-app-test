@@ -121,7 +121,7 @@ export default function PlanRequestsPage() {
      useEffect(() => {
         if (!pageInitialState) applyFilters();
         setPageInitialState(false);
-    }, [selectedStatus,searchTerm]);  
+    }, [selectedStatus,searchTerm]);
 
 
     const handleResetFilters = () => {
@@ -140,7 +140,7 @@ export default function PlanRequestsPage() {
     const columns = [
         {
             key: 'user.name',
-            label: t('Company'),
+            label: t('Organization'),
             render: (_, row) => {
                 const avatarUrl = row.user?.avatar ? getDisplayUrl(row.user.avatar) : getDisplayUrl('media/avatars/avatar.png');
                 return (
@@ -210,7 +210,7 @@ export default function PlanRequestsPage() {
     ];
 
     // Define table actions - only visible to super admin
-    const isSuperAdmin = auth?.user?.type === 'superadmin';
+    const isSuperAdmin = auth?.user?.type === 'super_admin';
     const actions = isSuperAdmin ? [
         {
             label: t('Approve'),
@@ -243,8 +243,8 @@ export default function PlanRequestsPage() {
             title={t('Plan Requests')}
             url="/plan-requests"
             breadcrumbs={breadcrumbs}
-            // description={t('View and manage all plan requests from companies.')}
-            description={isSuperAdmin ? t('View and manage all plan requests from companies.') : t('View your plan requests.')}
+            // description={t('View and manage all plan requests from organizations.')}
+            description={isSuperAdmin ? t('View and manage all plan requests from organizations.') : t('View your plan requests.')}
             noPadding
         >
             {/* Search and filters section */}

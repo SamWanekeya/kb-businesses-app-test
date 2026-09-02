@@ -15,20 +15,20 @@ class RoleSeeder extends Seeder
     {
         // Create super admin role
         $superAdminRole = Role::firstOrCreate(
-            ['name' => 'superadmin', 'guard_name' => 'web'],
+            ['name' => 'super_admin', 'guard_name' => 'web'],
             [
-                'label' => 'Super Admin',
-                'description' => 'Super Admin has full access to all features',
+                'label' => 'Super Administrator',
+                'description' => 'Super Administrator has full access to all features',
                 'created_by' => null,
             ]
         );
 
         // Create admin role
         $adminRole = Role::firstOrCreate(
-            ['name' => 'company', 'guard_name' => 'web'],
+            ['name' => 'organization', 'guard_name' => 'web'],
             [
-                'label' => 'Company',
-                'description' => 'Company has access to manage buissness',
+                'label' => 'Organization',
+                'description' => 'Organization has access to manage buissness',
                 'created_by' => null,
             ]
         );
@@ -39,7 +39,7 @@ class RoleSeeder extends Seeder
         // Assign all permissions to super admin
         $superAdminRole->syncPermissions($permissions);
 
-        // Assign specific permissions to company role
+        // Assign specific permissions to organization role
         $adminPermissions = Permission::whereIn('name', [
             'manage-dashboard',
             'manage-users',

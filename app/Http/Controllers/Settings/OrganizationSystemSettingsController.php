@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Settings;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class CompanySystemSettingsController extends Controller
+class OrganizationSystemSettingsController extends Controller
 {
     /**
-     * Update the company system settings.
+     * Update the organization system settings.
      *
-     * Handles company-level configuration including:
+     * Handles organization-level configuration including:
      * - Language and localization settings
      * - Date/time formats and timezone
      * - Excludes email verification and landing page settings

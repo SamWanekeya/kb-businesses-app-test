@@ -31,9 +31,9 @@ class InvoiceAamarpayPaymentController extends Controller
                 return response()->json(['error' => $validation['message']], 400);
             }
 
-            $companyId = $invoice->created_by;
-            $company = User::findOrFail($companyId);
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $organization = User::findOrFail($organizationId);
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['aamarpay_store_id']) || !isset($settings['payment_settings']['aamarpay_signature'])) {
                 return response()->json(['error' => __('Aamarpay not configured')], 400);
@@ -51,8 +51,8 @@ class InvoiceAamarpayPaymentController extends Controller
                 'payment_type' => '',
                 'currency' => $currency,
                 'tran_id' => $orderID,
-                'cus_name' => $company->name ?? 'Customer',
-                'cus_email' => $company->email,
+                'cus_name' => $organization->name ?? 'Customer',
+                'cus_email' => $organization->email,
                 'cus_add1' => $invoice->billing_address ?? '',
                 'cus_add2' => '',
                 'cus_city' => $invoice->billing_city ?? '',
@@ -172,11 +172,11 @@ class InvoiceAamarpayPaymentController extends Controller
         }
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 }

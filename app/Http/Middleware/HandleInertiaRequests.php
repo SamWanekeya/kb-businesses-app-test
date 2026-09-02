@@ -63,7 +63,7 @@ class HandleInertiaRequests extends Middleware
             ];
             $storageSettings = [
                 'allowed_file_types' => 'jpg,png,webp,gif',
-                'max_file_size_mb' => 2
+                'maximum_file_size_mb' => 2
             ];
         } else {
             // Get system settings
@@ -84,39 +84,39 @@ class HandleInertiaRequests extends Middleware
                 ];
             }
 
-            // Get storage settings from superadmin
+            // Get storage settings from super_admin
             $storageSettings = [];
             try {
-                $superAdmin = User::where('type', 'superadmin')->first();
+                $superAdmin = User::where('type', 'super_admin')->first();
                 if ($superAdmin) {
                     $storageSettingsData = Setting::where('user_id', $superAdmin->id)
-                        ->whereIn('key', ['storage_file_types', 'storage_max_upload_size'])
+                        ->whereIn('key', ['storage_file_types', 'storage_maximum_upload_size'])
                         ->pluck('value', 'key')
                         ->toArray();
 
-                    $maxSizeKB = (int)($storageSettingsData['storage_max_upload_size'] ?? 2048);
+                    $maxSizeKB = (int)($storageSettingsData['storage_maximum_upload_size'] ?? 2048);
                     $storageSettings = [
                         'allowed_file_types' => $storageSettingsData['storage_file_types'] ?? 'jpg,png,webp,gif',
-                        'max_file_size_mb' => round($maxSizeKB / 1024, 2)
+                        'maximum_file_size_mb' => round($maxSizeKB / 1024, 2)
                     ];
                 } else {
                     $storageSettings = [
                         'allowed_file_types' => 'jpg,png,webp,gif',
-                        'max_file_size_mb' => 2
+                        'maximum_file_size_mb' => 2
                     ];
                 }
             } catch (\Exception $e) {
                 // Fallback to default settings if service fails
                 $storageSettings = [
                     'allowed_file_types' => 'jpg,png,webp,gif',
-                    'max_file_size_mb' => 2
+                    'maximum_file_size_mb' => 2
                 ];
             }
 
             // Get super admin currency settings for plans and referrals
             $superAdminCurrencySettings = [];
             try {
-                $superAdmin = User::where('type', 'superadmin')->first();
+                $superAdmin = User::where('type', 'super_admin')->first();
                 if ($superAdmin) {
                     $superAdminSettings = Setting::where('user_id', $superAdmin->id)
                         ->whereIn('key', ['decimalFormat', 'defaultCurrency', 'thousandsSeparator', 'currencySymbolSpace', 'currencySymbolPosition'])
@@ -152,10 +152,10 @@ class HandleInertiaRequests extends Middleware
                 $availableLanguages = json_decode(file_get_contents($languagesFile), true) ?? [];
             }
 
-            // Get superadmin enableLogging setting for cookie consent
+            // Get super_admin enableLogging setting for cookie consent
             $superAdminEnableLogging = false;
             try {
-                $superAdmin = User::where('type', 'superadmin')->first();
+                $superAdmin = User::where('type', 'super_admin')->first();
                 if ($superAdmin) {
                     $enableLoggingSetting = Setting::where('user_id', $superAdmin->id)
                         ->where('key', 'enableLogging')
@@ -168,7 +168,7 @@ class HandleInertiaRequests extends Middleware
 
             $superAdminRegistrationEnabled = false;
             try {
-                $superAdmin = User::where('type', 'superadmin')->first();
+                $superAdmin = User::where('type', 'super_admin')->first();
                 if ($superAdmin) {
                     $registrationEnabledSetting = Setting::where('user_id', $superAdmin->id)
                         ->where('key', 'registrationEnabled')
@@ -193,7 +193,7 @@ class HandleInertiaRequests extends Middleware
         //     $cookieSetting = Setting::where('key', 'strictlyNecessaryCookies')->first();
         //     $globalSettings['strictlyNecessaryCookies'] = $cookieSetting ? (int)$cookieSetting->value : 0;
         //
-        // Get layout direction from Super Admin settings for public pages
+        // Get layout direction from Super Administrator settings for public pages
             if (config('app.is_demo')) {
                 $globalSettings['layoutDirection'] = $request->cookie('layoutDirection', 'left');
             } else {
@@ -201,11 +201,11 @@ class HandleInertiaRequests extends Middleware
              $globalSettings['layoutDirection'] = getSetting('layoutDirection', $settings['layoutDirection'] ?? 'left', auth()?->id());
 
             }
-            if (auth()->user() && auth()->user()->hasRole('company')) {
+            if (auth()->user() && auth()->user()->hasRole('organization')) {
                 $lastPlanOrder = PlanOrder::where('user_id', auth()->id())->orderByDesc('processed_at')->first();
                 if($lastPlanOrder){
                     $globalSettings['planExirationDate'] = $lastPlanOrder->billing_cycle == 'monthly' ? ($lastPlanOrder?->processed_at?->addMonth() ?? null) : ($lastPlanOrder?->processed_at?->addYear()?? null);
-             
+
                     }
             }
 

@@ -29,8 +29,8 @@ class InvoiceTapPaymentController extends Controller
                 return response()->json(['success' => false, 'error' => $validation['message']]);
             }
 
-            $companyId = $invoice->created_by;
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['tap_secret_key'])) {
                 return response()->json(['success' => false, 'error' => __('Tap not configured')]);
@@ -43,7 +43,7 @@ class InvoiceTapPaymentController extends Controller
             require_once app_path('Libraries/Tap/Reference.php');
             require_once app_path('Libraries/Tap/Payment.php');
             $tap = new \App\Package\Payment([
-                'company_tap_secret_key' => $settings['payment_settings']['tap_secret_key']
+                'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key']
             ]);
 
             $chargeData = [
@@ -54,7 +54,7 @@ class InvoiceTapPaymentController extends Controller
                 'statement_descriptor' => 'Invoice Payment',
                 'customer' => [
                     'first_name' => $invoice->account->name ?? $invoice->contact->name ?? 'Customer',
-                    'email' => $invoice->account->email ?? $invoice->contact->email ?? 'customer@example.com',
+                    'email' => $invoice->account->email ?? $invoice->contact->email ?? 'customer@kakbima.dev',
                 ],
                 'source' => ['id' => 'src_card'],
                 'post' => ['url' => route('invoice.tap.callback')],
@@ -92,8 +92,8 @@ class InvoiceTapPaymentController extends Controller
             }
 
             $invoice = Invoice::findOrFail($invoiceId);
-            $companyId = $invoice->created_by;
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['tap_secret_key'])) {
                 return redirect()->back()->with('error', __('Tap not configured'));
@@ -104,7 +104,7 @@ class InvoiceTapPaymentController extends Controller
             require_once app_path('Libraries/Tap/Reference.php');
             require_once app_path('Libraries/Tap/Payment.php');
             $tap = new \App\Package\Payment([
-                'company_tap_secret_key' => $settings['payment_settings']['tap_secret_key']
+                'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key']
             ]);
 
             // Get charge details from Tap API
@@ -179,11 +179,11 @@ class InvoiceTapPaymentController extends Controller
         return $request->validate(array_merge($baseRules, $additionalRules));
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 }

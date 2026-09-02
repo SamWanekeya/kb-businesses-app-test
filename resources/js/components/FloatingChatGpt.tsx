@@ -16,22 +16,22 @@ export function FloatingChatGpt() {
 
   // Check if user can access ChatGPT
   const userRole = auth?.roles?.[0] || auth?.user?.type;
-  const isSuperAdmin = userRole === 'superadmin' || auth?.user?.type === 'superadmin';
-  const isCompany = auth?.user?.type === 'company';
+  const isSuperAdmin = userRole === 'super_admin' || auth?.user?.type === 'super_admin';
+  const isOrganization = auth?.user?.type === 'organization';
 
   let canUseChatGPT = false;
 
   if (isSuperAdmin) {
     canUseChatGPT = true;
-  } else if (isCompany) {
-    // For company users, check their own plan
-    const hasActivePlan = auth?.user?.plan_is_active === 1 && auth?.user?.plan;
-    canUseChatGPT = hasActivePlan && auth?.user?.plan?.enable_chatgpt === 'on';
+  } else if (isOrganization) {
+    // For organization users, check their own plan
+    const hasActivePlan = auth?.user?.is_plan_active === 1 && auth?.user?.plan;
+    canUseChatGPT = hasActivePlan && auth?.user?.plan?.enable_kakbima_intelligence === 'on';
   } else {
-    // For other users, check the plan of the company user who created them
+    // For other users, check the plan of the organization user who created them
     const creator = auth?.user?.creator;
-    const hasActivePlan = creator?.plan_is_active === 1 && creator?.plan;
-    canUseChatGPT = hasActivePlan && creator?.plan?.enable_chatgpt === 'on';
+    const hasActivePlan = creator?.is_plan_active === 1 && creator?.plan;
+    canUseChatGPT = hasActivePlan && creator?.plan?.enable_kakbima_intelligence === 'on';
   }
 
   useEffect(() => {

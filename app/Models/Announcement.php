@@ -11,7 +11,7 @@ class Announcement extends BaseModel
 
     protected $fillable = [
         'title',
-        'content',
+        'announcement_content',
         'announcement_category_id',
         'start_date',
         'end_date',

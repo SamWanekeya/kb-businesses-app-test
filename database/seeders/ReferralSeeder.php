@@ -14,7 +14,7 @@ class ReferralSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $users = User::where('type', 'company')->get();
+        $users = User::where('type', 'organization')->get();
         $plans = Plan::all();
 
         if ($users->isEmpty() || $plans->isEmpty()) {
@@ -27,10 +27,10 @@ class ReferralSeeder extends Seeder
             $plan = $plans->random();
             $commissionPercentage = $faker->randomFloat(2, 5, 20);
             $commissionAmount = ($plan->price * $commissionPercentage) / 100;
-            
+
             Referral::create([
                 'user_id' => $user->id,
-                'company_id' => $referrer->id,
+                'organization_id' => $referrer->id,
                 'commission_percentage' => $commissionPercentage,
                 'amount' => $commissionAmount,
                 'plan_id' => $plan->id,

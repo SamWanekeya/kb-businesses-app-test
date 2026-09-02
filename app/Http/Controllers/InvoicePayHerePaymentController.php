@@ -29,9 +29,9 @@ class InvoicePayHerePaymentController extends Controller
                 return response()->json(['error' => $validation['message']], 400);
             }
 
-            $companyId = $invoice->created_by;
-            $company = User::findOrFail($companyId);
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $organization = User::findOrFail($organizationId);
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['payhere_merchant_id'])) {
                 \Log::error('PayHere payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
@@ -55,7 +55,7 @@ class InvoicePayHerePaymentController extends Controller
                 'amount' => number_format($validated['amount'], 2, '.', ''),
                 'first_name' => $invoice->name ?? 'Customer',
                 'last_name' => 'User',
-                'email' => $invoice->email ?? $company->email,
+                'email' => $invoice->email ?? $organization->email,
                 'phone' => $invoice->phone ?? '0771234567',
                 'address' => $invoice->billing_address ?? 'No.1, Galle Road',
                 'city' => $invoice->billing_city ?? 'Colombo',
@@ -141,14 +141,14 @@ class InvoicePayHerePaymentController extends Controller
 
             if ($orderId && $statusCode === '2') {
                 $parts = explode('_', $orderId);
-                
+
                 if (count($parts) >= 2) {
                     $invoiceId = $parts[1];
                     $invoice = Invoice::find($invoiceId);
 
                     if ($invoice) {
                         $remainingAmount = $invoice->getRemainingAmount();
-                        
+
                         InvoicePayment::storePayment([
                             'invoice_id' => $invoice->id,
                             'amount' => $remainingAmount,
@@ -186,11 +186,11 @@ class InvoicePayHerePaymentController extends Controller
         return $request->validate(array_merge($baseRules, $additionalRules));
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 }

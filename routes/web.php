@@ -9,7 +9,7 @@ use App\Http\Controllers\PlanRequestController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ReferralController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ImpersonateController;
@@ -124,7 +124,7 @@ use App\Http\Controllers\InvoiceKhaltiPaymentController;
 use App\Http\Controllers\InvoiceEasebuzzPaymentController;
 use App\Http\Controllers\InvoiceOzowPaymentController;
 use App\Http\Controllers\InvoiceCashfreePaymentController;
-use App\Http\Controllers\LoginHistoryController;
+use App\Http\Controllers\SignInHistoryController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\ProjectTaskController;
@@ -297,17 +297,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('media-library', function () {
             $planLimits = null;
-            if (auth()->user()->type === 'company') {
+            if (auth()->user()->type === 'organization') {
                 $user = auth()->user();
                 $plan = $user->getCurrentPlan();
 
                 if ($plan && $plan->storage_limit > 0) {
-                    $companyUsers = \App\Models\User::where('created_by', $user->id)->pluck('id')->push($user->id);
-                    $currentStorageUsage = \Spatie\MediaLibrary\MediaCollections\Models\Media::whereIn('user_id', $companyUsers)->sum('size');
+                    $organizationUsers = \App\Models\User::where('created_by', $user->id)->pluck('id')->push($user->id);
+                    $currentStorageUsage = \Spatie\MediaLibrary\MediaCollections\Models\Media::whereIn('user_id', $organizationUsers)->sum('size');
                     $storageLimit = $plan->storage_limit * 1024 * 1024 * 1024;
                     $planLimits = [
                         'current_storage' => $currentStorageUsage,
-                        'max_storage' => $storageLimit,
+                        'maximum_storage' => $storageLimit,
                         'can_create' => $currentStorageUsage < $storageLimit
                     ];
                 }
@@ -399,16 +399,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return Inertia::render('plans/plan-requests');
         })->name('plan-requests.index');
 
-        // Companies routes
-        Route::middleware('permission:manage-companies')->group(function () {
-            Route::get('companies', [CompanyController::class, 'index'])->middleware('permission:manage-companies')->name('companies.index');
-            Route::post('companies', [CompanyController::class, 'store'])->middleware('permission:create-companies')->name('companies.store');
-            Route::put('companies/{company}', [CompanyController::class, 'update'])->middleware('permission:edit-companies')->name('companies.update');
-            Route::delete('companies/{company}', [CompanyController::class, 'destroy'])->middleware('permission:delete-companies')->name('companies.destroy');
-            Route::put('companies/{company}/reset-password', [CompanyController::class, 'resetPassword'])->middleware('permission:reset-password-companies')->name('companies.reset-password');
-            Route::put('companies/{company}/toggle-status', [CompanyController::class, 'toggleStatus'])->middleware('permission:toggle-status-companies')->name('companies.toggle-status');
-            Route::get('companies/{company}/plans', [CompanyController::class, 'getPlans'])->middleware('permission:manage-plans-companies')->name('companies.plans');
-            Route::put('companies/{company}/upgrade-plan', [CompanyController::class, 'upgradePlan'])->middleware('permission:upgrade-plan-companies')->name('companies.upgrade-plan');
+        // Organizations routes
+        Route::middleware('permission:manage-organizations')->group(function () {
+            Route::get('organizations', [OrganizationController::class, 'index'])->middleware('permission:manage-organizations')->name('organizations.index');
+            Route::post('organizations', [OrganizationController::class, 'store'])->middleware('permission:create-organizations')->name('organizations.store');
+            Route::put('organizations/{organization}', [OrganizationController::class, 'update'])->middleware('permission:edit-organizations')->name('organizations.update');
+            Route::delete('organizations/{organization}', [OrganizationController::class, 'destroy'])->middleware('permission:delete-organizations')->name('organizations.destroy');
+            Route::put('organizations/{organization}/reset-password', [OrganizationController::class, 'resetPassword'])->middleware('permission:reset-password-organizations')->name('organizations.reset-password');
+            Route::put('organizations/{organization}/toggle-status', [OrganizationController::class, 'toggleStatus'])->middleware('permission:toggle-status-organizations')->name('organizations.toggle-status');
+            Route::get('organizations/{organization}/plans', [OrganizationController::class, 'getPlans'])->middleware('permission:manage-plans-organizations')->name('organizations.plans');
+            Route::put('organizations/{organization}/upgrade-plan', [OrganizationController::class, 'upgradePlan'])->middleware('permission:upgrade-plan-organizations')->name('organizations.upgrade-plan');
         });
 
 
@@ -1035,13 +1035,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('languages/{languageCode}/toggle', [LanguageController::class, 'toggleLanguageStatus'])->middleware('App\Http\Middleware\SuperAdminMiddleware')->name('languages.toggle');
 
 
-        // Login History routes
+        // Sign in History routes
         Route::middleware('permission:manage-login-history')->group(function () {
-            Route::get('login-history', [LoginHistoryController::class, 'index'])->middleware('permission:show-login-history')->name('login-history.index');
-            Route::delete('login-history/{loginDetail}', [LoginHistoryController::class, 'destroy'])->middleware('permission:delete-login-history')->name('login-history.destroy');
+            Route::get('login-history', [SignInHistoryController::class, 'index'])->middleware('permission:show-login-history')->name('login-history.index');
+            Route::delete('login-history/{loginDetail}', [SignInHistoryController::class, 'destroy'])->middleware('permission:delete-login-history')->name('login-history.destroy');
         });
 
-        // Landing Page content management (Super Admin only)
+        // Landing Page content management (Super Administrator only)
         Route::middleware('App\Http\Middleware\SuperAdminMiddleware')->group(function () {
             Route::get('landing-page/settings', [LandingPageController::class, 'settings'])->name('landing-page.settings');
             Route::post('landing-page/settings', [LandingPageController::class, 'updateSettings'])->name('landing-page.settings.update');
@@ -1060,7 +1060,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('impersonate/{userId}', [ImpersonateController::class, 'start'])->name('impersonate.start');
         });
 
-        Route::middleware(['role:superadmin|super admin'])->group(function () {
+        Route::middleware(['role:super_admin|super admin'])->group(function () {
             Route::get('/landing-page', [LandingPageController::class, 'settings'])->name('landing-page');
             // Email Templates routes (no middleware for testing)
             Route::get('email-templates', [EmailTemplateController::class, 'index'])->name('email-templates.index');

@@ -11,7 +11,7 @@ class EmailTemplateLang extends Model
         'parent_id',
         'lang',
         'subject',
-        'content',
+        'email_template_content',
     ];
 
     public function emailTemplate(): BelongsTo

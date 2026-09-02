@@ -11,10 +11,10 @@ class CategorySeeder extends Seeder
 {
     public function run(): void
     {
-        $companyUsers = User::where('type', 'company')->get();
-        
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        $organizationUsers = User::where('type', 'organization')->get();
+
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
@@ -27,21 +27,21 @@ class CategorySeeder extends Seeder
             ['name' => 'Networking & Security', 'description' => 'Network equipment and security devices']
         ];
 
-        foreach ($companyUsers as $company) {
+        foreach ($organizationUsers as $organization) {
             foreach ($categoryTemplates as $template) {
                 Category::firstOrCreate(
-                    ['slug' => Str::slug($template['name']), 'created_by' => $company->id],
+                    ['slug' => Str::slug($template['name']), 'created_by' => $organization->id],
                     [
                         'name' => $template['name'],
                         'slug' => Str::slug($template['name']),
                         'description' => $template['description'],
                         'status' => 'active',
-                        'created_by' => $company->id,
+                        'created_by' => $organization->id,
                     ]
                 );
             }
         }
-        
-        $this->command->info('Categories created for all company users!');
+
+        $this->command->info('Categories created for all organization users!');
     }
 }

@@ -19,8 +19,8 @@ class InvoiceMercadoPagoPaymentController extends Controller
 
         try {
             $invoice = Invoice::findOrFail($validated['invoice_id']);
-            $companyId = $invoice->created_by;
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['mercadopago_access_token'])) {
                 return response()->json(['error' => __('MercadoPago not configured')], 400);
@@ -163,11 +163,11 @@ class InvoiceMercadoPagoPaymentController extends Controller
         return $request->validate(array_merge($baseRules, $additionalRules));
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 }

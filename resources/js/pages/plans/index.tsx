@@ -129,7 +129,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
         router.get(route('plans.index'), { billing_cycle: value }, { preserveState: true });
     };
 
-    // Company plan actions
+    // Organization plan actions
     const handlePlanRequest = (planId: number) => {
         toast.loading(t('Submitting plan request...'));
 
@@ -559,7 +559,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
                 return <FileText className="h-4 w-4" />;
             case 'Blog Module':
                 return <FileText className="h-4 w-4" />;
-            case 'AI Integration':
+            case 'Kakbima Intelligence':
                 return <Bot className="h-4 w-4" />;
             case 'Analytics':
                 return <BarChart2 className="h-4 w-4" />;
@@ -627,7 +627,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
 
     // Common features to display for all plans
     const commonFeatures = [
-        'AI Integration'
+        'Kakbima Intelligence'
     ];
 
     // Define stat icons
@@ -643,7 +643,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
         { title: t('Dashboard'), href: route('dashboard') },
         { title: t('Plans') }
     ];
-    const isSuperAdmin = auth?.user?.type === 'superadmin';
+    const isSuperAdmin = auth?.user?.type === 'super_admin';
 
     return (
         <PageTemplate
@@ -921,7 +921,7 @@ export default function Plans({ plans: initialPlans, billingCycle: initialBillin
                     />
                 )}
 
-                {/* Subscription Modal - Company only */}
+                {/* Subscription Modal - Organization only */}
                 {!isAdmin && selectedPlan && (
                     <PlanSubscriptionModal
                         isOpen={isSubscriptionModalOpen}

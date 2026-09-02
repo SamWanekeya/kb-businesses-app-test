@@ -16,13 +16,13 @@ class ChatGptController extends Controller
             'language' => 'string|in:en,es,ar,da,de,fr,he,it,ja,nl,pl,pt,pt-BR,ru,tr,zh',
             'creativity' => 'string|in:low,medium,high',
             'num_results' => 'integer|min:1|max:5',
-            'max_length' => 'integer|min:1|max:500'
+            'maximum_length' => 'integer|min:1|max:500'
         ]);
 
         try {
             $apiKey = Setting::where('key', 'chatgptKey')->value('value');
             $model = Setting::where('key', 'chatgptModel')->value('value') ?? 'gpt-3.5-turbo';
-            
+
             if (!$apiKey) {
                 return response()->json([
                     'success' => false,
@@ -38,7 +38,7 @@ class ChatGptController extends Controller
                     default => 0.7
                 };
             }
-            
+
             $language = $request->input('language', 'en');
             $langText = $language !== 'en' ? "Provide response in " . match($language) {
                 'es' => 'Spanish',
@@ -59,20 +59,20 @@ class ChatGptController extends Controller
                 default => 'English'
             } . " language.\n\n " : "";
 
-            $maxTokens = (int) $request->input('max_length', 150);
+            $maxTokens = (int) $request->input('maximum_length', 150);
             $maxResults = (int) $request->input('num_results', 1);
 
             $client = OpenAI::client($apiKey);
-            
+
             $response = $client->chat()->create([
                 'model' => $model,
                 'messages' => [
                     [
                         'role' => 'user',
-                        'content' => $request->prompt . ' ' . $langText
+                        'template_content' => $request->prompt . ' ' . $langText
                     ]
                 ],
-                'max_tokens' => $maxTokens,
+                'maximum_tokens' => $maxTokens,
                 'temperature' => $temperature,
                 'n' => $maxResults
             ]);
@@ -80,19 +80,19 @@ class ChatGptController extends Controller
             if (isset($response->choices)) {
                 $text = '';
                 $counter = 1;
-                
+
                 if (count($response->choices) > 1) {
                     foreach ($response->choices as $choice) {
-                        $text .= $counter . '. ' . trim($choice->message->content) . "\r\n\r\n\r\n";
+                        $text .= $counter . '. ' . trim($choice->message->template_content) . "\r\n\r\n\r\n";
                         $counter++;
                     }
                 } else {
-                    $text = $response->choices[0]->message->content;
+                    $text = $response->choices[0]->message->template_content;
                 }
 
                 return response()->json([
                     'success' => true,
-                    'content' => trim($text)
+                    'template_content' => trim($text)
                 ]);
             } else {
                 return response()->json([

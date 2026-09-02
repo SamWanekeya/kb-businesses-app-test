@@ -10,16 +10,17 @@ return new class extends Migration
     {
         Schema::create('invoice_payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invoice_id')->constrained()->onDelete('cascade');
-            $table->decimal('amount', 10, 2);
+            $table->foreignId('invoice_id')->constrained()->cascadeOnDelete();
+            $table->decimal('amount', total: 19, places: 7);
             $table->string('payment_type'); // full, partial
             $table->string('payment_method'); // stripe, paypal, bank
             $table->string('payment_id')->nullable();
             $table->enum('status', ['pending', 'completed', 'failed', 'cancelled'])->default('pending');
             $table->timestamp('processed_at')->nullable();
             $table->text('notes')->nullable();
+            $table->string('receipt_path')->nullable();
             $table->timestamps();
-            
+
             // Indexes
             $table->index(['invoice_id', 'status']);
             $table->index('payment_id');

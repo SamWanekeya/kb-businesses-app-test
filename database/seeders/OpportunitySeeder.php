@@ -17,23 +17,23 @@ class OpportunitySeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $companyUsers = User::where('type', 'company')->get();
-        
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        $organizationUsers = User::where('type', 'organization')->get();
+
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
         $amounts = [25000, 45000, 75000, 95000, 125000, 165000, 195000, 225000, 285000];
 
-        foreach ($companyUsers as $company) {
-            $accounts = Account::where('created_by', $company->id)->get();
-            $contacts = Contact::where('created_by', $company->id)->get();
-            $products = Product::where('created_by', $company->id)->get();
-            $opportunityStages = OpportunityStage::where('created_by', $company->id)->get();
-            $opportunitySources = OpportunitySource::where('created_by', $company->id)->get();
-            $staffUsers = User::where('created_by', $company->id)->get();
-            
+        foreach ($organizationUsers as $organization) {
+            $accounts = Account::where('created_by', $organization->id)->get();
+            $contacts = Contact::where('created_by', $organization->id)->get();
+            $products = Product::where('created_by', $organization->id)->get();
+            $opportunityStages = OpportunityStage::where('created_by', $organization->id)->get();
+            $opportunitySources = OpportunitySource::where('created_by', $organization->id)->get();
+            $staffUsers = User::where('created_by', $organization->id)->get();
+
             if ($accounts->isEmpty() || $opportunityStages->isEmpty() || $opportunitySources->isEmpty()) {
                 continue;
             }
@@ -43,7 +43,7 @@ class OpportunitySeeder extends Seeder
                 $contact = $contacts->where('account_id', $account->id)->first() ?? $contacts->random();
                 $createdDate = $faker->dateTimeBetween('-3 months', 'now');
                 $closeDate = $faker->dateTimeBetween($createdDate, '+4 months');
-                
+
                 $opportunity = Opportunity::create([
                     'name' => $account->name . ' - ' . $faker->words(2, true) . ' Project',
                     'description' => 'Strategic business opportunity for ' . $account->name,
@@ -55,7 +55,7 @@ class OpportunitySeeder extends Seeder
                     'contact_id' => $contact?->id,
                     'opportunity_stage_id' => $opportunityStages->random()->id,
                     'opportunity_source_id' => $opportunitySources->random()->id,
-                    'created_by' => $company->id,
+                    'created_by' => $organization->id,
                     'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
                     'created_at' => $createdDate,
                 ]);
@@ -74,7 +74,7 @@ class OpportunitySeeder extends Seeder
                 }
             }
         }
-        
-        $this->command->info('Opportunities created for all company users!');
+
+        $this->command->info('Opportunities created for all organization users!');
     }
 }

@@ -24,11 +24,11 @@ class EmailSettingController extends Controller
             'driver' => getSetting('email_driver', 'smtp'),
             'host' => getSetting('email_host', 'smtp.example.com'),
             'port' => getSetting('email_port', '587'),
-            'username' => getSetting('email_username', 'user@example.com'),
+            'username' => getSetting('email_username', 'user@kakbima.dev'),
             'password' => getSetting('email_password', ''),
             'encryption' => getSetting('email_encryption', 'tls'),
-            'fromAddress' => getSetting('email_from_address', 'noreply@example.com'),
-            'fromName' => getSetting('email_from_name', 'WorkDo System')
+            'fromAddress' => getSetting('email_from_address', 'noreply@kakbima.dev'),
+            'fromName' => getSetting('email_from_name', 'Kakbima')
         ];
 
         // Mask password if it exists
@@ -100,10 +100,10 @@ class EmailSettingController extends Controller
             'driver' => getSetting('email_driver', 'smtp'),
             'host' => getSetting('email_host', 'smtp.example.com'),
             'port' => getSetting('email_port', '587'),
-            'username' => getSetting('email_username', 'user@example.com'),
+            'username' => getSetting('email_username', 'user@kakbima.dev'),
             'encryption' => getSetting('email_encryption', 'tls'),
-            'fromAddress' => getSetting('email_from_address', 'noreply@example.com'),
-            'fromName' => getSetting('email_from_name', 'WorkDo System')
+            'fromAddress' => getSetting('email_from_address', 'noreply@kakbima.dev'),
+            'fromName' => getSetting('email_from_name', 'Kakbima')
         ];
 
         // Get the actual password (not masked)

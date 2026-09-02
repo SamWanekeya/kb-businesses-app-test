@@ -43,7 +43,7 @@ const iconMap: Record<string, React.ComponentType<any>> = {
   'zap': Zap
 };
 
-export default function AboutUs({ settings, sectionData, brandColor = '#3b82f6' }: AboutUsProps) {
+export default function AboutUs({ settings, sectionData, brandColor = '#A12582' }: AboutUsProps) {
 
   const { t } = useTranslation();
   const { ref, isVisible } = useScrollAnimation();

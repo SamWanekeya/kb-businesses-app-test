@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\LoginHistory;
+use App\Models\SignInHistory;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 
-class LoginHistorySeeder extends Seeder
+class SignInHistorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -23,7 +23,7 @@ class LoginHistorySeeder extends Seeder
         }
 
         // Sample IP addresses
-        $ipAddresses = [
+        $ipAddressAddresses = [
             '192.168.1.100',
             '10.0.0.50',
             '172.16.0.25',
@@ -125,29 +125,29 @@ class LoginHistorySeeder extends Seeder
         ];
 
         // Get users by type
-        $superadminUsers = User::where('type', 'superadmin')->get();
-        $companyUsers = User::where('type', 'company')->get();
-        $staffUsers = User::where('type', '!=', 'superadmin')->where('type', '!=', 'company')->get();
+        $superAdminUsers = User::where('type', 'super_admin')->get();
+        $organizationUsers = User::where('type', 'organization')->get();
+        $staffUsers = User::where('type', '!=', 'super_admin')->where('type', '!=', 'organization')->get();
 
         // Create mixed login history records (20 total)
         $recordsCreated = 0;
 
-        // Create 5 superadmin login records
-        if ($superadminUsers->isNotEmpty()) {
+        // Create 5 super_admin login records
+        if ($superAdminUsers->isNotEmpty()) {
             for ($i = 0; $i < 5 && $recordsCreated < 20; $i++) {
-                $user = $superadminUsers->random();
-                $this->createLoginRecord($user, $browserData, $locationData, $ipAddresses, $user->id);
+                $user = $superAdminUsers->random();
+                $this->createLoginRecord($user, $browserData, $locationData, $ipAddressAddresses, $user->id);
                 $recordsCreated++;
             }
         }
 
-        // Create 8 company login records
-        if ($companyUsers->isNotEmpty()) {
+        // Create 8 organization login records
+        if ($organizationUsers->isNotEmpty()) {
             for ($i = 0; $i < 8 && $recordsCreated < 20; $i++) {
-                $user = $companyUsers->random();
-                $superadmin = $superadminUsers->first();
-                $createdBy = $superadmin ? $superadmin->id : $user->id;
-                $this->createLoginRecord($user, $browserData, $locationData, $ipAddresses, $createdBy);
+                $user = $organizationUsers->random();
+                $superAdmin = $superAdminUsers->first();
+                $createdBy = $superAdmin ? $superAdmin->id : $user->id;
+                $this->createLoginRecord($user, $browserData, $locationData, $ipAddressAddresses, $createdBy);
                 $recordsCreated++;
             }
         }
@@ -157,7 +157,7 @@ class LoginHistorySeeder extends Seeder
             for ($i = 0; $i < 7 && $recordsCreated < 20; $i++) {
                 $user = $staffUsers->random();
                 $createdBy = rand(1,2);
-                $this->createLoginRecord($user, $browserData, $locationData, $ipAddresses, $createdBy);
+                $this->createLoginRecord($user, $browserData, $locationData, $ipAddressAddresses, $createdBy);
                 $recordsCreated++;
             }
         }
@@ -165,33 +165,33 @@ class LoginHistorySeeder extends Seeder
         // Fill remaining records if any user type is missing
         while ($recordsCreated < 20 && $users->isNotEmpty()) {
             $user = $users->random();
-            $createdBy = $this->getCreatedBy($user, $superadminUsers, $companyUsers);
-            $this->createLoginRecord($user, $browserData, $locationData, $ipAddresses, $createdBy);
+            $createdBy = $this->getCreatedBy($user, $superAdminUsers, $organizationUsers);
+            $this->createLoginRecord($user, $browserData, $locationData, $ipAddressAddresses, $createdBy);
             $recordsCreated++;
         }
 
         $this->command->info("{$recordsCreated} login history records created successfully.");
-        $this->command->info('Distribution: 5 superadmin, 8 company, 7 staff records.');
+        $this->command->info('Distribution: 5 super_admin, 8 organization, 7 staff records.');
     }
 
-    private function createLoginRecord($user, $browserData, $locationData, $ipAddresses, $createdBy)
+    private function createLoginRecord($user, $browserData, $locationData, $ipAddressAddresses, $createdBy)
     {
         $browser = $browserData[array_rand($browserData)];
         $location = $locationData[array_rand($locationData)];
-        $ip = $ipAddresses[array_rand($ipAddresses)];
+        $ipAddress = $ipAddressAddresses[array_rand($ipAddressAddresses)];
 
         // Combine all details
         $details = array_merge($browser, $location, [
             'status' => 'success',
-            'query' => $ip,
+            'query' => $ipAddress,
             'referrer_host' => fake()->randomElement(['localhost', 'example.com', 'app.domain.com', null]),
-            'referrer_path' => fake()->randomElement(['/login', '/dashboard', '/home', null]),
+            'referrer_path' => fake()->randomElement(['/sign-in', '/dashboard', '/home', null]),
             'as' => null
         ]);
 
-        LoginHistory::create([
+        SignInHistory::create([
             'user_id' => $user->id,
-            'ip' => $ip,
+            'ip_address' => $ipAddress,
             'date' => Carbon::now()->subDays(rand(0, 30))->toDateString(),
             'details' => $details,
             'type' => $user->type,
@@ -201,15 +201,15 @@ class LoginHistorySeeder extends Seeder
         ]);
     }
 
-    private function getCreatedBy($user, $superadminUsers, $companyUsers)
+    private function getCreatedBy($user, $superAdminUsers, $organizationUsers)
     {
-        if ($user->type === 'superadmin') {
+        if ($user->type === 'super_admin') {
             return $user->id;
-        } elseif ($user->type === 'company') {
-            $superadmin = $superadminUsers->first();
-            return $superadmin ? $superadmin->id : $user->id;
+        } elseif ($user->type === 'organization') {
+            $superAdmin = $superAdminUsers->first();
+            return $superAdmin ? $superAdmin->id : $user->id;
         } else {
-            return $user->created_by ?: ($companyUsers->first() ? $companyUsers->first()->id : $user->id);
+            return $user->created_by ?: ($organizationUsers->first() ? $organizationUsers->first()->id : $user->id);
         }
     }
 }

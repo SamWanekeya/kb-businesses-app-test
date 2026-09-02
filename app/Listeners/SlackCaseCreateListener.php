@@ -21,7 +21,7 @@ class SlackCaseCreateListener
         if (isNotificationTemplateEnabled('Case Create', 'slack', createdBy())) {
             $variables = [
                 '{case_subject}' => $case->subject ?? '-',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
 
             try {

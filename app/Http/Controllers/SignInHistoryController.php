@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LoginHistory;
+use App\Models\SignInHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
-class LoginHistoryController extends Controller
+class SignInHistoryController extends Controller
 {
     public function index(Request $request)
     {
         if (Auth::user()->can('manage-login-history')) {
-            $query = LoginHistory::with('user:id,name,email,type')->where(function ($q) {
-                if (Auth::user()->hasRole('superadmin')) {
+            $query = SignInHistory::with('user:id,name,email,type')->where(function ($q) {
+                if (Auth::user()->hasRole('super_admin')) {
                     $q->where('created_by', Auth::id())->orWhereHas('user', function ($u) {
                         $u->where('created_by', Auth::id());
                     });
-                } else if (Auth::user()->hasRole('company')) {
+                } else if (Auth::user()->hasRole('organization')) {
                     $q->where('created_by', Auth::id());
                 } else {
                     $q->whereRaw('1 = 0');
@@ -30,7 +30,7 @@ class LoginHistoryController extends Controller
                 $query->whereHas('user', function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
                         ->orWhere('email', 'like', "%{$search}%");
-                })->orWhere('ip', 'like', "%{$search}%");
+                })->orWhere('ip_address', 'like', "%{$search}%");
             }
 
             // Sorting
@@ -47,10 +47,10 @@ class LoginHistoryController extends Controller
 
             // Pagination
             $perPage = $request->get('per_page', 10);
-            $loginHistory = $query->paginate((int)$perPage)->withQueryString();
+            $ipAddressHistory = $query->paginate((int)$perPage)->withQueryString();
 
             return Inertia::render('login-history/index', [
-                'loginHistory' => $loginHistory,
+                'loginHistory' => $ipAddressHistory,
                 'filters' => $request->only(['search', 'sort_field', 'sort_direction', 'per_page'])
             ]);
         } else {
@@ -58,11 +58,11 @@ class LoginHistoryController extends Controller
         }
     }
 
-    public function destroy(LoginHistory $loginDetail)
+    public function destroy(SignInHistory $ipAddressDetail)
     {
         if (Auth::user()->can('delete-login-history')) {
-            $loginDetail->delete();
-            return redirect()->back()->with('success', 'Login history deleted successfully.');
+            $ipAddressDetail->delete();
+            return redirect()->back()->with('success', 'Sign in history deleted successfully.');
         } else {
             return redirect()->back()->with('error', __('Permission Denied.'));
         }

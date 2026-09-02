@@ -10,9 +10,9 @@ use Mollie\Api\MollieApiClient;
 
 class InvoiceMolliePaymentController extends Controller
 {
-    private function getMollieCredentials($companyId)
+    private function getMollieCredentials($organizationId)
     {
-        $settings = $this->getInvoicePaymentSettings($companyId);
+        $settings = $this->getInvoicePaymentSettings($organizationId);
 
         return [
             'api_key' => $settings['payment_settings']['mollie_api_key'] ?? null,
@@ -116,11 +116,11 @@ class InvoiceMolliePaymentController extends Controller
             // Find the Mollie payment by temp_id in metadata
             $mollie = new MollieApiClient();
             $mollie->setApiKey($credentials['api_key']);
-            
+
             // List recent payments and find ours by temp_id
             $payments = $mollie->payments->page(null, 10);
             $molliePayment = null;
-            
+
             foreach ($payments as $payment) {
                 if (isset($payment->metadata->temp_id) && $payment->metadata->temp_id === $tempId) {
                     $molliePayment = $payment;
@@ -165,13 +165,13 @@ class InvoiceMolliePaymentController extends Controller
                 'trace' => $e->getTraceAsString(),
                 'request' => $request->all()
             ]);
-            
+
             // Try to redirect to invoice if we have the ID
             $invoiceId = $request->input('invoice_id');
             if ($invoiceId) {
                 return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('error', __('Payment verification failed.'));
             }
-            
+
             return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment verification failed.'));
         }
     }
@@ -243,11 +243,11 @@ class InvoiceMolliePaymentController extends Controller
         return $request->validate(array_merge($baseRules, $additionalRules));
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 }

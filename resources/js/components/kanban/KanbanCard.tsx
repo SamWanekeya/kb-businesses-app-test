@@ -14,7 +14,7 @@ interface Lead {
   name: string;
   email: string;
   phone: string;
-  company: string;
+  organization: string;
   value: string;
   lead_status_id: number;
   lead_status: {
@@ -78,7 +78,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
             <div className="flex justify-center mb-1">
               <div className="w-8 h-1 bg-gray-300 dark:bg-gray-600 rounded-full opacity-50 hover:opacity-100 transition-opacity" />
             </div>
-            
+
             {/* Header with avatar and actions */}
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -94,7 +94,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
                   </p>
                 </div>
               </div>
-              
+
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300">
@@ -140,15 +140,15 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
 
             {/* Lead details */}
             <div className="space-y-1">
-              {lead.company && (
+              {lead.organization && (
                 <div className="flex items-center gap-1">
                   <Building2 className="h-3 w-3 text-gray-400" />
                   <span className="text-xs text-gray-600 dark:text-gray-300 truncate">
-                    {lead.company}
+                    {lead.organization}
                   </span>
                 </div>
               )}
-              
+
               {lead.value && (
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-gray-500 dark:text-gray-400">{t('Value')}:</span>

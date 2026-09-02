@@ -19,7 +19,7 @@ interface ScreenshotsSectionProps {
   };
 }
 
-export default function ScreenshotsSection({ brandColor = '#3b82f6', settings, sectionData }: ScreenshotsSectionProps) {
+export default function ScreenshotsSection({ brandColor = '#A12582', settings, sectionData }: ScreenshotsSectionProps) {
   const { ref, isVisible } = useScrollAnimation();
   const {t} = useTranslation();
 

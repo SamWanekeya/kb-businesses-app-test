@@ -21,7 +21,7 @@ class SlackAccountCreateListener
         if (isNotificationTemplateEnabled('Account create', 'slack', createdBy())) {
             $variables = [
                 '{account_name}' => $account->name,
-                '{company_name}' => getCompanyName()
+                '{organization_name}' => getOrganizationName()
             ];
 
             try {

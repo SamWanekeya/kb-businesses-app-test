@@ -502,7 +502,7 @@ export default function ProjectTasks() {
                 formConfig={{
                     ...(hasPermission(permissions, 'export-project-tasks') && { exportRoute: 'project-task.export' }),
                     fields: [
-                        { name: 'title', label: t('Task Title'), type: 'text', required: true, placeholder: t('e.g. Design homepage mockup, Fix login bug') },
+                        { name: 'title', label: t('Task Title'), type: 'text', required: true, placeholder: t('e.g. Design homepage mockup, Fix sign in bug') },
                         { name: 'description', label: t('Description'), type: 'textarea', placeholder: t('Enter task description...') },
                         {
                             name: formMode === 'view' ? 'project_name' : 'project_id',

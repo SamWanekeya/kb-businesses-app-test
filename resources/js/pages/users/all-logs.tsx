@@ -9,7 +9,7 @@ import { Eye } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
-  loginHistories: {
+  signInHistories: {
     data: any[]
     from: number
     to: number
@@ -28,7 +28,7 @@ interface Props {
   }
 }
 
-export default function AllUserLogs({ loginHistories, filters: pageFilters = {} }: Props) {
+export default function AllUserLogs({ signInHistories, filters: pageFilters = {} }: Props) {
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
@@ -37,7 +37,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters = {} 
 
   const breadcrumbs = [
     { title: t('Dashboard'), href: route('dashboard') },
-    auth?.user?.type === 'superadmin' || auth?.user?.type === 'super admin' ? { title: t('Companies'), href: route('companies.index') } : { title: t('User'), href: route('users.index') },
+    auth?.user?.type === 'super_admin' || auth?.user?.type === 'super admin' ? { title: t('Organizations'), href: route('organizations.index') } : { title: t('User'), href: route('users.index') },
     { title: t('User Logs') }
   ];
 
@@ -198,7 +198,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters = {} 
               </tr>
             </thead>
             <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
-              {loginHistories?.data?.map((log: any) => {
+              {signInHistories?.data?.map((log: any) => {
                 const { location, device } = formatLocationAndDevice(log.details);
                 return (
                   <tr key={log.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
@@ -244,7 +244,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters = {} 
           </table>
         </div>
 
-        {loginHistories?.data?.length === 0 && (
+        {signInHistories?.data?.length === 0 && (
           <div className="text-center py-12">
             <p className="text-gray-500 dark:text-gray-400">{t('No user logs found.')}</p>
           </div>
@@ -252,10 +252,10 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters = {} 
 
         {/* Pagination section */}
         <Pagination
-          from={loginHistories?.from || 0}
-          to={loginHistories?.to || 0}
-          total={loginHistories?.total || 0}
-          links={loginHistories?.links}
+          from={signInHistories?.from || 0}
+          to={signInHistories?.to || 0}
+          total={signInHistories?.total || 0}
+          links={signInHistories?.links}
           entityName={t("logs")}
           onPageChange={(url) => router.get(url)}
         />
@@ -265,7 +265,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters = {} 
       <Dialog open={isDetailsModalOpen} onOpenChange={setIsDetailsModalOpen}>
         <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>{t('Login Details')}</DialogTitle>
+            <DialogTitle>{t('Sign in Details')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             {selectedLogDetails && Object.entries(formatDetailsForDisplay(selectedLogDetails)).map(([key, value]) => (

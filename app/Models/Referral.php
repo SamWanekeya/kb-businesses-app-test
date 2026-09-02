@@ -9,7 +9,7 @@ class Referral extends Model
 {
     protected $fillable = [
         'user_id',
-        'company_id',
+        'organization_id',
         'commission_percentage',
         'amount',
         'plan_id',
@@ -23,12 +23,12 @@ class Referral extends Model
     protected static function boot()
     {
         parent::boot();
-        
+
         static::creating(function ($referral) {
             $referral->amount = max(0, $referral->amount ?? 0);
             $referral->commission_percentage = max(0, min(100, $referral->commission_percentage ?? 0));
         });
-        
+
         static::updating(function ($referral) {
             $referral->amount = max(0, $referral->amount ?? 0);
             $referral->commission_percentage = max(0, min(100, $referral->commission_percentage ?? 0));
@@ -40,9 +40,9 @@ class Referral extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function company(): BelongsTo
+    public function organization(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'company_id');
+        return $this->belongsTo(User::class, 'organization_id');
     }
 
     public function plan(): BelongsTo

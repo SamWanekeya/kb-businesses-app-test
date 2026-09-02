@@ -19,7 +19,7 @@ import { hasPermission } from '@/utils/authorization';
 export default function QuoteShow() {
   const { t } = useTranslation();
   const { quote, streamItems, auth } = usePage().props as any;
-  const isCompany = auth?.user?.type === 'company';
+  const isOrganization = auth?.user?.type === 'organization';
   const permissions = auth?.permissions || [];
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleteAllModalOpen, setIsDeleteAllModalOpen] = useState(false);

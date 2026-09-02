@@ -16,7 +16,7 @@ export default function View({ record }: ViewProps) {
                     <div className="p-2 bg-primary/10 rounded-lg">
                         <Building2 className="h-5 w-5 text-primary" />
                     </div>
-                    <DialogTitle className="text-xl font-semibold">{t('Company Details')}</DialogTitle>
+                    <DialogTitle className="text-xl font-semibold">{t('Organization Details')}</DialogTitle>
                 </div>
             </DialogHeader>
 
@@ -26,7 +26,7 @@ export default function View({ record }: ViewProps) {
                     <div>
                         <label className="text-sm font-medium text-gray-500 flex items-center gap-2">
                             <Building2 className="h-4 w-4" />
-                            {t('Company Name')}
+                            {t('Organization Name')}
                         </label>
                         <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{record.name || '-'}</p>
                     </div>

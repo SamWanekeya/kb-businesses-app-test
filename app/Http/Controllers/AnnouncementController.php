@@ -43,7 +43,7 @@ class AnnouncementController extends Controller
         if ($request->has('search') && !empty($request->search)) {
             $query->where(function ($q) use ($request) {
                 $q->where('title', 'like', '%' . $request->search . '%')
-                    ->orWhere('content', 'like', '%' . $request->search . '%');
+                    ->orWhere('announcement_content', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -105,7 +105,7 @@ class AnnouncementController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255|unique:announcements,title,NULL,id,created_by,' . createdBy(),
-            'content' => 'required|string',
+            'announcement_content' => 'required|string',
             'announcement_category_id' => 'required|exists:announcement_categories,id',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
@@ -126,7 +126,7 @@ class AnnouncementController extends Controller
 
         $validated = $request->validate([
             'title' => 'required|string|max:255|unique:announcements,title,' . $id . ',id,created_by,' . createdBy(),
-            'content' => 'required|string',
+            'announcement_content' => 'required|string',
             'announcement_category_id' => 'required|exists:announcement_categories,id',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',

@@ -13,10 +13,10 @@ class ShippingProviderTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        $companyUsers = User::where('type', 'company')->get();
+        $organizationUsers = User::where('type', 'organization')->get();
 
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
@@ -28,21 +28,21 @@ class ShippingProviderTypeSeeder extends Seeder
             ['name' => 'International Shipping', 'color' => '#8B5CF6', 'description' => 'International delivery service']
         ];
 
-        foreach ($companyUsers as $company) {
+        foreach ($organizationUsers as $organization) {
             foreach ($typeTemplates as $template) {
                 ShippingProviderType::firstOrCreate(
-                    ['name' => $template['name'], 'created_by' => $company->id],
+                    ['name' => $template['name'], 'created_by' => $organization->id],
                     [
                         'name' => $template['name'],
                         'color' => $template['color'],
                         'description' => $template['description'],
                         'status' => 'active',
-                        'created_by' => $company->id,
+                        'created_by' => $organization->id,
                     ]
                 );
             }
         }
 
-        $this->command->info('Shipping provider types created for all company users!');
+        $this->command->info('Shipping provider types created for all organization users!');
     }
 }

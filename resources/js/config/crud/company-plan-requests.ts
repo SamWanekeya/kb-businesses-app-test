@@ -2,10 +2,10 @@ import { CrudConfig } from '@/types/crud';
 import { columnRenderers } from '@/utils/columnRenderers';
 import { t } from '@/utils/i18n';
 
-export const companyPlanRequestsConfig: CrudConfig = {
+export const organizationPlanRequestsConfig: CrudConfig = {
   entity: {
-    name: 'companyPlanRequests',
-    endpoint: route('company.plan-requests.index'),
+    name: 'organizationPlanRequests',
+    endpoint: route('organization.plan-requests.index'),
     permissions: {
       view: 'view-plan-requests',
       create: 'create-plan-requests',

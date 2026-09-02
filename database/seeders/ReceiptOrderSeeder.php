@@ -17,22 +17,22 @@ class ReceiptOrderSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $companyUsers = User::where('type', 'company')->get();
-        
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        $organizationUsers = User::where('type', 'organization')->get();
+
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
-        
+
         $statuses = ['pending', 'received', 'partial', 'completed', 'cancelled'];
-        
-        foreach ($companyUsers as $company) {
-            $accounts = Account::where('created_by', $company->id)->get();
-            $contacts = Contact::where('created_by', $company->id)->get();
-            $purchaseOrders = PurchaseOrder::where('created_by', $company->id)->get();
-            $returnOrders = ReturnOrder::where('created_by', $company->id)->get();
-            $products = Product::where('created_by', $company->id)->get();
-            $staffUsers = User::where('created_by', $company->id)->get();
+
+        foreach ($organizationUsers as $organization) {
+            $accounts = Account::where('created_by', $organization->id)->get();
+            $contacts = Contact::where('created_by', $organization->id)->get();
+            $purchaseOrders = PurchaseOrder::where('created_by', $organization->id)->get();
+            $returnOrders = ReturnOrder::where('created_by', $organization->id)->get();
+            $products = Product::where('created_by', $organization->id)->get();
+            $staffUsers = User::where('created_by', $organization->id)->get();
 
             if ($accounts->isEmpty() || $products->isEmpty()) {
                 continue;
@@ -41,7 +41,7 @@ class ReceiptOrderSeeder extends Seeder
             for ($i = 1; $i <= 15; $i++) {
                 $account = $accounts->random();
                 $contact = $contacts->where('account_id', $account->id)->first() ?? $contacts->random();
-                
+
                 $receiptOrder = ReceiptOrder::create([
                     'name' => 'Receipt Order ' . $i,
                     'description' => $faker->sentence(6),
@@ -54,7 +54,7 @@ class ReceiptOrderSeeder extends Seeder
                     'status' => $faker->randomElement($statuses),
                     'notes' => $faker->sentence(8),
                     'shipping_amount' => $faker->randomFloat(2, 5, 50),
-                    'created_by' => $company->id,
+                    'created_by' => $organization->id,
                     'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
                     'created_at' => $faker->dateTimeBetween('-1 month', 'now'),
                 ]);
@@ -65,7 +65,7 @@ class ReceiptOrderSeeder extends Seeder
                     $unitPrice = $product->price;
                     $lineTotal = $quantity * $unitPrice;
                     $discountAmount = $faker->boolean(20) ? $faker->randomFloat(2, 0, $lineTotal * 0.1) : 0;
-                    
+
                     $receiptOrder->products()->attach($product->id, [
                         'quantity' => $quantity,
                         'unit_price' => $unitPrice,
@@ -79,7 +79,7 @@ class ReceiptOrderSeeder extends Seeder
                 $receiptOrder->calculateTotals();
             }
         }
-        
-        $this->command->info('Receipt orders created for all company users!');
+
+        $this->command->info('Receipt orders created for all organization users!');
     }
 }

@@ -95,7 +95,7 @@ class YooKassaPaymentController extends Controller
                 if ($plan && $user) {
                     // Assign plan to user immediately
                     $user->plan_id = $plan->id;
-                    $user->plan_expire_date = $billingCycle === 'yearly' ? now()->addYear() : now()->addMonth();
+                    $user->plan_expiry_date = $billingCycle === 'yearly' ? now()->addYear() : now()->addMonth();
                     $user->save();
 
                     // Create plan order record
@@ -134,7 +134,7 @@ class YooKassaPaymentController extends Controller
                 if ($plan && $user) {
                     // Assign plan to user
                     $user->plan_id = $plan->id;
-                    $user->plan_expire_date = $metadata['billing_cycle'] === 'yearly' ? now()->addYear() : now()->addMonth();
+                    $user->plan_expiry_date = $metadata['billing_cycle'] === 'yearly' ? now()->addYear() : now()->addMonth();
                     $user->save();
 
                     processPaymentSuccess([

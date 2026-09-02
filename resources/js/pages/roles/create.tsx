@@ -126,7 +126,7 @@ export default function RolesCreate() {
                         <CardTitle className="text-base font-semibold">{t('Role Permissions')}</CardTitle>
                         <CardDescription>
                             {t('Select permissions for this role. You can select all permissions at once or manage them by module.')}
-                            {auth?.user?.type !== 'superadmin' && (
+                            {auth?.user?.type !== 'super_admin' && (
                                 <span className="block mt-1 text-amber-600 text-xs">
                                     {t('Note: Only permissions for modules available to your role are shown.')}
                                 </span>

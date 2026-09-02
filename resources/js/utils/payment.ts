@@ -77,7 +77,7 @@ export const PAYMENT_METHOD_HELP_URLS = {
   [PAYMENT_METHODS.SKRILL]: 'https://www.skrill.com/en/business/',
   [PAYMENT_METHODS.COINGATE]: 'https://coingate.com/api/docs',
   [PAYMENT_METHODS.PAYFAST]: 'https://developers.payfast.co.za/',
-  [PAYMENT_METHODS.TAP]: 'https://www.tap.company/developers/',
+  [PAYMENT_METHODS.TAP]: 'https://www.tap.organization/developers/',
   [PAYMENT_METHODS.XENDIT]: 'https://developers.xendit.co/',
   [PAYMENT_METHODS.PAYTR]: 'https://www.paytr.com/entegrasyon/',
   [PAYMENT_METHODS.MOLLIE]: 'https://docs.mollie.com/',

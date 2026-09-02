@@ -22,7 +22,7 @@ class PayfastPaymentController extends Controller
         ]);
 
         try {
-            $userID = User::where('type', 'superadmin')->first()?->id;
+            $userID = User::where('type', 'super_admin')->first()?->id;
             $settings = getPaymentMethodConfig('payfast',$userID);
             $isLive = ($settings['mode'] ?? 'sandbox') === 'live';
 

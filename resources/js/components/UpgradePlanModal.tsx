@@ -16,7 +16,7 @@ interface Plan {
   description?: string;
   features?: string[];
   business?: number;
-  max_users?: number;
+  maximum_users?: number;
   storage_limit?: string;
   is_active?: boolean;
   is_current?: boolean;
@@ -29,7 +29,7 @@ interface UpgradePlanModalProps {
   onConfirm: (planId: number, duration: string) => void;
   plans: Plan[];
   currentPlanId?: number;
-  companyName: string;
+  organizationName: string;
 }
 
 export function UpgradePlanModal({
@@ -38,7 +38,7 @@ export function UpgradePlanModal({
   onConfirm,
   plans,
   currentPlanId,
-  companyName
+  organizationName
 }: UpgradePlanModalProps) {
   const { t } = useTranslation();
   const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
@@ -86,9 +86,9 @@ export function UpgradePlanModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
         <DialogHeader>
-          <DialogTitle className="text-lg font-semibold text-gray-900">{t("Upgrade Plan for Company")}</DialogTitle>
+          <DialogTitle className="text-lg font-semibold text-gray-900">{t("Upgrade Plan for Organization")}</DialogTitle>
           <DialogDescription className="text-sm text-gray-600">
-            {t("Select a new plan for this company")}
+            {t("Select a new plan for this organization")}
           </DialogDescription>
         </DialogHeader>
 

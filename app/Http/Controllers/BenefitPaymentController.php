@@ -104,7 +104,7 @@ class BenefitPaymentController extends Controller
                 'Authorization' => 'Bearer ' . $settings['payment_settings']['benefit_secret_key'],
                 'accept' => 'application/json',
                 'content-type' => 'application/json',
-            ])->post('https://api.tap.company/v2/charges', $userData);
+            ])->post('https://api.tap.organization/v2/charges', $userData);
 
             if ($response->successful()) {
                 $res = $response->json();

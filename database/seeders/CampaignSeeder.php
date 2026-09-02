@@ -17,10 +17,10 @@ class CampaignSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $companyUsers = User::where('type', 'company')->get();
+        $organizationUsers = User::where('type', 'organization')->get();
 
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
@@ -42,10 +42,10 @@ class CampaignSeeder extends Seeder
             ['name' => 'Loyalty Program Rollout', 'description' => 'Customer loyalty program launch campaign']
         ];
 
-        foreach ($companyUsers as $company) {
-            $campaignTypes = CampaignType::where('created_by', $company->id)->get();
-            $targetLists = TargetList::where('created_by', $company->id)->get();
-            $staffUsers = User::where('created_by', $company->id)->get();
+        foreach ($organizationUsers as $organization) {
+            $campaignTypes = CampaignType::where('created_by', $organization->id)->get();
+            $targetLists = TargetList::where('created_by', $organization->id)->get();
+            $staffUsers = User::where('created_by', $organization->id)->get();
 
             if ($campaignTypes->isEmpty()) {
                 continue;
@@ -69,12 +69,12 @@ class CampaignSeeder extends Seeder
                     'campaign_type_id' => $campaignTypes->random()->id,
                     'target_list_id' => $targetLists->isNotEmpty() ? $targetLists->random()->id : null,
                     'status' => $faker->randomElement(['active', 'active', 'inactive']), // 67% active
-                    'created_by' => $company->id,
+                    'created_by' => $organization->id,
                     'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
                 ]);
             }
         }
 
-        $this->command->info('Campaigns created for all company users!');
+        $this->command->info('Campaigns created for all organization users!');
     }
 }

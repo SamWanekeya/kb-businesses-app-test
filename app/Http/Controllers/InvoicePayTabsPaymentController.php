@@ -27,8 +27,8 @@ class InvoicePayTabsPaymentController extends Controller
                 return response()->json(['success' => false, 'message' => $validation['message']], 400);
             }
 
-            $companyId = $invoice->created_by;
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (empty($settings['payment_settings']['paytabs_profile_id']) || empty($settings['payment_settings']['paytabs_server_key'])) {
                 return response()->json(['success' => false, 'message' => __('PayTabs configuration incomplete.')], 400);
@@ -49,14 +49,14 @@ class InvoicePayTabsPaymentController extends Controller
                 ->sendCart($cartId, $validated['amount'], "Invoice #{$invoice->invoice_number} - {$validated['payment_type']} payment")
                 ->sendCustomerDetails(
                     'Customer',
-                    'customer@example.com',
+                    'customer@kakbima.dev',
                     '1234567890',
                     'Address',
                     'City',
                     'State',
                     'SA',
                     '12345',
-                    request()->ip()
+                    request()->ip_address()
                 )
                 ->sendURLs(
                     route('invoice.paytabs.success') . '?cart_id=' . $cartId . '&invoice_id=' . $invoice->id . '&amount=' . $validated['amount'] . '&payment_type=' . $validated['payment_type'],
@@ -163,11 +163,11 @@ class InvoicePayTabsPaymentController extends Controller
         return $request->validate(array_merge($baseRules, $additionalRules));
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 }

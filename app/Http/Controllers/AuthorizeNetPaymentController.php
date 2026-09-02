@@ -23,15 +23,15 @@ class AuthorizeNetPaymentController extends Controller
             $plan = Plan::findOrFail($validated['plan_id']);
             $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null);
             $settings = getPaymentGatewaySettings();
-            
-            if (!isset($settings['payment_settings']['authorizenet_merchant_id']) || 
+
+            if (!isset($settings['payment_settings']['authorizenet_merchant_id']) ||
                 !isset($settings['payment_settings']['authorizenet_transaction_key'])) {
                 return response()->json(['error' => 'AuthorizeNet not properly configured'], 400);
             }
 
             // Get currency from settings or default to USD
             $currency = $settings['general_settings']['currency'] ?? 'USD';
-            
+
             // Validate currency support
             if (!in_array($currency, self::SUPPORTED_CURRENCIES)) {
                 $currency = 'USD';
@@ -66,8 +66,8 @@ class AuthorizeNetPaymentController extends Controller
             $plan = Plan::findOrFail($validated['plan_id']);
             $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null);
             $settings = getPaymentGatewaySettings();
-            
-            if (!isset($settings['payment_settings']['authorizenet_merchant_id']) || 
+
+            if (!isset($settings['payment_settings']['authorizenet_merchant_id']) ||
                 !isset($settings['payment_settings']['authorizenet_transaction_key'])) {
                 return back()->withErrors(['error' => __('AuthorizeNet not properly configured')]);
             }
@@ -91,7 +91,7 @@ class AuthorizeNetPaymentController extends Controller
 
                 return back()->with('success', __('Payment successful and plan activated'));
             }
-            
+
             return back()->withErrors(['error' => $result['error']]);
 
         } catch (\Exception $e) {
@@ -110,7 +110,7 @@ class AuthorizeNetPaymentController extends Controller
             // Set up credit card information
             $creditCard = new AnetAPI\CreditCardType();
             $creditCard->setCardNumber(preg_replace('/\s+/', '', $paymentData['card_number']));
-            
+
             // Fix expiration date format - AuthorizeNet expects YYYY-MM format
             $expiryYear = 2000 + intval($paymentData['expiry_year']);
             $expiryMonth = str_pad($paymentData['expiry_month'], 2, '0', STR_PAD_LEFT);
@@ -136,7 +136,7 @@ class AuthorizeNetPaymentController extends Controller
             $billTo = new AnetAPI\CustomerAddressType();
             $billTo->setFirstName(explode(' ', $paymentData['cardholder_name'])[0]);
             $billTo->setLastName(implode(' ', array_slice(explode(' ', $paymentData['cardholder_name']), 1)) ?: 'Customer');
-            $billTo->setCompany(auth()->user()->name ?? '');
+            $billTo->setOrganization(auth()->user()->name ?? '');
             $billTo->setAddress('-');
             $billTo->setCity('-');
             $billTo->setState('-');
@@ -156,11 +156,11 @@ class AuthorizeNetPaymentController extends Controller
             $merchantDefinedField1 = new AnetAPI\UserFieldType();
             $merchantDefinedField1->setName('plan_id');
             $merchantDefinedField1->setValue($paymentData['plan_id']);
-            
+
             $merchantDefinedField2 = new AnetAPI\UserFieldType();
             $merchantDefinedField2->setName('user_id');
             $merchantDefinedField2->setValue(auth()->id());
-            
+
             $transactionRequestType->setUserFields([$merchantDefinedField1, $merchantDefinedField2]);
 
             // Create the API request
@@ -170,15 +170,15 @@ class AuthorizeNetPaymentController extends Controller
 
             // Execute the request
             $controller = new AnetController\CreateTransactionController($request);
-            
-            $environment = ($settings['payment_settings']['authorizenet_mode'] === 'sandbox') 
-                ? \net\authorize\api\constants\ANetEnvironment::SANDBOX 
+
+            $environment = ($settings['payment_settings']['authorizenet_mode'] === 'sandbox')
+                ? \net\authorize\api\constants\ANetEnvironment::SANDBOX
                 : \net\authorize\api\constants\ANetEnvironment::PRODUCTION;
-                
+
             $response = $controller->executeWithApiResponse($environment);
 
             return $this->handleAuthorizeNetResponse($response);
-            
+
         } catch (\Exception $e) {
             return [
                 'success' => false,
@@ -199,13 +199,13 @@ class AuthorizeNetPaymentController extends Controller
         }
 
         $messages = $response->getMessages();
-        
+
         if ($messages->getResultCode() !== 'Ok') {
             $errorMessage = __('Payment gateway error');
             if ($messages->getMessage() && count($messages->getMessage()) > 0) {
                 $errorMessage = $messages->getMessage()[0]->getText();
             }
-            
+
             return [
                 'success' => false,
                 'error' => $this->getFriendlyErrorMessage($errorMessage),
@@ -214,7 +214,7 @@ class AuthorizeNetPaymentController extends Controller
         }
 
         $tresponse = $response->getTransactionResponse();
-        
+
         if ($tresponse === null) {
             return [
                 'success' => false,
@@ -224,7 +224,7 @@ class AuthorizeNetPaymentController extends Controller
         }
 
         $responseCode = $tresponse->getResponseCode();
-        
+
         // Response codes: 1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review
         switch ($responseCode) {
             case '1': // Approved
@@ -233,38 +233,38 @@ class AuthorizeNetPaymentController extends Controller
                     'error' => null,
                     'transaction_id' => $tresponse->getTransId()
                 ];
-                
+
             case '2': // Declined
                 $errorMessage = 'Transaction declined';
                 if ($tresponse->getErrors() && count($tresponse->getErrors()) > 0) {
                     $errorMessage = $tresponse->getErrors()[0]->getErrorText();
                 }
-                                
+
                 return [
                     'success' => false,
                     'error' => $this->getFriendlyErrorMessage($errorMessage),
                     'transaction_id' => null
                 ];
-                
+
             case '3': // Error
                 $errorMessage = 'Transaction error';
                 if ($tresponse->getErrors() && count($tresponse->getErrors()) > 0) {
                     $errorMessage = $tresponse->getErrors()[0]->getErrorText();
                 }
-                                
+
                 return [
                     'success' => false,
                     'error' => $this->getFriendlyErrorMessage($errorMessage),
                     'transaction_id' => null
                 ];
-                
+
             case '4': // Held for Review
                 return [
                     'success' => false,
                     'error' => __('Transaction is being reviewed. Please contact support.'),
                     'transaction_id' => $tresponse->getTransId()
                 ];
-                
+
             default:
                 return [
                     'success' => false,
@@ -289,13 +289,13 @@ class AuthorizeNetPaymentController extends Controller
             __('The transaction has been declined because of an AVS mismatch') => __('Address verification failed. Please check your billing address.'),
             __('The transaction has been declined because the CVV2 value is invalid') => __('Invalid security code. Please check your CVV.'),
         ];
-        
+
         foreach ($friendlyMessages as $original => $friendly) {
             if (stripos($errorMessage, $original) !== false) {
                 return $friendly;
             }
         }
-        
+
         return __('Payment processing failed. Please check your card details and try again.');
     }
 
@@ -306,8 +306,8 @@ class AuthorizeNetPaymentController extends Controller
     {
         try {
             $settings = getPaymentGatewaySettings();
-            
-            if (!isset($settings['payment_settings']['authorizenet_merchant_id']) || 
+
+            if (!isset($settings['payment_settings']['authorizenet_merchant_id']) ||
                 !isset($settings['payment_settings']['authorizenet_transaction_key'])) {
                 return response()->json([
                     'success' => false,
@@ -324,11 +324,11 @@ class AuthorizeNetPaymentController extends Controller
             $request->setMerchantAuthentication($merchantAuthentication);
 
             $controller = new AnetController\AuthenticateTestController($request);
-            
-            $environment = ($settings['payment_settings']['authorizenet_mode'] === 'sandbox') 
-                ? \net\authorize\api\constants\ANetEnvironment::SANDBOX 
+
+            $environment = ($settings['payment_settings']['authorizenet_mode'] === 'sandbox')
+                ? \net\authorize\api\constants\ANetEnvironment::SANDBOX
                 : \net\authorize\api\constants\ANetEnvironment::PRODUCTION;
-                
+
             $response = $controller->executeWithApiResponse($environment);
 
             if ($response && $response->getMessages()->getResultCode() === 'Ok') {
@@ -342,13 +342,13 @@ class AuthorizeNetPaymentController extends Controller
                 if ($response && $response->getMessages()->getMessage()) {
                     $errorMessage = $response->getMessages()->getMessage()[0]->getText();
                 }
-                
+
                 return response()->json([
                     'success' => false,
                     'message' => $errorMessage
                 ]);
             }
-            
+
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

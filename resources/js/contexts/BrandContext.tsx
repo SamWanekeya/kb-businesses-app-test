@@ -8,11 +8,11 @@ export const DEFAULT_BRAND_SETTINGS: BrandSettings = {
     logoDark: 'logo/logo-dark.png',
     logoLight: 'logo/logo-light.png',
     favicon: 'logo/favicon.png',
-    titleText: 'WorkDo',
-    footerText: '© 2024 WorkDo. All rights reserved.',
-    companyMobile: '',
+    titleText: 'Kakbima',
+    footerText: '© 2024 Kakbima. All rights reserved.',
+    organizationMobile: '',
     themeColor: 'green',
-    customColor: '#3b82f6',
+    customColor: '#A12582',
     sidebarVariant: 'inset',
     sidebarStyle: 'plain',
     layoutDirection: 'left',
@@ -26,7 +26,7 @@ export interface BrandSettings {
     favicon: string;
     titleText: string;
     footerText: string;
-    companyMobile?: string;
+    organizationMobile?: string;
     themeColor: ThemeColor;
     customColor: string;
     sidebarVariant: string;
@@ -106,7 +106,7 @@ export function BrandProvider({ children, globalSettings, user }: { children: Re
             window.location.pathname === '/' ||
             window.location.pathname.includes('/auth/');
 
-        // For public routes (landing page, auth pages), always use superadmin settings
+        // For public routes (landing page, auth pages), always use super_admin settings
         if (isPublicRoute) {
             return {
                 ...globalSettings,
@@ -116,8 +116,8 @@ export function BrandProvider({ children, globalSettings, user }: { children: Re
             };
         }
 
-        // For authenticated routes, use user's own settings if company role
-        if (user?.role === 'company' && user?.globalSettings) {
+        // For authenticated routes, use user's own settings if organization role
+        if (user?.role === 'organization' && user?.globalSettings) {
             return {
                 ...user.globalSettings,
                 favicon: getDisplayUrl(user.globalSettings?.favicon),
@@ -126,7 +126,7 @@ export function BrandProvider({ children, globalSettings, user }: { children: Re
             };
         }
 
-        // Default to global settings (superadmin)
+        // Default to global settings (super_admin)
         return {
             ...globalSettings,
             favicon: getDisplayUrl(globalSettings.favicon),
@@ -169,12 +169,12 @@ export function BrandProvider({ children, globalSettings, user }: { children: Re
         if (updatedSettings) {
             // Apply theme color globally
             const color = updatedSettings.themeColor === 'custom' ? updatedSettings.customColor : {
-                blue: '#3b82f6',
+                blue: '#A12582',
                 green: '#10b77f',
                 purple: '#8b5cf6',
                 orange: '#f97316',
                 red: '#ef4444'
-            }[updatedSettings.themeColor] || '#3b82f6';
+            }[updatedSettings.themeColor] || '#A12582';
 
             document.documentElement.style.setProperty('--theme-color', color);
             document.documentElement.style.setProperty('--primary', color);

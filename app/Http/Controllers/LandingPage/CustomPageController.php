@@ -105,7 +105,7 @@ class CustomPageController extends Controller
         $page = LandingPageCustomPage::where('slug', $slug)->where('is_active', true)->firstOrFail();
         $landingSettings = \App\Models\LandingPageSetting::getSettings();
 
-        $superAdminId = User::where('type', 'superadmin')->first()->id;
+        $superAdminId = User::where('type', 'super_admin')->first()->id;
 
         $landingPageSettings = $landingSettings->toArray();
         if (!$landingPageSettings["config_sections"]["theme"]["logo_light"]) {

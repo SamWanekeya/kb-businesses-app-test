@@ -31,9 +31,9 @@ class InvoiceFedaPayPaymentController extends Controller
                 return response()->json(['error' => $validation['message']], 400);
             }
 
-            $companyId = $invoice->created_by;
-            $company = User::findOrFail($companyId);
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $organization = User::findOrFail($organizationId);
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['fedapay_secret_key'])) {
                 \Log::error('FedaPay payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
@@ -46,10 +46,10 @@ class InvoiceFedaPayPaymentController extends Controller
                 'description' => 'Invoice Payment - ' . $invoice->invoice_number . ' - ' . ucfirst($validated['payment_type']) . ' payment',
                 'amount' => (int) ($validated['amount']),
                 'currency' => ['iso' => 'XOF'],
-                'callback_url' => route('invoice.fedapay.callback') . '?company_id=' . $companyId . '&invoice_id=' . $invoice->id,
+                'callback_url' => route('invoice.fedapay.callback') . '?organization_id=' . $organizationId . '&invoice_id=' . $invoice->id,
                 'customer' => [
                     'firstname' => $invoice->name ?? 'Customer',
-                    'email' => $invoice->email ?? $company->email,
+                    'email' => $invoice->email ?? $organization->email,
                 ],
                 'custom_metadata' => [
                     'invoice_id' => $invoice->id,
@@ -80,8 +80,8 @@ class InvoiceFedaPayPaymentController extends Controller
     public function callback(Request $request)
     {
         try {
-            $companyId = $request->input('company_id');
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $request->input('organization_id');
+            $settings = $this->getInvoicePaymentSettings($organizationId);
             $this->configureFedaPay($settings['payment_settings']);
 
             $transactionId = $request->input('id');
@@ -136,11 +136,11 @@ class InvoiceFedaPayPaymentController extends Controller
         return $request->validate(array_merge($baseRules, $additionalRules));
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 }

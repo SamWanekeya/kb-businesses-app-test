@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'superadmin' => [
+    'super_admin' => [
         'dashboard',
         'users',
         'roles',
         'permissions',
-        'companies',
+        'organizations',
         'plans',
         'plan_requests',
         'plan_orders',
@@ -19,7 +19,7 @@ return [
         'settings'
     ],
 
-    'company' => [
+    'organization' => [
         'dashboard',
         'users',
         'roles',

@@ -2,7 +2,7 @@
 export const getModulesFromNavigation = (userRole: string): string[] => {
   const superAdminModules = [
     'dashboard',
-    'companies',
+    'organizations',
     'nfc_cards',
     'nfc_card_order_requests',
     'campaigns',
@@ -15,7 +15,7 @@ export const getModulesFromNavigation = (userRole: string): string[] => {
     'settings'
   ];
 
-  const companyModules = [
+  const organizationModules = [
     'dashboard',
     'users',
     'roles',
@@ -28,9 +28,9 @@ export const getModulesFromNavigation = (userRole: string): string[] => {
     'settings'
   ];
 
-  return (userRole === 'superadmin' || userRole === 'super admin') 
-    ? superAdminModules 
-    : companyModules;
+  return (userRole === 'super_admin' || userRole === 'super admin')
+    ? superAdminModules
+    : organizationModules;
 };
 
 export const filterPermissionsByRole = (permissions: Record<string, any[]>, userRole: string): Record<string, any[]> => {

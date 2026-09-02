@@ -16,8 +16,8 @@ class InvoiceXenditPaymentController extends Controller
 
         try {
             $invoice = Invoice::findOrFail($validated['invoice_id']);
-            $companyId = $invoice->created_by;
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['xendit_api_key'])) {
                 return response()->json(['error' => __('Xendit not configured')], 400);
@@ -33,7 +33,7 @@ class InvoiceXenditPaymentController extends Controller
                 'currency' => 'PHP',
                 'customer' => [
                     'given_names' => $invoice->account->name ?? $invoice->contact->name ?? 'Customer',
-                    'email' => $invoice->account->email ?? $invoice->contact->email ?? 'customer@example.com'
+                    'email' => $invoice->account->email ?? $invoice->contact->email ?? 'customer@kakbima.dev'
                 ],
                 'success_redirect_url' => route('invoice.xendit.success', [
                     'invoice_id' => $invoice->id,
@@ -73,8 +73,8 @@ class InvoiceXenditPaymentController extends Controller
 
         try {
             $invoice = Invoice::findOrFail($validated['invoice_id']);
-            $companyId = $invoice->created_by;
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['xendit_api_key'])) {
                 return response()->json(['error' => __('Xendit not configured')], 400);
@@ -90,7 +90,7 @@ class InvoiceXenditPaymentController extends Controller
                 'currency' => 'PHP',
                 'customer' => [
                     'given_names' => $invoice->account->name ?? $invoice->contact->name ?? 'Customer',
-                    'email' => $invoice->account->email ?? $invoice->contact->email ?? 'customer@example.com'
+                    'email' => $invoice->account->email ?? $invoice->contact->email ?? 'customer@kakbima.dev'
                 ],
                 'success_redirect_url' => route('invoice.xendit.success', [
                     'invoice_id' => $invoice->id,
@@ -237,11 +237,11 @@ class InvoiceXenditPaymentController extends Controller
         return $request->validate(array_merge($baseRules, $additionalRules));
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('call_attendees', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('call_id')->constrained('calls')->onDelete('cascade');
+            $table->foreignId('call_id')->constrained('calls')->cascadeOnDelete();
             $table->string('attendee_type'); // user, contact, lead
             $table->unsignedBigInteger('attendee_id');
             $table->timestamps();

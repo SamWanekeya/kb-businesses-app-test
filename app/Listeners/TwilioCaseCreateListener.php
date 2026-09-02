@@ -29,7 +29,7 @@ class TwilioCaseCreateListener
         if (isNotificationTemplateEnabled('Case Create','twilio', createdBy()) && !empty($contact->phone)) {
             $variables = [
                 '{case_subject}' => $case->subject ?? '-',
-                '{company_name}' => 'Company Name'
+                '{organization_name}' => 'Organization Name'
             ];
 
             try {

@@ -32,7 +32,7 @@ interface ReturnItem {
     product_name: string;
     product_sku?: string;
     return_qty: number;
-    max_qty: number;
+    maximum_qty: number;
     unit_price: number;
     tax?: { name: string; rate: number } | null;
     reason: string;
@@ -140,7 +140,7 @@ export default function ReturnOrderCreate() {
             product_name: item.product_name,
             product_sku: item.product_sku,
             return_qty: 1,
-            max_qty: item.quantity,
+            maximum_qty: item.quantity,
             unit_price: item.unit_price,
             tax: item.tax,
             reason: '',
@@ -154,7 +154,7 @@ export default function ReturnOrderCreate() {
     const setReturnQty = (product_id: string, qty: number) => {
         setReturnItems(prev => prev.map(r => {
             if (r.product_id !== product_id) return r;
-            return { ...r, return_qty: Math.max(1, Math.min(qty, r.max_qty)) };
+            return { ...r, return_qty: Math.max(1, Math.min(qty, r.maximum_qty)) };
         }));
     };
 
@@ -471,7 +471,7 @@ noPadding actions={[{ label: t('Back'), icon: <ArrowLeft className="h-4 w-4 mr-2
                                 <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                                     {returnItems.map(item => {
                                         const c = calcReturnLine(item);
-                                        const qtyError = item.return_qty > item.max_qty;
+                                        const qtyError = item.return_qty > item.maximum_qty;
                                         return (
                                             <tr key={item.product_id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                                                 <td className="py-4 pe-6">
@@ -479,12 +479,12 @@ noPadding actions={[{ label: t('Back'), icon: <ArrowLeft className="h-4 w-4 mr-2
                                                     {item.product_sku && <div className="text-xs text-gray-400 mt-0.5">{item.product_sku}</div>}
                                                 </td>
                                                 <td className="py-4 pe-6 w-24">
-                                                    <Input type="number" min="1" max={item.max_qty}
+                                                    <Input type="number" min="1" max={item.maximum_qty}
                                                         value={item.return_qty}
                                                         onChange={e => setReturnQty(item.product_id, parseInt(e.target.value) || 1)}
                                                         className={`w-20 ${qtyError ? 'border-red-500' : ''}`}
                                                     />
-                                                    {qtyError && <p className="text-xs text-red-500 mt-1">{t('Max')} {item.max_qty}</p>}
+                                                    {qtyError && <p className="text-xs text-red-500 mt-1">{t('Max')} {item.maximum_qty}</p>}
                                                 </td>
                                                 <td className="py-4 pe-6 text-gray-700 dark:text-gray-300 font-mono">{fmt(item.unit_price)}</td>
                                                 <td className="py-4 pe-6">

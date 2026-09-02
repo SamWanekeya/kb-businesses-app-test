@@ -35,7 +35,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
         }
     };
 
-    if (userType === 'superadmin') {
+    if (userType === 'super_admin') {
         return (
             <div className="space-y-4">
                 {/* Stats Cards */}
@@ -89,9 +89,9 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                         <CardContent className="p-5">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm font-medium text-muted-foreground">{t('Active Companies')}</p>
-                                    <h3 className="mt-1 text-2xl font-bold text-purple-600 dark:text-purple-400">{stats.topCompanies?.length || 0}</h3>
-                                    <p className="text-xs text-muted-foreground mt-1">{t('Referring companies')}</p>
+                                    <p className="text-sm font-medium text-muted-foreground">{t('Active Organizations')}</p>
+                                    <h3 className="mt-1 text-2xl font-bold text-purple-600 dark:text-purple-400">{stats.topOrganizations?.length || 0}</h3>
+                                    <p className="text-xs text-muted-foreground mt-1">{t('Referring organizations')}</p>
                                 </div>
                                 <div className="h-10 w-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
                                     <TrendingUp className="h-5 w-5 text-purple-600 dark:text-purple-400" />
@@ -110,44 +110,44 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                                     <Award className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                                 </div>
                                 <div>
-                                    <CardTitle className="text-base font-semibold">{t('Top Referring Companies')}</CardTitle>
-                                    <CardDescription className="text-xs">{t('Companies with most referrals')}</CardDescription>
+                                    <CardTitle className="text-base font-semibold">{t('Top Referring Organizations')}</CardTitle>
+                                    <CardDescription className="text-xs">{t('Organizations with most referrals')}</CardDescription>
                                 </div>
                             </div>
                         </CardHeader>
                         <CardContent className="pt-4">
-                            {stats.topCompanies && stats.topCompanies.length > 0 ? (
+                            {stats.topOrganizations && stats.topOrganizations.length > 0 ? (
                                 <div className="space-y-2">
-                                    {stats.topCompanies.slice(0, 5).map((company: any, index: number) => (
-                                        <div key={company.id} className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                                    {stats.topOrganizations.slice(0, 5).map((organization: any, index: number) => (
+                                        <div key={organization.id} className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors">
                                             <div className="flex items-center space-x-3 min-w-0">
                                                 {/* <div className="flex items-center justify-center w-7 h-7 rounded-full bg-muted text-xs font-semibold text-muted-foreground shrink-0">
                                                     {index + 1}
                                                 </div> */}
                                                 <Avatar className="flex items-center justify-center w-10 h-10 rounded-full bg-muted text-xs font-semibold text-muted-foreground shrink-0">
                                                     <AvatarImage
-                                                        src={company?.avatar}
-                                                        alt={company?.name}
+                                                        src={organization?.avatar}
+                                                        alt={organization?.name}
                                                     />
                                                     <AvatarFallback className="text-lg">
-                                                        {getInitials(company?.name)}
+                                                        {getInitials(organization?.name)}
                                                     </AvatarFallback>
                                                 </Avatar>
 
                                                 <div>
-                                                    <p className="text-sm font-semibold truncate">{company.name}</p>
+                                                    <p className="text-sm font-semibold truncate">{organization.name}</p>
                                                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                                                         <Mail className="h-3 w-3 shrink-0" />
-                                                        <span className="truncate">{company.email}</span>
+                                                        <span className="truncate">{organization.email}</span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="text-right ml-3 shrink-0">
                                                 <div className="flex items-center gap-1 text-sm font-semibold text-blue-600 dark:text-blue-400">
                                                     <Users className="h-4 w-4" />
-                                                    {company.referral_count}
+                                                    {organization.referral_count}
                                                 </div>
-                                                <p className="text-xs text-green-600 dark:text-green-400 font-medium font-mono">{currencySymbol}{company.total_earned || 0}</p>
+                                                <p className="text-xs text-green-600 dark:text-green-400 font-medium font-mono">{currencySymbol}{organization.total_earned || 0}</p>
                                             </div>
                                         </div>
                                     ))}
@@ -155,7 +155,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                             ) : (
                                 <div className="text-center py-6">
                                     <Award className="h-10 w-10 text-muted-foreground mx-auto mb-2 opacity-50" />
-                                    <p className="text-sm font-medium text-muted-foreground">{t('No companies yet')}</p>
+                                    <p className="text-sm font-medium text-muted-foreground">{t('No organizations yet')}</p>
                                 </div>
                             )}
                         </CardContent>

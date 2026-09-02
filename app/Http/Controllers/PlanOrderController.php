@@ -15,7 +15,7 @@ class PlanOrderController extends BaseController
     {
         $query = PlanOrder::with(['user', 'plan', 'coupon', 'processedBy']);
 
-        if (Auth::user()->hasRole('company')) {
+        if (Auth::user()->hasRole('organization')) {
             $query->where('user_id', Auth::user()->id);
         }
         // Apply search
@@ -46,7 +46,7 @@ class PlanOrderController extends BaseController
         }
 
         // Always use super admin currency for plan pricing
-        $superAdmin = User::where('type', 'superadmin')->first();
+        $superAdmin = User::where('type', 'super_admin')->first();
         $superAdminSettings = settings($superAdmin->id);
         $currency = $superAdminSettings ? ($superAdminSettings['defaultCurrency'] ?? 'USD') : 'USD';
         $currencySymbol = '$';

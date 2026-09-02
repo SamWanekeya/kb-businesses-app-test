@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('billing_state')->nullable();
             $table->string('billing_postal_code')->nullable();
             $table->string('billing_country')->nullable();
-            
+
             // Shipping Address
             $table->text('shipping_address')->nullable();
             $table->string('shipping_city')->nullable();
@@ -30,11 +30,11 @@ return new class extends Migration
             $table->string('shipping_postal_code')->nullable();
             $table->string('shipping_country')->nullable();
             $table->string('website')->nullable();
-            $table->foreignId('account_type_id')->nullable()->constrained('account_types')->onDelete('set null');
-            $table->foreignId('account_industry_id')->nullable()->constrained('account_industries')->onDelete('set null');
+            $table->foreignId('account_type_id')->nullable()->constrained('account_types')->nullOnDelete();
+            $table->foreignId('account_industry_id')->nullable()->constrained('account_industries')->nullOnDelete();
             $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
-            $table->foreignId('assigned_to')->nullable()->constrained('users')->onDelete('set null');
+            $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('assigned_to')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
     }

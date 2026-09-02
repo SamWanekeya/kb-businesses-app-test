@@ -28,7 +28,7 @@ interface ContactSectionProps {
   };
 }
 
-export default function ContactSection({ flash, settings, sectionData, brandColor = '#3b82f6' }: ContactSectionProps) {
+export default function ContactSection({ flash, settings, sectionData, brandColor = '#A12582' }: ContactSectionProps) {
   const { t } = useTranslation();
   const [contactSuccessMessage, setContactSuccessMessage]=useState(false);
   const { data, setData, post, processing, errors, reset } = useForm({

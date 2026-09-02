@@ -63,7 +63,7 @@ class PasswordResetLinkController extends Controller
             return true;
         }
 
-        if ($user->hasRole('company')) {
+        if ($user->hasRole('organization')) {
             $configUser = User::where('id', $user->created_by)->first();
         } else {
             $configUser = User::where('id', $user->created_by)->first();

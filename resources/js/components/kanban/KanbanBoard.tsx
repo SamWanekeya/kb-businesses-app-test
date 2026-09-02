@@ -11,7 +11,7 @@ interface Lead {
   name: string;
   email: string;
   phone: string;
-  company: string;
+  organization: string;
   value: string;
   lead_status_id: number;
   lead_status: {
@@ -71,7 +71,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
   // Filter leads based on search term
   const filteredKanbanData = React.useMemo(() => {
     if (!searchTerm) return kanbanData;
-    
+
     const filtered: KanbanData = {};
     Object.keys(kanbanData).forEach(statusId => {
       const column = kanbanData[statusId];
@@ -79,15 +79,15 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
         lead.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         lead.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         lead.phone?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        lead.company?.toLowerCase().includes(searchTerm.toLowerCase())
+        lead.organization?.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      
+
       filtered[statusId] = {
         ...column,
         leads: filteredLeads
       };
     });
-    
+
     return filtered;
   }, [kanbanData, searchTerm]);
 
@@ -117,7 +117,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
 
     // Optimistic update
     const newKanbanData = { ...kanbanData };
-    
+
     // Remove from source
     newKanbanData[source.droppableId] = {
       ...sourceColumn,

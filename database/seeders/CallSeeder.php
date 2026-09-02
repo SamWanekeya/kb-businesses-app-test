@@ -18,10 +18,10 @@ class CallSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $companyUsers = User::where('type', 'company')->get();
+        $organizationUsers = User::where('type', 'organization')->get();
 
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
@@ -29,21 +29,21 @@ class CallSeeder extends Seeder
         $modules = ['lead', 'account', 'contact', 'opportunity', 'case'];
 
         // Fetch all data once to avoid N+1 queries
-        $allStaffUsers = User::whereIn('created_by', $companyUsers->pluck('id'))->get()->groupBy('created_by');
-        $allLeads = Lead::whereIn('created_by', $companyUsers->pluck('id'))->get()->groupBy('created_by');
-        $allAccounts = Account::whereIn('created_by', $companyUsers->pluck('id'))->get()->groupBy('created_by');
-        $allContacts = Contact::whereIn('created_by', $companyUsers->pluck('id'))->get()->groupBy('created_by');
-        $allOpportunities = Opportunity::whereIn('created_by', $companyUsers->pluck('id'))->get()->groupBy('created_by');
-        $allCases = CaseModel::whereIn('created_by', $companyUsers->pluck('id'))->get()->groupBy('created_by');
+        $allStaffUsers = User::whereIn('created_by', $organizationUsers->pluck('id'))->get()->groupBy('created_by');
+        $allLeads = Lead::whereIn('created_by', $organizationUsers->pluck('id'))->get()->groupBy('created_by');
+        $allAccounts = Account::whereIn('created_by', $organizationUsers->pluck('id'))->get()->groupBy('created_by');
+        $allContacts = Contact::whereIn('created_by', $organizationUsers->pluck('id'))->get()->groupBy('created_by');
+        $allOpportunities = Opportunity::whereIn('created_by', $organizationUsers->pluck('id'))->get()->groupBy('created_by');
+        $allCases = CaseModel::whereIn('created_by', $organizationUsers->pluck('id'))->get()->groupBy('created_by');
 
-        foreach ($companyUsers as $company) {
-            $staffUsers = $allStaffUsers->get($company->id, collect());
+        foreach ($organizationUsers as $organization) {
+            $staffUsers = $allStaffUsers->get($organization->id, collect());
             $parentCollections = [
-                'lead' => $allLeads->get($company->id, collect()),
-                'account' => $allAccounts->get($company->id, collect()),
-                'contact' => $allContacts->get($company->id, collect()),
-                'opportunity' => $allOpportunities->get($company->id, collect()),
-                'case' => $allCases->get($company->id, collect()),
+                'lead' => $allLeads->get($organization->id, collect()),
+                'account' => $allAccounts->get($organization->id, collect()),
+                'contact' => $allContacts->get($organization->id, collect()),
+                'opportunity' => $allOpportunities->get($organization->id, collect()),
+                'case' => $allCases->get($organization->id, collect()),
             ];
 
             $callTitles = [
@@ -108,7 +108,7 @@ class CallSeeder extends Seeder
                     'parent_module' => $parentModule,
                     'parent_id' => $parentId,
                     'status' => $faker->randomElement($statuses),
-                    'created_by' => $company->id,
+                    'created_by' => $organization->id,
                     'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
                     'created_at' => $faker->dateTimeBetween('-1 month', 'now'),
                 ]);
@@ -142,6 +142,6 @@ class CallSeeder extends Seeder
             }
         }
 
-        $this->command->info('Calls created for all company users!');
+        $this->command->info('Calls created for all organization users!');
     }
 }

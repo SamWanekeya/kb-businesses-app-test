@@ -116,7 +116,7 @@ class CashfreeController extends Controller
                 'customer_details' => [
                     'customer_id' => 'user_' . $user->id,
                     'customer_name' => $user->name ?: 'Customer',
-                    'customer_email' => $user->email ?: 'customer@example.com',
+                    'customer_email' => $user->email ?: 'customer@kakbima.dev',
                     'customer_phone' => $phone
                 ],
                 'order_meta' => [

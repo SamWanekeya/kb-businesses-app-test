@@ -25,8 +25,8 @@ class SettingsController extends Controller
         $user = auth()->user();
         $workspaceId = null;
 
-        // For company users, get the current workspace
-        if ($user->type === 'company') {
+        // For organization users, get the current workspace
+        if ($user->type === 'organization') {
             $workspaceId = $user->current_workspace_id;
         }
 
@@ -61,8 +61,8 @@ class SettingsController extends Controller
         }
         $systemSettings['logoDark'] = $systemSettings['logoDark'] ?? null;
 
-        // Get ReCaptcha settings separately (always without workspace for company users in non-SaaS mode)
-        if ($user->type === 'company') {
+        // Get ReCaptcha settings separately (always without workspace for organization users in non-SaaS mode)
+        if ($user->type === 'organization') {
             $recaptchaSettings = Setting::where('user_id', $user->id)
                 ->whereIn('key', [
                     'recaptchaEnabled',
@@ -95,9 +95,9 @@ class SettingsController extends Controller
         $webhooks = Webhook::where('user_id', $user->id)
             ->get();
 
-        // Get current workspace for company users
+        // Get current workspace for organization users
         $currentWorkspace = null;
-        if ($user->type === 'company' && $workspaceId) {
+        if ($user->type === 'organization' && $workspaceId) {
             $currentWorkspace = Workspace::find($workspaceId);
         }
 

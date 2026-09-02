@@ -18,9 +18,9 @@ class CheckPermission
         }
 
         $user = auth()->user();
-        
+
         // Super admin has all permissions
-        if ($user->type === 'superadmin' || $user->type === 'super admin') {
+        if ($user->type === 'super_admin') {
             return $next($request);
         }
 
@@ -29,7 +29,7 @@ class CheckPermission
             if ($request->expectsJson()) {
                 return response()->json(['message' => 'Forbidden'], 403);
             }
-            
+
             // Redirect to first available page
             return redirect()->route('dashboard.redirect');
         }

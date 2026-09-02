@@ -34,28 +34,28 @@ class SarahJohnsonDataSeeder extends Seeder
         $faker = Faker::create();
 
         // Find Sarah Johnson
-        $sarah = User::where('email', 'sarahjohnson@example.com')->first();
+        $sarah = User::where('email', 'sarahjohnson@kakbima.dev')->first();
 
         if (!$sarah) {
             $this->command->error('Sarah Johnson not found. Please run StaffRoleSeeder first.');
             return;
         }
 
-        $companyId = $sarah->created_by;
+        $organizationId = $sarah->created_by;
 
         // Get lookup data
-        $accountTypes = \App\Models\AccountType::where('created_by', $companyId)->get();
-        $accountIndustries = \App\Models\AccountIndustry::where('created_by', $companyId)->get();
-        $categories = Category::where('created_by', $companyId)->get();
-        $brands = Brand::where('created_by', $companyId)->get();
-        $taxes = Tax::where('created_by', $companyId)->get();
-        $opportunityStages = \App\Models\OpportunityStage::where('created_by', $companyId)->get();
-        $opportunitySources = \App\Models\OpportunitySource::where('created_by', $companyId)->get();
-        $leadStatuses = \App\Models\LeadStatus::where('created_by', $companyId)->get();
-        $leadSources = \App\Models\LeadSource::where('created_by', $companyId)->get();
+        $accountTypes = \App\Models\AccountType::where('created_by', $organizationId)->get();
+        $accountIndustries = \App\Models\AccountIndustry::where('created_by', $organizationId)->get();
+        $categories = Category::where('created_by', $organizationId)->get();
+        $brands = Brand::where('created_by', $organizationId)->get();
+        $taxes = Tax::where('created_by', $organizationId)->get();
+        $opportunityStages = \App\Models\OpportunityStage::where('created_by', $organizationId)->get();
+        $opportunitySources = \App\Models\OpportunitySource::where('created_by', $organizationId)->get();
+        $leadStatuses = \App\Models\LeadStatus::where('created_by', $organizationId)->get();
+        $leadSources = \App\Models\LeadSource::where('created_by', $organizationId)->get();
 
         // Create realistic Accounts
-        $companies = [
+        $organizations = [
             ['name' => 'TechFlow Solutions', 'email' => 'contact@techflow.com', 'website' => 'https://techflow.com', 'status' => 'active'],
             ['name' => 'Global Marketing Inc', 'email' => 'info@globalmarketing.com', 'website' => 'https://globalmarketing.com', 'status' => 'active'],
             ['name' => 'DataSync Corp', 'email' => 'sales@datasync.com', 'website' => 'https://datasync.com', 'status' => 'active'],
@@ -63,12 +63,12 @@ class SarahJohnsonDataSeeder extends Seeder
             ['name' => 'InnovateTech Group', 'email' => 'contact@innovatetech.com', 'website' => 'https://innovatetech.com', 'status' => 'active']
         ];
 
-        foreach ($companies as $company) {
+        foreach ($organizations as $organization) {
             Account::create([
-                'name' => $company['name'],
-                'email' => $company['email'],
+                'name' => $organization['name'],
+                'email' => $organization['email'],
                 'phone' => $faker->phoneNumber,
-                'website' => $company['website'],
+                'website' => $organization['website'],
                 'billing_address' => $faker->streetAddress,
                 'billing_city' => $faker->city,
                 'billing_state' => $faker->state,
@@ -79,15 +79,15 @@ class SarahJohnsonDataSeeder extends Seeder
                 'shipping_state' => $faker->state,
                 'shipping_postal_code' => $faker->postcode,
                 'shipping_country' => 'United States',
-                'status' => $company['status'],
+                'status' => $organization['status'],
                 'account_type_id' => $accountTypes->isNotEmpty() ? $accountTypes->random()->id : null,
                 'account_industry_id' => $accountIndustries->isNotEmpty() ? $accountIndustries->random()->id : null,
                 'assigned_to' => $sarah->id,
-                'created_by' => $companyId,
+                'created_by' => $organizationId,
             ]);
         }
 
-        $accounts = Account::where('created_by', $companyId)->get();
+        $accounts = Account::where('created_by', $organizationId)->get();
 
         // Create realistic Products with stock and detailed info
         $productData = [
@@ -113,11 +113,11 @@ class SarahJohnsonDataSeeder extends Seeder
                 'brand_id' => $brands->isNotEmpty() ? $brands->random()->id : null,
                 'tax_id' => $taxes->isNotEmpty() ? $taxes->random()->id : null,
                 'assigned_to' => $sarah->id,
-                'created_by' => $companyId,
+                'created_by' => $organizationId,
             ]);
         }
 
-        $products = Product::where('created_by', $companyId)->get();
+        $products = Product::where('created_by', $organizationId)->get();
 
         // Create realistic Contacts
         $contacts = [
@@ -141,22 +141,22 @@ class SarahJohnsonDataSeeder extends Seeder
                 'status' => $contact['status'],
                 'account_id' => $accounts->random()->id,
                 'assigned_to' => $sarah->id,
-                'created_by' => $companyId,
+                'created_by' => $organizationId,
             ]);
         }
 
         // Create realistic Leads with different statuses
         $leads = [
-            ['name' => 'Alex Martinez', 'company' => 'StartupHub Inc', 'position' => 'Founder & CEO', 'email' => 'alex@startuphub.com', 'status' => 'active', 'value' => 15000],
-            ['name' => 'Rachel Green', 'company' => 'EcoSolutions LLC', 'position' => 'Chief Executive Officer', 'email' => 'rachel@ecosolutions.com', 'status' => 'active', 'value' => 25000],
-            ['name' => 'Tom Wilson', 'company' => 'FinanceFirst Corp', 'position' => 'Chief Financial Officer', 'email' => 'tom@financefirst.com', 'status' => 'active', 'value' => 35000],
-            ['name' => 'Maria Garcia', 'company' => 'HealthTech Systems', 'position' => 'VP Technology', 'email' => 'maria@healthtech.com', 'status' => 'active', 'value' => 45000],
-            ['name' => 'Kevin Brown', 'company' => 'RetailMax Group', 'position' => 'Operations Director', 'email' => 'kevin@retailmax.com', 'status' => 'active', 'value' => 20000],
-            ['name' => 'Amanda Lee', 'company' => 'EduPlatform Co', 'position' => 'Product Lead', 'email' => 'amanda@eduplatform.com', 'status' => 'inactive', 'value' => 18000],
-            ['name' => 'Daniel Taylor', 'company' => 'LogiFlow Inc', 'position' => 'Supply Chain Manager', 'email' => 'daniel@logiflow.com', 'status' => 'active', 'value' => 12000],
-            ['name' => 'Sophie Clark', 'company' => 'MediaStream Ltd', 'position' => 'Content Director', 'email' => 'sophie@mediastream.com', 'status' => 'active', 'value' => 28000],
-            ['name' => 'Ryan Murphy', 'company' => 'SecureNet Solutions', 'position' => 'Security Analyst', 'email' => 'ryan@securenet.com', 'status' => 'active', 'value' => 22000],
-            ['name' => 'Jessica White', 'company' => 'GreenEnergy Corp', 'position' => 'Project Manager', 'email' => 'jessica@greenenergy.com', 'status' => 'active', 'value' => 32000]
+            ['name' => 'Alex Martinez', 'organization' => 'StartupHub Inc', 'position' => 'Founder & CEO', 'email' => 'alex@startuphub.com', 'status' => 'active', 'value' => 15000],
+            ['name' => 'Rachel Green', 'organization' => 'EcoSolutions LLC', 'position' => 'Chief Executive Officer', 'email' => 'rachel@ecosolutions.com', 'status' => 'active', 'value' => 25000],
+            ['name' => 'Tom Wilson', 'organization' => 'FinanceFirst Corp', 'position' => 'Chief Financial Officer', 'email' => 'tom@financefirst.com', 'status' => 'active', 'value' => 35000],
+            ['name' => 'Maria Garcia', 'organization' => 'HealthTech Systems', 'position' => 'VP Technology', 'email' => 'maria@healthtech.com', 'status' => 'active', 'value' => 45000],
+            ['name' => 'Kevin Brown', 'organization' => 'RetailMax Group', 'position' => 'Operations Director', 'email' => 'kevin@retailmax.com', 'status' => 'active', 'value' => 20000],
+            ['name' => 'Amanda Lee', 'organization' => 'EduPlatform Co', 'position' => 'Product Lead', 'email' => 'amanda@eduplatform.com', 'status' => 'inactive', 'value' => 18000],
+            ['name' => 'Daniel Taylor', 'organization' => 'LogiFlow Inc', 'position' => 'Supply Chain Manager', 'email' => 'daniel@logiflow.com', 'status' => 'active', 'value' => 12000],
+            ['name' => 'Sophie Clark', 'organization' => 'MediaStream Ltd', 'position' => 'Content Director', 'email' => 'sophie@mediastream.com', 'status' => 'active', 'value' => 28000],
+            ['name' => 'Ryan Murphy', 'organization' => 'SecureNet Solutions', 'position' => 'Security Analyst', 'email' => 'ryan@securenet.com', 'status' => 'active', 'value' => 22000],
+            ['name' => 'Jessica White', 'organization' => 'GreenEnergy Corp', 'position' => 'Project Manager', 'email' => 'jessica@greenenergy.com', 'status' => 'active', 'value' => 32000]
         ];
 
         foreach ($leads as $lead) {
@@ -164,10 +164,10 @@ class SarahJohnsonDataSeeder extends Seeder
                 'name' => $lead['name'],
                 'email' => $lead['email'],
                 'phone' => $faker->phoneNumber,
-                'company' => $lead['company'],
+                'organization' => $lead['organization'],
                 'position' => $lead['position'],
                 'address' => $faker->address,
-                'website' => 'https://' . strtolower(str_replace(' ', '', $lead['company'])) . '.com',
+                'website' => 'https://' . strtolower(str_replace(' ', '', $lead['organization'])) . '.com',
                 'notes' => 'Initial contact made through ' . $faker->randomElement(['LinkedIn', 'Trade Show', 'Referral', 'Cold Call', 'Website Inquiry']),
                 'value' => $lead['value'],
                 'status' => $lead['status'],
@@ -175,7 +175,7 @@ class SarahJohnsonDataSeeder extends Seeder
                 'lead_status_id' => $leadStatuses->isNotEmpty() ? $leadStatuses->random()->id : null,
                 'lead_source_id' => $leadSources->isNotEmpty() ? $leadSources->random()->id : null,
                 'assigned_to' => $sarah->id,
-                'created_by' => $companyId,
+                'created_by' => $organizationId,
             ]);
         }
 
@@ -198,11 +198,11 @@ class SarahJohnsonDataSeeder extends Seeder
                 'notes' => 'Key decision makers identified. Budget approved. Timeline: ' . $faker->randomElement(['Q1 2025', 'Q2 2025', 'Q3 2025']),
                 'status' => $opp['status'],
                 'account_id' => $accounts->random()->id,
-                'contact_id' => Contact::where('created_by', $companyId)->inRandomOrder()->first()?->id,
+                'contact_id' => Contact::where('created_by', $organizationId)->inRandomOrder()->first()?->id,
                 'opportunity_stage_id' => $opportunityStages->isNotEmpty() ? $opportunityStages->random()->id : null,
                 'opportunity_source_id' => $opportunitySources->isNotEmpty() ? $opportunitySources->random()->id : null,
                 'assigned_to' => $sarah->id,
-                'created_by' => $companyId,
+                'created_by' => $organizationId,
             ]);
         }
 
@@ -227,7 +227,7 @@ class SarahJohnsonDataSeeder extends Seeder
                 'status' => $quoteInfo['status'],
                 'valid_until' => $faker->dateTimeBetween('now', '+60 days'),
                 'assigned_to' => $sarah->id,
-                'created_by' => $companyId,
+                'created_by' => $organizationId,
             ]);
 
             // Add products to quote
@@ -265,7 +265,7 @@ class SarahJohnsonDataSeeder extends Seeder
                 'subtotal' => $subtotal,
                 'total_amount' => $totalAmount,
                 'assigned_to' => $sarah->id,
-                'created_by' => $companyId,
+                'created_by' => $organizationId,
             ]);
 
             // Add products to sales order
@@ -309,7 +309,7 @@ class SarahJohnsonDataSeeder extends Seeder
                 'terms' => 'Net 30 days. Late payment fee of 1.5% per month applies.',
                 'notes' => 'Thank you for your business. Please remit payment by due date.',
                 'assigned_to' => $sarah->id,
-                'created_by' => $companyId,
+                'created_by' => $organizationId,
             ]);
 
             // Add products to invoice
@@ -370,12 +370,12 @@ class SarahJohnsonDataSeeder extends Seeder
                 'priority' => $proj['priority'],
                 'account_id' => $accounts->random()->id,
                 'assigned_to' => $sarah->id,
-                'created_by' => $companyId,
+                'created_by' => $organizationId,
             ]);
 
             // Create tasks for each project
             foreach ($proj['tasks'] as $taskName) {
-                $taskStatuses = \App\Models\TaskStatus::where('created_by', $companyId)->get();
+                $taskStatuses = \App\Models\TaskStatus::where('created_by', $organizationId)->get();
 
                 ProjectTask::create([
                     'project_id' => $project->id,
@@ -389,7 +389,7 @@ class SarahJohnsonDataSeeder extends Seeder
                     'actual_hours' => $faker->numberBetween(35, 100),
                     'task_status_id' => $taskStatuses->isNotEmpty() ? $taskStatuses->random()->id : null,
                     'assigned_to' => $sarah->id,
-                    'created_by' => $companyId,
+                    'created_by' => $organizationId,
                 ]);
             }
         }
@@ -410,13 +410,13 @@ class SarahJohnsonDataSeeder extends Seeder
             DeliveryOrder::create([
                 'name' => $doInfo['name'],
                 'account_id' => $accounts->random()->id,
-                'sales_order_id' => SalesOrder::where('created_by', $companyId)->inRandomOrder()->first()?->id,
+                'sales_order_id' => SalesOrder::where('created_by', $organizationId)->inRandomOrder()->first()?->id,
                 'delivery_date' => $faker->dateTimeBetween('now', '+15 days'),
                 'status' => $doInfo['status'],
                 'tracking_number' => 'TRK' . $faker->numerify('########'),
                 'delivery_notes' => 'Standard delivery with signature required.',
                 'assigned_to' => $sarah->id,
-                'created_by' => $companyId,
+                'created_by' => $organizationId,
             ]);
         }
 
@@ -436,13 +436,13 @@ class SarahJohnsonDataSeeder extends Seeder
             ReturnOrder::create([
                 'name' => $roInfo['name'],
                 'account_id' => $accounts->random()->id,
-                'sales_order_id' => SalesOrder::where('created_by', $companyId)->inRandomOrder()->first()?->id,
+                'sales_order_id' => SalesOrder::where('created_by', $organizationId)->inRandomOrder()->first()?->id,
                 'return_date' => $faker->dateTimeBetween('-30 days', 'now'),
                 'reason' => $faker->randomElement(['defective', 'wrong_item', 'damaged', 'not_needed', 'other']),
                 'status' => $roInfo['status'],
-                'notes' => 'Return processed according to company policy.',
+                'notes' => 'Return processed according to organization policy.',
                 'assigned_to' => $sarah->id,
-                'created_by' => $companyId,
+                'created_by' => $organizationId,
             ]);
         }
 
@@ -469,7 +469,7 @@ class SarahJohnsonDataSeeder extends Seeder
                 'subtotal' => $subtotal,
                 'total_amount' => $subtotal,
                 'assigned_to' => $sarah->id,
-                'created_by' => $companyId,
+                'created_by' => $organizationId,
             ]);
         }
 
@@ -489,12 +489,12 @@ class SarahJohnsonDataSeeder extends Seeder
             ReceiptOrder::create([
                 'name' => $recInfo['name'],
                 'account_id' => $accounts->random()->id,
-                'purchase_order_id' => PurchaseOrder::where('created_by', $companyId)->inRandomOrder()->first()?->id,
+                'purchase_order_id' => PurchaseOrder::where('created_by', $organizationId)->inRandomOrder()->first()?->id,
                 'receipt_date' => $faker->dateTimeBetween('-15 days', 'now'),
                 'status' => $recInfo['status'],
                 'notes' => 'Items received and verified against purchase order.',
                 'assigned_to' => $sarah->id,
-                'created_by' => $companyId,
+                'created_by' => $organizationId,
             ]);
         }
 
@@ -509,7 +509,7 @@ class SarahJohnsonDataSeeder extends Seeder
             $folder = DocumentFolder::create([
                 'name' => $folderInfo['name'],
                 'description' => $folderInfo['description'],
-                'created_by' => $companyId,
+                'created_by' => $organizationId,
             ]);
 
             // Create documents in each folder
@@ -520,7 +520,7 @@ class SarahJohnsonDataSeeder extends Seeder
             ];
 
             foreach ($documents as $docInfo) {
-                $docType = DocumentType::where('created_by', $companyId)->where('type_name', $docInfo['type'])->first();
+                $docType = DocumentType::where('created_by', $organizationId)->where('type_name', $docInfo['type'])->first();
 
                 Document::create([
                     'name' => $docInfo['name'],
@@ -530,7 +530,7 @@ class SarahJohnsonDataSeeder extends Seeder
                     'account_id' => $accounts->random()->id,
                     'status' => 'active',
                     'assigned_to' => $sarah->id,
-                    'created_by' => $companyId,
+                    'created_by' => $organizationId,
                 ]);
             }
         }
@@ -548,7 +548,7 @@ class SarahJohnsonDataSeeder extends Seeder
         ];
 
         foreach ($campaigns as $campInfo) {
-            $campaignType = \App\Models\CampaignType::where('created_by', $companyId)->inRandomOrder()->first();
+            $campaignType = \App\Models\CampaignType::where('created_by', $organizationId)->inRandomOrder()->first();
 
             Campaign::create([
                 'name' => $campInfo['name'],
@@ -559,7 +559,7 @@ class SarahJohnsonDataSeeder extends Seeder
                 'status' => $campInfo['status'],
                 'campaign_type_id' => $campaignType?->id,
                 'assigned_to' => $sarah->id,
-                'created_by' => $companyId,
+                'created_by' => $organizationId,
             ]);
         }
 

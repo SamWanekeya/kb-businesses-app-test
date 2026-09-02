@@ -45,7 +45,7 @@ class SendQuoteStatusChangedEmail
                 '{new_quote_status}' => ucfirst($newStatus),
                 '{assigned_user_name}' => $assignedUser->name ?? '-',
                 '{assigned_user_email}' => $assignedUser->email ?? '-',
-                '{company_name}' => getCompanyName(),
+                '{organization_name}' => getOrganizationName(),
             ];
 
             try {

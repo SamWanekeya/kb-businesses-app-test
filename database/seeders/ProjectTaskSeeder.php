@@ -12,10 +12,10 @@ class ProjectTaskSeeder extends Seeder
 {
     public function run(): void
     {
-        $companyUsers = User::where('type', 'company')->get();
-        
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        $organizationUsers = User::where('type', 'organization')->get();
+
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
@@ -149,22 +149,22 @@ class ProjectTaskSeeder extends Seeder
             ],
         ];
 
-        foreach ($companyUsers as $company) {
-            $projects = Project::where('created_by', $company->id)->get();
-            $staffUsers = User::where('created_by', $company->id)->get();
-            $taskStatuses = TaskStatus::where('created_by', $company->id)->pluck('id', 'name')->toArray();
-            
+        foreach ($organizationUsers as $organization) {
+            $projects = Project::where('created_by', $organization->id)->get();
+            $staffUsers = User::where('created_by', $organization->id)->get();
+            $taskStatuses = TaskStatus::where('created_by', $organization->id)->pluck('id', 'name')->toArray();
+
             if ($projects->isEmpty() || empty($taskStatuses)) {
                 continue;
             }
-            
+
             $statusMapping = [
                 'to_do' => $taskStatuses['To Do'] ?? null,
                 'in_progress' => $taskStatuses['In Progress'] ?? null,
                 'review' => $taskStatuses['Review'] ?? null,
                 'done' => $taskStatuses['Done'] ?? null,
             ];
-            
+
             foreach ($projects->take(3) as $project) {
                 foreach ($tasks as $index => $taskData) {
                     $task = ProjectTask::create([
@@ -179,7 +179,7 @@ class ProjectTaskSeeder extends Seeder
                         'estimated_hours' => $taskData['estimated_hours'],
                         'actual_hours' => $taskData['actual_hours'] ?? null,
                         'progress' => $taskData['progress'],
-                        'created_by' => $company->id,
+                        'created_by' => $organization->id,
                     ]);
 
                 // Create subtasks for some main tasks
@@ -197,13 +197,13 @@ class ProjectTaskSeeder extends Seeder
                         'estimated_hours' => $taskData['estimated_hours'] / 2,
                         'actual_hours' => isset($taskData['actual_hours']) ? $taskData['actual_hours'] / 2 : null,
                         'progress' => $taskData['progress'],
-                        'created_by' => $company->id,
+                        'created_by' => $organization->id,
                     ]);
                 }
                 }
             }
         }
-        
-        $this->command->info('Project tasks created for all company users!');
+
+        $this->command->info('Project tasks created for all organization users!');
     }
 }

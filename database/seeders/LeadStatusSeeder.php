@@ -13,10 +13,10 @@ class LeadStatusSeeder extends Seeder
      */
     public function run(): void
     {
-        $companyUsers = User::where('type', 'company')->get();
+        $organizationUsers = User::where('type', 'organization')->get();
 
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
@@ -29,21 +29,21 @@ class LeadStatusSeeder extends Seeder
             ['name' => 'Lost', 'color' => '#EF4444', 'description' => 'Lead is lost or not interested']
         ];
 
-        foreach ($companyUsers as $company) {
+        foreach ($organizationUsers as $organization) {
             foreach ($statusTemplates as $template) {
                 LeadStatus::firstOrCreate(
-                    ['name' => $template['name'], 'created_by' => $company->id],
+                    ['name' => $template['name'], 'created_by' => $organization->id],
                     [
                         'name' => $template['name'],
                         'color' => $template['color'],
                         'description' => $template['description'],
                         'status' => 'active',
-                        'created_by' => $company->id,
+                        'created_by' => $organization->id,
                     ]
                 );
             }
         }
 
-        $this->command->info('Lead statuses created for all company users!');
+        $this->command->info('Lead statuses created for all organization users!');
     }
 }

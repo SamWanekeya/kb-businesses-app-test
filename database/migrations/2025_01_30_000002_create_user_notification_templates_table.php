@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('user_notification_templates', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('template_id');
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->boolean('is_active')->default(0);
             $table->timestamps();
-            
-            $table->foreign('template_id')->references('id')->on('notification_templates')->onDelete('cascade');
+
+            $table->foreign('template_id')->references('id')->on('notification_templates')->cascadeOnDelete();
             $table->unique(['user_id', 'template_id']);
         });
     }

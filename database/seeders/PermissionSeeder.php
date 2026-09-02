@@ -51,18 +51,18 @@ class PermissionSeeder extends Seeder
             ['name' => 'edit-permissions', 'module' => 'permissions', 'label' => 'Edit Permissions', 'description' => 'Can edit permissions'],
             ['name' => 'delete-permissions', 'module' => 'permissions', 'label' => 'Delete Permissions', 'description' => 'Can delete permissions'],
 
-            // Company management
-            ['name' => 'manage-companies', 'module' => 'companies', 'label' => 'Manage Companies', 'description' => 'Can manage Companies'],
-            ['name' => 'manage-any-companies', 'module' => 'companies', 'label' => 'Manage All Companies', 'description' => 'Manage Any Companies'],
-            ['name' => 'manage-own-companies', 'module' => 'companies', 'label' => 'Manage Own Companies', 'description' => 'Manage Limited Companies that is created by own'],
-            ['name' => 'view-companies', 'module' => 'companies', 'label' => 'View Companies', 'description' => 'View Companies'],
-            ['name' => 'create-companies', 'module' => 'companies', 'label' => 'Create Companies', 'description' => 'Can create Companies'],
-            ['name' => 'edit-companies', 'module' => 'companies', 'label' => 'Edit Companies', 'description' => 'Can edit Companies'],
-            ['name' => 'delete-companies', 'module' => 'companies', 'label' => 'Delete Companies', 'description' => 'Can delete Companies'],
-            ['name' => 'reset-password-companies', 'module' => 'companies', 'label' => 'Reset Password Companies', 'description' => 'Can reset password Companies'],
-            ['name' => 'toggle-status-companies', 'module' => 'companies', 'label' => 'Change Status Companies', 'description' => 'Can change status companies'],
-            ['name' => 'manage-plans-companies', 'module' => 'companies', 'label' => 'Manage Plan Companies', 'description' => 'Can manage plans companies'],
-            ['name' => 'upgrade-plan-companies', 'module' => 'companies', 'label' => 'Upgrade Plan Companies', 'description' => 'Can upgrade plan of companies'],
+            // Organization management
+            ['name' => 'manage-organizations', 'module' => 'organizations', 'label' => 'Manage Organizations', 'description' => 'Can manage Organizations'],
+            ['name' => 'manage-any-organizations', 'module' => 'organizations', 'label' => 'Manage All Organizations', 'description' => 'Manage Any Organizations'],
+            ['name' => 'manage-own-organizations', 'module' => 'organizations', 'label' => 'Manage Own Organizations', 'description' => 'Manage Limited Organizations that is created by own'],
+            ['name' => 'view-organizations', 'module' => 'organizations', 'label' => 'View Organizations', 'description' => 'View Organizations'],
+            ['name' => 'create-organizations', 'module' => 'organizations', 'label' => 'Create Organizations', 'description' => 'Can create Organizations'],
+            ['name' => 'edit-organizations', 'module' => 'organizations', 'label' => 'Edit Organizations', 'description' => 'Can edit Organizations'],
+            ['name' => 'delete-organizations', 'module' => 'organizations', 'label' => 'Delete Organizations', 'description' => 'Can delete Organizations'],
+            ['name' => 'reset-password-organizations', 'module' => 'organizations', 'label' => 'Reset Password Organizations', 'description' => 'Can reset password Organizations'],
+            ['name' => 'toggle-status-organizations', 'module' => 'organizations', 'label' => 'Change Status Organizations', 'description' => 'Can change status organizations'],
+            ['name' => 'manage-plans-organizations', 'module' => 'organizations', 'label' => 'Manage Plan Organizations', 'description' => 'Can manage plans organizations'],
+            ['name' => 'upgrade-plan-organizations', 'module' => 'organizations', 'label' => 'Upgrade Plan Organizations', 'description' => 'Can upgrade plan of organizations'],
 
             // Plan management
             ['name' => 'manage-plans', 'module' => 'plans', 'label' => 'Manage Plans', 'description' => 'Can manage subscription plans'],
@@ -111,7 +111,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'manage-system-settings', 'module' => 'settings', 'label' => 'Manage System Settings', 'description' => 'Can manage system settings'],
             ['name' => 'manage-email-settings', 'module' => 'settings', 'label' => 'Manage Email Settings', 'description' => 'Can manage email settings'],
             ['name' => 'manage-brand-settings', 'module' => 'settings', 'label' => 'Manage Brand Settings', 'description' => 'Can manage brand settings'],
-            ['name' => 'manage-company-settings', 'module' => 'settings', 'label' => 'Manage Company Settings', 'description' => 'Can manage Company settings'],
+            ['name' => 'manage-organization-settings', 'module' => 'settings', 'label' => 'Manage Organization Settings', 'description' => 'Can manage Organization settings'],
 
             ['name' => 'manage-payment-settings', 'module' => 'settings', 'label' => 'Manage Payment Settings', 'description' => 'Can manage payment settings'],
             ['name' => 'manage-currency-settings', 'module' => 'settings', 'label' => 'Manage Currency Settings', 'description' => 'Can manage currency settings'],
@@ -498,10 +498,10 @@ class PermissionSeeder extends Seeder
             ['name' => 'delete-announcements', 'module' => 'announcements', 'label' => 'Delete Announcements', 'description' => 'Can delete announcements'],
             ['name' => 'toggle-status-announcements', 'module' => 'announcements', 'label' => 'Toggle Status Announcements', 'description' => 'Can toggle status announcements'],
 
-            // Login History management
-            ['name' => 'manage-login-history', 'module' => 'login_history', 'label' => 'Manage Login History', 'description' => 'Can manage login history'],
-            ['name' => 'show-login-history', 'module' => 'login_history', 'label' => 'Show Login History', 'description' => 'Can view login history'],
-            ['name' => 'delete-login-history', 'module' => 'login_history', 'label' => 'Delete Login History', 'description' => 'Can delete login history'],
+            // Sign in History management
+            ['name' => 'manage-login-history', 'module' => 'sign_in_history', 'label' => 'Manage Sign in History', 'description' => 'Can manage login history'],
+            ['name' => 'show-login-history', 'module' => 'sign_in_history', 'label' => 'Show Sign in History', 'description' => 'Can view login history'],
+            ['name' => 'delete-login-history', 'module' => 'sign_in_history', 'label' => 'Delete Sign in History', 'description' => 'Can delete login history'],
         ];
 
         // foreach ($permissions as $permission) {
@@ -517,7 +517,7 @@ class PermissionSeeder extends Seeder
 
         // Delete old permissions which are not used
         // Permission::whereNotIn('name', Arr::pluck($permissions, 'name'))->delete();
-        
+
         $permissionNames = [];
         foreach ($permissions as $permission) {
             Permission::updateOrCreate(

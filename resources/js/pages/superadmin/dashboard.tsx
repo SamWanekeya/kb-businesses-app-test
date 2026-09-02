@@ -16,8 +16,8 @@ import UserInitials from '@/components/user-initials';
 
 interface SuperAdminDashboardData {
   stats: {
-    totalCompanies: number;
-    totalActivePlanCompanies: number;
+    totalOrganizations: number;
+    totalActivePlanOrganizations: number;
     totalUsers: number;
     totalRevenue: number;
     activePlans: number;
@@ -36,8 +36,8 @@ interface SuperAdminDashboardData {
   monthlyRevenue: Array<{ month: string; short: string; revenue: number }>;
   revenueYear: number;
   availableYears: number[];
-  monthlyCompanies: Array<{ month: string; short: string; count: number }>;
-  companiesYear: number;
+  monthlyOrganizations: Array<{ month: string; short: string; count: number }>;
+  organizationsYear: number;
   topPlans: Array<{
     name: string;
     subscribers: number;
@@ -51,8 +51,8 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [selectedYear, setSelectedYear] = useState<number>(() => dashboardData?.revenueYear ?? new Date().getFullYear());
-  const [selectedCompaniesYear, setSelectedCompaniesYear] = useState<number>(() => dashboardData?.companiesYear ?? new Date().getFullYear());
-  const [primaryColor, setPrimaryColor] = useState('#3b82f6');
+  const [selectedOrganizationsYear, setSelectedOrganizationsYear] = useState<number>(() => dashboardData?.organizationsYear ?? new Date().getFullYear());
+  const [primaryColor, setPrimaryColor] = useState('#A12582');
 
   useEffect(() => {
     setMounted(true);
@@ -76,7 +76,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
   ];
 
   const stats = dashboardData?.stats || {
-    totalCompanies: 0, totalUsers: 0, totalRevenue: 0,
+    totalOrganizations: 0, totalUsers: 0, totalRevenue: 0,
     activePlans: 0, pendingRequests: 0, monthlyGrowth: 0, activeCoupons: 0,
   };
 
@@ -84,18 +84,18 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
   const topPlans = dashboardData?.topPlans || [];
   const monthlyRevenue = dashboardData?.monthlyRevenue || [];
   const availableYears = dashboardData?.availableYears || [new Date().getFullYear()];
-  const monthlyCompanies = dashboardData?.monthlyCompanies || [];
-  const availableCompanyYears = dashboardData?.availableCompanyYears || [new Date().getFullYear()];
+  const monthlyOrganizations = dashboardData?.monthlyOrganizations || [];
+  const availableOrganizationYears = dashboardData?.availableOrganizationYears || [new Date().getFullYear()];
   const maxRevenue = topPlans.length > 0 ? Math.max(...topPlans.map(p => p.revenue)) : 1;
 
   const handleYearChange = (year: number) => {
     setSelectedYear(year);
-    router.reload({ data: { revenueYear: year, companiesYear: selectedCompaniesYear }, only: ['dashboardData'], preserveState: true });
+    router.reload({ data: { revenueYear: year, organizationsYear: selectedOrganizationsYear }, only: ['dashboardData'], preserveState: true });
   };
 
-  const handleCompaniesYearChange = (year: number) => {
-    setSelectedCompaniesYear(year);
-    router.reload({ data: { revenueYear: selectedYear, companiesYear: year }, only: ['dashboardData'], preserveState: true });
+  const handleOrganizationsYearChange = (year: number) => {
+    setSelectedOrganizationsYear(year);
+    router.reload({ data: { revenueYear: selectedYear, organizationsYear: year }, only: ['dashboardData'], preserveState: true });
   };
 
   const greeting = () => {
@@ -117,7 +117,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
       title={t('Dashboard')}
       url="/dashboard"
       actions={pageActions}
-      description={t('System overview — companies, revenue, plans and recent activity.')}
+      description={t('System overview — organizations, revenue, plans and recent activity.')}
     >
       <div className="space-y-6">
         <style>{`
@@ -168,7 +168,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
             <p className="text-slate-400 text-sm mb-0.5 transition-colors duration-300">{greeting()},</p>
             <div className="flex items-center gap-2">
               <h2 className="text-white text-xl sm:text-2xl font-bold truncate group-hover:text-primary transition-colors duration-300">
-                {auth?.user?.name ?? 'Super Admin'}
+                {auth?.user?.name ?? 'Super Administrator'}
               </h2>
               <span className="animate-hand-wave text-2xl sm:text-3xl select-none">👋</span>
             </div>
@@ -182,14 +182,14 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                 <div className="w-2 h-2 bg-primary/40 rounded-full animate-bounce" style={{ animationDelay: '300ms', animationDuration: '1.2s' }} />
               </div>
               <span className="text-primary font-semibold text-sm group-hover:scale-105 transition-transform duration-200">
-                {stats.totalActivePlanCompanies.toLocaleString()} {t('active plan companies')}
+                {stats.totalActivePlanOrganizations.toLocaleString()} {t('active plan organizations')}
               </span>
             </div>
           </div>
           <div className="flex items-center gap-2 flex-wrap shrink-0">
             <div className="rounded-xl bg-white/10 px-4 py-2.5 text-center min-w-[80px] hover:bg-white/15 hover:scale-105 transition-all duration-300">
-              <p className="text-white text-lg font-bold leading-tight">{stats.totalCompanies}</p>
-              <p className="text-slate-400 text-[11px]">{t('Companies')}</p>
+              <p className="text-white text-lg font-bold leading-tight">{stats.totalOrganizations}</p>
+              <p className="text-slate-400 text-[11px]">{t('Organizations')}</p>
             </div>
             <div className="rounded-xl bg-white/10 px-4 py-2.5 text-center min-w-[80px] hover:bg-white/15 hover:scale-105 transition-all duration-300">
               <p className="text-emerald-400 text-lg font-bold leading-tight">{stats.monthlyGrowth}%</p>
@@ -232,8 +232,8 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
             </Card>
           </Link>
 
-          {/* Total Companies */}
-          <Link href={route('companies.index')} className={`group ${fadeUp(150)}`}>
+          {/* Total Organizations */}
+          <Link href={route('organizations.index')} className={`group ${fadeUp(150)}`}>
             <Card className="h-full border border-blue-200 dark:border-blue-900/50 shadow-sm bg-blue-50 dark:bg-blue-950/30 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer dark:bg-slate-900">
               <CardContent className="relative overflow-hidden p-5">
                 <span className="pointer-events-none absolute -top-3 right-4 w-10 h-10 rounded-full bg-blue-300/40 dark:bg-blue-500/10 animate-ping" style={{ animationDuration: '7s' }} />
@@ -245,8 +245,8 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                   </div>
                   <ArrowUpRight className="h-4 w-4 text-blue-200 group-hover:text-blue-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all duration-200" />
                 </div>
-                <p className="text-blue-700 dark:text-blue-400 text-xs mb-1">{t('Total Companies')}</p>
-                <p className="text-blue-900 dark:text-blue-100 text-2xl font-bold tracking-tight">{stats.totalCompanies.toLocaleString()}</p>
+                <p className="text-blue-700 dark:text-blue-400 text-xs mb-1">{t('Total Organizations')}</p>
+                <p className="text-blue-900 dark:text-blue-100 text-2xl font-bold tracking-tight">{stats.totalOrganizations.toLocaleString()}</p>
                 <p className="text-emerald-600 text-[11px] mt-1.5 flex items-center gap-0.5">
                   <TrendingUp className="h-3 w-3" /> +{stats.monthlyGrowth}% {t('this month')}
                 </p>
@@ -328,15 +328,15 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
         {/* ── Main Content ── */}
         <div className={`grid gap-4 lg:grid-cols-5 ${fadeUp(300)}`}>
 
-          {/* Recently Registered Companies */}
+          {/* Recently Registered Organizations */}
           <Card className="lg:col-span-3 border border-blue-100 dark:border-blue-900/40 shadow-sm dark:bg-slate-900 overflow-hidden">
             <CardHeader className="pb-3 pt-5 px-5 border-b">
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-base font-semibold">{t('Recently Registered Companies')}</CardTitle>
-                  <p className="text-xs text-muted-foreground mt-0.5">{t('Latest companies that joined the platform')}</p>
+                  <CardTitle className="text-base font-semibold">{t('Recently Registered Organizations')}</CardTitle>
+                  <p className="text-xs text-muted-foreground mt-0.5">{t('Latest organizations that joined the platform')}</p>
                 </div>
-                <Link href={route('companies.index')} className="flex items-center gap-1 text-xs text-primary font-medium shrink-0 hover:gap-1.5 transition-all duration-150">
+                <Link href={route('organizations.index')} className="flex items-center gap-1 text-xs text-primary font-medium shrink-0 hover:gap-1.5 transition-all duration-150">
                   {t('View all')} <ChevronRight className="h-3.5 w-3.5" />
                 </Link>
               </div>
@@ -344,31 +344,31 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
             <CardContent className="p-0">
               {recentActivity.length > 0 ? (
                 <div>
-                  {recentActivity.map((company, i) => (
+                  {recentActivity.map((organization, i) => (
                     <div
-                      key={company.id}
+                      key={organization.id}
                       className="flex items-center gap-3 px-5 py-3.5 hover:bg-muted/50 dark:hover:bg-slate-800/60 transition-colors duration-150 group/row"
                       style={{ animationDelay: `${i * 60}ms` }}
                     >
                       <div className="relative w-9 h-9 shrink-0">
-                        {company.avatar ? (
+                        {organization.avatar ? (
                           <img
-                            src={company.avatar}
-                            alt={company.name}
+                            src={organization.avatar}
+                            alt={organization.name}
                             className="w-9 h-9 rounded-full object-cover shadow-sm group-hover/row:scale-105 transition-transform duration-150"
                             onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden'); }}
                           />
-                        ) : <UserInitials name={company?.name} />}
+                        ) : <UserInitials name={organization?.name} />}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold truncate leading-tight">{company.name}</p>
-                        <p className="text-xs text-muted-foreground truncate mt-0.5">{company.email}</p>
+                        <p className="text-sm font-semibold truncate leading-tight">{organization.name}</p>
+                        <p className="text-xs text-muted-foreground truncate mt-0.5">{organization.email}</p>
                       </div>
                       <div className="flex flex-col items-end gap-1 shrink-0">
                         <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20">
                           {t('Active')}
                         </span>
-                        <span className="text-[11px] text-muted-foreground">{company.registered_at}</span>
+                        <span className="text-[11px] text-muted-foreground">{organization.registered_at}</span>
                       </div>
                     </div>
                   ))}
@@ -378,7 +378,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                   <div className="rounded-full bg-muted p-4 animate-pulse">
                     <Building2 className="h-6 w-6 text-muted-foreground/50" />
                   </div>
-                  <p className="text-sm text-muted-foreground">{t('No companies registered yet')}</p>
+                  <p className="text-sm text-muted-foreground">{t('No organizations registered yet')}</p>
                 </div>
               )}
             </CardContent>
@@ -440,21 +440,21 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
 
         </div>
 
-        
-        {/* ── Monthly Companies Chart ── */}
+
+        {/* ── Monthly Organizations Chart ── */}
         <div className={fadeUp(375)}>
           <Card className="border border-border shadow-sm dark:bg-slate-900 overflow-hidden">
             <CardHeader className="pb-3 pt-5 px-5 border-b">
               <div className="flex items-center justify-between gap-3 flex-wrap">
                 <div>
-                  <CardTitle className="text-base font-semibold">{t('New Companies Registered')}</CardTitle>
-                  <p className="text-xs text-muted-foreground mt-0.5">{t('Companies joined per month')} — {selectedCompaniesYear}</p>
+                  <CardTitle className="text-base font-semibold">{t('New Organizations Registered')}</CardTitle>
+                  <p className="text-xs text-muted-foreground mt-0.5">{t('Organizations joined per month')} — {selectedOrganizationsYear}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20 dark:bg-emerald-900/20 dark:text-emerald-400 dark:ring-emerald-500/30">
-                    {monthlyCompanies.reduce((s, m) => s + m.count, 0)} {t('total')}
+                    {monthlyOrganizations.reduce((s, m) => s + m.count, 0)} {t('total')}
                   </span>
-                  <Select value={String(selectedCompaniesYear)} onValueChange={(v) => handleCompaniesYearChange(Number(v))}>
+                  <Select value={String(selectedOrganizationsYear)} onValueChange={(v) => handleOrganizationsYearChange(Number(v))}>
                     <SelectTrigger className="h-7 w-24 text-xs focus:ring-0 focus:ring-offset-0">
                       <SelectValue />
                     </SelectTrigger>
@@ -468,9 +468,9 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
               </div>
             </CardHeader>
             <CardContent className="p-4 pt-5">
-              {monthlyCompanies.length > 0 ? (
+              {monthlyOrganizations.length > 0 ? (
                 <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={monthlyCompanies} margin={{ top: 20, right: 8, left: 0, bottom: 0 }} accessibilityLayer={false}>
+                  <BarChart data={monthlyOrganizations} margin={{ top: 20, right: 8, left: 0, bottom: 0 }} accessibilityLayer={false}>
                     <CartesianGrid strokeDasharray="3 3" stroke={primaryColor} strokeOpacity={0.3} vertical={false} />
                     <XAxis
                       dataKey="short"
@@ -495,12 +495,12 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                         backgroundColor: "rgba(255, 255, 255, 0.7)",
                         color: primaryColor,
                       }}
-                      formatter={(value: number) => [value, t('Companies')]}
+                      formatter={(value: number) => [value, t('Organizations')]}
                       labelFormatter={(label, payload) => payload?.[0]?.payload?.month ?? label}
                     />
                     <Bar dataKey="count" radius={[4, 4, 0, 0]} maxBarSize={30} isAnimationActive={false}>
                       <LabelList dataKey="count" position="top" style={{ fontSize: 11, fill: primaryColor, fontWeight: 600 }} formatter={(v: number) => v > 0 ? v : ''} />
-                      {monthlyCompanies.map((_, i) => (
+                      {monthlyOrganizations.map((_, i) => (
                         <Cell key={i} fill={primaryColor} fillOpacity={0.7} />
                       ))}
                     </Bar>
@@ -511,7 +511,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                   <div className="rounded-full bg-muted p-4 animate-pulse">
                     <Building2 className="h-6 w-6 text-muted-foreground/50" />
                   </div>
-                  <p className="text-sm text-muted-foreground">{t('No company data available')}</p>
+                  <p className="text-sm text-muted-foreground">{t('No organization data available')}</p>
                 </div>
               )}
             </CardContent>

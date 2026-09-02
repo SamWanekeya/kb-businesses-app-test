@@ -1,6 +1,6 @@
 import { PageTemplate } from '@/components/page-template';
 import { CrudTable } from '@/components/CrudTable';
-import { companyPlanRequestsConfig } from '@/config/crud/company-plan-requests';
+import { organizationPlanRequestsConfig } from '@/config/crud/organization-plan-requests';
 import { useEffect, useState } from 'react';
 import { usePage, router } from '@inertiajs/react';
 import { toast } from '@/components/custom-toast';
@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 
-export default function CompanyPlanRequestsPage() {
+export default function OrganizationPlanRequestsPage() {
   const { t } = useTranslation();
   const { flash, planRequests, filters: pageFilters = {}, auth } = usePage().props as any;
   const permissions = auth?.permissions || [];
@@ -28,7 +28,7 @@ export default function CompanyPlanRequestsPage() {
 
   useEffect(() => {
     const initialFilters: Record<string, any> = {};
-    companyPlanRequestsConfig.filters?.forEach(filter => {
+    organizationPlanRequestsConfig.filters?.forEach(filter => {
       initialFilters[filter.key] = pageFilters[filter.key] || 'all';
     });
     setFilterValues(initialFilters);
@@ -56,7 +56,7 @@ export default function CompanyPlanRequestsPage() {
       params.per_page = pageFilters.per_page;
     }
 
-    router.get(route("company.plan-requests.index"), params, { preserveState: true, preserveScroll: true });
+    router.get(route("organization.plan-requests.index"), params, { preserveState: true, preserveScroll: true });
   };
 
   const handleFilterChange = (key: string, value: any) => {
@@ -79,7 +79,7 @@ export default function CompanyPlanRequestsPage() {
       params.per_page = pageFilters.per_page;
     }
 
-    router.get(route("company.plan-requests.index"), params, { preserveState: true, preserveScroll: true });
+    router.get(route("organization.plan-requests.index"), params, { preserveState: true, preserveScroll: true });
   };
 
   const breadcrumbs = [
@@ -96,7 +96,7 @@ export default function CompanyPlanRequestsPage() {
   return (
     <PageTemplate
       title={t('Plan Requests')}
-      url="/company/plan-requests"
+      url="/organization/plan-requests"
       breadcrumbs={breadcrumbs}
       noPadding
     >
@@ -105,7 +105,7 @@ export default function CompanyPlanRequestsPage() {
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
           onSearch={handleSearch}
-          filters={companyPlanRequestsConfig.filters?.map(filter => ({
+          filters={organizationPlanRequestsConfig.filters?.map(filter => ({
             name: filter.key,
             label: t(filter.label),
             type: 'select',
@@ -125,7 +125,7 @@ export default function CompanyPlanRequestsPage() {
           onResetFilters={() => {
             setSearchTerm('');
             setFilterValues({});
-            router.get(route('company.plan-requests.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
+            router.get(route('organization.plan-requests.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
           }}
           onApplyFilters={applyFilters}
           currentPerPage={pageFilters.per_page?.toString() || "10"}
@@ -142,14 +142,14 @@ export default function CompanyPlanRequestsPage() {
               }
             });
 
-            router.get(route('company.plan-requests.index'), params, { preserveState: true, preserveScroll: true });
+            router.get(route('organization.plan-requests.index'), params, { preserveState: true, preserveScroll: true });
           }}
         />
       </div>
 
       <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
         <CrudTable
-          columns={companyPlanRequestsConfig.table.columns.map(col => ({
+          columns={organizationPlanRequestsConfig.table.columns.map(col => ({
             ...col,
             label: t(col.label)
           }))}
@@ -158,7 +158,7 @@ export default function CompanyPlanRequestsPage() {
           from={planRequests?.from || 1}
           onAction={() => {}}
           permissions={permissions}
-          entityPermissions={companyPlanRequestsConfig.entity.permissions}
+          entityPermissions={organizationPlanRequestsConfig.entity.permissions}
         />
 
         <Pagination

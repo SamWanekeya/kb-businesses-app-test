@@ -10,10 +10,10 @@ class TaxSeeder extends Seeder
 {
     public function run(): void
     {
-        $companyUsers = User::where('type', 'company')->get();
-        
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        $organizationUsers = User::where('type', 'organization')->get();
+
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
@@ -25,22 +25,22 @@ class TaxSeeder extends Seeder
             ['name' => 'Export Exempt', 'rate' => 0.00, 'description' => 'Tax exemption for exports']
         ];
 
-        foreach ($companyUsers as $company) {
+        foreach ($organizationUsers as $organization) {
             foreach ($taxTemplates as $template) {
                 Tax::firstOrCreate(
-                    ['name' => $template['name'], 'created_by' => $company->id],
+                    ['name' => $template['name'], 'created_by' => $organization->id],
                     [
                         'name' => $template['name'],
                         'rate' => $template['rate'],
                         'type' => 'percentage',
                         'description' => $template['description'],
                         'status' => 'active',
-                        'created_by' => $company->id,
+                        'created_by' => $organization->id,
                     ]
                 );
             }
         }
-        
-        $this->command->info('Taxes created for all company users!');
+
+        $this->command->info('Taxes created for all organization users!');
     }
 }

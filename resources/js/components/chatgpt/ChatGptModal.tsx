@@ -59,7 +59,7 @@ export function ChatGptModal({
           language,
           creativity,
           num_results: numResults,
-          max_length: maxLength
+          maximum_length: maxLength
         })
       });
 

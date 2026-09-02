@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class PayoutRequest extends Model
 {
     protected $fillable = [
-        'company_id',
+        'organization_id',
         'amount',
         'status',
         'notes',
@@ -21,18 +21,18 @@ class PayoutRequest extends Model
     protected static function boot()
     {
         parent::boot();
-        
+
         static::creating(function ($payoutRequest) {
             $payoutRequest->amount = max(0, $payoutRequest->amount ?? 0);
         });
-        
+
         static::updating(function ($payoutRequest) {
             $payoutRequest->amount = max(0, $payoutRequest->amount ?? 0);
         });
     }
 
-    public function company(): BelongsTo
+    public function organization(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'company_id');
+        return $this->belongsTo(User::class, 'organization_id');
     }
 }

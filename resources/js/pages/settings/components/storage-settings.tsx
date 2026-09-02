@@ -139,7 +139,7 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
     const [storageSettings, setStorageSettings] = useState<StorageSettings>({
         storageType: (settings.storage_type as StorageType) || 'local',
         allowedFileTypes: settings.storage_file_types || 'jpg,png,webp,gif',
-        maxUploadSize: settings.storage_max_upload_size || '2048',
+        maxUploadSize: settings.storage_maximum_upload_size || '2048',
         awsAccessKeyId: settings.aws_access_key_id || '',
         awsSecretAccessKey: settings.aws_secret_access_key || '',
         awsDefaultRegion: settings.aws_default_region || 'us-east-1',

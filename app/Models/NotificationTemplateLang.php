@@ -11,7 +11,7 @@ class NotificationTemplateLang extends Model
         'parent_id',
         'lang',
         'title',
-        'content',
+        'notification_template_content',
         'created_by',
     ];
 

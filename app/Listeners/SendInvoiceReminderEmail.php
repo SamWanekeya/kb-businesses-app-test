@@ -28,7 +28,7 @@ class SendInvoiceReminderEmail
         $recipientName = $event->recipientName;
 
         if (!$recipient || !isEmailTemplateEnabled('Invoice Payment Reminder', createdBy())) {
-            session()->flash('email_error', 'Invoice Payment Reminder not enabled in company settings, Enable it to send Invoice Payment Reminder');
+            session()->flash('email_error', 'Invoice Payment Reminder not enabled in organization settings, Enable it to send Invoice Payment Reminder');
             return;
         }
 
@@ -44,7 +44,7 @@ class SendInvoiceReminderEmail
             '{invoice_total}' => $this->formatCurrency($invoice->total_amount),
             '{invoice_amount_due}' => $this->formatCurrency($invoice->amount_due ?? $invoice->total_amount),
             '{invoice_payment_link}' => $paymentLink,
-            '{company_name}' => getCompanyName(),
+            '{organization_name}' => getOrganizationName(),
         ];
 
         try {
@@ -66,7 +66,7 @@ class SendInvoiceReminderEmail
                 !str_contains($errorMessage, '550 5.7.0') &&
                 !str_contains($errorMessage, 'rate limit')
             ) {
-                session()->flash('email_error', 'Email template not enabled in company settings.');
+                session()->flash('email_error', 'Email template not enabled in organization settings.');
             }
         }
     }

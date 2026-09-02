@@ -71,17 +71,17 @@ class ContactController extends Controller
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
 
-        // Get plan limits for company users
+        // Get plan limits for organization users
         $planLimits = null;
         $user = User::find(createdBy());
         $plan = $user->getCurrentPlan();
 
-        if ($plan && $plan->max_contacts > 0) {
+        if ($plan && $plan->maximum_contacts > 0) {
             $currentContactCount = Contact::where('created_by', $user->id)->count();
             $planLimits = [
                 'current_contacts' => $currentContactCount,
-                'max_contacts' => $plan->max_contacts,
-                'can_create' => $currentContactCount < $plan->max_contacts
+                'maximum_contacts' => $plan->maximum_contacts,
+                'can_create' => $currentContactCount < $plan->maximum_contacts
             ];
         }
 
@@ -109,16 +109,16 @@ class ContactController extends Controller
             'assigned_to' => 'required|exists:users,id',
         ]);
 
-        // Check contact limit for company users
-        if (auth()->user()->type === 'company') {
+        // Check contact limit for organization users
+        if (auth()->user()->type === 'organization') {
             $user = auth()->user();
             $plan = $user->getCurrentPlan();
 
-            if ($plan && $plan->max_contacts > 0) {
+            if ($plan && $plan->maximum_contacts > 0) {
                 $currentContactCount = Contact::where('created_by', $user->id)->count();
 
-                if ($currentContactCount >= $plan->max_contacts) {
-                    return redirect()->back()->with('error', __('Contact limit exceeded. Your plan allows maximum :limit contacts.', ['limit' => $plan->max_contacts]));
+                if ($currentContactCount >= $plan->maximum_contacts) {
+                    return redirect()->back()->with('error', __('Contact limit exceeded. Your plan allows maximum :limit contacts.', ['limit' => $plan->maximum_contacts]));
                 }
             }
         }

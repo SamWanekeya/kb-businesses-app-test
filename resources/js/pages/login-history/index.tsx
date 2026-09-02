@@ -10,7 +10,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
-export default function LoginHistory() {
+export default function signInHistory() {
     const { t } = useTranslation();
     const { auth, loginHistory, filters: pageFilters = {}, globalSettings } = usePage().props as any;
     const permissions = auth?.permissions || [];
@@ -45,7 +45,7 @@ export default function LoginHistory() {
     };
 
     const applyFilters = () => {
-        router.get(route('login-history.index'), {
+        router.get(route('sign-in-history.index'), {
             page: 1,
             search: searchTerm || undefined,
             per_page: pageFilters.per_page
@@ -55,7 +55,7 @@ export default function LoginHistory() {
     const handleSort = (field: string) => {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
 
-        router.get(route('login-history.index'), {
+        router.get(route('sign-in-history.index'), {
             sort_field: field,
             sort_direction: direction,
             page: 1,
@@ -79,10 +79,10 @@ export default function LoginHistory() {
 
     const handleDeleteConfirm = () => {
         if (!globalSettings?.is_demo) {
-            toast.loading(t('Deleting login history...'));
+            toast.loading(t('Deleting sign in history...'));
         }
 
-        router.delete(route('login-history.destroy', currentItem.id), {
+        router.delete(route('sign-in-history.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
                 if (!globalSettings?.is_demo) {
@@ -101,28 +101,28 @@ export default function LoginHistory() {
                 if (typeof errors === 'string') {
                     toast.error(t(errors));
                 } else {
-                    toast.error(t('Failed to delete login history: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(t('Failed to delete sign in history: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
             }
         });
     };
 
     const handleResetFilters = () => {
-        router.get(route('login-history.index'));
+        router.get(route('sign-in-history.index'));
     };
 
     let breadcrumbs = [];
-    if (hasRole('superadmin', auth.roles)) {
+    if (hasRole('super_admin', auth.roles)) {
         breadcrumbs = [
             { title: t('Dashboard'), href: route('dashboard') },
-            { title: t('Companies'), href: route('companies.index') },
-            { title: t('Login History') }
+            { title: t('Organizations'), href: route('organizations.index') },
+            { title: t('Sign in History') }
         ];
     } else {
         breadcrumbs = [
             { title: t('Dashboard'), href: route('dashboard') },
             { title: t('Staff'), href: route('users.index') },
-            { title: t('Login History') }
+            { title: t('Sign in History') }
         ];
     }
 
@@ -147,14 +147,14 @@ export default function LoginHistory() {
             }
         },
         {
-            key: 'ip',
+            key: 'ip_address',
             label: t('IP Address'),
             sortable: true,
             render: (value) => value || '-'
         },
         {
             key: 'date',
-            label: t('Login Date'),
+            label: t('Sign in Date'),
             sortable: true,
             type: 'date',
             // render: (value) => window.appSettings?.formatDateTime(value, false) || '-'
@@ -184,22 +184,22 @@ export default function LoginHistory() {
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
-            requiredPermission: 'show-login-history'
+            requiredPermission: 'show-sign-in-history'
         },
         {
             label: t('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
-            requiredPermission: 'delete-login-history'
+            requiredPermission: 'delete-sign-in-history'
         }
     ];
 
     return (
         <PageTemplate
-            title={t("Login History")}
-            description={t("Manage your login history records.")}
-            url="/login-history"
+            title={t("Sign in History")}
+            description={t("Manage your sign in history records.")}
+            url="/sign-in-history"
             breadcrumbs={breadcrumbs}
             noPadding
         >
@@ -213,7 +213,7 @@ export default function LoginHistory() {
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
                     onResetFilters={handleResetFilters}
-                   
+
                 />
             </div>
 
@@ -230,7 +230,7 @@ export default function LoginHistory() {
                     onSort={handleSort}
                     permissions={permissions}
                     entityPermissions={{
-                        delete: 'delete-login-history'
+                        delete: 'delete-sign-in-history'
                     }}
                 />
 
@@ -240,11 +240,11 @@ export default function LoginHistory() {
                     to={loginHistory?.to || 0}
                     total={loginHistory?.total || 0}
                     links={loginHistory?.links}
-                    entityName={t("login records")}
+                    entityName={t("sign in records")}
                     onPageChange={(url) => router.get(url)}
                      currentPerPage={pageFilters.per_page?.toString() || "10"}
                     onPerPageChange={(value) => {
-                        router.get(route('login-history.index'), {
+                        router.get(route('sign-in-history.index'), {
                             page: 1,
                             per_page: parseInt(value),
                             search: searchTerm || undefined
@@ -259,14 +259,14 @@ export default function LoginHistory() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={`${currentItem?.user?.name || ''} `}
-                itemType={t('login history')}
+                itemType={t('sign in history')}
             />
 
             {/* View Modal */}
             <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
                 <DialogContent className="max-w-xl max-h-[80vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                     <DialogHeader>
-                        <DialogTitle>{t('Login Details')}</DialogTitle>
+                        <DialogTitle>{t('Sign in Details')}</DialogTitle>
                     </DialogHeader>
                     <div className="space-y-4">
                         <div className="flex justify-between py-2 border-b border-gray-100">
@@ -286,7 +286,7 @@ export default function LoginHistory() {
                             <span className="font-medium">{currentItem?.ip || '-'}</span>
                         </div>
                         <div className="flex justify-between py-2 border-b border-gray-100">
-                            <span className="text-gray-600">{t('Login Date')}</span>
+                            <span className="text-gray-600">{t('Sign in Date')}</span>
                             <span className="font-medium">{window.appSettings?.formatDateTime(currentItem?.date, false) || '-'}</span>
                         </div>
                         {(() => {

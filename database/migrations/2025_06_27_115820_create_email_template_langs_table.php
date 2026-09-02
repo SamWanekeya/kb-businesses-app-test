@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,13 +12,11 @@ return new class extends Migration
     {
         Schema::create('email_template_langs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('parent_id');
-            $table->string('lang');
+            $table->foreignId('parent_id')->constrained('email_templates')->cascadeOnDelete();
+            $table->string('lang', 6);
             $table->string('subject');
-            $table->longText('content');
+            $table->longText('email_template_content');
             $table->timestamps();
-            
-            $table->foreign('parent_id')->references('id')->on('email_templates')->onDelete('cascade');
         });
     }
 

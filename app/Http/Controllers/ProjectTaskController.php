@@ -360,7 +360,7 @@ class ProjectTaskController extends Controller
                     'priority' => 'high',
                     'progress' => 100,
                     'task_status' => ['id' => 1, 'name' => 'Done', 'color' => '#10b981'],
-                    'assigned_user' => ['id' => 1, 'name' => 'John Doe', 'email' => 'john@example.com']
+                    'assigned_user' => ['id' => 1, 'name' => 'John Doe', 'email' => 'john@kakbima.dev']
                 ],
                 [
                     'id' => 2,
@@ -370,8 +370,8 @@ class ProjectTaskController extends Controller
                     'due_date' => now()->addDays(2)->format('Y-m-d'),
                     'priority' => 'high',
                     'progress' => 75,
-                    'task_status' => ['id' => 2, 'name' => 'In Progress', 'color' => '#3b82f6'],
-                    'assigned_user' => ['id' => 2, 'name' => 'Jane Smith', 'email' => 'jane@example.com']
+                    'task_status' => ['id' => 2, 'name' => 'In Progress', 'color' => '#A12582'],
+                    'assigned_user' => ['id' => 2, 'name' => 'Jane Smith', 'email' => 'jane@kakbima.dev']
                 ],
                 [
                     'id' => 3,
@@ -381,8 +381,8 @@ class ProjectTaskController extends Controller
                     'due_date' => now()->addDays(15)->format('Y-m-d'),
                     'priority' => 'urgent',
                     'progress' => 30,
-                    'task_status' => ['id' => 2, 'name' => 'In Progress', 'color' => '#3b82f6'],
-                    'assigned_user' => ['id' => 3, 'name' => 'Mike Johnson', 'email' => 'mike@example.com']
+                    'task_status' => ['id' => 2, 'name' => 'In Progress', 'color' => '#A12582'],
+                    'assigned_user' => ['id' => 3, 'name' => 'Mike Johnson', 'email' => 'mike@kakbima.dev']
                 ],
                 [
                     'id' => 4,
@@ -393,7 +393,7 @@ class ProjectTaskController extends Controller
                     'priority' => 'high',
                     'progress' => 0,
                     'task_status' => ['id' => 3, 'name' => 'To Do', 'color' => '#6b7280'],
-                    'assigned_user' => ['id' => 4, 'name' => 'Sarah Williams', 'email' => 'sarah@example.com']
+                    'assigned_user' => ['id' => 4, 'name' => 'Sarah Williams', 'email' => 'sarah@kakbima.dev']
                 ],
                 [
                     'id' => 5,
@@ -404,7 +404,7 @@ class ProjectTaskController extends Controller
                     'priority' => 'medium',
                     'progress' => 0,
                     'task_status' => ['id' => 3, 'name' => 'To Do', 'color' => '#6b7280'],
-                    'assigned_user' => ['id' => 5, 'name' => 'Tom Brown', 'email' => 'tom@example.com']
+                    'assigned_user' => ['id' => 5, 'name' => 'Tom Brown', 'email' => 'tom@kakbima.dev']
                 ],
                 [
                     'id' => 6,
@@ -415,7 +415,7 @@ class ProjectTaskController extends Controller
                     'priority' => 'high',
                     'progress' => 0,
                     'task_status' => ['id' => 3, 'name' => 'To Do', 'color' => '#6b7280'],
-                    'assigned_user' => ['id' => 1, 'name' => 'John Doe', 'email' => 'john@example.com']
+                    'assigned_user' => ['id' => 1, 'name' => 'John Doe', 'email' => 'john@kakbima.dev']
                 ]
             ];
         } else {

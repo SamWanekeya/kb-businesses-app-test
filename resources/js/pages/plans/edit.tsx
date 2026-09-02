@@ -8,17 +8,17 @@ interface Plan {
   yearly_price: number | null;
   duration: string;
   description: string | null;
-  max_users: number;
-  max_projects: number;
-  max_contacts: number;
-  max_accounts: number;
+  maximum_users: number;
+  maximum_projects: number;
+  maximum_contacts: number;
+  maximum_accounts: number;
   storage_limit: number;
   enable_branding: string;
-  enable_chatgpt: string;
+  enable_kakbima_intelligence: string;
   module: string[] | null;
   is_trial: string | null;
-  trial_day: number;
-  is_plan_enable: string;
+  trial_days: number;
+  is_plan_enabled: string;
   is_default: boolean;
 }
 

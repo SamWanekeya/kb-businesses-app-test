@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Settings as SettingsIcon, Building, DollarSign, Users, RefreshCw, Palette, BookOpen, Award, FileText, Mail, Bell, Link2, CreditCard, Calendar, HardDrive, Shield, Bot, Cookie, Search, Webhook, Wallet, MessageSquare, ShoppingBag, Slack } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import SystemSettings from './components/system-settings';
-import CompanySystemSettings from './components/company-system-settings';
+import OrganizationSystemSettings from './components/organization-system-settings';
 import { usePage } from '@inertiajs/react';
 
 import CurrencySettings from './components/currency-settings';
@@ -93,7 +93,7 @@ export default function Settings() {
         },
         {
             title: t('Payment Settings'),
-            href: '#company-payment-settings',
+            href: '#organization-payment-settings',
             icon: <CreditCard className="h-4 w-4 mr-2" />,
             permission: 'settings'
         },
@@ -101,21 +101,21 @@ export default function Settings() {
             title: t('Quote Templates'),
             href: '#quote-templates',
             icon: <FileText className="h-4 w-4 mr-2" />,
-            role: 'company',
+            role: 'organization',
             permission: 'manage-quotes-settings'
         },
         {
             title: t('Sales Order Templates'),
             href: '#sales-order-templates',
             icon: <ShoppingBag className="h-4 w-4 mr-2" />,
-            role: 'company',
+            role: 'organization',
             permission: 'manage-sales-orders-settings'
         },
         {
             title: t('Invoice Templates'),
             href: '#invoice-templates',
             icon: <FileText className="h-4 w-4 mr-2" />,
-            role: 'company',
+            role: 'organization',
             permission: 'manage-invoices-settings'
         },
 
@@ -164,7 +164,7 @@ export default function Settings() {
 
     ];
 
-    if (!hasRole(auth.roles, 'superadmin')) {
+    if (!hasRole(auth.roles, 'super_admin')) {
         allSidebarNavItems.push({
             title: t('Webhook Settings'),
             href: '#webhook-settings',
@@ -186,8 +186,8 @@ export default function Settings() {
         if (!item.permission || hasPermission(auth.permissions, item.permission)) {
             return true;
         }
-        // For company users, only show specific settings
-        if (hasRole(auth.roles, 'company')) {
+        // For organization users, only show specific settings
+        if (hasRole(auth.roles, 'organization')) {
             // Only allow system settings, email settings, brand settings, currency settings, webhook settings, email notifications, and settings
             return ['manage-system-settings', 'manage-email-settings', 'manage-brand-settings', 'manage-currency-settings', 'manage-webhook-settings', 'manage-email-notifications', 'manage-twilio-notifications', 'manage-quotes-settings', 'manage-sales-orders-settings', 'manage-invoices-settings', 'settings'].includes(item.permission);
         }
@@ -201,7 +201,7 @@ export default function Settings() {
     const currencySettingsRef = useRef<HTMLDivElement>(null);
     const emailSettingsRef = useRef<HTMLDivElement>(null);
     const paymentSettingsRef = useRef<HTMLDivElement>(null);
-    const companyPaymentSettingsRef = useRef<HTMLDivElement>(null);
+    const organizationPaymentSettingsRef = useRef<HTMLDivElement>(null);
     const quoteTemplatesRef = useRef<HTMLDivElement>(null);
     const salesOrderTemplatesRef = useRef<HTMLDivElement>(null);
     const invoiceTemplatesRef = useRef<HTMLDivElement>(null);
@@ -232,7 +232,7 @@ export default function Settings() {
             const currencySettingsPosition = currencySettingsRef.current?.offsetTop || 0;
             const emailSettingsPosition = emailSettingsRef.current?.offsetTop || 0;
             const paymentSettingsPosition = paymentSettingsRef.current?.offsetTop || 0;
-            const companyPaymentSettingsPosition = companyPaymentSettingsRef.current?.offsetTop || 0;
+            const organizationPaymentSettingsPosition = organizationPaymentSettingsRef.current?.offsetTop || 0;
             const quoteTemplatesPosition = quoteTemplatesRef.current?.offsetTop || 0;
             const salesOrderTemplatesPosition = salesOrderTemplatesRef.current?.offsetTop || 0;
             const invoiceTemplatesPosition = invoiceTemplatesRef.current?.offsetTop || 0;
@@ -273,8 +273,8 @@ export default function Settings() {
                 setActiveSection('sales-order-templates');
             } else if (scrollPosition >= quoteTemplatesPosition && quoteTemplatesPosition > 0) {
                 setActiveSection('quote-templates');
-            } else if (scrollPosition >= companyPaymentSettingsPosition && companyPaymentSettingsPosition > 0) {
-                setActiveSection('company-payment-settings');
+            } else if (scrollPosition >= organizationPaymentSettingsPosition && organizationPaymentSettingsPosition > 0) {
+                setActiveSection('organization-payment-settings');
             } else if (scrollPosition >= slackNotificationSettingsPosition && slackNotificationSettingsPosition > 0) {
                 setActiveSection('slack-notification-settings');
             } else if (scrollPosition >= twilioNotificationSettingsPosition && twilioNotificationSettingsPosition > 0) {
@@ -371,7 +371,7 @@ export default function Settings() {
                 {/* Main Content */}
                 <div className="flex-1">
                     {/* System Settings Section */}
-                    {(hasPermission(auth.permissions, 'manage-system-settings') || hasRole(auth.roles, 'superadmin')) && (
+                    {(hasPermission(auth.permissions, 'manage-system-settings') || hasRole(auth.roles, 'super_admin')) && (
                         <section id="system-settings" ref={systemSettingsRef} className="mb-8">
                             <SystemSettings
                                 settings={systemSettings}
@@ -382,10 +382,10 @@ export default function Settings() {
                         </section>
                     )}
 
-                    {/* Company System Settings Section */}
-                    {hasRole(auth.roles, 'company') && (
+                    {/* Organization System Settings Section */}
+                    {hasRole(auth.roles, 'organization') && (
                         <section id="system-settings" ref={systemSettingsRef} className="mb-8">
-                            <CompanySystemSettings
+                            <OrganizationSystemSettings
                                 settings={systemSettings}
                                 timezones={timezones}
                                 dateFormats={dateFormats}
@@ -395,7 +395,7 @@ export default function Settings() {
                     )}
 
                     {/* Brand Settings Section */}
-                    {(hasPermission(auth.permissions, 'manage-brand-settings') || hasRole(auth.roles, 'superadmin')) && (
+                    {(hasPermission(auth.permissions, 'manage-brand-settings') || hasRole(auth.roles, 'super_admin')) && (
                         <section id="brand-settings" ref={brandSettingsRef} className="mb-8">
                             <BrandSettings />
                         </section>
@@ -404,116 +404,116 @@ export default function Settings() {
 
 
                     {/* Currency Settings Section */}
-                    {(hasPermission(auth.permissions, 'manage-currency-settings') || hasRole(auth.roles, 'superadmin') || hasRole(auth.roles, 'company')) && (
+                    {(hasPermission(auth.permissions, 'manage-currency-settings') || hasRole(auth.roles, 'super_admin') || hasRole(auth.roles, 'organization')) && (
                         <section id="currency-settings" ref={currencySettingsRef} className="mb-8">
                             <CurrencySettings />
                         </section>
                     )}
 
                     {/* Email Settings Section */}
-                    {(hasPermission(auth.permissions, 'manage-email-settings') || hasRole(auth.roles, 'superadmin')) && (
+                    {(hasPermission(auth.permissions, 'manage-email-settings') || hasRole(auth.roles, 'super_admin')) && (
                         <section id="email-settings" ref={emailSettingsRef} className="mb-8">
                             <EmailSettings />
                         </section>
                     )}
                     {/* Email Notification Settings Section */}
-                    {(hasPermission(auth.permissions, 'manage-email-notifications') || hasRole(auth.roles, 'company')) && (
+                    {(hasPermission(auth.permissions, 'manage-email-notifications') || hasRole(auth.roles, 'organization')) && (
                         <section id="email-notification-settings" ref={emailNotificationSettingsRef} className="mb-8">
                             <EmailNotificationSettings />
                         </section>
                     )}
                     {/* Twilio Notification Settings Section */}
-                    {(hasPermission(auth.permissions, 'manage-twilio-notifications') || hasRole(auth.roles, 'company')) && (
+                    {(hasPermission(auth.permissions, 'manage-twilio-notifications') || hasRole(auth.roles, 'organization')) && (
                         <section id="twilio-notification-settings" ref={twilioNotificationSettingsRef} className="mb-8">
                             <TwilioNotificationSettings />
                         </section>
                     )}
                     {/* Slack Notification Settings Section */}
-                    {(hasPermission(auth.permissions, 'manage-slack-notifications') || hasRole(auth.roles, 'company')) && (
+                    {(hasPermission(auth.permissions, 'manage-slack-notifications') || hasRole(auth.roles, 'organization')) && (
                         <section id="slack-notification-settings" ref={slackNotificationSettingsRef} className="mb-8">
                             <SlackNotificationSettings />
                         </section>
                     )}
 
                     {/* Payment Settings Section */}
-                    {(hasPermission(auth.permissions, 'manage-payment-settings') || hasRole(auth.roles, 'superadmin')) && (
+                    {(hasPermission(auth.permissions, 'manage-payment-settings') || hasRole(auth.roles, 'super_admin')) && (
                         <section id="payment-settings" ref={paymentSettingsRef} className="mb-8">
                             <PaymentSettings settings={paymentSettings} />
                         </section>
                     )}
 
-                    {/* Company Payment Settings Section */}
-                    {(hasPermission(auth.permissions, 'settings') || hasRole(auth.roles, 'company')) && (
-                        <section id="company-payment-settings" ref={companyPaymentSettingsRef} className="mb-8">
+                    {/* Organization Payment Settings Section */}
+                    {(hasPermission(auth.permissions, 'settings') || hasRole(auth.roles, 'organization')) && (
+                        <section id="organization-payment-settings" ref={organizationPaymentSettingsRef} className="mb-8">
                             <PaymentSettings settings={paymentSettings} />
                         </section>
                     )}
 
                     {/* Quote Templates Section */}
-                    {(hasRole(auth.roles, 'company') && hasPermission(auth.permissions, 'manage-quotes-settings')) && (
+                    {(hasRole(auth.roles, 'organization') && hasPermission(auth.permissions, 'manage-quotes-settings')) && (
                         <section id="quote-templates" ref={quoteTemplatesRef} className="mb-8">
                             <QuoteTemplateSettings />
                         </section>
                     )}
 
                     {/* Sales Order Templates Section */}
-                    {(hasRole(auth.roles, 'company') && hasPermission(auth.permissions, 'manage-sales-orders-settings')) && (
+                    {(hasRole(auth.roles, 'organization') && hasPermission(auth.permissions, 'manage-sales-orders-settings')) && (
                         <section id="sales-order-templates" ref={salesOrderTemplatesRef} className="mb-8">
                             <SalesOrderTemplateSettings />
                         </section>
                     )}
 
                     {/* Invoice Templates Section */}
-                    {(hasRole(auth.roles, 'company') && hasPermission(auth.permissions, 'manage-invoices-settings')) && (
+                    {(hasRole(auth.roles, 'organization') && hasPermission(auth.permissions, 'manage-invoices-settings')) && (
                         <section id="invoice-templates" ref={invoiceTemplatesRef} className="mb-8">
                             <InvoiceTemplateSettings />
                         </section>
                     )}
 
                     {/* ReCaptcha Settings Section */}
-                    {(hasPermission(auth.permissions, 'manage-recaptcha-settings') || hasRole(auth.roles, 'superadmin')) && (
+                    {(hasPermission(auth.permissions, 'manage-recaptcha-settings') || hasRole(auth.roles, 'super_admin')) && (
                         <section id="recaptcha-settings" ref={recaptchaSettingsRef} className="mb-8">
                             <RecaptchaSettings settings={systemSettings} />
                         </section>
                     )}
 
                     {/* Chat GPT Settings Section */}
-                    {(hasPermission(auth.permissions, 'manage-chatgpt-settings') || hasRole(auth.roles, 'superadmin')) && (
+                    {(hasPermission(auth.permissions, 'manage-chatgpt-settings') || hasRole(auth.roles, 'super_admin')) && (
                         <section id="chatgpt-settings" ref={chatgptSettingsRef} className="mb-8">
                             <ChatGptSettings settings={systemSettings} />
                         </section>
                     )}
 
                     {/* Cookie Settings Section */}
-                    {(hasPermission(auth.permissions, 'manage-cookie-settings') || hasRole(auth.roles, 'superadmin')) && (
+                    {(hasPermission(auth.permissions, 'manage-cookie-settings') || hasRole(auth.roles, 'super_admin')) && (
                         <section id="cookie-settings" ref={cookieSettingsRef} className="mb-8">
                             <CookieSettings settings={systemSettings}/>
                         </section>
                     )}
 
                     {/* SEO Settings Section */}
-                    {(hasPermission(auth.permissions, 'manage-seo-settings') || hasRole(auth.roles, 'superadmin')) && (
+                    {(hasPermission(auth.permissions, 'manage-seo-settings') || hasRole(auth.roles, 'super_admin')) && (
                         <section id="seo-settings" ref={seoSettingsRef} className="mb-8">
                             <SeoSettings settings={systemSettings} />
                         </section>
                     )}
 
                     {/* Storage Settings Section */}
-                    {(hasPermission(auth.permissions, 'manage-storage-settings') || hasRole(auth.roles, 'superadmin')) && (
+                    {(hasPermission(auth.permissions, 'manage-storage-settings') || hasRole(auth.roles, 'super_admin')) && (
                         <section id="storage-settings" ref={storageSettingsRef} className="mb-8">
                             <StorageSettings settings={systemSettings} />
                         </section>
                     )}
 
                     {/* Cache Settings Section */}
-                    {(hasPermission(auth.permissions, 'manage-cache-settings') || hasRole(auth.roles, 'superadmin')) && (
+                    {(hasPermission(auth.permissions, 'manage-cache-settings') || hasRole(auth.roles, 'super_admin')) && (
                         <section id="cache-settings" ref={cacheSettingsRef} className="mb-8">
                             <CacheSettings cacheSize={cacheSize} />
                         </section>
                     )}
 
                     {/* Google Calendar Settings Section */}
-                    {(hasPermission(auth.permissions, 'settings') || hasRole(auth.roles, 'company')) && (
+                    {(hasPermission(auth.permissions, 'settings') || hasRole(auth.roles, 'organization')) && (
                         <section id="google-calendar-settings" ref={googleCalendarSettingsRef} className="mb-8">
                             <GoogleCalendarSettings settings={systemSettings} />
                         </section>
@@ -523,7 +523,7 @@ export default function Settings() {
 
 
                     {/* Webhook Settings Section */}
-                    {(hasPermission(auth.permissions, 'manage-webhook-settings') || hasRole(auth.roles, 'company')) && (
+                    {(hasPermission(auth.permissions, 'manage-webhook-settings') || hasRole(auth.roles, 'organization')) && (
                         <section id="webhook-settings" ref={webhookSettingsRef} className="mb-8">
                             <WebhookSettings webhooks={webhooks} />
                         </section>

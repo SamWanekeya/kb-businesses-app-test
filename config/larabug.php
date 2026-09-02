@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Login key
+    | Sign in key
     |--------------------------------------------------------------------------
     |
     | This is your authorization key which you get from your profile.

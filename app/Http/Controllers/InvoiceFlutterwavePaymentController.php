@@ -32,8 +32,8 @@ class InvoiceFlutterwavePaymentController extends Controller
                 return back()->withErrors(['error' => $validation['message']]);
             }
 
-            $companyId = $invoice->created_by;
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['flutterwave_secret_key'])) {
                 \Log::error('Flutterwave payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
@@ -129,11 +129,11 @@ class InvoiceFlutterwavePaymentController extends Controller
         return $request->validate(array_merge($baseRules, $additionalRules));
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 

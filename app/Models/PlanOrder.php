@@ -38,7 +38,7 @@ class PlanOrder extends Model
     protected static function boot()
     {
         parent::boot();
-        
+
         static::creating(function ($planOrder) {
             if (empty($planOrder->order_number)) {
                 $planOrder->order_number = 'PO-' . strtoupper(Str::random(8));
@@ -81,8 +81,8 @@ class PlanOrder extends Model
         $expiresAt = $this->billing_cycle === 'yearly' ? now()->addYear() : now()->addMonth();
         $this->user->update([
             'plan_id' => $this->plan_id,
-            'plan_expire_date' => $expiresAt,
-            'plan_is_active' => 1,
+            'plan_expiry_date' => $expiresAt,
+            'is_plan_active' => 1,
         ]);
 
         // Create referral record if user was referred, passing billing cycle information
@@ -98,15 +98,15 @@ class PlanOrder extends Model
             'notes' => $notes
         ]);
     }
-    
+
     public function activateSubscription()
     {
         // Assign plan to user when payment is completed
         $expiresAt = $this->billing_cycle === 'yearly' ? now()->addYear() : now()->addMonth();
         $this->user->update([
             'plan_id' => $this->plan_id,
-            'plan_expire_date' => $expiresAt,
-            'plan_is_active' => 1,
+            'plan_expiry_date' => $expiresAt,
+            'is_plan_active' => 1,
         ]);
     }
 
@@ -122,7 +122,7 @@ class PlanOrder extends Model
             } else {
                 $this->discount_amount = min($coupon->discount_amount, $planPrice);
             }
-            
+
             $this->final_price = $planPrice - $this->discount_amount;
             $this->coupon_id = $coupon->id;
             $this->coupon_code = $coupon->code;

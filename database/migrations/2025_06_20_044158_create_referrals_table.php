@@ -10,11 +10,11 @@ return new class extends Migration
     {
         Schema::create('referrals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('company_id')->constrained('users')->onDelete('cascade');
-            $table->decimal('commission_percentage', 5, 2);
-            $table->decimal('amount', 10, 2);
-            $table->foreignId('plan_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('organization_id')->constrained('users')->cascadeOnDelete();
+            $table->decimal('commission_percentage', total: 19, places: 7);
+            $table->decimal('amount', total: 19, places: 7);
+            $table->foreignId('plan_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }

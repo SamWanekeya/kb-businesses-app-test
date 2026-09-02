@@ -16,66 +16,66 @@ class ReferralProgramSeeder extends Seeder
     {
         $faker = Faker::create();
         $plan = Plan::first();
-        
-        // Create company@example.com with MORE data
-        $mainCompany = User::updateOrCreate(
-            ['email' => 'company@example.com'],
+
+        // Create organization@kakbima.dev with MORE data
+        $mainOrganization = User::updateOrCreate(
+            ['email' => 'organization@kakbima.dev'],
             [
-                'name' => 'Company',
+                'name' => 'Organization',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
-                'type' => 'company',
+                'type' => 'organization',
                 'plan_id' => $plan->id,
                 'referral_code' => rand(100000, 999999),
             ]
         );
-        $mainCompany->assignRole('company');
-        
-        // Realistic company names for referred users
-        $referredCompanies = [
+        $mainOrganization->assignRole('organization');
+
+        // Realistic organization names for referred users
+        $referredOrganizations = [
             'TechStart Solutions', 'Digital Marketing Pro', 'CloudSync Systems', 'DataFlow Analytics',
             'WebCraft Studios', 'MobileFirst Apps', 'SecureNet Services', 'AutoScale Tech',
             'SmartBiz Tools', 'InnovateLab Inc', 'GrowthHack Agency', 'NextGen Software'
         ];
-        
-        // Create 12 referred users for company@example.com (MORE than others)
-        foreach ($referredCompanies as $i => $companyName) {
-            $email = strtolower(str_replace(' ', '', $companyName)) . '@business.com';
+
+        // Create 12 referred users for organization@kakbima.dev (MORE than others)
+        foreach ($referredOrganizations as $i => $organizationName) {
+            $email = strtolower(str_replace(' ', '', $organizationName)) . '@business.com';
             $user = User::updateOrCreate(
                 ['email' => $email],
                 [
-                    'name' => $companyName,
+                    'name' => $organizationName,
                     'email_verified_at' => $faker->dateTimeBetween('-8 months', '-1 month'),
                     'password' => Hash::make('password'),
-                    'type' => 'company',
+                    'type' => 'organization',
                     'plan_id' => $plan->id,
                     'referral_code' => rand(100000, 999999),
-                    'used_referral_code' => $mainCompany->referral_code,
+                    'referral_code_used' => $mainOrganization->referral_code,
                     'created_at' => $faker->dateTimeBetween('-8 months', '-1 month'),
                 ]
             );
-            $user->assignRole('company');
-            
+            $user->assignRole('organization');
+
             // Create realistic commission pattern - monthly recurring
             $joinDate = $user->created_at;
             $currentDate = now();
             $monthsDiff = $joinDate->diffInMonths($currentDate);
-            
+
             // Create monthly commissions based on plan price
             $planPrice = $plan->price ?? 99;
             $commissionRate = 15; // 15%
             $monthlyCommission = ($planPrice * $commissionRate) / 100;
-            
+
             for ($month = 0; $month <= $monthsDiff; $month++) {
                 $commissionDate = $joinDate->copy()->addMonths($month);
                 if ($commissionDate <= $currentDate) {
                     // Add some variation to commission amounts
                     $variation = $faker->randomFloat(2, -10, 25);
                     $finalAmount = max(5, $monthlyCommission + $variation);
-                    
+
                     Referral::create([
                         'user_id' => $user->id,
-                        'company_id' => $mainCompany->id,
+                        'organization_id' => $mainOrganization->id,
                         'commission_percentage' => $commissionRate,
                         'amount' => $finalAmount,
                         'plan_id' => $plan->id,
@@ -85,11 +85,11 @@ class ReferralProgramSeeder extends Seeder
                 }
             }
         }
-        
+
         // Create realistic payout requests based on actual earnings
-        $totalEarnings = Referral::where('company_id', $mainCompany->id)->sum('amount');
+        $totalEarnings = Referral::where('organization_id', $mainOrganization->id)->sum('amount');
         $availableBalance = $totalEarnings;
-        
+
         // Create historical payout requests
         $payoutHistory = [
             ['months_ago' => 4, 'percentage' => 0.3, 'status' => 'approved', 'note' => 'Q1 commission payout'],
@@ -98,83 +98,83 @@ class ReferralProgramSeeder extends Seeder
             ['months_ago' => 1, 'percentage' => 0.15, 'status' => 'approved', 'note' => 'Monthly withdrawal - May'],
             ['months_ago' => 0.5, 'percentage' => 0.1, 'status' => 'pending', 'note' => 'Current month withdrawal request'],
         ];
-        
+
         $processedAmount = 0;
         foreach ($payoutHistory as $payout) {
             $requestAmount = min($totalEarnings * $payout['percentage'], $availableBalance - $processedAmount);
             if ($requestAmount > 50) {
                 PayoutRequest::create([
-                    'company_id' => $mainCompany->id,
+                    'organization_id' => $mainOrganization->id,
                     'amount' => round($requestAmount, 2),
                     'status' => $payout['status'],
                     'notes' => $payout['note'],
                     'created_at' => now()->subMonths($payout['months_ago']),
                     'updated_at' => now()->subMonths($payout['months_ago'] - 0.1),
                 ]);
-                
+
                 if ($payout['status'] === 'approved') {
                     $processedAmount += $requestAmount;
                 }
             }
         }
-        
-        // Create other realistic companies with LESS data
-        $otherCompanies = [
+
+        // Create other realistic organizations with LESS data
+        $otherOrganizations = [
             ['name' => 'StartupHub Co', 'email' => 'startuphub@business.com'],
-            ['name' => 'LocalBiz Solutions', 'email' => 'localbiz@company.com'],
+            ['name' => 'LocalBiz Solutions', 'email' => 'localbiz@organization.com'],
             ['name' => 'FreelanceForce', 'email' => 'freelanceforce@agency.com'],
             ['name' => 'ConsultPro Services', 'email' => 'consultpro@services.com'],
         ];
-        
-        foreach ($otherCompanies as $companyData) {
-            $company = User::updateOrCreate(
-                ['email' => $companyData['email']],
+
+        foreach ($otherOrganizations as $organizationData) {
+            $organization = User::updateOrCreate(
+                ['email' => $organizationData['email']],
                 [
-                    'name' => $companyData['name'],
+                    'name' => $organizationData['name'],
                     'email_verified_at' => now(),
                     'password' => Hash::make('password'),
-                    'type' => 'company',
+                    'type' => 'organization',
                     'plan_id' => $plan->id,
                     'referral_code' => rand(100000, 999999),
                 ]
             );
-            $company->assignRole('company');
-            
-            // Create fewer referred users for other companies (2-4 users)
+            $organization->assignRole('organization');
+
+            // Create fewer referred users for other organizations (2-4 users)
             $referredCount = $faker->numberBetween(2, 4);
             $smallBusinessNames = ['QuickStart', 'EasyFlow', 'SimpleTools', 'FastTrack', 'SmallBiz'];
-            
+
             for ($i = 1; $i <= $referredCount; $i++) {
                 $businessName = $faker->randomElement($smallBusinessNames) . ' ' . $faker->word();
                 $email = strtolower(str_replace(' ', '', $businessName)) . $i . '@small.biz';
-                
+
                 $user = User::updateOrCreate(
                     ['email' => $email],
                     [
                         'name' => $businessName,
                         'email_verified_at' => $faker->dateTimeBetween('-3 months', '-2 weeks'),
                         'password' => Hash::make('password'),
-                        'type' => 'company',
+                        'type' => 'organization',
                         'plan_id' => $plan->id,
                         'referral_code' => rand(100000, 999999),
-                        'used_referral_code' => $company->referral_code,
+                        'referral_code_used' => $organization->referral_code,
                         'created_at' => $faker->dateTimeBetween('-3 months', '-2 weeks'),
                     ]
                 );
-                $user->assignRole('company');
-                
+                $user->assignRole('organization');
+
                 // Create realistic monthly commissions (fewer months)
                 $joinDate = $user->created_at;
                 $monthsActive = min(3, $joinDate->diffInMonths(now()));
-                $planPrice = $plan->price ?? 49; // Smaller companies use cheaper plans
+                $planPrice = $plan->price ?? 49; // Smaller organizations use cheaper plans
                 $monthlyCommission = ($planPrice * 15) / 100;
-                
+
                 for ($month = 0; $month <= $monthsActive; $month++) {
                     $commissionDate = $joinDate->copy()->addMonths($month);
                     if ($commissionDate <= now()) {
                         Referral::create([
                             'user_id' => $user->id,
-                            'company_id' => $company->id,
+                            'organization_id' => $organization->id,
                             'commission_percentage' => 15,
                             'amount' => $monthlyCommission + $faker->randomFloat(2, -5, 10),
                             'plan_id' => $plan->id,
@@ -183,29 +183,29 @@ class ReferralProgramSeeder extends Seeder
                     }
                 }
             }
-            
-            // Create multiple payout requests for other companies
-            $companyEarnings = Referral::where('company_id', $company->id)->sum('amount');
-            if ($companyEarnings > 50) {
+
+            // Create multiple payout requests for other organizations
+            $organizationEarnings = Referral::where('organization_id', $organization->id)->sum('amount');
+            if ($organizationEarnings > 50) {
                 $payoutRequests = [
                     ['months_ago' => 2, 'percentage' => 0.4, 'status' => 'approved', 'note' => 'Initial payout'],
                     ['months_ago' => 1, 'percentage' => 0.3, 'status' => $faker->randomElement(['approved', 'rejected']), 'note' => 'Monthly withdrawal'],
                     ['months_ago' => 0.2, 'percentage' => 0.25, 'status' => $faker->randomElement(['pending', 'approved']), 'note' => 'Recent withdrawal request'],
                 ];
-                
+
                 $processedAmount = 0;
                 foreach ($payoutRequests as $payout) {
-                    $requestAmount = min($companyEarnings * $payout['percentage'], $companyEarnings - $processedAmount);
+                    $requestAmount = min($organizationEarnings * $payout['percentage'], $organizationEarnings - $processedAmount);
                     if ($requestAmount > 25) {
                         PayoutRequest::create([
-                            'company_id' => $company->id,
+                            'organization_id' => $organization->id,
                             'amount' => round($requestAmount, 2),
                             'status' => $payout['status'],
                             'notes' => $payout['note'],
                             'created_at' => now()->subMonths($payout['months_ago']),
                             'updated_at' => now()->subMonths($payout['months_ago'] - 0.1),
                         ]);
-                        
+
                         if ($payout['status'] === 'approved') {
                             $processedAmount += $requestAmount;
                         }
@@ -213,10 +213,10 @@ class ReferralProgramSeeder extends Seeder
                 }
             }
         }
-        
+
         $this->command->info('Referral program data created successfully!');
-        $this->command->info('Main Company (MORE data): company@example.com / password');
-        $this->command->info('Other Companies (LESS data): companya@example.com, companyb@example.com, companyc@example.com / password');
-        $this->command->info('Main company earnings: $' . Referral::where('company_id', $mainCompany->id)->sum('amount'));
+        $this->command->info('Main Organization (MORE data): organization@kakbima.dev / password');
+        $this->command->info('Other Organizations (LESS data): organizationa@kakbima.dev, organizationb@kakbima.dev, organizationc@kakbima.dev / password');
+        $this->command->info('Main organization earnings: $' . Referral::where('organization_id', $mainOrganization->id)->sum('amount'));
     }
 }

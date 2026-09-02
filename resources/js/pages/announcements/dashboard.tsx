@@ -71,7 +71,7 @@ export default function AnnouncementDashboard() {
     return (
         <PageTemplate
             title={t('Announcement Dashboard')}
-            description={t('Company-wide announcements and notices')}
+            description={t('Organization-wide announcements and notices')}
             actions={[
                 ...(hasPermission(permissions, 'manage-announcements') ? [{
                     label: t('List View'),

@@ -19,7 +19,7 @@ class PayTabsPaymentController extends Controller
         ]);
 
         try {
-            $superAdmin = User::where('type', 'superadmin')->first();
+            $superAdmin = User::where('type', 'super_admin')->first();
             $settings = getPaymentMethodConfig('paytabs', $superAdmin->id);
 
             if (empty($settings['profile_id']) || empty($settings['server_key'])) {
@@ -64,7 +64,7 @@ class PayTabsPaymentController extends Controller
                     'State',
                     'SA',
                     '12345',
-                    request()->ip()
+                    request()->ip_address()
                 )
                 ->sendURLs(
                     route('paytabs.success') . '?cart_id=' . $cartId,
@@ -156,7 +156,7 @@ class PayTabsPaymentController extends Controller
                 // Verify payment status with PayTabs before assigning plan
                 if ($planOrder->status === 'pending') {
                     try {
-                        $superAdmin = User::where('type', 'superadmin')->first();
+                        $superAdmin = User::where('type', 'super_admin')->first();
                         $settings = getPaymentMethodConfig('paytabs', $superAdmin->id);
 
                         config([

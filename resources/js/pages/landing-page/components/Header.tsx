@@ -15,7 +15,7 @@ interface CustomPage {
 interface HeaderProps {
     brandColor?: string;
     settings: {
-        company_name: string;
+        organization_name: string;
         config_sections:
         {
             theme: {
@@ -28,7 +28,7 @@ interface HeaderProps {
     customPages?: CustomPage[];
 }
 
-export default function Header({ settings, sectionData, customPages = [], brandColor = '#3b82f6' }: HeaderProps) {
+export default function Header({ settings, sectionData, customPages = [], brandColor = '#A12582' }: HeaderProps) {
     const { t } = useTranslation();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
@@ -175,7 +175,7 @@ export default function Header({ settings, sectionData, customPages = [], brandC
                                     onMouseEnter={(e) => e.currentTarget.style.color = brandColor}
                                     onMouseLeave={(e) => e.currentTarget.style.color = textColor}
                                 >
-                                    {t("Login")}
+                                    {t("Sign in")}
                                 </Link>
                                 {isRegistrationEnabled() && <Link
                                     href={route('register')}
@@ -247,7 +247,7 @@ export default function Header({ settings, sectionData, customPages = [], brandC
                                     onMouseEnter={(e) => e.currentTarget.style.color = brandColor}
                                     onMouseLeave={(e) => e.currentTarget.style.color = textColor}
                                 >
-                                    {t("Login")}
+                                    {t("Sign in")}
                                 </Link>
                                 <Link
                                     href={route('register')}

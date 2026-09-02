@@ -379,7 +379,7 @@ class SystemSettingsController extends Controller
             $settingsMap = [
                 'storage_type' => 'storage_type',
                 'allowedFileTypes' => 'storage_file_types',
-                'maxUploadSize' => 'storage_max_upload_size',
+                'maxUploadSize' => 'storage_maximum_upload_size',
                 'awsAccessKeyId' => 'aws_access_key_id',
                 'awsSecretAccessKey' => 'aws_secret_access_key',
                 'awsDefaultRegion' => 'aws_default_region',
@@ -425,7 +425,7 @@ class SystemSettingsController extends Controller
 
         return response()->json([
             'allowed_file_types' => $settings['allowed_file_types'] ?? 'jpg,png,webp,gif',
-            'max_file_size_mb' => $settings['max_file_size_mb'] ?? 2
+            'maximum_file_size_mb' => $settings['maximum_file_size_mb'] ?? 2
         ]);
     }
 
@@ -791,7 +791,7 @@ class SystemSettingsController extends Controller
      */
     public function updateInvoiceTemplate(\Illuminate\Http\Request $request)
     {
-        if (!auth()->user()->hasRole('company') || !auth()->user()->can('manage-invoices-settings')) {
+        if (!auth()->user()->hasRole('organization') || !auth()->user()->can('manage-invoices-settings')) {
             return response()->json(['error' => __('Permission denied')], 403);
         }
 
@@ -829,7 +829,7 @@ class SystemSettingsController extends Controller
      */
     public function updateQuoteTemplate(Request $request)
     {
-        if (!auth()->user()->hasRole('company') || !auth()->user()->can('manage-quotes-settings')) {
+        if (!auth()->user()->hasRole('organization') || !auth()->user()->can('manage-quotes-settings')) {
             return response()->json(['error' => __('Permission denied.')], 403);
         }
 
@@ -867,7 +867,7 @@ class SystemSettingsController extends Controller
      */
     public function updateSalesOrderTemplate(Request $request)
     {
-        if (!auth()->user()->hasRole('company') || !auth()->user()->can('manage-sales-orders-settings')) {
+        if (!auth()->user()->hasRole('organization') || !auth()->user()->can('manage-sales-orders-settings')) {
             return response()->json(['error' => __('Permission denied.')], 403);
         }
 

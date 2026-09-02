@@ -38,7 +38,7 @@ class SendUserCreatedEmail
                 '{user_type}' => ucfirst($user->type),
                 '{app_name}' => config('app.name'),
                 '{created_date}' => $user->created_at->format('Y-m-d H:i:s'),
-                '{company_name}' => getCompanyName(),
+                '{organization_name}' => getOrganizationName(),
             ];
 
             try {

@@ -16,22 +16,22 @@ class PlanRequestSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        
+
         // Get required data with proper validation
-        $companyUsers = User::where('type', 'company')->get();
+        $organizationUsers = User::where('type', 'organization')->get();
         $staffUsers = User::where('type', 'staff')->get();
         $plans = Plan::all();
-        $superAdmin = User::where('type', 'superadmin')->first();
-        
-        $allUsers = $companyUsers->merge($staffUsers);
-        
+        $superAdmin = User::where('type', 'super_admin')->first();
+
+        $allUsers = $organizationUsers->merge($staffUsers);
+
         if ($allUsers->isEmpty() || $plans->isEmpty()) {
             $this->command->warn('No users or plans found. Please run UserSeeder and PlanSeeder first.');
             return;
         }
-        
+
         $statuses = ['pending', 'approved', 'rejected'];
-        
+
         // Sample request messages
         $requestMessages = [
             'I would like to upgrade my plan to access more features and increase user limits.',
@@ -45,21 +45,21 @@ class PlanRequestSeeder extends Seeder
             'We need access to advanced integrations available in higher tier plans.',
             'Team expansion requires plan upgrade for additional collaboration features.'
         ];
-        
+
         // Create plan requests for users
         foreach ($allUsers->take(15) as $user) {
             // Some users may have multiple requests
             $requestCount = $faker->randomElement([1, 1, 1, 2]); // Most users have 1 request
-            
+
             for ($i = 0; $i < $requestCount; $i++) {
                 $status = $faker->randomElement($statuses);
                 $requestedPlan = $plans->random();
-                
+
                 // Ensure user isn't requesting their current plan
                 if ($user->plan_id === $requestedPlan->id) {
                     $requestedPlan = $plans->where('id', '!=', $user->plan_id)->random();
                 }
-                
+
                 $planRequest = PlanRequest::create([
                     'user_id' => $user->id,
                     'plan_id' => $requestedPlan->id,
@@ -67,7 +67,7 @@ class PlanRequestSeeder extends Seeder
                     'message' => $faker->randomElement($requestMessages),
                     'created_at' => $faker->dateTimeBetween('-3 months', 'now'),
                 ]);
-                
+
                 // Set approval/rejection details for processed requests
                 if ($status === 'approved') {
                     $planRequest->update([
@@ -82,7 +82,7 @@ class PlanRequestSeeder extends Seeder
                 }
             }
         }
-        
+
         $this->command->info('Plan requests created successfully!');
     }
 }

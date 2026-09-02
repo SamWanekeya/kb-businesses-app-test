@@ -22,11 +22,11 @@ export default function EmailSettings() {
     driver: settings.email_driver || 'smtp',
     host: settings.email_host || 'smtp.example.com',
     port: settings.email_port || '587',
-    username: settings.email_username || 'user@example.com',
+    username: settings.email_username || 'user@kakbima.dev',
     password: settings.email_password ? '••••••••••••' : '',
     encryption: settings.email_encryption || 'tls',
-    fromAddress: settings.email_from_address || 'noreply@example.com',
-    fromName: settings.email_from_name || 'WorkDo System'
+    fromAddress: settings.email_from_address || 'noreply@kakbima.dev',
+    fromName: settings.email_from_name || 'Kakbima'
   });
 
   // Test email state
@@ -231,7 +231,7 @@ export default function EmailSettings() {
                       id="username"
                       value={emailSettings.username}
                       onChange={(e) => handleEmailSettingsChange('username', e.target.value)}
-                      placeholder="user@example.com"
+                      placeholder="user@kakbima.dev"
                     />
                   </div>
 
@@ -278,7 +278,7 @@ export default function EmailSettings() {
                       id="fromAddress"
                       value={emailSettings.fromAddress}
                       onChange={(e) => handleEmailSettingsChange('fromAddress', e.target.value)}
-                      placeholder="noreply@example.com"
+                      placeholder="noreply@kakbima.dev"
                     />
                   </div>
 
@@ -317,7 +317,7 @@ export default function EmailSettings() {
                     type="email"
                     value={testEmail}
                     onChange={(e) => setTestEmail(e.target.value)}
-                    placeholder="test@example.com"
+                    placeholder="test@kakbima.dev"
                     required
                   />
                   <p className="text-xs text-muted-foreground">

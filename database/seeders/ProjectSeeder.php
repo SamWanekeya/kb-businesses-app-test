@@ -13,10 +13,10 @@ class ProjectSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $companyUsers = User::where('type', 'company')->get();
-        
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        $organizationUsers = User::where('type', 'organization')->get();
+
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
@@ -27,10 +27,10 @@ class ProjectSeeder extends Seeder
         ];
         $statuses = ['active', 'inactive', 'completed', 'on_hold'];
         $priorities = ['low', 'medium', 'high', 'urgent'];
-        
-        foreach ($companyUsers as $company) {
-            $accounts = Account::where('created_by', $company->id)->get();
-            $staffUsers = User::where('created_by', $company->id)->get();
+
+        foreach ($organizationUsers as $organization) {
+            $accounts = Account::where('created_by', $organization->id)->get();
+            $staffUsers = User::where('created_by', $organization->id)->get();
 
             if ($accounts->isEmpty()) {
                 continue;
@@ -40,12 +40,12 @@ class ProjectSeeder extends Seeder
                 $startDate = $faker->dateTimeBetween('-4 months', 'now');
                 $endDate = $faker->dateTimeBetween($startDate, '+6 months');
                 $status = $faker->randomElement($statuses);
-                
+
                 if ($status === 'completed') {
                     $endDate = $faker->dateTimeBetween('-2 months', 'now');
                     $startDate = $faker->dateTimeBetween('-6 months', $endDate);
                 }
-                
+
                 Project::create([
                     'name' => 'Project ' . $i . ' - ' . $faker->randomElement($projectTypes),
                     'code' => 'PRJ-' . str_pad($i, 3, '0', STR_PAD_LEFT),
@@ -56,13 +56,13 @@ class ProjectSeeder extends Seeder
                     'priority' => $faker->randomElement($priorities),
                     'status' => $status,
                     'account_id' => $accounts->random()->id,
-                    'created_by' => $company->id,
+                    'created_by' => $organization->id,
                     'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
                     'created_at' => $startDate,
                 ]);
             }
         }
-        
-        $this->command->info('Projects created for all company users!');
+
+        $this->command->info('Projects created for all organization users!');
     }
 }

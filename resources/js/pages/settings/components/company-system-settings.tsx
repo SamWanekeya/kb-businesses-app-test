@@ -11,19 +11,19 @@ import languageData from '@/../../resources/lang/language.json';
 import ReactCountryFlag from 'react-country-flag';
 import { Card, CardContent } from '@/components/ui/card';
 
-interface CompanySystemSettingsProps {
+interface OrganizationSystemSettingsProps {
     settings?: Record<string, string>;
     timezones?: Record<string, string>;
     dateFormats?: Record<string, string>;
     timeFormats?: Record<string, string>;
 }
 
-export default function CompanySystemSettings({
+export default function OrganizationSystemSettings({
     settings = {},
     timezones = {},
     dateFormats = {},
     timeFormats = {}
-}: CompanySystemSettingsProps) {
+}: OrganizationSystemSettingsProps) {
     const { t } = useTranslation();
     const pageProps = usePage().props as any;
     const [processing, setProcessing] = useState(false);
@@ -87,7 +87,7 @@ export default function CompanySystemSettings({
         };
 
         // Submit to backend using Inertia
-        router.post(route('settings.company.system.update'), cleanSettings, {
+        router.post(route('settings.organization.system.update'), cleanSettings, {
             preserveScroll: true,
             onSuccess: (page) => {
                 setProcessing(false);
@@ -111,9 +111,9 @@ export default function CompanySystemSettings({
     return (
         <SettingsSection
             title={t("System Settings")}
-            description={t("Configure system-wide settings for your company")}
+            description={t("Configure system-wide settings for your organization")}
             action={
-                <Button type="submit" disabled={processing} form="company-system-settings-form" size="sm">
+                <Button type="submit" disabled={processing} form="organization-system-settings-form" size="sm">
                     <Save className="h-4 w-4 mr-2" />
                     {processing ? t("Saving...") : t("Save Changes")}
                 </Button>
@@ -121,7 +121,7 @@ export default function CompanySystemSettings({
         >
             <Card>
                 <CardContent className='mt-6'>
-                    <form id="company-system-settings-form" onSubmit={submitSystemSettings} className="space-y-6">
+                    <form id="organization-system-settings-form" onSubmit={submitSystemSettings} className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="grid gap-2">
                                 <Label htmlFor="defaultLanguage">{t("Default Language")}</Label>

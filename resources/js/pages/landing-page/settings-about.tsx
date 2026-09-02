@@ -110,7 +110,7 @@ export default function AboutSection({ data, setData, errors, handleInputChange,
               name="about_description"
               value={getSectionData('about').description || ''}
               onChange={(e) => updateSectionData('about', { description: e.target.value })}
-              placeholder={t("Tell visitors about your company")}
+              placeholder={t("Tell visitors about your organization")}
               rows={4}
             />
             {errors.about_description && (
@@ -311,7 +311,7 @@ export default function AboutSection({ data, setData, errors, handleInputChange,
           </div>
           <div>
             <h3 className="text-lg font-semibold text-gray-900">{t("About Values")}</h3>
-            <p className="text-sm text-gray-500">{t("Company values and mission statements")}</p>
+            <p className="text-sm text-gray-500">{t("Organization values and mission statements")}</p>
           </div>
         </div>
 

@@ -27,12 +27,12 @@ return new class extends Migration
             $table->unsignedBigInteger('assigned_to')->nullable();
             $table->timestamps();
 
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('set null');
-            $table->foreign('folder_id')->references('id')->on('document_folders')->onDelete('set null');
-            $table->foreign('type_id')->references('id')->on('document_types')->onDelete('set null');
-            $table->foreign('opportunity_id')->references('id')->on('opportunities')->onDelete('set null');
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
-            $table->foreign('assigned_to')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('account_id')->references('id')->on('accounts')->nullOnDelete();
+            $table->foreign('folder_id')->references('id')->on('document_folders')->cascadeOnDelete();
+            $table->foreign('type_id')->references('id')->on('document_types')->nullOnDelete();
+            $table->foreign('opportunity_id')->references('id')->on('opportunities')->nullOnDelete();
+            $table->foreign('created_by')->references('id')->on('users')->nullOnDelete();
+            $table->foreign('assigned_to')->references('id')->on('users')->nullOnDelete();
         });
     }
 

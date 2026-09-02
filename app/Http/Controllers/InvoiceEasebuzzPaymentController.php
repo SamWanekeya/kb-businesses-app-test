@@ -29,9 +29,9 @@ class InvoiceEasebuzzPaymentController extends Controller
                 return response()->json(['error' => $validation['message']], 400);
             }
 
-            $companyId = $invoice->created_by;
-            $company = User::findOrFail($companyId);
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $organization = User::findOrFail($organizationId);
+            $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['easebuzz_merchant_key']) || !isset($settings['payment_settings']['easebuzz_salt_key'])) {
                 \Log::error('Easebuzz payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
@@ -55,7 +55,7 @@ class InvoiceEasebuzzPaymentController extends Controller
                 'amount' => number_format($validated['amount'], 2, '.', ''),
                 'productinfo' => 'Invoice Payment - ' . $invoice->invoice_number,
                 'firstname' => $invoice->name ?? 'Customer',
-                'email' => $invoice->email ?? $company->email,
+                'email' => $invoice->email ?? $organization->email,
                 'phone' => $invoice->phone ?? '9999999999',
                 'surl' => route('invoice.easebuzz.success', [
                     'invoice_id' => $invoice->id,
@@ -114,8 +114,8 @@ class InvoiceEasebuzzPaymentController extends Controller
                 return redirect()->route('invoices.public', encrypt($invoiceId))->with('error', __('Invoice not found'));
             }
 
-            $companyId = $invoice->created_by;
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $settings = $this->getInvoicePaymentSettings($organizationId);
             $environment = $settings['payment_settings']['easebuzz_environment'] === 'prod' ? 'prod' : 'test';
 
             $easebuzz = new \Easebuzz(
@@ -235,11 +235,11 @@ class InvoiceEasebuzzPaymentController extends Controller
         return $request->validate(array_merge($baseRules, $additionalRules));
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 }

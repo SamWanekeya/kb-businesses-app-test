@@ -38,11 +38,11 @@ class StaffRoleSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        // Get all company users
-        $companyUsers = User::where('type', 'company')->get();
+        // Get all organization users
+        $organizationUsers = User::where('type', 'organization')->get();
 
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run CompanySeeder first.');
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run OrganizationSeeder first.');
             return;
         }
 
@@ -909,16 +909,16 @@ class StaffRoleSeeder extends Seeder
             ];
         }
 
-        // Create roles and staff users for each company
-        foreach ($companyUsers as $company) {
-            // Create roles for each company
+        // Create roles and staff users for each organization
+        foreach ($organizationUsers as $organization) {
+            // Create roles for each organization
             foreach ($roleTemplates as $roleTemplate) {
                 $role = Role::firstOrCreate([
                     'name' => $roleTemplate['name'],
                     'label' => $roleTemplate['label'],
                     'description' => $roleTemplate['description'],
                     'guard_name' => 'web',
-                    'created_by' => $company->id
+                    'created_by' => $organization->id
                 ]);
 
                 // Get permissions for this role
@@ -930,7 +930,7 @@ class StaffRoleSeeder extends Seeder
                 // Assign permissions to role
                 $role->syncPermissions($permissionObjects);
 
-                // Create 2-3 staff users for each role (total 10-15 per company)
+                // Create 2-3 staff users for each role (total 10-15 per organization)
                 if (IsDemo()) {
                     $staffCount = rand(2, 3);
                 } else {
@@ -941,24 +941,24 @@ class StaffRoleSeeder extends Seeder
                     $firstName = $faker->firstName;
                     $lastName = $faker->lastName;
                     $name = $firstName . ' ' . $lastName;
-                    $email = strtolower($firstName . '.' . $lastName . '.' . $company->id . '@example.com');
+                    $email = strtolower($firstName . '.' . $lastName . '.' . $organization->id . '@kakbima.dev');
 
                     // Skip if user already exists
                     if (User::where('email', $email)->exists()) {
                         continue;
                     }
 
-                    // Create specific user for manager role (first iteration only) - only for company@example.com
-                    if ($roleTemplate['name'] === 'manager' && $i === 0 && $company->email === 'company@example.com') {
+                    // Create specific user for manager role (first iteration only) - only for organization@kakbima.dev
+                    if ($roleTemplate['name'] === 'manager' && $i === 0 && $organization->email === 'organization@kakbima.dev') {
                         $staff = User::firstOrCreate(
-                            ['email' => 'sarahjohnson@example.com'],
+                            ['email' => 'sarahjohnson@kakbima.dev'],
                             [
                                 'name' => 'Sarah Johnson',
                                 'email_verified_at' => now(),
                                 'password' => Hash::make('password'),
                                 'type' => 'staff',
                                 'lang' => 'en',
-                                'created_by' => $company->id,
+                                'created_by' => $organization->id,
                                 'created_at' => now(),
                             ]
                         );
@@ -970,7 +970,7 @@ class StaffRoleSeeder extends Seeder
                             'password' => Hash::make('password'),
                             'type' => 'staff',
                             'lang' => $faker->randomElement(['en', 'es', 'fr', 'de']),
-                            'created_by' => $company->id,
+                            'created_by' => $organization->id,
                             'created_at' => $faker->dateTimeBetween('-6 months', 'now'),
                         ]);
                     }

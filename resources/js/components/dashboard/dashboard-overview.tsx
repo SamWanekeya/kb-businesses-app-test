@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from '@inertiajs/react';
 
 interface DashboardOverviewProps {
-  userType: 'superadmin' | 'company';
+  userType: 'super_admin' | 'organization';
   stats: any;
 }
 
@@ -30,12 +30,12 @@ export function DashboardOverview({ userType, stats }: DashboardOverviewProps) {
 
   const superAdminFeatures = [
     {
-      title: t('Company Management'),
-      description: t('Manage all registered companies and their subscriptions'),
+      title: t('Organization Management'),
+      description: t('Manage all registered organizations and their subscriptions'),
       icon: Building2,
       color: 'blue',
-      href: route('companies.index'),
-      count: stats?.totalCompanies || 0
+      href: route('organizations.index'),
+      count: stats?.totalOrganizations || 0
     },
     {
       title: t('Plan Management'),
@@ -63,7 +63,7 @@ export function DashboardOverview({ userType, stats }: DashboardOverviewProps) {
     }
   ];
 
-  const companyFeatures = [
+  const organizationFeatures = [
     {
       title: t('Lead Management'),
       description: t('Track and manage your sales leads'),
@@ -98,7 +98,7 @@ export function DashboardOverview({ userType, stats }: DashboardOverviewProps) {
     }
   ];
 
-    const features = userType === 'superadmin' ? superAdminFeatures : companyFeatures;
+    const features = userType === 'super_admin' ? superAdminFeatures : organizationFeatures;
 
     const getColorClasses = (color: string) => {
         const colors = {
@@ -120,7 +120,7 @@ export function DashboardOverview({ userType, stats }: DashboardOverviewProps) {
           </CardTitle>
         </div>
         <p className="text-base text-muted-foreground">
-          {userType === 'superadmin'
+          {userType === 'super_admin'
             ? t('Comprehensive system management and oversight tools')
             : t('Everything you need to manage your digital business presence')
           }
@@ -164,7 +164,7 @@ export function DashboardOverview({ userType, stats }: DashboardOverviewProps) {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary">
             <TrendingUp className="h-3.5 w-3.5" />
             <span className="text-sm font-medium">
-              {userType === 'superadmin'
+              {userType === 'super_admin'
                 ? t('System growing at {{growth}}% monthly', { growth: stats?.monthlyGrowth || 0 })
                 : t('Your business growing at {{growth}}% monthly', { growth: stats?.monthlyGrowth || 0 })
               }

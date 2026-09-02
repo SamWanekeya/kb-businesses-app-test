@@ -31,9 +31,9 @@ class InvoiceSkrillPaymentController extends Controller
                 return back()->withErrors(['error' => $validation['message']]);
             }
 
-            $companyId = $invoice->created_by;
-            $company = User::findOrFail($companyId);
-            $settings = $this->getInvoicePaymentSettings($companyId);
+            $organizationId = $invoice->created_by;
+            $organization = User::findOrFail($organizationId);
+            $settings = $this->getInvoicePaymentSettings($organizationId);
             $currency = $settings['general_settings']['defaultCurrency'] ?? 'USD';
 
             if (!isset($settings['payment_settings']['skrill_merchant_id'])) {
@@ -57,7 +57,7 @@ class InvoiceSkrillPaymentController extends Controller
                 'detail1_description' => 'Invoice Payment',
                 'detail1_text' => 'Invoice #' . $invoice->invoice_number . ' - ' . ucfirst($validated['payment_type']) . ' payment',
                 'pay_from_email' => $validated['email'],
-                'recipient_description' => $company->name ?? 'Invoice Payment',
+                'recipient_description' => $organization->name ?? 'Invoice Payment',
                 'logo_url' => config('app.url') . 'logo/logo-light.png',
             ];
 
@@ -175,11 +175,11 @@ class InvoiceSkrillPaymentController extends Controller
         return $request->validate(array_merge($baseRules, $additionalRules));
     }
 
-    private function getInvoicePaymentSettings($companyId)
+    private function getInvoicePaymentSettings($organizationId)
     {
         return [
-            'payment_settings' => PaymentSetting::getUserSettings($companyId),
-            'general_settings' => \App\Models\Setting::getUserSettings($companyId),
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
         ];
     }
 

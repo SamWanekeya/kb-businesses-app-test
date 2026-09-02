@@ -173,12 +173,12 @@ export default function Accounts() {
     if (hasPermission(permissions, 'create-accounts')) {
         const isDisabled = planLimits && !planLimits.can_create;
         pageActions.push({
-            label: isDisabled ? t('Account Limit Reached ({{current}}/{{max}})', { current: planLimits?.current_accounts || 0, max: planLimits?.max_accounts || 0 }) : t('Add Account'),
+            label: isDisabled ? t('Account Limit Reached ({{current}}/{{max}})', { current: planLimits?.current_accounts || 0, max: planLimits?.maximum_accounts || 0 }) : t('Add Account'),
             icon: <Plus className="h-4 w-4 mr-2" />,
             variant: isDisabled ? 'outline' : 'default',
             disabled: isDisabled,
             onClick: isDisabled
-                ? () => toast.error(t('Account limit reached. Your plan allows maximum {{max}} accounts.', { max: planLimits.max_accounts }))
+                ? () => toast.error(t('Account limit reached. Your plan allows maximum {{max}} accounts.', { max: planLimits.maximum_accounts }))
                 : () => router.visit(route('accounts.create')),
         });
     }

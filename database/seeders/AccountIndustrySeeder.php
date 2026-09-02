@@ -10,10 +10,10 @@ class AccountIndustrySeeder extends Seeder
 {
     public function run(): void
     {
-        $companyUsers = User::where('type', 'company')->get();
+        $organizationUsers = User::where('type', 'organization')->get();
 
-        if ($companyUsers->isEmpty()) {
-            $this->command->warn('No company users found. Please run UserSeeder first.');
+        if ($organizationUsers->isEmpty()) {
+            $this->command->warn('No organization users found. Please run UserSeeder first.');
             return;
         }
 
@@ -28,21 +28,21 @@ class AccountIndustrySeeder extends Seeder
             ['name' => 'Real Estate & Construction', 'description' => 'Property and construction services', 'color' => '#84CC16']
         ];
 
-        foreach ($companyUsers as $company) {
+        foreach ($organizationUsers as $organization) {
             foreach ($industryTemplates as $template) {
                 AccountIndustry::firstOrCreate(
-                    ['name' => $template['name'], 'created_by' => $company->id],
+                    ['name' => $template['name'], 'created_by' => $organization->id],
                     [
                         'name' => $template['name'],
                         'description' => $template['description'],
                         'color' => $template['color'],
                         'status' => 'active',
-                        'created_by' => $company->id,
+                        'created_by' => $organization->id,
                     ]
                 );
             }
         }
 
-        $this->command->info('Account industries created for all company users!');
+        $this->command->info('Account industries created for all organization users!');
     }
 }
