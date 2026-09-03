@@ -1,13 +1,13 @@
-import { Head, router, usePage } from '@inertiajs/react';
-import { PageTemplate } from '@/components/page-template';
-import { Card, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Trash2, ArrowLeft, Star, CalendarDays } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-import { hasPermission } from '@/utils/authorization';
-import { useState } from 'react';
 import { CrudDeleteModal } from '@/components/CrudDeleteModal';
 import { toast } from '@/components/custom-toast';
+import { PageTemplate } from '@/components/page-template';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import { hasPermission } from '@/utils/authorization';
+import { Head, router, usePage } from '@inertiajs/react';
+import { ArrowLeft, CalendarDays, Star, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function AnnouncementShow() {
     const { t } = useTranslation();
@@ -33,39 +33,39 @@ export default function AnnouncementShow() {
                 } else {
                     toast.error(t('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
-            }
+            },
         });
     };
 
     const breadcrumbs = [
         { title: t('Dashboard'), href: route('dashboard') },
         { title: t('Announcements'), href: route('announcements.index') },
-        { title: announcement.title }
+        { title: announcement.title },
     ];
 
-    const pageActions = [
-        {
-            label: t('Back'),
-            icon: <ArrowLeft className="h-4 w-4" />,
-            variant: 'outline',
-            onClick: () => window.history.back()
-        }
-    ];
+    const pageActions = [];
 
     if (hasPermission(permissions, 'delete-announcements')) {
         pageActions.push({
             label: t('Delete'),
-            icon: <Trash2 className="h-4 w-4 mr-2" />,
+            icon: <Trash2 className="mr-2 h-4 w-4" />,
             variant: 'destructive',
-            onClick: () => setIsDeleteModalOpen(true)
+            onClick: () => setIsDeleteModalOpen(true),
         });
     }
+
+    pageActions.push({
+        label: t('Back'),
+        icon: <ArrowLeft className="h-4 w-4" />,
+        variant: 'outline',
+        onClick: () => window.history.back(),
+    });
 
     const getStatusBadge = (status: string) => {
         const statusColors = {
             expired: 'bg-gray-100 text-gray-800 ring-1 ring-inset ring-gray-600/20',
             active: 'bg-green-100 text-green-800 ring-1 ring-inset ring-green-600/20',
-            inactive: 'bg-red-100 text-red-800 ring-1 ring-inset ring-red-600/20'
+            inactive: 'bg-red-100 text-red-800 ring-1 ring-inset ring-red-600/20',
         };
 
         return (
@@ -92,22 +92,32 @@ export default function AnnouncementShow() {
                             <CardTitle className="text-xl">{announcement.title}</CardTitle>
                             <div className="flex gap-2">
                                 {announcement.category && (
-                                    <Badge variant="outline" className="bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-600/20">
+                                    <Badge variant="outline" className="bg-indigo-50 text-indigo-700 ring-1 ring-indigo-600/20 ring-inset">
                                         {announcement.category.name}
                                     </Badge>
                                 )}
                                 {getStatusBadge(announcement.status)}
                                 {announcement.is_featured && (
-                                    <Badge className="bg-yellow-100 text-yellow-800 ring-1 ring-inset ring-purple-600/20 flex items-center gap-1">
+                                    <Badge className="flex items-center gap-1 bg-yellow-100 text-yellow-800 ring-1 ring-purple-600/20 ring-inset">
                                         <Star className="h-3 w-3" />
                                         {t('Featured')}
                                     </Badge>
                                 )}
                             </div>
                         </div>
-                        <div className="flex items-center gap-6 text-sm text-muted-foreground mt-4">
-                            {announcement.start_date && <div className='flex items-center gap-2'><CalendarDays className="h-4 w-4" /> <span className='font-bold'>{t('Start Date')}:</span> {window.appSettings?.formatDateTime(announcement.start_date, false) || '-'}</div>}
-                            {announcement.end_date && <div className='flex items-center gap-2'><CalendarDays className="h-4 w-4" /> <span className='font-bold'>{t('End Date')}:</span> {window.appSettings?.formatDateTime(announcement.end_date, false) || '-'}</div>}
+                        <div className="text-muted-foreground mt-4 flex items-center gap-6 text-sm">
+                            {announcement.start_date && (
+                                <div className="flex items-center gap-2">
+                                    <CalendarDays className="h-4 w-4" /> <span className="font-bold">{t('Start Date')}:</span>{' '}
+                                    {window.appSettings?.formatDateTime(announcement.start_date, false) || '-'}
+                                </div>
+                            )}
+                            {announcement.end_date && (
+                                <div className="flex items-center gap-2">
+                                    <CalendarDays className="h-4 w-4" /> <span className="font-bold">{t('End Date')}:</span>{' '}
+                                    {window.appSettings?.formatDateTime(announcement.end_date, false) || '-'}
+                                </div>
+                            )}
                         </div>
                     </CardHeader>
                 </Card>
@@ -125,6 +135,6 @@ export default function AnnouncementShow() {
                 itemName={announcement.title || ''}
                 entityName={t('announcement')}
             />
-        </PageTemplate >
+        </PageTemplate>
     );
 }

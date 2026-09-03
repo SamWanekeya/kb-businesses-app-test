@@ -1,15 +1,15 @@
-import { useState } from 'react';
+import { toast } from '@/components/custom-toast';
 import { PageTemplate } from '@/components/page-template';
-import { usePage, useForm, router } from '@inertiajs/react';
-import { ArrowLeft, Plus, Trash2, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { router, useForm, usePage } from '@inertiajs/react';
+import { ArrowLeft, Copy, Plus, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { toast } from '@/components/custom-toast';
 
 type ProductRow = {
     id: string;
@@ -91,13 +91,13 @@ export default function QuoteEdit() {
                     shipping_contact_id: details.shipping_contact_id ? String(details.shipping_contact_id) : prev.shipping_contact_id,
                     products: details.products?.length
                         ? details.products.map((p: any) => ({
-                            id: crypto.randomUUID(),
-                            product_id: String(p.product_id),
-                            quantity: String(p.quantity),
-                            unit_price: String(p.unit_price),
-                            discount_type: p.discount_type || 'none',
-                            discount_value: String(p.discount_value || '0'),
-                        }))
+                              id: crypto.randomUUID(),
+                              product_id: String(p.product_id),
+                              quantity: String(p.quantity),
+                              unit_price: String(p.unit_price),
+                              discount_type: p.discount_type || 'none',
+                              discount_value: String(p.discount_value || '0'),
+                          }))
                         : prev.products,
                 }));
                 clearErrors('account_id' as any);
@@ -108,7 +108,7 @@ export default function QuoteEdit() {
                     details.products.forEach((_: any, i: number) => clearErrors(`products.${i}.product_id` as any));
                 }
             }
-        } catch { }
+        } catch {}
     };
 
     const copyBillingToShipping = () => {
@@ -125,11 +125,17 @@ export default function QuoteEdit() {
     };
 
     const addProductRow = () =>
-        setData('products', [...data.products, { id: crypto.randomUUID(), product_id: '', quantity: '1', unit_price: '0', discount_type: 'none', discount_value: '0' }]);
+        setData('products', [
+            ...data.products,
+            { id: crypto.randomUUID(), product_id: '', quantity: '1', unit_price: '0', discount_type: 'none', discount_value: '0' },
+        ]);
 
     const removeProductRow = (rowId: string) => {
         if (data.products.length <= 1) return;
-        setData('products', data.products.filter((r) => r.id !== rowId));
+        setData(
+            'products',
+            data.products.filter((r) => r.id !== rowId),
+        );
     };
 
     const updateProductRow = (rowId: string, field: string, value: string) => {
@@ -188,8 +194,7 @@ export default function QuoteEdit() {
         if (!data.billing_postal_code) errs.billing_postal_code = t('Billing Postal Code is required');
         if (!data.billing_country) errs.billing_country = t('Billing Country is required');
 
-        if (!data.products.length || data.products.every((r: any) => !r.product_id))
-            errs.products = t('At least one product is required');
+        if (!data.products.length || data.products.every((r: any) => !r.product_id)) errs.products = t('At least one product is required');
 
         data.products.forEach((row, i) => {
             if (!row.product_id) errs[`products.${i}.product_id`] = t('Product is required');
@@ -215,25 +220,27 @@ export default function QuoteEdit() {
             description={t('Update quote details and related information')}
             breadcrumbs={breadcrumbs}
             fullWidth
-            actions={[{
-                label: t('Back'),
-                icon: <ArrowLeft className="h-4 w-4 mr-2" />,
-                variant: 'outline',
-                onClick: () => router.visit(route('quotes.index')),
-            }]}
+            actions={[
+                {
+                    label: t('Back'),
+                    icon: <ArrowLeft className="mr-2 h-4 w-4" />,
+                    variant: 'outline',
+                    onClick: () => router.visit(route('quotes.index')),
+                },
+            ]}
             noPadding
         >
             <form onSubmit={handleSubmit} className="space-y-6">
-
                 {/* Quote Details */}
-                <Card className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
-                    <CardHeader className="pb-3 border-b bg-gray-50 dark:bg-gray-800">
+                <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+                    <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
                         <CardTitle className="text-base font-semibold">{t('Quote Details')}</CardTitle>
                     </CardHeader>
-                    <CardContent className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-
-                        <div className="lg:col-span-3 md:col-span-2 space-y-1">
-                            <Label className="text-sm font-medium" required>{t('Quote Name')}</Label>
+                    <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-2 lg:grid-cols-3">
+                        <div className="space-y-1 md:col-span-2 lg:col-span-3">
+                            <Label className="text-sm font-medium" required>
+                                {t('Quote Name')}
+                            </Label>
                             <Input
                                 value={data.name}
                                 onChange={(e) => set('name', e.target.value)}
@@ -244,14 +251,18 @@ export default function QuoteEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium" required>{t('Opportunity')}</Label>
+                            <Label className="text-sm font-medium" required>
+                                {t('Opportunity')}
+                            </Label>
                             <Select value={data.opportunity_id} onValueChange={handleOpportunityChange}>
                                 <SelectTrigger className={errors.opportunity_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={t('Select opportunity')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {opportunities.map((o: any) => (
-                                        <SelectItem key={o.id} value={String(o.id)}>{o.name}</SelectItem>
+                                        <SelectItem key={o.id} value={String(o.id)}>
+                                            {o.name}
+                                        </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
@@ -259,14 +270,18 @@ export default function QuoteEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium" required>{t('Account')}</Label>
+                            <Label className="text-sm font-medium" required>
+                                {t('Account')}
+                            </Label>
                             <Select value={data.account_id} onValueChange={(v) => set('account_id', v)}>
                                 <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={t('Select account')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {accounts.map((a: any) => (
-                                        <SelectItem key={a.id} value={String(a.id)}>{a.name}</SelectItem>
+                                        <SelectItem key={a.id} value={String(a.id)}>
+                                            {a.name}
+                                        </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
@@ -274,14 +289,18 @@ export default function QuoteEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium" required>{t('Billing Contact')}</Label>
+                            <Label className="text-sm font-medium" required>
+                                {t('Billing Contact')}
+                            </Label>
                             <Select value={data.billing_contact_id} onValueChange={(v) => set('billing_contact_id', v)}>
                                 <SelectTrigger className={errors.billing_contact_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={t('Select billing contact')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {contacts.map((c: any) => (
-                                        <SelectItem key={c.id} value={String(c.id)}>{c.name}</SelectItem>
+                                        <SelectItem key={c.id} value={String(c.id)}>
+                                            {c.name}
+                                        </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
@@ -289,14 +308,18 @@ export default function QuoteEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium" required>{t('Shipping Contact')}</Label>
+                            <Label className="text-sm font-medium" required>
+                                {t('Shipping Contact')}
+                            </Label>
                             <Select value={data.shipping_contact_id} onValueChange={(v) => set('shipping_contact_id', v)}>
                                 <SelectTrigger className={errors.shipping_contact_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={t('Select shipping contact')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {contacts.map((c: any) => (
-                                        <SelectItem key={c.id} value={String(c.id)}>{c.name}</SelectItem>
+                                        <SelectItem key={c.id} value={String(c.id)}>
+                                            {c.name}
+                                        </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
@@ -304,14 +327,18 @@ export default function QuoteEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium" required>{t('Shipping Provider')}</Label>
+                            <Label className="text-sm font-medium" required>
+                                {t('Shipping Provider')}
+                            </Label>
                             <Select value={data.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
                                 <SelectTrigger className={errors.shipping_provider_type_id ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={t('Select shipping provider')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {shippingProviderTypes.map((s: any) => (
-                                        <SelectItem key={s.id} value={String(s.id)}>{s.name}</SelectItem>
+                                        <SelectItem key={s.id} value={String(s.id)}>
+                                            {s.name}
+                                        </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
@@ -321,7 +348,9 @@ export default function QuoteEdit() {
                         <div className="space-y-1">
                             <Label className="text-sm font-medium">{t('Status')}</Label>
                             <Select value={data.status} onValueChange={(v) => set('status', v)}>
-                                <SelectTrigger><SelectValue /></SelectTrigger>
+                                <SelectTrigger>
+                                    <SelectValue />
+                                </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="draft">{t('Draft')}</SelectItem>
                                     <SelectItem value="sent">{t('Sent')}</SelectItem>
@@ -334,33 +363,47 @@ export default function QuoteEdit() {
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium">{t('Valid Until')}</Label>
-                            <div className="cursor-pointer" onClick={(e) => { const input = (e.currentTarget as HTMLElement).querySelector('input'); try { (input as any)?.showPicker?.(); } catch { input?.focus(); } }}>
-                            <Input
-                                type="date"
-                                value={data.valid_until}
-                                onChange={(e) => set('valid_until', e.target.value)}
-                                className={`cursor-pointer ${errors.valid_until ? 'border-red-500' : ''}`}
-                            />
+                            <div
+                                className="cursor-pointer"
+                                onClick={(e) => {
+                                    const input = (e.currentTarget as HTMLElement).querySelector('input');
+                                    try {
+                                        (input as any)?.showPicker?.();
+                                    } catch {
+                                        input?.focus();
+                                    }
+                                }}
+                            >
+                                <Input
+                                    type="date"
+                                    value={data.valid_until}
+                                    onChange={(e) => set('valid_until', e.target.value)}
+                                    className={`cursor-pointer ${errors.valid_until ? 'border-red-500' : ''}`}
+                                />
                             </div>
                             {errors.valid_until && <p className="text-xs text-red-500">{errors.valid_until}</p>}
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium" required>{t('Assign To')}</Label>
+                            <Label className="text-sm font-medium" required>
+                                {t('Assign To')}
+                            </Label>
                             <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
                                     <SelectValue placeholder={t('Select user')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {users.map((u: any) => (
-                                        <SelectItem key={u.id} value={String(u.id)}>{u.name} ({u.email})</SelectItem>
+                                        <SelectItem key={u.id} value={String(u.id)}>
+                                            {u.name} ({u.email})
+                                        </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
                             {errors.assigned_to && <p className="text-xs text-red-500">{errors.assigned_to}</p>}
                         </div>
 
-                        <div className="lg:col-span-3 md:col-span-2 space-y-1">
+                        <div className="space-y-1 md:col-span-2 lg:col-span-3">
                             <Label className="text-sm font-medium">{t('Description')}</Label>
                             <Textarea
                                 value={data.description}
@@ -373,78 +416,124 @@ export default function QuoteEdit() {
                 </Card>
 
                 {/* Products */}
-                <Card className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
-                    <CardHeader className="pb-3 border-b bg-gray-50 dark:bg-gray-800">
+                <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+                    <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
                         <div className="flex items-center justify-between">
                             <CardTitle className="text-base font-semibold">
                                 {t('Products')}
-                                {errors.products && <span className="text-xs text-red-500 font-normal ml-2">{errors.products}</span>}
+                                {errors.products && <span className="ml-2 text-xs font-normal text-red-500">{errors.products}</span>}
                             </CardTitle>
                             <Button type="button" size="sm" onClick={addProductRow}>
-                                <Plus className="h-4 w-4 mr-1" /> {t('Add Product')}
+                                <Plus className="mr-1 h-4 w-4" /> {t('Add Product')}
                             </Button>
                         </div>
                     </CardHeader>
                     <CardContent className="p-0">
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-sm">
-                                <thead>
-                                    <tr className="border-b bg-gray-50 dark:bg-gray-800 text-xs font-semibold text-gray-600 dark:text-gray-400">
-                                        <th className="px-4 py-3 text-left min-w-[200px]">{t('Product')} <span className="text-red-500">*</span></th>
-                                        <th className="px-4 py-3 text-left w-24">{t('Qty')} <span className="text-red-500">*</span></th>
-                                        <th className="px-4 py-3 text-left w-32">{t('Unit Price')} <span className="text-red-500">*</span></th>
-                                        <th className="px-4 py-3 text-left w-32">{t('Discount Type')}</th>
-                                        <th className="px-4 py-3 text-left w-28">{t('Discount Val')}</th>
-                                        <th className="px-4 py-3 text-left w-28">{t('Tax')}</th>
-                                        <th className="px-4 py-3 text-left w-28">{t('Total')}</th>
-                                        <th className="px-4 py-3 w-12"></th>
+                        <div className="overflow-x-auto p-4 md:p-0">
+                            <table className="block w-full text-sm xl:table">
+                                <thead className="hidden xl:table-header-group">
+                                    <tr className="border-b bg-gray-50 text-xs font-semibold text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                                        <th className="min-w-[200px] px-4 py-3 text-left">
+                                            {t('Product')} <span className="text-red-500">*</span>
+                                        </th>
+                                        <th className="w-24 px-4 py-3 text-left">
+                                            {t('Qty')} <span className="text-red-500">*</span>
+                                        </th>
+                                        <th className="w-32 px-4 py-3 text-left">
+                                            {t('Unit Price')} <span className="text-red-500">*</span>
+                                        </th>
+                                        <th className="w-32 px-4 py-3 text-left">{t('Discount Type')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{t('Discount Val')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{t('Tax')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{t('Total')}</th>
+                                        <th className="w-12 px-4 py-3"></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody className="block space-y-4 divide-y divide-gray-200 xl:table-row-group xl:space-y-0 xl:divide-y-0">
                                     {data.products.map((row, i) => {
                                         const disc = calcDiscount(row);
                                         const tax = calcTax(row);
                                         const total = calcLineTotal(row) - disc + tax;
                                         const usedIds = data.products.filter((r) => r.id !== row.id && r.product_id).map((r) => r.product_id);
-                                        const lineProductOptions = productOptions.filter((p: any) => !usedIds.includes(String(p.id)) || String(p.id) === row.product_id);
+                                        const lineProductOptions = productOptions.filter(
+                                            (p: any) => !usedIds.includes(String(p.id)) || String(p.id) === row.product_id,
+                                        );
                                         return (
-                                            <tr key={row.id} className="border-b hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                                                <td className="px-4 py-3 w-48">
+                                            <tr
+                                                key={row.id}
+                                                className="border-border relative grid grid-cols-1 gap-3 rounded-lg border border-b bg-gray-50/50 p-4 hover:bg-gray-50 sm:grid-cols-2 xl:table-row xl:gap-0 xl:space-y-0 xl:border-b xl:bg-transparent dark:bg-gray-800/30 dark:hover:bg-gray-800/50"
+                                            >
+                                                <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-48 xl:px-4 xl:py-3">
+                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                        {t('Product')} <span className="text-red-500">*</span>
+                                                    </span>
                                                     <Select value={row.product_id} onValueChange={(v) => updateProductRow(row.id, 'product_id', v)}>
                                                         <SelectTrigger className={errors[`products.${i}.product_id`] ? 'border-red-500' : ''}>
                                                             <SelectValue placeholder={t('Select product')} />
                                                         </SelectTrigger>
                                                         <SelectContent searchable>
                                                             {lineProductOptions.map((p: any) => (
-                                                                <SelectItem key={p.id} value={String(p.id)}>{p.name}</SelectItem>
+                                                                <SelectItem key={p.id} value={String(p.id)}>
+                                                                    {p.name}
+                                                                </SelectItem>
                                                             ))}
                                                         </SelectContent>
                                                     </Select>
-                                                    {errors[`products.${i}.product_id`] && <p className="text-xs text-red-500 mt-1">{errors[`products.${i}.product_id`]}</p>}
-                                                    {i === 0 && productOptions.length === 0 && <p className="text-xs mt-1">{t('Click here to add')} <a href={route('products.index')} className="underline font-medium">{t('Products')}</a></p>}
+                                                    {errors[`products.${i}.product_id`] && (
+                                                        <p className="mt-1 text-xs text-red-500">{errors[`products.${i}.product_id`]}</p>
+                                                    )}
+                                                    {i === 0 && productOptions.length === 0 && (
+                                                        <p className="mt-1 text-xs">
+                                                            {t('Click here to add')}{' '}
+                                                            <a href={route('products.index')} className="font-medium underline">
+                                                                {t('Products')}
+                                                            </a>
+                                                        </p>
+                                                    )}
                                                 </td>
-                                                <td className="px-4 py-3">
+                                                <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-24 xl:px-4 xl:py-3">
+                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                        {t('Qty')} <span className="text-red-500">*</span>
+                                                    </span>
                                                     <Input
-                                                        type="number" min="1"
+                                                        type="number"
+                                                        min="1"
                                                         value={row.quantity}
                                                         onChange={(e) => updateProductRow(row.id, 'quantity', e.target.value)}
                                                         className={errors[`products.${i}.quantity`] ? 'border-red-500' : ''}
                                                     />
-                                                    {errors[`products.${i}.quantity`] && <p className="text-xs text-red-500 mt-1">{errors[`products.${i}.quantity`]}</p>}
+                                                    {errors[`products.${i}.quantity`] && (
+                                                        <p className="mt-1 text-xs text-red-500">{errors[`products.${i}.quantity`]}</p>
+                                                    )}
                                                 </td>
-                                                <td className="px-4 py-3">
+                                                <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
+                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                        {t('Unit Price')} <span className="text-red-500">*</span>
+                                                    </span>
                                                     <Input
-                                                        type="number" step="0.01" min="0"
+                                                        type="number"
+                                                        step="0.01"
+                                                        min="0"
                                                         value={row.unit_price}
                                                         onChange={(e) => updateProductRow(row.id, 'unit_price', e.target.value)}
                                                         placeholder="0.00"
                                                         className={errors[`products.${i}.unit_price`] ? 'border-red-500' : ''}
                                                     />
-                                                    {errors[`products.${i}.unit_price`] && <p className="text-xs text-red-500 mt-1">{errors[`products.${i}.unit_price`]}</p>}
+                                                    {errors[`products.${i}.unit_price`] && (
+                                                        <p className="mt-1 text-xs text-red-500">{errors[`products.${i}.unit_price`]}</p>
+                                                    )}
                                                 </td>
-                                                <td className="px-4 py-3">
-                                                    <Select value={row.discount_type} onValueChange={(v) => updateProductRow(row.id, 'discount_type', v)}>
-                                                        <SelectTrigger><SelectValue /></SelectTrigger>
+                                                <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
+                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                        {t('Discount Type')}
+                                                    </span>
+                                                    <Select
+                                                        value={row.discount_type}
+                                                        onValueChange={(v) => updateProductRow(row.id, 'discount_type', v)}
+                                                    >
+                                                        <SelectTrigger>
+                                                            <SelectValue />
+                                                        </SelectTrigger>
                                                         <SelectContent>
                                                             <SelectItem value="none">{t('None')}</SelectItem>
                                                             <SelectItem value="percentage">{t('Percentage (%)')}</SelectItem>
@@ -452,9 +541,14 @@ export default function QuoteEdit() {
                                                         </SelectContent>
                                                     </Select>
                                                 </td>
-                                                <td className="px-4 py-3">
+                                                <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
+                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                        {t('Discount Val')}
+                                                    </span>
                                                     <Input
-                                                        type="number" step="0.01" min="0"
+                                                        type="number"
+                                                        step="0.01"
+                                                        min="0"
                                                         value={row.discount_value}
                                                         onChange={(e) => updateProductRow(row.id, 'discount_value', e.target.value)}
                                                         disabled={row.discount_type === 'none'}
@@ -462,12 +556,28 @@ export default function QuoteEdit() {
                                                         placeholder="0"
                                                     />
                                                 </td>
-                                                <td className="px-4 py-3 text-left">
-                                                    {(() => { const p = productOptions.find((p: any) => String(p.id) === row.product_id); return (<span className="text-sm font-medium text-muted-foreground">{p?.tax ? `${p.tax.name} (${parseFloat(p.tax.rate).toFixed(2)}%)` : t('No Tax')}</span>); })()}
+                                                <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-28 xl:px-4 xl:py-3">
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{t('Tax')}</span>
+                                                    {(() => {
+                                                        const p = productOptions.find((p: any) => String(p.id) === row.product_id);
+                                                        return (
+                                                            <span className="text-muted-foreground text-sm font-medium">
+                                                                {p?.tax ? `${p.tax.name} (${parseFloat(p.tax.rate).toFixed(2)}%)` : t('No Tax')}
+                                                            </span>
+                                                        );
+                                                    })()}
                                                 </td>
-                                                <td className="px-4 py-3 text-left font-medium font-mono">{fmt(total)}</td>
-                                                <td className="px-4 py-3 text-left">
-                                                    <button type="button" onClick={() => removeProductRow(row.id)} disabled={data.products.length <= 1} className="p-1.5 rounded text-gray-500 hover:bg-gray-100 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed">
+                                                <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-mono font-medium xl:table-cell xl:w-28 xl:px-4 xl:py-3">
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{t('Total')}</span>
+                                                    <span>{fmt(total)}</span>
+                                                </td>
+                                                <td className="col-span-1 block w-full border-t px-0 py-0 pt-2 text-right sm:col-span-2 xl:table-cell xl:w-12 xl:border-t-0 xl:px-4 xl:py-3 xl:pt-0 xl:text-left">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => removeProductRow(row.id)}
+                                                        disabled={data.products.length <= 1}
+                                                        className="cursor-pointer rounded p-1.5 text-gray-500 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
+                                                    >
                                                         <Trash2 className="h-4 w-4 text-gray-500" />
                                                     </button>
                                                 </td>
@@ -479,23 +589,23 @@ export default function QuoteEdit() {
                         </div>
 
                         {/* Totals */}
-                        <div className="flex justify-end p-4 border-t">
+                        <div className="flex justify-end border-t p-4">
                             <div className="w-64 space-y-2">
                                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
                                     <span>{t('Subtotal')}</span>
-                                    <span className="font-medium font-mono">{fmt(subtotal)}</span>
+                                    <span className="font-mono font-medium">{fmt(subtotal)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-red-600">
                                     <span>{t('Discount')}</span>
-                                    <span className="font-medium font-mono">-{fmt(totalDiscount)}</span>
+                                    <span className="font-mono font-medium">-{fmt(totalDiscount)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
                                     <span>{t('Tax')}</span>
-                                    <span className="font-medium font-mono">{fmt(totalTax)}</span>
+                                    <span className="font-mono font-medium">{fmt(totalTax)}</span>
                                 </div>
-                                <div className="flex justify-between text-base font-bold text-gray-900 dark:text-gray-100 border-t pt-2">
+                                <div className="flex justify-between border-t pt-2 text-base font-bold text-gray-900 dark:text-gray-100">
                                     <span>{t('Grand Total')}</span>
-                                    <span className="text-green-600 text-lg font-mono">{fmt(grandTotal)}</span>
+                                    <span className="font-mono text-lg text-green-600">{fmt(grandTotal)}</span>
                                 </div>
                             </div>
                         </div>
@@ -503,23 +613,24 @@ export default function QuoteEdit() {
                 </Card>
 
                 {/* Billing & Shipping Address */}
-                <Card className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
-                    <CardHeader className="pb-3 border-b bg-gray-50 dark:bg-gray-800">
+                <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+                    <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
                         <div className="flex items-center justify-between">
                             <CardTitle className="text-base font-semibold">{t('Billing & Shipping Address')}</CardTitle>
                             <Button type="button" variant="outline" size="sm" onClick={copyBillingToShipping} className="text-xs">
-                                <Copy className="h-3 w-3 mr-1" /> {t('Copy Billing to Shipping')}
+                                <Copy className="mr-1 h-3 w-3" /> {t('Copy Billing to Shipping')}
                             </Button>
                         </div>
                     </CardHeader>
                     <CardContent className="p-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
+                        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                             {/* Billing */}
                             <div className="space-y-4">
-                                <h3 className="font-semibold text-sm text-gray-800 dark:text-gray-200">{t('Billing Address')}</h3>
+                                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">{t('Billing Address')}</h3>
                                 <div className="space-y-1">
-                                    <Label className="text-sm font-medium" required>{t('Address')}</Label>
+                                    <Label className="text-sm font-medium" required>
+                                        {t('Address')}
+                                    </Label>
                                     <Textarea
                                         value={data.billing_address}
                                         onChange={(e) => {
@@ -534,40 +645,60 @@ export default function QuoteEdit() {
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-medium" required>{t('City')}</Label>
+                                        <Label className="text-sm font-medium" required>
+                                            {t('City')}
+                                        </Label>
                                         <Input
                                             value={data.billing_city}
-                                            onChange={(e) => { set('billing_city', e.target.value); if (sameAsBilling) setData('shipping_city' as any, e.target.value); }}
+                                            onChange={(e) => {
+                                                set('billing_city', e.target.value);
+                                                if (sameAsBilling) setData('shipping_city' as any, e.target.value);
+                                            }}
                                             className={errors.billing_city ? 'border-red-500' : ''}
                                             placeholder="New York"
                                         />
                                         {errors.billing_city && <p className="text-xs text-red-500">{errors.billing_city}</p>}
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-medium" required>{t('State')}</Label>
+                                        <Label className="text-sm font-medium" required>
+                                            {t('State')}
+                                        </Label>
                                         <Input
                                             value={data.billing_state}
-                                            onChange={(e) => { set('billing_state', e.target.value); if (sameAsBilling) setData('shipping_state' as any, e.target.value); }}
+                                            onChange={(e) => {
+                                                set('billing_state', e.target.value);
+                                                if (sameAsBilling) setData('shipping_state' as any, e.target.value);
+                                            }}
                                             className={errors.billing_state ? 'border-red-500' : ''}
                                             placeholder="NY"
                                         />
                                         {errors.billing_state && <p className="text-xs text-red-500">{errors.billing_state}</p>}
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-medium" required>{t('Country')}</Label>
+                                        <Label className="text-sm font-medium" required>
+                                            {t('Country')}
+                                        </Label>
                                         <Input
                                             value={data.billing_country}
-                                            onChange={(e) => { set('billing_country', e.target.value); if (sameAsBilling) setData('shipping_country' as any, e.target.value); }}
+                                            onChange={(e) => {
+                                                set('billing_country', e.target.value);
+                                                if (sameAsBilling) setData('shipping_country' as any, e.target.value);
+                                            }}
                                             className={errors.billing_country ? 'border-red-500' : ''}
                                             placeholder="United States"
                                         />
                                         {errors.billing_country && <p className="text-xs text-red-500">{errors.billing_country}</p>}
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-medium" required>{t('Postal Code')}</Label>
+                                        <Label className="text-sm font-medium" required>
+                                            {t('Postal Code')}
+                                        </Label>
                                         <Input
                                             value={data.billing_postal_code}
-                                            onChange={(e) => { set('billing_postal_code', e.target.value); if (sameAsBilling) setData('shipping_postal_code' as any, e.target.value); }}
+                                            onChange={(e) => {
+                                                set('billing_postal_code', e.target.value);
+                                                if (sameAsBilling) setData('shipping_postal_code' as any, e.target.value);
+                                            }}
                                             className={errors.billing_postal_code ? 'border-red-500' : ''}
                                             placeholder="10001"
                                         />
@@ -578,7 +709,7 @@ export default function QuoteEdit() {
 
                             {/* Shipping */}
                             <div className="space-y-4">
-                                <h3 className="font-semibold text-sm text-gray-800 dark:text-gray-200">{t('Shipping Address')}</h3>
+                                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">{t('Shipping Address')}</h3>
                                 <div className="space-y-1">
                                     <Label className="text-sm font-medium">{t('Address')}</Label>
                                     <Textarea
@@ -591,7 +722,11 @@ export default function QuoteEdit() {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
                                         <Label className="text-sm font-medium">{t('City')}</Label>
-                                        <Input value={data.shipping_city} onChange={(e) => set('shipping_city', e.target.value)} placeholder="Los Angeles" />
+                                        <Input
+                                            value={data.shipping_city}
+                                            onChange={(e) => set('shipping_city', e.target.value)}
+                                            placeholder="Los Angeles"
+                                        />
                                     </div>
                                     <div className="space-y-1">
                                         <Label className="text-sm font-medium">{t('State')}</Label>
@@ -599,11 +734,19 @@ export default function QuoteEdit() {
                                     </div>
                                     <div className="space-y-1">
                                         <Label className="text-sm font-medium">{t('Country')}</Label>
-                                        <Input value={data.shipping_country} onChange={(e) => set('shipping_country', e.target.value)} placeholder="United States" />
+                                        <Input
+                                            value={data.shipping_country}
+                                            onChange={(e) => set('shipping_country', e.target.value)}
+                                            placeholder="United States"
+                                        />
                                     </div>
                                     <div className="space-y-1">
                                         <Label className="text-sm font-medium">{t('Postal Code')}</Label>
-                                        <Input value={data.shipping_postal_code} onChange={(e) => set('shipping_postal_code', e.target.value)} placeholder="90001" />
+                                        <Input
+                                            value={data.shipping_postal_code}
+                                            onChange={(e) => set('shipping_postal_code', e.target.value)}
+                                            placeholder="90001"
+                                        />
                                     </div>
                                 </div>
                             </div>

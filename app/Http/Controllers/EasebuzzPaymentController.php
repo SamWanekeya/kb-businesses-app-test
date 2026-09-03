@@ -49,7 +49,7 @@ class EasebuzzPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['easebuzz_merchant_key']) || !isset($settings['payment_settings']['easebuzz_salt_key'])) {
@@ -98,7 +98,7 @@ class EasebuzzPaymentController extends Controller
                     return response()->json([
                         'success' => true,
                         'payment_url' => $baseUrl . '/pay/' . $accessKey,
-                        'transaction_id' => $txnid
+                        'transaction_id' => $txnid,
                     ]);
                 }
             }

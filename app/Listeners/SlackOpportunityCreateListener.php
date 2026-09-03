@@ -3,8 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\OpportunityCreated;
-use App\Services\SlackService;
 use App\Models\User;
+use App\Services\SlackService;
 use Exception;
 
 class SlackOpportunityCreateListener
@@ -25,7 +25,7 @@ class SlackOpportunityCreateListener
                 '{opportunity_name}' => $opportunity->name ?? '-',
                 '{amount}' => $opportunity->amount ?? '-',
                 '{account_name}' => $account->name ?? '-',
-                '{close_date}' => date('Y-m-d', strtotime( $opportunity->close_date)) ?? '-',
+                '{close_date}' => date('Y-m-d', strtotime($opportunity->close_date)) ?? '-',
                 '{organization_name}' => getOrganizationName(),
             ];
 

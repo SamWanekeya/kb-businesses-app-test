@@ -1,20 +1,19 @@
 import { useForm } from '@inertiajs/react';
-import { Mail, Lock, User } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 
+import AuthButton from '@/components/auth/auth-button';
 import InputError from '@/components/input-error';
+import Recaptcha from '@/components/recaptcha';
 import TextLink from '@/components/text-link';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useTranslation } from 'react-i18next';
-import AuthLayout from '@/layouts/auth-layout';
-import AuthButton from '@/components/auth/auth-button';
-import Recaptcha from '@/components/recaptcha';
 import { useBrand } from '@/contexts/BrandContext';
 import { THEME_COLORS } from '@/hooks/use-appearance';
+import AuthLayout from '@/layouts/auth-layout';
 import { isDemoMode } from '@/utils/cookie-utils';
-import { Checkbox } from '@/components/ui/checkbox';
 import { getTermsAndConditionsUrl } from '@/utils/helper';
+import { useTranslation } from 'react-i18next';
 
 type RegisterForm = {
     name: string;
@@ -51,14 +50,13 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
     };
 
     return (
-        <AuthLayout
-            title={t("Create your account")}
-            description={t("Enter your details below to get started")}
-        >
+        <AuthLayout title={t('Create your account')} description={t('Enter your details below to get started')}>
             <form className="space-y-5" onSubmit={submit}>
                 <div className="space-y-4">
                     <div className="relative">
-                        <Label htmlFor="name" className="text-gray-700 dark:text-gray-300 font-medium mb-2 block" required>{t("Full name")}</Label>
+                        <Label htmlFor="name" className="mb-2 block font-medium text-gray-700 dark:text-gray-300" required>
+                            {t('Full name')}
+                        </Label>
                         <div className="relative">
                             <Input
                                 id="name"
@@ -69,8 +67,8 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
                                 autoComplete="name"
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
-                                placeholder={t("Enter your full name")}
-                                className="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg transition-all duration-200"
+                                placeholder={t('Enter your full name')}
+                                className="h-11 w-full rounded-lg border-gray-300 bg-white text-gray-900 transition-all duration-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 style={{ '--tw-ring-color': primaryColor } as React.CSSProperties}
                             />
                         </div>
@@ -78,7 +76,9 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
                     </div>
 
                     <div className="relative">
-                        <Label htmlFor="email" className="text-gray-700 dark:text-gray-300 font-medium mb-2 block" required>{t("Email address")}</Label>
+                        <Label htmlFor="email" className="mb-2 block font-medium text-gray-700 dark:text-gray-300" required>
+                            {t('Email address')}
+                        </Label>
                         <div className="relative">
                             <Input
                                 id="email"
@@ -88,8 +88,8 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
                                 autoComplete="email"
                                 value={data.email}
                                 onChange={(e) => setData('email', e.target.value)}
-                                placeholder={t("Enter your email")}
-                                className="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg transition-all duration-200"
+                                placeholder={t('Enter your email')}
+                                className="h-11 w-full rounded-lg border-gray-300 bg-white text-gray-900 transition-all duration-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 style={{ '--tw-ring-color': primaryColor } as React.CSSProperties}
                             />
                         </div>
@@ -97,7 +97,9 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
                     </div>
 
                     <div>
-                        <Label htmlFor="password" className="text-gray-700 dark:text-gray-300 font-medium mb-2 block" required>{t("Password")}</Label>
+                        <Label htmlFor="password" className="mb-2 block font-medium text-gray-700 dark:text-gray-300" required>
+                            {t('Password')}
+                        </Label>
                         <div className="relative">
                             <Input
                                 id="password"
@@ -107,8 +109,8 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
                                 autoComplete="new-password"
                                 value={data.password}
                                 onChange={(e) => setData('password', e.target.value)}
-                                placeholder={t("Enter your password")}
-                                className="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg transition-all duration-200"
+                                placeholder={t('Enter your password')}
+                                className="h-11 w-full rounded-lg border-gray-300 bg-white text-gray-900 transition-all duration-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 style={{ '--tw-ring-color': primaryColor } as React.CSSProperties}
                             />
                         </div>
@@ -116,7 +118,9 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
                     </div>
 
                     <div>
-                        <Label htmlFor="password_confirmation" className="text-gray-700 dark:text-gray-300 font-medium mb-2 block" required>{t("Confirm password")}</Label>
+                        <Label htmlFor="password_confirmation" className="mb-2 block font-medium text-gray-700 dark:text-gray-300" required>
+                            {t('Confirm password')}
+                        </Label>
                         <div className="relative">
                             <Input
                                 id="password_confirmation"
@@ -126,60 +130,53 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
                                 autoComplete="new-password"
                                 value={data.password_confirmation}
                                 onChange={(e) => setData('password_confirmation', e.target.value)}
-                                placeholder={t("Confirm your password")}
-                                className="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg transition-all duration-200"
+                                placeholder={t('Confirm your password')}
+                                className="h-11 w-full rounded-lg border-gray-300 bg-white text-gray-900 transition-all duration-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 style={{ '--tw-ring-color': primaryColor } as React.CSSProperties}
                             />
                         </div>
                         <InputError message={errors.password_confirmation} />
                     </div>
 
-                    <div className="flex items-center !mt-4 !mb-5">
+                    <div className="!mt-4 !mb-5 flex items-center">
                         <Checkbox
                             id="terms"
                             checked={data.terms}
                             onClick={() => setData('terms', !data.terms)}
                             tabIndex={5}
-                            className="w-[14px] h-[14px] border border-gray-300 rounded"
+                            className="h-[14px] w-[14px] rounded border border-gray-300 dark:border-gray-600"
                         />
-                        <Label htmlFor="terms" className="ml-2 text-gray-600 dark:text-gray-400 text-sm" required>{t("I agree to the")}{' '}
+                        <Label htmlFor="terms" className="text-sm text-gray-600 ltr:ml-2 rtl:mr-2 dark:text-gray-400" required>
+                            {t('I agree to the')}{' '}
                             <a
-                                href={isDemoMode() ? route('home') : (getTermsAndConditionsUrl() || route('home'))}
+                                href={isDemoMode() ? route('home') : getTermsAndConditionsUrl() || route('home')}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 style={{ color: primaryColor }}
                             >
-                                {t("Terms and Conditions")}
+                                {t('Terms and Conditions')}
                             </a>
                         </Label>
                     </div>
                     <InputError message={errors.terms} />
                 </div>
 
-                <Recaptcha
-                    onVerify={setRecaptchaToken}
-                    onExpired={() => setRecaptchaToken('')}
-                    onError={() => setRecaptchaToken('')}
-                />
+                <Recaptcha onVerify={setRecaptchaToken} onExpired={() => setRecaptchaToken('')} onError={() => setRecaptchaToken('')} />
 
                 <AuthButton
                     tabIndex={6}
                     processing={processing}
-                    className="w-full text-white py-2.5 text-sm font-medium tracking-wide transition-all duration-200 rounded-md shadow-md hover:shadow-lg transform hover:scale-[1.02]"
+                    className="w-full transform rounded-md py-2.5 text-sm font-medium tracking-wide text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg"
                     style={{ backgroundColor: primaryColor }}
                 >
-                    {t("Create Account")}
+                    {t('Create Account')}
                 </AuthButton>
 
                 <div className="text-center">
-                    <p className="text-sm text-gray-500">{t("Already have an account?")}{' '}
-                        <TextLink
-                            href={route('login')}
-                            className="font-medium hover:underline"
-                            style={{ color: primaryColor }}
-                            tabIndex={7}
-                        >
-                            {t("Sign in")}
+                    <p className="text-sm text-gray-500">
+                        {t('Already have an account?')}{' '}
+                        <TextLink href={route('login')} className="font-medium hover:underline" style={{ color: primaryColor }} tabIndex={7}>
+                            {t('Sign in')}
                         </TextLink>
                     </p>
                 </div>

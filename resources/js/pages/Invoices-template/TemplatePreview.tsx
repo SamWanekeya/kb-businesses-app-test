@@ -1,4 +1,3 @@
-import React from 'react';
 import { usePage } from '@inertiajs/react';
 
 export default function TemplatePreview() {
@@ -14,8 +13,9 @@ export default function TemplatePreview() {
             <head>
                 <meta charSet="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <style dangerouslySetInnerHTML={{
-                    __html: `
+                <style
+                    dangerouslySetInnerHTML={{
+                        __html: `
                         body {
                             font-family: 'Lato', sans-serif;
                             margin: 0;
@@ -71,8 +71,9 @@ export default function TemplatePreview() {
                         .total-table td {
                             padding: 8px 0;
                         }
-                    `
-                }} />
+                    `,
+                    }}
+                />
             </head>
             <body>
                 <div className="invoice-preview-main">
@@ -96,17 +97,23 @@ export default function TemplatePreview() {
                                     <td>
                                         <strong>From:</strong>
                                         <p style={{ margin: '10px 0 0 0' }}>
-                                            {settings?.organizationName || 'Your Organization'}<br />
-                                            {settings?.organizationAddress || '123 Business St'}<br />
-                                            {settings?.organizationCity || 'City'}, {settings?.organizationState || 'State'} {settings?.organizationZipcode || '12345'}<br />
+                                            {settings?.organizationName || 'Your Organization'}
+                                            <br />
+                                            {settings?.organizationAddress || '123 Business St'}
+                                            <br />
+                                            {settings?.organizationCity || 'City'}, {settings?.organizationState || 'State'}{' '}
+                                            {settings?.organizationZipcode || '12345'}
+                                            <br />
                                             {settings?.organizationCountry || 'Country'}
                                         </p>
                                     </td>
                                     <td className="text-right">
                                         <strong>Bill To:</strong>
                                         <p style={{ margin: '10px 0 0 0' }}>
-                                            {invoice.account.name}<br />
-                                            {invoice.account.email}<br />
+                                            {invoice.account.name}
+                                            <br />
+                                            {invoice.account.email}
+                                            <br />
                                             {invoice.account.phone}
                                         </p>
                                     </td>
@@ -131,7 +138,9 @@ export default function TemplatePreview() {
                                         <td>{product.name}</td>
                                         <td>{product.pivot.quantity}</td>
                                         <td>{formatCurrency(product.pivot.unit_price)}</td>
-                                        <td>{product.tax.name} ({product.tax.rate}%)</td>
+                                        <td>
+                                            {product.tax.name} ({product.tax.rate}%)
+                                        </td>
                                         <td>{formatCurrency(product.pivot.total_price)}</td>
                                     </tr>
                                 ))}
@@ -140,16 +149,24 @@ export default function TemplatePreview() {
                         <table className="total-table">
                             <tbody>
                                 <tr>
-                                    <td className="text-right"><strong>Subtotal:</strong></td>
+                                    <td className="text-right">
+                                        <strong>Subtotal:</strong>
+                                    </td>
                                     <td className="text-right">{formatCurrency(invoice.subtotal)}</td>
                                 </tr>
                                 <tr>
-                                    <td className="text-right"><strong>Tax:</strong></td>
+                                    <td className="text-right">
+                                        <strong>Tax:</strong>
+                                    </td>
                                     <td className="text-right">{formatCurrency(invoice.tax_amount)}</td>
                                 </tr>
                                 <tr>
-                                    <td className="text-right"><strong>Total:</strong></td>
-                                    <td className="text-right"><strong>{formatCurrency(invoice.total_amount)}</strong></td>
+                                    <td className="text-right">
+                                        <strong>Total:</strong>
+                                    </td>
+                                    <td className="text-right">
+                                        <strong>{formatCurrency(invoice.total_amount)}</strong>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

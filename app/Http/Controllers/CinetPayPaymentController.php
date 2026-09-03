@@ -50,7 +50,7 @@ class CinetPayPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$request->billing_cycle);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $request->billing_cycle);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['cinetpay_site_id']) || !isset($settings['payment_settings']['cinetpay_api_key'])) {
@@ -97,16 +97,17 @@ class CinetPayPaymentController extends Controller
                     'success' => true,
                     'payment_url' => $response['data']['payment_url'],
                     'payment_token' => $response['data']['payment_token'],
-                    'transaction_id' => $transactionId
+                    'transaction_id' => $transactionId,
                 ]);
             }
 
             return response()->json([
-                'error' => $response['message'] ?? __('Payment creation failed')
+                'error' => $response['message'] ?? __('Payment creation failed'),
             ], 400);
 
         } catch (\Exception $e) {
             Log::error('CinetPay payment creation error: ' . $e->getMessage());
+
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
     }
@@ -122,7 +123,7 @@ class CinetPayPaymentController extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
-            'User-Agent: SalesyCRM/1.0'
+            'User-Agent: SalesyCRM/1.0',
         ]);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
@@ -133,6 +134,7 @@ class CinetPayPaymentController extends Controller
         if (curl_error($ch)) {
             Log::error('CinetPay cURL error: ' . curl_error($ch));
             curl_close($ch);
+
             return null;
         }
 

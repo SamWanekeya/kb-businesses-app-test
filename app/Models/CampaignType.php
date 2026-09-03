@@ -16,7 +16,7 @@ class CampaignType extends Model
         'description',
         'color',
         'status',
-        'created_by'
+        'created_by',
     ];
 
     public function creator(): BelongsTo

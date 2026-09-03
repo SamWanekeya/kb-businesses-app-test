@@ -1,19 +1,32 @@
 import { CrudDeleteModal } from '@/components/CrudDeleteModal';
+import { toast } from '@/components/custom-toast';
 import { PageTemplate } from '@/components/page-template';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { hasPermission } from '@/utils/authorization';
 import { usePage } from '@inertiajs/react';
-import { log } from 'console';
-import { Calendar, Copy, Download, Eye, File, FileText, HardDrive, Image, Image as ImageIcon, Info, MoreHorizontal, Plus, Search, Upload, X } from 'lucide-react';
+import {
+    Calendar,
+    ChevronLeft,
+    ChevronRight,
+    Copy,
+    Download,
+    Eye,
+    File,
+    FileText,
+    HardDrive,
+    Image,
+    Image as ImageIcon,
+    Plus,
+    Search,
+    Upload,
+    X,
+} from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { toast } from '@/components/custom-toast';
-import { MIMEType } from 'util';
 
 interface MediaItem {
     id: number;
@@ -52,7 +65,8 @@ export default function MediaLibraryDemo() {
     const [isChatGptOpen, setIsChatGptOpen] = useState(false);
     useEffect(() => {
         const checkChatGpt = () => {
-            const chatGptModal = document.querySelector('[data-chatgpt-modal]') ||
+            const chatGptModal =
+                document.querySelector('[data-chatgpt-modal]') ||
                 document.querySelector('.chatgpt-modal') ||
                 document.querySelector('[class*="chatgpt"]') ||
                 document.querySelector('[id*="chatgpt"]');
@@ -193,8 +207,8 @@ export default function MediaLibraryDemo() {
 
     const deleteMedia = async () => {
         try {
-            const id=selectedMediaInfo?.id;
-            if(!id){
+            const id = selectedMediaInfo?.id;
+            if (!id) {
                 return;
             }
             const response = await fetch(route('api.media.destroy', id), {
@@ -236,7 +250,7 @@ export default function MediaLibraryDemo() {
     const handleDownload = async (id: number, filename: string) => {
         try {
             // Find the media item to get its URL
-            const mediaItem = media.find(item => item.id === id);
+            const mediaItem = media.find((item) => item.id === id);
             if (!mediaItem) {
                 toast.error('File not found');
                 return;
@@ -263,7 +277,7 @@ export default function MediaLibraryDemo() {
     };
 
     const handleShowInfo = (item: MediaItem) => {
-        if(!hasPermission(permissions, 'view-media')) return;
+        if (!hasPermission(permissions, 'view-media')) return;
         setSelectedMediaInfo(item);
         setInfoModalOpen(true);
     };
@@ -349,19 +363,38 @@ export default function MediaLibraryDemo() {
     const breadcrumbs = [{ title: t('Dashboard'), href: '/dashboard' }, { title: t('Media Library') }];
 
     const canCreate = !planLimits || planLimits.can_create;
-    const pageActions = hasPermission(permissions, 'create-media') ? [
-        {
-            label: planLimits && !canCreate ? t('Storage Limit Reached ({{current}}/{{max}})', { current: formatFileSize(planLimits.current_storage), max: formatFileSize(planLimits.maximum_storage) }) : t('Upload Media'),
-            icon: <Plus className="h-4 w-4" />,
-            variant: canCreate ? 'default' as const : 'outline' as const,
-            onClick: canCreate ? () => setIsUploadModalOpen(true) : () => toast.error(t('Storage limit exceeded. Your plan allows maximum {{max}} storage. Please upgrade your plan.', { max: formatFileSize(planLimits.maximum_storage) })),
-            disabled: !canCreate
-        },
-    ] : [];
+    const pageActions = hasPermission(permissions, 'create-media')
+        ? [
+              {
+                  label:
+                      planLimits && !canCreate
+                          ? t('Storage Limit Reached ({{current}}/{{max}})', {
+                                current: formatFileSize(planLimits.current_storage),
+                                max: formatFileSize(planLimits.maximum_storage),
+                            })
+                          : t('Upload Media'),
+                  icon: <Plus className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
+                  variant: canCreate ? ('default' as const) : ('outline' as const),
+                  onClick: canCreate
+                      ? () => setIsUploadModalOpen(true)
+                      : () =>
+                            toast.error(
+                                t('Storage limit exceeded. Your plan allows maximum {{max}} storage. Please upgrade your plan.', {
+                                    max: formatFileSize(planLimits.maximum_storage),
+                                }),
+                            ),
+                  disabled: !canCreate,
+                  className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
+                  labelClassName: 'hidden min-[400px]:inline',
+                  tooltip: t('Upload Media'),
+                  tooltipClassName: 'min-[400px]:hidden',
+              },
+          ]
+        : [];
 
-    const handleDelete=()=>{
+    const handleDelete = () => {
         setIsDeleteModalOpen(true);
-    }
+    };
 
     return (
         <PageTemplate
@@ -373,15 +406,14 @@ export default function MediaLibraryDemo() {
             noPadding
         >
             <div className="space-y-6">
-
                 {/* Search and Stats Bar */}
                 <Card>
                     <CardContent className="p-4">
-                        <div className="flex flex-col lg:flex-row gap-4">
+                        <div className="flex flex-col gap-4 lg:flex-row">
                             {/* Search Section */}
                             <div className="flex-1">
                                 <div className="relative max-w-sm">
-                                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                                    <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
                                     <Input
                                         placeholder={t('Search media files...')}
                                         value={searchTerm}
@@ -390,23 +422,23 @@ export default function MediaLibraryDemo() {
                                     />
                                 </div>
                                 {searchTerm && (
-                                    <p className="text-xs text-muted-foreground mt-1">
-                                        {t('Showing results for "{{term}}"', { term: searchTerm })}
-                                    </p>
+                                    <p className="text-muted-foreground mt-1 text-xs">{t('Showing results for "{{term}}"', { term: searchTerm })}</p>
                                 )}
                             </div>
 
                             {/* Stats Section */}
-                            <div className="flex gap-6 items-center">
+                            <div className="flex items-center gap-6">
                                 <div className="flex items-center gap-2">
-                                    <div className="p-1.5 bg-primary/10 rounded-md">
-                                        <ImageIcon className="h-4 w-4 text-primary" />
+                                    <div className="bg-primary/10 rounded-md p-1.5">
+                                        <ImageIcon className="text-primary h-4 w-4" />
                                     </div>
-                                    <span className="text-sm font-semibold">{filteredMedia.length} {t('Files')}</span>
+                                    <span className="text-sm font-semibold">
+                                        {filteredMedia.length} {t('Files')}
+                                    </span>
                                 </div>
 
                                 <div className="flex items-center gap-2">
-                                    <div className="p-1.5 bg-green-500/10 rounded-md">
+                                    <div className="rounded-md bg-green-500/10 p-1.5">
                                         <HardDrive className="h-4 w-4 text-green-600" />
                                     </div>
                                     <span className="text-sm font-semibold">
@@ -415,11 +447,11 @@ export default function MediaLibraryDemo() {
                                 </div>
 
                                 <div className="flex items-center gap-2">
-                                    <div className="p-1.5 bg-blue-500/10 rounded-md">
+                                    <div className="rounded-md bg-blue-500/10 p-1.5">
                                         <ImageIcon className="h-4 w-4 text-blue-600" />
                                     </div>
                                     <span className="text-sm font-semibold">
-                                        {filteredMedia.filter(item => item.mime_type.startsWith('image/')).length} {t('Images')}
+                                        {filteredMedia.filter((item) => item.mime_type.startsWith('image/')).length} {t('Images')}
                                     </span>
                                 </div>
                             </div>
@@ -429,92 +461,91 @@ export default function MediaLibraryDemo() {
 
                 {/* Media Grid */}
                 <Card>
-                    <CardContent className="p-3 lg:p-6 gap-3 lg:gap-6  flex flex-col h-full overflow-hidden bg-[#F0F0F1] dark:bg-gray-800">
+                    <CardContent className="flex h-full flex-col gap-3 overflow-hidden bg-[#F0F0F1] p-3 lg:gap-6 lg:p-6 dark:bg-gray-800">
                         {loading ? (
-                            <div className="text-center py-12">
-                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                            <div className="py-12 text-center">
+                                <div className="border-primary mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-b-2"></div>
                                 <p className="text-muted-foreground">{t('Loading media...')}</p>
                             </div>
                         ) : currentMedia.length === 0 ? (
-                            <div className="text-center py-16">
-                                <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-4">
-                                    <ImageIcon className="h-10 w-10 text-muted-foreground" />
+                            <div className="py-16 text-center">
+                                <div className="bg-muted mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full">
+                                    <ImageIcon className="text-muted-foreground h-10 w-10" />
                                 </div>
-                                <h3 className="text-lg font-semibold mb-2">{t('No media files found')}</h3>
+                                <h3 className="mb-2 text-lg font-semibold">{t('No media files found')}</h3>
                                 <p className="text-muted-foreground mb-6">
-                                    {searchTerm ? t('No results found for "{{term}}"', { term: searchTerm }) : t('Get started by uploading your first file')}
+                                    {searchTerm
+                                        ? t('No results found for "{{term}}"', { term: searchTerm })
+                                        : t('Get started by uploading your first file')}
                                 </p>
                                 {!searchTerm && (
-                                    <Button
-                                        onClick={() => setIsUploadModalOpen(true)}
-                                        size="lg"
-                                    >
-                                        <Plus className="h-4 w-4 mr-2" />
+                                    <Button onClick={() => setIsUploadModalOpen(true)} size="lg">
+                                        <Plus className="mr-2 h-4 w-4" />
                                         {t('Upload Files')}
                                     </Button>
                                 )}
                             </div>
                         ) : (
                             <>
-                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+                                <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
                                     {currentMedia.map((item) => (
                                         <div
                                             key={item.id}
-                                            className="group relative bg-card border rounded-lg overflow-hidden hover:shadow-md transition-all duration-200 cursor-pointer"
+                                            className="group bg-card relative cursor-pointer overflow-hidden rounded-lg border transition-all duration-200 hover:shadow-md"
                                             onClick={() => handleShowInfo(item)}
                                         >
                                             {/* File Preview Container */}
-                                            <div className="relative aspect-square bg-muted flex items-center justify-center">
+                                            <div className="bg-muted relative flex aspect-square items-center justify-center">
                                                 {item.mime_type.startsWith('image/') ? (
                                                     <img
                                                         src={item.thumb_url}
                                                         alt={item.name}
-                                                        className="w-full h-full object-cover"
+                                                        className="h-full w-full object-cover"
                                                         onError={(e) => {
                                                             e.currentTarget.src = item.url;
                                                         }}
                                                     />
                                                 ) : (
                                                     <div className="flex flex-col items-center justify-center p-4">
-                                                        <div className="mb-2 text-2xl">
-                                                            {getFileIcon(item.mime_type)}
-                                                        </div>
-                                                        <div className="text-xs text-center font-medium text-muted-foreground truncate w-full">
+                                                        <div className="mb-2 text-2xl">{getFileIcon(item.mime_type)}</div>
+                                                        <div className="text-muted-foreground w-full truncate text-center text-xs font-medium">
                                                             {item.mime_type.split('/')[1]?.toUpperCase() || 'FILE'}
                                                         </div>
                                                     </div>
                                                 )}
 
                                                 {/* Hover Overlay */}
-                                                {hasPermission(permissions, 'view-media') && <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-200 flex items-center justify-center">
-                                                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                                                        <div className="bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 text-sm font-medium text-gray-900">
-                                                            {t('Click to view')}
+                                                {hasPermission(permissions, 'view-media') && (
+                                                    <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-200 group-hover:bg-black/40">
+                                                        <div className="opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                                                            <div className="rounded-lg bg-white/90 px-4 py-2 text-sm font-medium text-gray-900 backdrop-blur-sm">
+                                                                {t('Click to view')}
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>}
+                                                )}
 
                                                 {/* File Type Badge */}
                                                 <div className="absolute top-2 left-2">
-                                                    <Badge variant="secondary" className="text-xs bg-background/95">
+                                                    <Badge variant="secondary" className="bg-background/95 text-xs">
                                                         {item.mime_type.split('/')[1].toUpperCase()}
                                                     </Badge>
                                                 </div>
                                             </div>
 
                                             {/* Card Content */}
-                                            <div className="p-3 space-y-2">
+                                            <div className="space-y-2 p-3">
                                                 <div>
-                                                    <h3 className="text-sm font-medium truncate" title={item.name}>
+                                                    <h3 className="truncate text-sm font-medium" title={item.name}>
                                                         {item.name}
                                                     </h3>
-                                                    <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                                                    <p className="text-muted-foreground mt-1 flex items-center gap-1 text-xs">
                                                         <HardDrive className="h-3 w-3" />
                                                         {formatFileSize(item.size)}
                                                     </p>
                                                 </div>
 
-                                                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                                                <div className="text-muted-foreground flex items-center justify-between text-xs">
                                                     <span className="flex items-center gap-1">
                                                         <Calendar className="h-3 w-3" />
                                                         {window.appSettings?.formatDateTime(item.created_at, false) || '-'}
@@ -527,56 +558,128 @@ export default function MediaLibraryDemo() {
 
                                 {/* Pagination */}
                                 {totalPages > 1 && (
-                                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t">
-                                        <div className="text-sm text-muted-foreground">
-                                            {t('Showing')} <span className="font-semibold">{startIndex + 1}</span> {t('to')} <span className="font-semibold">{Math.min(startIndex + itemsPerPage, filteredMedia.length)}</span> {t('of')} <span className="font-semibold">{filteredMedia.length}</span> {t('results')}
+                                    <div className="flex flex-col items-center justify-between gap-4 border-t pt-6 sm:flex-row">
+                                        <div className="text-muted-foreground text-sm">
+                                            {t('Showing')} <span className="font-semibold">{startIndex + 1}</span> {t('to')}{' '}
+                                            <span className="font-semibold">{Math.min(startIndex + itemsPerPage, filteredMedia.length)}</span>{' '}
+                                            {t('of')} <span className="font-semibold">{filteredMedia.length}</span> {t('results')}
                                         </div>
 
                                         <div className="flex items-center gap-2">
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                disabled={currentPage === 1}
-                                                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                                            >
-                                                {t('Previous')}
-                                            </Button>
+                                            {/* Desktop view */}
+                                            <div className="hidden items-center gap-2 min-[992px]:flex">
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                    disabled={currentPage === 1}
+                                                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                                                >
+                                                    {t('Previous')}
+                                                </Button>
 
-                                            <div className="flex gap-1">
-                                                {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
-                                                    let page;
-                                                    if (totalPages <= 5) {
-                                                        page = i + 1;
-                                                    } else if (currentPage <= 3) {
-                                                        page = i + 1;
-                                                    } else if (currentPage >= totalPages - 2) {
-                                                        page = totalPages - 4 + i;
-                                                    } else {
-                                                        page = currentPage - 2 + i;
-                                                    }
+                                                <div className="flex gap-1">
+                                                    {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                                                        let page;
+                                                        if (totalPages <= 5) {
+                                                            page = i + 1;
+                                                        } else if (currentPage <= 3) {
+                                                            page = i + 1;
+                                                        } else if (currentPage >= totalPages - 2) {
+                                                            page = totalPages - 4 + i;
+                                                        } else {
+                                                            page = currentPage - 2 + i;
+                                                        }
 
-                                                    return (
-                                                        <Button
-                                                            key={page}
-                                                            variant={currentPage === page ? 'default' : 'outline'}
-                                                            size="sm"
-                                                            className="w-10 h-8"
-                                                            onClick={() => setCurrentPage(page)}
-                                                        >
-                                                            {page}
-                                                        </Button>
-                                                    );
-                                                })}
+                                                        return (
+                                                            <Button
+                                                                key={page}
+                                                                variant={currentPage === page ? 'default' : 'outline'}
+                                                                size="sm"
+                                                                className="h-8 w-10"
+                                                                onClick={() => setCurrentPage(page)}
+                                                            >
+                                                                {page}
+                                                            </Button>
+                                                        );
+                                                    })}
+                                                </div>
+
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                    disabled={currentPage === totalPages}
+                                                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                                                >
+                                                    {t('Next')}
+                                                </Button>
                                             </div>
 
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                disabled={currentPage === totalPages}
-                                                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                                            >
-                                                {t('Next')}
-                                            </Button>
+                                            {/* Mobile view (< 992px) */}
+                                            <div className="flex items-center gap-1 min-[992px]:hidden">
+                                                <Button
+                                                    variant="outline"
+                                                    size="icon"
+                                                    className="h-8 w-8"
+                                                    disabled={currentPage === 1}
+                                                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                                                >
+                                                    <ChevronLeft className="h-4 w-4" />
+                                                </Button>
+
+                                                {(() => {
+                                                    const items = [];
+                                                    const isNearStart = currentPage <= 3;
+                                                    const isNearEnd = currentPage >= totalPages - 2;
+
+                                                    if (isNearStart) {
+                                                        items.push(1);
+                                                        if (totalPages >= 2) items.push(2);
+                                                        if (totalPages > 3) items.push({ type: 'ellipsis' });
+                                                    } else if (isNearEnd) {
+                                                        if (totalPages > 3) items.push({ type: 'ellipsis' });
+                                                        if (totalPages - 1 > 1) items.push(totalPages - 1);
+                                                        items.push(totalPages);
+                                                    } else {
+                                                        if (currentPage - 1 > 1) items.push({ type: 'ellipsis' });
+                                                        items.push(currentPage);
+                                                        if (currentPage + 1 < totalPages) items.push({ type: 'ellipsis' });
+                                                    }
+
+                                                    return items.map((item, i) => {
+                                                        if (typeof item === 'object') {
+                                                            return (
+                                                                <span
+                                                                    key={`el-${i}`}
+                                                                    className="text-muted-foreground flex h-8 w-8 items-center justify-center text-sm"
+                                                                >
+                                                                    ...
+                                                                </span>
+                                                            );
+                                                        }
+                                                        return (
+                                                            <Button
+                                                                key={item}
+                                                                variant={currentPage === item ? 'default' : 'outline'}
+                                                                size="icon"
+                                                                className="h-8 w-8"
+                                                                onClick={() => setCurrentPage(item)}
+                                                            >
+                                                                {item}
+                                                            </Button>
+                                                        );
+                                                    });
+                                                })()}
+
+                                                <Button
+                                                    variant="outline"
+                                                    size="icon"
+                                                    className="h-8 w-8"
+                                                    disabled={currentPage === totalPages}
+                                                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                                                >
+                                                    <ChevronRight className="h-4 w-4" />
+                                                </Button>
+                                            </div>
                                         </div>
                                     </div>
                                 )}
@@ -597,27 +700,20 @@ export default function MediaLibraryDemo() {
 
                         <div className="space-y-6">
                             <div
-                                className={`relative border-2 border-dashed rounded-xl p-12 text-center transition-all duration-200 ${dragActive
-                                    ? 'border-blue-500 bg-blue-50 scale-[1.02]'
-                                    : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
-                                    }`}
+                                className={`relative rounded-xl border-2 border-dashed p-12 text-center transition-all duration-200 ${
+                                    dragActive ? 'scale-[1.02] border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                                }`}
                                 onDragEnter={handleDrag}
                                 onDragLeave={handleDrag}
                                 onDragOver={handleDrag}
                                 onDrop={handleDrop}
                             >
-                                <div className={`transition-all duration-200 ${dragActive ? 'scale-110' : ''
-                                    }`}>
-                                    <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                                        <Upload className={`h-8 w-8 transition-colors ${dragActive ? 'text-blue-500' : 'text-gray-400'
-                                            }`} />
+                                <div className={`transition-all duration-200 ${dragActive ? 'scale-110' : ''}`}>
+                                    <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+                                        <Upload className={`h-8 w-8 transition-colors ${dragActive ? 'text-blue-500' : 'text-gray-400'}`} />
                                     </div>
-                                    <h3 className="text-lg font-medium mb-2">
-                                        {dragActive ? t('Drop files here') : t('Upload your files')}
-                                    </h3>
-                                    <p className="text-sm text-muted-foreground mb-6">
-                                        {t('Drag and drop your files here, or click to browse')}
-                                    </p>
+                                    <h3 className="mb-2 text-lg font-medium">{dragActive ? t('Drop files here') : t('Upload your files')}</h3>
+                                    <p className="text-muted-foreground mb-6 text-sm">{t('Drag and drop your files here, or click to browse')}</p>
 
                                     <Input
                                         type="file"
@@ -635,21 +731,19 @@ export default function MediaLibraryDemo() {
                                     >
                                         {uploading ? (
                                             <>
-                                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                                                <div className="mr-2 h-4 w-4 animate-spin rounded-full border-b-2 border-white"></div>
                                                 {t('Uploading...')}
                                             </>
                                         ) : (
                                             <>
-                                                <Plus className="h-4 w-4 mr-2" />
+                                                <Plus className="mr-2 h-4 w-4" />
                                                 {t('Choose Files')}
                                             </>
                                         )}
                                     </Button>
                                 </div>
 
-                                {dragActive && (
-                                    <div className="absolute inset-0 bg-blue-500/10 rounded-xl" />
-                                )}
+                                {dragActive && <div className="absolute inset-0 rounded-xl bg-blue-500/10" />}
                             </div>
                         </div>
                     </DialogContent>
@@ -657,37 +751,35 @@ export default function MediaLibraryDemo() {
 
                 {/* Info Modal */}
                 <Dialog open={infoModalOpen} onOpenChange={setInfoModalOpen} modal={!isChatGptOpen}>
-                    <DialogContent className="max-w-7xl max-h-[95vh] overflow-hidden">
+                    <DialogContent className="max-h-[95vh] max-w-7xl overflow-hidden">
                         <DialogHeader>
                             <DialogTitle className="flex items-center gap-2">
-                                <Image className='h-5 w-5'/>
+                                <Image className="h-5 w-5" />
                                 {t('Media Details')}
                             </DialogTitle>
                         </DialogHeader>
 
                         {selectedMediaInfo && (
-                            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 overflow-y-auto max-h-[calc(95vh-100px)] pr-2">
+                            <div className="grid max-h-[calc(95vh-100px)] grid-cols-1 gap-8 overflow-y-auto pr-2 lg:grid-cols-4">
                                 {/* Left Side - Large Media Preview (75% width) */}
-                                <div className="lg:col-span-3 space-y-4">
-                                    <div className="flex justify-center items-center rounded-lg p-8 border border-border min-h-[700px] bg-[#F0F0F1]">
+                                <div className="space-y-4 lg:col-span-3">
+                                    <div className="border-border flex min-h-[700px] items-center justify-center rounded-lg border bg-[#F0F0F1] p-8">
                                         {selectedMediaInfo.mime_type.startsWith('image/') ? (
                                             <img
                                                 src={selectedMediaInfo.url}
                                                 alt={selectedMediaInfo.name}
-                                                className="max-w-full max-h-[700px] w-auto h-auto object-contain rounded-md shadow-lg"
+                                                className="h-auto max-h-[700px] w-auto max-w-full rounded-md object-contain shadow-lg"
                                                 onError={(e) => {
                                                     e.currentTarget.src = selectedMediaInfo.thumb_url;
                                                 }}
                                             />
                                         ) : (
-                                            <div className="flex flex-col items-center justify-center h-full w-full">
-                                                <div className="mb-6 text-9xl">
-                                                    {getFileIcon(selectedMediaInfo.mime_type)}
-                                                </div>
-                                                <div className="text-3xl font-semibold text-muted-foreground mb-3">
+                                            <div className="flex h-full w-full flex-col items-center justify-center">
+                                                <div className="mb-6 text-9xl">{getFileIcon(selectedMediaInfo.mime_type)}</div>
+                                                <div className="text-muted-foreground mb-3 text-3xl font-semibold">
                                                     {selectedMediaInfo.mime_type.split('/')[1]?.toUpperCase() || 'FILE'}
                                                 </div>
-                                                <div className="text-base text-muted-foreground mt-2 max-w-md text-center break-all px-4">
+                                                <div className="text-muted-foreground mt-2 max-w-md px-4 text-center text-base break-all">
                                                     {selectedMediaInfo.file_name}
                                                 </div>
                                             </div>
@@ -696,48 +788,60 @@ export default function MediaLibraryDemo() {
                                 </div>
 
                                 {/* Right Side - Compact Details & Actions (25% width) */}
-                                <div className="lg:col-span-1 space-y-4">
+                                <div className="space-y-4 lg:col-span-1">
                                     {/* File Information */}
                                     <div className="space-y-3">
-                                        <h3 className="text-sm font-semibold text-foreground">{t('File Information')}</h3>
+                                        <h3 className="text-foreground text-sm font-semibold">{t('File Information')}</h3>
 
                                         <div className="space-y-2.5">
                                             <div className="space-y-0.5">
-                                                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('File Name')}</span>
-                                                <p className="text-sm font-medium text-foreground break-all leading-tight">
+                                                <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+                                                    {t('File Name')}
+                                                </span>
+                                                <p className="text-foreground text-sm leading-tight font-medium break-all">
                                                     {selectedMediaInfo.file_name}
                                                 </p>
                                             </div>
 
                                             <div className="space-y-0.5">
-                                                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('Display Name')}</span>
-                                                <p className="text-sm font-medium text-foreground break-all leading-tight">
+                                                <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+                                                    {t('Display Name')}
+                                                </span>
+                                                <p className="text-foreground text-sm leading-tight font-medium break-all">
                                                     {selectedMediaInfo.name}
                                                 </p>
                                             </div>
 
                                             <div className="space-y-0.5">
-                                                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('File Type')}</span>
-                                                <Badge variant="secondary" className="text-xs font-mono">{selectedMediaInfo.mime_type}</Badge>
+                                                <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+                                                    {t('File Type')}
+                                                </span>
+                                                <Badge variant="secondary" className="font-mono text-xs">
+                                                    {selectedMediaInfo.mime_type}
+                                                </Badge>
                                             </div>
 
                                             <div className="space-y-0.5">
-                                                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('File Size')}</span>
-                                                <p className="text-sm font-semibold text-foreground">{formatFileSize(selectedMediaInfo.size)}</p>
+                                                <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+                                                    {t('File Size')}
+                                                </span>
+                                                <p className="text-foreground text-sm font-semibold">{formatFileSize(selectedMediaInfo.size)}</p>
                                             </div>
 
                                             <div className="space-y-0.5">
-                                                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('Uploaded')}</span>
-                                                <p className="text-sm font-medium text-foreground">{formatDate(selectedMediaInfo.created_at)}</p>
+                                                <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+                                                    {t('Uploaded')}
+                                                </span>
+                                                <p className="text-foreground text-sm font-medium">{formatDate(selectedMediaInfo.created_at)}</p>
                                             </div>
                                         </div>
                                     </div>
 
                                     {/* URL Section */}
                                     <div className="space-y-1.5">
-                                        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t('File URL')}</span>
-                                        <div className="flex items-center gap-2 p-2 bg-muted/50 rounded-lg border border-border">
-                                            <code className="text-xs text-muted-foreground flex-1 break-all font-mono leading-tight">
+                                        <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">{t('File URL')}</span>
+                                        <div className="bg-muted/50 border-border flex items-center gap-2 rounded-lg border p-2">
+                                            <code className="text-muted-foreground flex-1 font-mono text-xs leading-tight break-all">
                                                 {selectedMediaInfo.url}
                                             </code>
                                             <Button
@@ -747,7 +851,7 @@ export default function MediaLibraryDemo() {
                                                     e.stopPropagation();
                                                     handleCopyLink(selectedMediaInfo.url);
                                                 }}
-                                                className="h-7 w-7 p-0 flex-shrink-0"
+                                                className="h-7 w-7 flex-shrink-0 p-0"
                                                 title={t('Copy URL')}
                                             >
                                                 <Copy className="h-3.5 w-3.5" />
@@ -756,37 +860,43 @@ export default function MediaLibraryDemo() {
                                     </div>
 
                                     {/* Action Buttons */}
-                                    <div className="space-y-2 pt-3 border-t border-border">
-                                        {hasPermission(permissions, 'view-media') && <Button
-                                            variant="outline"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                window.open(selectedMediaInfo.url, '_blank');
-                                            }}
-                                            className="w-full justify-start"
-                                        >
-                                            <Eye className="h-4 w-4 mr-2" />
-                                            {t('View')}
-                                        </Button>}
-                                        {hasPermission(permissions, 'download-media') && <Button
-                                            variant="outline"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleDownload(selectedMediaInfo.id, selectedMediaInfo.file_name);
-                                            }}
-                                            className="w-full justify-start"
-                                        >
-                                            <Download className="h-4 w-4 mr-2" />
-                                            {t('Download')}
-                                        </Button>}
-                                        {hasPermission(permissions, 'delete-media') && <Button
-                                            variant="outline"
-                                            onClick={handleDelete}
-                                            className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
-                                        >
-                                            <X className="h-4 w-4 mr-2" />
-                                            {t('Delete')}
-                                        </Button>}
+                                    <div className="border-border space-y-2 border-t pt-3">
+                                        {hasPermission(permissions, 'view-media') && (
+                                            <Button
+                                                variant="outline"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    window.open(selectedMediaInfo.url, '_blank');
+                                                }}
+                                                className="w-full justify-start"
+                                            >
+                                                <Eye className="mr-2 h-4 w-4" />
+                                                {t('View')}
+                                            </Button>
+                                        )}
+                                        {hasPermission(permissions, 'download-media') && (
+                                            <Button
+                                                variant="outline"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleDownload(selectedMediaInfo.id, selectedMediaInfo.file_name);
+                                                }}
+                                                className="w-full justify-start"
+                                            >
+                                                <Download className="mr-2 h-4 w-4" />
+                                                {t('Download')}
+                                            </Button>
+                                        )}
+                                        {hasPermission(permissions, 'delete-media') && (
+                                            <Button
+                                                variant="outline"
+                                                onClick={handleDelete}
+                                                className="text-destructive hover:text-destructive hover:bg-destructive/10 w-full justify-start"
+                                            >
+                                                <X className="mr-2 h-4 w-4" />
+                                                {t('Delete')}
+                                            </Button>
+                                        )}
                                     </div>
                                 </div>
                             </div>

@@ -14,7 +14,7 @@ class XenditPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['xendit_api_key'])) {
@@ -32,20 +32,20 @@ class XenditPaymentController extends Controller
                 'currency' => 'PHP',
                 'customer' => [
                     'given_names' => $user->name ?? 'Customer',
-                    'email' => $user->email
+                    'email' => $user->email,
                 ],
                 'success_redirect_url' => route('xendit.success', [
                     'plan_id' => $plan->id,
                     'user_id' => $user->id,
                     'billing_cycle' => $validated['billing_cycle'],
-                    'coupon_code' => $validated['coupon_code'] ?? ''
+                    'coupon_code' => $validated['coupon_code'] ?? '',
                 ]),
-                'failure_redirect_url' => route('plans.index')
+                'failure_redirect_url' => route('plans.index'),
             ];
 
             $response = \Http::withHeaders([
                 'Authorization' => 'Basic ' . base64_encode($settings['payment_settings']['xendit_api_key'] . ':'),
-                'Content-Type' => 'application/json'
+                'Content-Type' => 'application/json',
             ])->post('https://api.xendit.co/v2/invoices', $invoiceData);
 
             if ($response->successful()) {
@@ -54,7 +54,7 @@ class XenditPaymentController extends Controller
                     return response()->json([
                         'success' => true,
                         'payment_url' => $result['invoice_url'],
-                        'external_id' => $externalId
+                        'external_id' => $externalId,
                     ]);
                 }
             }
@@ -123,7 +123,7 @@ class XenditPaymentController extends Controller
                 'payment_method' => 'xendit',
                 'coupon_code' => $validated['coupon_code'] ?? null,
                 'payment_id' => $validated['external_id'],
-                'status' => 'pending'
+                'status' => 'pending',
             ]);
 
             $invoiceData = [
@@ -134,20 +134,20 @@ class XenditPaymentController extends Controller
                 'customer' => [
                     'given_names' => $validated['customer_details']['firstName'],
                     'surname' => $validated['customer_details']['lastName'],
-                    'email' => $validated['customer_details']['email']
+                    'email' => $validated['customer_details']['email'],
                 ],
                 'customer_notification_preference' => [
                     'invoice_created' => ['email'],
                     'invoice_reminder' => ['email'],
-                    'invoice_paid' => ['email']
+                    'invoice_paid' => ['email'],
                 ],
                 'success_redirect_url' => route('plans.index'),
-                'failure_redirect_url' => route('plans.index')
+                'failure_redirect_url' => route('plans.index'),
             ];
 
             $response = \Http::withHeaders([
                 'Authorization' => 'Basic ' . base64_encode($settings['secret_key'] . ':'),
-                'Content-Type' => 'application/json'
+                'Content-Type' => 'application/json',
             ])->post('https://api.xendit.co/v2/invoices', $invoiceData);
 
             if ($response->successful()) {

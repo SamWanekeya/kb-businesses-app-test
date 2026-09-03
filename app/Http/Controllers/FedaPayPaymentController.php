@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
-use Illuminate\Http\Request;
 use FedaPay\FedaPay;
 use FedaPay\Transaction;
+use Illuminate\Http\Request;
 
 class FedaPayPaymentController extends Controller
 {
@@ -53,7 +53,7 @@ class FedaPayPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['fedapay_secret_key'])) {
@@ -78,7 +78,7 @@ class FedaPayPaymentController extends Controller
                     'user_id' => $user->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'coupon_code' => $validated['coupon_code'] ?? null,
-                ]
+                ],
             ]);
 
             $token = $transaction->generateToken();
@@ -87,7 +87,7 @@ class FedaPayPaymentController extends Controller
                 'success' => true,
                 'payment_url' => $token->url,
                 'transaction_id' => $transaction->id,
-                'token' => $token->token
+                'token' => $token->token,
             ]);
 
         } catch (\Exception $e) {

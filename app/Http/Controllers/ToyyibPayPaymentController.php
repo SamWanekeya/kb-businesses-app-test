@@ -5,20 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ToyyibPayPaymentController extends Controller
 {
     private $secretKey;
+
     private $categoryCode;
+
     private $callBackUrl;
+
     private $returnUrl;
 
     public function __construct()
     {
         $userID = User::where('type', 'super_admin')->first()?->id;
-        $settings = getPaymentMethodConfig('toyyibpay',$userID);
+        $settings = getPaymentMethodConfig('toyyibpay', $userID);
         // $settings = getPaymentMethodConfig('toyyibpay');
         $this->secretKey = $settings['secret_key'] ?? '';
         $this->categoryCode = $settings['category_code'] ?? '';
@@ -44,7 +47,7 @@ class ToyyibPayPaymentController extends Controller
             }
 
             // Calculate final amount with coupon
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
             $finalAmount = $pricing['final_price'];
 
             // Set callback and return URLs
@@ -62,7 +65,7 @@ class ToyyibPayPaymentController extends Controller
                 'payment_method' => 'toyyibpay',
                 'coupon_code' => $validated['coupon_code'] ?? null,
                 'payment_id' => $paymentId,
-                'status' => 'pending'
+                'status' => 'pending',
             ]);
 
             // Format phone number for Malaysian format
@@ -92,7 +95,7 @@ class ToyyibPayPaymentController extends Controller
                 'billContentEmail' => 'Thank you for your subscription!',
                 'billChargeToCustomer' => 1,
                 'billExpiryDate' => date('d-m-Y', strtotime('+3 days')),
-                'billExpiryDays' => 3
+                'billExpiryDays' => 3,
             ];
 
             // Make API call to ToyyibPay
@@ -130,6 +133,7 @@ class ToyyibPayPaymentController extends Controller
             if (isset($responseData[0]['BillCode'])) {
                 $redirectUrl = 'https://toyyibpay.com/' . $responseData[0]['BillCode'];
                 Log::info('Redirecting to ToyyibPay', ['url' => $redirectUrl]);
+
                 return redirect()->away($redirectUrl);
             } else {
                 $errorMsg = $responseData[0]['msg'] ?? __('Failed to create payment bill');
@@ -163,6 +167,7 @@ class ToyyibPayPaymentController extends Controller
                     ]);
                 }
             }
+
             return response('OK', 200);
         } catch (\Exception $e) {
             return response('ERROR', 500);

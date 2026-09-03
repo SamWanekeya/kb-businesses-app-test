@@ -1,44 +1,71 @@
 import { PageTemplate } from '@/components/page-template';
 import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { type NavItem } from '@/types';
-import { useEffect, useRef, useState } from 'react';
-import { Settings as SettingsIcon, Building, DollarSign, Users, RefreshCw, Palette, BookOpen, Award, FileText, Mail, Bell, Link2, CreditCard, Calendar, HardDrive, Shield, Bot, Cookie, Search, Webhook, Wallet, MessageSquare, ShoppingBag, Slack } from 'lucide-react';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import SystemSettings from './components/system-settings';
-import OrganizationSystemSettings from './components/organization-system-settings';
 import { usePage } from '@inertiajs/react';
+import {
+    Bell,
+    Bot,
+    Calendar,
+    Cookie,
+    CreditCard,
+    DollarSign,
+    FileText,
+    HardDrive,
+    Mail,
+    MessageSquare,
+    Palette,
+    Search,
+    Settings as SettingsIcon,
+    Shield,
+    ShoppingBag,
+    Slack,
+    Webhook,
+} from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import OrganizationSystemSettings from './components/organization-system-settings';
+import SystemSettings from './components/system-settings';
 
 import CurrencySettings from './components/currency-settings';
 import EmailNotificationSettings from './components/email-notification-settings';
-import TwilioNotificationSettings from './components/twilio-notification-settings';
 import SlackNotificationSettings from './components/slack-notification-settings';
+import TwilioNotificationSettings from './components/twilio-notification-settings';
 
 import BrandSettings from './components/brand-settings';
 import EmailSettings from './components/email-settings';
 import PaymentSettings from './components/payment-settings';
 
-import RecaptchaSettings from './components/recaptcha-settings';
+import CacheSettings from './components/cache-settings';
 import ChatGptSettings from './components/chatgpt-settings';
 import CookieSettings from './components/cookie-settings';
-import SeoSettings from './components/seo-settings';
-import CacheSettings from './components/cache-settings';
-import WebhookSettings from './components/webhook-settings';
 import GoogleCalendarSettings from './components/google-calendar-settings';
 import InvoiceTemplateSettings from './components/invoice-template-settings';
 import QuoteTemplateSettings from './components/quote-template-settings';
+import RecaptchaSettings from './components/recaptcha-settings';
 import SalesOrderTemplateSettings from './components/sales-order-template-settings';
+import SeoSettings from './components/seo-settings';
+import WebhookSettings from './components/webhook-settings';
 
-import StorageSettings from './components/storage-settings';
 import { Toaster } from '@/components/ui/toaster';
-import { useTranslation } from 'react-i18next';
-import { hasPermission, hasRole } from '@/utils/authorization';
 import { useLayout } from '@/contexts/LayoutContext';
+import { hasPermission, hasRole } from '@/utils/authorization';
+import { useTranslation } from 'react-i18next';
+import StorageSettings from './components/storage-settings';
 
 export default function Settings() {
     const { t } = useTranslation();
     const { position } = useLayout();
-    const { systemSettings = {}, cacheSize = '0.00', timezones = {}, dateFormats = {}, timeFormats = {}, paymentSettings = {}, webhooks = [], auth = {}} = usePage().props as any;
+    const {
+        systemSettings = {},
+        cacheSize = '0.00',
+        timezones = {},
+        dateFormats = {},
+        timeFormats = {},
+        paymentSettings = {},
+        webhooks = [],
+        auth = {},
+    } = usePage().props as any;
     const [activeSection, setActiveSection] = useState('system-settings');
 
     // Define all possible sidebar navigation items
@@ -46,134 +73,133 @@ export default function Settings() {
         {
             title: t('System Settings'),
             href: '#system-settings',
-            icon: <SettingsIcon className="h-4 w-4 mr-2" />,
-            permission: 'manage-system-settings'
+            icon: <SettingsIcon className="mr-2 h-4 w-4" />,
+            permission: 'manage-system-settings',
         },
         {
             title: t('Brand Settings'),
             href: '#brand-settings',
-            icon: <Palette className="h-4 w-4 mr-2" />,
-            permission: 'manage-brand-settings'
+            icon: <Palette className="mr-2 h-4 w-4" />,
+            permission: 'manage-brand-settings',
         },
         {
             title: t('Currency Settings'),
             href: '#currency-settings',
-            icon: <DollarSign className="h-4 w-4 mr-2" />,
-            permission: 'manage-currency-settings'
+            icon: <DollarSign className="mr-2 h-4 w-4" />,
+            permission: 'manage-currency-settings',
         },
         {
             title: t('Email Settings'),
             href: '#email-settings',
-            icon: <Mail className="h-4 w-4 mr-2" />,
-            permission: 'manage-email-settings'
+            icon: <Mail className="mr-2 h-4 w-4" />,
+            permission: 'manage-email-settings',
         },
         {
             title: t('Email Notification Settings'),
             href: '#email-notification-settings',
-            icon: <Bell className="h-4 w-4 mr-2" />,
-            permission: 'manage-email-notifications'
+            icon: <Bell className="mr-2 h-4 w-4" />,
+            permission: 'manage-email-notifications',
         },
         {
             title: t('Twilio Settings'),
             href: '#twilio-notification-settings',
-            icon: <MessageSquare className="h-4 w-4 mr-2" />,
-            permission: 'manage-twilio-notifications'
+            icon: <MessageSquare className="mr-2 h-4 w-4" />,
+            permission: 'manage-twilio-notifications',
         },
         {
             title: t('Slack Settings'),
             href: '#slack-notification-settings',
-            icon: <Slack className="h-4 w-4 mr-2" />,
-            permission: 'manage-twilio-notifications'
+            icon: <Slack className="mr-2 h-4 w-4" />,
+            permission: 'manage-twilio-notifications',
         },
         {
             title: t('Payment Settings'),
             href: '#payment-settings',
-            icon: <CreditCard className="h-4 w-4 mr-2" />,
-            permission: 'manage-payment-settings'
+            icon: <CreditCard className="mr-2 h-4 w-4" />,
+            permission: 'manage-payment-settings',
         },
         {
             title: t('Payment Settings'),
             href: '#organization-payment-settings',
-            icon: <CreditCard className="h-4 w-4 mr-2" />,
-            permission: 'settings'
+            icon: <CreditCard className="mr-2 h-4 w-4" />,
+            permission: 'settings',
         },
         {
             title: t('Quote Templates'),
             href: '#quote-templates',
-            icon: <FileText className="h-4 w-4 mr-2" />,
+            icon: <FileText className="mr-2 h-4 w-4" />,
             role: 'organization',
-            permission: 'manage-quotes-settings'
+            permission: 'manage-quotes-settings',
         },
         {
             title: t('Sales Order Templates'),
             href: '#sales-order-templates',
-            icon: <ShoppingBag className="h-4 w-4 mr-2" />,
+            icon: <ShoppingBag className="mr-2 h-4 w-4" />,
             role: 'organization',
-            permission: 'manage-sales-orders-settings'
+            permission: 'manage-sales-orders-settings',
         },
         {
             title: t('Invoice Templates'),
             href: '#invoice-templates',
-            icon: <FileText className="h-4 w-4 mr-2" />,
+            icon: <FileText className="mr-2 h-4 w-4" />,
             role: 'organization',
-            permission: 'manage-invoices-settings'
+            permission: 'manage-invoices-settings',
         },
 
         {
             title: t('ReCaptcha Settings'),
             href: '#recaptcha-settings',
-            icon: <Shield className="h-4 w-4 mr-2" />,
-            permission: 'manage-recaptcha-settings'
+            icon: <Shield className="mr-2 h-4 w-4" />,
+            permission: 'manage-recaptcha-settings',
         },
         {
             title: t('Chat GPT Settings'),
             href: '#chatgpt-settings',
-            icon: <Bot className="h-4 w-4 mr-2" />,
-            permission: 'manage-chatgpt-settings'
+            icon: <Bot className="mr-2 h-4 w-4" />,
+            permission: 'manage-chatgpt-settings',
         },
         {
             title: t('Cookie Settings'),
             href: '#cookie-settings',
-            icon: <Cookie className="h-4 w-4 mr-2" />,
-            permission: 'manage-cookie-settings'
+            icon: <Cookie className="mr-2 h-4 w-4" />,
+            permission: 'manage-cookie-settings',
         },
         {
             title: t('SEO Settings'),
             href: '#seo-settings',
-            icon: <Search className="h-4 w-4 mr-2" />,
-            permission: 'manage-seo-settings'
+            icon: <Search className="mr-2 h-4 w-4" />,
+            permission: 'manage-seo-settings',
         },
         {
             title: t('Storage Settings'),
             href: '#storage-settings',
-            icon: <HardDrive className="h-4 w-4 mr-2" />,
-            permission: 'manage-storage-settings'
+            icon: <HardDrive className="mr-2 h-4 w-4" />,
+            permission: 'manage-storage-settings',
         },
         {
             title: t('Cache Settings'),
             href: '#cache-settings',
-            icon: <HardDrive className="h-4 w-4 mr-2" />,
-            permission: 'manage-cache-settings'
+            icon: <HardDrive className="mr-2 h-4 w-4" />,
+            permission: 'manage-cache-settings',
         },
         {
             title: t('Google Calendar Settings'),
             href: '#google-calendar-settings',
-            icon: <Calendar className="h-4 w-4 mr-2" />,
-            permission: 'settings'
+            icon: <Calendar className="mr-2 h-4 w-4" />,
+            permission: 'settings',
         },
-
     ];
 
     if (!hasRole(auth.roles, 'super_admin')) {
         allSidebarNavItems.push({
             title: t('Webhook Settings'),
             href: '#webhook-settings',
-            icon: <Webhook className="h-4 w-4 mr-2" />,
-            permission: 'manage-webhook-settings'
+            icon: <Webhook className="mr-2 h-4 w-4" />,
+            permission: 'manage-webhook-settings',
         });
     }
     // Filter sidebar items based on user permissions
-    const sidebarNavItems = allSidebarNavItems.filter(item => {
+    const sidebarNavItems = allSidebarNavItems.filter((item) => {
         // Check for both role and permission if both exist
         if (item.role && item.permission) {
             return hasRole(auth.roles, item.role) && hasPermission(auth.permissions, item.permission);
@@ -189,13 +215,26 @@ export default function Settings() {
         // For organization users, only show specific settings
         if (hasRole(auth.roles, 'organization')) {
             // Only allow system settings, email settings, brand settings, currency settings, webhook settings, email notifications, and settings
-            return ['manage-system-settings', 'manage-email-settings', 'manage-brand-settings', 'manage-currency-settings', 'manage-webhook-settings', 'manage-email-notifications', 'manage-twilio-notifications', 'manage-quotes-settings', 'manage-sales-orders-settings', 'manage-invoices-settings', 'settings'].includes(item.permission);
+            return [
+                'manage-system-settings',
+                'manage-email-settings',
+                'manage-brand-settings',
+                'manage-currency-settings',
+                'manage-webhook-settings',
+                'manage-email-notifications',
+                'manage-twilio-notifications',
+                'manage-quotes-settings',
+                'manage-sales-orders-settings',
+                'manage-invoices-settings',
+                'settings',
+            ].includes(item.permission);
         }
         return false;
     });
 
     // Refs for each section
     const systemSettingsRef = useRef<HTMLDivElement>(null);
+    const organizationSystemSettingsRef = useRef<HTMLDivElement>(null);
     const brandSettingsRef = useRef<HTMLDivElement>(null);
 
     const currencySettingsRef = useRef<HTMLDivElement>(null);
@@ -219,7 +258,6 @@ export default function Settings() {
 
     const storageSettingsRef = useRef<HTMLDivElement>(null);
 
-
     // Smart scroll functionality
     useEffect(() => {
         const handleScroll = () => {
@@ -227,6 +265,7 @@ export default function Settings() {
 
             // Get positions of each section
             const systemSettingsPosition = systemSettingsRef.current?.offsetTop || 0;
+            const organizationSystemSettingsPosition = organizationSystemSettingsRef.current?.offsetTop || 0;
             const brandSettingsPosition = brandSettingsRef.current?.offsetTop || 0;
 
             const currencySettingsPosition = currencySettingsRef.current?.offsetTop || 0;
@@ -300,7 +339,8 @@ export default function Settings() {
         // Initial check for hash in URL
         const hash = window.location.hash.replace('#', '');
         if (hash) {
-            const element = document.getElementById(hash);
+            const targetId = hash === 'system-settings' && !document.getElementById('system-settings') ? 'organization-system-settings' : hash;
+            const element = document.getElementById(targetId);
             if (element) {
                 element.scrollIntoView({ behavior: 'smooth' });
                 setActiveSection(hash);
@@ -312,50 +352,57 @@ export default function Settings() {
         };
     }, []);
 
+    // Force layout recalculation on mount to fix issues where layout is stuck
+    useEffect(() => {
+        const triggerResize = () => {
+            window.dispatchEvent(new Event('resize'));
+        };
+
+        const timers = [setTimeout(triggerResize, 0), setTimeout(triggerResize, 100), setTimeout(triggerResize, 300)];
+
+        return () => {
+            timers.forEach(clearTimeout);
+        };
+    }, []);
+
     // Handle navigation click
     const handleNavClick = (href: string) => {
         const id = href.replace('#', '');
-        const element = document.getElementById(id);
+        const targetId = id === 'system-settings' && !document.getElementById('system-settings') ? 'organization-system-settings' : id;
+        const element = document.getElementById(targetId);
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
             setActiveSection(id);
         }
     };
 
-    const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Settings') }
-    ];
+    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Settings') }];
 
     return (
-        <PageTemplate
-            title={t('Settings')}
-            description={t('Manage system settings.')}
-            url="/settings"
-            breadcrumbs={breadcrumbs}
-        ><style>{`
-            main {
-            max-width: 100vw;
-            overflow-x: clip !important;
-            }
-            body {
-            overflow-x: clip !important;
-            }
-        `}</style>
-            <div className={`flex flex-col md:flex-row gap-8`} dir={position === 'right' ? 'rtl' : 'ltr'}>
+        <PageTemplate title={t('Settings')} description={t('Manage system settings.')} url="/settings" breadcrumbs={breadcrumbs}>
+            <style>{`
+                @media (min-width: 1024px) {
+                    [data-slot="sidebar-inset"] {
+                        overflow-x: clip !important;
+                    }
+                }
+            `}</style>
+            <div className="flex w-full max-w-full min-w-0 flex-col gap-8 lg:flex-row" dir={position === 'right' ? 'rtl' : 'ltr'}>
                 {/* Sidebar Navigation */}
-                <div className="md:w-64 flex-shrink-0">
-                    <div className="sticky top-20">
-                        <ScrollArea className="h-[calc(100vh-5rem)]">
-                            <div className={`bg-card rounded-xl border p-2 shadow-sm`}>
-                                  <div className="flex flex-col gap-2">
+                <div className="w-full flex-shrink-0 lg:sticky lg:top-20 lg:w-64 lg:self-start">
+                    <ScrollArea className="h-auto lg:h-[calc(100vh-5rem)]">
+                        <div className="bg-card rounded-xl border p-2 shadow-sm">
+                            <div className="flex flex-col gap-2">
                                 {sidebarNavItems.map((item) => (
                                     <Button
                                         key={item.href}
                                         variant="ghost"
-                                        className={cn('w-full justify-start gap-3 rounded-lg text-sm font-normal text-card-foreground hover:bg-muted hover:font-normal', {
-                                            'bg-muted font-medium text-card-foreground': activeSection === item.href.replace('#', ''),
-                                        })}
+                                        className={cn(
+                                            'text-card-foreground hover:bg-muted w-full justify-start gap-3 rounded-lg text-sm font-normal hover:font-normal',
+                                            {
+                                                'bg-muted text-card-foreground font-medium': activeSection === item.href.replace('#', ''),
+                                            },
+                                        )}
                                         onClick={() => handleNavClick(item.href)}
                                     >
                                         {item.icon}
@@ -363,28 +410,22 @@ export default function Settings() {
                                     </Button>
                                 ))}
                             </div>
-                            </div>
-                        </ScrollArea>
-                    </div>
+                        </div>
+                    </ScrollArea>
                 </div>
 
                 {/* Main Content */}
-                <div className="flex-1">
+                <div className="w-full max-w-full min-w-0 flex-1 overflow-x-hidden">
                     {/* System Settings Section */}
                     {(hasPermission(auth.permissions, 'manage-system-settings') || hasRole(auth.roles, 'super_admin')) && (
                         <section id="system-settings" ref={systemSettingsRef} className="mb-8">
-                            <SystemSettings
-                                settings={systemSettings}
-                                timezones={timezones}
-                                dateFormats={dateFormats}
-                                timeFormats={timeFormats}
-                            />
+                            <SystemSettings settings={systemSettings} timezones={timezones} dateFormats={dateFormats} timeFormats={timeFormats} />
                         </section>
                     )}
 
                     {/* Organization System Settings Section */}
                     {hasRole(auth.roles, 'organization') && (
-                        <section id="system-settings" ref={systemSettingsRef} className="mb-8">
+                        <section id="organization-system-settings" ref={organizationSystemSettingsRef} className="mb-8">
                             <OrganizationSystemSettings
                                 settings={systemSettings}
                                 timezones={timezones}
@@ -401,10 +442,10 @@ export default function Settings() {
                         </section>
                     )}
 
-
-
                     {/* Currency Settings Section */}
-                    {(hasPermission(auth.permissions, 'manage-currency-settings') || hasRole(auth.roles, 'super_admin') || hasRole(auth.roles, 'organization')) && (
+                    {(hasPermission(auth.permissions, 'manage-currency-settings') ||
+                        hasRole(auth.roles, 'super_admin') ||
+                        hasRole(auth.roles, 'organization')) && (
                         <section id="currency-settings" ref={currencySettingsRef} className="mb-8">
                             <CurrencySettings />
                         </section>
@@ -450,21 +491,21 @@ export default function Settings() {
                     )}
 
                     {/* Quote Templates Section */}
-                    {(hasRole(auth.roles, 'organization') && hasPermission(auth.permissions, 'manage-quotes-settings')) && (
+                    {hasRole(auth.roles, 'organization') && hasPermission(auth.permissions, 'manage-quotes-settings') && (
                         <section id="quote-templates" ref={quoteTemplatesRef} className="mb-8">
                             <QuoteTemplateSettings />
                         </section>
                     )}
 
                     {/* Sales Order Templates Section */}
-                    {(hasRole(auth.roles, 'organization') && hasPermission(auth.permissions, 'manage-sales-orders-settings')) && (
+                    {hasRole(auth.roles, 'organization') && hasPermission(auth.permissions, 'manage-sales-orders-settings') && (
                         <section id="sales-order-templates" ref={salesOrderTemplatesRef} className="mb-8">
                             <SalesOrderTemplateSettings />
                         </section>
                     )}
 
                     {/* Invoice Templates Section */}
-                    {(hasRole(auth.roles, 'organization') && hasPermission(auth.permissions, 'manage-invoices-settings')) && (
+                    {hasRole(auth.roles, 'organization') && hasPermission(auth.permissions, 'manage-invoices-settings') && (
                         <section id="invoice-templates" ref={invoiceTemplatesRef} className="mb-8">
                             <InvoiceTemplateSettings />
                         </section>
@@ -487,7 +528,7 @@ export default function Settings() {
                     {/* Cookie Settings Section */}
                     {(hasPermission(auth.permissions, 'manage-cookie-settings') || hasRole(auth.roles, 'super_admin')) && (
                         <section id="cookie-settings" ref={cookieSettingsRef} className="mb-8">
-                            <CookieSettings settings={systemSettings}/>
+                            <CookieSettings settings={systemSettings} />
                         </section>
                     )}
 
@@ -519,16 +560,12 @@ export default function Settings() {
                         </section>
                     )}
 
-
-
-
                     {/* Webhook Settings Section */}
                     {(hasPermission(auth.permissions, 'manage-webhook-settings') || hasRole(auth.roles, 'organization')) && (
                         <section id="webhook-settings" ref={webhookSettingsRef} className="mb-8">
                             <WebhookSettings webhooks={webhooks} />
                         </section>
                     )}
-
                 </div>
             </div>
             <Toaster />

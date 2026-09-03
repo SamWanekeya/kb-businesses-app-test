@@ -16,21 +16,21 @@ class PaystackPaymentController extends Controller
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
             $settings = getPaymentGatewaySettings();
-            
+
             if (!isset($settings['payment_settings']['paystack_secret_key'])) {
                 return back()->withErrors(['error' => __('Paystack not configured')]);
             }
 
             // Verify payment with Paystack API
             $curl = curl_init();
-            curl_setopt_array($curl, array(
+            curl_setopt_array($curl, [
                 CURLOPT_URL => "https://api.paystack.co/transaction/verify/" . $validated['payment_id'],
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HTTPHEADER => [
                     "Authorization: Bearer " . $settings['payment_settings']['paystack_secret_key'],
                     "Cache-Control: no-cache",
                 ],
-            ));
+            ]);
 
             $response = curl_exec($curl);
             curl_close($curl);

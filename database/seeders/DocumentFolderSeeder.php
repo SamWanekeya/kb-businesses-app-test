@@ -14,6 +14,7 @@ class DocumentFolderSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 

@@ -14,7 +14,7 @@ class YooKassaPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['yookassa_shop_id'])) {
@@ -38,7 +38,7 @@ class YooKassaPaymentController extends Controller
                         'plan_id' => $plan->id,
                         'order_id' => $orderID,
                         'billing_cycle' => $validated['billing_cycle'],
-                        'coupon_code' => $validated['coupon_code'] ?? null
+                        'coupon_code' => $validated['coupon_code'] ?? null,
                     ]),
                 ],
                 'capture' => true,
@@ -48,15 +48,15 @@ class YooKassaPaymentController extends Controller
                     'user_id' => $user->id,
                     'billing_cycle' => $validated['billing_cycle'],
                     'coupon_code' => $validated['coupon_code'] ?? null,
-                    'order_id' => $orderID
-                ]
+                    'order_id' => $orderID,
+                ],
             ], uniqid('', true));
 
             if ($payment['confirmation']['confirmation_url'] != null) {
                 return response()->json([
                     'success' => true,
                     'payment_url' => $payment['confirmation']['confirmation_url'],
-                    'payment_id' => $payment['id']
+                    'payment_id' => $payment['id'],
                 ]);
             } else {
                 return response()->json(['error' => __('Payment creation failed')], 500);
@@ -111,6 +111,7 @@ class YooKassaPaymentController extends Controller
                     return redirect()->route('plans.index')->with('success', 'Payment successful and plan activated');
                 }
             }
+
             return redirect()->route('plans.index')->with('error', __('Payment verification failed'));
         } catch (\Exception $e) {
             return redirect()->route('plans.index')->with('error', __('Payment processing failed'));
@@ -147,6 +148,7 @@ class YooKassaPaymentController extends Controller
                     ]);
                 }
             }
+
             return response()->json(['status' => 'success']);
         } catch (\Exception $e) {
             return response()->json(['error' => __('Callback processing failed')], 500);

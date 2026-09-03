@@ -1,7 +1,7 @@
+import CookieConsentBanner from '@/components/CookieConsentBanner';
+import { FloatingChatGpt } from '@/components/FloatingChatGpt';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { useLayout } from '@/contexts/LayoutContext';
-import { FloatingChatGpt } from '@/components/FloatingChatGpt';
-import CookieConsentBanner from '@/components/CookieConsentBanner';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
@@ -35,7 +35,7 @@ export function AppShell({ children, variant = 'header' }: AppShellProps) {
 
     return (
         <SidebarProvider defaultOpen={isOpen} open={isOpen} onOpenChange={handleSidebarChange}>
-            <div className={cn('flex w-full min-h-screen',effectivePosition === 'right' ? 'flex-row-reverse' : 'flex-row')}>
+            <div className={cn('flex min-h-screen w-full', effectivePosition === 'right' ? 'flex-row-reverse' : 'flex-row')}>
                 {children}
                 <FloatingChatGpt />
                 <CookieConsentBanner />

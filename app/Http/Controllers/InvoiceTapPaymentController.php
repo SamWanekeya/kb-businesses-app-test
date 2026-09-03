@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class InvoiceTapPaymentController extends Controller
@@ -43,7 +42,7 @@ class InvoiceTapPaymentController extends Controller
             require_once app_path('Libraries/Tap/Reference.php');
             require_once app_path('Libraries/Tap/Payment.php');
             $tap = new \App\Package\Payment([
-                'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key']
+                'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key'],
             ]);
 
             $chargeData = [
@@ -62,8 +61,8 @@ class InvoiceTapPaymentController extends Controller
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
-                    'transaction_id' => $transactionId
-                ])]
+                    'transaction_id' => $transactionId,
+                ])],
             ];
 
             return $tap->charge($chargeData, true);
@@ -72,8 +71,9 @@ class InvoiceTapPaymentController extends Controller
             \Log::error('Tap invoice payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return response()->json(['success' => false, 'error' => __('Payment creation failed')]);
         }
     }
@@ -104,7 +104,7 @@ class InvoiceTapPaymentController extends Controller
             require_once app_path('Libraries/Tap/Reference.php');
             require_once app_path('Libraries/Tap/Payment.php');
             $tap = new \App\Package\Payment([
-                'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key']
+                'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key'],
             ]);
 
             // Get charge details from Tap API
@@ -123,7 +123,7 @@ class InvoiceTapPaymentController extends Controller
                     'invoice_id' => $invoiceId,
                     'amount' => $amount,
                     'payment_type' => $paymentType,
-                    'charge_id' => $chargeId
+                    'charge_id' => $chargeId,
                 ]);
 
                 return redirect()->route('invoices.public', encrypt($invoiceId))
@@ -135,12 +135,13 @@ class InvoiceTapPaymentController extends Controller
         } catch (\Exception $e) {
             \Log::error('Tap invoice success error', [
                 'error' => $e->getMessage(),
-                'request' => $request->all()
+                'request' => $request->all(),
             ]);
             $invoiceId = $request->input('invoice_id');
             if ($invoiceId) {
                 return redirect()->route('invoices.public', encrypt($invoiceId))->with('error', __('Payment verification failed'));
             }
+
             return redirect()->back()->with('error', __('Payment verification failed'));
         }
     }
@@ -154,7 +155,7 @@ class InvoiceTapPaymentController extends Controller
             \Log::info('Tap invoice callback received', [
                 'charge_id' => $chargeId,
                 'status' => $status,
-                'all_data' => $request->all()
+                'all_data' => $request->all(),
             ]);
 
             return response('OK', 200);
@@ -162,8 +163,9 @@ class InvoiceTapPaymentController extends Controller
         } catch (\Exception $e) {
             \Log::error('Tap invoice callback error', [
                 'error' => $e->getMessage(),
-                'data' => $request->all()
+                'data' => $request->all(),
             ]);
+
             return response('Error', 500);
         }
     }

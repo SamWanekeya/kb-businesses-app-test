@@ -17,6 +17,7 @@ class OpportunitySourceSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -26,7 +27,7 @@ class OpportunitySourceSeeder extends Seeder
             ['name' => 'Cold Outreach', 'description' => 'Opportunities from cold calling and emails'],
             ['name' => 'Social Media', 'description' => 'Opportunities from social media platforms'],
             ['name' => 'Trade Show', 'description' => 'Opportunities from trade shows and events'],
-            ['name' => 'Partner', 'description' => 'Opportunities from business partners']
+            ['name' => 'Partner', 'description' => 'Opportunities from business partners'],
         ];
 
         foreach ($organizationUsers as $organization) {

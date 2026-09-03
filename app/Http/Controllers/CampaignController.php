@@ -46,7 +46,7 @@ class CampaignController extends Controller
         // Handle sorting
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'name', 'start_date', 'end_date', 'budget', 'actual_cost', 'created_at'];
+        $allowedSorts = ['id', 'name', 'start_date', 'end_date', 'budget', 'actual_cost', 'created_at'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -156,10 +156,11 @@ class CampaignController extends Controller
 
         return Inertia::render('campaigns/show', [
             'campaign' => $campaign,
-            'campaignLeads' => $campaignLeads
+            'campaignLeads' => $campaignLeads,
         ]);
     }
-      public function edit($campaignId)
+
+    public function edit($campaignId)
     {
         $campaign = Campaign::where('id', $campaignId)
             ->where('created_by', createdBy())
@@ -183,7 +184,7 @@ class CampaignController extends Controller
 
     public function update(Request $request, $campaignId)
     {
-        
+
         $campaign = Campaign::where('id', $campaignId)
             ->where('created_by', createdBy())
             ->first();
@@ -220,6 +221,7 @@ class CampaignController extends Controller
                 }
 
                 $campaign->update($validated);
+
                 return redirect()->route('campaigns.index')->with('success', __('Campaign updated successfully.'));
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update campaign.'));
@@ -238,6 +240,7 @@ class CampaignController extends Controller
         if ($campaign) {
             try {
                 $campaign->delete();
+
                 return redirect()->back()->with('success', __('Campaign deleted successfully.'));
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete campaign.'));
@@ -246,6 +249,7 @@ class CampaignController extends Controller
             return redirect()->back()->with('error', __('Campaign not found.'));
         }
     }
+
     public function toggleStatus($campaignId)
     {
         $campaign = Campaign::where('id', $campaignId)

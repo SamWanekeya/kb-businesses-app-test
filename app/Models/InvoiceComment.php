@@ -13,7 +13,7 @@ class InvoiceComment extends BaseModel
         'invoice_id',
         'user_id',
         'comment',
-        'created_by'
+        'created_by',
     ];
 
     public function invoice(): BelongsTo

@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
-use App\Models\User;
-use App\Models\Setting;
 use App\Models\PlanOrder;
-use App\Models\PaymentSetting;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class BenefitPaymentController extends Controller
 {
@@ -21,7 +18,7 @@ class BenefitPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['benefit_secret_key']) || !isset($settings['payment_settings']['benefit_public_key'])) {
@@ -61,7 +58,7 @@ class BenefitPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['benefit_secret_key'])) {
@@ -86,7 +83,7 @@ class BenefitPaymentController extends Controller
                     "middle_name" => "",
                     "last_name" => "",
                     "email" => $user->email,
-                    "phone" => ["country_code" => "973", "number" => "33123456"]
+                    "phone" => ["country_code" => "973", "number" => "33123456"],
                 ],
                 "source" => ["id" => "src_bh.benefit"],
                 "post" => ["url" => route('benefit.callback')],
@@ -95,8 +92,8 @@ class BenefitPaymentController extends Controller
                     'amount' => $pricing['final_price'],
                     'coupon' => $validated['coupon_code'] ?? '',
                     'user_id' => $user->id,
-                    'billing_cycle' => $validated['billing_cycle']
-                ])]
+                    'billing_cycle' => $validated['billing_cycle'],
+                ])],
             ];
 
             $responseData = json_encode($userData);
@@ -112,7 +109,7 @@ class BenefitPaymentController extends Controller
                     return response()->json([
                         'success' => true,
                         'payment_url' => $res['transaction']['url'],
-                        'transaction_id' => $orderID
+                        'transaction_id' => $orderID,
                     ]);
                 }
             }
@@ -278,7 +275,7 @@ class BenefitPaymentController extends Controller
 
         return [
             'session_id' => 'benefit_session_' . time(),
-            'payment_url' => $baseUrl . '/payment/checkout?session=' . time()
+            'payment_url' => $baseUrl . '/payment/checkout?session=' . time(),
         ];
     }
 
@@ -290,7 +287,7 @@ class BenefitPaymentController extends Controller
             'status' => 'completed',
             'payment_id' => $paymentId,
             'amount' => '10.000',
-            'currency' => 'BHD'
+            'currency' => 'BHD',
         ];
     }
 

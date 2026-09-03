@@ -1,9 +1,9 @@
+import { toast } from '@/components/custom-toast';
+import { Button } from '@/components/ui/button';
+import axios from 'axios';
+import { ExternalLink, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
-import { Loader2, ExternalLink } from 'lucide-react';
-import { toast } from '@/components/custom-toast';
-import axios from 'axios';
 
 interface InvoiceMolliePaymentFormProps {
     invoiceId: number;
@@ -22,7 +22,7 @@ export function InvoiceMolliePaymentForm({
     mollieApiKey,
     currency = 'EUR',
     onSuccess,
-    onCancel
+    onCancel,
 }: InvoiceMolliePaymentFormProps) {
     const { t } = useTranslation();
     const [isProcessing, setIsProcessing] = useState(false);
@@ -31,18 +31,22 @@ export function InvoiceMolliePaymentForm({
         setIsProcessing(true);
 
         try {
-            const response = await axios.post(route('invoice.mollie.payment'), {
-                invoice_id: invoiceId,
-                amount: amount,
-                payment_type: paymentType,
-                _token: document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
-            }, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            });
+            const response = await axios.post(
+                route('invoice.mollie.payment'),
+                {
+                    invoice_id: invoiceId,
+                    amount: amount,
+                    payment_type: paymentType,
+                    _token: document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                },
+            );
 
             if (response.data.success && response.data.checkout_url) {
                 toast.success(t('Redirecting to Mollie payment page...'));
@@ -60,13 +64,11 @@ export function InvoiceMolliePaymentForm({
 
     return (
         <div className="space-y-4">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
                 <div className="flex items-start gap-3">
-                    <ExternalLink className="h-5 w-5 text-blue-600 mt-0.5" />
+                    <ExternalLink className="mt-0.5 h-5 w-5 text-blue-600" />
                     <div>
-                        <h4 className="font-medium text-blue-900 mb-1">
-                            {t('Secure Payment with Mollie')}
-                        </h4>
+                        <h4 className="mb-1 font-medium text-blue-900">{t('Secure Payment with Mollie')}</h4>
                         <p className="text-sm text-blue-700">
                             {t('You will be redirected to Mollie secure payment page to complete your transaction.')}
                         </p>
@@ -74,31 +76,24 @@ export function InvoiceMolliePaymentForm({
                 </div>
             </div>
 
-            <div className="border rounded-lg p-4 bg-gray-50">
-                <div className="flex justify-between items-center mb-2">
+            <div className="rounded-lg border bg-gray-50 p-4">
+                <div className="mb-2 flex items-center justify-between">
                     <span className="text-sm font-medium text-gray-600">{t('Payment Type')}:</span>
                     <span className="text-sm text-gray-900 capitalize">{paymentType}</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                     <span className="text-sm font-medium text-gray-600">{t('Amount')}:</span>
-                    <span className="text-lg font-bold text-gray-900">{currency} {amount}</span>
+                    <span className="text-lg font-bold text-gray-900">
+                        {currency} {amount}
+                    </span>
                 </div>
             </div>
 
             <div className="flex gap-3">
-                <Button
-                    variant="outline"
-                    onClick={onCancel}
-                    className="flex-1"
-                    disabled={isProcessing}
-                >
+                <Button variant="outline" onClick={onCancel} className="flex-1" disabled={isProcessing}>
                     {t('Cancel')}
                 </Button>
-                <Button
-                    onClick={handlePayment}
-                    disabled={isProcessing}
-                    className="flex-1"
-                >
+                <Button onClick={handlePayment} disabled={isProcessing} className="flex-1">
                     {isProcessing ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

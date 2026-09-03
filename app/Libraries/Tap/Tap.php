@@ -1,19 +1,18 @@
 <?php
+
 namespace App\Package;
 
 interface Tap
 {
+    public function charge($data);
 
-  public function charge($data);
+    public function getCharge($charge_id);
 
-  public function getCharge($charge_id);
+    public function chargesList($options);
 
-  public function chargesList($options);
+    public function refund($data = []);
 
-  public function refund($data = []);
+    public function getRefund($refund_id);
 
-  public function getRefund($refund_id);
-
-  public function refundList($options);
-
+    public function refundList($options);
 }

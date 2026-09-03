@@ -2,15 +2,15 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\ReceiptOrder;
-use App\Models\User;
 use App\Models\Account;
 use App\Models\Contact;
-use App\Models\PurchaseOrder;
-use App\Models\ReturnOrder;
 use App\Models\Product;
+use App\Models\PurchaseOrder;
+use App\Models\ReceiptOrder;
+use App\Models\ReturnOrder;
+use App\Models\User;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class ReceiptOrderSeeder extends Seeder
 {
@@ -21,6 +21,7 @@ class ReceiptOrderSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 

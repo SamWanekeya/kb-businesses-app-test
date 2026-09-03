@@ -15,6 +15,7 @@ class CategorySeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -24,7 +25,7 @@ class CategorySeeder extends Seeder
             ['name' => 'Mobile Devices', 'description' => 'Smartphones, tablets, and accessories'],
             ['name' => 'Software & Licenses', 'description' => 'Software applications and licenses'],
             ['name' => 'Office Equipment', 'description' => 'Printers, scanners, and office hardware'],
-            ['name' => 'Networking & Security', 'description' => 'Network equipment and security devices']
+            ['name' => 'Networking & Security', 'description' => 'Network equipment and security devices'],
         ];
 
         foreach ($organizationUsers as $organization) {

@@ -17,7 +17,7 @@ class DocumentFolderController extends Controller
     {
         $query = DocumentFolder::query()
             ->with(['parentFolder', 'creator'])
-            ->where(function($q) {
+            ->where(function ($q) {
                 if (auth()->user()->type === 'organization') {
                     $q->where('created_by', createdBy());
                 } else {
@@ -46,7 +46,7 @@ class DocumentFolderController extends Controller
         // Handle sorting
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'name', 'created_at'];
+        $allowedSorts = ['id', 'name', 'created_at'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -67,10 +67,11 @@ class DocumentFolderController extends Controller
                 if ($folder->parentFolder) {
                     $displayName = $folder->parentFolder->name . ' / ' . $folder->name;
                 }
+
                 return [
                     'id' => $folder->id,
                     'name' => $folder->name,
-                    'display_name' => $displayName
+                    'display_name' => $displayName,
                 ];
             });
 
@@ -81,7 +82,6 @@ class DocumentFolderController extends Controller
         ]);
     }
 
-
     public function create()
     {
         $parentFolders = DocumentFolder::where('created_by', createdBy())
@@ -91,8 +91,6 @@ class DocumentFolderController extends Controller
             'parentFolders' => $parentFolders,
         ]);
     }
-
-
 
     public function store(Request $request)
     {
@@ -131,7 +129,7 @@ class DocumentFolderController extends Controller
         return redirect()->back()->with('success', __('Document folder created successfully.'));
     }
 
-     public function show($id)
+    public function show($id)
     {
         $folder = DocumentFolder::where('id', $id)
             ->where('created_by', createdBy())
@@ -152,25 +150,25 @@ class DocumentFolderController extends Controller
             ->where('status', 'active')
             ->with('parentFolder')
             ->get(['id', 'name', 'parent_folder_id'])
-            ->map(fn($f) => [
-                'id'           => $f->id,
-                'name'         => $f->name,
+            ->map(fn ($f) => [
+                'id' => $f->id,
+                'name' => $f->name,
                 'display_name' => $f->parentFolder ? $f->parentFolder->name . ' / ' . $f->name : $f->name,
             ])->all();
 
         return Inertia::render('documents/folder', [
-            'folder'        => $folder,
-            'documents'     => $documents,
+            'folder' => $folder,
+            'documents' => $documents,
             'parentFolders' => $parentFolders,
-            'users'         => User::where('created_by', createdBy())->where('status', 'active')->select('id', 'name', 'email')->get(),
-            'accounts'      => Account::where('created_by', createdBy())->select('id', 'name')->get(),
-            'folders'       => DocumentFolder::where('created_by', createdBy())->select('id', 'name')->get(),
-            'types'         => DocumentType::where('created_by', createdBy())->where('status', 'active')->select('id', 'type_name')->get(),
+            'users' => User::where('created_by', createdBy())->where('status', 'active')->select('id', 'name', 'email')->get(),
+            'accounts' => Account::where('created_by', createdBy())->select('id', 'name')->get(),
+            'folders' => DocumentFolder::where('created_by', createdBy())->select('id', 'name')->get(),
+            'types' => DocumentType::where('created_by', createdBy())->where('status', 'active')->select('id', 'type_name')->get(),
             'opportunities' => Opportunity::where('created_by', createdBy())->where('status', 'active')->select('id', 'name')->get(),
         ]);
     }
 
-     public function edit($id)
+    public function edit($id)
     {
         $documentFolder = DocumentFolder::where('id', $id)
             ->where('created_by', createdBy())
@@ -235,6 +233,7 @@ class DocumentFolderController extends Controller
                 if ($parentFolderId) {
                     return redirect()->route('documents.folder', $parentFolderId)->with('success', __('Document folder deleted successfully.'));
                 }
+
                 return redirect()->route('documents.index')->with('success', __('Document folder deleted successfully.'));
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete document folder.'));
@@ -243,7 +242,6 @@ class DocumentFolderController extends Controller
             return redirect()->route('documents.index')->with('error', __('Document folder not found.'));
         }
     }
-
 
     public function toggleStatus($documentFolderId)
     {

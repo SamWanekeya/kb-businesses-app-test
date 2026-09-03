@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import { toast } from '@/components/custom-toast';
+import { SettingsSection } from '@/components/settings-section';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Save, Calendar, RefreshCw } from 'lucide-react';
-import { SettingsSection } from '@/components/settings-section';
-import { useTranslation } from 'react-i18next';
 import { router } from '@inertiajs/react';
-import { toast } from '@/components/custom-toast';
-import { Card, CardContent } from '@/components/ui/card';
+import { RefreshCw, Save } from 'lucide-react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface GoogleCalendarSettingsProps {
     settings?: Record<string, string>;
@@ -55,81 +55,83 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                 setIsLoading(false);
                 const errorMessage = errors.error || Object.values(errors).join(', ') || t('Failed to update Google Calendar settings');
                 toast.error(errorMessage);
-            }
+            },
         });
     };
 
     const handleSync = () => {
         setIsSyncing(true);
 
-        router.post(route('settings.google-calendar.sync'), {}, {
-            preserveScroll: true,
-            onSuccess: (page) => {
-                const successMessage = page.props.flash?.success;
-                const errorMessage = page.props.flash?.error;
+        router.post(
+            route('settings.google-calendar.sync'),
+            {},
+            {
+                preserveScroll: true,
+                onSuccess: (page) => {
+                    const successMessage = page.props.flash?.success;
+                    const errorMessage = page.props.flash?.error;
 
-                if (successMessage) {
-                    toast.success(successMessage);
-                } else if (errorMessage) {
+                    if (successMessage) {
+                        toast.success(successMessage);
+                    } else if (errorMessage) {
+                        toast.error(errorMessage);
+                    }
+                },
+                onError: (errors) => {
+                    const errorMessage = errors.error || Object.values(errors).join(', ') || t('Sync failed');
                     toast.error(errorMessage);
-                }
+                },
+                onFinish: () => {
+                    setIsSyncing(false);
+                },
             },
-            onError: (errors) => {
-                const errorMessage = errors.error || Object.values(errors).join(', ') || t('Sync failed');
-                toast.error(errorMessage);
-            },
-            onFinish: () => {
-                setIsSyncing(false);
-            }
-        });
+        );
     };
 
     return (
         <SettingsSection
-            title={t("Google Calendar Settings")}
-            description={t("Configure Google Calendar integration for appointment synchronization")}
+            title={t('Google Calendar Settings')}
+            description={t('Configure Google Calendar integration for appointment synchronization')}
             action={
-                <Button type="submit" form="google-calendar-form" disabled={isLoading} size="sm">
-                    <Save className="h-4 w-4 mr-2" />
-                    {isLoading ? t('Saving...') : t('Save Changes')}
+                <Button type="submit" form="google-calendar-form" disabled={isLoading} size="sm" className="max-[1300px]:px-2.5">
+                    <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
+                    <span className="max-[1300px]:hidden">{isLoading ? t('Saving...') : t('Save Changes')}</span>
                 </Button>
             }
         >
             <Card>
-                <CardContent className='pt-6'>
+                <CardContent className="pt-6">
                     <form id="google-calendar-form" onSubmit={handleSubmit} className="space-y-6">
                         <div className="flex items-center justify-between">
                             <div className="space-y-0.5">
-                                <Label htmlFor="googleCalendarEnabled">{t("Enable Google Calendar")}</Label>
-                                <p className="text-sm text-muted-foreground">
-                                    {t("Enable Google Calendar integration for appointments")}
-                                </p>
+                                <Label htmlFor="googleCalendarEnabled">{t('Enable Google Calendar')}</Label>
+                                <p className="text-muted-foreground text-sm">{t('Enable Google Calendar integration for appointments')}</p>
                             </div>
                             <Switch
                                 id="googleCalendarEnabled"
                                 checked={formData.googleCalendarEnabled}
-                                onCheckedChange={(checked) => setFormData(prev => ({ ...prev, googleCalendarEnabled: checked }))}
+                                onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, googleCalendarEnabled: checked }))}
                             />
                         </div>
 
                         <div className="space-y-4">
                             <div className="space-y-2">
                                 <Label htmlFor="googleCalendarId">
-                                    {t("Google Calendar ID")}
-                                    <span className="text-red-500 ml-1">*</span>
+                                    {t('Google Calendar ID')}
+                                    <span className="ml-1 text-red-500">*</span>
                                 </Label>
                                 <Input
                                     id="googleCalendarId"
                                     type="text"
                                     value={formData.googleCalendarId}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, googleCalendarId: e.target.value }))}
+                                    onChange={(e) => setFormData((prev) => ({ ...prev, googleCalendarId: e.target.value }))}
                                     placeholder={t("Enter your Google Calendar ID or 'primary'")}
                                     disabled={!formData.googleCalendarEnabled}
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="googleCalendarJson">{t("Service Account JSON File")}</Label>
+                                <Label htmlFor="googleCalendarJson">{t('Service Account JSON File')}</Label>
                                 <Input
                                     id="googleCalendarJson"
                                     type="file"
@@ -142,18 +144,11 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                                         {t('Selected file')}: {jsonFile.name}
                                     </p>
                                 )}
-                                <p className="text-xs text-muted-foreground">
-                                    {t("Upload your Google service account JSON credentials")}
-                                </p>
+                                <p className="text-muted-foreground text-xs">{t('Upload your Google service account JSON credentials')}</p>
                             </div>
 
                             <div className="flex justify-end">
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    onClick={handleSync}
-                                    disabled={!formData.googleCalendarEnabled || isSyncing}
-                                >
+                                <Button type="button" variant="outline" onClick={handleSync} disabled={!formData.googleCalendarEnabled || isSyncing}>
                                     <RefreshCw className={`mr-2 h-4 w-4 ${isSyncing ? 'animate-spin' : ''}`} />
                                     {isSyncing ? t('Syncing...') : t('Test Sync')}
                                 </Button>

@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { PageTemplate } from '@/components/page-template';
-import { usePage, router } from '@inertiajs/react';
-import { useTranslation } from 'react-i18next';
 import { toast } from '@/components/custom-toast';
+import { PageTemplate } from '@/components/page-template';
+import { RolePermissionCheckboxGroup } from '@/components/RolePermissionCheckboxGroup';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { RolePermissionCheckboxGroup } from '@/components/RolePermissionCheckboxGroup';
-import { Save, ArrowLeft } from 'lucide-react';
+import { router, usePage } from '@inertiajs/react';
+import { ArrowLeft } from 'lucide-react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function RolesCreate() {
     const { t } = useTranslation();
@@ -46,31 +46,35 @@ export default function RolesCreate() {
             if (!globalSettings?.is_demo) toast.loading(t('Creating role...'));
         }
 
-        router.post(route('roles.store'), {
-            label,
-            description,
-            permissions: selectedPermissions,
-        }, {
-            onSuccess: (page) => {
-                if (!isDemo) {
-                    if (!globalSettings?.is_demo) toast.dismiss();
-                    if (page.props.flash.success) toast.success(t(page.props.flash.success));
-                    else if (page.props.flash.error) toast.error(t(page.props.flash.error));
-                }
+        router.post(
+            route('roles.store'),
+            {
+                label,
+                description,
+                permissions: selectedPermissions,
             },
-            onError: (errs) => {
-                if (!isDemo) if (!globalSettings?.is_demo) toast.dismiss();
-                if (typeof errs === 'object') setErrors(errs as Record<string, string>);
-                else if (!isDemo) toast.error(t(errs));
+            {
+                onSuccess: (page) => {
+                    if (!isDemo) {
+                        if (!globalSettings?.is_demo) toast.dismiss();
+                        if (page.props.flash.success) toast.success(t(page.props.flash.success));
+                        else if (page.props.flash.error) toast.error(t(page.props.flash.error));
+                    }
+                },
+                onError: (errs) => {
+                    if (!isDemo) if (!globalSettings?.is_demo) toast.dismiss();
+                    if (typeof errs === 'object') setErrors(errs as Record<string, string>);
+                    else if (!isDemo) toast.error(t(errs));
+                },
+                onFinish: () => setProcessing(false),
             },
-            onFinish: () => setProcessing(false),
-        });
+        );
     };
 
     const pageActions = [
         {
             label: t('Back'),
-            icon: <ArrowLeft className="h-4 w-4 mr-2" />,
+            icon: <ArrowLeft className="mr-2 h-4 w-4" />,
             variant: 'outline' as const,
             onClick: () => router.get(route('roles.index')),
         },
@@ -85,7 +89,6 @@ export default function RolesCreate() {
             breadcrumbs={breadcrumbs}
         >
             <form onSubmit={handleSubmit} className="space-y-6">
-
                 {/* Basic Info */}
                 <Card>
                     <CardHeader className="pb-3">
@@ -93,9 +96,11 @@ export default function RolesCreate() {
                         <CardDescription>{t('Enter the role name and an optional description.')}</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1.5">
-                                <Label required htmlFor="label">{t('Role Name')}</Label>
+                                <Label required htmlFor="label">
+                                    {t('Role Name')}
+                                </Label>
                                 <Input
                                     id="label"
                                     required
@@ -127,16 +132,14 @@ export default function RolesCreate() {
                         <CardDescription>
                             {t('Select permissions for this role. You can select all permissions at once or manage them by module.')}
                             {auth?.user?.type !== 'super_admin' && (
-                                <span className="block mt-1 text-amber-600 text-xs">
+                                <span className="mt-1 block text-xs text-amber-600">
                                     {t('Note: Only permissions for modules available to your role are shown.')}
                                 </span>
                             )}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        {errors.permissions && (
-                            <p className="text-xs text-red-500 mb-3">{errors.permissions}</p>
-                        )}
+                        {errors.permissions && <p className="mb-3 text-xs text-red-500">{errors.permissions}</p>}
                         <RolePermissionCheckboxGroup
                             permissions={permissions}
                             selectedPermissions={selectedPermissions}
@@ -146,7 +149,7 @@ export default function RolesCreate() {
                 </Card>
 
                 {/* Submit */}
-                <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pb-2">
+                <div className="flex flex-col-reverse justify-end gap-3 pb-2 sm:flex-row">
                     <Button type="button" variant="outline" onClick={() => router.get(route('roles.index'))}>
                         {t('Cancel')}
                     </Button>
@@ -154,7 +157,6 @@ export default function RolesCreate() {
                         {processing && !isDemo ? t('Saving...') : t('Save')}
                     </Button>
                 </div>
-
             </form>
         </PageTemplate>
     );

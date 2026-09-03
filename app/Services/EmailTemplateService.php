@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\EmailTemplate;
 use App\Models\Business;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Config;
+use App\Models\EmailTemplate;
 use Exception;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Mail;
 
 class EmailTemplateService
 {

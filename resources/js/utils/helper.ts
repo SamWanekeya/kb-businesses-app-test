@@ -1,4 +1,4 @@
-import { t } from "i18next";
+import { t } from 'i18next';
 
 const getBaseUrl = (): string => {
     return window.appSettings?.baseUrl || window.location.origin;
@@ -20,7 +20,7 @@ const getDisplayUrl = (path: string, pageProps?: any): string => {
     try {
         const dynamicPath = `${baseUrl}`;
         const globalSettings = (window as any).page.props.globalSettings;
-        let imageUrlPrefix = globalSettings?.image_url || (dynamicPath + '/storage/media');
+        let imageUrlPrefix = globalSettings?.image_url || dynamicPath + '/storage/media';
 
         path = path.replace('storage/media', '');
 
@@ -35,8 +35,7 @@ const getDisplayUrl = (path: string, pageProps?: any): string => {
         } else {
             return imageUrlPrefix + path;
         }
-    }
-    catch {
+    } catch {
         const fallbackPrefix = `${window.location.origin}`;
         return path.startsWith('/') ? fallbackPrefix + path.substring(1) : fallbackPrefix + path;
     }
@@ -45,17 +44,17 @@ const getDisplayUrl = (path: string, pageProps?: any): string => {
 const isRegistrationEnabled = () => {
     const globalSettings = getGlobalSettings();
     return globalSettings?.registrationEnabled;
-}
+};
 
 const getTermsAndConditionsUrl = () => {
     const globalSettings = getGlobalSettings();
     return globalSettings?.termsConditionsPage;
-}
+};
 
 const isDisabledEditRole = (role: string) => {
     const roles = ['sales-manager'];
     return roles.includes(role);
-}
+};
 
 const formatRelativeTime = (dateString: string) => {
     const date = new Date(dateString);
@@ -81,8 +80,8 @@ const capitalize = (str: string) => {
         .toLowerCase() // Convert everything to lowercase first
         .replace(/_/g, ' ') // Replace underscores with spaces
         .split(' ') // Split into words
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize first letter of each word
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize first letter of each word
         .join(' '); // Join back with spaces
 };
 
-export { getDisplayUrl, isRegistrationEnabled, getTermsAndConditionsUrl, isDisabledEditRole, formatRelativeTime, capitalize };
+export { capitalize, formatRelativeTime, getDisplayUrl, getTermsAndConditionsUrl, isDisabledEditRole, isRegistrationEnabled };

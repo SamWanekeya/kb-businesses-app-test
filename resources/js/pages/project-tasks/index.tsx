@@ -1,21 +1,21 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { CrudDeleteModal } from '@/components/CrudDeleteModal';
+import { CrudFormModal } from '@/components/CrudFormModal';
+import { toast } from '@/components/custom-toast';
 import { PageTemplate } from '@/components/page-template';
-import { usePage, router } from '@inertiajs/react';
-import { Plus, Eye, Edit, Trash2, MoreHorizontal, FileDown, Calendar, User } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { hasPermission } from '@/utils/authorization';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CrudFormModal } from '@/components/CrudFormModal';
-import { CrudDeleteModal } from '@/components/CrudDeleteModal';
-import { toast } from '@/components/custom-toast';
-import { useTranslation } from 'react-i18next';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useInitials } from '@/hooks/use-initials';
+import { hasPermission } from '@/utils/authorization';
+import { router, usePage } from '@inertiajs/react';
+import { Calendar, Edit, Eye, FileDown, LayoutGrid, MoreHorizontal, Plus, Trash2, User } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
-function ParentTaskSelect({ tasksRef, value, onChange }: { tasksRef: React.MutableRefObject<any[]>, value: string, onChange: (v: string) => void }) {
+function ParentTaskSelect({ tasksRef, value, onChange }: { tasksRef: React.MutableRefObject<any[]>; value: string; onChange: (v: string) => void }) {
     const { t } = useTranslation();
     const [tasks, setTasks] = useState<any[]>(() => [...tasksRef.current]);
 
@@ -23,7 +23,9 @@ function ParentTaskSelect({ tasksRef, value, onChange }: { tasksRef: React.Mutab
         tasksRef.current.__notify = () => setTasks([...tasksRef.current]);
         // Sync on mount in case data was loaded before this mounted
         setTasks([...tasksRef.current]);
-        return () => { delete tasksRef.current.__notify; };
+        return () => {
+            delete tasksRef.current.__notify;
+        };
     }, [tasksRef]);
     return (
         <Select value={value || ''} onValueChange={onChange}>
@@ -32,7 +34,9 @@ function ParentTaskSelect({ tasksRef, value, onChange }: { tasksRef: React.Mutab
             </SelectTrigger>
             <SelectContent className="z-[60000]">
                 {tasks.map((task: any) => (
-                    <SelectItem key={task.id} value={String(task.id)}>{task.title}</SelectItem>
+                    <SelectItem key={task.id} value={String(task.id)}>
+                        {task.title}
+                    </SelectItem>
                 ))}
             </SelectContent>
         </Select>
@@ -41,7 +45,19 @@ function ParentTaskSelect({ tasksRef, value, onChange }: { tasksRef: React.Mutab
 
 export default function ProjectTasks() {
     const { t } = useTranslation();
-    const { auth, kanbanData: initialKanbanData, statuses = [], projects = [], allProjects = [], users = [], allUsers = [], parentTasks = [], taskStatuses = [], allTaskStatuses = [], filters: pageFilters = {} } = usePage().props as any;
+    const {
+        auth,
+        kanbanData: initialKanbanData,
+        statuses = [],
+        projects = [],
+        allProjects = [],
+        users = [],
+        allUsers = [],
+        parentTasks = [],
+        taskStatuses = [],
+        allTaskStatuses = [],
+        filters: pageFilters = {},
+    } = usePage().props as any;
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();
 
@@ -65,12 +81,20 @@ export default function ProjectTasks() {
 
     const pageInitialState = useState(true);
     useEffect(() => {
-        if (pageInitialState[0]) { pageInitialState[1](false); return; }
+        if (pageInitialState[0]) {
+            pageInitialState[1](false);
+            return;
+        }
         applyFilters();
     }, [searchTerm, selectedStatus, selectedPriority, selectedProject, selectedAssignee]);
 
-    const hasActiveFilters = () => searchTerm !== '' || selectedStatus !== 'all' || selectedPriority !== 'all' || selectedProject !== 'all' || selectedAssignee !== 'all';
-    const activeFilterCount = () => (selectedStatus !== 'all' ? 1 : 0) + (selectedPriority !== 'all' ? 1 : 0) + (selectedProject !== 'all' ? 1 : 0) + (selectedAssignee !== 'all' ? 1 : 0);
+    const hasActiveFilters = () =>
+        searchTerm !== '' || selectedStatus !== 'all' || selectedPriority !== 'all' || selectedProject !== 'all' || selectedAssignee !== 'all';
+    const activeFilterCount = () =>
+        (selectedStatus !== 'all' ? 1 : 0) +
+        (selectedPriority !== 'all' ? 1 : 0) +
+        (selectedProject !== 'all' ? 1 : 0) +
+        (selectedAssignee !== 'all' ? 1 : 0);
 
     const loadKanbanData = () => {
         const allTasks = Object.values(initialKanbanData || {}).flatMap((col: any) => col.tasks || []);
@@ -81,14 +105,15 @@ export default function ProjectTasks() {
                 status,
                 items: allTasks.filter((task: any) => {
                     const matchesStatus = task.task_status_id === status.id;
-                    const matchesSearch = !searchTerm ||
+                    const matchesSearch =
+                        !searchTerm ||
                         task.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         task.description?.toLowerCase().includes(searchTerm.toLowerCase());
                     const matchesPriority = selectedPriority === 'all' || task.priority === selectedPriority;
                     const matchesProject = selectedProject === 'all' || task.project?.id?.toString() === selectedProject;
                     const matchesAssignee = selectedAssignee === 'all' || task.assigned_user?.id?.toString() === selectedAssignee;
                     return matchesStatus && matchesSearch && matchesPriority && matchesProject && matchesAssignee;
-                })
+                }),
             };
         });
 
@@ -100,13 +125,17 @@ export default function ProjectTasks() {
     }, [initialKanbanData, searchTerm, selectedPriority, selectedProject, selectedAssignee, statuses]);
 
     const applyFilters = () => {
-        router.get(route('project-tasks.index'), {
-            search: searchTerm || undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            priority: selectedPriority !== 'all' ? selectedPriority : undefined,
-            project_id: selectedProject !== 'all' ? selectedProject : undefined,
-            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('project-tasks.index'),
+            {
+                search: searchTerm || undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                priority: selectedPriority !== 'all' ? selectedPriority : undefined,
+                project_id: selectedProject !== 'all' ? selectedProject : undefined,
+                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleSearch = (e: React.FormEvent) => {
@@ -128,8 +157,8 @@ export default function ProjectTasks() {
                 setFormMode('edit');
                 if (item.project?.id) {
                     fetch(route('api.projects.details', item.project.id) + '?exclude_id=' + item.id)
-                        .then(res => res.json())
-                        .then(data => setParentTasks(data.parent_tasks || []))
+                        .then((res) => res.json())
+                        .then((data) => setParentTasks(data.parent_tasks || []))
                         .catch(() => setParentTasks([]))
                         .finally(() => setIsFormModalOpen(true));
                 } else {
@@ -154,21 +183,27 @@ export default function ProjectTasks() {
     const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
             toast.loading(t('Creating task...'));
-            router.post(route('project-tasks.store'), {
-                ...formData,
-                task_status_id: prefilledStatus ? parseInt(prefilledStatus) : formData.task_status_id,
-            }, {
-                onSuccess: (page) => {
-                    setIsFormModalOpen(false);
-                    toast.dismiss();
-                    if (page.props.flash.success) toast.success(t(page.props.flash.success));
-                    else if (page.props.flash.error) toast.error(t(page.props.flash.error));
+            router.post(
+                route('project-tasks.store'),
+                {
+                    ...formData,
+                    task_status_id: prefilledStatus ? parseInt(prefilledStatus) : formData.task_status_id,
                 },
-                onError: (errors) => {
-                    toast.dismiss();
-                    toast.error(typeof errors === 'string' ? errors : t('Failed to create: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                }
-            });
+                {
+                    onSuccess: (page) => {
+                        setIsFormModalOpen(false);
+                        toast.dismiss();
+                        if (page.props.flash.success) toast.success(t(page.props.flash.success));
+                        else if (page.props.flash.error) toast.error(t(page.props.flash.error));
+                    },
+                    onError: (errors) => {
+                        toast.dismiss();
+                        toast.error(
+                            typeof errors === 'string' ? errors : t('Failed to create: {{errors}}', { errors: Object.values(errors).join(', ') }),
+                        );
+                    },
+                },
+            );
         } else if (formMode === 'edit') {
             toast.loading(t('Updating task...'));
             router.put(route('project-tasks.update', currentItem.id), formData, {
@@ -180,8 +215,10 @@ export default function ProjectTasks() {
                 },
                 onError: (errors) => {
                     toast.dismiss();
-                    toast.error(typeof errors === 'string' ? errors : t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                }
+                    toast.error(
+                        typeof errors === 'string' ? errors : t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }),
+                    );
+                },
             });
         }
     };
@@ -198,7 +235,7 @@ export default function ProjectTasks() {
             onError: (errors) => {
                 toast.dismiss();
                 toast.error(typeof errors === 'string' ? errors : t('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
-            }
+            },
         });
     };
 
@@ -207,25 +244,33 @@ export default function ProjectTasks() {
     if (hasPermission(permissions, 'export-project-tasks')) {
         pageActions.push({
             label: t('Export'),
-            icon: <FileDown className="h-4 w-4 mr-2" />,
+            icon: <FileDown className="min-[390px]: mr-0 mr-2 h-4 w-4" />,
             variant: 'outline',
-            onClick: () => window.location.href = route('project-task.export')
+            onClick: () => (window.location.href = route('project-task.export')),
+            className: 'h-8 w-8 min-[390px]:h-9 min-[390px]:w-auto px-0 min-[390px]:px-4',
+            labelClassName: 'hidden min-[390px]:inline',
+            tooltip: t('Export'),
+            tooltipClassName: 'min-[390px]:hidden',
         });
     }
 
     if (hasPermission(permissions, 'create-project-tasks')) {
         pageActions.push({
             label: t('Add Task'),
-            icon: <Plus className="h-4 w-4 mr-2" />,
+            icon: <Plus className="mr-0 h-4 w-4 min-[390px]:mr-2" />,
             variant: 'default',
-            onClick: () => handleAddTask('')
+            className: 'h-8 w-8 min-[390px]:h-9 min-[390px]:w-auto px-0 min-[390px]:px-4',
+            labelClassName: 'hidden min-[390px]:inline',
+            tooltip: t('Add Task'),
+            tooltipClassName: 'min-[390px]:hidden',
+            onClick: () => handleAddTask(''),
         });
     }
 
     const breadcrumbs = [
         { title: t('Dashboard'), href: route('dashboard') },
         { title: t('Project Management'), href: route('project-tasks.index') },
-        { title: t('Project Tasks') }
+        { title: t('Project Tasks') },
     ];
 
     const priorityColors: any = {
@@ -254,7 +299,7 @@ export default function ProjectTasks() {
               .kanban-board-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
             `}</style>
 
-            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 shadow mb-4 border">
+            <div className="mb-4 rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-900">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -268,8 +313,8 @@ export default function ProjectTasks() {
                             onChange: setSelectedStatus,
                             options: [
                                 { value: 'all', label: t('All Status') },
-                                ...allTaskStatuses.map((s: any) => ({ value: s.id.toString(), label: s.name }))
-                            ]
+                                ...allTaskStatuses.map((s: any) => ({ value: s.id.toString(), label: s.name })),
+                            ],
                         },
                         {
                             name: 'priority',
@@ -282,8 +327,8 @@ export default function ProjectTasks() {
                                 { value: 'low', label: t('Low') },
                                 { value: 'medium', label: t('Medium') },
                                 { value: 'high', label: t('High') },
-                                { value: 'urgent', label: t('Urgent') }
-                            ]
+                                { value: 'urgent', label: t('Urgent') },
+                            ],
                         },
                         {
                             name: 'project_id',
@@ -294,8 +339,8 @@ export default function ProjectTasks() {
                             onChange: setSelectedProject,
                             options: [
                                 { value: 'all', label: t('All Projects') },
-                                ...allProjects.map((p: any) => ({ value: p.id.toString(), label: p.name }))
-                            ]
+                                ...allProjects.map((p: any) => ({ value: p.id.toString(), label: p.name })),
+                            ],
                         },
                         {
                             name: 'assigned_to',
@@ -306,9 +351,9 @@ export default function ProjectTasks() {
                             onChange: setSelectedAssignee,
                             options: [
                                 { value: 'all', label: t('All Users') },
-                                ...allUsers.map((u: any) => ({ value: u.id.toString(), label: u.name }))
-                            ]
-                        }
+                                ...allUsers.map((u: any) => ({ value: u.id.toString(), label: u.name })),
+                            ],
+                        },
                     ]}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
@@ -317,24 +362,54 @@ export default function ProjectTasks() {
                 />
             </div>
 
-            <div className="flex gap-4 overflow-x-auto pb-2 kanban-board-scroll" style={{ height: 'calc(100vh - 240px)' }}>
-                        {statuses.map((status: any) => {
-                            const statusTasks = kanbanData?.[status.id]?.items || [];
-                            const colBg = status.color ? `${status.color}12` : '#f8fafc';
-                            const colBorder = status.color ? `${status.color}30` : '#e2e8f0';
-                            return (
-                                <div
-                                    key={status.id}
-                                    className="flex-shrink-0 flex flex-col rounded-xl border"
-                                    style={{ width: '300px', minWidth: '300px', backgroundColor: colBg, borderColor: colBorder, height: '100%' }}
-                                    onDragOver={(e) => e.preventDefault()}
-                                    onDrop={(e) => {
-                                        e.preventDefault();
-                                        const taskId = e.dataTransfer.getData('taskId');
-                                        if (!taskId) return;
-                                        if (!hasPermission(permissions, 'move-project-task')) { toast.error(t('Permission denied.')); return; }
-                                        toast.loading(t('Updating task status...'));
-                                        router.put(route('project-tasks.update-status', taskId), { task_status_id: status.id }, {
+            <div className="kanban-board-scroll flex gap-4 overflow-x-auto pb-2" style={{ height: 'calc(100vh - 240px)' }}>
+                {!(statuses || []).length ? (
+                    <div className="flex h-full w-full flex-col items-center justify-center rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+                        <div className="flex max-w-sm flex-col items-center gap-5 text-center">
+                            <div className="bg-primary/10 flex h-20 w-20 items-center justify-center rounded-2xl">
+                                <LayoutGrid className="text-primary h-10 w-10" />
+                            </div>
+                            <div className="space-y-1.5">
+                                <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{t('No Task Status Yet')}</h3>
+                                <p className="text-muted-foreground text-sm leading-relaxed">
+                                    {t('Set up task statuses to start organizing your work in a Kanban board.')}
+                                </p>
+                            </div>
+                            {hasPermission(permissions, 'manage-task-statuses') && (
+                                <button
+                                    onClick={() => router.visit(route('task-statuses.index'))}
+                                    className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
+                                >
+                                    <Plus className="h-4 w-4" />
+                                    {t('Add Task Status')}
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                ) : (
+                    statuses.map((status: any) => {
+                        const statusTasks = kanbanData?.[status.id]?.items || [];
+                        const colBg = status.color ? `${status.color}12` : '#f8fafc';
+                        const colBorder = status.color ? `${status.color}30` : '#e2e8f0';
+                        return (
+                            <div
+                                key={status.id}
+                                className="flex flex-shrink-0 flex-col rounded-xl border"
+                                style={{ width: '300px', minWidth: '300px', backgroundColor: colBg, borderColor: colBorder, height: '100%' }}
+                                onDragOver={(e) => e.preventDefault()}
+                                onDrop={(e) => {
+                                    e.preventDefault();
+                                    const taskId = e.dataTransfer.getData('taskId');
+                                    if (!taskId) return;
+                                    if (!hasPermission(permissions, 'move-project-task')) {
+                                        toast.error(t('Permission denied.'));
+                                        return;
+                                    }
+                                    toast.loading(t('Updating task status...'));
+                                    router.put(
+                                        route('project-tasks.update-status', taskId),
+                                        { task_status_id: status.id },
+                                        {
                                             preserveState: true,
                                             preserveScroll: true,
                                             onSuccess: (page) => {
@@ -343,89 +418,114 @@ export default function ProjectTasks() {
                                                 else if (page.props.flash?.error) toast.error(t(page.props.flash.error));
                                                 router.reload();
                                             },
-                                            onError: () => { toast.dismiss(); toast.error(t('Failed to update task status')); }
-                                        });
-                                    }}
-                                >
-                                    {/* Column header */}
-                                    <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: colBorder }}>
-                                        <div className="flex items-center gap-2">
-                                            <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: status.color }}></span>
-                                            <span className="font-semibold text-sm text-gray-800 dark:text-gray-100">{status.name}</span>
-                                            <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: status.color + '22', color: status.color }}>
-                                                {statusTasks.length}
-                                            </span>
-                                        </div>
-                                        {hasPermission(permissions, 'create-project-tasks') && (
-                                            <button
-                                                onClick={() => handleAddTask(status.id.toString())}
-                                                className="w-6 h-6 flex items-center justify-center rounded-md hover:bg-white/60 text-gray-500 hover:text-gray-800 transition-colors cursor-pointer"
-                                                title={t('Add Task')}
-                                            >
-                                                <Plus className="h-4 w-4" />
-                                            </button>
-                                        )}
+                                            onError: () => {
+                                                toast.dismiss();
+                                                toast.error(t('Failed to update task status'));
+                                            },
+                                        },
+                                    );
+                                }}
+                            >
+                                {/* Column header */}
+                                <div className="flex items-center justify-between border-b px-4 py-3" style={{ borderColor: colBorder }}>
+                                    <div className="flex items-center gap-2">
+                                        <span className="h-2.5 w-2.5 flex-shrink-0 rounded-full" style={{ backgroundColor: status.color }}></span>
+                                        <span className="text-sm font-semibold text-gray-800 dark:text-gray-100">{status.name}</span>
+                                        <span
+                                            className="rounded-full px-2 py-0.5 text-xs font-semibold"
+                                            style={{ backgroundColor: status.color + '22', color: status.color }}
+                                        >
+                                            {statusTasks.length}
+                                        </span>
                                     </div>
+                                    {hasPermission(permissions, 'create-project-tasks') && (
+                                        <button
+                                            onClick={() => handleAddTask(status.id.toString())}
+                                            className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-white/60 hover:text-gray-800"
+                                            title={t('Add Task')}
+                                        >
+                                            <Plus className="h-4 w-4" />
+                                        </button>
+                                    )}
+                                </div>
 
-                                    {/* Cards */}
-                                    <div className="flex-1 overflow-y-auto kanban-col-scroll p-3 space-y-3">
-                                        {statusTasks.length === 0 ? (
-                                            <div className="flex flex-col items-center justify-center h-40 text-gray-300">
-                                                <div className="w-14 h-14 rounded-full border-2 border-dashed border-gray-200 flex items-center justify-center mb-2">
-                                                    <User className="h-6 w-6 text-gray-300" />
-                                                </div>
-                                                <p className="text-xs text-gray-400">{t('Drop tasks here')}</p>
+                                {/* Cards */}
+                                <div className="kanban-col-scroll flex-1 space-y-3 overflow-y-auto p-3">
+                                    {statusTasks.length === 0 ? (
+                                        <div className="flex h-40 flex-col items-center justify-center text-gray-300">
+                                            <div className="mb-2 flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-gray-200">
+                                                <User className="h-6 w-6 text-gray-300" />
                                             </div>
-                                        ) : statusTasks.map((task: any) => (
+                                            <p className="text-xs text-gray-400">{t('Drop tasks here')}</p>
+                                        </div>
+                                    ) : (
+                                        statusTasks.map((task: any) => (
                                             <div
                                                 key={task.id}
                                                 draggable={hasPermission(permissions, 'move-project-task')}
                                                 onDragStart={(e) => {
-                                                    if (!hasPermission(permissions, 'move-project-task')) { e.preventDefault(); return; }
+                                                    if (!hasPermission(permissions, 'move-project-task')) {
+                                                        e.preventDefault();
+                                                        return;
+                                                    }
                                                     e.dataTransfer.setData('taskId', task.id.toString());
                                                     e.currentTarget.classList.add('opacity-50');
                                                 }}
                                                 onDragEnd={(e) => e.currentTarget.classList.remove('opacity-50')}
-                                                className={hasPermission(permissions, 'move-project-task') ? 'cursor-grab active:cursor-grabbing' : ''}
+                                                className={
+                                                    hasPermission(permissions, 'move-project-task') ? 'cursor-grab active:cursor-grabbing' : ''
+                                                }
                                             >
-                                                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow duration-200">
+                                                <div className="rounded-lg border border-gray-100 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
                                                     <div className="p-3">
                                                         {/* Top row: title + menu */}
-                                                        <div className="flex items-start gap-2.5 mb-2.5">
-                                                            <div className="flex-1 min-w-0">
+                                                        <div className="mb-2.5 flex items-start gap-2.5">
+                                                            <div className="min-w-0 flex-1">
                                                                 <h4
-                                                                    className="font-semibold text-sm text-gray-900 dark:text-gray-100 leading-tight truncate cursor-pointer hover:text-primary transition-colors"
+                                                                    className="hover:text-primary cursor-pointer truncate text-sm leading-tight font-semibold text-gray-900 transition-colors dark:text-gray-100"
                                                                     onClick={() => handleAction('view', task)}
                                                                 >
                                                                     {task.title}
                                                                 </h4>
                                                                 {task.project?.name && (
-                                                                    <p className="text-xs text-gray-500 truncate mt-0.5">{task.project.name}</p>
+                                                                    <p className="mt-0.5 truncate text-xs text-gray-500">{task.project.name}</p>
                                                                 )}
                                                             </div>
-                                                            {(hasPermission(permissions, 'view-project-tasks') || hasPermission(permissions, 'edit-project-tasks') || hasPermission(permissions, 'delete-project-tasks')) && (
+                                                            {(hasPermission(permissions, 'view-project-tasks') ||
+                                                                hasPermission(permissions, 'edit-project-tasks') ||
+                                                                hasPermission(permissions, 'delete-project-tasks')) && (
                                                                 <DropdownMenu>
                                                                     <DropdownMenuTrigger asChild>
-                                                                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0 flex-shrink-0 text-gray-400 hover:text-gray-600">
+                                                                        <Button
+                                                                            variant="ghost"
+                                                                            size="sm"
+                                                                            className="h-6 w-6 flex-shrink-0 p-0 text-gray-400 hover:text-gray-600"
+                                                                        >
                                                                             <MoreHorizontal className="h-3.5 w-3.5" />
                                                                         </Button>
                                                                     </DropdownMenuTrigger>
                                                                     <DropdownMenuContent align="end" className="w-32">
                                                                         {hasPermission(permissions, 'view-project-tasks') && (
                                                                             <DropdownMenuItem onClick={() => handleAction('view', task)}>
-                                                                                <Eye className="h-4 w-4 mr-2" />{t('View')}
+                                                                                <Eye className="mr-2 h-4 w-4" />
+                                                                                {t('View')}
                                                                             </DropdownMenuItem>
                                                                         )}
                                                                         {hasPermission(permissions, 'edit-project-tasks') && (
                                                                             <DropdownMenuItem onClick={() => handleAction('edit', task)}>
-                                                                                <Edit className="h-4 w-4 mr-2" />{t('Edit')}
+                                                                                <Edit className="mr-2 h-4 w-4" />
+                                                                                {t('Edit')}
                                                                             </DropdownMenuItem>
                                                                         )}
                                                                         {hasPermission(permissions, 'delete-project-tasks') && (
                                                                             <>
                                                                                 <DropdownMenuSeparator />
-                                                                                <DropdownMenuItem onClick={() => handleAction('delete', task)} className="text-red-600">
-                                                                                    <Trash2 className="h-4 w-4 mr-2" />{t('Delete')}
+                                                                                <DropdownMenuItem
+                                                                                    onClick={() => handleAction('delete', task)}
+                                                                                    className="text-red-600"
+                                                                                >
+                                                                                    <Trash2 className="mr-2 h-4 w-4" />
+                                                                                    {t('Delete')}
                                                                                 </DropdownMenuItem>
                                                                             </>
                                                                         )}
@@ -435,33 +535,37 @@ export default function ProjectTasks() {
                                                         </div>
 
                                                         {/* Priority badge */}
-                                                        <div className="flex flex-wrap gap-1 mb-2.5">
-                                                            <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${priorityColors[task.priority] || priorityColors.medium}`}>
+                                                        <div className="mb-2.5 flex flex-wrap gap-1">
+                                                            <span
+                                                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${priorityColors[task.priority] || priorityColors.medium}`}
+                                                            >
                                                                 {t(task.priority.charAt(0).toUpperCase() + task.priority.slice(1))}
                                                             </span>
                                                         </div>
 
                                                         {/* Progress bar */}
                                                         <div className="mb-2.5">
-                                                            <div className="flex justify-between text-xs mb-1">
+                                                            <div className="mb-1 flex justify-between text-xs">
                                                                 <span className="text-gray-500">{t('Progress')}</span>
                                                                 <span className="font-medium text-gray-700">{task.progress}%</span>
                                                             </div>
-                                                            <div className="w-full bg-gray-200 rounded-full h-1.5">
+                                                            <div className="h-1.5 w-full rounded-full bg-gray-200">
                                                                 <div
-                                                                    className="h-1.5 rounded-full transition-all duration-300 bg-primary"
+                                                                    className="bg-primary h-1.5 rounded-full transition-all duration-300"
                                                                     style={{ width: `${task.progress}%` }}
                                                                 />
                                                             </div>
                                                         </div>
 
                                                         {/* Footer: due date + assigned avatar */}
-                                                        <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-700">
+                                                        <div className="flex items-center justify-between border-t border-gray-100 pt-2 dark:border-gray-700">
                                                             <div className="flex items-center gap-1 text-xs text-gray-500">
                                                                 <Calendar className="h-3 w-3" />
                                                                 <span>
-                                                                    {t('Due')}:{' '}{task.due_date
-                                                                        ? (window.appSettings?.formatDateTime(task.due_date, false) || new Date(task.due_date).toLocaleDateString())
+                                                                    {t('Due')}:{' '}
+                                                                    {task.due_date
+                                                                        ? window.appSettings?.formatDateTime(task.due_date, false) ||
+                                                                          new Date(task.due_date).toLocaleDateString()
                                                                         : t('No due date')}
                                                                 </span>
                                                             </div>
@@ -471,7 +575,13 @@ export default function ProjectTasks() {
                                                                         <TooltipTrigger asChild>
                                                                             <Avatar className="h-7 w-7 cursor-pointer">
                                                                                 <AvatarImage src={task.assigned_user.avatar} />
-                                                                                <AvatarFallback className="text-xs" style={{ backgroundColor: status.color + '33', color: status.color }}>
+                                                                                <AvatarFallback
+                                                                                    className="text-xs"
+                                                                                    style={{
+                                                                                        backgroundColor: status.color + '33',
+                                                                                        color: status.color,
+                                                                                    }}
+                                                                                >
                                                                                     {getInitials(task.assigned_user.name)}
                                                                                 </AvatarFallback>
                                                                             </Avatar>
@@ -480,7 +590,7 @@ export default function ProjectTasks() {
                                                                     </Tooltip>
                                                                 </TooltipProvider>
                                                             ) : (
-                                                                <div className="h-6 w-6 rounded-full bg-gray-100 flex items-center justify-center">
+                                                                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-100">
                                                                     <User className="h-3 w-3 text-gray-400" />
                                                                 </div>
                                                             )}
@@ -488,12 +598,14 @@ export default function ProjectTasks() {
                                                     </div>
                                                 </div>
                                             </div>
-                                        ))}
-                                    </div>
+                                        ))
+                                    )}
                                 </div>
-                            );
-                        })}
-                    </div>
+                            </div>
+                        );
+                    })
+                )}
+            </div>
 
             <CrudFormModal
                 isOpen={isFormModalOpen}
@@ -502,7 +614,13 @@ export default function ProjectTasks() {
                 formConfig={{
                     ...(hasPermission(permissions, 'export-project-tasks') && { exportRoute: 'project-task.export' }),
                     fields: [
-                        { name: 'title', label: t('Task Title'), type: 'text', required: true, placeholder: t('e.g. Design homepage mockup, Fix sign in bug') },
+                        {
+                            name: 'title',
+                            label: t('Task Title'),
+                            type: 'text',
+                            required: true,
+                            placeholder: t('e.g. Design homepage mockup, Fix sign in bug'),
+                        },
                         { name: 'description', label: t('Description'), type: 'textarea', placeholder: t('Enter task description...') },
                         {
                             name: formMode === 'view' ? 'project_name' : 'project_id',
@@ -517,11 +635,11 @@ export default function ProjectTasks() {
                                 setParentTasks([]);
                                 if (formMode === 'create' && value) {
                                     fetch(route('api.projects.details', value))
-                                        .then(res => res.json())
-                                        .then(data => setParentTasks(data.parent_tasks || []))
+                                        .then((res) => res.json())
+                                        .then((data) => setParentTasks(data.parent_tasks || []))
                                         .catch(() => {});
                                 }
-                            }
+                            },
                         },
                         {
                             name: 'parent_id',
@@ -529,7 +647,7 @@ export default function ProjectTasks() {
                             type: 'custom',
                             render: (_field: any, formData: any, handleChange: any, _errors: any, mode: any) => {
                                 if (mode === 'view') {
-                                    return <div className="p-2 border rounded-md bg-gray-50">{formData.parent_name || '-'}</div>;
+                                    return <div className="rounded-md border bg-gray-50 p-2">{formData.parent_name || '-'}</div>;
                                 }
                                 return (
                                     <ParentTaskSelect
@@ -538,7 +656,7 @@ export default function ProjectTasks() {
                                         onChange={(value) => handleChange('parent_id', value)}
                                     />
                                 );
-                            }
+                            },
                         },
                         { name: 'start_date', label: t('Start Date'), type: 'date' },
                         { name: 'due_date', label: t('Due Date'), type: 'date' },
@@ -550,9 +668,9 @@ export default function ProjectTasks() {
                                 { value: 'low', label: t('Low') },
                                 { value: 'medium', label: t('Medium') },
                                 { value: 'high', label: t('High') },
-                                { value: 'urgent', label: t('Urgent') }
+                                { value: 'urgent', label: t('Urgent') },
                             ],
-                            defaultValue: 'medium'
+                            defaultValue: 'medium',
                         },
                         {
                             name: 'task_status_id',
@@ -562,8 +680,10 @@ export default function ProjectTasks() {
                             searchable: true,
                             emptyNote: { link: route('task-statuses.index'), linkText: t('Task Statuses') },
                             options: taskStatuses.map((s: any) => ({ value: String(s.id), label: s.name })),
-                            defaultValue: prefilledStatus ? String(prefilledStatus) : String(taskStatuses.find((s: any) => s.name === 'To Do')?.id || taskStatuses[0]?.id || ''),
-                            hidden: formMode === 'create' && !!prefilledStatus
+                            defaultValue: prefilledStatus
+                                ? String(prefilledStatus)
+                                : String(taskStatuses.find((s: any) => s.name === 'To Do')?.id || taskStatuses[0]?.id || ''),
+                            hidden: formMode === 'create' && !!prefilledStatus,
                         },
                         { name: 'estimated_hours', label: t('Estimated Hours'), type: 'number', step: '0.5', placeholder: t('e.g. 8') },
                         { name: 'actual_hours', label: t('Actual Hours'), type: 'number', step: '0.5', placeholder: t('e.g. 6.5') },
@@ -576,21 +696,25 @@ export default function ProjectTasks() {
                             searchable: true,
                             emptyNote: { link: route('users.index'), linkText: t('Users') },
                             options: formMode === 'view' ? [] : users.map((u: any) => ({ value: String(u.id), label: `${u.name} (${u.email})` })),
-                            readOnly: formMode === 'view'
-                        }
+                            readOnly: formMode === 'view',
+                        },
                     ],
-                    modalSize: 'xl'
+                    modalSize: 'xl',
                 }}
-                initialData={currentItem ? {
-                    ...currentItem,
-                    project_id: currentItem.project?.id ? String(currentItem.project.id) : '',
-                    assigned_to: currentItem.assigned_user?.id ? String(currentItem.assigned_user.id) : '',
-                    task_status_id: currentItem.task_status_id ? String(currentItem.task_status_id) : '',
-                    parent_id: currentItem.parent_id ? String(currentItem.parent_id) : '',
-                    assigned_user_name: currentItem.assigned_user?.name || t('Unassigned'),
-                    project_name: currentItem.project?.name || t('No Project'),
-                    parent_name: currentItem.parent?.title || t('No Parent Task')
-                } : null}
+                initialData={
+                    currentItem
+                        ? {
+                              ...currentItem,
+                              project_id: currentItem.project?.id ? String(currentItem.project.id) : '',
+                              assigned_to: currentItem.assigned_user?.id ? String(currentItem.assigned_user.id) : '',
+                              task_status_id: currentItem.task_status_id ? String(currentItem.task_status_id) : '',
+                              parent_id: currentItem.parent_id ? String(currentItem.parent_id) : '',
+                              assigned_user_name: currentItem.assigned_user?.name || t('Unassigned'),
+                              project_name: currentItem.project?.name || t('No Project'),
+                              parent_name: currentItem.parent?.title || t('No Parent Task'),
+                          }
+                        : null
+                }
                 title={formMode === 'create' ? t('Add Task') : formMode === 'edit' ? t('Edit Task') : t('View Task')}
                 mode={formMode}
             />

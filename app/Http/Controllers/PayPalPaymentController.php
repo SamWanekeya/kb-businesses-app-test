@@ -3,12 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
-use App\Models\User;
-use App\Models\Setting;
-use App\Models\PlanOrder;
-use App\Models\PaymentSetting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class PayPalPaymentController extends Controller
 {
@@ -21,7 +16,7 @@ class PayPalPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            
+
             processPaymentSuccess([
                 'user_id' => auth()->id(),
                 'plan_id' => $plan->id,

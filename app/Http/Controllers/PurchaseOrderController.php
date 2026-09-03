@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PurchaseOrder;
-use App\Models\SalesOrder;
+use App\Events\PurchaseOrderCreated;
+use App\Exports\PurchaseOrderExport;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Product;
+use App\Models\PurchaseOrder;
+use App\Models\SalesOrder;
 use App\Models\ShippingProviderType;
 use App\Models\Tax;
-use App\Events\PurchaseOrderCreated;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Exports\PurchaseOrderExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class PurchaseOrderController extends Controller
@@ -27,7 +27,7 @@ class PurchaseOrderController extends Controller
             $query->where(function ($q) use ($request) {
                 $q->where('order_number', 'like', '%' . $request->search . '%')
                     ->orWhere('name', 'like', '%' . $request->search . '%')
-                    ->orWhereHas('account', fn($q) => $q->where('name', 'like', '%' . $request->search . '%'));
+                    ->orWhereHas('account', fn ($q) => $q->where('name', 'like', '%' . $request->search . '%'));
             });
         }
 
@@ -105,7 +105,7 @@ class PurchaseOrderController extends Controller
             'products' => $products,
             'shippingProviderTypes' => $shippingProviderTypes,
             'taxes' => $taxes,
-            'users' => $users
+            'users' => $users,
         ]);
     }
 
@@ -185,13 +185,14 @@ class PurchaseOrderController extends Controller
 
         if ($emailError) {
             $message = __('Purchase order created successfully, but ') . __('Email send failed: ') . $emailError;
+
             return redirect()->route('purchase-orders.index')->with('warning', $message);
         }
 
         return redirect()->route('purchase-orders.index')->with('success', __('Purchase order created successfully.'));
     }
 
-     public function show($purchaseOrderId)
+    public function show($purchaseOrderId)
     {
         $purchaseOrder = PurchaseOrder::where('id', $purchaseOrderId)
             ->where('created_by', createdBy())
@@ -205,7 +206,7 @@ class PurchaseOrderController extends Controller
                 'creator',
                 'assignedUser',
                 'products.tax',
-                'activities.user'
+                'activities.user',
             ])
             ->first();
 
@@ -215,10 +216,10 @@ class PurchaseOrderController extends Controller
 
         return Inertia::render('purchase-orders/show', [
             'purchaseOrder' => $purchaseOrder,
-            'streamItems' => $purchaseOrder->activities
+            'streamItems' => $purchaseOrder->activities,
         ]);
     }
-    
+
     public function edit($id)
     {
         $purchaseOrder = PurchaseOrder::with([
@@ -230,7 +231,7 @@ class PurchaseOrderController extends Controller
             'shippingProviderType',
             'creator',
             'assignedUser',
-            'products.tax'
+            'products.tax',
         ])
             ->where('created_by', createdBy())
             ->where('id', $id)
@@ -254,7 +255,7 @@ class PurchaseOrderController extends Controller
                 'products' => $products,
                 'shippingProviderTypes' => $shippingProviderTypes,
                 'taxes' => $taxes,
-                'users' => $users
+                'users' => $users,
             ]);
         } else {
             return redirect()->route('purchase-orders.index')->with('error', __('Purchase order not found.'));
@@ -364,7 +365,7 @@ class PurchaseOrderController extends Controller
         }
 
         $validated = $request->validate([
-            'status' => 'required|in:draft,sent,confirmed,received,cancelled'
+            'status' => 'required|in:draft,sent,confirmed,received,cancelled',
         ]);
 
         $purchaseOrder->update(['status' => $validated['status']]);
@@ -383,7 +384,7 @@ class PurchaseOrderController extends Controller
         }
 
         $validated = $request->validate([
-            'sales_order_id' => 'required|exists:sales_orders,id'
+            'sales_order_id' => 'required|exists:sales_orders,id',
         ]);
 
         $salesOrder = SalesOrder::where('id', $validated['sales_order_id'])
@@ -459,7 +460,7 @@ class PurchaseOrderController extends Controller
         }
 
         $validated = $request->validate([
-            'assigned_to' => 'required|exists:users,id'
+            'assigned_to' => 'required|exists:users,id',
         ]);
 
         $purchaseOrder->update(['assigned_to' => $validated['assigned_to']]);
@@ -554,9 +555,9 @@ class PurchaseOrderController extends Controller
                     'quantity' => $product->pivot->quantity ?? 1,
                     'unit_price' => $product->pivot->unit_price ?? $product->price ?? 0,
                     'discount_type' => $product->pivot->discount_type ?? 'none',
-                    'discount_value' => $product->pivot->discount_value ?? 0
+                    'discount_value' => $product->pivot->discount_value ?? 0,
                 ];
-            })
+            }),
         ]);
     }
 
@@ -572,6 +573,7 @@ class PurchaseOrderController extends Controller
         }
 
         $name = 'purchase_order_' . date('Y-m-d i:h:s');
+
         return Excel::download(new PurchaseOrderExport(), $name . '.xlsx');
     }
 }

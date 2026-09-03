@@ -2,31 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Announcement;
-use App\Models\Asset;
-use App\Models\AttendanceRecord;
-use App\Models\Branch;
-use App\Models\Candidate;
-use App\Models\Department;
-use App\Models\Employee;
-use App\Models\EmployeeContract;
-use App\Models\EmployeeTraining;
-use App\Models\Holiday;
-use App\Models\JobPosting;
-use App\Models\LeaveApplication;
-use App\Models\LeaveType;
-use App\Models\Meeting;
 use App\Models\Coupon;
-use App\Models\PayrollRun;
 use App\Models\Plan;
 use App\Models\PlanOrder;
 use App\Models\PlanRequest;
-use App\Models\Shift;
 use App\Models\User;
-use App\Models\Warning;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
-
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
@@ -81,6 +63,7 @@ class DashboardController extends Controller
 
         // If no permissions found, logout user
         auth()->logout();
+
         return redirect()->route('login')->with('error', __('No access permissions found.'));
     }
 
@@ -183,14 +166,14 @@ class DashboardController extends Controller
 
         $dashboardData = [
             'stats' => [
-                'totalOrganizations'          => $totalOrganizations,
+                'totalOrganizations' => $totalOrganizations,
                 'totalActivePlanOrganizations' => $totalActivePlanOrganizations,
-                'totalUsers'              => $totalUsers,
-                'totalRevenue'            => $totalRevenue,
-                'activePlans'             => $activePlans,
-                'pendingRequests'         => $pendingRequests,
-                'monthlyGrowth'           => $monthlyGrowth,
-                'activeCoupons'           => $activeCoupons,
+                'totalUsers' => $totalUsers,
+                'totalRevenue' => $totalRevenue,
+                'activePlans' => $activePlans,
+                'pendingRequests' => $pendingRequests,
+                'monthlyGrowth' => $monthlyGrowth,
+                'activeCoupons' => $activeCoupons,
             ],
             'recentActivity' => User::where('type', 'organization')
                 ->orderBy('created_at', 'desc')
@@ -198,18 +181,18 @@ class DashboardController extends Controller
                 ->get(['id', 'name', 'email', 'avatar', 'created_at'])
                 ->map(function ($organization) {
                     return [
-                        'id'            => $organization->id,
-                        'name'          => $organization->name,
-                        'email'         => $organization->email,
-                        'avatar'        => check_file($organization->getRawOriginal('avatar')) ? get_file($organization->getRawOriginal('avatar')) : null,
+                        'id' => $organization->id,
+                        'name' => $organization->name,
+                        'email' => $organization->email,
+                        'avatar' => check_file($organization->getRawOriginal('avatar')) ? get_file($organization->getRawOriginal('avatar')) : null,
                         'registered_at' => $organization->created_at->diffForHumans(),
-                        'status'        => 'active',
+                        'status' => 'active',
                     ];
                 }),
-            'monthlyRevenue'       => $monthlyRevenue,
-            'revenueYear'          => $revenueYear,
-            'availableYears'       => $availableYears,
-            'monthlyOrganizations'     => $monthlyOrganizations,
+            'monthlyRevenue' => $monthlyRevenue,
+            'revenueYear' => $revenueYear,
+            'availableYears' => $availableYears,
+            'monthlyOrganizations' => $monthlyOrganizations,
             'availableOrganizationYears' => $availableOrganizationYears,
             'topPlans' => Plan::withCount('users')
                 ->orderBy('users_count', 'desc')
@@ -217,9 +200,9 @@ class DashboardController extends Controller
                 ->get()
                 ->map(function ($plan) {
                     return [
-                        'name'        => $plan->name,
+                        'name' => $plan->name,
                         'subscribers' => $plan->users_count,
-                        'revenue'     => $plan->users_count * $plan->price,
+                        'revenue' => $plan->users_count * $plan->price,
                     ];
                 }),
         ];
@@ -320,10 +303,10 @@ class DashboardController extends Controller
         $leadConversionsData = [];
         $revenueChartData = [];
         if (IsDemo()) {
-            $demoSales        = [3, 7, 5, 9, 6, 11, 8, 12, 10, 15, 13, 18];
-            $demoLeads        = [5, 9, 7, 12, 8, 14, 10, 16, 13, 18, 15, 20];
-            $demoConversions  = [3, 6, 5, 9, 6, 11, 8, 13, 10, 14, 12, 17];
-            $demoRevenue      = [1200, 2100, 1800, 3200, 2800, 4100, 3600, 4800, 4200, 5500, 4900, 6200];
+            $demoSales = [3, 7, 5, 9, 6, 11, 8, 12, 10, 15, 13, 18];
+            $demoLeads = [5, 9, 7, 12, 8, 14, 10, 16, 13, 18, 15, 20];
+            $demoConversions = [3, 6, 5, 9, 6, 11, 8, 13, 10, 14, 12, 17];
+            $demoRevenue = [1200, 2100, 1800, 3200, 2800, 4100, 3600, 4800, 4200, 5500, 4900, 6200];
             for ($i = 1; $i <= 12; $i++) {
                 $salesTrendsData[] = [
                     'month' => date('F', mktime(0, 0, 0, $i, 1)),
@@ -331,20 +314,20 @@ class DashboardController extends Controller
                     'sales' => $demoSales[$i - 1],
                 ];
                 $leadConversionsData[] = [
-                    'month'       => date('F', mktime(0, 0, 0, $i, 1)),
-                    'short'       => date('M', mktime(0, 0, 0, $i, 1)),
-                    'leads'       => $demoLeads[$i - 1],
+                    'month' => date('F', mktime(0, 0, 0, $i, 1)),
+                    'short' => date('M', mktime(0, 0, 0, $i, 1)),
+                    'leads' => $demoLeads[$i - 1],
                     'conversions' => $demoConversions[$i - 1],
                 ];
                 $revenueChartData[] = [
-                    'month'   => date('F', mktime(0, 0, 0, $i, 1)),
-                    'short'   => date('M', mktime(0, 0, 0, $i, 1)),
+                    'month' => date('F', mktime(0, 0, 0, $i, 1)),
+                    'short' => date('M', mktime(0, 0, 0, $i, 1)),
                     'revenue' => $demoRevenue[$i - 1],
                 ];
             }
         } else {
             $chartYear = (int) request('chart_year', now()->year);
-            $leadYear  = (int) request('lead_year', now()->year);
+            $leadYear = (int) request('lead_year', now()->year);
             for ($m = 1; $m <= 12; $m++) {
                 $date = \Carbon\Carbon::create($chartYear, $m, 1);
                 $monthlySales = 0;
@@ -418,7 +401,7 @@ class DashboardController extends Controller
             $customerDistribution[] = [
                 'name' => $type->accountType->name ?? 'Other',
                 'value' => $type->count,
-                'color' => $colors[$index % count($colors)]
+                'color' => $colors[$index % count($colors)],
             ];
         }
 
@@ -432,7 +415,7 @@ class DashboardController extends Controller
             $employeeDistribution[] = [
                 'name' => ucfirst($role->type),
                 'value' => $role->count,
-                'color' => $colors[$index % count($colors)]
+                'color' => $colors[$index % count($colors)],
             ];
         }
 
@@ -555,7 +538,7 @@ class DashboardController extends Controller
                         'name' => $lead->name,
                         'email' => $lead->email,
                         'status' => $lead->status ?? 'new',
-                        'created_at' => $lead->created_at->toISOString()
+                        'created_at' => $lead->created_at->toISOString(),
                     ];
                 }),
                 'sales' => $recentSales->map(function ($sale) {
@@ -564,7 +547,7 @@ class DashboardController extends Controller
                         'customer' => $sale->account->name ?? 'Customer',
                         'amount' => $sale->total_amount ?? 0,
                         'status' => $sale->status ?? 'pending',
-                        'created_at' => $sale->created_at->toISOString()
+                        'created_at' => $sale->created_at->toISOString(),
                     ];
                 }),
                 'projects' => $recentProjects->map(function ($project) {
@@ -572,7 +555,7 @@ class DashboardController extends Controller
                         'id' => $project->id,
                         'name' => $project->name,
                         'status' => $project->status ?? 'planning',
-                        'created_at' => $project->created_at->toISOString()
+                        'created_at' => $project->created_at->toISOString(),
                     ];
                 }),
                 'customers' => $recentCustomers->map(function ($customer) {
@@ -581,7 +564,7 @@ class DashboardController extends Controller
                         'name' => $customer->name,
                         'email' => $customer->email,
                         'type' => $customer->accountType->name ?? 'customer',
-                        'created_at' => $customer->created_at->toISOString()
+                        'created_at' => $customer->created_at->toISOString(),
                     ];
                 }),
                 'announcements' => $recentAnnouncements->map(function ($announcement) {
@@ -590,14 +573,14 @@ class DashboardController extends Controller
                         'title' => $announcement->title,
                         'category' => $announcement->category->name ?? 'General',
                         'is_featured' => $announcement->is_featured ?? false,
-                        'created_at' => $announcement->created_at->toISOString()
+                        'created_at' => $announcement->created_at->toISOString(),
                     ];
-                })
-            ]
+                }),
+            ],
         ];
 
         return Inertia::render('dashboard', [
-            'dashboardData' => $dashboardData
+            'dashboardData' => $dashboardData,
         ]);
     }
 
@@ -609,6 +592,7 @@ class DashboardController extends Controller
                 $size += $file->getSize();
             }
         }
+
         return $size;
     }
 }

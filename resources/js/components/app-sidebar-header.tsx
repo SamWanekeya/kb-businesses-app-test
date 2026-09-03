@@ -1,14 +1,14 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
+import { LanguageSwitcher } from '@/components/language-switcher';
+import { ProfileMenu } from '@/components/profile-menu';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useLayout } from '@/contexts/LayoutContext';
 import { type BreadcrumbItem as BreadcrumbItemType } from '@/types';
-import { ProfileMenu } from '@/components/profile-menu';
-import { LanguageSwitcher } from '@/components/language-switcher';
-import { usePage, router } from '@inertiajs/react';
-import { useTranslation } from 'react-i18next';
-import { Sun, Moon } from 'lucide-react';
-import { useState, useEffect } from 'react';
 import { getCookie, setCookie } from '@/utils/cookie-utils';
+import { router, usePage } from '@inertiajs/react';
+import { Moon, Sun } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from './ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
@@ -26,10 +26,10 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
                     const parsed = JSON.parse(cookie);
                     return parsed.appearance === 'dark' ? 'dark' : 'light';
                 }
-            } catch { }
+            } catch {}
             return 'light';
         }
-        return (globalSettings?.themeMode === 'dark') ? 'dark' : 'light';
+        return globalSettings?.themeMode === 'dark' ? 'dark' : 'light';
     };
 
     const [isDark, setIsDark] = useState(() => getCurrentMode() === 'dark');
@@ -70,46 +70,46 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
             }
         } else {
             // Main: save to database
-            router.post(route('settings.brand.update'), {
-                settings: {
-                    themeMode: newMode
-                }
-            }, { preserveScroll: true, preserveState: true });
+            router.post(
+                route('settings.brand.update'),
+                {
+                    settings: {
+                        themeMode: newMode,
+                    },
+                },
+                { preserveScroll: true, preserveState: true },
+            );
         }
     };
 
     return (
         <>
-            <header className="border-sidebar-border/50 flex h-14 shrink-0 items-center gap-2 border-b px-[50px] transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+            <header className="border-sidebar-border/50 flex h-14 shrink-0 items-center gap-2 border-b px-[10px] transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 min-[992px]:px-[50px]">
                 <div className="flex w-full items-center justify-between">
                     <div className="flex items-center gap-2">
                         {position === 'left' && <SidebarTrigger className="-ml-1" />}
                         {position === 'right' && <SidebarTrigger className="-mr-1" />}
-                        <Breadcrumbs items={breadcrumbs.map(b => ({ label: b.title, href: b.href }))} />
+                        <Breadcrumbs items={breadcrumbs.map((b) => ({ label: b.title, href: b.href }))} />
                     </div>
                     <div className="flex items-center gap-2">
                         {(usePage().props as any).isImpersonating && (
                             <button
                                 onClick={() => router.post(route('impersonate.leave'))}
-                                className="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600 cursor-pointer"
+                                className="cursor-pointer rounded bg-red-500 px-2 py-1 text-xs text-white hover:bg-red-600"
                             >
-                                {t("Return Back")}
+                                {t('Return Back')}
                             </button>
                         )}
                         {/* Dark/Light Mode Toggle */}
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <Button
-                                        size={'icon'}
-                                        variant={'outline'}
-                                        onClick={handleToggle}
-                                        className="border shadow-sm"
-                                    >
-                                        {isDark
-                                            ? <Sun className="h-4 w-4 text-yellow-500" />
-                                            : <Moon className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                                        }
+                                    <Button size={'icon'} variant={'outline'} onClick={handleToggle} className="border shadow-sm">
+                                        {isDark ? (
+                                            <Sun className="h-4 w-4 text-yellow-500" />
+                                        ) : (
+                                            <Moon className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                                        )}
                                     </Button>
                                 </TooltipTrigger>
                                 <TooltipContent>

@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Lab404\Impersonate\Models\Impersonate;
-use App\Models\Plan;
-use App\Models\Referral;
-use App\Models\PayoutRequest;
 use App\Services\MailConfigService;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Log;
+use Lab404\Impersonate\Models\Impersonate;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends BaseAuthenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasRoles, HasFactory, Notifiable, Impersonate;
+    use HasRoles;
+    use HasFactory;
+    use Notifiable;
+    use Impersonate;
 
     /**
      * The attributes that are mass assignable.
@@ -49,7 +49,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
         'trial_days',
         'trial_expiry_date',
         'commission_amount',
-        'invoice_template'
+        'invoice_template',
     ];
 
     /**
@@ -148,14 +148,15 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
      */
     public function hasActivePlan()
     {
-        if(!$this->isTrialExpired())
-        {
+        if (!$this->isTrialExpired()) {
             return true;
         }
+
         return $this->plan_id &&
             $this->is_plan_active &&
             ($this->plan_expiry_date !== null && $this->plan_expiry_date > now());
     }
+
     /**
      * Check if user's plan has expired
      */
@@ -204,6 +205,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
         if (!$this->hasActivePlan()) {
             return true;
         }
+
         return false;
     }
 
@@ -275,6 +277,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
     {
         $totalEarned = $this->referrals()->sum('amount');
         $totalRequested = $this->payoutRequests()->whereIn('status', ['pending', 'approved'])->sum('amount');
+
         return $totalEarned - $totalRequested;
     }
 
@@ -286,14 +289,16 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
         try {
             MailConfigService::setDynamicConfig();
             parent::sendEmailVerificationNotification();
+
             return ['success' => true, 'message' => 'Verification email sent successfully'];
         } catch (\Exception $e) {
             Log::error('Email verification failed', [
                 'user_id' => $this->id,
                 'email' => $this->email,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return ['success' => false, 'message' => 'Failed to send verification email: ' . $e->getMessage()];
         }
     }
@@ -346,10 +351,10 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
             Setting::updateOrCreate(
                 [
                     'key' => 'layoutDirection',
-                    'user_id' => $user->id
+                    'user_id' => $user->id,
                 ],
                 [
-                    'value' => $layoutDirection
+                    'value' => $layoutDirection,
                 ]
             );
         });
@@ -362,7 +367,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
                 'label' => 'Sales Manager',
                 'description' => 'Sales Manager has access to manage sales operations',
                 'permissions' => $this->getSalesManagerPermissions(),
-            ]
+            ],
         ];
 
         foreach ($roles as $name => $data) {
@@ -499,6 +504,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
                 'manage-announcements',
                 'view-announcements',
             ];
+
         return $permissions;
     }
 

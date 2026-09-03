@@ -18,7 +18,7 @@ class CurrencyController extends Controller
         // Handle search
         if ($request->has('search')) {
             $searchTerm = $request->search;
-            $query->where(function($q) use ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
                 $q->where('name', 'like', "%{$searchTerm}%")
                   ->orWhere('code', 'like', "%{$searchTerm}%")
                   ->orWhere('symbol', 'like', "%{$searchTerm}%");
@@ -28,7 +28,7 @@ class CurrencyController extends Controller
         // Handle sorting
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'name', 'code', 'symbol', 'created_at'];
+        $allowedSorts = ['id', 'name', 'code', 'symbol', 'created_at'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -120,6 +120,7 @@ class CurrencyController extends Controller
     public function getAllCurrencies()
     {
         $currencies = Currency::all();
+
         return response()->json($currencies);
     }
 }

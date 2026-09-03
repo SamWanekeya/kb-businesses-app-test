@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { PageTemplate } from '@/components/page-template';
-import { usePage, router } from '@inertiajs/react';
-import { ArrowLeft, Plus } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { CrudFormModal } from '@/components/CrudFormModal';
 import { toast } from '@/components/custom-toast';
-import { hasPermission } from '@/utils/authorization';
+import { PageTemplate } from '@/components/page-template';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
+import { hasPermission } from '@/utils/authorization';
+import { router, usePage } from '@inertiajs/react';
+import { ArrowLeft, Plus } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 // Helper functions for time scale calculations
 const getTimelineConfig = (timeScale: string) => {
@@ -18,42 +18,42 @@ const getTimelineConfig = (timeScale: string) => {
                 totalUnits: 96, // 24 hours * 4 quarters
                 unitDuration: 6 * 60 * 60 * 1000, // 6 hours in ms
                 startOffset: -24, // 24 quarters ago (6 days)
-                label: 'Quarter'
+                label: 'Quarter',
             };
         case 'half-day':
             return {
                 totalUnits: 48, // 24 days * 2 halves
                 unitDuration: 12 * 60 * 60 * 1000, // 12 hours in ms
                 startOffset: -24, // 24 half-days ago (12 days)
-                label: 'Half Day'
+                label: 'Half Day',
             };
         case 'day':
             return {
                 totalUnits: 60,
                 unitDuration: 24 * 60 * 60 * 1000, // 1 day in ms
                 startOffset: -15, // 15 days ago
-                label: 'Day'
+                label: 'Day',
             };
         case 'week':
             return {
                 totalUnits: 26, // 26 weeks
                 unitDuration: 7 * 24 * 60 * 60 * 1000, // 1 week in ms
                 startOffset: -8, // 8 weeks ago
-                label: 'Week'
+                label: 'Week',
             };
         case 'month':
             return {
                 totalUnits: 12, // 12 months
                 unitDuration: 30 * 24 * 60 * 60 * 1000, // ~1 month in ms
                 startOffset: -3, // 3 months ago
-                label: 'Month'
+                label: 'Month',
             };
         default:
             return {
                 totalUnits: 60,
                 unitDuration: 24 * 60 * 60 * 1000,
                 startOffset: -15,
-                label: 'Day'
+                label: 'Day',
             };
     }
 };
@@ -61,13 +61,16 @@ const getTimelineConfig = (timeScale: string) => {
 const calculateTaskPosition = (task: any, timeScale: string) => {
     const config = getTimelineConfig(timeScale);
     const today = new Date();
-    const timelineStart = new Date(today.getTime() + (config.startOffset * config.unitDuration));
+    const timelineStart = new Date(today.getTime() + config.startOffset * config.unitDuration);
 
     const startDate = task.start_date ? new Date(task.start_date) : new Date();
     const endDate = task.due_date ? new Date(task.due_date) : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
     const taskStart = Math.max(0, (startDate.getTime() - timelineStart.getTime()) / config.unitDuration);
-    const taskWidth = Math.min(config.totalUnits - taskStart, (endDate.getTime() - Math.max(startDate.getTime(), timelineStart.getTime())) / config.unitDuration);
+    const taskWidth = Math.min(
+        config.totalUnits - taskStart,
+        (endDate.getTime() - Math.max(startDate.getTime(), timelineStart.getTime())) / config.unitDuration,
+    );
 
     const leftPercent = (taskStart / config.totalUnits) * 100;
     const widthPercent = (taskWidth / config.totalUnits) * 100;
@@ -95,13 +98,13 @@ const calculateTaskPosition = (task: any, timeScale: string) => {
         startDate,
         endDate,
         timelineStart,
-        totalUnits: config.totalUnits
+        totalUnits: config.totalUnits,
     };
 };
 
 const getTodayPosition = (today: Date, totalUnits: number, timeScale: string) => {
     const config = getTimelineConfig(timeScale);
-    const timelineStart = new Date(today.getTime() + (config.startOffset * config.unitDuration));
+    const timelineStart = new Date(today.getTime() + config.startOffset * config.unitDuration);
     return ((today.getTime() - timelineStart.getTime()) / config.unitDuration / totalUnits) * 100;
 };
 
@@ -122,11 +125,11 @@ const getTimeScaleUnit = (timeScale: string) => {
     }
 };
 
-const GanttChart = ({ tasks, timeScale, onTaskClick }: { tasks: any[], timeScale: string, onTaskClick: (task: any) => void }) => {
+const GanttChart = ({ tasks, timeScale, onTaskClick }: { tasks: any[]; timeScale: string; onTaskClick: (task: any) => void }) => {
     const { t } = useTranslation();
     const config = getTimelineConfig(timeScale);
     const today = new Date();
-    const timelineStart = new Date(today.getTime() + (config.startOffset * config.unitDuration));
+    const timelineStart = new Date(today.getTime() + config.startOffset * config.unitDuration);
 
     const chartHeight = Math.max(400, tasks.length * 40 + 100);
     const unitWidth = timeScale === 'month' ? 120 : timeScale === 'week' ? 100 : 38;
@@ -157,7 +160,7 @@ const GanttChart = ({ tasks, timeScale, onTaskClick }: { tasks: any[], timeScale
             {/* Timeline Labels */}
             <g className="date">
                 {Array.from({ length: config.totalUnits }, (_, i) => {
-                    const date = new Date(timelineStart.getTime() + (i * config.unitDuration));
+                    const date = new Date(timelineStart.getTime() + i * config.unitDuration);
                     const x = i * unitWidth + unitWidth / 2;
                     let upperLabel = '';
                     let lowerLabel = '';
@@ -216,9 +219,9 @@ const GanttChart = ({ tasks, timeScale, onTaskClick }: { tasks: any[], timeScale
 
             {/* Today Line */}
             <line
-                x1={getTodayPosition(today, config.totalUnits, timeScale) * chartWidth / 100}
+                x1={(getTodayPosition(today, config.totalUnits, timeScale) * chartWidth) / 100}
                 y1="60"
-                x2={getTodayPosition(today, config.totalUnits, timeScale) * chartWidth / 100}
+                x2={(getTodayPosition(today, config.totalUnits, timeScale) * chartWidth) / 100}
                 y2={chartHeight}
                 stroke="#ef4444"
                 strokeWidth="2"
@@ -237,35 +240,11 @@ const GanttChart = ({ tasks, timeScale, onTaskClick }: { tasks: any[], timeScale
 
                     return (
                         <g key={task.id} className="bar-wrapper cursor-pointer" onClick={() => onTaskClick(task)}>
-                            <rect
-                                x={x}
-                                y={y}
-                                width={width}
-                                height="20"
-                                rx="3"
-                                ry="3"
-                                fill={barColor}
-                                style={{ cursor: 'pointer' }}
-                            />
+                            <rect x={x} y={y} width={width} height="20" rx="3" ry="3" fill={barColor} style={{ cursor: 'pointer' }} />
                             {task.progress > 0 && (
-                                <rect
-                                    x={x}
-                                    y={y}
-                                    width={(width * task.progress) / 100}
-                                    height="20"
-                                    rx="3"
-                                    ry="3"
-                                    fill="rgba(0,0,0,0.2)"
-                                />
+                                <rect x={x} y={y} width={(width * task.progress) / 100} height="20" rx="3" ry="3" fill="rgba(0,0,0,0.2)" />
                             )}
-                            <text
-                                x={x + width / 2}
-                                y={y + 14}
-                                fontSize="11"
-                                fill="white"
-                                fontWeight="500"
-                                textAnchor="middle"
-                            >
+                            <text x={x + width / 2} y={y + 14} fontSize="11" fill="white" fontWeight="500" textAnchor="middle">
                                 {width > 60 ? task.title.substring(0, 12) : ''}
                             </text>
                         </g>
@@ -292,6 +271,15 @@ export default function ProjectGantt() {
     const [timeScale, setTimeScale] = useState('day');
     const [selectedTask, setSelectedTask] = useState<any>(null);
 
+    const pageInitialState = useState(true);
+    useEffect(() => {
+        if (pageInitialState[0]) {
+            pageInitialState[1](false);
+            return;
+        }
+        applyFilters();
+    }, [searchTerm, selectedStatus, selectedPriority]);
+
     const handleAddTask = () => {
         setCurrentItem(null);
         setFormMode('create');
@@ -304,11 +292,15 @@ export default function ProjectGantt() {
     };
 
     const applyFilters = () => {
-        router.get(route('projects.gantt', project.id), {
-            search: searchTerm || undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            priority: selectedPriority !== 'all' ? selectedPriority : undefined,
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('projects.gantt', project.id),
+            {
+                search: searchTerm || undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                priority: selectedPriority !== 'all' ? selectedPriority : undefined,
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleResetFilters = () => {
@@ -327,13 +319,13 @@ export default function ProjectGantt() {
         return (searchTerm ? 1 : 0) + (selectedStatus !== 'all' ? 1 : 0) + (selectedPriority !== 'all' ? 1 : 0);
     };
 
-const handleFormSubmit = (formData: any) => {
+    const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
             toast.loading(t('Creating task...'));
 
             const taskData = {
                 ...formData,
-                project_id: project.id
+                project_id: project.id,
             };
 
             router.post(route('project-tasks.store'), taskData, {
@@ -352,7 +344,7 @@ const handleFormSubmit = (formData: any) => {
                     } else {
                         toast.error(`Failed to create task: ${Object.values(errors).join(', ')}`);
                     }
-                }
+                },
             });
         }
     };
@@ -360,27 +352,31 @@ const handleFormSubmit = (formData: any) => {
     const pageActions = [
         {
             label: t('Back'),
-            icon: <ArrowLeft className="h-4 w-4 mr-2" />,
+            icon: <ArrowLeft className="mr-2 h-4 w-4" />,
             variant: 'outline',
-            onClick: () => router.get(route('projects.show', project.id))
-        }
+            onClick: () => router.get(route('projects.show', project.id)),
+        },
     ];
 
     if (hasPermission(permissions, 'create-project-tasks')) {
         pageActions.unshift({
             label: t('Add Task'),
-            icon: <Plus className="h-4 w-4 mr-2" />,
+            icon: <Plus className="mr-0 h-4 w-4 min-[1090px]:mr-2" />,
             variant: 'default',
-            onClick: handleAddTask
+            className: 'h-8 w-8 min-[1090px]:h-9 min-[1090px]:w-auto px-0 min-[1090px]:px-4',
+            labelClassName: 'hidden min-[1090px]:inline',
+            tooltip: t('Add Task'),
+            tooltipClassName: 'min-[1090px]:hidden',
+            onClick: handleAddTask,
         });
     }
 
     const breadcrumbs = [
         { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Project Management')},
+        { title: t('Project Management') },
         { title: t('Projects'), href: route('projects.index') },
         { title: project.name, href: route('projects.show', project.id) },
-        { title: t('Gantt View') }
+        { title: t('Gantt View') },
     ];
 
     return (
@@ -410,7 +406,7 @@ const handleFormSubmit = (formData: any) => {
         }
       `}</style>
             {/* Search and filters section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
+            <div className="mb-4 rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-900">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -425,8 +421,8 @@ const handleFormSubmit = (formData: any) => {
                             searchable: true,
                             options: [
                                 { value: 'all', label: t('All Status') },
-                                ...taskStatuses.map((status: any) => ({ value: status.id, label: status.name }))
-                            ]
+                                ...taskStatuses.map((status: any) => ({ value: status.id, label: status.name })),
+                            ],
                         },
                         {
                             name: 'priority',
@@ -439,9 +435,9 @@ const handleFormSubmit = (formData: any) => {
                                 { value: 'low', label: t('Low') },
                                 { value: 'medium', label: t('Medium') },
                                 { value: 'high', label: t('High') },
-                                { value: 'urgent', label: t('Urgent') }
-                            ]
-                        }
+                                { value: 'urgent', label: t('Urgent') },
+                            ],
+                        },
                     ]}
                     showFilters={showFilters}
                     setShowFilters={setShowFilters}
@@ -454,9 +450,9 @@ const handleFormSubmit = (formData: any) => {
                 />
             </div>
 
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+            <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                 <div className="border-b border-gray-200 p-4">
-                    <div className="flex justify-between items-center">
+                    <div className="flex items-center justify-between">
                         <h6 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Gantt Chart')}</h6>
                         <div className="flex gap-1">
                             {[
@@ -464,15 +460,14 @@ const handleFormSubmit = (formData: any) => {
                                 { value: 'half-day', label: t('Half Day') },
                                 { value: 'day', label: t('Day') },
                                 { value: 'week', label: t('Week') },
-                                { value: 'month', label: t('Month') }
+                                { value: 'month', label: t('Month') },
                             ].map((scale) => (
                                 <button
                                     key={scale.value}
                                     onClick={() => setTimeScale(scale.value)}
-                                    className={`px-3 py-1 text-xs font-medium rounded transition-colors cursor-pointer ${timeScale === scale.value
-                                        ? 'bg-blue-600 text-white'
-                                        : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
-                                        }`}
+                                    className={`cursor-pointer rounded px-3 py-1 text-xs font-medium transition-colors ${
+                                        timeScale === scale.value ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
+                                    }`}
                                 >
                                     {scale.label}
                                 </button>
@@ -480,8 +475,8 @@ const handleFormSubmit = (formData: any) => {
                         </div>
                     </div>
                 </div>
-                <div className='flex justify-center'>
-                    <div className="w-full overflow-auto max-w-7xl">
+                <div className="flex justify-center">
+                    <div className="w-full max-w-7xl overflow-auto">
                         <GanttChart tasks={tasks} timeScale={timeScale} onTaskClick={setSelectedTask} />
                     </div>
                 </div>
@@ -493,7 +488,13 @@ const handleFormSubmit = (formData: any) => {
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
-                        { name: 'title', label: t('Task Title'), type: 'text', required: true, placeholder: t('e.g. Design homepage mockup, Fix sign in bug') },
+                        {
+                            name: 'title',
+                            label: t('Task Title'),
+                            type: 'text',
+                            required: true,
+                            placeholder: t('e.g. Design homepage mockup, Fix sign in bug'),
+                        },
                         { name: 'description', label: t('Description'), type: 'textarea', placeholder: t('Enter task description...') },
                         { name: 'start_date', label: t('Start Date'), type: 'date' },
                         { name: 'due_date', label: t('Due Date'), type: 'date' },
@@ -505,9 +506,9 @@ const handleFormSubmit = (formData: any) => {
                                 { value: 'low', label: t('Low') },
                                 { value: 'medium', label: t('Medium') },
                                 { value: 'high', label: t('High') },
-                                { value: 'urgent', label: t('Urgent') }
+                                { value: 'urgent', label: t('Urgent') },
                             ],
-                            defaultValue: 'medium'
+                            defaultValue: 'medium',
                         },
                         {
                             name: 'task_status_id',
@@ -518,23 +519,35 @@ const handleFormSubmit = (formData: any) => {
                             emptyNote: { link: route('task-statuses.index'), linkText: t('Task Statuses') },
                             options: taskStatuses.map((status: any) => ({
                                 value: status.id,
-                                label: status.name
+                                label: status.name,
                             })),
-                            defaultValue: taskStatuses.find((s: any) => s.name === 'To Do')?.id || taskStatuses[0]?.id
+                            defaultValue: taskStatuses.find((s: any) => s.name === 'To Do')?.id || taskStatuses[0]?.id,
                         },
                         { name: 'estimated_hours', label: t('Estimated Hours'), type: 'number', step: '0.5', placeholder: t('e.g. 8') },
-                        { name: 'progress', label: t('Progress (%)'), type: 'number', min: '0', max: '100', defaultValue: '0', placeholder: t('e.g. 50') },
-                        ...(isOrganization ? [{
-                            name: 'assigned_to',
-                            label: t('Assign To'),
-                            type: 'select',
-                            required: true,
-                            searchable: true,
-                            emptyNote: { link: route('users.index'), linkText: t('Users') },
-                            options: [...users.map((user: any) => ({ value: user.id, label: `${user.name} (${user.email})` }))]
-                        }] : [])
+                        {
+                            name: 'progress',
+                            label: t('Progress (%)'),
+                            type: 'number',
+                            min: '0',
+                            max: '100',
+                            defaultValue: '0',
+                            placeholder: t('e.g. 50'),
+                        },
+                        ...(isOrganization
+                            ? [
+                                  {
+                                      name: 'assigned_to',
+                                      label: t('Assign To'),
+                                      type: 'select',
+                                      required: true,
+                                      searchable: true,
+                                      emptyNote: { link: route('users.index'), linkText: t('Users') },
+                                      options: [...users.map((user: any) => ({ value: user.id, label: `${user.name} (${user.email})` }))],
+                                  },
+                              ]
+                            : []),
                     ],
-                    modalSize: 'lg'
+                    modalSize: 'lg',
                 }}
                 initialData={null}
                 title={t('Add Task')}
@@ -543,13 +556,17 @@ const handleFormSubmit = (formData: any) => {
 
             {/* Task Detail Modal */}
             {selectedTask && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={() => setSelectedTask(null)} style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
-                        <div className="flex items-center justify-between mb-4">
+                <div
+                    className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black"
+                    onClick={() => setSelectedTask(null)}
+                    style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+                >
+                    <div className="mx-4 w-full max-w-md rounded-lg bg-white p-6 dark:bg-gray-800" onClick={(e) => e.stopPropagation()}>
+                        <div className="mb-4 flex items-center justify-between">
                             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{selectedTask.title}</h3>
                             <button
                                 onClick={() => setSelectedTask(null)}
-                                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer"
+                                className="cursor-pointer text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                             >
                                 ✕
                             </button>
@@ -563,7 +580,7 @@ const handleFormSubmit = (formData: any) => {
                                     style={{
                                         backgroundColor: `${selectedTask.task_status?.color}20`,
                                         color: selectedTask.task_status?.color,
-                                        borderColor: `${selectedTask.task_status?.color}40`
+                                        borderColor: `${selectedTask.task_status?.color}40`,
                                     }}
                                 >
                                     {selectedTask.task_status?.name}
@@ -572,11 +589,17 @@ const handleFormSubmit = (formData: any) => {
 
                             <div className="flex justify-between">
                                 <span className="text-gray-600 dark:text-gray-400">{t('Priority')}:</span>
-                                <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${selectedTask.priority === 'urgent' ? 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20' :
-                                    selectedTask.priority === 'high' ? 'bg-orange-50 text-orange-700 ring-1 ring-inset ring-orange-600/20' :
-                                        selectedTask.priority === 'medium' ? 'bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20' :
-                                            'bg-gray-50 text-gray-700 ring-1 ring-inset ring-gray-600/20'
-                                    }`}>
+                                <span
+                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                        selectedTask.priority === 'urgent'
+                                            ? 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
+                                            : selectedTask.priority === 'high'
+                                              ? 'bg-orange-50 text-orange-700 ring-1 ring-orange-600/20 ring-inset'
+                                              : selectedTask.priority === 'medium'
+                                                ? 'bg-blue-50 text-blue-700 ring-1 ring-blue-600/20 ring-inset'
+                                                : 'bg-gray-50 text-gray-700 ring-1 ring-gray-600/20 ring-inset'
+                                    }`}
+                                >
                                     {t(selectedTask.priority.charAt(0).toUpperCase() + selectedTask.priority.slice(1))}
                                 </span>
                             </div>
@@ -591,7 +614,7 @@ const handleFormSubmit = (formData: any) => {
                             <div className="flex justify-between">
                                 <span className="text-gray-600 dark:text-gray-400">{t('Progress')}:</span>
                                 <div className="flex items-center gap-2">
-                                    <div className="w-20 bg-gray-200 rounded-full h-2">
+                                    <div className="h-2 w-20 rounded-full bg-gray-200">
                                         <div className="bg-primary h-2 rounded-full" style={{ width: `${selectedTask.progress || 0}%` }}></div>
                                     </div>
                                     <span className="text-gray-900 dark:text-white">{selectedTask.progress || 0}%</span>
@@ -601,21 +624,27 @@ const handleFormSubmit = (formData: any) => {
                             {selectedTask.start_date && (
                                 <div className="flex justify-between">
                                     <span className="text-gray-600 dark:text-gray-400">{t('Start Date')}:</span>
-                                    <span className="text-gray-900 dark:text-white">{window.appSettings?.formatDateTime(selectedTask.start_date, false) || new Date(selectedTask.start_date).toLocaleDateString()}</span>
+                                    <span className="text-gray-900 dark:text-white">
+                                        {window.appSettings?.formatDateTime(selectedTask.start_date, false) ||
+                                            new Date(selectedTask.start_date).toLocaleDateString()}
+                                    </span>
                                 </div>
                             )}
 
                             {selectedTask.due_date && (
                                 <div className="flex justify-between">
                                     <span className="text-gray-600 dark:text-gray-400">{t('Due Date')}:</span>
-                                    <span className="text-gray-900 dark:text-white">{window.appSettings?.formatDateTime(selectedTask.due_date, false) || new Date(selectedTask.due_date).toLocaleDateString()}</span>
+                                    <span className="text-gray-900 dark:text-white">
+                                        {window.appSettings?.formatDateTime(selectedTask.due_date, false) ||
+                                            new Date(selectedTask.due_date).toLocaleDateString()}
+                                    </span>
                                 </div>
                             )}
 
                             {selectedTask.description && (
                                 <div>
                                     <span className="text-gray-600 dark:text-gray-400">{t('Description')}:</span>
-                                    <p className="text-gray-900 dark:text-white mt-1">{selectedTask.description}</p>
+                                    <p className="mt-1 text-gray-900 dark:text-white">{selectedTask.description}</p>
                                 </div>
                             )}
                         </div>

@@ -45,10 +45,10 @@ class InvoiceMidtransPaymentController extends Controller
             $paymentData = [
                 'transaction_details' => [
                     'order_id' => $orderId,
-                    'gross_amount' => $amount
+                    'gross_amount' => $amount,
                 ],
                 'credit_card' => [
-                    'secure' => true
+                    'secure' => true,
                 ],
                 'customer_details' => [
                     'first_name' => $organization->name ?? 'Customer',
@@ -57,24 +57,24 @@ class InvoiceMidtransPaymentController extends Controller
                         'address' => $invoice->billing_address ?? '',
                         'city' => $invoice->billing_city ?? '',
                         'postal_code' => $invoice->billing_postal_code ?? '',
-                        'country_code' => 'IDN'
-                    ]
+                        'country_code' => 'IDN',
+                    ],
                 ],
                 'item_details' => [
                     [
                         'id' => $invoice->id,
                         'price' => $amount,
                         'quantity' => 1,
-                        'name' => 'Invoice #' . $invoice->invoice_number
-                    ]
+                        'name' => 'Invoice #' . $invoice->invoice_number,
+                    ],
                 ],
                 'callbacks' => [
                     'finish' => route('invoice.midtrans.success', [
                         'invoice_id' => $invoice->id,
                         'amount' => $validated['amount'],
-                        'payment_type' => $validated['payment_type']
-                    ])
-                ]
+                        'payment_type' => $validated['payment_type'],
+                    ]),
+                ],
             ];
 
             $snapToken = $this->createSnapToken($paymentData, $settings['payment_settings']);
@@ -88,7 +88,7 @@ class InvoiceMidtransPaymentController extends Controller
                     'success' => true,
                     'snap_token' => $snapToken,
                     'payment_url' => $baseUrl . '/snap/v1/transactions/' . $snapToken,
-                    'order_id' => $orderId
+                    'order_id' => $orderId,
                 ]);
             }
 
@@ -99,6 +99,7 @@ class InvoiceMidtransPaymentController extends Controller
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
             ]);
+
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
     }
@@ -127,7 +128,7 @@ class InvoiceMidtransPaymentController extends Controller
                     \Log::info('Midtrans invoice payment successful', [
                         'invoice_id' => $invoice->id,
                         'amount' => $amount,
-                        'payment_id' => $orderId
+                        'payment_id' => $orderId,
                     ]);
 
                     return redirect()->route('invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
@@ -140,6 +141,7 @@ class InvoiceMidtransPaymentController extends Controller
             \Log::error('Midtrans invoice payment success error', [
                 'error' => $e->getMessage(),
             ]);
+
             return redirect()->route('invoices.public', encrypt($request->input('invoice_id') ?? 0))->withErrors(['error' => __('Payment processing failed')]);
         }
     }
@@ -153,7 +155,7 @@ class InvoiceMidtransPaymentController extends Controller
             if ($orderId && in_array($transactionStatus, ['capture', 'settlement'])) {
                 \Log::info('Midtrans invoice callback received', [
                     'order_id' => $orderId,
-                    'status' => $transactionStatus
+                    'status' => $transactionStatus,
                 ]);
             }
 
@@ -178,7 +180,7 @@ class InvoiceMidtransPaymentController extends Controller
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
                 'Authorization: Basic ' . base64_encode($settings['midtrans_secret_key'] . ':'),
                 'Content-Type: application/json',
-                'Accept: application/json'
+                'Accept: application/json',
             ]);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -193,6 +195,7 @@ class InvoiceMidtransPaymentController extends Controller
             }
 
             $result = json_decode($response, true);
+
             return $result['token'] ?? false;
 
         } catch (\Exception $e) {

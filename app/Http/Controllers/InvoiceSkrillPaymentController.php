@@ -38,6 +38,7 @@ class InvoiceSkrillPaymentController extends Controller
 
             if (!isset($settings['payment_settings']['skrill_merchant_id'])) {
                 \Log::error('Skrill payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+
                 return back()->withErrors(['error' => __('Skrill not configured')]);
             }
 
@@ -77,7 +78,7 @@ class InvoiceSkrillPaymentController extends Controller
                 'invoice_id' => $invoice->id,
                 'amount' => $validated['amount'],
                 'payment_type' => $validated['payment_type'],
-                'transaction_id' => $transactionId
+                'transaction_id' => $transactionId,
             ]);
 
             return response($form);
@@ -85,8 +86,9 @@ class InvoiceSkrillPaymentController extends Controller
             \Log::error('Skrill payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return $this->handleInvoicePaymentError($e, 'skrill');
         }
     }
@@ -105,11 +107,12 @@ class InvoiceSkrillPaymentController extends Controller
                 'status' => $status,
                 'amount' => $amount,
                 'currency' => $currency,
-                'pay_from_email' => $payFromEmail
+                'pay_from_email' => $payFromEmail,
             ]);
 
             if (!$transactionId) {
                 \Log::error('Skrill callback: Missing transaction ID');
+
                 return response('Missing transaction ID', 400);
             }
 
@@ -119,6 +122,7 @@ class InvoiceSkrillPaymentController extends Controller
 
             if (!$payment) {
                 \Log::error('Skrill callback: Payment not found', ['transaction_id' => $transactionId]);
+
                 return response('Payment not found', 404);
             }
 
@@ -134,23 +138,23 @@ class InvoiceSkrillPaymentController extends Controller
                 \Log::info('Skrill payment completed', [
                     'invoice_id' => $payment->invoice_id,
                     'payment_id' => $payment->payment_id,
-                    'amount' => $payment->amount
+                    'amount' => $payment->amount,
                 ]);
             } elseif ($status == '0') { // Payment pending
                 \Log::info('Skrill payment pending', [
                     'invoice_id' => $payment->invoice_id,
-                    'transaction_id' => $transactionId
+                    'transaction_id' => $transactionId,
                 ]);
             } else { // Payment failed or cancelled
                 $payment->update([
                     'status' => 'failed',
-                    'notes' => $payment->notes . ' | Skrill payment failed (Status: ' . $status . ')'
+                    'notes' => $payment->notes . ' | Skrill payment failed (Status: ' . $status . ')',
                 ]);
 
                 \Log::warning('Skrill payment failed', [
                     'invoice_id' => $payment->invoice_id,
                     'transaction_id' => $transactionId,
-                    'status' => $status
+                    'status' => $status,
                 ]);
             }
 
@@ -158,8 +162,9 @@ class InvoiceSkrillPaymentController extends Controller
         } catch (\Exception $e) {
             \Log::error('Skrill callback error', [
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return response('Internal Server Error', 500);
         }
     }

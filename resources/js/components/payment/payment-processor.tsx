@@ -1,46 +1,46 @@
-import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Card, CardContent } from '@/components/ui/card';
+import { toast } from '@/components/custom-toast';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Tag, Loader2 } from 'lucide-react';
-import { toast } from '@/components/custom-toast';
-import { StripePaymentForm } from './stripe-payment-form';
+import { Loader2, Tag } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { PayPalPaymentForm } from './paypal-payment-form';
+import { StripePaymentForm } from './stripe-payment-form';
 
-import { BankTransferForm } from './bank-transfer-form';
-import { RazorpayPaymentForm } from './razorpay-payment-form';
-import { MercadoPagoPaymentForm } from './mercadopago-payment-form';
-import { PaystackPaymentForm } from './paystack-payment-form';
-import { FlutterwavePaymentForm } from './flutterwave-payment-form';
-import { PayTabsPaymentForm } from './paytabs-payment-form';
-import { SkrillPaymentForm } from './skrill-payment-form';
-import { CoinGatePaymentForm } from './coingate-payment-form';
-import { PayfastPaymentForm } from './payfast-payment-form';
-import { ToyyibPayPaymentForm } from './toyyibpay-payment-form';
-import { PayTRPaymentForm } from './paytr-payment-form';
-import { MolliePaymentForm } from './mollie-payment-form';
-import { CashfreePaymentForm } from './cashfree-payment-form';
-import { IyzipayPaymentForm } from './iyzipay-payment-form';
-import { BenefitPaymentForm } from './benefit-payment-form';
-import { OzowPaymentForm } from './ozow-payment-form';
-import { EasebuzzPaymentForm } from './easebuzz-payment-form';
-import { KhaltiPaymentForm } from './khalti-payment-form';
-import { AuthorizeNetPaymentForm } from './authorizenet-payment-form';
-import { FedaPayPaymentForm } from './fedapay-payment-form';
-import { PayHerePaymentForm } from './payhere-payment-form';
-import { CinetPayPaymentForm } from './cinetpay-payment-form';
-import { PaiementPaymentForm } from './paiement-payment-form';
-import { NepalstePaymentForm } from './nepalste-payment-form';
-import { YooKassaPaymentForm } from './yookassa-payment-form';
-import { AamarpayPaymentForm } from './aamarpay-payment-form';
-import { MidtransPaymentForm } from './midtrans-payment-form';
-import { TapPaymentForm } from './tap-payment-form';
-import { XenditPaymentForm } from './xendit-payment-form';
 import { router } from '@inertiajs/react';
 import axios from 'axios';
+import { AamarpayPaymentForm } from './aamarpay-payment-form';
+import { AuthorizeNetPaymentForm } from './authorizenet-payment-form';
+import { BankTransferForm } from './bank-transfer-form';
+import { BenefitPaymentForm } from './benefit-payment-form';
+import { CashfreePaymentForm } from './cashfree-payment-form';
+import { CinetPayPaymentForm } from './cinetpay-payment-form';
+import { CoinGatePaymentForm } from './coingate-payment-form';
+import { EasebuzzPaymentForm } from './easebuzz-payment-form';
+import { FedaPayPaymentForm } from './fedapay-payment-form';
+import { FlutterwavePaymentForm } from './flutterwave-payment-form';
+import { IyzipayPaymentForm } from './iyzipay-payment-form';
+import { KhaltiPaymentForm } from './khalti-payment-form';
+import { MercadoPagoPaymentForm } from './mercadopago-payment-form';
+import { MidtransPaymentForm } from './midtrans-payment-form';
+import { MolliePaymentForm } from './mollie-payment-form';
+import { NepalstePaymentForm } from './nepalste-payment-form';
+import { OzowPaymentForm } from './ozow-payment-form';
+import { PaiementPaymentForm } from './paiement-payment-form';
+import { PayfastPaymentForm } from './payfast-payment-form';
+import { PayHerePaymentForm } from './payhere-payment-form';
+import { PaystackPaymentForm } from './paystack-payment-form';
+import { PayTabsPaymentForm } from './paytabs-payment-form';
+import { PayTRPaymentForm } from './paytr-payment-form';
+import { RazorpayPaymentForm } from './razorpay-payment-form';
+import { SkrillPaymentForm } from './skrill-payment-form';
+import { TapPaymentForm } from './tap-payment-form';
+import { ToyyibPayPaymentForm } from './toyyibpay-payment-form';
+import { XenditPaymentForm } from './xendit-payment-form';
+import { YooKassaPaymentForm } from './yookassa-payment-form';
 
 interface PaymentMethod {
     id: string;
@@ -66,14 +66,7 @@ interface PaymentProcessorProps {
     onCancel: () => void;
 }
 
-export function PaymentProcessor({
-    plan,
-    billingCycle,
-    paymentMethods,
-    currencySymbol = '$',
-    onSuccess,
-    onCancel
-}: PaymentProcessorProps) {
+export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencySymbol = '$', onSuccess, onCancel }: PaymentProcessorProps) {
     const { t } = useTranslation();
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('');
     const [couponCode, setCouponCode] = useState('');
@@ -89,7 +82,11 @@ export function PaymentProcessor({
     }, [plan.price]);
 
     const originalPrice = currentPrice;
-    const discountAmount = appliedCoupon ? (appliedCoupon.type === 'percentage' ? (originalPrice * appliedCoupon.value / 100) : appliedCoupon.value) : 0;
+    const discountAmount = appliedCoupon
+        ? appliedCoupon.type === 'percentage'
+            ? (originalPrice * appliedCoupon.value) / 100
+            : appliedCoupon.value
+        : 0;
     const finalPrice = Math.max(0, originalPrice - discountAmount);
 
     const handleApplyCoupon = async () => {
@@ -103,7 +100,7 @@ export function PaymentProcessor({
             const { data } = await axios.post(route('coupons.validate'), {
                 coupon_code: couponCode,
                 plan_id: plan.id,
-                amount: originalPrice
+                amount: originalPrice,
             });
 
             if (data.valid) {
@@ -148,26 +145,30 @@ export function PaymentProcessor({
     const handleConfirmZeroPayment = () => {
         setProcessing(true);
 
-        router.post(route('zero.payment'), {
-            plan_id: plan.id,
-            billing_cycle: billingCycle,
-            coupon_code: couponCode,
-            amount: finalPrice,
-        }, {
-            onSuccess: () => {
-                toast.success(t('Payment request submitted successfully'));
-                onSuccess();
+        router.post(
+            route('zero.payment'),
+            {
+                plan_id: plan.id,
+                billing_cycle: billingCycle,
+                coupon_code: couponCode,
+                amount: finalPrice,
             },
-            onError: () => {
-                toast.error(t('Failed to submit payment request'));
+            {
+                onSuccess: () => {
+                    toast.success(t('Payment request submitted successfully'));
+                    onSuccess();
+                },
+                onError: () => {
+                    toast.error(t('Failed to submit payment request'));
+                },
+                onFinish: () => {
+                    setProcessing(false);
+                },
             },
-            onFinish: () => {
-                setProcessing(false);
-            }
-        });
+        );
     };
 
-    const enabledPaymentMethods = paymentMethods.filter(method => method.enabled);
+    const enabledPaymentMethods = paymentMethods.filter((method) => method.enabled);
 
     const renderPaymentForm = () => {
         const commonProps = {
@@ -180,13 +181,7 @@ export function PaymentProcessor({
 
         switch (selectedPaymentMethod) {
             case 'stripe':
-                return (
-                    <StripePaymentForm
-                        {...commonProps}
-                        amount={finalPrice}
-                        stripeKey={plan.paymentMethods?.stripe_key || ''}
-                    />
-                );
+                return <StripePaymentForm {...commonProps} amount={finalPrice} stripeKey={plan.paymentMethods?.stripe_key || ''} />;
 
             case 'paypal':
                 return (
@@ -198,13 +193,7 @@ export function PaymentProcessor({
                     />
                 );
             case 'bank':
-                return (
-                    <BankTransferForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        bankDetails={plan.paymentMethods?.bank_details || ''}
-                    />
-                );
+                return <BankTransferForm {...commonProps} planPrice={finalPrice} bankDetails={plan.paymentMethods?.bank_details || ''} />;
             case 'razorpay':
                 return (
                     <RazorpayPaymentForm
@@ -481,18 +470,18 @@ export function PaymentProcessor({
             {/* Plan Summary */}
             <Card>
                 <CardContent className="p-4">
-                    <div className="flex justify-between items-center">
+                    <div className="flex items-center justify-between">
                         <div>
                             <h3 className="font-medium">{plan.name}</h3>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-muted-foreground text-sm">
                                 {t(billingCycle)} {t('subscription')}
                             </p>
                         </div>
                         <div className="text-right">
-                            <div className="text-lg font-bold">{currencySymbol} {plan.price}</div>
-                            <div className="text-sm text-muted-foreground">
-                                /{t(billingCycle)}
+                            <div className="text-lg font-bold">
+                                {currencySymbol} {plan.price}
                             </div>
+                            <div className="text-muted-foreground text-sm">/{t(billingCycle)}</div>
                         </div>
                     </div>
                 </CardContent>
@@ -502,80 +491,72 @@ export function PaymentProcessor({
             <div className="space-y-3">
                 {finalPrice != 0 && <Label>{t('Select Payment Method')}</Label>}
                 {enabledPaymentMethods.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">
-                        {t('No payment methods available')}
-                    </p>
+                    <p className="text-muted-foreground text-sm">{t('No payment methods available')}</p>
                 ) : (
-                    finalPrice != 0 && <div className="space-y-2">
-                        {enabledPaymentMethods.map((method, index) => (
-                            <Card
-                                key={`${method.id}-${index}`}
-                                className={`cursor-pointer transition-colors ${selectedPaymentMethod === method.id
-                                    ? 'border-primary bg-primary/5'
-                                    : 'hover:border-gray-300'
+                    finalPrice != 0 && (
+                        <div className="space-y-2">
+                            {enabledPaymentMethods.map((method, index) => (
+                                <Card
+                                    key={`${method.id}-${index}`}
+                                    className={`cursor-pointer transition-colors ${
+                                        selectedPaymentMethod === method.id ? 'border-primary bg-primary/5' : 'hover:border-gray-300'
                                     }`}
-                                onClick={() => setSelectedPaymentMethod(method.id)}
-                            >
-                                <CardContent className="p-3">
-                                    <div className="flex items-center gap-3">
-                                        <div className="text-primary">{method.icon}</div>
-                                        <span className="font-medium">{method.name}</span>
-                                        {selectedPaymentMethod === method.id && (
-                                            <Badge variant="secondary" className="ml-auto">
-                                                {t('Selected')}
-                                            </Badge>
-                                        )}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </div>
+                                    onClick={() => setSelectedPaymentMethod(method.id)}
+                                >
+                                    <CardContent className="p-3">
+                                        <div className="flex items-center gap-3">
+                                            <div className="text-primary">{method.icon}</div>
+                                            <span className="font-medium">{method.name}</span>
+                                            {selectedPaymentMethod === method.id && (
+                                                <Badge variant="secondary" className="ml-auto">
+                                                    {t('Selected')}
+                                                </Badge>
+                                            )}
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            ))}
+                        </div>
+                    )
                 )}
             </div>
 
             {/* Coupon Code */}
             <div className="space-y-3">
-                {plan.price != 0 && <><Label htmlFor="coupon">{t('Coupon Code')} ({t('Optional')})</Label>
-                    <div className="flex gap-2">
-                        <div className="relative flex-1">
-                            <Input
-                                id="coupon"
-                                value={couponCode}
-                                onChange={(e) => setCouponCode(e.target.value)}
-                                placeholder={t('Enter coupon code')}
-                                className="pr-10"
-                                disabled={!!appliedCoupon}
-                            />
-                            <Tag className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                {plan.price != 0 && (
+                    <>
+                        <Label htmlFor="coupon">
+                            {t('Coupon Code')} ({t('Optional')})
+                        </Label>
+                        <div className="flex gap-2">
+                            <div className="relative flex-1">
+                                <Input
+                                    id="coupon"
+                                    value={couponCode}
+                                    onChange={(e) => setCouponCode(e.target.value)}
+                                    placeholder={t('Enter coupon code')}
+                                    className="pr-10"
+                                    disabled={!!appliedCoupon}
+                                />
+                                <Tag className="text-muted-foreground absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 transform" />
+                            </div>
+                            {!appliedCoupon ? (
+                                <Button type="button" variant="outline" onClick={handleApplyCoupon} disabled={!couponCode.trim() || couponLoading}>
+                                    {couponLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : t('Apply')}
+                                </Button>
+                            ) : (
+                                <Button type="button" variant="outline" onClick={handleRemoveCoupon}>
+                                    {t('Remove')}
+                                </Button>
+                            )}
                         </div>
-                        {!appliedCoupon ? (
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={handleApplyCoupon}
-                                disabled={!couponCode.trim() || couponLoading}
-                            >
-                                {couponLoading ? (
-                                    <Loader2 className="h-4 w-4 animate-spin" />
-                                ) : (
-                                    t('Apply')
-                                )}
-                            </Button>
-                        ) : (
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={handleRemoveCoupon}
-                            >
-                                {t('Remove')}
-                            </Button>
-                        )}
-                    </div></>}
+                    </>
+                )}
 
                 {appliedCoupon && (
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                    <div className="rounded-lg border border-green-200 bg-green-50 p-3">
                         <div className="flex items-center justify-between text-sm">
-                            <span className="text-green-700 font-medium">
+                            <span className="font-medium text-green-700">
                                 {t('Coupon Applied')}: {appliedCoupon.code}
                             </span>
                             <span className="text-green-600">
@@ -592,18 +573,27 @@ export function PaymentProcessor({
                     <div className="space-y-2">
                         <div className="flex justify-between text-sm">
                             <span>{t('Subtotal')}</span>
-                            <span>{currencySymbol}{originalPrice}</span>
+                            <span>
+                                {currencySymbol}
+                                {originalPrice}
+                            </span>
                         </div>
                         {appliedCoupon && (
                             <div className="flex justify-between text-sm text-green-600">
                                 <span>{t('Discount')}</span>
-                                <span>-{currencySymbol}{discountAmount}</span>
+                                <span>
+                                    -{currencySymbol}
+                                    {discountAmount}
+                                </span>
                             </div>
                         )}
                         <div className="border-t pt-2">
                             <div className="flex justify-between font-medium">
                                 <span>{t('Total')}</span>
-                                <span>{currencySymbol}{finalPrice.toFixed(2)}</span>
+                                <span>
+                                    {currencySymbol}
+                                    {finalPrice.toFixed(2)}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -615,11 +605,7 @@ export function PaymentProcessor({
                 <Button variant="outline" onClick={onCancel} className="flex-1">
                     {t('Cancel')}
                 </Button>
-                <Button
-                    onClick={handlePayNow}
-                    disabled={enabledPaymentMethods.length === 0 || processing}
-                    className="flex-1"
-                >
+                <Button onClick={handlePayNow} disabled={enabledPaymentMethods.length === 0 || processing} className="flex-1">
                     {t('Pay')} {currencySymbol} {finalPrice}
                 </Button>
             </div>

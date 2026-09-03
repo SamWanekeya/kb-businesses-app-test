@@ -11,17 +11,17 @@
 export function asset(path: string): string {
     // Remove leading slash if present
     const cleanPath = path.startsWith('/') ? path.substring(1) : path;
-    
+
     // For absolute URLs, return as is
     if (cleanPath.startsWith('http://') || cleanPath.startsWith('https://')) {
         return cleanPath;
     }
-    
+
     // For relative URLs in production, use relative paths
     if (import.meta.env.PROD) {
         return cleanPath;
     }
-    
+
     // For development, use the base URL from the window object
     const baseUrl = (window as any).baseUrl || '';
     return `${baseUrl}/${cleanPath}`;

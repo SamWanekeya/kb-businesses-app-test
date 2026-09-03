@@ -1,6 +1,6 @@
+import { InvoicePaymentProcessor } from '@/components/payment/invoice-payment-processor';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useTranslation } from 'react-i18next';
-import { InvoicePaymentProcessor } from '@/components/payment/invoice-payment-processor';
 
 interface Invoice {
     id: number;
@@ -17,13 +17,7 @@ interface InvoicePaymentModalProps {
     onAmountChange: (amount: number) => void;
 }
 
-export function InvoicePaymentModal({
-    isOpen,
-    onClose,
-    invoice,
-    amount,
-    onAmountChange
-}: InvoicePaymentModalProps) {
+export function InvoicePaymentModal({ isOpen, onClose, invoice, amount, onAmountChange }: InvoicePaymentModalProps) {
     const { t } = useTranslation();
 
     const handlePaymentSuccess = () => {
@@ -33,12 +27,14 @@ export function InvoicePaymentModal({
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="max-w-lg max-h-[90vh] flex flex-col print:hidden">
+            <DialogContent className="flex max-h-[90vh] max-w-lg flex-col print:hidden">
                 <DialogHeader className="flex-shrink-0">
-                    <DialogTitle>{t('Pay Invoice')} #{invoice.invoice_number}</DialogTitle>
+                    <DialogTitle>
+                        {t('Pay Invoice')} #{invoice.invoice_number}
+                    </DialogTitle>
                 </DialogHeader>
 
-                <div className="overflow-y-auto flex-1 pr-2">
+                <div className="flex-1 overflow-y-auto pr-2">
                     <InvoicePaymentProcessor
                         invoice={invoice}
                         amount={amount}

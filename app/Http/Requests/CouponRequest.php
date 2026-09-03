@@ -37,7 +37,7 @@ class CouponRequest extends FormRequest
                     if ($this->type === 'percentage' && $value > 99) {
                         $fail('The discount amount cannot exceed 99% for percentage discounts.');
                     }
-                }
+                },
             ],
             'use_limit_per_coupon' => 'nullable|integer|min:1',
             'use_limit_per_user' => 'nullable|integer|min:1',
@@ -46,10 +46,10 @@ class CouponRequest extends FormRequest
                 'required_if:code_type,manual',
                 'string',
                 'max:50',
-                Rule::unique('coupons', 'code')->ignore($couponId)
+                Rule::unique('coupons', 'code')->ignore($couponId),
             ],
             'code_type' => 'required|in:manual,auto',
-            'status' => 'boolean'
+            'status' => 'boolean',
         ];
     }
 

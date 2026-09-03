@@ -163,7 +163,7 @@ class Invoice extends BaseModel
             'subtotal' => $subtotal,
             'discount_amount' => $totalDiscountAmount,
             'tax_amount' => $taxAmount,
-            'total_amount' => $totalAmount
+            'total_amount' => $totalAmount,
         ]);
 
         return $totalAmount;
@@ -187,6 +187,7 @@ class Invoice extends BaseModel
     public function isPartiallyPaid()
     {
         $totalPaid = $this->getTotalPaidAmount();
+
         return $totalPaid > 0 && $totalPaid < $this->total_amount;
     }
 

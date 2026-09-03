@@ -3,17 +3,15 @@
 namespace App\Events;
 
 use App\Models\Opportunity;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
 class OpportunityStageChanged
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     /**
      * Create a new event instance.
@@ -22,8 +20,7 @@ class OpportunityStageChanged
         public Opportunity $opportunity,
         public string $oldStage,
         public string $newStage
-    )
-    {
+    ) {
         //
     }
 }

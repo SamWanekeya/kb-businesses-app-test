@@ -2,15 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\Quote;
-use App\Models\User;
-use App\Models\Opportunity;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\Opportunity;
 use App\Models\Product;
+use App\Models\Quote;
 use App\Models\ShippingProviderType;
-use Illuminate\Database\Seeder;
+use App\Models\User;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class QuoteSeeder extends Seeder
 {
@@ -21,6 +21,7 @@ class QuoteSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 

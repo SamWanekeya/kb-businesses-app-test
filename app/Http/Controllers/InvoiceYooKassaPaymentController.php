@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
-use App\Models\User;
 use Illuminate\Http\Request;
 use YooKassa\Client;
 
@@ -35,6 +34,7 @@ class InvoiceYooKassaPaymentController extends Controller
 
             if (!isset($settings['payment_settings']['yookassa_shop_id']) || !isset($settings['payment_settings']['yookassa_secret_key'])) {
                 \Log::error('YooKassa payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+
                 return response()->json(['error' => __('YooKassa not configured')], 400);
             }
 
@@ -54,7 +54,7 @@ class InvoiceYooKassaPaymentController extends Controller
                         'invoice_id' => $invoice->id,
                         'order_id' => $orderID,
                         'amount' => $validated['amount'],
-                        'payment_type' => $validated['payment_type']
+                        'payment_type' => $validated['payment_type'],
                     ]),
                 ],
                 'capture' => true,
@@ -63,18 +63,19 @@ class InvoiceYooKassaPaymentController extends Controller
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
-                    'order_id' => $orderID
-                ]
+                    'order_id' => $orderID,
+                ],
             ], uniqid('', true));
 
             if ($payment['confirmation']['confirmation_url'] != null) {
                 return response()->json([
                     'success' => true,
                     'payment_url' => $payment['confirmation']['confirmation_url'],
-                    'payment_id' => $payment['id']
+                    'payment_id' => $payment['id'],
                 ]);
             } else {
                 \Log::error('YooKassa payment creation failed', ['invoice_id' => $invoice->id]);
+
                 return response()->json(['error' => __('Payment creation failed')], 500);
             }
 
@@ -82,8 +83,9 @@ class InvoiceYooKassaPaymentController extends Controller
             \Log::error('YooKassa payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return response()->json(['error' => __('Payment creation failed'),'message' => $e->getMessage()], 500);
         }
     }
@@ -113,17 +115,19 @@ class InvoiceYooKassaPaymentController extends Controller
                         'invoice_id' => $invoice->id,
                         'amount' => $amount,
                         'payment_type' => $paymentType,
-                        'payment_id' => $orderId
+                        'payment_id' => $orderId,
                     ]);
 
                     return redirect()->route('invoices.public', $invoice->id)->with('success', __('Payment successful'));
                 }
             }
+
             return redirect()->route('invoices.public', $invoiceId)->with('error', __('Payment verification failed'));
         } catch (\Exception $e) {
             \Log::error('YooKassa success callback error', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return redirect()->route('invoices.public', $request->input('invoice_id'))->with('error', __('Payment processing failed'));
         }
     }
@@ -154,15 +158,17 @@ class InvoiceYooKassaPaymentController extends Controller
                     \Log::info('YooKassa invoice payment callback successful', [
                         'invoice_id' => $invoice->id,
                         'amount' => $amount,
-                        'payment_id' => $paymentId
+                        'payment_id' => $paymentId,
                     ]);
                 }
             }
+
             return response()->json(['status' => 'success']);
         } catch (\Exception $e) {
             \Log::error('YooKassa callback error', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return response()->json(['error' => __('Callback processing failed')], 500);
         }
     }

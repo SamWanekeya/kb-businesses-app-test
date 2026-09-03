@@ -2,15 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\Meeting;
-use App\Models\MeetingAttendee;
-use App\Models\User;
-use App\Models\Lead;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\Lead;
+use App\Models\Meeting;
+use App\Models\MeetingAttendee;
 use App\Models\Opportunity;
-use Illuminate\Database\Seeder;
+use App\Models\User;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class MeetingSeeder extends Seeder
 {
@@ -21,6 +21,7 @@ class MeetingSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -58,7 +59,7 @@ class MeetingSeeder extends Seeder
                 'Partnership Discussion',
                 'Training Workshop',
                 'System Implementation Planning',
-                'Annual Planning Meeting'
+                'Annual Planning Meeting',
             ];
 
             $meetingDescriptions = [
@@ -76,7 +77,7 @@ class MeetingSeeder extends Seeder
                 'Business partnership discussion to explore collaboration opportunities and mutual benefits',
                 'Educational workshop to enhance team skills and knowledge in specific areas',
                 'Planning meeting for system implementation including timeline, resources, and risk assessment',
-                'Annual strategic planning session to set long-term goals and organizational direction'
+                'Annual strategic planning session to set long-term goals and organizational direction',
             ];
 
             $locations = [
@@ -94,7 +95,7 @@ class MeetingSeeder extends Seeder
                 'Virtual - WebEx',
                 'Outdoor Terrace',
                 'Restaurant Meeting',
-                'Home Office - Remote'
+                'Home Office - Remote',
             ];
 
             for ($i = 0; $i < 15; $i++) {

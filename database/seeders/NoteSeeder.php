@@ -27,7 +27,7 @@ class NoteSeeder extends Seeder
             'Employee Onboarding Checklist',
             'Quarterly Goals and Objectives',
             'Vendor Contract Negotiations',
-            'System Upgrade Planning'
+            'System Upgrade Planning',
         ];
 
         $noteContents = [
@@ -45,7 +45,7 @@ class NoteSeeder extends Seeder
             '<p>Comprehensive onboarding plan for new team members. Includes training schedule, mentor assignment, and 30-60-90 day goals.</p><p>Resources: Access to learning platform and documentation repository.</p>',
             '<p>Established quarterly targets for revenue growth, customer acquisition, and product development.</p><p>Key metrics: 25% revenue increase, 1000 new customers, 5 major feature releases.</p>',
             '<p>Negotiating terms with new vendor for software licensing. Discussed pricing, support levels, and contract duration.</p><p>Status: Awaiting final proposal. Decision deadline: End of month.</p>',
-            '<p>Planning system upgrade to latest version. Assessed compatibility issues and migration requirements.</p><p>Timeline: 2-week implementation window. Backup and rollback procedures documented.</p>'
+            '<p>Planning system upgrade to latest version. Assessed compatibility issues and migration requirements.</p><p>Timeline: 2-week implementation window. Backup and rollback procedures documented.</p>',
         ];
 
         foreach ($users as $user) {

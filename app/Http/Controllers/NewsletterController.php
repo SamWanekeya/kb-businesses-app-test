@@ -20,7 +20,7 @@ class NewsletterController extends Controller
 
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'email', 'created_at'];
+        $allowedSorts = ['id', 'email', 'created_at'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';

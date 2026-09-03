@@ -3,19 +3,19 @@ import '../css/dark-mode.css';
 
 import { createInertiaApp, router } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
-import { lazy, Suspense } from 'react';
-import { LayoutProvider } from './contexts/LayoutContext';
-import { SidebarProvider } from './contexts/SidebarContext';
-import { BrandProvider } from './contexts/BrandContext';
-import { ModalStackProvider } from './contexts/ModalStackContext';
-import { initializeTheme } from './hooks/use-appearance';
 import { CustomToast } from './components/custom-toast';
-import { initializeGlobalSettings } from './utils/globalSettings';
-import { initPerformanceMonitoring, lazyLoadImages } from './utils/performance';
-import { getCookie, isDemoMode } from './utils/cookie-utils';
+import { BrandProvider } from './contexts/BrandContext';
+import { LayoutProvider } from './contexts/LayoutContext';
+import { ModalStackProvider } from './contexts/ModalStackContext';
+import { SidebarProvider } from './contexts/SidebarContext';
+import { initializeTheme } from './hooks/use-appearance';
 import i18n from './i18n'; // Import i18n configuration
 import './utils/axios-config'; // Import axios configuration
+import { getCookie, isDemoMode } from './utils/cookie-utils';
+import { initializeGlobalSettings } from './utils/globalSettings';
+import { initPerformanceMonitoring, lazyLoadImages } from './utils/performance';
 import './utils/routes'; // Import route helper
 
 // Initialize performance monitoring
@@ -54,8 +54,7 @@ createInertiaApp({
         // Make page data globally available for axios interceptor
         try {
             (window as any).page = props.initialPage;
-        } catch (e) {
-        }
+        } catch (e) {}
 
         // Set demo mode globally
         try {
@@ -134,14 +133,13 @@ createInertiaApp({
 
                 if (savedTheme) {
                     const themeSettings = JSON.parse(savedTheme);
-                    const isDark = themeSettings.appearance === 'dark' ||
-                        (themeSettings.appearance === 'system' &&
-                            window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    const isDark =
+                        themeSettings.appearance === 'dark' ||
+                        (themeSettings.appearance === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
                     document.documentElement.classList.toggle('dark', isDark);
                     document.body.classList.toggle('dark', isDark);
                 }
-            } catch (e) {
-            }
+            } catch (e) {}
         });
     },
     progress: {

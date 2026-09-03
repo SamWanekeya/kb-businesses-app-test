@@ -1,15 +1,13 @@
 <?php
 
-use App\Models\Setting;
-use App\Models\User;
 use App\Models\Coupon;
-use App\Models\NotificationTemplate;
-use Carbon\Carbon;
+use App\Models\PaymentSetting;
 use App\Models\Plan;
 use App\Models\PlanOrder;
 use App\Models\Role;
-use Spatie\Permission\Models\Permission;
-use App\Models\PaymentSetting;
+use App\Models\Setting;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -185,6 +183,7 @@ if (! function_exists('createDefaultEmailTemplateSettings')) {
      * Create default email template settings for a user
      *
      * @param int $userId
+     *
      * @return void
      */
     function createDefaultEmailTemplateSettings($userId)
@@ -206,6 +205,7 @@ if (! function_exists('isNotificationTemplateEnabled')) {
      *
      * @param string $templateName
      * @param int|null $userId
+     *
      * @return bool
      */
     function isNotificationTemplateEnabled($templateName, $templateType, $userId = null)
@@ -234,6 +234,7 @@ if (! function_exists('createDefaultNotificationTemplateSettings')) {
      * Create default notification template settings for a user
      *
      * @param int $userId
+     *
      * @return void
      */
     function createDefaultNotificationTemplateSettings($userId)
@@ -254,6 +255,7 @@ if (! function_exists('getPaymentSettings')) {
      * Get payment settings for a user
      *
      * @param int|null $userId
+     *
      * @return array
      */
     function getPaymentSettings($userId = null)
@@ -273,6 +275,7 @@ if (! function_exists('updatePaymentSetting')) {
      * @param string $key
      * @param mixed $value
      * @param int|null $userId
+     *
      * @return \App\Models\PaymentSetting
      */
     function updatePaymentSetting($key, $value, $userId = null)
@@ -291,6 +294,7 @@ if (! function_exists('isPaymentMethodEnabled')) {
      *
      * @param string $method (stripe, paypal, razorpay, mercadopago, bank)
      * @param int|null $userId
+     *
      * @return bool
      */
     function isPaymentMethodEnabled($method, $userId = null)
@@ -308,6 +312,7 @@ if (! function_exists('getPaymentMethodConfig')) {
      *
      * @param string $method (stripe, paypal, razorpay, mercadopago)
      * @param int|null $userId
+     *
      * @return array
      */
     function getPaymentMethodConfig($method, $userId = null)
@@ -525,6 +530,7 @@ if (! function_exists('getEnabledPaymentMethods')) {
      * Get all enabled payment methods
      *
      * @param int|null $userId
+     *
      * @return array
      */
     function getEnabledPaymentMethods($userId = null)
@@ -548,6 +554,7 @@ if (! function_exists('validatePaymentMethodConfig')) {
      *
      * @param string $method
      * @param array $config
+     *
      * @return array [valid => bool, errors => array]
      */
     function validatePaymentMethodConfig($method, $config)
@@ -801,7 +808,7 @@ if (! function_exists('validatePaymentMethodConfig')) {
 
         return [
             'valid' => empty($errors),
-            'errors' => $errors
+            'errors' => $errors,
         ];
     }
 }
@@ -834,7 +841,7 @@ if (! function_exists('calculatePlanPricing')) {
             'original_price' => $originalPrice,
             'discount_amount' => $discountAmount,
             'final_price' => $finalPrice,
-            'coupon_id' => $couponId
+            'coupon_id' => $couponId,
         ];
     }
 }
@@ -845,6 +852,7 @@ if (! function_exists('createPlanOrder')) {
         $plan = Plan::findOrFail($data['plan_id']);
         $billingCycle = $data['billing_cycle'] ?? 'monthly';
         $pricing = calculatePlanPricing($plan, $data['coupon_code'] ?? null, $data['billing_cycle'] ?? 'monthly');
+
         return PlanOrder::create([
             'user_id' => $data['user_id'],
             'plan_id' => $plan->id,
@@ -914,7 +922,7 @@ if (! function_exists('getPaymentGatewaySettings')) {
         return [
             'payment_settings' => PaymentSetting::getUserSettings($superAdminId),
             'general_settings' => Setting::getUserSettings($superAdminId),
-            'super_admin_id' => $superAdminId
+            'super_admin_id' => $superAdminId,
         ];
     }
 }
@@ -1005,7 +1013,7 @@ if (! function_exists('defaultSettings')) {
             'cookieDescription' => 'We use cookies to enhance your browsing experience and provide personalized content.',
             'strictlyCookieDescription' => 'These cookies are essential for the website to function properly.',
             'contactUsDescription' => 'If you have any questions about our cookie policy, please contact us.',
-            'contactUsUrl' => 'https://example.com/contact',
+            'contactUsUrl' => 'https://kakbima.dev/contact',
         ];
     }
 }
@@ -1015,6 +1023,7 @@ if (! function_exists('createDefaultSettings')) {
      * Create default settings for a user
      *
      * @param int $userId
+     *
      * @return void
      */
     function createDefaultSettings($userId)
@@ -1041,6 +1050,7 @@ if (! function_exists('copySettingsFromSuperAdmin')) {
      * Copy system and brand settings from super_admin to organization user
      *
      * @param int $organizationUserId
+     *
      * @return void
      */
     function copySettingsFromSuperAdmin($organizationUserId)
@@ -1048,6 +1058,7 @@ if (! function_exists('copySettingsFromSuperAdmin')) {
         $superAdmin = User::where('type', 'super_admin')->first();
         if (!$superAdmin) {
             createDefaultSettings($organizationUserId);
+
             return;
         }
 
@@ -1079,7 +1090,7 @@ if (! function_exists('copySettingsFromSuperAdmin')) {
             'cookieDescription',
             'strictlyCookieDescription',
             'contactUsDescription',
-            'contactUsUrl'
+            'contactUsUrl',
         ];
 
         // Currency settings - use defaults for organization (not copied from super_admin)
@@ -1090,7 +1101,7 @@ if (! function_exists('copySettingsFromSuperAdmin')) {
             'thousandsSeparator' => ',',
             'floatNumber' => '1',
             'currencySymbolSpace' => '0',
-            'currencySymbolPosition' => 'before'
+            'currencySymbolPosition' => 'before',
         ];
 
         $superAdminSettings = Setting::where('user_id', $superAdmin->id)
@@ -1154,7 +1165,7 @@ if (! function_exists('createdBy')) {
     {
         if (Auth::user()->type == 'super_admin') {
             return Auth::user()->id;
-        } else if (Auth::user()->type == 'organization') {
+        } elseif (Auth::user()->type == 'organization') {
             return Auth::user()->id;
         } else {
             return  Auth::user()->created_by;
@@ -1178,6 +1189,7 @@ if (! function_exists('createDefaultNotificationTemplates')) {
      * Create default notification templates for a new organization
      *
      * @param int $organizationId
+     *
      * @return void
      */
     function createDefaultNotificationTemplates($organizationId)
@@ -1209,7 +1221,7 @@ if (! function_exists('createDefaultNotificationTemplates')) {
                         'lang' => $langCode,
                         'title' => $globalContent->title,
                         'notification_template_content' => $globalContent->notification_template_content,
-                        'created_by' => $organizationId
+                        'created_by' => $organizationId,
                     ]);
                 }
             }
@@ -1223,6 +1235,7 @@ if (! function_exists('isEmailTemplateEnabled')) {
      *
      * @param string $templateName
      * @param int|null $userId
+     *
      * @return bool
      */
     function isEmailTemplateEnabled($templateName, $userId = null)
@@ -1250,7 +1263,7 @@ if (! function_exists('getTwilioConfig')) {
         return [
             'twilio_sid' => getSetting('twilio_sid', ''),
             'twilio_token' => getSetting('twilio_token', ''),
-            'twilio_from' => getSetting('twilio_from', '')
+            'twilio_from' => getSetting('twilio_from', ''),
         ];
     }
 }
@@ -1303,7 +1316,7 @@ if (!function_exists('getDemoCalendarData')) {
         $events = [];
 
         $rangeStart = Carbon::create(2025, 12, 1);
-        $rangeEnd   = Carbon::create(2026, 12, 31);
+        $rangeEnd = Carbon::create(2026, 12, 31);
 
         // Fixed templates (no randomness)
         $demoEvents = [
@@ -1319,10 +1332,10 @@ if (!function_exists('getDemoCalendarData')) {
         ];
 
         // Predefined static values
-        $statusesTask    = ['pending', 'in_progress', 'completed'];
-        $statusesEvent   = ['scheduled', 'completed', 'cancelled'];
-        $timeSlots       = ['09:00', '10:00', '11:30', '14:00', '15:30', '16:30'];
-        $locations       = ['Conference Room A', 'Zoom', 'Office'];
+        $statusesTask = ['pending', 'in_progress', 'completed'];
+        $statusesEvent = ['scheduled', 'completed', 'cancelled'];
+        $timeSlots = ['09:00', '10:00', '11:30', '14:00', '15:30', '16:30'];
+        $locations = ['Conference Room A', 'Zoom', 'Office'];
 
         $eventId = 1;
         $currentDate = $rangeStart->copy();
@@ -1331,21 +1344,21 @@ if (!function_exists('getDemoCalendarData')) {
 
             // Rotate event templates deterministically
             $template = $demoEvents[$eventId % count($demoEvents)];
-            $type     = $template['type'];
+            $type = $template['type'];
 
             if ($type === 'task') {
                 $events[] = [
-                    'id'              => "task-{$eventId}",
-                    'title'           => $template['title'],
-                    'start'           => $currentDate->format('Y-m-d'),
-                    'type'            => 'task',
+                    'id' => "task-{$eventId}",
+                    'title' => $template['title'],
+                    'start' => $currentDate->format('Y-m-d'),
+                    'type' => 'task',
                     'backgroundColor' => '#f59e0b',
-                    'borderColor'     => '#d97706',
-                    'task_id'         => $eventId,
-                    'project_id'      => ($eventId % 5) + 1,
-                    'description'     => 'Demo task description',
-                    'status'          => $statusesTask[$eventId % count($statusesTask)],
-                    'parent_name'     => 'Demo Project ' . (($eventId % 3) + 1),
+                    'borderColor' => '#d97706',
+                    'task_id' => $eventId,
+                    'project_id' => ($eventId % 5) + 1,
+                    'description' => 'Demo task description',
+                    'status' => $statusesTask[$eventId % count($statusesTask)],
+                    'parent_name' => 'Demo Project ' . (($eventId % 3) + 1),
                 ];
             } else {
                 $time = $timeSlots[$eventId % count($timeSlots)];
@@ -1357,29 +1370,29 @@ if (!function_exists('getDemoCalendarData')) {
                 $endDateTime = $startDateTime->copy()->addMinutes($template['duration']);
 
                 $event = [
-                    'id'              => "{$type}-{$eventId}",
-                    'title'           => $template['title'],
-                    'start'           => $startDateTime->format('Y-m-d H:i:s'),
-                    'end'             => $endDateTime->format('Y-m-d H:i:s'),
-                    'type'            => $type,
-                    'description'     => "Demo {$type} description",
-                    'status'          => $statusesEvent[$eventId % count($statusesEvent)],
-                    'parent_name'     => $type === 'meeting'
+                    'id' => "{$type}-{$eventId}",
+                    'title' => $template['title'],
+                    'start' => $startDateTime->format('Y-m-d H:i:s'),
+                    'end' => $endDateTime->format('Y-m-d H:i:s'),
+                    'type' => $type,
+                    'description' => "Demo {$type} description",
+                    'status' => $statusesEvent[$eventId % count($statusesEvent)],
+                    'parent_name' => $type === 'meeting'
                         ? 'Demo Lead ' . (($eventId % 5) + 1)
                         : 'Demo Contact ' . (($eventId % 5) + 1),
-                    'startDateTime'   => $startDateTime->format('H:i:s'),
-                    'endDateTime'     => $endDateTime->format('H:i:s'),
+                    'startDateTime' => $startDateTime->format('H:i:s'),
+                    'endDateTime' => $endDateTime->format('H:i:s'),
                 ];
 
                 if ($type === 'meeting') {
                     $event['backgroundColor'] = '#A12582';
-                    $event['borderColor']     = '#2563eb';
-                    $event['meeting_id']      = $eventId;
-                    $event['location']        = $locations[$eventId % count($locations)];
+                    $event['borderColor'] = '#2563eb';
+                    $event['meeting_id'] = $eventId;
+                    $event['location'] = $locations[$eventId % count($locations)];
                 } else {
                     $event['backgroundColor'] = '#10b77f';
-                    $event['borderColor']     = '#059669';
-                    $event['call_id']         = $eventId;
+                    $event['borderColor'] = '#059669';
+                    $event['call_id'] = $eventId;
                 }
 
                 $events[] = $event;
@@ -1417,6 +1430,7 @@ if (!function_exists('getSuperAdminSettings')) {
             $superAdminSettings = Setting::where('user_id', $superAdmin->id)
                 ->pluck('value', 'key')
                 ->toArray();
+
             return $superAdminSettings;
         }
     }
@@ -1666,6 +1680,7 @@ if (!function_exists('get_file')) {
 
                 // Normalize path for S3
                 $s3Path = 'media/' . ltrim($path, '/');
+
                 return Storage::disk('s3')->url($s3Path);
             }
 
@@ -1693,6 +1708,7 @@ if (!function_exists('get_file')) {
 
                 // Normalize path for Wasabi
                 $wasabiPath = 'media/' . ltrim($path, '/');
+
                 return Storage::disk('wasabi')->url($wasabiPath);
             }
 
@@ -1702,8 +1718,9 @@ if (!function_exists('get_file')) {
             // Log error for debugging
             Log::error('get_file error: ' . $e->getMessage(), [
                 'path' => $path,
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             // Return asset path as fallback
             return asset($path);
         }
@@ -1739,6 +1756,7 @@ if (!function_exists('delete_file')) {
                 if (file_exists($publicPath)) {
                     return unlink($publicPath);
                 }
+
                 return false;
             }
 
@@ -1762,6 +1780,7 @@ if (!function_exists('delete_file')) {
 
                 // Normalize path for S3
                 $s3Path = 'media/' . ltrim($path, '/');
+
                 return Storage::disk('s3')->delete($s3Path);
             }
 
@@ -1789,6 +1808,7 @@ if (!function_exists('delete_file')) {
 
                 // Normalize path for Wasabi
                 $wasabiPath = 'media/' . ltrim($path, '/');
+
                 return Storage::disk('wasabi')->delete($wasabiPath);
             }
 
@@ -1798,8 +1818,9 @@ if (!function_exists('delete_file')) {
             // Log error for debugging
             Log::error('delete_file error: ' . $e->getMessage(), [
                 'path' => $path,
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return false;
         }
     }
@@ -1823,6 +1844,7 @@ if (!function_exists('getImageUrlPrefix')) {
                 }
                 $bucket = getSetting('aws_bucket');
                 $region = getSetting('aws_default_region', 'us-east-1');
+
                 return "https://{$bucket}.s3.{$region}.amazonaws.com";
 
             case 'wasabi':
@@ -1833,9 +1855,11 @@ if (!function_exists('getImageUrlPrefix')) {
                     if ($bucket && !str_contains($url, $bucket)) {
                         return rtrim($url, '/') . '/' . $bucket;
                     }
+
                     return rtrim($url, '/');
                 }
                 $region = getSetting('wasabi_region', 'us-east-1');
+
                 return "https://s3.{$region}.wasabisys.com/{$bucket}";
 
             case 'local':

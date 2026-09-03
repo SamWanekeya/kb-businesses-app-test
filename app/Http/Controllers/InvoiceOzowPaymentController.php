@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class InvoiceOzowPaymentController extends Controller
@@ -32,6 +31,7 @@ class InvoiceOzowPaymentController extends Controller
 
             if (!isset($settings['payment_settings']['ozow_site_key']) || !isset($settings['payment_settings']['ozow_private_key']) || !isset($settings['payment_settings']['ozow_api_key'])) {
                 \Log::error('Ozow payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+
                 return response()->json(['error' => __('Ozow not configured')], 400);
             }
 
@@ -44,7 +44,7 @@ class InvoiceOzowPaymentController extends Controller
             $successUrl = route('invoice.ozow.success', [
                 'invoice_id' => $invoice->id,
                 'amount' => $validated['amount'],
-                'payment_type' => $validated['payment_type']
+                'payment_type' => $validated['payment_type'],
             ]);
             $notifyUrl = route('invoice.ozow.callback');
             $bankReference = 'INV' . $invoice->id . time();
@@ -84,7 +84,7 @@ class InvoiceOzowPaymentController extends Controller
                 CURLOPT_HTTPHEADER => [
                     'Accept: application/json',
                     'ApiKey: ' . $apiKey,
-                    'Content-Type: application/json'
+                    'Content-Type: application/json',
                 ],
             ]);
 
@@ -96,10 +96,11 @@ class InvoiceOzowPaymentController extends Controller
                 return response()->json([
                     'success' => true,
                     'payment_url' => $json_attendance->url,
-                    'transaction_id' => $transactionReference
+                    'transaction_id' => $transactionReference,
                 ]);
             } else {
                 \Log::error('Ozow payment creation failed', ['invoice_id' => $invoice->id, 'response' => $response]);
+
                 return response()->json(['error' => __('Payment creation failed')], 500);
             }
 
@@ -107,8 +108,9 @@ class InvoiceOzowPaymentController extends Controller
             \Log::error('Ozow payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
     }
@@ -136,15 +138,16 @@ class InvoiceOzowPaymentController extends Controller
             \Log::info('Ozow invoice payment successful', [
                 'invoice_id' => $invoice->id,
                 'amount' => $amount,
-                'payment_type' => $paymentType
+                'payment_type' => $paymentType,
             ]);
 
             return redirect()->route('invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
 
         } catch (\Exception $e) {
             \Log::error('Ozow success callback error', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return redirect()->route('invoices.public', encrypt($request->input('invoice_id')))->with('error', __('Payment processing failed'));
         }
     }
@@ -175,7 +178,7 @@ class InvoiceOzowPaymentController extends Controller
 
                         \Log::info('Ozow invoice payment callback successful', [
                             'invoice_id' => $invoice->id,
-                            'transaction_id' => $transactionId
+                            'transaction_id' => $transactionId,
                         ]);
                     }
                 }
@@ -185,8 +188,9 @@ class InvoiceOzowPaymentController extends Controller
 
         } catch (\Exception $e) {
             \Log::error('Ozow callback error', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return response()->json(['error' => __('Callback processing failed')], 500);
         }
     }

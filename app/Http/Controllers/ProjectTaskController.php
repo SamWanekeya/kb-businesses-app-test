@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ProjectTask;
-use App\Models\Project;
-use App\Models\User;
-use App\Models\TaskStatus;
 use App\Exports\ProjectTaskExport;
-
+use App\Models\Project;
+use App\Models\ProjectTask;
+use App\Models\TaskStatus;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -45,7 +44,7 @@ class ProjectTaskController extends Controller
 
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'title'];
+        $allowedSorts = ['id', 'title'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -70,7 +69,7 @@ class ProjectTaskController extends Controller
         $allTaskStatuses = (clone $taskStatusQuery)->select('id', 'name', 'color')->get();
         $taskStatuses = (clone $taskStatusQuery)->where('status', 'active')->select('id', 'name', 'color')->get();
 
-        $groupedTasks = $allTasks->map(fn($task) => [
+        $groupedTasks = $allTasks->map(fn ($task) => [
             'id' => $task->id,
             'title' => $task->title,
             'description' => $task->description,
@@ -234,6 +233,7 @@ class ProjectTaskController extends Controller
 
             try {
                 $task->delete();
+
                 return redirect()->back()->with('success', __('Task deleted successfully.'));
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete task.'));
@@ -252,7 +252,7 @@ class ProjectTaskController extends Controller
         if ($task) {
             try {
                 $validated = $request->validate([
-                    'task_status_id' => 'required|integer|exists:task_statuses,id'
+                    'task_status_id' => 'required|integer|exists:task_statuses,id',
                 ]);
 
                 // Validate task_status_id belongs to current user
@@ -286,7 +286,7 @@ class ProjectTaskController extends Controller
             ->where('status', 'active')
             ->select('id', 'name', 'color')
             ->get()
-            ->map(fn($s) => ['id' => $s->id, 'name' => $s->name, 'color' => $s->color])
+            ->map(fn ($s) => ['id' => $s->id, 'name' => $s->name, 'color' => $s->color])
             ->toArray();
 
         $taskQuery = ProjectTask::with(['assignedUser', 'taskStatus'])
@@ -294,7 +294,7 @@ class ProjectTaskController extends Controller
             ->where('created_by', createdBy());
 
         if (!empty($request->search)) {
-            $taskQuery->where(fn($q) => $q->where('title', 'like', '%' . $request->search . '%')
+            $taskQuery->where(fn ($q) => $q->where('title', 'like', '%' . $request->search . '%')
                 ->orWhere('description', 'like', '%' . $request->search . '%'));
         }
 
@@ -307,7 +307,7 @@ class ProjectTaskController extends Controller
         }
 
         $tasks = $taskQuery->get()
-            ->map(fn($task) => [
+            ->map(fn ($task) => [
                 'id' => $task->id,
                 'title' => $task->title,
                 'description' => $task->description,
@@ -325,7 +325,7 @@ class ProjectTaskController extends Controller
         foreach ($statuses as $status) {
             $kanbanData[$status['id']] = [
                 'status' => $status,
-                'tasks' => $tasks->get($status['id'], collect())->values()->toArray()
+                'tasks' => $tasks->get($status['id'], collect())->values()->toArray(),
             ];
         }
 
@@ -360,7 +360,7 @@ class ProjectTaskController extends Controller
                     'priority' => 'high',
                     'progress' => 100,
                     'task_status' => ['id' => 1, 'name' => 'Done', 'color' => '#10b981'],
-                    'assigned_user' => ['id' => 1, 'name' => 'John Doe', 'email' => 'john@kakbima.dev']
+                    'assigned_user' => ['id' => 1, 'name' => 'John Doe', 'email' => 'john@kakbima.dev'],
                 ],
                 [
                     'id' => 2,
@@ -371,7 +371,7 @@ class ProjectTaskController extends Controller
                     'priority' => 'high',
                     'progress' => 75,
                     'task_status' => ['id' => 2, 'name' => 'In Progress', 'color' => '#A12582'],
-                    'assigned_user' => ['id' => 2, 'name' => 'Jane Smith', 'email' => 'jane@kakbima.dev']
+                    'assigned_user' => ['id' => 2, 'name' => 'Jane Smith', 'email' => 'jane@kakbima.dev'],
                 ],
                 [
                     'id' => 3,
@@ -382,7 +382,7 @@ class ProjectTaskController extends Controller
                     'priority' => 'urgent',
                     'progress' => 30,
                     'task_status' => ['id' => 2, 'name' => 'In Progress', 'color' => '#A12582'],
-                    'assigned_user' => ['id' => 3, 'name' => 'Mike Johnson', 'email' => 'mike@kakbima.dev']
+                    'assigned_user' => ['id' => 3, 'name' => 'Mike Johnson', 'email' => 'mike@kakbima.dev'],
                 ],
                 [
                     'id' => 4,
@@ -393,7 +393,7 @@ class ProjectTaskController extends Controller
                     'priority' => 'high',
                     'progress' => 0,
                     'task_status' => ['id' => 3, 'name' => 'To Do', 'color' => '#6b7280'],
-                    'assigned_user' => ['id' => 4, 'name' => 'Sarah Williams', 'email' => 'sarah@kakbima.dev']
+                    'assigned_user' => ['id' => 4, 'name' => 'Sarah Williams', 'email' => 'sarah@kakbima.dev'],
                 ],
                 [
                     'id' => 5,
@@ -404,7 +404,7 @@ class ProjectTaskController extends Controller
                     'priority' => 'medium',
                     'progress' => 0,
                     'task_status' => ['id' => 3, 'name' => 'To Do', 'color' => '#6b7280'],
-                    'assigned_user' => ['id' => 5, 'name' => 'Tom Brown', 'email' => 'tom@kakbima.dev']
+                    'assigned_user' => ['id' => 5, 'name' => 'Tom Brown', 'email' => 'tom@kakbima.dev'],
                 ],
                 [
                     'id' => 6,
@@ -415,16 +415,41 @@ class ProjectTaskController extends Controller
                     'priority' => 'high',
                     'progress' => 0,
                     'task_status' => ['id' => 3, 'name' => 'To Do', 'color' => '#6b7280'],
-                    'assigned_user' => ['id' => 1, 'name' => 'John Doe', 'email' => 'john@kakbima.dev']
-                ]
+                    'assigned_user' => ['id' => 1, 'name' => 'John Doe', 'email' => 'john@kakbima.dev'],
+                ],
             ];
+
+            $tasks = collect($tasks);
+
+            if (!empty($request->search)) {
+                $search = strtolower($request->search);
+                $tasks = $tasks->filter(function ($task) use ($search) {
+                    return str_contains(strtolower($task['title']), $search) ||
+                           str_contains(strtolower($task['description']), $search);
+                });
+            }
+
+            if (!empty($request->status) && $request->status !== 'all') {
+                $tasks = $tasks->filter(function ($task) use ($request) {
+                    return $task['task_status']['id'] == $request->status;
+                });
+            }
+
+            if (!empty($request->priority) && $request->priority !== 'all') {
+                $tasks = $tasks->filter(function ($task) use ($request) {
+                    return $task['priority'] == $request->priority;
+                });
+            }
+
+            $tasks = $tasks->values()->toArray();
+
         } else {
             $taskQuery = ProjectTask::with(['assignedUser', 'taskStatus'])
                 ->where('project_id', $projectId)
                 ->where('created_by', createdBy());
 
             if (!empty($request->search)) {
-                $taskQuery->where(fn($q) => $q->where('title', 'like', '%' . $request->search . '%')
+                $taskQuery->where(fn ($q) => $q->where('title', 'like', '%' . $request->search . '%')
                     ->orWhere('description', 'like', '%' . $request->search . '%'));
             }
 
@@ -469,7 +494,7 @@ class ProjectTaskController extends Controller
         }
 
         $validated = request()->validate([
-            'task_status_id' => 'required|exists:task_statuses,id'
+            'task_status_id' => 'required|exists:task_statuses,id',
         ]);
 
         $task->update(['task_status_id' => $validated['task_status_id']]);
@@ -495,6 +520,7 @@ class ProjectTaskController extends Controller
         }
 
         $name = 'project_tasks_' . date('Y-m-d_H-i-s');
+
         return Excel::download(new ProjectTaskExport(), $name . '.xlsx');
     }
 
@@ -507,7 +533,7 @@ class ProjectTaskController extends Controller
             ->get();
 
         return response()->json([
-            'parent_tasks' => $parentTasks
+            'parent_tasks' => $parentTasks,
         ]);
     }
 }

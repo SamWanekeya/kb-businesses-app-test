@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\ProjectTask;
 use App\Models\Project;
-use App\Models\User;
+use App\Models\ProjectTask;
 use App\Models\TaskStatus;
+use App\Models\User;
+use Illuminate\Database\Seeder;
 
 class ProjectTaskSeeder extends Seeder
 {
@@ -16,6 +16,7 @@ class ProjectTaskSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -182,24 +183,24 @@ class ProjectTaskSeeder extends Seeder
                         'created_by' => $organization->id,
                     ]);
 
-                // Create subtasks for some main tasks
-                if (in_array($index, [2, 3, 4])) {
-                    ProjectTask::create([
-                        'title' => 'Subtask: ' . $taskData['title'] . ' - Phase 1',
-                        'description' => 'First phase of ' . strtolower($taskData['title']),
-                        'project_id' => $project->id,
-                        'parent_id' => $task->id,
-                        'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
-                        'start_date' => $task->start_date,
-                        'due_date' => $task->start_date->addDays(3),
-                        'priority' => $taskData['priority'],
-                        'task_status_id' => $statusMapping[$taskData['status']],
-                        'estimated_hours' => $taskData['estimated_hours'] / 2,
-                        'actual_hours' => isset($taskData['actual_hours']) ? $taskData['actual_hours'] / 2 : null,
-                        'progress' => $taskData['progress'],
-                        'created_by' => $organization->id,
-                    ]);
-                }
+                    // Create subtasks for some main tasks
+                    if (in_array($index, [2, 3, 4])) {
+                        ProjectTask::create([
+                            'title' => 'Subtask: ' . $taskData['title'] . ' - Phase 1',
+                            'description' => 'First phase of ' . strtolower($taskData['title']),
+                            'project_id' => $project->id,
+                            'parent_id' => $task->id,
+                            'assigned_to' => $staffUsers->isNotEmpty() ? $staffUsers->random()->id : null,
+                            'start_date' => $task->start_date,
+                            'due_date' => $task->start_date->addDays(3),
+                            'priority' => $taskData['priority'],
+                            'task_status_id' => $statusMapping[$taskData['status']],
+                            'estimated_hours' => $taskData['estimated_hours'] / 2,
+                            'actual_hours' => isset($taskData['actual_hours']) ? $taskData['actual_hours'] / 2 : null,
+                            'progress' => $taskData['progress'],
+                            'created_by' => $organization->id,
+                        ]);
+                    }
                 }
             }
         }

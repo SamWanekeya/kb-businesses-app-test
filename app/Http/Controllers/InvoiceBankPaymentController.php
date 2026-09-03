@@ -45,7 +45,6 @@ class InvoiceBankPaymentController extends Controller
         }
     }
 
-
     private function validateInvoicePaymentRequest($request, $additionalRules = [])
     {
         $baseRules = [

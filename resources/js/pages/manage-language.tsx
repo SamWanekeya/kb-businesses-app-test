@@ -1,18 +1,17 @@
-import { useEffect, useState } from 'react';
+import { toast } from '@/components/custom-toast';
 import { PageTemplate } from '@/components/page-template';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card } from '@/components/ui/card';
-import { toast } from '@/components/custom-toast';
-import { useTranslation } from 'react-i18next';
-import { usePage, router } from '@inertiajs/react';
-import ReactCountryFlag from 'react-country-flag';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-import { CreateLanguageModal } from '@/components/create-language-modal';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Plus, Trash2, Power, RefreshCw, Lock } from 'lucide-react';
 import { hasRole } from '@/utils/authorization';
+import { router, usePage } from '@inertiajs/react';
+import { Lock, Power, RefreshCw, Trash2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import ReactCountryFlag from 'react-country-flag';
+import { useTranslation } from 'react-i18next';
 
 interface Language {
     code: string;
@@ -50,12 +49,12 @@ export default function ManageLanguagePage() {
     const [labels, setLabels] = useState<{ [key: string]: string }>(defaultData);
     const [loading, setLoading] = useState(false);
     const [saving, setSaving] = useState(false);
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState('');
 
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [isToggling, setIsToggling] = useState(false);
 
-    const userRoles = auth?.roles || [];
+    const userRoles = auth?.user?.roles || [];
     const isSuperAdmin = hasRole('super_admin', userRoles);
 
     // Update selectedLang when defaultLang changes (from Inertia navigation)
@@ -73,8 +72,8 @@ export default function ManageLanguagePage() {
 
         setLoading(true);
         fetch(`${route('language.load')}?lang=${selectedLang}`)
-            .then(res => res.json())
-            .then(res => {
+            .then((res) => res.json())
+            .then((res) => {
                 if (res.data) {
                     setLabels(res.data);
                 } else {
@@ -94,7 +93,7 @@ export default function ManageLanguagePage() {
     };
 
     // Save language data to backend
-    const handleSave = (e) => {
+    const handleSave = (e: React.FormEvent) => {
         // Prevent default form submission behavior
         if (e) e.preventDefault();
 
@@ -106,17 +105,17 @@ export default function ManageLanguagePage() {
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
-                'Accept': 'application/json',
+                Accept: 'application/json',
                 'X-Requested-With': 'XMLHttpRequest', // Add this to ensure Laravel detects AJAX request
             },
             body: JSON.stringify({
                 _method: 'PATCH', // Laravel method spoofing for PATCH
                 lang: selectedLang,
-                data: labels
+                data: labels,
             }),
         })
-            .then(response => response.json())
-            .then(data => {
+            .then((response) => response.json())
+            .then((data) => {
                 if (data.success) {
                     toast.success(data.success || t('Language updated successfully'));
                 } else if (data.error) {
@@ -126,7 +125,7 @@ export default function ManageLanguagePage() {
                 }
                 setSaving(false);
             })
-            .catch(error => {
+            .catch((error) => {
                 toast.error(t('Failed to update language file'));
                 setSaving(false);
             });
@@ -143,7 +142,7 @@ export default function ManageLanguagePage() {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
-                    'Accept': 'application/json',
+                    Accept: 'application/json',
                 },
             });
 
@@ -170,7 +169,7 @@ export default function ManageLanguagePage() {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
-                    'Accept': 'application/json',
+                    Accept: 'application/json',
                 },
             });
 
@@ -194,20 +193,34 @@ export default function ManageLanguagePage() {
             title={t('Manage Language')}
             url="/manage-language"
             actions={[
-                ...(selectedLang !== 'en' && isSuperAdmin ? [
-                    {
-                        label: isToggling ? t('Updating...') : (isCurrentLanguageEnabled ? t('Disable Language') : t('Enable Language')),
-                        icon: isToggling ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Power className="h-4 w-4" />,
-                        variant: 'outline' as const,
-                        onClick: handleToggleLanguage
-                    },
-                    {
-                        label: t('Delete Language'),
-                        icon: <Trash2 className="h-4 w-4" />,
-                        variant: 'destructive' as const,
-                        onClick: () => setShowDeleteConfirm(true)
-                    }
-                ] : [])
+                ...(selectedLang !== 'en' && isSuperAdmin
+                    ? [
+                          {
+                              label: isToggling ? t('Updating...') : isCurrentLanguageEnabled ? t('Disable Language') : t('Enable Language'),
+                              icon: isToggling ? (
+                                  <RefreshCw className="mr-0 h-4 w-4 animate-spin lg:mr-2" />
+                              ) : (
+                                  <Power className="mr-0 h-4 w-4 lg:mr-2" />
+                              ),
+                              variant: 'outline' as const,
+                              onClick: handleToggleLanguage,
+                              className: 'h-8 w-8 lg:h-9 lg:w-auto px-0 lg:px-4',
+                              labelClassName: 'hidden lg:inline',
+                              tooltip: isCurrentLanguageEnabled ? t('Disable Language') : t('Enable Language'),
+                              tooltipClassName: 'lg:hidden',
+                          },
+                          {
+                              label: t('Delete Language'),
+                              icon: <Trash2 className="mr-0 h-4 w-4 lg:mr-2" />,
+                              variant: 'destructive' as const,
+                              onClick: () => setShowDeleteConfirm(true),
+                              className: 'h-8 w-8 lg:h-9 lg:w-auto px-0 lg:px-4',
+                              labelClassName: 'hidden lg:inline',
+                              tooltip: t('Delete Language'),
+                              tooltipClassName: 'lg:hidden',
+                          },
+                      ]
+                    : []),
             ]}
         >
             <style>{`
@@ -219,32 +232,33 @@ export default function ManageLanguagePage() {
             overflow-x: clip !important;
             }
         `}</style>
-
-            <div className="flex flex-col md:flex-row gap-8">
-                {/* Sidebar: Language List */}
-                <div className="md:w-64 flex-shrink-0">
-                    <div className="sticky top-20">
-                        <ScrollArea className="h-[calc(100vh-5rem)]">
-                            {/* <div className="bg-white dark:bg-gray-900 rounded-xl border p-2 shadow-sm"> */}
-                            <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-3 pr-4">
-                                <div className="flex flex-col gap-2">
-                                    {availableLanguages.map((lang) => {
-                                        const isEnabled = lang.enabled === true || (lang.enabled === undefined && !lang.hasOwnProperty('enabled'));
-                                        return (
-                                            <Button
-                                                key={lang.code}
-                                                variant="ghost"
-                                                className={cn('w-full justify-start gap-3 rounded-lg text-sm font-normal text-card-foreground hover:bg-muted hover:font-normal', {
-                                                    'bg-muted font-medium text-card-foreground': selectedLang === lang.code,
-                                                    'text-muted-foreground': !isEnabled
-                                                })}
-                                                onClick={() => {
-                                                    if (selectedLang !== lang.code) {
-                                                        // Navigate to the language page using Inertia
-                                                        router.get(route('manage-language', { lang: lang.code }));
-                                                    }
-                                                }}
-                                            >
+            <div className="flex w-full flex-col gap-8 lg:flex-row">
+                {/* Mobile Language Selector (Select Dropdown) */}
+                <div className="block w-full lg:hidden">
+                    <div className="bg-card text-card-foreground rounded-lg border p-4 shadow-sm">
+                        <label className="mb-2 block text-sm font-medium">{t('Select Language')}</label>
+                        <Select
+                            value={selectedLang}
+                            onValueChange={(value) => {
+                                if (selectedLang !== value) {
+                                    router.get(route('manage-language', { lang: value }));
+                                }
+                            }}
+                        >
+                            <SelectTrigger className="bg-background border-input w-full">
+                                <SelectValue placeholder={t('Select Language')} />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {availableLanguages.map((lang) => {
+                                    const isEnabled = lang.enabled === true || (lang.enabled === undefined && !lang.hasOwnProperty('enabled'));
+                                    return (
+                                        <SelectItem
+                                            key={lang.code}
+                                            value={lang.code}
+                                            disabled={!isEnabled}
+                                            className={cn('flex items-center gap-2', !isEnabled && 'opacity-50')}
+                                        >
+                                            <div className="flex items-center gap-2">
                                                 {lang.countryCode && (
                                                     <ReactCountryFlag
                                                         countryCode={lang.countryCode}
@@ -252,62 +266,112 @@ export default function ManageLanguagePage() {
                                                         style={{ width: '1.2em', height: '1.2em' }}
                                                     />
                                                 )}
-                                                <span className={!isEnabled ? 'text-muted-foreground' : ''}>
-                                                    {lang.name}
-                                                </span>
-                                                {!isEnabled && (
-                                                    <Lock className="h-3 w-3 ml-auto text-muted-foreground" />
-                                                )}
-                                            </Button>
-                                        );
-                                    })}
-                                </div>
+                                                <span>{lang.name}</span>
+                                                {!isEnabled && <span className="text-muted-foreground ml-1 text-xs">({t('Disabled')})</span>}
+                                            </div>
+                                        </SelectItem>
+                                    );
+                                })}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </div>
+
+                {/* Sidebar: Language List (Desktop Only) */}
+                <div className="hidden h-fit w-64 flex-shrink-0 lg:sticky lg:top-20 lg:block">
+                    <div className="bg-card text-card-foreground rounded-lg border p-3 shadow-sm">
+                        <div className="h-auto scrollbar-thin overflow-y-auto pr-1 lg:h-[calc(100vh-12rem)]">
+                            <div className="flex flex-col gap-2">
+                                {availableLanguages.map((lang) => {
+                                    const isEnabled = lang.enabled === true || (lang.enabled === undefined && !lang.hasOwnProperty('enabled'));
+                                    return (
+                                        <Button
+                                            key={lang.code}
+                                            variant="ghost"
+                                            className={cn(
+                                                'text-card-foreground hover:bg-muted w-full justify-start gap-3 rounded-lg text-sm font-normal hover:font-normal',
+                                                {
+                                                    'bg-muted text-card-foreground font-medium': selectedLang === lang.code,
+                                                    'text-muted-foreground': !isEnabled,
+                                                },
+                                            )}
+                                            onClick={() => {
+                                                if (selectedLang !== lang.code) {
+                                                    // Navigate to the language page using Inertia
+                                                    router.get(route('manage-language', { lang: lang.code }));
+                                                }
+                                            }}
+                                        >
+                                            {lang.countryCode && (
+                                                <ReactCountryFlag countryCode={lang.countryCode} svg style={{ width: '1.2em', height: '1.2em' }} />
+                                            )}
+                                            <span className={!isEnabled ? 'text-muted-foreground' : ''}>{lang.name}</span>
+                                            {!isEnabled && <Lock className="text-muted-foreground ms-auto h-3 w-3" />}
+                                        </Button>
+                                    );
+                                })}
                             </div>
-                        </ScrollArea>
+                        </div>
                     </div>
                 </div>
                 {/* Main Content: Language Labels */}
-                <div className="flex-1">
-                    <Card className="p-6">
-                        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2">
-                            <h2 className="text-lg font-semibold">{t('Edit Labels for')} {languages.find(l => l.code === selectedLang)?.name}</h2>
+                <div className="w-full min-w-0 flex-1">
+                    <Card className="border-border border p-4 shadow-sm sm:p-6">
+                        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                            <h2 className="text-lg font-semibold tracking-tight">
+                                {t('Edit Labels for')} {languages.find((l) => l.code === selectedLang)?.name}
+                            </h2>
                             <Input
                                 placeholder={t('Search labels...')}
                                 value={search}
-                                onChange={e => setSearch(e.target.value)}
-                                className="w-full md:w-72"
+                                onChange={(e) => setSearch(e.target.value)}
+                                className="w-full sm:w-72"
                             />
                         </div>
                         {loading ? (
-                            <div>{t('Loading...')}</div>
+                            <div className="text-muted-foreground flex justify-center py-8 text-sm">{t('Loading...')}</div>
                         ) : (
-                            <form onSubmit={(e) => { e.preventDefault(); handleSave(e); return false; }}>
-                                <div className="space-y-4">
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <form
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    handleSave(e);
+                                    return false;
+                                }}
+                            >
+                                <div className="space-y-6">
+                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                                         {Object.entries(labels)
-                                            .filter(([key, value]) =>
-                                                key.toLowerCase().includes(search.toLowerCase()) ||
-                                                value.toLowerCase().includes(search.toLowerCase())
+                                            .filter(
+                                                ([key, value]) =>
+                                                    key.toLowerCase().includes(search.toLowerCase()) ||
+                                                    value.toLowerCase().includes(search.toLowerCase()),
                                             )
                                             .map(([key, value]) => (
-                                                <div key={key} className="flex flex-col gap-1">
-                                                    <label className="text-xs text-muted-foreground truncate mb-1">{key}</label>
+                                                <div key={key} className="flex min-w-0 flex-col gap-1.5">
+                                                    <label
+                                                        className="text-muted-foreground/80 mb-0.5 block text-xs font-medium break-all select-all"
+                                                        title={key}
+                                                    >
+                                                        {key}
+                                                    </label>
                                                     <Input
-                                                        className="w-full"
+                                                        className="h-9 w-full"
                                                         value={value}
-                                                        onChange={e => handleLabelChange(key, e.target.value)}
+                                                        onChange={(e) => handleLabelChange(key, e.target.value)}
                                                     />
                                                 </div>
                                             ))}
                                     </div>
-                                    <div className="pt-6 text-right">
-                                        <Button
-                                            type="submit"
-                                            disabled={saving}
-                                        >
+                                    <div className="flex justify-end border-t pt-6">
+                                        <Button type="submit" disabled={saving} className="w-full sm:w-auto">
                                             {saving ? (
-                                                <span className="flex items-center gap-2"><span className="animate-spin h-4 w-4 border-2 border-t-transparent border-primary rounded-full"></span>{t('Saving...')}</span>
-                                            ) : t('Save Changes')}
+                                                <span className="flex items-center gap-2">
+                                                    <span className="border-primary h-4 w-4 animate-spin rounded-full border-2 border-t-transparent"></span>
+                                                    {t('Saving...')}
+                                                </span>
+                                            ) : (
+                                                t('Save Changes')
+                                            )}
                                         </Button>
                                     </div>
                                 </div>
@@ -317,14 +381,15 @@ export default function ManageLanguagePage() {
                 </div>
             </div>
 
-
-
             <Dialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>{t('Delete Language')}</DialogTitle>
                     </DialogHeader>
-                    <p>{t('Are you sure you want to delete the')} <strong>{selectedLang}</strong> {t('language? This will remove all translation files and cannot be undone.')}.</p>
+                    <p>
+                        {t('Are you sure you want to delete the')} <strong>{selectedLang}</strong>{' '}
+                        {t('language? This will remove all translation files and cannot be undone.')}.
+                    </p>
                     <DialogFooter>
                         <Button variant="outline" onClick={() => setShowDeleteConfirm(false)}>
                             {t('Cancel')}

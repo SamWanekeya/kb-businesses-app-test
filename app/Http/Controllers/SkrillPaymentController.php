@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
-use App\Models\User;
-use App\Models\Setting;
 use App\Models\PlanOrder;
-use App\Models\PaymentSetting;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class SkrillPaymentController extends Controller
 {
@@ -21,7 +18,7 @@ class SkrillPaymentController extends Controller
 
         try {
             $userID = User::where('type', 'super_admin')->first()?->id;
-            $settings = getPaymentMethodConfig('skrill',$userID);
+            $settings = getPaymentMethodConfig('skrill', $userID);
             // $settings = getPaymentMethodConfig('skrill');
 
             createPlanOrder([
@@ -31,11 +28,11 @@ class SkrillPaymentController extends Controller
                 'payment_method' => 'skrill',
                 'coupon_code' => $validated['coupon_code'] ?? null,
                 'payment_id' => $validated['transaction_id'],
-                'status' => 'pending'
+                'status' => 'pending',
             ]);
 
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
 
             $paymentData = [
                 'pay_to_email' => $settings['merchant_id'],
@@ -48,7 +45,7 @@ class SkrillPaymentController extends Controller
                 'currency' => 'USD',
                 'detail1_description' => 'Plan Subscription',
                 'detail1_text' => $plan->name,
-                'pay_from_email' => $validated['email']
+                'pay_from_email' => $validated['email'],
             ];
 
             // Create form and auto-submit to Skrill

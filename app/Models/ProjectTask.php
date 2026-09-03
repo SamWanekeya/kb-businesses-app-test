@@ -11,7 +11,9 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class ProjectTask extends BaseModel implements HasMedia
 {
-    use HasFactory, SoftDeletes, InteractsWithMedia;
+    use HasFactory;
+    use SoftDeletes;
+    use InteractsWithMedia;
 
     protected $fillable = [
         'title',

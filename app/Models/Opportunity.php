@@ -92,9 +92,9 @@ class Opportunity extends BaseModel
             $quantity = $product->pivot->quantity ?? 1;
             $unitPrice = $product->pivot->unit_price ?? $product->price ?? 0;
             $lineTotal = $quantity * $unitPrice;
-            
+
             $subtotal += $lineTotal;
-            
+
             if ($product->tax) {
                 $totalTax += ($lineTotal * $product->tax->rate) / 100;
             }

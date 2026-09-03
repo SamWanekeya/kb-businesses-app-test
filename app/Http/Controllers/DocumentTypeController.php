@@ -6,7 +6,6 @@ use App\Models\DocumentType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Auth;
 
 class DocumentTypeController extends Controller
 {
@@ -28,9 +27,9 @@ class DocumentTypeController extends Controller
         }
 
         // Apply sorting
-       $sortField = $request->input('sort_field', 'id');
+        $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'type_name', 'created_at'];
+        $allowedSorts = ['id', 'type_name', 'created_at'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -47,7 +46,7 @@ class DocumentTypeController extends Controller
 
         return Inertia::render('document-types/index', [
             'documentTypes' => $documentTypes,
-            'filters' => $request->only(['search', 'status', 'sort_field', 'sort_direction', 'per_page', 'page'])
+            'filters' => $request->only(['search', 'status', 'sort_field', 'sort_direction', 'per_page', 'page']),
         ]);
     }
 
@@ -92,7 +91,7 @@ class DocumentTypeController extends Controller
         $documentType->load(['creator']);
 
         return Inertia::render('document-types/show', [
-            'documentType' => $documentType
+            'documentType' => $documentType,
         ]);
     }
 

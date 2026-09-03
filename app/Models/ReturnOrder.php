@@ -99,6 +99,7 @@ class ReturnOrder extends Model
             if ($product->tax) {
                 return ($product->pivot->total_price * $product->tax->rate) / 100;
             }
+
             return 0;
         });
 

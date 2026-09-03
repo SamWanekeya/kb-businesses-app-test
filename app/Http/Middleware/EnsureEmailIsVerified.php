@@ -3,16 +3,16 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Http\Request;
 
 class EnsureEmailIsVerified
 {
     public function handle(Request $request, Closure $next)
     {
         $emailVerificationEnabled = getSetting('emailVerification', false);
-        
-        if ($emailVerificationEnabled && 
+
+        if ($emailVerificationEnabled &&
             $request->user() &&
             $request->user() instanceof MustVerifyEmail &&
             !$request->user()->hasVerifiedEmail()) {

@@ -1,21 +1,21 @@
-import { useState, useEffect } from 'react';
+import { CrudDeleteModal } from '@/components/CrudDeleteModal';
+import { CrudFormModal } from '@/components/CrudFormModal';
+import { CrudTable } from '@/components/CrudTable';
+import { toast } from '@/components/custom-toast';
 import { PageTemplate } from '@/components/page-template';
-import { usePage, router, Link } from '@inertiajs/react';
-import { Plus, Eye, Edit, Trash2, MoreHorizontal, Download, Lock, Unlock, FileDown, RefreshCw, Calendar, Building2, User, CircleDot, Clock, CheckCircle2, XCircle } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { hasPermission } from '@/utils/authorization';
-import { CrudTable } from '@/components/CrudTable';
-import { CrudFormModal } from '@/components/CrudFormModal';
-import { CrudDeleteModal } from '@/components/CrudDeleteModal';
-import { toast } from '@/components/custom-toast';
-import { useTranslation } from 'react-i18next';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { useInitials } from '@/hooks/use-initials';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useInitials } from '@/hooks/use-initials';
+import { hasPermission } from '@/utils/authorization';
+import { Link, router, usePage } from '@inertiajs/react';
+import { Building2, Calendar, Edit, Eye, FileDown, MoreHorizontal, Plus, RefreshCw, Trash2, User } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function Cases() {
     const { t } = useTranslation();
@@ -35,9 +35,7 @@ export default function Cases() {
     const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
     const [currentItem, setCurrentItem] = useState<any>(null);
     const [formMode, setFormMode] = useState<'create' | 'edit' | 'view'>('create');
-    const [activeView, setActiveView] = useState(
-        ['list', 'grid'].includes(pageFilters.view) ? pageFilters.view : 'list'
-    );
+    const [activeView, setActiveView] = useState(['list', 'grid'].includes(pageFilters.view) ? pageFilters.view : 'list');
     const [pageInitialState, setPageInitialState] = useState(true);
 
     useEffect(() => {
@@ -47,12 +45,25 @@ export default function Cases() {
 
     // Check if any filters are active
     const hasActiveFilters = () => {
-        return searchTerm !== '' || selectedAccount !== 'all' || selectedPriority !== 'all' || selectedStatus !== 'all' || selectedCaseType !== 'all' || selectedAssignee !== 'all';
+        return (
+            searchTerm !== '' ||
+            selectedAccount !== 'all' ||
+            selectedPriority !== 'all' ||
+            selectedStatus !== 'all' ||
+            selectedCaseType !== 'all' ||
+            selectedAssignee !== 'all'
+        );
     };
 
     // Count active filters
     const activeFilterCount = () => {
-        return (selectedAccount !== 'all' ? 1 : 0) + (selectedPriority !== 'all' ? 1 : 0) + (selectedStatus !== 'all' ? 1 : 0) + (selectedCaseType !== 'all' ? 1 : 0) + (selectedAssignee !== 'all' ? 1 : 0);
+        return (
+            (selectedAccount !== 'all' ? 1 : 0) +
+            (selectedPriority !== 'all' ? 1 : 0) +
+            (selectedStatus !== 'all' ? 1 : 0) +
+            (selectedCaseType !== 'all' ? 1 : 0) +
+            (selectedAssignee !== 'all' ? 1 : 0)
+        );
     };
 
     const handleSearch = (e: React.FormEvent) => {
@@ -61,37 +72,45 @@ export default function Cases() {
     };
 
     const applyFilters = () => {
-        router.get(route('cases.index'), {
-            view: activeView,
-            page: 1,
-            search: searchTerm || undefined,
-            account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
-            priority: selectedPriority !== 'all' ? selectedPriority : undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            case_type: selectedCaseType !== 'all' ? selectedCaseType : undefined,
-            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-            sort_field: pageFilters.sort_field || undefined,
-            sort_direction: pageFilters.sort_direction || undefined,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('cases.index'),
+            {
+                view: activeView,
+                page: 1,
+                search: searchTerm || undefined,
+                account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                priority: selectedPriority !== 'all' ? selectedPriority : undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                case_type: selectedCaseType !== 'all' ? selectedCaseType : undefined,
+                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                sort_field: pageFilters.sort_field || undefined,
+                sort_direction: pageFilters.sort_direction || undefined,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleSort = (field: string) => {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
 
-        router.get(route('cases.index'), {
-            view: activeView,
-            sort_field: field,
-            sort_direction: direction,
-            page: 1,
-            search: searchTerm || undefined,
-            account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
-            priority: selectedPriority !== 'all' ? selectedPriority : undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            case_type: selectedCaseType !== 'all' ? selectedCaseType : undefined,
-            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('cases.index'),
+            {
+                view: activeView,
+                sort_field: field,
+                sort_direction: direction,
+                page: 1,
+                search: searchTerm || undefined,
+                account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                priority: selectedPriority !== 'all' ? selectedPriority : undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                case_type: selectedCaseType !== 'all' ? selectedCaseType : undefined,
+                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleAction = (action: string, item: any) => {
@@ -143,7 +162,7 @@ export default function Cases() {
                     } else {
                         toast.error(t('Failed to create case: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
-                }
+                },
             });
         } else if (formMode === 'edit') {
             toast.loading(t('Updating case...'));
@@ -167,7 +186,7 @@ export default function Cases() {
                     } else {
                         toast.error(t('Failed to update case: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
-                }
+                },
             });
         }
     };
@@ -194,7 +213,7 @@ export default function Cases() {
                 } else {
                     toast.error(t('Failed to delete case: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
-            }
+            },
         });
     };
 
@@ -216,7 +235,7 @@ export default function Cases() {
                 } else {
                     toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
-            }
+            },
         });
     };
 
@@ -224,24 +243,28 @@ export default function Cases() {
         const newStatus = caseItem.status === 'new' ? 'closed' : 'new';
         toast.loading(`${newStatus === 'new' ? t('Opening') : t('Closing')} case...`);
 
-        router.put(route('cases.toggle-status', caseItem.id), {}, {
-            onSuccess: (page) => {
-                toast.dismiss();
-                if (page.props.flash.success) {
-                    toast.success(t(page.props.flash.success));
-                } else if (page.props.flash.error) {
-                    toast.error(t(page.props.flash.error));
-                }
+        router.put(
+            route('cases.toggle-status', caseItem.id),
+            {},
+            {
+                onSuccess: (page) => {
+                    toast.dismiss();
+                    if (page.props.flash.success) {
+                        toast.success(t(page.props.flash.success));
+                    } else if (page.props.flash.error) {
+                        toast.error(t(page.props.flash.error));
+                    }
+                },
+                onError: (errors) => {
+                    toast.dismiss();
+                    if (typeof errors === 'string') {
+                        toast.error(errors);
+                    } else {
+                        toast.error(t('Failed to update case status: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    }
+                },
             },
-            onError: (errors) => {
-                toast.dismiss();
-                if (typeof errors === 'string') {
-                    toast.error(errors);
-                } else {
-                    toast.error(t('Failed to update case status: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                }
-            }
-        });
+        );
     };
 
     const handleResetFilters = () => {
@@ -254,9 +277,13 @@ export default function Cases() {
     if (hasPermission(permissions, 'export-cases')) {
         pageActions.push({
             label: t('Export'),
-            icon: <FileDown className="h-4 w-4 mr-2" />,
+            icon: <FileDown className="mr-0 h-4 w-4 min-[360px]:mr-2" />,
             variant: 'outline',
-            onClick: () => window.location.href = route('case.export')
+            onClick: () => (window.location.href = route('case.export')),
+            className: 'h-8 w-8 min-[360px]:h-9 min-[360px]:w-auto px-0 min-[360px]:px-4',
+            labelClassName: 'hidden min-[360px]:inline',
+            tooltip: t('Export'),
+            tooltipClassName: 'min-[360px]:hidden',
         });
     }
 
@@ -264,16 +291,17 @@ export default function Cases() {
     if (hasPermission(permissions, 'create-cases')) {
         pageActions.push({
             label: t('Add Case'),
-            icon: <Plus className="h-4 w-4 mr-2" />,
+            icon: <Plus className="mr-0 h-4 w-4 min-[360px]:mr-2" />,
             variant: 'default',
-            onClick: () => handleAddNew()
+            onClick: () => handleAddNew(),
+            className: 'h-8 w-8 min-[360px]:h-9 min-[360px]:w-auto px-0 min-[360px]:px-4',
+            labelClassName: 'hidden min-[360px]:inline',
+            tooltip: t('Add Case'),
+            tooltipClassName: 'min-[360px]:hidden',
         });
     }
 
-    const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Cases') }
-    ];
+    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Cases') }];
 
     // Define table columns
     const columns = [
@@ -285,33 +313,40 @@ export default function Cases() {
                 return (
                     <div>
                         <div className="font-medium">{row.subject}</div>
-                        <div className="text-sm text-muted-foreground whitespace-nowrap">{row.case_type ? row.case_type.replace(/_/g, ' ').charAt(0).toUpperCase() + row.case_type.replace(/_/g, ' ').slice(1) : ''}</div>
+                        <div className="text-muted-foreground text-sm whitespace-nowrap">
+                            {row.case_type
+                                ? row.case_type.replace(/_/g, ' ').charAt(0).toUpperCase() + row.case_type.replace(/_/g, ' ').slice(1)
+                                : ''}
+                        </div>
                     </div>
                 );
-            }
+            },
         },
         {
             key: 'assigned_user',
             label: t('Assigned To'),
             className: 'whitespace-nowrap',
-            render: (value: any) => value ? (
-                <div className="flex items-center gap-2">
-                    <Avatar className="h-8 w-8 flex-shrink-0">
-                        <AvatarImage src={value.avatar} />
-                        <AvatarFallback className="text-xs">{getInitials(value.name)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                        <div className="font-medium whitespace-nowrap">{value.name}</div>
-                        <div className="text-sm text-muted-foreground whitespace-nowrap">{value.email}</div>
+            render: (value: any) =>
+                value ? (
+                    <div className="flex items-center gap-2">
+                        <Avatar className="h-8 w-8 flex-shrink-0">
+                            <AvatarImage src={value.avatar} />
+                            <AvatarFallback className="text-xs">{getInitials(value.name)}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <div className="font-medium whitespace-nowrap">{value.name}</div>
+                            <div className="text-muted-foreground text-sm whitespace-nowrap">{value.email}</div>
+                        </div>
                     </div>
-                </div>
-            ) : <span className="whitespace-nowrap text-muted-foreground">{t('Unassigned')}</span>
+                ) : (
+                    <span className="text-muted-foreground whitespace-nowrap">{t('Unassigned')}</span>
+                ),
         },
         {
             key: 'account',
             label: t('Account'),
             className: 'whitespace-nowrap',
-            render: (value: any) => <span className="whitespace-nowrap">{value?.name || '-'}</span>
+            render: (value: any) => <span className="whitespace-nowrap">{value?.name || '-'}</span>,
         },
         {
             key: 'priority',
@@ -321,14 +356,16 @@ export default function Cases() {
                     low: 'bg-gray-50 text-gray-700 ring-gray-600/20',
                     medium: 'bg-blue-50 text-blue-700 ring-blue-600/20',
                     high: 'bg-orange-50 text-orange-700 ring-orange-600/20',
-                    urgent: 'bg-red-50 text-red-700 ring-red-600/20'
+                    urgent: 'bg-red-50 text-red-700 ring-red-600/20',
                 };
                 return (
-                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset whitespace-nowrap ${colors[value as keyof typeof colors]}`}>
+                    <span
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${colors[value as keyof typeof colors]}`}
+                    >
                         {value.charAt(0).toUpperCase() + value.slice(1)}
                     </span>
                 );
-            }
+            },
         },
         {
             key: 'status',
@@ -340,14 +377,16 @@ export default function Cases() {
                     in_progress: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20',
                     pending: 'bg-orange-50 text-orange-700 ring-orange-600/20',
                     resolved: 'bg-green-50 text-green-700 ring-green-600/20',
-                    closed: 'bg-gray-50 text-gray-700 ring-gray-600/20'
+                    closed: 'bg-gray-50 text-gray-700 ring-gray-600/20',
                 };
                 return (
-                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset whitespace-nowrap ${colors[value as keyof typeof colors]}`}>
+                    <span
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${colors[value as keyof typeof colors]}`}
+                    >
                         {value.replace('_', ' ').charAt(0).toUpperCase() + value.replace('_', ' ').slice(1)}
                     </span>
                 );
-            }
+            },
         },
         // {
         //     key: 'case_type',
@@ -360,8 +399,8 @@ export default function Cases() {
             label: t('Created At'),
             sortable: true,
             className: 'whitespace-nowrap',
-            type: 'date'
-        }
+            type: 'date',
+        },
     ];
 
     // Define table actions
@@ -371,29 +410,29 @@ export default function Cases() {
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
-            requiredPermission: 'toggle-status-cases'
+            requiredPermission: 'toggle-status-cases',
         },
         {
             label: t('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
-            requiredPermission: 'view-cases'
+            requiredPermission: 'view-cases',
         },
         {
             label: t('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
-            requiredPermission: 'edit-cases'
+            requiredPermission: 'edit-cases',
         },
         {
             label: t('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
-            requiredPermission: 'delete-cases'
-        }
+            requiredPermission: 'delete-cases',
+        },
     ];
 
     // Prepare filter options
@@ -401,8 +440,8 @@ export default function Cases() {
         { value: 'all', label: t('All Accounts') },
         ...allAccounts.map((account: any) => ({
             value: account.id.toString(),
-            label: account.name
-        }))
+            label: account.name,
+        })),
     ];
 
     const priorityOptions = [
@@ -410,7 +449,7 @@ export default function Cases() {
         { value: 'low', label: t('Low') },
         { value: 'medium', label: t('Medium') },
         { value: 'high', label: t('High') },
-        { value: 'urgent', label: t('Urgent') }
+        { value: 'urgent', label: t('Urgent') },
     ];
 
     const statusOptions = [
@@ -419,7 +458,7 @@ export default function Cases() {
         { value: 'in_progress', label: t('In Progress') },
         { value: 'pending', label: t('Pending') },
         { value: 'resolved', label: t('Resolved') },
-        { value: 'closed', label: t('Closed') }
+        { value: 'closed', label: t('Closed') },
     ];
 
     const caseTypeOptions = [
@@ -428,33 +467,64 @@ export default function Cases() {
         { value: 'bug', label: t('Bug') },
         { value: 'feature_request', label: t('Feature Request') },
         { value: 'complaint', label: t('Complaint') },
-        { value: 'inquiry', label: t('Inquiry') }
+        { value: 'inquiry', label: t('Inquiry') },
     ];
 
     return (
-        <PageTemplate
-            title={t("Cases")}
-            description={t("Manage your cases.")}
-            url="/cases"
-            actions={pageActions}
-            breadcrumbs={breadcrumbs}
-            noPadding
-        >
+        <PageTemplate title={t('Cases')} description={t('Manage your cases.')} url="/cases" actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
             {/* Search and filters section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
+            <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
                     onSearch={handleSearch}
                     filters={[
-                        { name: 'account_id', label: t('Account'), type: 'select', searchable: true, value: selectedAccount, onChange: setSelectedAccount, options: accountOptions },
-                        { name: 'priority', label: t('Priority'), type: 'select', value: selectedPriority, onChange: setSelectedPriority, options: priorityOptions },
-                        { name: 'status', label: t('Status'), type: 'select', value: selectedStatus, onChange: setSelectedStatus, options: statusOptions },
-                        { name: 'case_type', label: t('Type'), type: 'select', value: selectedCaseType, onChange: setSelectedCaseType, options: caseTypeOptions },
                         {
-                            name: 'assigned_to', label: t('Assigned To'), type: 'select', searchable: true, value: selectedAssignee, onChange: setSelectedAssignee,
-                            options: [{ value: 'all', label: t('All Users') }, { value: 'unassigned', label: t('Unassigned') }, ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name }))]
-                        }
+                            name: 'account_id',
+                            label: t('Account'),
+                            type: 'select',
+                            searchable: true,
+                            value: selectedAccount,
+                            onChange: setSelectedAccount,
+                            options: accountOptions,
+                        },
+                        {
+                            name: 'priority',
+                            label: t('Priority'),
+                            type: 'select',
+                            value: selectedPriority,
+                            onChange: setSelectedPriority,
+                            options: priorityOptions,
+                        },
+                        {
+                            name: 'status',
+                            label: t('Status'),
+                            type: 'select',
+                            value: selectedStatus,
+                            onChange: setSelectedStatus,
+                            options: statusOptions,
+                        },
+                        {
+                            name: 'case_type',
+                            label: t('Type'),
+                            type: 'select',
+                            value: selectedCaseType,
+                            onChange: setSelectedCaseType,
+                            options: caseTypeOptions,
+                        },
+                        {
+                            name: 'assigned_to',
+                            label: t('Assigned To'),
+                            type: 'select',
+                            searchable: true,
+                            value: selectedAssignee,
+                            onChange: setSelectedAssignee,
+                            options: [
+                                { value: 'all', label: t('All Users') },
+                                { value: 'unassigned', label: t('Unassigned') },
+                                ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name })),
+                            ],
+                        },
                     ]}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
@@ -482,25 +552,25 @@ export default function Cases() {
 
             {/* Content section */}
             {activeView === 'list' ? (
-                <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+                <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                     <div className="overflow-x-auto">
-                    <CrudTable
-                        columns={columns}
-                        actions={actions}
-                        data={cases?.data || []}
-                        from={cases?.from || 1}
-                        onAction={handleAction}
-                        sortField={pageFilters.sort_field}
-                        sortDirection={pageFilters.sort_direction}
-                        onSort={handleSort}
-                        permissions={permissions}
-                        entityPermissions={{
-                            view: 'view-cases',
-                            create: 'create-cases',
-                            edit: 'edit-cases',
-                            delete: 'delete-cases'
-                        }}
-                    />
+                        <CrudTable
+                            columns={columns}
+                            actions={actions}
+                            data={cases?.data || []}
+                            from={cases?.from || 1}
+                            onAction={handleAction}
+                            sortField={pageFilters.sort_field}
+                            sortDirection={pageFilters.sort_direction}
+                            onSort={handleSort}
+                            permissions={permissions}
+                            entityPermissions={{
+                                view: 'view-cases',
+                                create: 'create-cases',
+                                edit: 'edit-cases',
+                                delete: 'delete-cases',
+                            }}
+                        />
                     </div>
 
                     {/* Pagination section */}
@@ -509,29 +579,34 @@ export default function Cases() {
                         to={cases?.to || 0}
                         total={cases?.total || 0}
                         links={cases?.links}
-                        entityName={t("cases")}
+                        entityName={t('cases')}
                         onPageChange={(url) => router.get(url)}
-                        currentPerPage={pageFilters.per_page?.toString() || "10"}
+                        currentPerPage={pageFilters.per_page?.toString() || '10'}
                         onPerPageChange={(value) => {
-                            router.get(route('cases.index'), {
-                                view: activeView, page: 1,
-                                search: searchTerm || undefined,
-                                account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
-                                priority: selectedPriority !== 'all' ? selectedPriority : undefined,
-                                status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                                case_type: selectedCaseType !== 'all' ? selectedCaseType : undefined,
-                                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-                                sort_field: pageFilters.sort_field || undefined,
-                                sort_direction: pageFilters.sort_direction || undefined,
-                                ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
-                            }, { preserveState: true, preserveScroll: true });
+                            router.get(
+                                route('cases.index'),
+                                {
+                                    view: activeView,
+                                    page: 1,
+                                    search: searchTerm || undefined,
+                                    account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                                    priority: selectedPriority !== 'all' ? selectedPriority : undefined,
+                                    status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                    case_type: selectedCaseType !== 'all' ? selectedCaseType : undefined,
+                                    assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                                    sort_field: pageFilters.sort_field || undefined,
+                                    sort_direction: pageFilters.sort_direction || undefined,
+                                    ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+                                },
+                                { preserveState: true, preserveScroll: true },
+                            );
                         }}
                     />
                 </div>
             ) : (
                 <div>
                     {/* Grid View */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         {cases?.data?.map((caseItem: any) => {
                             const priorityColors: Record<string, string> = {
                                 low: 'bg-gray-50 text-gray-700 ring-gray-600/20',
@@ -557,37 +632,47 @@ export default function Cases() {
                             };
                             const sc = statusConfig[caseItem.status] ?? statusConfig.new;
                             return (
-                                <Card key={caseItem.id} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col overflow-hidden">
-                                    <div className="relative p-4 flex flex-col flex-1">
-
+                                <Card
+                                    key={caseItem.id}
+                                    className="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-900"
+                                >
+                                    <div className="relative flex flex-1 flex-col p-4">
                                         {/* Dropdown — top right */}
                                         <div className="absolute top-3 right-3">
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
-                                                    <Button variant="ghost" size="sm" className="h-7 w-7 p-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        className="h-7 w-7 p-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                                                    >
                                                         <MoreHorizontal className="h-4 w-4" />
                                                     </Button>
                                                 </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end" className="w-40 z-50" sideOffset={5}>
+                                                <DropdownMenuContent align="end" className="z-50 w-40" sideOffset={5}>
                                                     {hasPermission(permissions, 'view-cases') && (
                                                         <DropdownMenuItem onClick={() => handleAction('view', caseItem)}>
-                                                            <Eye className="h-4 w-4 mr-2" /><span>{t('View Case')}</span>
+                                                            <Eye className="mr-2 h-4 w-4" />
+                                                            <span>{t('View Case')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     {hasPermission(permissions, 'toggle-status-cases') && (
                                                         <DropdownMenuItem onClick={() => handleAction('toggle-status', caseItem)}>
-                                                            <RefreshCw className="h-4 w-4 mr-2" /><span>{t('Change Status')}</span>
+                                                            <RefreshCw className="mr-2 h-4 w-4" />
+                                                            <span>{t('Change Status')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     {hasPermission(permissions, 'edit-cases') && (
                                                         <DropdownMenuItem onClick={() => handleAction('edit', caseItem)}>
-                                                            <Edit className="h-4 w-4 mr-2" /><span>{t('Edit')}</span>
+                                                            <Edit className="mr-2 h-4 w-4" />
+                                                            <span>{t('Edit')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     <DropdownMenuSeparator />
                                                     {hasPermission(permissions, 'delete-cases') && (
                                                         <DropdownMenuItem onClick={() => handleAction('delete', caseItem)} className="text-rose-600">
-                                                            <Trash2 className="h-4 w-4 mr-2" /><span>{t('Delete')}</span>
+                                                            <Trash2 className="mr-2 h-4 w-4" />
+                                                            <span>{t('Delete')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                 </DropdownMenuContent>
@@ -597,27 +682,35 @@ export default function Cases() {
                                         {/* Header: subject + status pill */}
                                         <div className="mb-3">
                                             <Link href={route('cases.show', caseItem.id)}>
-                                                <h3 className="text-sm font-semibold text-gray-900 dark:text-white truncate leading-tight pr-8 cursor-pointer hover:text-primary transition-colors">{caseItem.subject}</h3>
+                                                <h3 className="hover:text-primary cursor-pointer truncate pr-8 text-sm leading-tight font-semibold text-gray-900 transition-colors dark:text-white">
+                                                    {caseItem.subject}
+                                                </h3>
                                             </Link>
 
                                             {/* Row 1: Status only */}
-                                            <div className="flex items-center gap-2 mt-2">
-                                                <span className="text-xs text-gray-500 dark:text-gray-400 w-12 shrink-0">{t('Status')}:</span>
-                                                <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset whitespace-nowrap ${sc.cls}`}>
+                                            <div className="mt-2 flex items-center gap-2">
+                                                <span className="w-12 shrink-0 text-xs text-gray-500 dark:text-gray-400">{t('Status')}:</span>
+                                                <span
+                                                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${sc.cls}`}
+                                                >
                                                     {fmt(caseItem.status)}
                                                 </span>
                                             </div>
                                             {/* Row 2: Priority left | Type right */}
-                                            <div className="flex items-center justify-between mt-1.5">
+                                            <div className="mt-1.5 flex items-center justify-between">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-xs text-gray-500 dark:text-gray-400 w-12 shrink-0">{t('Priority')}:</span>
-                                                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset whitespace-nowrap ${priorityColors[caseItem.priority] ?? priorityColors.medium}`}>
+                                                    <span className="w-12 shrink-0 text-xs text-gray-500 dark:text-gray-400">{t('Priority')}:</span>
+                                                    <span
+                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${priorityColors[caseItem.priority] ?? priorityColors.medium}`}
+                                                    >
                                                         {fmt(caseItem.priority)}
                                                     </span>
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-xs text-gray-500 dark:text-gray-400">{t('Type')}:</span>
-                                                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset whitespace-nowrap ${typeColors[caseItem.case_type] ?? 'bg-purple-50 text-purple-700 ring-purple-600/20'}`}>
+                                                    <span
+                                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${typeColors[caseItem.case_type] ?? 'bg-purple-50 text-purple-700 ring-purple-600/20'}`}
+                                                    >
                                                         {fmt(caseItem.case_type)}
                                                     </span>
                                                 </div>
@@ -625,24 +718,27 @@ export default function Cases() {
                                         </div>
 
                                         {/* Info rows */}
-                                        <div className="space-y-1.5 mb-3">
+                                        <div className="mb-3 space-y-1.5">
                                             <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
-                                                <Building2 className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                                                <Building2 className="h-3.5 w-3.5 shrink-0 text-gray-400" />
                                                 <span className="shrink-0">{t('Account')}:</span>
                                                 <span className="truncate">{caseItem.account?.name || '-'}</span>
                                             </div>
                                             <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
-                                                <User className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                                                <User className="h-3.5 w-3.5 shrink-0 text-gray-400" />
                                                 <span className="shrink-0">{t('Contact')}:</span>
                                                 <span className="truncate">{caseItem.contact?.name || '-'}</span>
                                             </div>
                                         </div>
 
                                         {/* Footer: created date + assigned user */}
-                                        <div className="mt-auto pt-3 border-t border-border flex items-center justify-between gap-2">
+                                        <div className="border-border mt-auto flex items-center justify-between gap-2 border-t pt-3">
                                             <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                                                 <Calendar className="h-3.5 w-3.5 shrink-0" />
-                                                <span>{window.appSettings?.formatDateTime(caseItem.created_at, false) || new Date(caseItem.created_at).toLocaleDateString()}</span>
+                                                <span>
+                                                    {window.appSettings?.formatDateTime(caseItem.created_at, false) ||
+                                                        new Date(caseItem.created_at).toLocaleDateString()}
+                                                </span>
                                             </div>
                                             {caseItem.assigned_user && (
                                                 <div className="flex items-center gap-1.5">
@@ -650,12 +746,19 @@ export default function Cases() {
                                                     <TooltipProvider>
                                                         <Tooltip>
                                                             <TooltipTrigger asChild>
-                                                                <Avatar className="h-7 w-7 cursor-pointer shrink-0">
-                                                                    <AvatarImage src={caseItem.assigned_user.avatar} alt={caseItem.assigned_user.name} />
-                                                                    <AvatarFallback className="text-xs bg-purple-100 text-purple-700 font-medium">{getInitials(caseItem.assigned_user.name)}</AvatarFallback>
+                                                                <Avatar className="h-7 w-7 shrink-0 cursor-pointer">
+                                                                    <AvatarImage
+                                                                        src={caseItem.assigned_user.avatar}
+                                                                        alt={caseItem.assigned_user.name}
+                                                                    />
+                                                                    <AvatarFallback className="bg-purple-100 text-xs font-medium text-purple-700">
+                                                                        {getInitials(caseItem.assigned_user.name)}
+                                                                    </AvatarFallback>
                                                                 </Avatar>
                                                             </TooltipTrigger>
-                                                            <TooltipContent side="top"><p>{caseItem.assigned_user.name}</p></TooltipContent>
+                                                            <TooltipContent side="top">
+                                                                <p>{caseItem.assigned_user.name}</p>
+                                                            </TooltipContent>
                                                         </Tooltip>
                                                     </TooltipProvider>
                                                 </div>
@@ -668,29 +771,34 @@ export default function Cases() {
                     </div>
 
                     {/* Pagination for grid view */}
-                    <div className="mt-6 bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+                    <div className="mt-6 overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                         <Pagination
                             from={cases?.from || 0}
                             to={cases?.to || 0}
                             total={cases?.total || 0}
                             links={cases?.links}
-                            entityName={t("cases")}
+                            entityName={t('cases')}
                             onPageChange={(url) => router.get(url)}
                             perPageOptions={[12, 24, 48, 96]}
                             currentPerPage={pageFilters.per_page?.toString() || '12'}
                             onPerPageChange={(value) => {
-                                router.get(route('cases.index'), {
-                                    view: activeView, page: 1,
-                                    search: searchTerm || undefined,
-                                    account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
-                                    priority: selectedPriority !== 'all' ? selectedPriority : undefined,
-                                    status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                                    case_type: selectedCaseType !== 'all' ? selectedCaseType : undefined,
-                                    assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-                                    sort_field: pageFilters.sort_field || undefined,
-                                    sort_direction: pageFilters.sort_direction || undefined,
-                                    ...(parseInt(value) !== 12 && { per_page: parseInt(value) }),
-                                }, { preserveState: true, preserveScroll: true });
+                                router.get(
+                                    route('cases.index'),
+                                    {
+                                        view: activeView,
+                                        page: 1,
+                                        search: searchTerm || undefined,
+                                        account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                                        priority: selectedPriority !== 'all' ? selectedPriority : undefined,
+                                        status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                        case_type: selectedCaseType !== 'all' ? selectedCaseType : undefined,
+                                        assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                                        sort_field: pageFilters.sort_field || undefined,
+                                        sort_direction: pageFilters.sort_direction || undefined,
+                                        ...(parseInt(value) !== 12 && { per_page: parseInt(value) }),
+                                    },
+                                    { preserveState: true, preserveScroll: true },
+                                );
                             }}
                         />
                     </div>
@@ -704,7 +812,13 @@ export default function Cases() {
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
-                        { name: 'subject', label: t('Subject'), type: 'text', required: true, placeholder: t('e.g. Sign in page not loading, Billing issue') },
+                        {
+                            name: 'subject',
+                            label: t('Subject'),
+                            type: 'text',
+                            required: true,
+                            placeholder: t('e.g. Sign in page not loading, Billing issue'),
+                        },
                         { name: 'description', label: t('Description'), type: 'textarea', placeholder: t('Describe the issue in detail...') },
                         {
                             name: 'account_id',
@@ -715,8 +829,8 @@ export default function Cases() {
                             emptyNote: { link: route('accounts.index'), linkText: t('Accounts') },
                             options: (accounts || []).map((account: any) => ({
                                 value: account.id.toString(),
-                                label: account.name
-                            }))
+                                label: account.name,
+                            })),
                         },
                         {
                             name: 'contact_id',
@@ -727,8 +841,8 @@ export default function Cases() {
                             emptyNote: { link: route('contacts.index'), linkText: t('Contacts') },
                             options: (contacts || []).map((contact: any) => ({
                                 value: contact.id.toString(),
-                                label: `${contact.name} (${contact.account?.name || 'No Account'})`
-                            }))
+                                label: `${contact.name} (${contact.account?.name || 'No Account'})`,
+                            })),
                         },
                         {
                             name: 'priority',
@@ -739,9 +853,9 @@ export default function Cases() {
                                 { value: 'low', label: t('Low') },
                                 { value: 'medium', label: t('Medium') },
                                 { value: 'high', label: t('High') },
-                                { value: 'urgent', label: t('Urgent') }
+                                { value: 'urgent', label: t('Urgent') },
                             ],
-                            defaultValue: 'medium'
+                            defaultValue: 'medium',
                         },
                         {
                             name: 'status',
@@ -752,9 +866,9 @@ export default function Cases() {
                                 { value: 'in_progress', label: t('In Progress') },
                                 { value: 'pending', label: t('Pending') },
                                 { value: 'resolved', label: t('Resolved') },
-                                { value: 'closed', label: t('Closed') }
+                                { value: 'closed', label: t('Closed') },
                             ],
-                            defaultValue: 'new'
+                            defaultValue: 'new',
                         },
                         {
                             name: 'case_type',
@@ -766,9 +880,9 @@ export default function Cases() {
                                 { value: 'bug', label: t('Bug') },
                                 { value: 'feature_request', label: t('Feature Request') },
                                 { value: 'complaint', label: t('Complaint') },
-                                { value: 'inquiry', label: t('Inquiry') }
+                                { value: 'inquiry', label: t('Inquiry') },
                             ],
-                            defaultValue: 'support'
+                            defaultValue: 'support',
                         },
                         {
                             name: formMode === 'view' ? 'assigned_user_name' : 'assigned_to',
@@ -777,23 +891,24 @@ export default function Cases() {
                             required: true,
                             searchable: true,
                             emptyNote: { link: route('users.index'), linkText: t('Users') },
-                            options: formMode === 'view' ? [] : (users || []).map((user: any) => ({ value: user.id, label: `${user.name} (${user.email})` })),
-                            readOnly: formMode === 'view'
-                        }
+                            options:
+                                formMode === 'view'
+                                    ? []
+                                    : (users || []).map((user: any) => ({ value: user.id, label: `${user.name} (${user.email})` })),
+                            readOnly: formMode === 'view',
+                        },
                     ],
-                    modalSize: 'xl'
+                    modalSize: 'xl',
                 }}
-                initialData={currentItem ? {
-                    ...currentItem,
-                    assigned_user_name: currentItem.assigned_user?.name || t('Unassigned')
-                } : null}
-                title={
-                    formMode === 'create'
-                        ? t('Add Case')
-                        : formMode === 'edit'
-                            ? t('Edit Case')
-                            : t('View Case')
+                initialData={
+                    currentItem
+                        ? {
+                              ...currentItem,
+                              assigned_user_name: currentItem.assigned_user?.name || t('Unassigned'),
+                          }
+                        : null
                 }
+                title={formMode === 'create' ? t('Add Case') : formMode === 'edit' ? t('Edit Case') : t('View Case')}
                 mode={formMode}
             />
 
@@ -814,15 +929,15 @@ export default function Cases() {
                                 { value: 'in_progress', label: t('In Progress') },
                                 { value: 'pending', label: t('Pending') },
                                 { value: 'resolved', label: t('Resolved') },
-                                { value: 'closed', label: t('Closed') }
-                            ]
-                        }
+                                { value: 'closed', label: t('Closed') },
+                            ],
+                        },
                     ],
-                    modalSize: 'sm'
+                    modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
                 title={t('Change Case Status')}
-                mode='edit'
+                mode="edit"
             />
 
             {/* Delete Modal */}

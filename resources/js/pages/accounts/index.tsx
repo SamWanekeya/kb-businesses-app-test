@@ -1,26 +1,35 @@
-import { useState, useEffect } from 'react';
+import { CrudDeleteModal } from '@/components/CrudDeleteModal';
+import { CrudTable } from '@/components/CrudTable';
+import { toast } from '@/components/custom-toast';
 import { PageTemplate } from '@/components/page-template';
-import { usePage, router } from '@inertiajs/react';
-import { Plus, Eye, Edit, Trash2, MoreHorizontal, FileDown, Lock, Calendar, Phone, Globe, Building2, Mail } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { hasPermission } from '@/utils/authorization';
-import { CrudTable } from '@/components/CrudTable';
-import { CrudDeleteModal } from '@/components/CrudDeleteModal';
-import { toast } from '@/components/custom-toast';
-import { useTranslation } from 'react-i18next';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { useInitials } from '@/hooks/use-initials';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
+import { useInitials } from '@/hooks/use-initials';
+import { hasPermission } from '@/utils/authorization';
+import { router, usePage } from '@inertiajs/react';
+import { Calendar, Edit, Eye, FileDown, Globe, Lock, Mail, MoreHorizontal, Phone, Plus, Trash2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function Accounts() {
     const { t } = useTranslation();
     const getInitials = useInitials();
-    const { auth, accounts, flash, allUsers = [], allAccountTypes = [], allAccountIndustries = [], planLimits, filters: pageFilters = {} } = usePage().props as any;
+    const {
+        auth,
+        accounts,
+        flash,
+        allUsers = [],
+        allAccountTypes = [],
+        allAccountIndustries = [],
+        planLimits,
+        filters: pageFilters = {},
+    } = usePage().props as any;
     useEffect(() => {
         if (flash?.success) toast.success(t(flash.success));
         else if (flash?.error) toast.error(t(flash.error));
@@ -36,9 +45,7 @@ export default function Accounts() {
     const [selectedAssignee, setSelectedAssignee] = useState(pageFilters.assigned_to || 'all');
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [currentItem, setCurrentItem] = useState<any>(null);
-    const [activeView, setActiveView] = useState(
-        ['list', 'grid'].includes(pageFilters.view) ? pageFilters.view : 'list'
-    );
+    const [activeView, setActiveView] = useState(['list', 'grid'].includes(pageFilters.view) ? pageFilters.view : 'list');
     const [pageInitialState, setPageInitialState] = useState(true);
 
     useEffect(() => {
@@ -53,7 +60,12 @@ export default function Accounts() {
 
     // Count active filters
     const activeFilterCount = () => {
-        return (selectedType !== 'all' ? 1 : 0) + (selectedIndustry !== 'all' ? 1 : 0) + (selectedStatus !== 'all' ? 1 : 0) + (selectedAssignee !== 'all' ? 1 : 0);
+        return (
+            (selectedType !== 'all' ? 1 : 0) +
+            (selectedIndustry !== 'all' ? 1 : 0) +
+            (selectedStatus !== 'all' ? 1 : 0) +
+            (selectedAssignee !== 'all' ? 1 : 0)
+        );
     };
 
     const handleSearch = (e: React.FormEvent) => {
@@ -62,34 +74,42 @@ export default function Accounts() {
     };
 
     const applyFilters = () => {
-        router.get(route('accounts.index'), {
-            view: activeView,
-            page: 1,
-            search: searchTerm || undefined,
-            account_type_id: selectedType !== 'all' ? selectedType : undefined,
-            account_industry_id: selectedIndustry !== 'all' ? selectedIndustry : undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-            sort_field: pageFilters.sort_field || undefined,
-            sort_direction: pageFilters.sort_direction || undefined,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('accounts.index'),
+            {
+                view: activeView,
+                page: 1,
+                search: searchTerm || undefined,
+                account_type_id: selectedType !== 'all' ? selectedType : undefined,
+                account_industry_id: selectedIndustry !== 'all' ? selectedIndustry : undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                sort_field: pageFilters.sort_field || undefined,
+                sort_direction: pageFilters.sort_direction || undefined,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleSort = (field: string) => {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
-        router.get(route('accounts.index'), {
-            view: activeView,
-            page: 1,
-            search: searchTerm || undefined,
-            account_type_id: selectedType !== 'all' ? selectedType : undefined,
-            account_industry_id: selectedIndustry !== 'all' ? selectedIndustry : undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-            sort_field: field,
-            sort_direction: direction,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('accounts.index'),
+            {
+                view: activeView,
+                page: 1,
+                search: searchTerm || undefined,
+                account_type_id: selectedType !== 'all' ? selectedType : undefined,
+                account_industry_id: selectedIndustry !== 'all' ? selectedIndustry : undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                sort_field: field,
+                sort_direction: direction,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleAction = (action: string, item: any) => {
@@ -131,7 +151,7 @@ export default function Accounts() {
                 } else {
                     toast.error(t('Failed to delete account: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
-            }
+            },
         });
     };
 
@@ -139,17 +159,21 @@ export default function Accounts() {
         const newStatus = account.status === 'active' ? 'inactive' : 'active';
         toast.loading(`${newStatus === 'active' ? t('Activating') : t('Deactivating')} account...`);
 
-        router.put(route('accounts.toggle-status', account.id), {}, {
-            onSuccess: () => toast.dismiss(),
-            onError: (errors) => {
-                toast.dismiss();
-                if (typeof errors === 'string') {
-                    toast.error(errors);
-                } else {
-                    toast.error(t('Failed to update account status: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                }
-            }
-        });
+        router.put(
+            route('accounts.toggle-status', account.id),
+            {},
+            {
+                onSuccess: () => toast.dismiss(),
+                onError: (errors) => {
+                    toast.dismiss();
+                    if (typeof errors === 'string') {
+                        toast.error(errors);
+                    } else {
+                        toast.error(t('Failed to update account status: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    }
+                },
+            },
+        );
     };
 
     const handleResetFilters = () => {
@@ -163,9 +187,13 @@ export default function Accounts() {
     if (hasPermission(permissions, 'export-accounts')) {
         pageActions.push({
             label: t('Export'),
-            icon: <FileDown className="h-4 w-4 mr-2" />,
+            icon: <FileDown className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
             variant: 'outline',
-            onClick: () => window.location.href = route('account.export')
+            onClick: () => (window.location.href = route('account.export')),
+            className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
+            labelClassName: 'hidden min-[400px]:inline',
+            tooltip: t('Export'),
+            tooltipClassName: 'min-[400px]:hidden',
         });
     }
 
@@ -173,20 +201,29 @@ export default function Accounts() {
     if (hasPermission(permissions, 'create-accounts')) {
         const isDisabled = planLimits && !planLimits.can_create;
         pageActions.push({
-            label: isDisabled ? t('Account Limit Reached ({{current}}/{{max}})', { current: planLimits?.current_accounts || 0, max: planLimits?.maximum_accounts || 0 }) : t('Add Account'),
-            icon: <Plus className="h-4 w-4 mr-2" />,
+            label: isDisabled
+                ? t('Account Limit Reached ({{current}}/{{max}})', {
+                      current: planLimits?.current_accounts || 0,
+                      max: planLimits?.maximum_accounts || 0,
+                  })
+                : t('Add Account'),
+            icon: <Plus className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
             variant: isDisabled ? 'outline' : 'default',
             disabled: isDisabled,
             onClick: isDisabled
                 ? () => toast.error(t('Account limit reached. Your plan allows maximum {{max}} accounts.', { max: planLimits.maximum_accounts }))
                 : () => router.visit(route('accounts.create')),
+            className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
+            labelClassName: 'hidden min-[400px]:inline',
+            tooltip: t('Add Account'),
+            tooltipClassName: 'min-[400px]:hidden',
         });
     }
 
     const breadcrumbs = [
         { title: t('Dashboard'), href: route('dashboard') },
         { title: t('Account Management'), href: route('accounts.index') },
-        { title: t('Accounts') }
+        { title: t('Accounts') },
     ];
 
     // Define table columns
@@ -200,26 +237,29 @@ export default function Accounts() {
                     <UserInitials name={row.name} />
                     <div>
                         <div className="font-medium">{row.name}</div>
-                        <div className="text-sm text-muted-foreground">{row.email || t('No email')}</div>
+                        <div className="text-muted-foreground text-sm">{row.email || t('No email')}</div>
                     </div>
                 </div>
-            )
+            ),
         },
         {
             key: 'assigned_user',
             label: t('Assigned To'),
-            render: (value: any) => value ? (
-                <div className="flex items-center gap-3">
-                    <Avatar className="h-9 w-9">
-                        <AvatarImage src={value.avatar} />
-                        <AvatarFallback>{getInitials(value.name)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                        <div className="font-medium">{value.name}</div>
-                        <div className="text-sm text-muted-foreground">{value.email}</div>
+            render: (value: any) =>
+                value ? (
+                    <div className="flex items-center gap-3">
+                        <Avatar className="h-9 w-9">
+                            <AvatarImage src={value.avatar} />
+                            <AvatarFallback>{getInitials(value.name)}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <div className="font-medium">{value.name}</div>
+                            <div className="text-muted-foreground text-sm">{value.email}</div>
+                        </div>
                     </div>
-                </div>
-            ) : <span className="text-muted-foreground">{t('Unassigned')}</span>
+                ) : (
+                    <span className="text-muted-foreground">{t('Unassigned')}</span>
+                ),
         },
         {
             key: 'account_type',
@@ -232,13 +272,13 @@ export default function Accounts() {
                         style={{
                             backgroundColor: `${value.color}20`,
                             color: value.color,
-                            borderColor: `${value.color}40`
+                            borderColor: `${value.color}40`,
                         }}
                     >
                         {value.name}
                     </span>
                 );
-            }
+            },
         },
         {
             key: 'account_industry',
@@ -251,34 +291,37 @@ export default function Accounts() {
                         style={{
                             backgroundColor: `${value.color}20`,
                             color: value.color,
-                            borderColor: `${value.color}40`
+                            borderColor: `${value.color}40`,
                         }}
                     >
                         {value.name}
                     </span>
                 );
-            }
+            },
         },
         {
             key: 'status',
             label: t('Status'),
             render: (value: string) => {
                 return (
-                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${value === 'active'
-                        ? 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/20'
-                        : 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/20'
-                        }`}>
+                    <span
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                            value === 'active'
+                                ? 'bg-green-50 text-green-700 ring-1 ring-green-600/20 ring-inset'
+                                : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
+                        }`}
+                    >
                         {value === 'active' ? t('Active') : t('Inactive')}
                     </span>
                 );
-            }
+            },
         },
         {
             key: 'created_at',
             label: t('Created At'),
             sortable: true,
             type: 'date',
-        }
+        },
     ];
 
     // Define table actions
@@ -288,42 +331,42 @@ export default function Accounts() {
             icon: 'Lock',
             action: 'toggle-status',
             className: 'text-amber-500',
-            requiredPermission: 'toggle-status-accounts'
+            requiredPermission: 'toggle-status-accounts',
         },
         {
             label: t('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
-            requiredPermission: 'view-accounts'
+            requiredPermission: 'view-accounts',
         },
         {
             label: t('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
-            requiredPermission: 'edit-accounts'
+            requiredPermission: 'edit-accounts',
         },
         {
             label: t('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
-            requiredPermission: 'delete-accounts'
-        }
+            requiredPermission: 'delete-accounts',
+        },
     ];
 
     return (
         <PageTemplate
-            title={t("Accounts")}
-            description={t("Manage your accounts")}
+            title={t('Accounts')}
+            description={t('Manage your accounts')}
             url="/accounts"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
             noPadding
         >
             {/* Search and filters section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
+            <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -340,9 +383,9 @@ export default function Accounts() {
                                 { value: 'all', label: t('All Types') },
                                 ...allAccountTypes.map((type: any) => ({
                                     value: type.id.toString(),
-                                    label: type.name
-                                }))
-                            ]
+                                    label: type.name,
+                                })),
+                            ],
                         },
                         {
                             name: 'account_industry_id',
@@ -355,9 +398,9 @@ export default function Accounts() {
                                 { value: 'all', label: t('All Industries') },
                                 ...allAccountIndustries.map((industry: any) => ({
                                     value: industry.id.toString(),
-                                    label: industry.name
-                                }))
-                            ]
+                                    label: industry.name,
+                                })),
+                            ],
                         },
                         {
                             name: 'status',
@@ -368,8 +411,8 @@ export default function Accounts() {
                             options: [
                                 { value: 'all', label: t('All Status') },
                                 { value: 'active', label: t('Active') },
-                                { value: 'inactive', label: t('Inactive') }
-                            ]
+                                { value: 'inactive', label: t('Inactive') },
+                            ],
                         },
                         {
                             name: 'assigned_to',
@@ -382,10 +425,10 @@ export default function Accounts() {
                                 { value: 'all', label: t('All Users') },
                                 ...allUsers.map((user: any) => ({
                                     value: user.id.toString(),
-                                    label: user.name
-                                }))
-                            ]
-                        }
+                                    label: user.name,
+                                })),
+                            ],
+                        },
                     ]}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
@@ -412,7 +455,7 @@ export default function Accounts() {
 
             {/* Content section */}
             {activeView === 'list' ? (
-                <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+                <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                     <CrudTable
                         columns={columns}
                         actions={actions}
@@ -427,7 +470,7 @@ export default function Accounts() {
                             view: 'view-accounts',
                             create: 'create-accounts',
                             edit: 'edit-accounts',
-                            delete: 'delete-accounts'
+                            delete: 'delete-accounts',
                         }}
                     />
 
@@ -437,64 +480,74 @@ export default function Accounts() {
                         to={accounts?.to || 0}
                         total={accounts?.total || 0}
                         links={accounts?.links}
-                        entityName={t("accounts")}
+                        entityName={t('accounts')}
                         onPageChange={(url) => router.get(url)}
-                        currentPerPage={pageFilters.per_page?.toString() || "10"}
+                        currentPerPage={pageFilters.per_page?.toString() || '10'}
                         onPerPageChange={(value) => {
-                            router.get(route('accounts.index'), {
-                                view: activeView,
-                                page: 1,
-                                search: searchTerm || undefined,
-                                account_type_id: selectedType !== 'all' ? selectedType : undefined,
-                                account_industry_id: selectedIndustry !== 'all' ? selectedIndustry : undefined,
-                                status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-                                sort_field: pageFilters.sort_field || undefined,
-                                sort_direction: pageFilters.sort_direction || undefined,
-                                ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
-                            }, { preserveState: true, preserveScroll: true });
+                            router.get(
+                                route('accounts.index'),
+                                {
+                                    view: activeView,
+                                    page: 1,
+                                    search: searchTerm || undefined,
+                                    account_type_id: selectedType !== 'all' ? selectedType : undefined,
+                                    account_industry_id: selectedIndustry !== 'all' ? selectedIndustry : undefined,
+                                    status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                    assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                                    sort_field: pageFilters.sort_field || undefined,
+                                    sort_direction: pageFilters.sort_direction || undefined,
+                                    ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+                                },
+                                { preserveState: true, preserveScroll: true },
+                            );
                         }}
                     />
                 </div>
             ) : (
                 <div>
                     {/* Grid View */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         {accounts?.data?.map((account: any) => (
-                            <Card key={account.id} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col">
-                                <div className="relative p-4 flex flex-col flex-1">
-
+                            <Card
+                                key={account.id}
+                                className="flex flex-col rounded-xl border border-gray-200 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-900"
+                            >
+                                <div className="relative flex flex-1 flex-col p-4">
                                     {/* Three-dots dropdown — top right */}
                                     <div className="absolute top-2 right-2">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
-                                                <Button variant="ghost" size="sm" className="h-7 w-7 p-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                                                <Button
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    className="h-7 w-7 p-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                                                >
                                                     <MoreHorizontal className="h-4 w-4" />
                                                 </Button>
                                             </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end" className="w-40 z-50" sideOffset={5}>
+                                            <DropdownMenuContent align="end" className="z-50 w-40" sideOffset={5}>
                                                 {hasPermission(permissions, 'view-accounts') && (
                                                     <DropdownMenuItem onClick={() => handleAction('view', account)}>
-                                                        <Eye className="h-4 w-4 mr-2" />
+                                                        <Eye className="mr-2 h-4 w-4" />
                                                         <span>{t('View Account')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {hasPermission(permissions, 'toggle-status-accounts') && (
                                                     <DropdownMenuItem onClick={() => handleAction('toggle-status', account)}>
-                                                        <Lock className="h-4 w-4 mr-2" />
+                                                        <Lock className="mr-2 h-4 w-4" />
                                                         <span>{account.status === 'active' ? t('Deactivate') : t('Activate')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {hasPermission(permissions, 'edit-accounts') && (
                                                     <DropdownMenuItem onClick={() => handleAction('edit', account)}>
-                                                        <Edit className="h-4 w-4 mr-2" />
+                                                        <Edit className="mr-2 h-4 w-4" />
                                                         <span>{t('Edit')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 <DropdownMenuSeparator />
                                                 {hasPermission(permissions, 'delete-accounts') && (
                                                     <DropdownMenuItem onClick={() => handleAction('delete', account)} className="text-rose-600">
-                                                        <Trash2 className="h-4 w-4 mr-2" />
+                                                        <Trash2 className="mr-2 h-4 w-4" />
                                                         <span>{t('Delete')}</span>
                                                     </DropdownMenuItem>
                                                 )}
@@ -503,45 +556,69 @@ export default function Accounts() {
                                     </div>
 
                                     {/* Avatar + name + email + status */}
-                                    <div className="flex items-start gap-3 mb-4 pr-8">
+                                    <div className="mb-4 flex items-start gap-3 pr-8">
                                         <UserInitials name={account.name} />
-                                        <div className="flex-1 min-w-0">
-                                            <h3 className="text-sm font-semibold text-gray-900 dark:text-white truncate">{account.name}</h3>
-                                            <div className="flex items-center gap-1.5 mt-0.5 mb-1.5">
-                                                <Mail className="h-3 w-3 text-gray-500 shrink-0" />
-                                                <p className="text-xs text-gray-600 dark:text-gray-400 truncate">{account.email || t('No email')}</p>
+                                        <div className="min-w-0 flex-1">
+                                            <h3 className="truncate text-sm font-semibold text-gray-900 dark:text-white">{account.name}</h3>
+                                            <div className="mt-0.5 mb-1.5 flex items-center gap-1.5">
+                                                <Mail className="h-3 w-3 shrink-0 text-gray-500" />
+                                                <p className="truncate text-xs text-gray-600 dark:text-gray-400">{account.email || t('No email')}</p>
                                             </div>
-                                            <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
-                                                account.status === 'active'
-                                                    ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-500/10 dark:text-green-400 dark:ring-green-500/20'
-                                                    : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-500/20'
-                                            }`}>
+                                            <span
+                                                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                                    account.status === 'active'
+                                                        ? 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-500/10 dark:text-green-400 dark:ring-green-500/20'
+                                                        : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-500/20'
+                                                }`}
+                                            >
                                                 {account.status === 'active' ? t('Active') : t('Inactive')}
                                             </span>
                                         </div>
                                     </div>
 
                                     {/* Info rows */}
-                                    <div className="space-y-1.5 mb-3">
+                                    <div className="mb-3 space-y-1.5">
                                         <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
-                                            <Phone className="h-3.5 w-3.5 text-gray-500 shrink-0" />
+                                            <Phone className="h-3.5 w-3.5 shrink-0 text-gray-500" />
                                             <span className="truncate">{account.phone || '-'}</span>
                                         </div>
                                         <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
-                                            <Globe className="h-3.5 w-3.5 text-gray-500 shrink-0" />
-                                            {account.website
-                                                ? <a href={account.website.startsWith('http') ? account.website : `https://${account.website}`} target="_blank" rel="noopener noreferrer" className="truncate text-blue-600 hover:!text-blue-600 hover:underline">{account.website}</a>
-                                                : <span className="truncate">-</span>
-                                            }
+                                            <Globe className="h-3.5 w-3.5 shrink-0 text-gray-500" />
+                                            {account.website ? (
+                                                <a
+                                                    href={account.website.startsWith('http') ? account.website : `https://${account.website}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="truncate text-blue-600 hover:!text-blue-600 hover:underline"
+                                                >
+                                                    {account.website}
+                                                </a>
+                                            ) : (
+                                                <span className="truncate">-</span>
+                                            )}
                                         </div>
-                                        <div className="flex items-center gap-2 flex-wrap">
+                                        <div className="flex flex-wrap items-center gap-2">
                                             {account.account_type && (
-                                                <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset" style={{ backgroundColor: `${account.account_type.color}20`, color: account.account_type.color, borderColor: `${account.account_type.color}40` }}>
+                                                <span
+                                                    className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
+                                                    style={{
+                                                        backgroundColor: `${account.account_type.color}20`,
+                                                        color: account.account_type.color,
+                                                        borderColor: `${account.account_type.color}40`,
+                                                    }}
+                                                >
                                                     {account.account_type.name}
                                                 </span>
                                             )}
                                             {account.account_industry && (
-                                                <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset" style={{ backgroundColor: `${account.account_industry.color}20`, color: account.account_industry.color, borderColor: `${account.account_industry.color}40` }}>
+                                                <span
+                                                    className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
+                                                    style={{
+                                                        backgroundColor: `${account.account_industry.color}20`,
+                                                        color: account.account_industry.color,
+                                                        borderColor: `${account.account_industry.color}40`,
+                                                    }}
+                                                >
                                                     {account.account_industry.name}
                                                 </span>
                                             )}
@@ -549,10 +626,13 @@ export default function Accounts() {
                                     </div>
 
                                     {/* Footer: date left, assigned avatar right */}
-                                    <div className="mt-auto pt-3 border-t border-border flex items-center justify-between">
+                                    <div className="border-border mt-auto flex items-center justify-between border-t pt-3">
                                         <div className="flex items-center gap-2 text-xs font-medium text-gray-600 dark:text-gray-400">
-                                            <Calendar className="h-3.5 w-3.5 text-gray-500 shrink-0" />
-                                            <span>{window.appSettings?.formatDateTime(account.created_at, false) || new Date(account.created_at).toLocaleDateString()}</span>
+                                            <Calendar className="h-3.5 w-3.5 shrink-0 text-gray-500" />
+                                            <span>
+                                                {window.appSettings?.formatDateTime(account.created_at, false) ||
+                                                    new Date(account.created_at).toLocaleDateString()}
+                                            </span>
                                         </div>
                                         {account.assigned_user && (
                                             <div className="flex items-center gap-1.5">
@@ -560,9 +640,11 @@ export default function Accounts() {
                                                 <TooltipProvider>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
-                                                            <Avatar className="h-7 w-7 cursor-pointer shrink-0">
+                                                            <Avatar className="h-7 w-7 shrink-0 cursor-pointer">
                                                                 <AvatarImage src={account.assigned_user.avatar} alt={account.assigned_user.name} />
-                                                                <AvatarFallback className="text-xs bg-purple-100 text-purple-700 font-medium">{getInitials(account.assigned_user.name)}</AvatarFallback>
+                                                                <AvatarFallback className="bg-purple-100 text-xs font-medium text-purple-700">
+                                                                    {getInitials(account.assigned_user.name)}
+                                                                </AvatarFallback>
                                                             </Avatar>
                                                         </TooltipTrigger>
                                                         <TooltipContent side="top">
@@ -579,29 +661,33 @@ export default function Accounts() {
                     </div>
 
                     {/* Pagination for grid view */}
-                    <div className="mt-6 bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+                    <div className="mt-6 overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                         <Pagination
                             from={accounts?.from || 0}
                             to={accounts?.to || 0}
                             total={accounts?.total || 0}
                             links={accounts?.links}
-                            entityName={t("accounts")}
+                            entityName={t('accounts')}
                             onPageChange={(url) => router.get(url)}
                             perPageOptions={[12, 24, 48, 96]}
                             currentPerPage={pageFilters.per_page?.toString() || '12'}
                             onPerPageChange={(value) => {
-                                router.get(route('accounts.index'), {
-                                    view: activeView,
-                                    page: 1,
-                                    search: searchTerm || undefined,
-                                    account_type_id: selectedType !== 'all' ? selectedType : undefined,
-                                    account_industry_id: selectedIndustry !== 'all' ? selectedIndustry : undefined,
-                                    status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                                    assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-                                    sort_field: pageFilters.sort_field || undefined,
-                                    sort_direction: pageFilters.sort_direction || undefined,
-                                    ...(parseInt(value) !== 12 && { per_page: parseInt(value) }),
-                                }, { preserveState: true, preserveScroll: true });
+                                router.get(
+                                    route('accounts.index'),
+                                    {
+                                        view: activeView,
+                                        page: 1,
+                                        search: searchTerm || undefined,
+                                        account_type_id: selectedType !== 'all' ? selectedType : undefined,
+                                        account_industry_id: selectedIndustry !== 'all' ? selectedIndustry : undefined,
+                                        status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                        assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                                        sort_field: pageFilters.sort_field || undefined,
+                                        sort_direction: pageFilters.sort_direction || undefined,
+                                        ...(parseInt(value) !== 12 && { per_page: parseInt(value) }),
+                                    },
+                                    { preserveState: true, preserveScroll: true },
+                                );
                             }}
                         />
                     </div>

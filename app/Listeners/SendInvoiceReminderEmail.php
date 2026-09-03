@@ -29,6 +29,7 @@ class SendInvoiceReminderEmail
 
         if (!$recipient || !isEmailTemplateEnabled('Invoice Payment Reminder', createdBy())) {
             session()->flash('email_error', 'Invoice Payment Reminder not enabled in organization settings, Enable it to send Invoice Payment Reminder');
+
             return;
         }
 
@@ -74,6 +75,7 @@ class SendInvoiceReminderEmail
     private function formatCurrency($amount)
     {
         $currencySymbol = getSetting('currencySymbol', '$');
+
         return $currencySymbol . number_format($amount, 2);
     }
 }

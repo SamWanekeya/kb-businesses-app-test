@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Paytabscom\Laravel_paytabs\Facades\paypage;
 
@@ -41,7 +40,7 @@ class InvoicePayTabsPaymentController extends Controller
                 'paytabs.profile_id' => $settings['payment_settings']['paytabs_profile_id'],
                 'paytabs.server_key' => $settings['payment_settings']['paytabs_server_key'],
                 'paytabs.region' => $settings['payment_settings']['paytabs_region'] ?? 'ARE',
-                'paytabs.currency' => 'INR'
+                'paytabs.currency' => 'INR',
             ]);
 
             $pay = paypage::sendPaymentCode('all')
@@ -71,7 +70,7 @@ class InvoicePayTabsPaymentController extends Controller
 
                 return response()->json([
                     'success' => true,
-                    'redirect_url' => $redirectUrl
+                    'redirect_url' => $redirectUrl,
                 ]);
             }
 
@@ -81,8 +80,9 @@ class InvoicePayTabsPaymentController extends Controller
             \Log::info('PayTabs payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return response()->json(['success' => false, 'message' => __('Payment processing failed.')], 500);
         }
     }
@@ -113,7 +113,7 @@ class InvoicePayTabsPaymentController extends Controller
                 'invoice_id' => $invoiceId,
                 'amount' => $amount,
                 'payment_type' => $paymentType,
-                'cart_id' => $cartId
+                'cart_id' => $cartId,
             ]);
 
             return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('success', __('Payment completed successfully!'));
@@ -121,8 +121,9 @@ class InvoicePayTabsPaymentController extends Controller
         } catch (\Exception $e) {
             \Log::info('PayTabs success callback error', [
                 'error' => $e->getMessage(),
-                'request' => $request->all()
+                'request' => $request->all(),
             ]);
+
             return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment verification failed.'));
         }
     }
@@ -138,7 +139,7 @@ class InvoicePayTabsPaymentController extends Controller
                 'cart_id' => $cartId,
                 'resp_status' => $respStatus,
                 'tran_ref' => $tranRef,
-                'all_params' => $request->all()
+                'all_params' => $request->all(),
             ]);
 
             return response('OK', 200);
@@ -146,8 +147,9 @@ class InvoicePayTabsPaymentController extends Controller
         } catch (\Exception $e) {
             \Log::info('PayTabs callback error', [
                 'error' => $e->getMessage(),
-                'request' => $request->all()
+                'request' => $request->all(),
             ]);
+
             return response(__('Callback processing failed'), 500);
         }
     }

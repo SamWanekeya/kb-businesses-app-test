@@ -21,6 +21,4 @@ class LeadStatus extends BaseModel
     {
         return $this->belongsTo(User::class, 'created_by');
     }
-
-
 }

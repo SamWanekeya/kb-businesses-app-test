@@ -10,8 +10,8 @@ export const customPagesConfig: CrudConfig = {
             view: 'manage-settings',
             create: 'manage-settings',
             edit: 'manage-settings',
-            delete: 'manage-settings'
-        }
+            delete: 'manage-settings',
+        },
     },
     modalSize: '2xl',
     table: {
@@ -23,13 +23,13 @@ export const customPagesConfig: CrudConfig = {
                 render: (value: string) => {
                     const text = value.replace(/<[^>]*>/g, '');
                     return text.substring(0, 100) + (text.length > 100 ? '...' : '');
-                }
+                },
             },
             {
                 key: 'is_active',
                 label: t('Status'),
-                render: (value: boolean) => value ? t('Active') : t('Inactive')
-            }
+                render: (value: boolean) => (value ? t('Active') : t('Inactive')),
+            },
         ],
         actions: [
             {
@@ -37,16 +37,16 @@ export const customPagesConfig: CrudConfig = {
                 icon: 'Edit',
                 action: 'edit',
                 className: 'text-amber-500',
-                requiredPermission: 'manage-settings'
+                requiredPermission: 'manage-settings',
             },
             {
                 label: t('Delete'),
                 icon: 'Trash2',
                 action: 'delete',
                 className: 'text-red-500',
-                requiredPermission: 'manage-settings'
-            }
-        ]
+                requiredPermission: 'manage-settings',
+            },
+        ],
     },
     filters: [],
     form: {
@@ -55,7 +55,7 @@ export const customPagesConfig: CrudConfig = {
             { name: 'sort_order', label: t('Sort Order'), type: 'number', defaultValue: '0' },
             { name: 'meta_title', label: t('Meta Title (SEO)'), type: 'text' },
             { name: 'meta_description', label: t('Meta Description (SEO)'), type: 'textarea' },
-            { name: 'is_active', label: t('Active'), type: 'switch', defaultValue: true }
-        ]
-    }
+            { name: 'is_active', label: t('Active'), type: 'switch', defaultValue: true },
+        ],
+    },
 };

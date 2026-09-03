@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invoice;
-use App\Models\InvoiceComment;
 use App\Models\InvoiceActivity;
+use App\Models\InvoiceComment;
 use Illuminate\Http\Request;
 
 class InvoiceCommentController extends Controller
@@ -20,14 +20,14 @@ class InvoiceCommentController extends Controller
         }
 
         $validated = $request->validate([
-            'comment' => 'required|string|max:1000'
+            'comment' => 'required|string|max:1000',
         ]);
 
         $comment = InvoiceComment::create([
             'invoice_id' => $invoice->id,
             'user_id' => auth()->id(),
             'comment' => $validated['comment'],
-            'created_by' => createdBy()
+            'created_by' => createdBy(),
         ]);
 
         // Create activity record
@@ -37,7 +37,7 @@ class InvoiceCommentController extends Controller
             'activity_type' => 'comment',
             'title' => auth()->user()->name . ' added a comment',
             'description' => $validated['comment'],
-            'created_by' => createdBy()
+            'created_by' => createdBy(),
         ]);
 
         return redirect()->back()->with('success', __('Comment added successfully.'));
@@ -64,11 +64,11 @@ class InvoiceCommentController extends Controller
         }
 
         $validated = $request->validate([
-            'comment' => 'required|string|max:1000'
+            'comment' => 'required|string|max:1000',
         ]);
 
         $activity->update([
-            'description' => $validated['comment']
+            'description' => $validated['comment'],
         ]);
 
         return redirect()->back()->with('success', __('Comment updated successfully.'));

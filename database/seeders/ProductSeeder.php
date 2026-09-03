@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
-use App\Models\User;
-use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Product;
 use App\Models\Tax;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
@@ -17,6 +17,7 @@ class ProductSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -30,7 +31,7 @@ class ProductSeeder extends Seeder
             ['name' => 'Surface Pro 9', 'price' => 1200, 'brand' => 'Microsoft', 'category' => 'Computers & Laptops'],
             ['name' => 'Dell UltraSharp Monitor', 'price' => 400, 'brand' => 'Dell', 'category' => 'Office Equipment'],
             ['name' => 'Microsoft Wireless Mouse', 'price' => 50, 'brand' => 'Microsoft', 'category' => 'Office Equipment'],
-            ['name' => 'HP Mechanical Keyboard', 'price' => 150, 'brand' => 'HP', 'category' => 'Office Equipment']
+            ['name' => 'HP Mechanical Keyboard', 'price' => 150, 'brand' => 'HP', 'category' => 'Office Equipment'],
         ];
 
         foreach ($organizationUsers as $organization) {

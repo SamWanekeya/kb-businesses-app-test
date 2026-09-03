@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class InvoiceKhaltiPaymentController extends Controller
@@ -34,6 +33,7 @@ class InvoiceKhaltiPaymentController extends Controller
 
             if (!isset($settings['payment_settings']['khalti_public_key'])) {
                 \Log::error('Khalti payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+
                 return response()->json(['error' => __('Khalti not configured')], 400);
             }
 
@@ -50,8 +50,9 @@ class InvoiceKhaltiPaymentController extends Controller
             \Log::error('Khalti payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
     }
@@ -82,6 +83,7 @@ class InvoiceKhaltiPaymentController extends Controller
 
             if (!isset($settings['payment_settings']['khalti_secret_key'])) {
                 \Log::error('Khalti payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+
                 return back()->withErrors(['error' => __('Khalti not configured')]);
             }
 
@@ -101,7 +103,7 @@ class InvoiceKhaltiPaymentController extends Controller
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
-                    'token' => $validated['token']
+                    'token' => $validated['token'],
                 ]);
 
                 return back()->with('success', __('Payment successful'));
@@ -113,8 +115,9 @@ class InvoiceKhaltiPaymentController extends Controller
             \Log::error('Khalti payment processing error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return back()->withErrors(['error' => __('Payment processing failed. Please try again.')]);
         }
     }

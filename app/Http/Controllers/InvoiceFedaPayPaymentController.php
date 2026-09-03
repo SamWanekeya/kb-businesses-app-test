@@ -6,9 +6,9 @@ use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
 use App\Models\User;
-use Illuminate\Http\Request;
 use FedaPay\FedaPay;
 use FedaPay\Transaction;
+use Illuminate\Http\Request;
 
 class InvoiceFedaPayPaymentController extends Controller
 {
@@ -37,6 +37,7 @@ class InvoiceFedaPayPaymentController extends Controller
 
             if (!isset($settings['payment_settings']['fedapay_secret_key'])) {
                 \Log::error('FedaPay payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+
                 return response()->json(['error' => __('FedaPay not configured')], 400);
             }
 
@@ -55,7 +56,7 @@ class InvoiceFedaPayPaymentController extends Controller
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
-                ]
+                ],
             ]);
 
             $token = $transaction->generateToken();
@@ -64,15 +65,16 @@ class InvoiceFedaPayPaymentController extends Controller
                 'success' => true,
                 'payment_url' => $token->url,
                 'transaction_id' => $transaction->id,
-                'token' => $token->token
+                'token' => $token->token,
             ]);
 
         } catch (\Exception $e) {
             \Log::error('FedaPay payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
     }
@@ -102,7 +104,7 @@ class InvoiceFedaPayPaymentController extends Controller
 
                     \Log::info('FedaPay invoice payment callback successful', [
                         'invoice_id' => $invoice->id,
-                        'transaction_id' => $transactionId
+                        'transaction_id' => $transactionId,
                     ]);
 
                     return redirect()->route('invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
@@ -112,10 +114,11 @@ class InvoiceFedaPayPaymentController extends Controller
             return redirect()->route('invoices.public', encrypt($metadata['invoice_id'] ?? null))->with('error', __('Payment was not completed'));
         } catch (\Exception $e) {
             \Log::error('FedaPay callback error', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             // return response()->json(['error' => __('Callback processing failed')], 500);
-            return redirect()->route('invoices.public',encrypt($request->input('invoice_id')))->with('error', __('Callback processing failed'));
+            return redirect()->route('invoices.public', encrypt($request->input('invoice_id')))->with('error', __('Callback processing failed'));
         }
     }
 

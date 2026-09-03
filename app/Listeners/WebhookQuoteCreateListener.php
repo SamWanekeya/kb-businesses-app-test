@@ -8,6 +8,7 @@ use App\Services\WebhookService;
 class WebhookQuoteCreateListener
 {
     private static array $processedQuote = [];
+
     /**
      * Create the event listener.
      */

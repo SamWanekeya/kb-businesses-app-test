@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Razorpay\Api\Api;
 
@@ -45,7 +44,7 @@ class InvoiceRazorpayPaymentController extends Controller
                 'notes' => [
                     'invoice_id' => $invoice->id,
                     'payment_type' => $validated['payment_type'],
-                ]
+                ],
             ];
 
             $razorpayOrder = $api->order->create($orderData);
@@ -57,8 +56,9 @@ class InvoiceRazorpayPaymentController extends Controller
         } catch (\Exception $e) {
             \Log::error('Razorpay order creation failed', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -91,6 +91,7 @@ class InvoiceRazorpayPaymentController extends Controller
 
             if (!isset($settings['payment_settings']['razorpay_key']) || !isset($settings['payment_settings']['razorpay_secret'])) {
                 \Log::error('Razorpay payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+
                 return back()->withErrors(['error' => __('Razorpay not configured')]);
             }
 
@@ -100,7 +101,7 @@ class InvoiceRazorpayPaymentController extends Controller
             $api->utility->verifyPaymentSignature([
                 'razorpay_order_id' => $validated['razorpay_order_id'],
                 'razorpay_payment_id' => $validated['razorpay_payment_id'],
-                'razorpay_signature' => $validated['razorpay_signature']
+                'razorpay_signature' => $validated['razorpay_signature'],
             ]);
 
             // Store invoice payment using common method
@@ -116,7 +117,7 @@ class InvoiceRazorpayPaymentController extends Controller
                 'invoice_id' => $invoice->id,
                 'amount' => $validated['amount'],
                 'payment_type' => $validated['payment_type'],
-                'payment_id' => $validated['razorpay_payment_id']
+                'payment_id' => $validated['razorpay_payment_id'],
             ]);
 
             return back()->with('success', __('Payment successful'));
@@ -125,8 +126,9 @@ class InvoiceRazorpayPaymentController extends Controller
             \Log::error('Razorpay payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return $this->handleInvoicePaymentError($e, 'razorpay');
         }
     }

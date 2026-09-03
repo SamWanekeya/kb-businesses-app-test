@@ -99,6 +99,7 @@ class InvoiceAamarpayPaymentController extends Controller
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
             ]);
+
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
     }
@@ -135,7 +136,7 @@ class InvoiceAamarpayPaymentController extends Controller
                     \Log::info('Aamarpay invoice payment successful', [
                         'invoice_id' => $invoice->id,
                         'amount' => $amount,
-                        'payment_id' => $orderId
+                        'payment_id' => $orderId,
                     ]);
 
                     return redirect()->route('invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
@@ -148,6 +149,7 @@ class InvoiceAamarpayPaymentController extends Controller
             \Log::error('Aamarpay invoice payment success error', [
                 'error' => $e->getMessage(),
             ]);
+
             return redirect()->route('invoices.public', encrypt($request->input('invoice_id') ?? 0))->withErrors(['error' => __('Payment processing failed')]);
         }
     }
@@ -161,7 +163,7 @@ class InvoiceAamarpayPaymentController extends Controller
             if ($transactionId && $status === 'Successful') {
                 \Log::info('Aamarpay invoice callback received', [
                     'transaction_id' => $transactionId,
-                    'status' => $status
+                    'status' => $status,
                 ]);
             }
 

@@ -16,7 +16,7 @@ class MailConfigService
         }
         if ($user->type == 'super_admin') {
             $user = User::where('type', 'super_admin')->first();
-        } else if ($user->type == 'organization') {
+        } elseif ($user->type == 'organization') {
             $user = User::where('id', $user->created_by)->first();
         } else {
             $user = User::where('id', $user->created_by)->first();
@@ -26,7 +26,7 @@ class MailConfigService
 
         // $settings = [
         //     'driver' => getSetting('email_driver', 'smtp'),
-        //     'host' => getSetting('email_host', 'smtp.example.com'),
+        //     'host' => getSetting('email_host', 'smtp.kakbima.dev'),
         //     'port' => getSetting('email_port', '587'),
         //     'username' => getSetting('email_username', ''),
         //     'password' => getSetting('email_password', ''),
@@ -36,13 +36,13 @@ class MailConfigService
         // ];
         $settings = [
             'driver' => $getSettings['email_driver'] ?? 'smtp',
-            'host' => $getSettings['email_host'] ?? 'smtp.example.com',
+            'host' => $getSettings['email_host'] ?? 'smtp.kakbima.dev',
             'port' => $getSettings['email_port'] ?? '587',
             'username' => $getSettings['email_username'] ?? '',
             'password' => $getSettings['email_password'] ?? '',
             'encryption' => $getSettings['email_encryption'] ?? 'tls',
             'fromAddress' => $getSettings['email_from_address'] ?? 'noreply@kakbima.dev',
-            'fromName' => $getSettings['email_from_name'] ?? 'Kakbima'
+            'fromName' => $getSettings['email_from_name'] ?? 'Kakbima',
         ];
 
         Config::set([

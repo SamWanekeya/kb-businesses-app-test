@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Quote;
-use App\Models\Opportunity;
+use App\Exports\QuoteExport;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\Opportunity;
 use App\Models\Product;
+use App\Models\Quote;
 use App\Models\ShippingProviderType;
 use App\Models\Tax;
-use App\Models\User;
-use App\Exports\QuoteExport;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -28,7 +27,7 @@ class QuoteController extends Controller
             $query->where(function ($q) use ($request) {
                 $q->where('quote_number', 'like', '%' . $request->search . '%')
                     ->orWhere('name', 'like', '%' . $request->search . '%')
-                    ->orWhereHas('account', fn($q) => $q->where('name', 'like', '%' . $request->search . '%'));
+                    ->orWhereHas('account', fn ($q) => $q->where('name', 'like', '%' . $request->search . '%'));
             });
         }
 
@@ -50,7 +49,7 @@ class QuoteController extends Controller
 
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'quote_number', 'name', 'created_at'];
+        $allowedSorts = ['id', 'quote_number', 'name', 'created_at'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -111,10 +110,10 @@ class QuoteController extends Controller
             'products' => $products,
             'shippingProviderTypes' => $shippingProviderTypes,
             'taxes' => $taxes,
-            'users' => $users
+            'users' => $users,
         ]);
     }
-    
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -202,6 +201,7 @@ class QuoteController extends Controller
 
         if (!empty($errors)) {
             $message = __('Quote created successfully, but ') . implode(', ', $errors);
+
             return redirect()->route('quotes.index')->with('warning', $message);
         }
 
@@ -222,7 +222,7 @@ class QuoteController extends Controller
                 'creator',
                 'assignedUser',
                 'products.tax',
-                'activities.user'
+                'activities.user',
             ])
             ->first();
 
@@ -232,10 +232,10 @@ class QuoteController extends Controller
 
         return Inertia::render('quotes/show', [
             'quote' => $quote,
-            'streamItems' => $quote->activities
+            'streamItems' => $quote->activities,
         ]);
     }
-    
+
     public function edit($id)
     {
         $quote = Quote::with([
@@ -247,7 +247,7 @@ class QuoteController extends Controller
             'shippingProviderType',
             'creator',
             'assignedUser',
-            'products.tax'
+            'products.tax',
         ])
             ->where('created_by', createdBy())
             ->where('id', $id)
@@ -270,7 +270,7 @@ class QuoteController extends Controller
                 'products' => $products,
                 'shippingProviderTypes' => $shippingProviderTypes,
                 'taxes' => $taxes,
-                'users' => $users
+                'users' => $users,
             ]);
         } else {
             return redirect()->route('quotes.index')->with('error', __('Quote not found.'));
@@ -390,7 +390,7 @@ class QuoteController extends Controller
         }
 
         $validated = $request->validate([
-            'status' => 'required|in:draft,sent,accepted,rejected,expired'
+            'status' => 'required|in:draft,sent,accepted,rejected,expired',
         ]);
 
         $oldStatus = $quote->status;
@@ -417,7 +417,7 @@ class QuoteController extends Controller
         }
 
         $validated = $request->validate([
-            'assigned_to' => 'required|exists:users,id'
+            'assigned_to' => 'required|exists:users,id',
         ]);
 
         $quote->update(['assigned_to' => $validated['assigned_to']]);
@@ -436,7 +436,7 @@ class QuoteController extends Controller
         }
 
         $validated = $request->validate([
-            'opportunity_id' => 'required|exists:opportunities,id'
+            'opportunity_id' => 'required|exists:opportunities,id',
         ]);
 
         $opportunity = Opportunity::where('id', $validated['opportunity_id'])
@@ -548,9 +548,9 @@ class QuoteController extends Controller
                     'quantity' => $product->pivot->quantity ?? 1,
                     'unit_price' => $product->pivot->unit_price ?? $product->price ?? 0,
                     'discount_type' => 'none',
-                    'discount_value' => 0
+                    'discount_value' => 0,
                 ];
-            })
+            }),
         ]);
     }
 
@@ -561,6 +561,7 @@ class QuoteController extends Controller
         }
 
         $name = 'quote_' . date('Y-m-d_H-i-s');
+
         return Excel::download(new QuoteExport(), $name . '.xlsx');
     }
 
@@ -601,7 +602,7 @@ class QuoteController extends Controller
                     'products.tax',
                     'creator',
                     'assignedUser',
-                    'activities.user'
+                    'activities.user',
                 ])
                 ->first();
 

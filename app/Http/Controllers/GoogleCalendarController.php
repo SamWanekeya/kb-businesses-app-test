@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Services\GoogleCalendarService;
-use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class GoogleCalendarController extends Controller
@@ -25,13 +24,13 @@ class GoogleCalendarController extends Controller
 
             return response()->json([
                 'success' => true,
-                'events' => $events
+                'events' => $events,
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage(),
-                'events' => []
+                'events' => [],
             ]);
         }
     }
@@ -45,14 +44,14 @@ class GoogleCalendarController extends Controller
             \Log::info('Google Calendar sync check', [
                 'user_id' => createdBy(),
                 'isEnabled' => $isEnabled,
-                'isAuthorized' => $isAuthorized
+                'isAuthorized' => $isAuthorized,
             ]);
 
             if (!$isEnabled || !$isAuthorized) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Google Calendar not configured. Please configure Google Calendar JSON credentials in settings.',
-                    'needsConfig' => true
+                    'needsConfig' => true,
                 ]);
             }
 
@@ -60,6 +59,7 @@ class GoogleCalendarController extends Controller
 
             $events = collect($events)->filter(function ($event) {
                 $cleanedId = str_replace('google_', '', $event['id']);
+
                 return \App\Models\Meeting::where('google_calendar_event_id', $cleanedId)->exists() ||
                        \App\Models\Call::where('google_calendar_event_id', $cleanedId)->exists();
             })->values()->all();
@@ -67,12 +67,12 @@ class GoogleCalendarController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Calendar events synchronized successfully',
-                'events' => $events
+                'events' => $events,
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to sync calendar events: ' . $e->getMessage()
+                'message' => 'Failed to sync calendar events: ' . $e->getMessage(),
             ]);
         }
     }
@@ -86,12 +86,12 @@ class GoogleCalendarController extends Controller
             return response()->json([
                 'success' => true,
                 'enabled' => $isEnabled,
-                'authorized' => $isAuthorized
+                'authorized' => $isAuthorized,
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ]);
         }
     }

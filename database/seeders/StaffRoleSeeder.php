@@ -3,11 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Faker\Factory as Faker;
+use Spatie\Permission\Models\Role;
 
 class StaffRoleSeeder extends Seeder
 {
@@ -28,6 +28,7 @@ class StaffRoleSeeder extends Seeder
                 }
             }
         }
+
         return array_merge($processedPermissions, $managePermissions);
     }
 
@@ -43,6 +44,7 @@ class StaffRoleSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run OrganizationSeeder first.');
+
             return;
         }
 
@@ -53,7 +55,7 @@ class StaffRoleSeeder extends Seeder
                     'name' => 'sales-manager',
                     'label' => 'Sales Manager',
                     'description' => 'Sales Manager has access to manage sales operations',
-                    'permissions' =>  [
+                    'permissions' => [
                         'manage-dashboard',
 
                         'manage-media',
@@ -164,13 +166,13 @@ class StaffRoleSeeder extends Seeder
 
                         'manage-announcements',
                         'view-announcements',
-                    ]
+                    ],
                 ],
                 [
                     'name' => 'product-manager',
                     'label' => 'Product Manager',
                     'description' => 'Product Manager has access to manage products and inventory',
-                    'permissions' =>  [
+                    'permissions' => [
                         'manage-dashboard',
 
                         'manage-products',
@@ -232,13 +234,13 @@ class StaffRoleSeeder extends Seeder
 
                         'manage-announcements',
                         'view-announcements',
-                    ]
+                    ],
                 ],
                 [
                     'name' => 'accountant',
                     'label' => 'Accountant',
                     'description' => 'Accountant has access to financial operations',
-                    'permissions' =>  [
+                    'permissions' => [
                         'manage-dashboard',
 
                         'manage-taxes',
@@ -293,13 +295,13 @@ class StaffRoleSeeder extends Seeder
 
                         'manage-announcements',
                         'view-announcements',
-                    ]
+                    ],
                 ],
                 [
                     'name' => 'inventory-manager',
                     'label' => 'Inventory Manager',
                     'description' => 'Inventory Manager has access to manage inventory and orders',
-                    'permissions' =>  [
+                    'permissions' => [
                         'manage-dashboard',
 
                         'manage-products',
@@ -360,13 +362,13 @@ class StaffRoleSeeder extends Seeder
 
                         'manage-announcements',
                         'view-announcements',
-                    ]
+                    ],
                 ],
                 [
                     'name' => 'sales-rep',
                     'label' => 'Sales Representative',
                     'description' => 'Sales Representative has limited access to sales operations',
-                    'permissions' =>  [
+                    'permissions' => [
                         'manage-dashboard',
 
                         'manage-leads',
@@ -427,13 +429,13 @@ class StaffRoleSeeder extends Seeder
 
                         'manage-announcements',
                         'view-announcements',
-                    ]
+                    ],
                 ],
                 [
                     'name' => 'manager',
                     'label' => 'Manager',
                     'description' => 'Manager has comprehensive access to all modules',
-                    'permissions' =>  [
+                    'permissions' => [
                         'manage-dashboard',
 
                         'manage-users',
@@ -632,13 +634,13 @@ class StaffRoleSeeder extends Seeder
 
                         'manage-announcements',
                         'view-announcements',
-                    ]
+                    ],
                 ],
                 [
                     'name' => 'project-manager',
                     'label' => 'Project Manager',
                     'description' => 'Project Manager has access to manage projects and tasks',
-                    'permissions' =>  [
+                    'permissions' => [
                         'manage-dashboard',
 
                         'manage-projects',
@@ -708,13 +710,13 @@ class StaffRoleSeeder extends Seeder
 
                         'manage-announcements',
                         'view-announcements',
-                    ]
+                    ],
                 ],
                 [
                     'name' => 'support-agent',
                     'label' => 'Support Agent',
                     'description' => 'Support Agent has access to view and support customers',
-                    'permissions' =>  [
+                    'permissions' => [
                         'manage-dashboard',
 
                         'manage-products',
@@ -784,8 +786,8 @@ class StaffRoleSeeder extends Seeder
 
                         'manage-announcements',
                         'view-announcements',
-                    ]
-                ]
+                    ],
+                ],
             ];
         } else {
             $roleTemplates = [
@@ -793,7 +795,7 @@ class StaffRoleSeeder extends Seeder
                     'name' => 'sales-manager',
                     'label' => 'Sales Manager',
                     'description' => 'Sales Manager has access to manage sales operations',
-                    'permissions' =>  [
+                    'permissions' => [
                         'manage-dashboard',
 
                         'manage-media',
@@ -904,7 +906,7 @@ class StaffRoleSeeder extends Seeder
 
                         'manage-announcements',
                         'view-announcements',
-                    ]
+                    ],
                 ],
             ];
         }
@@ -918,7 +920,7 @@ class StaffRoleSeeder extends Seeder
                     'label' => $roleTemplate['label'],
                     'description' => $roleTemplate['description'],
                     'guard_name' => 'web',
-                    'created_by' => $organization->id
+                    'created_by' => $organization->id,
                 ]);
 
                 // Get permissions for this role

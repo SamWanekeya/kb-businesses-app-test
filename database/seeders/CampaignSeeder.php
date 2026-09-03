@@ -6,8 +6,8 @@ use App\Models\Campaign;
 use App\Models\CampaignType;
 use App\Models\TargetList;
 use App\Models\User;
-use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class CampaignSeeder extends Seeder
 {
@@ -21,6 +21,7 @@ class CampaignSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -39,7 +40,7 @@ class CampaignSeeder extends Seeder
             ['name' => 'Partnership Marketing', 'description' => 'Strategic partnership marketing initiative'],
             ['name' => 'Mobile App Promotion', 'description' => 'Mobile application marketing campaign'],
             ['name' => 'Customer Survey Campaign', 'description' => 'Customer feedback and survey campaign'],
-            ['name' => 'Loyalty Program Rollout', 'description' => 'Customer loyalty program launch campaign']
+            ['name' => 'Loyalty Program Rollout', 'description' => 'Customer loyalty program launch campaign'],
         ];
 
         foreach ($organizationUsers as $organization) {

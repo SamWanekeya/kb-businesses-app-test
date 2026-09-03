@@ -1,18 +1,17 @@
-import { useState, useEffect } from 'react';
-import { PageTemplate } from '@/components/page-template';
-import { usePage, router, Link } from '@inertiajs/react';
-import { Plus, Eye, Edit, Trash2, Download, FileDown } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
-import { CrudTable } from '@/components/CrudTable';
-import { CrudFormModal } from '@/components/CrudFormModal';
 import { CrudDeleteModal } from '@/components/CrudDeleteModal';
+import { CrudFormModal } from '@/components/CrudFormModal';
+import { CrudTable } from '@/components/CrudTable';
 import { toast } from '@/components/custom-toast';
-import { useTranslation } from 'react-i18next';
+import { PageTemplate } from '@/components/page-template';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { Button } from '@/components/ui/button';
+import { useInitials } from '@/hooks/use-initials';
+import { hasPermission } from '@/utils/authorization';
+import { Link, router, usePage } from '@inertiajs/react';
+import { FileDown, Plus } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function DeliveryOrders() {
     const { t } = useTranslation();
@@ -34,13 +33,20 @@ export default function DeliveryOrders() {
     const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
     const [currentItem, setCurrentItem] = useState<any>(null);
 
-
     const hasActiveFilters = () => {
-        return searchTerm !== '' || selectedStatus !== 'all' || selectedAccount !== 'all' || selectedSalesOrder !== 'all' || selectedAssignee !== 'all';
+        return (
+            searchTerm !== '' || selectedStatus !== 'all' || selectedAccount !== 'all' || selectedSalesOrder !== 'all' || selectedAssignee !== 'all'
+        );
     };
 
     const activeFilterCount = () => {
-        return (searchTerm ? 1 : 0) + (selectedStatus !== 'all' ? 1 : 0) + (selectedAccount !== 'all' ? 1 : 0) + (selectedSalesOrder !== 'all' ? 1 : 0) + (selectedAssignee !== 'all' ? 1 : 0);
+        return (
+            (searchTerm ? 1 : 0) +
+            (selectedStatus !== 'all' ? 1 : 0) +
+            (selectedAccount !== 'all' ? 1 : 0) +
+            (selectedSalesOrder !== 'all' ? 1 : 0) +
+            (selectedAssignee !== 'all' ? 1 : 0)
+        );
     };
 
     const handleSearch = (e: React.FormEvent) => {
@@ -49,32 +55,40 @@ export default function DeliveryOrders() {
     };
 
     const applyFilters = () => {
-        router.get(route('delivery-orders.index'), {
-            page: 1,
-            search: searchTerm || undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
-            sales_order_id: selectedSalesOrder !== 'all' ? selectedSalesOrder : undefined,
-            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-            sort_field: pageFilters.sort_field || undefined,
-            sort_direction: pageFilters.sort_direction || undefined,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('delivery-orders.index'),
+            {
+                page: 1,
+                search: searchTerm || undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                sales_order_id: selectedSalesOrder !== 'all' ? selectedSalesOrder : undefined,
+                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                sort_field: pageFilters.sort_field || undefined,
+                sort_direction: pageFilters.sort_direction || undefined,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleSort = (field: string) => {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
-        router.get(route('delivery-orders.index'), {
-            page: 1,
-            search: searchTerm || undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
-            sales_order_id: selectedSalesOrder !== 'all' ? selectedSalesOrder : undefined,
-            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-            sort_field: field,
-            sort_direction: direction,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('delivery-orders.index'),
+            {
+                page: 1,
+                search: searchTerm || undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                sales_order_id: selectedSalesOrder !== 'all' ? selectedSalesOrder : undefined,
+                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                sort_field: field,
+                sort_direction: direction,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleAction = (action: string, item: any) => {
@@ -93,7 +107,6 @@ export default function DeliveryOrders() {
             case 'toggle-status':
                 setIsStatusModalOpen(true);
                 break;
-
         }
     };
 
@@ -112,7 +125,7 @@ export default function DeliveryOrders() {
             onError: (errors) => {
                 toast.dismiss();
                 toast.error(t('Failed to delete delivery order: {{errors}}', { errors: Object.values(errors).join(', ') }));
-            }
+            },
         });
     };
 
@@ -123,44 +136,48 @@ export default function DeliveryOrders() {
             },
             onError: (errors) => {
                 toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
-            }
+            },
         });
     };
 
     const handleToggleStatus = (deliveryOrder: any) => {
         const statusMap = {
-            'pending': 'in_transit',
-            'in_transit': 'delivered',
-            'delivered': 'pending',
-            'cancelled': 'pending'
+            pending: 'in_transit',
+            in_transit: 'delivered',
+            delivered: 'pending',
+            cancelled: 'pending',
         };
         const newStatus = statusMap[deliveryOrder.status as keyof typeof statusMap] || 'pending';
         toast.loading(t('Setting delivery order to {{status}}...', { status: newStatus }));
 
-        router.put(route('delivery-orders.toggle-status', deliveryOrder.id), {}, {
-            onSuccess: (page) => {
-                toast.dismiss();
-                if (page.props.flash.success) {
-                    toast.success(t(page.props.flash.success));
-                }
+        router.put(
+            route('delivery-orders.toggle-status', deliveryOrder.id),
+            {},
+            {
+                onSuccess: (page) => {
+                    toast.dismiss();
+                    if (page.props.flash.success) {
+                        toast.success(t(page.props.flash.success));
+                    }
+                },
+                onError: (errors) => {
+                    toast.dismiss();
+                    toast.error(t('Failed to update delivery order status: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                },
             },
-            onError: (errors) => {
-                toast.dismiss();
-                toast.error(t('Failed to update delivery order status: {{errors}}', { errors: Object.values(errors).join(', ') }));
-            }
-        });
+        );
     };
-
-
 
     const pageInitialState = useState(true);
     useEffect(() => {
-        if (pageInitialState[0]) { pageInitialState[1](false); return; }
+        if (pageInitialState[0]) {
+            pageInitialState[1](false);
+            return;
+        }
         applyFilters();
     }, [searchTerm, selectedStatus, selectedAccount, selectedSalesOrder, selectedAssignee]);
 
     const handleResetFilters = () => {
-     
         router.get(route('delivery-orders.index'));
     };
 
@@ -169,25 +186,30 @@ export default function DeliveryOrders() {
     if (hasPermission(permissions, 'export-delivery-orders')) {
         pageActions.push({
             label: t('Export'),
-            icon: <FileDown className="h-4 w-4 mr-2" />,
+            icon: <FileDown className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
             variant: 'outline',
-            onClick: () => window.location.href = route('delivery-order.export')
+            onClick: () => (window.location.href = route('delivery-order.export')),
+            className: 'h-8 w-8 min-[500px]:h-9 min-[500px]:w-auto px-0 min-[500px]:px-4',
+            labelClassName: 'hidden min-[500px]:inline',
+            tooltip: t('Export'),
+            tooltipClassName: 'min-[500px]:hidden',
         });
     }
 
     if (hasPermission(permissions, 'create-delivery-orders')) {
         pageActions.push({
             label: t('Add Delivery Order'),
-            icon: <Plus className="h-4 w-4 mr-2" />,
+            icon: <Plus className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
             variant: 'default',
-            onClick: () => handleAddNew()
+            onClick: () => handleAddNew(),
+            className: 'h-8 w-8 min-[500px]:h-9 min-[500px]:w-auto px-0 min-[500px]:px-4',
+            labelClassName: 'hidden min-[500px]:inline',
+            tooltip: t('Add Delivery Order'),
+            tooltipClassName: 'min-[500px]:hidden',
         });
     }
 
-    const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Delivery Orders') }
-    ];
+    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Delivery Orders') }];
 
     const columns = [
         {
@@ -196,44 +218,55 @@ export default function DeliveryOrders() {
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: string, item: any) => (
-                <Link href={route('delivery-orders.show', item.id)} className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 hover:border-blue-400 transition-colors duration-200 border border-blue-200 cursor-pointer whitespace-nowrap" style={{ color: '#1d4ed8' }} onMouseEnter={e => (e.currentTarget.style.color = '#1d4ed8')} onMouseLeave={e => (e.currentTarget.style.color = '#1d4ed8')}>{value}</Link>
-            )
+                <Link
+                    href={route('delivery-orders.show', item.id)}
+                    className="inline-flex cursor-pointer items-center rounded-md border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium whitespace-nowrap text-blue-700 transition-colors duration-200 hover:border-blue-400 hover:bg-blue-100"
+                    style={{ color: '#1d4ed8' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = '#1d4ed8')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#1d4ed8')}
+                >
+                    {value}
+                </Link>
+            ),
         },
         {
             key: 'name',
             label: t('Name'),
             sortable: true,
-            render: (value: string) => <span className="whitespace-nowrap font-medium">{value || '-'}</span>
+            render: (value: string) => <span className="font-medium whitespace-nowrap">{value || '-'}</span>,
         },
         {
             key: 'assigned_user',
             label: t('Assigned To'),
             className: 'whitespace-nowrap',
-            render: (value: any) => value ? (
-                <div className="flex items-center gap-2">
-                    <Avatar className="h-8 w-8 flex-shrink-0">
-                        <AvatarImage src={value.avatar} alt={value.name} />
-                        <AvatarFallback className="text-xs">{getInitials(value.name)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                        <div className="font-medium whitespace-nowrap">{value.name}</div>
-                        <div className="text-sm text-muted-foreground whitespace-nowrap">{value.email}</div>
+            render: (value: any) =>
+                value ? (
+                    <div className="flex items-center gap-2">
+                        <Avatar className="h-8 w-8 flex-shrink-0">
+                            <AvatarImage src={value.avatar} alt={value.name} />
+                            <AvatarFallback className="text-xs">{getInitials(value.name)}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <div className="font-medium whitespace-nowrap">{value.name}</div>
+                            <div className="text-muted-foreground text-sm whitespace-nowrap">{value.email}</div>
+                        </div>
                     </div>
-                </div>
-            ) : <span className="whitespace-nowrap">{t('Unassigned')}</span>
+                ) : (
+                    <span className="whitespace-nowrap">{t('Unassigned')}</span>
+                ),
         },
         {
             key: 'sales_order',
             label: t('Sales Order'),
             className: 'whitespace-nowrap',
-            render: (value: any) => <span className="whitespace-nowrap">{value?.order_number || t('-')}</span>
+            render: (value: any) => <span className="whitespace-nowrap">{value?.order_number || t('-')}</span>,
         },
         {
             key: 'delivery_date',
             label: t('Delivery Date'),
             sortable: true,
             className: 'whitespace-nowrap',
-            type: 'date'
+            type: 'date',
         },
         {
             key: 'status',
@@ -244,14 +277,16 @@ export default function DeliveryOrders() {
                     pending: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20',
                     in_transit: 'bg-blue-50 text-blue-700 ring-blue-600/20',
                     delivered: 'bg-green-50 text-green-700 ring-green-600/20',
-                    cancelled: 'bg-red-50 text-red-700 ring-red-600/20'
+                    cancelled: 'bg-red-50 text-red-700 ring-red-600/20',
                 };
                 return (
-                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset whitespace-nowrap ${statusColors[value as keyof typeof statusColors] || statusColors.pending}`}>
-                        {t(value.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()))}
+                    <span
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${statusColors[value as keyof typeof statusColors] || statusColors.pending}`}
+                    >
+                        {t(value.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()))}
                     </span>
                 );
-            }
+            },
         },
         // {
         //     key: 'created_at',
@@ -268,29 +303,29 @@ export default function DeliveryOrders() {
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
-            requiredPermission: 'toggle-status-delivery-orders'
+            requiredPermission: 'toggle-status-delivery-orders',
         },
         {
             label: t('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
-            requiredPermission: 'view-delivery-orders'
+            requiredPermission: 'view-delivery-orders',
         },
         {
             label: t('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
-            requiredPermission: 'edit-delivery-orders'
+            requiredPermission: 'edit-delivery-orders',
         },
         {
             label: t('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
-            requiredPermission: 'delete-delivery-orders'
-        }
+            requiredPermission: 'delete-delivery-orders',
+        },
     ];
 
     const statusOptions = [
@@ -298,24 +333,24 @@ export default function DeliveryOrders() {
         { value: 'pending', label: t('Pending') },
         { value: 'in_transit', label: t('In Transit') },
         { value: 'delivered', label: t('Delivered') },
-        { value: 'cancelled', label: t('Cancelled') }
+        { value: 'cancelled', label: t('Cancelled') },
     ];
 
     const accountOptions = [
         { value: 'all', label: t('All Accounts') },
-        ...allAccounts.map((account: any) => ({ value: account.id.toString(), label: account.name }))
+        ...allAccounts.map((account: any) => ({ value: account.id.toString(), label: account.name })),
     ];
 
     return (
         <PageTemplate
-            title={t("Delivery Orders")}
-            description={t("Manage your delivery orders.")}
+            title={t('Delivery Orders')}
+            description={t('Manage your delivery orders.')}
             url="/delivery-orders"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
             noPadding
         >
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
+            <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -327,7 +362,7 @@ export default function DeliveryOrders() {
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
-                            options: statusOptions
+                            options: statusOptions,
                         },
                         {
                             name: 'account_id',
@@ -336,7 +371,7 @@ export default function DeliveryOrders() {
                             searchable: true,
                             value: selectedAccount,
                             onChange: setSelectedAccount,
-                            options: accountOptions
+                            options: accountOptions,
                         },
                         {
                             name: 'sales_order_id',
@@ -347,8 +382,8 @@ export default function DeliveryOrders() {
                             onChange: setSelectedSalesOrder,
                             options: [
                                 { value: 'all', label: t('All Sales Orders') },
-                                ...salesOrders?.map((so: any) => ({ value: so.id.toString(), label: `${so.order_number} - ${so.name}` })) || []
-                            ]
+                                ...(salesOrders?.map((so: any) => ({ value: so.id.toString(), label: `${so.order_number} - ${so.name}` })) || []),
+                            ],
                         },
                         {
                             name: 'assigned_to',
@@ -359,9 +394,9 @@ export default function DeliveryOrders() {
                             onChange: setSelectedAssignee,
                             options: [
                                 { value: 'all', label: t('All Users') },
-                                ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name }))
-                            ]
-                        }
+                                ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name })),
+                            ],
+                        },
                     ]}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
@@ -369,25 +404,25 @@ export default function DeliveryOrders() {
                 />
             </div>
 
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+            <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                 <div className="overflow-x-auto">
-                <CrudTable
-                    columns={columns}
-                    actions={actions}
-                    data={deliveryOrders?.data || []}
-                    from={deliveryOrders?.from || 1}
-                    onAction={handleAction}
-                    sortField={pageFilters.sort_field}
-                    sortDirection={pageFilters.sort_direction}
-                    onSort={handleSort}
-                    permissions={permissions}
-                    entityPermissions={{
-                        view: 'view-delivery-orders',
-                        create: 'create-delivery-orders',
-                        edit: 'edit-delivery-orders',
-                        delete: 'delete-delivery-orders'
-                    }}
-                />
+                    <CrudTable
+                        columns={columns}
+                        actions={actions}
+                        data={deliveryOrders?.data || []}
+                        from={deliveryOrders?.from || 1}
+                        onAction={handleAction}
+                        sortField={pageFilters.sort_field}
+                        sortDirection={pageFilters.sort_direction}
+                        onSort={handleSort}
+                        permissions={permissions}
+                        entityPermissions={{
+                            view: 'view-delivery-orders',
+                            create: 'create-delivery-orders',
+                            edit: 'edit-delivery-orders',
+                            delete: 'delete-delivery-orders',
+                        }}
+                    />
                 </div>
 
                 <Pagination
@@ -395,21 +430,25 @@ export default function DeliveryOrders() {
                     to={deliveryOrders?.to || 0}
                     total={deliveryOrders?.total || 0}
                     links={deliveryOrders?.links}
-                    entityName={t("delivery orders")}
+                    entityName={t('delivery orders')}
                     onPageChange={(url) => router.get(url)}
-                    currentPerPage={pageFilters.per_page?.toString() || "10"}
+                    currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
-                        router.get(route('delivery-orders.index'), {
-                            page: 1,
-                            search: searchTerm || undefined,
-                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                            account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
-                            sales_order_id: selectedSalesOrder !== 'all' ? selectedSalesOrder : undefined,
-                            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-                            sort_field: pageFilters.sort_field || undefined,
-                            sort_direction: pageFilters.sort_direction || undefined,
-                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
-                        }, { preserveState: true, preserveScroll: true });
+                        router.get(
+                            route('delivery-orders.index'),
+                            {
+                                page: 1,
+                                search: searchTerm || undefined,
+                                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                                sales_order_id: selectedSalesOrder !== 'all' ? selectedSalesOrder : undefined,
+                                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                                sort_field: pageFilters.sort_field || undefined,
+                                sort_direction: pageFilters.sort_direction || undefined,
+                                ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+                            },
+                            { preserveState: true, preserveScroll: true },
+                        );
                     }}
                 />
             </div>
@@ -429,15 +468,15 @@ export default function DeliveryOrders() {
                                 { value: 'pending', label: t('Pending') },
                                 { value: 'in_transit', label: t('In Transit') },
                                 { value: 'delivered', label: t('Delivered') },
-                                { value: 'cancelled', label: t('Cancelled') }
-                            ]
-                        }
+                                { value: 'cancelled', label: t('Cancelled') },
+                            ],
+                        },
                     ],
-                    modalSize: 'sm'
+                    modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
                 title={t('Change Delivery Order Status')}
-                mode='edit'
+                mode="edit"
             />
 
             <CrudDeleteModal
@@ -447,8 +486,6 @@ export default function DeliveryOrders() {
                 itemName={currentItem?.name || ''}
                 entityName={t('delivery order')}
             />
-
-
         </PageTemplate>
     );
 }

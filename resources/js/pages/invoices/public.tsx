@@ -1,13 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Head, usePage } from '@inertiajs/react';
-import { useTranslation } from 'react-i18next';
-import { Calendar, MapPin, CreditCard, Printer, Package, DollarSign, User, Copy, Check, FileText } from 'lucide-react';
-import { InvoicePaymentModal } from '@/components/invoice-payment-modal';
 import { toast } from '@/components/custom-toast';
+import { InvoicePaymentModal } from '@/components/invoice-payment-modal';
 import { hasPermission } from '@/utils/authorization';
 import { getDisplayUrl } from '@/utils/helper';
+import { Head, usePage } from '@inertiajs/react';
+import { Calendar, Check, Copy, CreditCard, DollarSign, FileText, MapPin, Package, Printer, User } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
+import IframePortal, { IframePortalHandles } from '@/components/IframePortal';
 import Template1 from './templates/Template1';
+import Template10 from './templates/Template10';
 import Template2 from './templates/Template2';
 import Template3 from './templates/Template3';
 import Template4 from './templates/Template4';
@@ -16,8 +18,6 @@ import Template6 from './templates/Template6';
 import Template7 from './templates/Template7';
 import Template8 from './templates/Template8';
 import Template9 from './templates/Template9';
-import Template10 from './templates/Template10';
-import IframePortal, { IframePortalHandles } from '@/components/IframePortal';
 
 const templateComponents = {
     template1: Template1,
@@ -99,7 +99,7 @@ const templates = {
     6: { primary: '#dc2626', secondary: '#991b1b' },
     7: { primary: '#0891b2', secondary: '#0e7490' },
     8: { primary: '#d97706', secondary: '#92400e' },
-    9: { primary: '#db2777', secondary: '#be185d' }
+    9: { primary: '#db2777', secondary: '#be185d' },
 };
 
 interface Props {
@@ -112,7 +112,15 @@ interface Props {
     customColor?: string;
 }
 
-export default function PublicInvoice({ invoice, templateId = 'template1', color = 'ffffff', qrEnabled = false, settings = {}, themeColor = 'blue', customColor = null }: Props) {
+export default function PublicInvoice({
+    invoice,
+    templateId = 'template1',
+    color = 'ffffff',
+    qrEnabled = false,
+    settings = {},
+    themeColor = 'blue',
+    customColor = null,
+}: Props) {
     const { t } = useTranslation();
     const { props } = usePage<any>();
     const globalSettings = props.globalSettings;
@@ -137,10 +145,11 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
     const template = { primary: currentThemeColor, secondary: currentThemeColor };
 
     // Calculate paid amount from completed payments
-    const paidAmount = invoice.payments?.reduce((total, payment) => {
-        const amount = Number(payment.amount) || 0;
-        return payment.status === 'completed' ? total + amount : total;
-    }, 0) || 0;
+    const paidAmount =
+        invoice.payments?.reduce((total, payment) => {
+            const amount = Number(payment.amount) || 0;
+            return payment.status === 'completed' ? total + amount : total;
+        }, 0) || 0;
 
     // Calculate due amount
     const dueAmount = Math.max(0, (Number(invoice.total_amount) || 0) - paidAmount);
@@ -184,7 +193,7 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
         const lineTotal = product.pivot.quantity * product.pivot.unit_price;
         const discountAmount = product.pivot.discount_amount || 0;
         const afterDiscount = lineTotal - discountAmount;
-        const taxAmount = product.tax ? (afterDiscount * product.tax.rate / 100) : 0;
+        const taxAmount = product.tax ? (afterDiscount * product.tax.rate) / 100 : 0;
 
         return {
             name: product.name,
@@ -192,11 +201,15 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
             price: product.pivot.unit_price,
             tax: product.tax?.rate || 0,
             discount: discountAmount,
-            itemTax: product.tax ? [{
-                name: product.tax.name,
-                rate: `${product.tax.rate}%`,
-                price: formatCurrency(taxAmount)
-            }] : []
+            itemTax: product.tax
+                ? [
+                      {
+                          name: product.tax.name,
+                          rate: `${product.tax.rate}%`,
+                          price: formatCurrency(taxAmount),
+                      },
+                  ]
+                : [],
         };
     });
 
@@ -205,7 +218,7 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
             const lineTotal = product.pivot.quantity * product.pivot.unit_price;
             const discountAmount = product.pivot.discount_amount || 0;
             const afterDiscount = lineTotal - discountAmount;
-            const taxAmount = afterDiscount * product.tax.rate / 100;
+            const taxAmount = (afterDiscount * product.tax.rate) / 100;
             acc[product.tax.name] = (acc[product.tax.name] || 0) + taxAmount;
         }
         return acc;
@@ -219,7 +232,7 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
         total_tax: totalTax,
         total_amount: grandTotal,
         totalQuantity: invoice.products.reduce((sum: number, p: any) => sum + p.pivot.quantity, 0),
-        totalRate: invoice.products.reduce((sum: number, p: any) => sum + (p.pivot.quantity * p.pivot.unit_price), 0),
+        totalRate: invoice.products.reduce((sum: number, p: any) => sum + p.pivot.quantity * p.pivot.unit_price, 0),
         totalTaxPrice: totalTax,
         totalDiscount: totalDiscount,
         total_discount: totalDiscount,
@@ -239,57 +252,54 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
             await navigator.clipboard.writeText(window.location.href);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
-        } catch (err) {
-        }
+        } catch (err) {}
     };
 
     return (
         <>
             <Head title={t('Invoice {{invoiceNumber}}', { invoiceNumber: invoice.invoice_number })}>
-                {settings?.favicon && (
-                    <link rel="icon" href={getDisplayUrl(settings.favicon, props.globalSettings)} />
-                )}
+                {settings?.favicon && <link rel="icon" href={getDisplayUrl(settings.favicon, props.globalSettings)} />}
             </Head>
 
-            <div className="min-h-screen bg-gray-50 dark:from-gray-900 dark:to-gray-800 py-8 print:p-0 print:m-0 print:bg-white">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 print-container">
+            <div className="min-h-screen bg-gray-50 py-8 dark:from-gray-900 dark:to-gray-800 print:m-0 print:bg-white print:p-0">
+                <div className="print-container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     {/* Action Bar */}
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 print:hidden">
+                    <div className="mb-8 flex flex-col items-start justify-between sm:flex-row sm:items-center print:hidden">
                         <div className="mb-4 sm:mb-0">
                             <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('Invoice Details')}</h1>
-                            <p className="text-gray-600 dark:text-gray-400 mt-1">{t('View and manage your invoice')}</p>
+                            <p className="mt-1 text-gray-600 dark:text-gray-400">{t('View and manage your invoice')}</p>
                         </div>
                         <div className="flex flex-wrap gap-3">
                             {hasPermission(permissions, 'view-invoices') && (
                                 <button
                                     onClick={copyInvoiceLink}
-                                    className="inline-flex items-center px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
+                                    className="inline-flex cursor-pointer items-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-gray-500 dark:hover:bg-gray-700"
                                 >
-                                    {copied ? <Check className="w-4 h-4 mr-2 text-green-600" /> : <Copy className="w-4 h-4 mr-2" />}
+                                    {copied ? <Check className="mr-2 h-4 w-4 text-green-600" /> : <Copy className="mr-2 h-4 w-4" />}
                                     {copied ? t('Copied!') : t('Copy Link')}
                                 </button>
                             )}
                             <button
                                 onClick={handlePrint}
-                                className="inline-flex items-center px-4 py-2.5 text-white rounded-xl text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
+                                className="inline-flex cursor-pointer items-center rounded-xl px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:shadow-md"
                                 style={{
                                     backgroundColor: currentThemeColor,
-                                    ':hover': { filter: 'brightness(0.9)' }
+                                    ':hover': { filter: 'brightness(0.9)' },
                                 }}
                             >
-                                <Printer className="w-4 h-4 mr-2" />
+                                <Printer className="mr-2 h-4 w-4" />
                                 {t('Print Invoice')}
                             </button>
                             {invoice.status !== 'paid' && (
                                 <button
                                     onClick={() => setShowPaymentModal(true)}
-                                    className="inline-flex items-center px-6 py-2.5 text-white rounded-xl text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer"
+                                    className="inline-flex transform cursor-pointer items-center rounded-xl px-6 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
                                     style={{
                                         background: `linear-gradient(135deg, ${currentThemeColor}, ${currentThemeColor}dd)`,
-                                        ':hover': { filter: 'brightness(0.9)' }
+                                        ':hover': { filter: 'brightness(0.9)' },
                                     }}
                                 >
-                                    <CreditCard className="w-4 h-4 mr-2" />
+                                    <CreditCard className="mr-2 h-4 w-4" />
                                     {invoice.status === 'partially_paid' ? t('Pay Remaining') : t('Pay Invoice')}
                                 </button>
                             )}
@@ -297,7 +307,7 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
                     </div>
 
                     {/* Template for Print */}
-                    <div className='hidden print:block'>
+                    <div className="hidden print:block">
                         <IframePortal ref={iframeRef}>
                             <TemplateComponent
                                 invoice={invoiceData}
@@ -312,36 +322,49 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
 
                     <div className="mx-auto space-y-6 print:hidden">
                         {/* Header Section */}
-                        <div className="bg-white rounded-lg shadow-sm border p-8 print:hidden">
+                        <div className="rounded-lg border bg-white p-8 shadow-sm print:hidden">
                             <div className="flex items-start justify-between">
                                 <div className="flex-1">
-                                    <h1 className="text-2xl font-bold text-gray-900 leading-tight">{invoice.name}</h1>
-                                    <p className="text-base text-gray-600 mt-2 leading-relaxed max-w-3xl">{invoice.description || t('No description provided')}</p>
+                                    <h1 className="text-2xl leading-tight font-bold text-gray-900">{invoice.name}</h1>
+                                    <p className="mt-2 max-w-3xl text-base leading-relaxed text-gray-600">
+                                        {invoice.description || t('No description provided')}
+                                    </p>
                                 </div>
-                                <div className="text-right ml-6">
-                                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${invoice.status === 'paid' ? 'bg-green-50 text-green-700 ring-green-600/20' :
-                                            invoice.status === 'partially_paid' ? 'bg-orange-50 text-orange-700 ring-orange-600/20' :
-                                                invoice.status === 'sent' ? 'bg-blue-50 text-blue-700 ring-blue-600/20' :
-                                                    invoice.status === 'overdue' ? 'bg-red-50 text-red-700 ring-red-600/20' :
-                                                        invoice.status === 'cancelled' ? 'bg-yellow-50 text-yellow-700 ring-yellow-600/20' :
-                                                            'bg-gray-50 text-gray-700 ring-gray-600/20'
-                                        }`}>
-                                        {invoice.status === 'partially_paid' ? t('Partially Paid') :
-                                            (invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1))}
+                                <div className="ml-6 text-right">
+                                    <span
+                                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                            invoice.status === 'paid'
+                                                ? 'bg-green-50 text-green-700 ring-green-600/20'
+                                                : invoice.status === 'partially_paid'
+                                                  ? 'bg-orange-50 text-orange-700 ring-orange-600/20'
+                                                  : invoice.status === 'sent'
+                                                    ? 'bg-blue-50 text-blue-700 ring-blue-600/20'
+                                                    : invoice.status === 'overdue'
+                                                      ? 'bg-red-50 text-red-700 ring-red-600/20'
+                                                      : invoice.status === 'cancelled'
+                                                        ? 'bg-yellow-50 text-yellow-700 ring-yellow-600/20'
+                                                        : 'bg-gray-50 text-gray-700 ring-gray-600/20'
+                                        }`}
+                                    >
+                                        {invoice.status === 'partially_paid'
+                                            ? t('Partially Paid')
+                                            : invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)}
                                     </span>
-                                    <p className="text-sm font-medium text-gray-700 mt-2 font-mono">{invoice.invoice_number}</p>
+                                    <p className="mt-2 font-mono text-sm font-medium text-gray-700">{invoice.invoice_number}</p>
                                 </div>
                             </div>
                         </div>
 
                         {/* Payment Summary Cards */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div className="hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border">
+                        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+                            <div className="rounded-lg border bg-white shadow-sm transition-shadow hover:shadow-lg">
                                 <div className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <p className="text-sm font-bold text-gray-500">{t('Total Amount')}</p>
-                                            <h3 className="mt-2 text-2xl font-bold leading-none" style={{ color: template.primary }}>{formatCurrency(invoice.total_amount)}</h3>
+                                            <h3 className="mt-2 text-2xl leading-none font-bold" style={{ color: template.primary }}>
+                                                {formatCurrency(invoice.total_amount)}
+                                            </h3>
                                         </div>
                                         <div className="rounded-full p-4" style={{ backgroundColor: `${template.primary}15` }}>
                                             <DollarSign className="h-5 w-5" style={{ color: template.primary }} />
@@ -350,12 +373,14 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
                                 </div>
                             </div>
 
-                            <div className="hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border">
+                            <div className="rounded-lg border bg-white shadow-sm transition-shadow hover:shadow-lg">
                                 <div className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <p className="text-sm font-bold text-gray-500">{t('Paid Amount')}</p>
-                                            <h3 className="mt-2 text-2xl font-bold leading-none" style={{ color: template.secondary }}>{formatCurrency(paidAmount)}</h3>
+                                            <h3 className="mt-2 text-2xl leading-none font-bold" style={{ color: template.secondary }}>
+                                                {formatCurrency(paidAmount)}
+                                            </h3>
                                         </div>
                                         <div className="rounded-full p-4" style={{ backgroundColor: `${template.secondary}15` }}>
                                             <DollarSign className="h-5 w-5" style={{ color: template.secondary }} />
@@ -364,12 +389,12 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
                                 </div>
                             </div>
 
-                            <div className="hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border">
+                            <div className="rounded-lg border bg-white shadow-sm transition-shadow hover:shadow-lg">
                                 <div className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <p className="text-sm font-bold text-gray-500">{t('Due Amount')}</p>
-                                            <h3 className="mt-2 text-2xl font-bold text-red-600 leading-none">{formatCurrency(dueAmount)}</h3>
+                                            <h3 className="mt-2 text-2xl leading-none font-bold text-red-600">{formatCurrency(dueAmount)}</h3>
                                         </div>
                                         <div className="rounded-full bg-red-100 p-4">
                                             <DollarSign className="h-5 w-5 text-red-600" />
@@ -380,13 +405,15 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
                         </div>
 
                         {/* Invoice Details Cards */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div className="hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border">
+                        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+                            <div className="rounded-lg border bg-white shadow-sm transition-shadow hover:shadow-lg">
                                 <div className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <p className="text-sm font-bold text-gray-500">{t('Products')}</p>
-                                            <h3 className="mt-2 text-2xl font-bold leading-none" style={{ color: template.primary }}>{invoice.products?.length || 0}</h3>
+                                            <h3 className="mt-2 text-2xl leading-none font-bold" style={{ color: template.primary }}>
+                                                {invoice.products?.length || 0}
+                                            </h3>
                                         </div>
                                         <div className="rounded-full p-4" style={{ backgroundColor: `${template.primary}15` }}>
                                             <Package className="h-5 w-5" style={{ color: template.primary }} />
@@ -395,12 +422,14 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
                                 </div>
                             </div>
 
-                            <div className="hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border">
+                            <div className="rounded-lg border bg-white shadow-sm transition-shadow hover:shadow-lg">
                                 <div className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <p className="text-sm font-bold text-gray-500">{t('Invoice Date')}</p>
-                                            <h3 className="mt-2 text-lg font-bold leading-tight" style={{ color: template.secondary }}>{formatDate(invoice.invoice_date)}</h3>
+                                            <h3 className="mt-2 text-lg leading-tight font-bold" style={{ color: template.secondary }}>
+                                                {formatDate(invoice.invoice_date)}
+                                            </h3>
                                         </div>
                                         <div className="rounded-full p-4" style={{ backgroundColor: `${template.secondary}15` }}>
                                             <Calendar className="h-5 w-5" style={{ color: template.secondary }} />
@@ -409,12 +438,12 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
                                 </div>
                             </div>
 
-                            <div className="hover:shadow-lg transition-shadow bg-white rounded-lg shadow-sm border">
+                            <div className="rounded-lg border bg-white shadow-sm transition-shadow hover:shadow-lg">
                                 <div className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <p className="text-sm font-bold text-gray-500">{t('Due Date')}</p>
-                                            <h3 className="mt-2 text-lg font-bold text-amber-600 leading-tight">{formatDate(invoice.due_date)}</h3>
+                                            <h3 className="mt-2 text-lg leading-tight font-bold text-amber-600">{formatDate(invoice.due_date)}</h3>
                                         </div>
                                         <div className="rounded-full bg-amber-100 p-4">
                                             <FileText className="h-5 w-5 text-amber-600" />
@@ -425,73 +454,73 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
                         </div>
 
                         {/* Billing Details */}
-                        <div className="bg-white rounded-lg shadow-sm border">
+                        <div className="rounded-lg border bg-white shadow-sm">
                             <div className="border-b px-8 py-6" style={{ backgroundColor: `${template.primary}25` }}>
                                 <h3 className="flex items-center text-xl font-bold text-gray-800">
-                                    <User className="h-5 w-5 mr-3" />
+                                    <User className="mr-3 h-5 w-5" />
                                     {t('Billing Details')}
                                 </h3>
                             </div>
                             <div className="p-8">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                     <div>
-                                        <h4 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
-                                            <MapPin
-                                                className="w-5 h-5 mr-2"
-                                                style={{ color: template.primary }}
-                                            />
+                                        <h4 className="mb-4 flex items-center text-lg font-bold text-gray-900 dark:text-gray-100">
+                                            <MapPin className="mr-2 h-5 w-5" style={{ color: template.primary }} />
                                             {t('Bill To')}
                                         </h4>
                                         {invoice.account && (
                                             <div className="space-y-2">
-                                                <p className="font-semibold text-gray-900 dark:text-gray-100 text-lg">{invoice.account.name}</p>
+                                                <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">{invoice.account.name}</p>
                                                 {invoice.account.email && <p className="text-gray-600 dark:text-gray-300">{invoice.account.email}</p>}
                                                 {invoice.account.phone && <p className="text-gray-600 dark:text-gray-300">{invoice.account.phone}</p>}
                                             </div>
                                         )}
                                         {invoice.contact && !invoice.account && (
                                             <div className="space-y-2">
-                                                <p className="font-semibold text-gray-900 dark:text-gray-100 text-lg">{invoice.contact.name}</p>
+                                                <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">{invoice.contact.name}</p>
                                                 {invoice.contact.email && <p className="text-gray-600 dark:text-gray-300">{invoice.contact.email}</p>}
                                                 {invoice.contact.phone && <p className="text-gray-600 dark:text-gray-300">{invoice.contact.phone}</p>}
                                             </div>
                                         )}
                                         {invoice.billing_address && (
-                                            <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                                            <div className="mt-4 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-600 dark:bg-gray-700">
                                                 <p className="text-gray-700 dark:text-gray-300">{invoice.billing_address}</p>
                                                 <p className="text-gray-700 dark:text-gray-300">
                                                     {invoice.billing_city && `${invoice.billing_city}, `}
                                                     {invoice.billing_state && `${invoice.billing_state} `}
                                                     {invoice.billing_postal_code}
                                                 </p>
-                                                {invoice.billing_country && <p className="text-gray-700 dark:text-gray-300">{invoice.billing_country}</p>}
+                                                {invoice.billing_country && (
+                                                    <p className="text-gray-700 dark:text-gray-300">{invoice.billing_country}</p>
+                                                )}
                                             </div>
                                         )}
                                     </div>
                                     <div>
-                                        <h4 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
-                                            <Calendar
-                                                className="w-5 h-5 mr-2"
-                                                style={{ color: template.primary }}
-                                            />
+                                        <h4 className="mb-4 flex items-center text-lg font-bold text-gray-900 dark:text-gray-100">
+                                            <Calendar className="mr-2 h-5 w-5" style={{ color: template.primary }} />
                                             {t('Invoice Details')}
                                         </h4>
                                         <div className="space-y-3">
-                                            <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-                                                <span className="text-gray-600 dark:text-gray-300 font-medium">{t('Invoice Date')}:</span>
-                                                <span className="font-semibold text-gray-900 dark:text-gray-100">{formatDate(invoice.invoice_date)}</span>
+                                            <div className="flex items-center justify-between border-b border-gray-200 py-2 dark:border-gray-600">
+                                                <span className="font-medium text-gray-600 dark:text-gray-300">{t('Invoice Date')}:</span>
+                                                <span className="font-semibold text-gray-900 dark:text-gray-100">
+                                                    {formatDate(invoice.invoice_date)}
+                                                </span>
                                             </div>
-                                            <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
-                                                <span className="text-gray-600 dark:text-gray-300 font-medium">{t('Due Date')}:</span>
+                                            <div className="flex items-center justify-between border-b border-gray-200 py-2 dark:border-gray-600">
+                                                <span className="font-medium text-gray-600 dark:text-gray-300">{t('Due Date')}:</span>
                                                 <span className="font-semibold text-gray-900 dark:text-gray-100">{formatDate(invoice.due_date)}</span>
                                             </div>
                                             {invoice.payment_method && (
-                                                <div className="flex justify-between items-center py-2">
-                                                    <span className="text-gray-600 dark:text-gray-300 font-medium flex items-center">
-                                                        <CreditCard className="w-4 h-4 mr-1" />
+                                                <div className="flex items-center justify-between py-2">
+                                                    <span className="flex items-center font-medium text-gray-600 dark:text-gray-300">
+                                                        <CreditCard className="mr-1 h-4 w-4" />
                                                         {t('Payment Method')}:
                                                     </span>
-                                                    <span className="font-semibold text-gray-900 dark:text-gray-100 capitalize">{invoice.payment_method}</span>
+                                                    <span className="font-semibold text-gray-900 capitalize dark:text-gray-100">
+                                                        {invoice.payment_method}
+                                                    </span>
                                                 </div>
                                             )}
                                         </div>
@@ -501,10 +530,10 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
                         </div>
 
                         {/* Products */}
-                        <div className="bg-white rounded-lg shadow-sm border">
-                            <div className="bg-gray-50 border-b px-8 py-6">
+                        <div className="rounded-lg border bg-white shadow-sm">
+                            <div className="border-b bg-gray-50 px-8 py-6">
                                 <h3 className="flex items-center text-xl font-bold text-gray-800">
-                                    <Package className="h-5 w-5 mr-3" />
+                                    <Package className="mr-3 h-5 w-5" />
                                     {t('Products')}
                                 </h3>
                             </div>
@@ -514,12 +543,12 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
                                         <table className="min-w-full">
                                             <thead>
                                                 <tr style={{ backgroundColor: template.primary }}>
-                                                    <th className="text-base font-bold text-white py-4 px-6 w-1/3 text-left">{t('Product')}</th>
-                                                    <th className="text-right text-base font-bold text-white py-4 px-4">{t('Quantity')}</th>
-                                                    <th className="text-right text-base font-bold text-white py-4 px-4">{t('Unit Price')}</th>
-                                                    <th className="text-right text-base font-bold text-white py-4 px-4">{t('Discount')}</th>
-                                                    <th className="text-right text-base font-bold text-white py-4 px-4">{t('Tax')}</th>
-                                                    <th className="text-right text-base font-bold text-white py-4 px-4 w-1/6">{t('Total')}</th>
+                                                    <th className="w-1/3 px-6 py-4 text-left text-base font-bold text-white">{t('Product')}</th>
+                                                    <th className="px-4 py-4 text-right text-base font-bold text-white">{t('Quantity')}</th>
+                                                    <th className="px-4 py-4 text-right text-base font-bold text-white">{t('Unit Price')}</th>
+                                                    <th className="px-4 py-4 text-right text-base font-bold text-white">{t('Discount')}</th>
+                                                    <th className="px-4 py-4 text-right text-base font-bold text-white">{t('Tax')}</th>
+                                                    <th className="w-1/6 px-4 py-4 text-right text-base font-bold text-white">{t('Total')}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -530,94 +559,131 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
 
                                                     return (
                                                         <tr key={index} className="border-b hover:bg-gray-50">
-                                                            <td className="font-semibold text-base text-gray-900 py-4 px-6">{product.name}</td>
-                                                            <td className="text-right text-base font-medium py-4 px-4">{product.pivot.quantity}</td>
-                                                            <td className="text-right text-base font-semibold py-4 px-4">{formatCurrency(product.pivot.unit_price)}</td>
-                                                            <td className="text-right py-4 px-4">
-                                                                {product.pivot.discount_type && product.pivot.discount_type !== 'none' && product.pivot.discount_value > 0 ? (
+                                                            <td className="px-6 py-4 text-base font-semibold text-gray-900">{product.name}</td>
+                                                            <td className="px-4 py-4 text-right text-base font-medium">{product.pivot.quantity}</td>
+                                                            <td className="px-4 py-4 text-right text-base font-semibold">
+                                                                {formatCurrency(product.pivot.unit_price)}
+                                                            </td>
+                                                            <td className="px-4 py-4 text-right">
+                                                                {product.pivot.discount_type &&
+                                                                product.pivot.discount_type !== 'none' &&
+                                                                product.pivot.discount_value > 0 ? (
                                                                     <div className="text-base">
-                                                                        <div className="font-semibold text-gray-700">{product.pivot.discount_type === 'percentage' ? `${Number(product.pivot.discount_value)}%` : formatCurrency(Number(product.pivot.discount_value))}</div>
-                                                                        <div className="text-red-600 font-bold">(-{formatCurrency(discountAmount)})</div>
+                                                                        <div className="font-semibold text-gray-700">
+                                                                            {product.pivot.discount_type === 'percentage'
+                                                                                ? `${Number(product.pivot.discount_value)}%`
+                                                                                : formatCurrency(Number(product.pivot.discount_value))}
+                                                                        </div>
+                                                                        <div className="font-bold text-red-600">
+                                                                            (-{formatCurrency(discountAmount)})
+                                                                        </div>
                                                                     </div>
                                                                 ) : (
-                                                                    <span className="text-gray-500 font-medium">-</span>
+                                                                    <span className="font-medium text-gray-500">-</span>
                                                                 )}
                                                             </td>
-                                                            <td className="text-right text-base py-4 px-4">
+                                                            <td className="px-4 py-4 text-right text-base">
                                                                 {product.tax ? (
                                                                     <div>
-                                                                        <span className="text-sm font-medium text-muted-foreground">{product.tax.name} ({parseFloat(product.tax.rate).toFixed(2)}%)</span>
-                                                                        <div className="text-sm font-semibold text-gray-900">{formatCurrency(finalTotal * (product.tax.rate / 100))}</div>
+                                                                        <span className="text-muted-foreground text-sm font-medium">
+                                                                            {product.tax.name} ({parseFloat(product.tax.rate).toFixed(2)}%)
+                                                                        </span>
+                                                                        <div className="text-sm font-semibold text-gray-900">
+                                                                            {formatCurrency(finalTotal * (product.tax.rate / 100))}
+                                                                        </div>
                                                                     </div>
                                                                 ) : (
-                                                                    <span className="text-gray-500 font-medium">{t('No Tax')}</span>
+                                                                    <span className="font-medium text-gray-500">{t('No Tax')}</span>
                                                                 )}
                                                             </td>
-                                                            <td className="text-right font-bold text-base py-4 px-4">
+                                                            <td className="px-4 py-4 text-right text-base font-bold">
                                                                 {discountAmount > 0 ? (
                                                                     <div>
-                                                                        <div className="line-through text-gray-400 text-sm font-medium">{formatCurrency(lineTotal)}</div>
-                                                                        <div className="text-green-600 font-semibold">{formatCurrency(finalTotal)}</div>
+                                                                        <div className="text-sm font-medium text-gray-400 line-through">
+                                                                            {formatCurrency(lineTotal)}
+                                                                        </div>
+                                                                        <div className="font-semibold text-green-600">
+                                                                            {formatCurrency(finalTotal)}
+                                                                        </div>
                                                                     </div>
                                                                 ) : (
-                                                                    <span className="text-green-600 font-semibold">{formatCurrency(lineTotal)}</span>
+                                                                    <span className="font-semibold text-green-600">{formatCurrency(lineTotal)}</span>
                                                                 )}
                                                             </td>
                                                         </tr>
                                                     );
                                                 })}
                                                 <tr style={{ backgroundColor: `${template.primary}10` }}>
-                                                    <td colSpan={4} className="py-3 px-4"></td>
-                                                    <td className="text-right font-semibold text-base py-3 px-4" style={{ color: template.primary }}>{t('Discount')}:</td>
-                                                    <td className="text-right font-semibold text-base py-3 px-4" style={{ color: template.primary }}>-{formatCurrency(totalDiscount)}</td>
+                                                    <td colSpan={4} className="px-4 py-3"></td>
+                                                    <td className="px-4 py-3 text-right text-base font-semibold" style={{ color: template.primary }}>
+                                                        {t('Discount')}:
+                                                    </td>
+                                                    <td className="px-4 py-3 text-right text-base font-semibold" style={{ color: template.primary }}>
+                                                        -{formatCurrency(totalDiscount)}
+                                                    </td>
                                                 </tr>
                                                 <tr style={{ backgroundColor: `${template.primary}10` }}>
-                                                    <td colSpan={4} className="py-3 px-4"></td>
-                                                    <td className="text-right font-semibold text-base py-3 px-4" style={{ color: template.primary }}>{t('Subtotal')}:</td>
-                                                    <td className="text-right font-semibold text-base py-3 px-4" style={{ color: template.primary }}>{formatCurrency(invoice.subtotal)}</td>
+                                                    <td colSpan={4} className="px-4 py-3"></td>
+                                                    <td className="px-4 py-3 text-right text-base font-semibold" style={{ color: template.primary }}>
+                                                        {t('Subtotal')}:
+                                                    </td>
+                                                    <td className="px-4 py-3 text-right text-base font-semibold" style={{ color: template.primary }}>
+                                                        {formatCurrency(invoice.subtotal)}
+                                                    </td>
                                                 </tr>
                                                 <tr style={{ backgroundColor: `${template.primary}10` }}>
-                                                    <td colSpan={4} className="py-3 px-4"></td>
-                                                    <td className="text-right font-semibold text-base py-3 px-4" style={{ color: template.primary }}>{t('Tax')}:</td>
-                                                    <td className="text-right font-semibold text-base py-3 px-4" style={{ color: template.primary }}>{formatCurrency(invoice.tax_amount)}</td>
+                                                    <td colSpan={4} className="px-4 py-3"></td>
+                                                    <td className="px-4 py-3 text-right text-base font-semibold" style={{ color: template.primary }}>
+                                                        {t('Tax')}:
+                                                    </td>
+                                                    <td className="px-4 py-3 text-right text-base font-semibold" style={{ color: template.primary }}>
+                                                        {formatCurrency(invoice.tax_amount)}
+                                                    </td>
                                                 </tr>
-                                                <tr className="border-t-2" style={{ backgroundColor: `${template.primary}15`, borderTopColor: template.primary }}>
-                                                    <td colSpan={4} className="py-4 px-4"></td>
-                                                    <td className="text-right font-bold text-lg py-4 px-4" style={{ color: template.primary }}>{t('Grand Total')}:</td>
-                                                    <td className="text-right py-4 px-4"><span className="font-bold text-xl" style={{ color: template.primary }}>{formatCurrency(invoice.total_amount)}</span></td>
+                                                <tr
+                                                    className="border-t-2"
+                                                    style={{ backgroundColor: `${template.primary}15`, borderTopColor: template.primary }}
+                                                >
+                                                    <td colSpan={4} className="px-4 py-4"></td>
+                                                    <td className="px-4 py-4 text-right text-lg font-bold" style={{ color: template.primary }}>
+                                                        {t('Grand Total')}:
+                                                    </td>
+                                                    <td className="px-4 py-4 text-right">
+                                                        <span className="text-xl font-bold" style={{ color: template.primary }}>
+                                                            {formatCurrency(invoice.total_amount)}
+                                                        </span>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 ) : (
-                                    <div className="text-center py-16 text-gray-500">
-                                        <Package className="h-16 w-16 mx-auto mb-6 text-gray-300" />
+                                    <div className="py-16 text-center text-gray-500">
+                                        <Package className="mx-auto mb-6 h-16 w-16 text-gray-300" />
                                         <p className="text-lg font-medium">{t('No products added to this invoice')}</p>
                                     </div>
                                 )}
                             </div>
                         </div>
 
-
-
                         {/* Notes and Terms */}
                         {(invoice.notes || invoice.terms) && (
-                            <div className="bg-white rounded-lg shadow-sm border">
+                            <div className="rounded-lg border bg-white shadow-sm">
                                 <div className="border-b px-8 py-6" style={{ backgroundColor: `${template.primary}25` }}>
                                     <h3 className="text-xl font-bold text-gray-800">{t('Additional Information')}</h3>
                                 </div>
                                 <div className="p-8">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                                         {invoice.notes && (
                                             <div>
-                                                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">{t('Notes')}</label>
-                                                <p className="text-base text-gray-700 mt-2 leading-relaxed">{invoice.notes}</p>
+                                                <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{t('Notes')}</label>
+                                                <p className="mt-2 text-base leading-relaxed text-gray-700">{invoice.notes}</p>
                                             </div>
                                         )}
                                         {invoice.terms && (
                                             <div>
-                                                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">{t('Terms')}</label>
-                                                <p className="text-base text-gray-700 mt-2 leading-relaxed">{invoice.terms}</p>
+                                                <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{t('Terms')}</label>
+                                                <p className="mt-2 text-base leading-relaxed text-gray-700">{invoice.terms}</p>
                                             </div>
                                         )}
                                     </div>
@@ -627,10 +693,10 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
 
                         {/* Payments */}
                         {invoice.payments && invoice.payments.length > 0 && (
-                            <div className="bg-white rounded-lg shadow-sm border">
-                                <div className="bg-gray-50 border-b px-8 py-6">
+                            <div className="rounded-lg border bg-white shadow-sm">
+                                <div className="border-b bg-gray-50 px-8 py-6">
                                     <h3 className="flex items-center text-xl font-bold text-gray-800">
-                                        <DollarSign className="h-5 w-5 mr-3" />
+                                        <DollarSign className="mr-3 h-5 w-5" />
                                         {t('Payment History')}
                                     </h3>
                                 </div>
@@ -638,23 +704,28 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
                                     <table className="min-w-full">
                                         <thead>
                                             <tr style={{ backgroundColor: template.primary }}>
-                                                <th className="text-base font-bold text-white py-4 px-6 text-left w-1/4">{t('Date')}</th>
-                                                <th className="text-base font-bold text-white py-4 px-4 text-left w-1/4">{t('Method')}</th>
-                                                <th className="text-right text-base font-bold text-white py-4 px-4 w-1/4">{t('Amount')}</th>
-                                                <th className="text-base font-bold text-white py-4 px-4 text-left w-1/4">{t('Status')}</th>
+                                                <th className="w-1/4 px-6 py-4 text-left text-base font-bold text-white">{t('Date')}</th>
+                                                <th className="w-1/4 px-4 py-4 text-left text-base font-bold text-white">{t('Method')}</th>
+                                                <th className="w-1/4 px-4 py-4 text-right text-base font-bold text-white">{t('Amount')}</th>
+                                                <th className="w-1/4 px-4 py-4 text-left text-base font-bold text-white">{t('Status')}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {invoice.payments.map((payment: any, index: number) => (
                                                 <tr key={index} className="border-b hover:bg-gray-50">
-                                                    <td className="py-4 px-6">{formatDate(payment.processed_at || payment.created_at)}</td>
-                                                    <td className="py-4 px-4 capitalize">{payment.payment_method}</td>
-                                                    <td className="text-right py-4 px-4 font-semibold">{formatCurrency(payment.amount)}</td>
-                                                    <td className="py-4 px-4 capitalize">
-                                                        <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${payment.status === 'completed' ? 'bg-green-50 text-green-800 ring-green-600/20' :
-                                                                payment.status === 'pending' ? 'bg-yellow-50 text-yellow-800 ring-yellow-600/20' :
-                                                                    'bg-red-50 text-red-800 ring-red-600/20'
-                                                            }`}>
+                                                    <td className="px-6 py-4">{formatDate(payment.processed_at || payment.created_at)}</td>
+                                                    <td className="px-4 py-4 capitalize">{payment.payment_method}</td>
+                                                    <td className="px-4 py-4 text-right font-semibold">{formatCurrency(payment.amount)}</td>
+                                                    <td className="px-4 py-4 capitalize">
+                                                        <span
+                                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                                                                payment.status === 'completed'
+                                                                    ? 'bg-green-50 text-green-800 ring-green-600/20'
+                                                                    : payment.status === 'pending'
+                                                                      ? 'bg-yellow-50 text-yellow-800 ring-yellow-600/20'
+                                                                      : 'bg-red-50 text-red-800 ring-red-600/20'
+                                                            }`}
+                                                        >
                                                             {payment.status}
                                                         </span>
                                                     </td>
@@ -665,14 +736,12 @@ export default function PublicInvoice({ invoice, templateId = 'template1', color
                                 </div>
                             </div>
                         )}
-
-
                     </div>
                 </div>
             </div>
 
             {/* Payment Modal */}
-            <div className='print:hidden'>
+            <div className="print:hidden">
                 {showPaymentModal && (
                     <InvoicePaymentModal
                         isOpen={showPaymentModal}

@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use App\Models\Plan;
 use App\Models\Setting;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Carbon\Carbon;
 
 class UserSeeder extends Seeder
 {
@@ -24,7 +23,7 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => Hash::make('Kakbima@DemoAccount2026'),
                 'type' => 'super_admin',
-                'lang' => 'en'
+                'lang' => 'en',
             ]
         );
 

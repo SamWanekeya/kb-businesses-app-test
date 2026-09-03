@@ -26,6 +26,7 @@ class UserEmailTemplate extends Model
      * Get user email template settings
      *
      * @param int $userId
+     *
      * @return array
      */
     public static function getUserEmailTemplateSettings($userId)

@@ -17,6 +17,7 @@ class OpportunityStageSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -26,7 +27,7 @@ class OpportunityStageSeeder extends Seeder
             ['name' => 'Proposal', 'color' => '#F59E0B', 'probability' => 50, 'description' => 'Proposal submitted to client'],
             ['name' => 'Negotiation', 'color' => '#8B5CF6', 'probability' => 75, 'description' => 'Negotiating terms and conditions'],
             ['name' => 'Closed Won', 'color' => '#10b77f', 'probability' => 100, 'description' => 'Opportunity successfully closed'],
-            ['name' => 'Closed Lost', 'color' => '#EF4444', 'probability' => 0, 'description' => 'Opportunity lost or cancelled']
+            ['name' => 'Closed Lost', 'color' => '#EF4444', 'probability' => 0, 'description' => 'Opportunity lost or cancelled'],
         ];
 
         foreach ($organizationUsers as $organization) {

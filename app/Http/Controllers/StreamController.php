@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use App\Models\AccountActivity;
 use App\Models\InvoiceActivity;
 use App\Models\LeadActivity;
@@ -11,6 +9,7 @@ use App\Models\OpportunityActivity;
 use App\Models\PurchaseOrderActivity;
 use App\Models\QuoteActivity;
 use App\Models\SalesOrderActivity;
+use Inertia\Inertia;
 
 class StreamController extends Controller
 {
@@ -27,7 +26,7 @@ class StreamController extends Controller
         ];
 
         return Inertia::render('streams/index', [
-            'modules' => $modules
+            'modules' => $modules,
         ]);
     }
 
@@ -41,7 +40,7 @@ class StreamController extends Controller
         return Inertia::render('streams/show', [
             'module' => 'account_activities',
             'moduleTitle' => 'Account Activities',
-            'streams' => $streams
+            'streams' => $streams,
         ]);
     }
 
@@ -54,6 +53,7 @@ class StreamController extends Controller
         }
 
         $stream->delete();
+
         return back()->with('success', __('Activity deleted successfully.'));
     }
 
@@ -67,7 +67,7 @@ class StreamController extends Controller
         return Inertia::render('streams/show', [
             'module' => 'invoice_activities',
             'moduleTitle' => 'Invoice Activities',
-            'streams' => $streams
+            'streams' => $streams,
         ]);
     }
 
@@ -80,6 +80,7 @@ class StreamController extends Controller
         }
 
         $stream->delete();
+
         return back()->with('success', __('Activity deleted successfully.'));
     }
 
@@ -93,7 +94,7 @@ class StreamController extends Controller
         return Inertia::render('streams/show', [
             'module' => 'lead_activities',
             'moduleTitle' => 'Lead Activities',
-            'streams' => $streams
+            'streams' => $streams,
         ]);
     }
 
@@ -106,6 +107,7 @@ class StreamController extends Controller
         }
 
         $stream->delete();
+
         return back()->with('success', __('Activity deleted successfully.'));
     }
 
@@ -119,7 +121,7 @@ class StreamController extends Controller
         return Inertia::render('streams/show', [
             'module' => 'opportunity_activities',
             'moduleTitle' => 'Opportunity Activities',
-            'streams' => $streams
+            'streams' => $streams,
         ]);
     }
 
@@ -132,6 +134,7 @@ class StreamController extends Controller
         }
 
         $stream->delete();
+
         return back()->with('success', __('Activity deleted successfully.'));
     }
 
@@ -145,7 +148,7 @@ class StreamController extends Controller
         return Inertia::render('streams/show', [
             'module' => 'purchase_order_activities',
             'moduleTitle' => 'Purchase Order Activities',
-            'streams' => $streams
+            'streams' => $streams,
         ]);
     }
 
@@ -158,6 +161,7 @@ class StreamController extends Controller
         }
 
         $stream->delete();
+
         return back()->with('success', __('Activity deleted successfully.'));
     }
 
@@ -171,7 +175,7 @@ class StreamController extends Controller
         return Inertia::render('streams/show', [
             'module' => 'quote_activities',
             'moduleTitle' => 'Quote Activities',
-            'streams' => $streams
+            'streams' => $streams,
         ]);
     }
 
@@ -184,6 +188,7 @@ class StreamController extends Controller
         }
 
         $stream->delete();
+
         return back()->with('success', __('Activity deleted successfully.'));
     }
 
@@ -197,7 +202,7 @@ class StreamController extends Controller
         return Inertia::render('streams/show', [
             'module' => 'sales_order_activities',
             'moduleTitle' => 'Sales Order Activities',
-            'streams' => $streams
+            'streams' => $streams,
         ]);
     }
 
@@ -210,6 +215,7 @@ class StreamController extends Controller
         }
 
         $stream->delete();
+
         return back()->with('success', __('Activity deleted successfully.'));
     }
 }

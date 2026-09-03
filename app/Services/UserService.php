@@ -11,6 +11,7 @@ class UserService
      * Assign default role to a user
      *
      * @param User $user
+     *
      * @return bool
      */
     public static function assignDefaultRole(User $user): bool
@@ -19,12 +20,14 @@ class UserService
             if (empty($user->type)) {
                 $user->type = 'organization';
                 $user->save();
+
                 return true;
             }
 
             return false;
         } catch (\Exception $e) {
             \Log::error('Failed to assign default role: ' . $e->getMessage());
+
             return false;
         }
     }
@@ -33,6 +36,7 @@ class UserService
      * Assign organization role and permissions to user
      *
      * @param User $user
+     *
      * @return bool
      */
     public static function assignOrganizationPermissions(User $user): bool
@@ -45,12 +49,14 @@ class UserService
                 $user->assignRole($organizationRole);
                 $user->type = 'organization';
                 $user->save();
+
                 return true;
             }
 
             return false;
         } catch (\Exception $e) {
             \Log::error('Failed to assign organization role: ' . $e->getMessage());
+
             return false;
         }
     }

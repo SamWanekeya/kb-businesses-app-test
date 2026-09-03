@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
-use App\Models\PlanOrder;
-use App\Models\PaymentSetting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Razorpay\Api\Api;
 
 class RazorpayController extends Controller
@@ -23,14 +20,15 @@ class RazorpayController extends Controller
         return [
             'key' => $settings['payment_settings']['razorpay_key'] ?? null,
             'secret' => $settings['payment_settings']['razorpay_secret'] ?? null,
-            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'INR'
+            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'INR',
         ];
     }
 
     /**
      * Create a Razorpay order
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function createOrder(Request $request)
@@ -39,7 +37,7 @@ class RazorpayController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
 
             $amountInSmallestUnit = $pricing['final_price'] * 100;
 
@@ -59,7 +57,7 @@ class RazorpayController extends Controller
                 'notes' => [
                     'plan_id' => $plan->id,
                     'billing_cycle' => $request->billing_cycle,
-                ]
+                ],
             ];
 
             $razorpayOrder = $api->order->create($orderData);
@@ -76,7 +74,8 @@ class RazorpayController extends Controller
     /**
      * Verify Razorpay payment
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function verifyPayment(Request $request)
@@ -98,7 +97,7 @@ class RazorpayController extends Controller
             $api->utility->verifyPaymentSignature([
                 'razorpay_order_id' => $validated['razorpay_order_id'],
                 'razorpay_payment_id' => $validated['razorpay_payment_id'],
-                'razorpay_signature' => $validated['razorpay_signature']
+                'razorpay_signature' => $validated['razorpay_signature'],
             ]);
 
             processPaymentSuccess([

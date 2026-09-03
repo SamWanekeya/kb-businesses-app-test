@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
-use App\Models\User;
-use Illuminate\Http\Request;
 use CoinGate\Client;
+use Illuminate\Http\Request;
 
 class InvoiceCoingatePaymentController extends Controller
 {
@@ -36,6 +35,7 @@ class InvoiceCoingatePaymentController extends Controller
 
             if (!isset($settings['payment_settings']['coingate_api_token']) || empty($settings['payment_settings']['coingate_api_token'])) {
                 \Log::error('Coingate payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+
                 return back()->withErrors(['error' => __('Coingate not configured')]);
             }
 
@@ -67,22 +67,23 @@ class InvoiceCoingatePaymentController extends Controller
                 session(['coingate_data' => array_merge((array)$orderResponse, [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
-                    'payment_type' => $validated['payment_type']
+                    'payment_type' => $validated['payment_type'],
                 ])]);
 
                 \Log::info('Coingate payment initiated', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
-                    'order_id' => $orderId
+                    'order_id' => $orderId,
                 ]);
 
                 return redirect($orderResponse->payment_url);
             } else {
                 \Log::error('Coingate order creation failed', [
                     'invoice_id' => $invoice->id,
-                    'response' => $orderResponse
+                    'response' => $orderResponse,
                 ]);
+
                 return back()->withErrors(['error' => __('Payment initialization failed')]);
             }
 
@@ -90,8 +91,9 @@ class InvoiceCoingatePaymentController extends Controller
             \Log::error('Coingate payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return $this->handleInvoicePaymentError($e, 'coingate');
         }
     }
@@ -103,6 +105,7 @@ class InvoiceCoingatePaymentController extends Controller
 
             if (!$coingateData) {
                 \Log::error('Coingate callback: Data not found in session');
+
                 return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment session expired'));
             }
 
@@ -110,8 +113,9 @@ class InvoiceCoingatePaymentController extends Controller
 
             if (!$orderId) {
                 \Log::error('Coingate callback: Order ID not found', [
-                    'session_data' => $coingateData
+                    'session_data' => $coingateData,
                 ]);
+
                 return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Order ID not found'));
             }
 
@@ -130,7 +134,7 @@ class InvoiceCoingatePaymentController extends Controller
             \Log::info('Coingate payment completed', [
                 'invoice_id' => $coingateData['invoice_id'],
                 'payment_id' => $orderId,
-                'amount' => $coingateData['amount']
+                'amount' => $coingateData['amount'],
             ]);
 
             return redirect()->route('invoices.public', encrypt($coingateData['invoice_id']))
@@ -140,8 +144,9 @@ class InvoiceCoingatePaymentController extends Controller
             \Log::error('Coingate callback error', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
-                'request_data' => $request->all()
+                'request_data' => $request->all(),
             ]);
+
             return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment processing failed'));
         }
     }

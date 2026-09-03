@@ -15,7 +15,7 @@ class TargetList extends Model
         'name',
         'description',
         'status',
-        'created_by'
+        'created_by',
     ];
 
     public function creator(): BelongsTo

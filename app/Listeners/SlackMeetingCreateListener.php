@@ -3,8 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\MeetingInvitation;
-use App\Services\SlackService;
 use App\Models\User;
+use App\Services\SlackService;
 use Exception;
 
 class SlackMeetingCreateListener

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Libraries\Coingate\Coingate;
 use App\Models\Plan;
 use App\Models\PlanOrder;
-use App\Models\PaymentSetting;
-use Illuminate\Http\Request;
-use App\Libraries\Coingate\Coingate;
 use CoinGate\Client;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class CoinGatePaymentController extends Controller
@@ -17,7 +16,7 @@ class CoinGatePaymentController extends Controller
         $validated = $request->validate([
             'plan_id' => 'required|exists:plans,id',
             'billing_cycle' => 'required|in:monthly,yearly',
-            'coupon_code' => 'nullable|string'
+            'coupon_code' => 'nullable|string',
         ]);
 
         try {
@@ -50,7 +49,7 @@ class CoinGatePaymentController extends Controller
                 'payment_id' => $orderId,
                 'original_price' => $price,
                 'final_price' => $price,
-                'status' => 'pending'
+                'status' => 'pending',
             ]);
 
             // Use official CoinGate package
@@ -83,6 +82,7 @@ class CoinGatePaymentController extends Controller
                 return redirect($orderResponse->payment_url);
             } else {
                 $planOrder->update(['status' => 'cancelled']);
+
                 return redirect()->route('plans.index')->with('error', __('Payment initialization failed'));
             }
 
@@ -111,7 +111,7 @@ class CoinGatePaymentController extends Controller
             // Mark as successful and activate subscription
             $planOrder->update([
                 'status' => 'approved',
-                'processed_at' => now()
+                'processed_at' => now(),
             ]);
 
             $planOrder->activateSubscription();
@@ -123,6 +123,7 @@ class CoinGatePaymentController extends Controller
 
         } catch (\Exception $e) {
             Log::error('CoinGate callback error: ' . $e->getMessage());
+
             return redirect()->route('plans.index')->with('error', __('Payment processing failed'));
         }
     }

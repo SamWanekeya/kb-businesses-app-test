@@ -1,15 +1,15 @@
+import { toast } from '@/components/custom-toast';
+import { SettingsSection } from '@/components/settings-section';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Checkbox } from '@/components/ui/checkbox';
-import { useState, useMemo } from 'react';
-import { Save, HardDrive, Search } from 'lucide-react';
-import { SettingsSection } from '@/components/settings-section';
-import { useTranslation } from 'react-i18next';
 import { router } from '@inertiajs/react';
-import { toast } from '@/components/custom-toast';
-import { Card, CardContent } from '@/components/ui/card';
+import { HardDrive, Save, Search } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type StorageType = 'local' | 'aws_s3' | 'wasabi';
 
@@ -44,96 +44,96 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
     const fileExtensions = {
         '3dmf': '3dmf',
         '3dm': '3dm',
-        'avi': 'avi',
-        'ai': 'ai',
-        'bin': 'bin',
-        'bmp': 'bmp',
-        'cab': 'cab',
-        'c': 'c',
+        avi: 'avi',
+        ai: 'ai',
+        bin: 'bin',
+        bmp: 'bmp',
+        cab: 'cab',
+        c: 'c',
         'c++': 'c++',
-        'class': 'class',
-        'css': 'css',
-        'csv': 'csv',
-        'cdr': 'cdr',
-        'doc': 'doc',
-        'dot': 'dot',
-        'docx': 'docx',
-        'dwg': 'dwg',
-        'eps': 'eps',
-        'exe': 'exe',
-        'gif': 'gif',
-        'gz': 'gz',
-        'gtar': 'gtar',
-        'flv': 'flv',
-        'fh4': 'fh4',
-        'fh5': 'fh5',
-        'fhc': 'fhc',
-        'help': 'help',
-        'hlp': 'hlp',
-        'html': 'html',
-        'htm': 'htm',
-        'ico': 'ico',
-        'imap': 'imap',
-        'inf': 'inf',
-        'jpe': 'jpe',
-        'jpeg': 'jpeg',
-        'jpg': 'jpg',
-        'js': 'js',
-        'java': 'java',
-        'latex': 'latex',
-        'log': 'log',
-        'm3u': 'm3u',
-        'midi': 'midi',
-        'mid': 'mid',
-        'mov': 'mov',
-        'mp4': 'mp4',
-        'mp3': 'mp3',
-        'mpeg': 'mpeg',
-        'mpg': 'mpg',
-        'mp2': 'mp2',
-        'ogg': 'ogg',
-        'phtml': 'phtml',
-        'php': 'php',
-        'pdf': 'pdf',
-        'pgp': 'pgp',
-        'png': 'png',
-        'pps': 'pps',
-        'ppt': 'ppt',
-        'ppz': 'ppz',
-        'pot': 'pot',
-        'ps': 'ps',
-        'qt': 'qt',
-        'qd3d': 'qd3d',
-        'qd3': 'qd3',
-        'qxd': 'qxd',
-        'rar': 'rar',
-        'ra': 'ra',
-        'ram': 'ram',
-        'rm': 'rm',
-        'rtf': 'rtf',
-        'spr': 'spr',
-        'sprite': 'sprite',
-        'stream': 'stream',
-        'swf': 'swf',
-        'svg': 'svg',
-        'sgml': 'sgml',
-        'sgm': 'sgm',
-        'tar': 'tar',
-        'tiff': 'tiff',
-        'tif': 'tif',
-        'tgz': 'tgz',
-        'tex': 'tex',
-        'txt': 'txt',
-        'vob': 'vob',
-        'wav': 'wav',
-        'wrl': 'wrl',
-        'xla': 'xla',
-        'xls': 'xls',
-        'xlc': 'xlc',
-        'xml': 'xml',
-        'zip': 'zip',
-        'json': 'json',
-        'webp': 'webp'
+        class: 'class',
+        css: 'css',
+        csv: 'csv',
+        cdr: 'cdr',
+        doc: 'doc',
+        dot: 'dot',
+        docx: 'docx',
+        dwg: 'dwg',
+        eps: 'eps',
+        exe: 'exe',
+        gif: 'gif',
+        gz: 'gz',
+        gtar: 'gtar',
+        flv: 'flv',
+        fh4: 'fh4',
+        fh5: 'fh5',
+        fhc: 'fhc',
+        help: 'help',
+        hlp: 'hlp',
+        html: 'html',
+        htm: 'htm',
+        ico: 'ico',
+        imap: 'imap',
+        inf: 'inf',
+        jpe: 'jpe',
+        jpeg: 'jpeg',
+        jpg: 'jpg',
+        js: 'js',
+        java: 'java',
+        latex: 'latex',
+        log: 'log',
+        m3u: 'm3u',
+        midi: 'midi',
+        mid: 'mid',
+        mov: 'mov',
+        mp4: 'mp4',
+        mp3: 'mp3',
+        mpeg: 'mpeg',
+        mpg: 'mpg',
+        mp2: 'mp2',
+        ogg: 'ogg',
+        phtml: 'phtml',
+        php: 'php',
+        pdf: 'pdf',
+        pgp: 'pgp',
+        png: 'png',
+        pps: 'pps',
+        ppt: 'ppt',
+        ppz: 'ppz',
+        pot: 'pot',
+        ps: 'ps',
+        qt: 'qt',
+        qd3d: 'qd3d',
+        qd3: 'qd3',
+        qxd: 'qxd',
+        rar: 'rar',
+        ra: 'ra',
+        ram: 'ram',
+        rm: 'rm',
+        rtf: 'rtf',
+        spr: 'spr',
+        sprite: 'sprite',
+        stream: 'stream',
+        swf: 'swf',
+        svg: 'svg',
+        sgml: 'sgml',
+        sgm: 'sgm',
+        tar: 'tar',
+        tiff: 'tiff',
+        tif: 'tif',
+        tgz: 'tgz',
+        tex: 'tex',
+        txt: 'txt',
+        vob: 'vob',
+        wav: 'wav',
+        wrl: 'wrl',
+        xla: 'xla',
+        xls: 'xls',
+        xlc: 'xlc',
+        xml: 'xml',
+        zip: 'zip',
+        json: 'json',
+        webp: 'webp',
     };
 
     const [storageSettings, setStorageSettings] = useState<StorageSettings>({
@@ -151,54 +151,52 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
         wasabiRegion: settings.wasabi_region || 'us-east-1',
         wasabiBucket: settings.wasabi_bucket || '',
         wasabiUrl: settings.wasabi_url || '',
-        wasabiRoot: settings.wasabi_root || ''
+        wasabiRoot: settings.wasabi_root || '',
     });
 
     const [searchTerm, setSearchTerm] = useState('');
     const [processing, setProcessing] = useState(false);
 
     const handleSettingChange = (field: keyof StorageSettings, value: string) => {
-        setStorageSettings(prev => ({
+        setStorageSettings((prev) => ({
             ...prev,
-            [field]: value
+            [field]: value,
         }));
     };
 
     const handleFileTypeChange = (extension: string, checked: boolean) => {
-        const currentTypes = storageSettings.allowedFileTypes.split(',').filter(type => type.trim());
+        const currentTypes = storageSettings.allowedFileTypes.split(',').filter((type) => type.trim());
         let newTypes;
 
         if (checked) {
             newTypes = [...currentTypes, extension];
         } else {
-            newTypes = currentTypes.filter(type => type !== extension);
+            newTypes = currentTypes.filter((type) => type !== extension);
         }
 
-        setStorageSettings(prev => ({
+        setStorageSettings((prev) => ({
             ...prev,
-            allowedFileTypes: newTypes.join(',')
+            allowedFileTypes: newTypes.join(','),
         }));
     };
 
     const handleSelectAll = () => {
         const allExtensions = Object.keys(fileExtensions);
-        setStorageSettings(prev => ({
+        setStorageSettings((prev) => ({
             ...prev,
-            allowedFileTypes: allExtensions.join(',')
+            allowedFileTypes: allExtensions.join(','),
         }));
     };
 
     const handleUnselectAll = () => {
-        setStorageSettings(prev => ({
+        setStorageSettings((prev) => ({
             ...prev,
-            allowedFileTypes: ''
+            allowedFileTypes: '',
         }));
     };
 
     const filteredExtensions = useMemo(() => {
-        return Object.keys(fileExtensions).filter(ext =>
-            ext.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+        return Object.keys(fileExtensions).filter((ext) => ext.toLowerCase().includes(searchTerm.toLowerCase()));
     }, [searchTerm]);
 
     const submitStorageSettings = (e: React.FormEvent) => {
@@ -246,42 +244,36 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 setProcessing(false);
                 const errorMessage = errors.error || Object.values(errors).join(', ') || t('Failed to update storage settings');
                 toast.error(errorMessage);
-            }
+            },
         });
     };
 
     const renderFileTypeSelector = () => (
         <div className="space-y-2">
-            <Label>{t("Allowed File Types")} <span className='text-sm text-red-500'>*</span></Label>
+            <Label>
+                {t('Allowed File Types')} <span className="text-sm text-red-500">*</span>
+            </Label>
             <div className="space-y-3">
-                <div className="flex gap-2">
+                <div className="flex flex-col gap-2 min-[1100px]:flex-row">
                     <div className="relative flex-1">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                        <Search className="absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
                         <Input
-                            placeholder={t("Search file types...")}
+                            placeholder={t('Search file types...')}
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="pl-10"
+                            className="ps-10"
                         />
                     </div>
-                    <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={handleSelectAll}
-                    >
-                        {t("Select All")}
-                    </Button>
-                    <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={handleUnselectAll}
-                    >
-                        {t("Unselect All")}
-                    </Button>
+                    <div className="flex gap-2 max-[768px]:grid max-[768px]:grid-cols-2">
+                        <Button type="button" variant="outline" size="sm" onClick={handleSelectAll} className="w-full whitespace-nowrap">
+                            {t('Select All')}
+                        </Button>
+                        <Button type="button" variant="outline" size="sm" onClick={handleUnselectAll} className="w-full whitespace-nowrap">
+                            {t('Unselect All')}
+                        </Button>
+                    </div>
                 </div>
-                <div className="grid grid-cols-4 gap-2 p-4 border rounded-md max-h-48 overflow-y-auto">
+                <div className="grid max-h-48 grid-cols-2 gap-2 overflow-y-auto rounded-md border p-4 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {filteredExtensions.map((ext) => (
                         <div key={ext} className="flex items-center space-x-2">
                             <Checkbox
@@ -289,7 +281,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                                 checked={storageSettings.allowedFileTypes.split(',').includes(ext)}
                                 onCheckedChange={(checked) => handleFileTypeChange(ext, checked as boolean)}
                             />
-                            <Label htmlFor={ext} className="text-sm font-normal">{ext}</Label>
+                            <Label htmlFor={ext} className="text-sm font-normal">
+                                {ext}
+                            </Label>
                         </div>
                     ))}
                 </div>
@@ -302,7 +296,7 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
             {renderFileTypeSelector()}
 
             <div className="space-y-2">
-                <Label htmlFor="maxUploadSize">{t("Max Upload Size (KB)")}</Label>
+                <Label htmlFor="maxUploadSize">{t('Max Upload Size (KB)')}</Label>
                 <Input
                     id="maxUploadSize"
                     type="number"
@@ -316,9 +310,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
 
     const renderAwsS3Fields = () => (
         <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div className="space-y-2">
-                    <Label htmlFor="awsAccessKeyId">{t("AWS Access Key ID")}</Label>
+                    <Label htmlFor="awsAccessKeyId">{t('AWS Access Key ID')}</Label>
                     <Input
                         id="awsAccessKeyId"
                         value={storageSettings.awsAccessKeyId}
@@ -328,7 +322,7 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="awsSecretAccessKey">{t("AWS Secret Access Key")}</Label>
+                    <Label htmlFor="awsSecretAccessKey">{t('AWS Secret Access Key')}</Label>
                     <Input
                         id="awsSecretAccessKey"
                         type="password"
@@ -339,7 +333,7 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="awsDefaultRegion">{t("AWS Default Region")}</Label>
+                    <Label htmlFor="awsDefaultRegion">{t('AWS Default Region')}</Label>
                     <Input
                         id="awsDefaultRegion"
                         value={storageSettings.awsDefaultRegion}
@@ -349,7 +343,7 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="awsBucket">{t("AWS Bucket")}</Label>
+                    <Label htmlFor="awsBucket">{t('AWS Bucket')}</Label>
                     <Input
                         id="awsBucket"
                         value={storageSettings.awsBucket}
@@ -359,7 +353,7 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="awsUrl">{t("AWS URL")}</Label>
+                    <Label htmlFor="awsUrl">{t('AWS URL')}</Label>
                     <Input
                         id="awsUrl"
                         value={storageSettings.awsUrl}
@@ -369,7 +363,7 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="awsEndpoint">{t("AWS Endpoint")}</Label>
+                    <Label htmlFor="awsEndpoint">{t('AWS Endpoint')}</Label>
                     <Input
                         id="awsEndpoint"
                         value={storageSettings.awsEndpoint}
@@ -381,10 +375,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
 
             <div className="space-y-6">
                 {renderFileTypeSelector()}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div className="space-y-2">
-                        <Label htmlFor="awsMaxUploadSize">{t("Max Upload Size (KB)")}</Label>
+                        <Label htmlFor="awsMaxUploadSize">{t('Max Upload Size (KB)')}</Label>
                         <Input
                             id="awsMaxUploadSize"
                             type="number"
@@ -400,9 +393,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
 
     const renderWasabiFields = () => (
         <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div className="space-y-2">
-                    <Label htmlFor="wasabiAccessKey">{t("Wasabi Access Key")}</Label>
+                    <Label htmlFor="wasabiAccessKey">{t('Wasabi Access Key')}</Label>
                     <Input
                         id="wasabiAccessKey"
                         value={storageSettings.wasabiAccessKey}
@@ -412,7 +405,7 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="wasabiSecretKey">{t("Wasabi Secret Key")}</Label>
+                    <Label htmlFor="wasabiSecretKey">{t('Wasabi Secret Key')}</Label>
                     <Input
                         id="wasabiSecretKey"
                         type="password"
@@ -423,7 +416,7 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="wasabiRegion">{t("Wasabi Region")}</Label>
+                    <Label htmlFor="wasabiRegion">{t('Wasabi Region')}</Label>
                     <Input
                         id="wasabiRegion"
                         value={storageSettings.wasabiRegion}
@@ -433,7 +426,7 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="wasabiBucket">{t("Wasabi Bucket")}</Label>
+                    <Label htmlFor="wasabiBucket">{t('Wasabi Bucket')}</Label>
                     <Input
                         id="wasabiBucket"
                         value={storageSettings.wasabiBucket}
@@ -443,7 +436,7 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="wasabiUrl">{t("Wasabi URL")}</Label>
+                    <Label htmlFor="wasabiUrl">{t('Wasabi URL')}</Label>
                     <Input
                         id="wasabiUrl"
                         value={storageSettings.wasabiUrl}
@@ -453,7 +446,7 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="wasabiRoot">{t("Wasabi Root")}</Label>
+                    <Label htmlFor="wasabiRoot">{t('Wasabi Root')}</Label>
                     <Input
                         id="wasabiRoot"
                         value={storageSettings.wasabiRoot}
@@ -466,7 +459,7 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
             <div className="space-y-6">
                 {renderFileTypeSelector()}
                 <div className="space-y-2">
-                    <Label htmlFor="wasabiMaxUploadSize">{t("Max Upload Size (KB)")}</Label>
+                    <Label htmlFor="wasabiMaxUploadSize">{t('Max Upload Size (KB)')}</Label>
                     <Input
                         id="wasabiMaxUploadSize"
                         type="number"
@@ -481,50 +474,50 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
 
     return (
         <SettingsSection
-            title={t("Storage Settings")}
-            description={t("Configure file storage settings for your application")}
+            title={t('Storage Settings')}
+            description={t('Configure file storage settings for your application')}
             action={
-                <Button type="submit" disabled={processing} form="storage-settings-form" size="sm">
-                    <Save className="h-4 w-4 mr-2" />
-                    {processing ? t("Saving...") : t("Save Changes")}
+                <Button type="submit" disabled={processing} form="storage-settings-form" size="sm" className="max-[1300px]:px-2.5">
+                    <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
+                    <span className="max-[1300px]:hidden">{processing ? t('Saving...') : t('Save Changes')}</span>
                 </Button>
             }
         >
             <Card>
-                <CardContent className='mt-6'>
+                <CardContent className="mt-6">
                     <form id="storage-settings-form" onSubmit={submitStorageSettings}>
                         <Tabs
                             value={storageSettings.storageType}
                             className="w-full"
-                            onValueChange={(value) => setStorageSettings(prev => ({ ...prev, storageType: value as StorageType }))}
+                            onValueChange={(value) => setStorageSettings((prev) => ({ ...prev, storageType: value as StorageType }))}
                         >
-                            <TabsList className="grid w-full grid-cols-3">
-                                <TabsTrigger value="local" className="flex items-center gap-2">
+                            <TabsList className="grid w-full grid-cols-3 max-[1100px]:h-auto max-[1100px]:grid-cols-1">
+                                <TabsTrigger value="local" className="flex cursor-pointer items-center gap-2">
                                     <HardDrive className="h-4 w-4" />
-                                    {t("Local Storage")}
+                                    {t('Local Storage')}
                                 </TabsTrigger>
-                                <TabsTrigger value="aws_s3" className="flex items-center gap-2">
+                                <TabsTrigger value="aws_s3" className="flex cursor-pointer items-center gap-2">
                                     <span>☁️</span>
-                                    {t("AWS S3")}
+                                    {t('AWS S3')}
                                 </TabsTrigger>
-                                <TabsTrigger value="wasabi" className="flex items-center gap-2">
+                                <TabsTrigger value="wasabi" className="flex cursor-pointer items-center gap-2">
                                     <span>🗄️</span>
-                                    {t("Wasabi")}
+                                    {t('Wasabi')}
                                 </TabsTrigger>
                             </TabsList>
 
                             <TabsContent value="local" className="mt-6">
-                                <h3 className="text-base font-medium mb-4">{t("Local Storage Settings")}</h3>
+                                <h3 className="mb-4 text-base font-medium">{t('Local Storage Settings')}</h3>
                                 {renderLocalStorageFields()}
                             </TabsContent>
 
                             <TabsContent value="aws_s3" className="mt-6">
-                                <h3 className="text-base font-medium mb-4">{t("AWS S3 Storage Settings")}</h3>
+                                <h3 className="mb-4 text-base font-medium">{t('AWS S3 Storage Settings')}</h3>
                                 {renderAwsS3Fields()}
                             </TabsContent>
 
                             <TabsContent value="wasabi" className="mt-6">
-                                <h3 className="text-base font-medium mb-4">{t("Wasabi Storage Settings")}</h3>
+                                <h3 className="mb-4 text-base font-medium">{t('Wasabi Storage Settings')}</h3>
                                 {renderWasabiFields()}
                             </TabsContent>
                         </Tabs>

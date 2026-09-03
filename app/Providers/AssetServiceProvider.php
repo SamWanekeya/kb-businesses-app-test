@@ -2,9 +2,8 @@
 
 namespace App\Providers;
 
-use App\Helpers\AssetHelper;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\ServiceProvider;
 
 class AssetServiceProvider extends ServiceProvider
 {
@@ -25,7 +24,7 @@ class AssetServiceProvider extends ServiceProvider
         Blade::directive('dynamicAsset', function ($expression) {
             return "<?php echo App\\Helpers\\AssetHelper::asset($expression); ?>";
         });
-        
+
         // Register a custom Blade directive for Vite assets
         Blade::directive('dynamicVite', function ($expression) {
             return "<?php echo App\\Helpers\\AssetHelper::viteAsset($expression); ?>";

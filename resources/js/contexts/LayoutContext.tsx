@@ -88,7 +88,9 @@ export const LayoutProvider = ({ children }: { children: ReactNode }) => {
     //     (position === 'left' ? 'right' : 'left') :
     //     position;
 
-    return <LayoutContext.Provider value={{ position, effectivePosition, updatePosition,saveLayoutPosition, isRtl }}>{children}</LayoutContext.Provider>;
+    return (
+        <LayoutContext.Provider value={{ position, effectivePosition, updatePosition, saveLayoutPosition, isRtl }}>{children}</LayoutContext.Provider>
+    );
 };
 
 export const useLayout = () => {

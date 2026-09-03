@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -35,7 +34,7 @@ class StorageConfigService
 
         return [
             'mimes:' . $allowedTypes,
-            'max:' . $maxSize
+            'max:' . $maxSize,
         ];
     }
 
@@ -98,7 +97,7 @@ class StorageConfigService
                     'wasabi_region',
                     'wasabi_bucket',
                     'wasabi_url',
-                    'wasabi_root'
+                    'wasabi_root',
                 ])
                 ->pluck('value', 'key')
                 ->toArray();
@@ -108,6 +107,7 @@ class StorageConfigService
             // If no settings found, return default
             if (empty($settings)) {
                 \Log::info('No storage settings found, using defaults');
+
                 return self::getDefaultConfig();
             }
             // Map storage_type to correct disk name
@@ -138,10 +138,11 @@ class StorageConfigService
                     'region' => $settings['wasabi_region'] ?? 'us-east-1',
                     'url' => $settings['wasabi_url'] ?? '',
                     'root' => $settings['wasabi_root'] ?? '',
-                ]
+                ],
             ];
         } catch (\Exception $e) {
             \Log::error('Failed to load storage config from DB', ['error' => $e->getMessage()]);
+
             return self::getDefaultConfig();
         }
     }
@@ -156,7 +157,7 @@ class StorageConfigService
             'allowed_file_types' => 'jpg,png,webp,gif',
             'maximum_file_size_mb' => 2,
             's3' => [],
-            'wasabi' => []
+            'wasabi' => [],
         ];
     }
 }

@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import ReactCountryFlag from 'react-country-flag';
+import { CreateLanguageModal } from '@/components/create-language-modal';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuGroup,
     DropdownMenuItem,
-    DropdownMenuTrigger,
     DropdownMenuSeparator,
+    DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Globe, Plus, Settings } from 'lucide-react';
-import { usePage, router } from '@inertiajs/react';
-import { hasRole } from '@/utils/authorization';
-import { CreateLanguageModal } from '@/components/create-language-modal';
 import { useLayout } from '@/contexts/LayoutContext';
-import { isDemoMode, setCookie, getCookie } from '@/utils/cookie-utils';
+import { hasRole } from '@/utils/authorization';
+import { isDemoMode, setCookie } from '@/utils/cookie-utils';
+import { router, usePage } from '@inertiajs/react';
+import { Globe, Plus, Settings } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import ReactCountryFlag from 'react-country-flag';
+import { useTranslation } from 'react-i18next';
 
 interface Language {
     code: string;
@@ -66,41 +66,44 @@ export const LanguageSwitcher: React.FC = () => {
                 // Save layoutDirection to database/cookies when RTL language is selected
                 if (isAuthenticated && !isDemoMode()) {
                     // Save language change for authenticated non-demo users
-                    router.post(route('languages.change'), {
-                        language: languageCode
-                    }, {
-                        preserveScroll: true,
-                        onSuccess: () => {
+                    router.post(
+                        route('languages.change'),
+                        {
+                            language: languageCode,
                         },
-                        onError: (errors) => {
-                        }
-                    });
+                        {
+                            preserveScroll: true,
+                            onSuccess: () => {},
+                            onError: (errors) => {},
+                        },
+                    );
                 } else {
                     // For demo mode or non-authenticated users, save to cookies
                     setCookie('app_language', languageCode);
                     setCookie('layoutDirection', newDirection);
                 }
 
-                window.dispatchEvent(new CustomEvent('languageChanged', {
-                    detail: { language: languageCode, direction: newDirection }
-                }));
+                window.dispatchEvent(
+                    new CustomEvent('languageChanged', {
+                        detail: { language: languageCode, direction: newDirection },
+                    }),
+                );
 
                 window.dispatchEvent(new Event('resize'));
-            } catch (error) {
-            }
+            } catch (error) {}
         }
     };
 
+    const isRtl = typeof document !== 'undefined' ? document.documentElement.dir === 'rtl' : false;
+
     return (
-        <DropdownMenu>
+        <DropdownMenu dir={isRtl ? 'rtl' : 'ltr'}>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-2 rounded-md shadow-sm border bg-white">
-                    <Globe className="h-4 w-4" />
+                <Button variant="ghost" className="flex items-center gap-2 rounded-md border bg-white px-2 shadow-sm md:px-3" dir="ltr">
+                    <Globe className="hidden h-4 w-4 md:block" />
                     {currentLanguage && (
                         <>
-                            <span className="text-sm font-medium hidden md:inline-block">
-                                {currentLanguage.name}
-                            </span>
+                            <span className="hidden text-sm font-medium md:inline-block">{currentLanguage.name}</span>
                             <ReactCountryFlag
                                 countryCode={currentLanguage.countryCode}
                                 svg
@@ -116,23 +119,26 @@ export const LanguageSwitcher: React.FC = () => {
             <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuGroup>
                     <div className="max-h-48 overflow-y-auto">
-                        {(availableLanguages || []).filter((language: any) => language.enabled !== false).map((language: Language) => (
-                            <DropdownMenuItem
-                                key={language.code}
-                                onClick={() => handleLanguageChange(language.code)}
-                                className={`flex items-center gap-2 ${currentLanguage?.code === language.code ? 'bg-accent' : ''}`}
-                            >
-                                <ReactCountryFlag
-                                    countryCode={language.countryCode}
-                                    svg
-                                    style={{
-                                        width: '1.2em',
-                                        height: '1.2em',
-                                    }}
-                                />
-                                <span>{language.name}</span>
-                            </DropdownMenuItem>
-                        ))}
+                        {(availableLanguages || [])
+                            .filter((language: any) => language.enabled !== false)
+                            .map((language: Language) => (
+                                <DropdownMenuItem
+                                    key={language.code}
+                                    onClick={() => handleLanguageChange(language.code)}
+                                    className={`flex items-center gap-2 ${currentLanguage?.code === language.code ? 'bg-accent' : ''}`}
+                                    dir="ltr"
+                                >
+                                    <ReactCountryFlag
+                                        countryCode={language.countryCode}
+                                        svg
+                                        style={{
+                                            width: '1.2em',
+                                            height: '1.2em',
+                                        }}
+                                    />
+                                    <span>{language.name}</span>
+                                </DropdownMenuItem>
+                            ))}
                     </div>
                 </DropdownMenuGroup>
                 {isSuperAdmin && (
@@ -140,25 +146,21 @@ export const LanguageSwitcher: React.FC = () => {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                             onClick={() => setShowCreateModal(true)}
-                            className="justify-start text-primary font-semibold cursor-pointer"
+                            className="text-primary cursor-pointer justify-start font-semibold"
                         >
-                            <Plus className="h-4 w-4 mr-2" />
+                            <Plus className="mr-2 h-4 w-4" />
                             {t('Create Language')}
                         </DropdownMenuItem>
-                        <DropdownMenuItem asChild className="justify-start text-primary font-semibold cursor-pointer">
+                        <DropdownMenuItem asChild className="text-primary cursor-pointer justify-start font-semibold">
                             <a href={route('manage-language')} rel="noopener noreferrer">
-                                <Settings className="h-4 w-4 mr-2" />
+                                <Settings className="mr-2 h-4 w-4" />
                                 {t('Manage Language')}
                             </a>
                         </DropdownMenuItem>
                     </>
                 )}
             </DropdownMenuContent>
-            <CreateLanguageModal
-                open={showCreateModal}
-                onOpenChange={setShowCreateModal}
-                onSuccess={() => setShowCreateModal(false)}
-            />
+            <CreateLanguageModal open={showCreateModal} onOpenChange={setShowCreateModal} onSuccess={() => setShowCreateModal(false)} />
         </DropdownMenu>
     );
 };

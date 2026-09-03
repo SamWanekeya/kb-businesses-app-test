@@ -11,6 +11,7 @@ use Google_Service_Calendar_EventDateTime;
 class GoogleCalendarService
 {
     private $client;
+
     private $service;
 
     public function __construct()
@@ -23,6 +24,7 @@ class GoogleCalendarService
     {
         $enabled = getSetting('googleCalendarEnabled', null, $userId) === '1';
         \Log::info('Google Calendar enabled check', ['user_id' => $userId, 'enabled' => $enabled]);
+
         return $enabled;
     }
 
@@ -68,6 +70,7 @@ class GoogleCalendarService
     {
         if (!$this->isEnabled($userId)) {
             \Log::info('Google Calendar not enabled', ['user_id' => $userId]);
+
             return null;
         }
 
@@ -86,9 +89,9 @@ class GoogleCalendarService
                     'private' => [
                         'app_type' => $type,
                         'app_id' => $item->id,
-                        'app_user_id' => $userId
-                    ]
-                ]
+                        'app_user_id' => $userId,
+                    ],
+                ],
             ]);
 
             $userTimezone = getSetting('defaultTimezone', 'Asia/Kolkata', $userId);
@@ -130,14 +133,16 @@ class GoogleCalendarService
                 ->value('value') ?: 'primary';
 
             $calendarEvent = $this->service->events->insert($calendarId, $event);
+
             return $calendarEvent->getId();
         } catch (\Exception $e) {
             \Log::error('Google Calendar event creation failed', [
                 'error' => $e->getMessage(),
                 'user_id' => $userId,
                 'type' => $type,
-                'item_id' => $item->id ?? 'unknown'
+                'item_id' => $item->id ?? 'unknown',
             ]);
+
             return null;
         }
     }
@@ -196,9 +201,11 @@ class GoogleCalendarService
             $event->setEnd($end);
 
             $this->service->events->update($calendarId, $eventId, $event);
+
             return true;
         } catch (\Exception $e) {
             \Log::error('Google Calendar event update failed: ' . $e->getMessage());
+
             return false;
         }
     }
@@ -216,13 +223,14 @@ class GoogleCalendarService
                 ->value('value') ?: 'primary';
 
             $this->service->events->delete($calendarId, $eventId);
+
             return true;
         } catch (\Exception $e) {
             \Log::error('Google Calendar event deletion failed: ' . $e->getMessage());
+
             return false;
         }
     }
-
 
     public function getEvents($userId, $maxResults = 100, $timeMin = null, $timeMax = null)
     {
@@ -253,7 +261,7 @@ class GoogleCalendarService
             $results = $this->service->events->listEvents($calendarId, $optParams);
             $events = $results->getItems();
 
-            return array_map(function($event) {
+            return array_map(function ($event) {
                 $start = $event->getStart()->getDateTime() ?: $event->getStart()->getDate();
                 $end = $event->getEnd()->getDateTime() ?: $event->getEnd()->getDate();
 
@@ -278,11 +286,12 @@ class GoogleCalendarService
                         'description' => $event->getDescription() ?: '',
                         'location' => $event->getLocation() ?: '',
                         'source' => 'google',
-                    ]
+                    ],
                 ];
             }, $events);
         } catch (\Exception $e) {
             \Log::error('Google Calendar events fetch failed: ' . $e->getMessage());
+
             return [];
         }
     }

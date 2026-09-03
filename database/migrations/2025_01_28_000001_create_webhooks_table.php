@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     public function up(): void
     {
         Schema::create('webhooks', function (Blueprint $table) {
@@ -18,7 +17,7 @@ return new class extends Migration
                 'Meeting Invitation',
                 'Opportunity Created',
                 'Quote Created',
-                'Task Assigned'
+                'Task Assigned',
             ]);
             $table->enum('method', ['GET', 'POST']);
             $table->string('url');

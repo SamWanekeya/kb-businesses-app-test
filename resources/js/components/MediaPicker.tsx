@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { File, FileText, Image as ImageIcon, Trash2, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import MediaLibraryModal from './MediaLibraryModal';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-import MediaLibraryModal from './MediaLibraryModal';
-import { Image as ImageIcon, X, Trash2, File, FileText } from 'lucide-react';
 
 interface MediaPickerProps {
     label?: string;
@@ -22,7 +22,7 @@ export default function MediaPicker({
     multiple = false,
     placeholder = 'Select image...',
     showPreview = true,
-    returnType = 'url'
+    returnType = 'url',
 }: MediaPickerProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -63,16 +63,16 @@ export default function MediaPicker({
                 fetch(route('api.media.index'), {
                     credentials: 'same-origin',
                     headers: {
-                        'Accept': 'application/json',
+                        Accept: 'application/json',
                         'X-Requested-With': 'XMLHttpRequest',
                     },
                 })
-                    .then(response => response.json())
-                    .then(media => {
+                    .then((response) => response.json())
+                    .then((media) => {
                         const urls: string[] = [];
                         const names: string[] = [];
                         const mimes: string[] = [];
-                        ids.forEach(id => {
+                        ids.forEach((id) => {
                             const mediaItem = media.find((m: any) => m.id === Number(id));
                             if (mediaItem) {
                                 urls.push(mediaItem.url);
@@ -96,17 +96,24 @@ export default function MediaPicker({
             }
         } else if (returnType === 'url') {
             const valueStr = Array.isArray(value) ? value.join(',') : String(value || '');
-            const urls = valueStr ? valueStr.split(',').map(url => url.trim()).filter(Boolean) : [];
+            const urls = valueStr
+                ? valueStr
+                      .split(',')
+                      .map((url) => url.trim())
+                      .filter(Boolean)
+                : [];
             setImageUrls(urls);
             setImageNames(urls.map((_, index) => `File ${index + 1}`));
             setImageMimeTypes(urls.map(getMimeFromUrl));
         }
     }, [value, returnType]);
 
-    const displayValue = imageUrls.map((img) => {
-        const imagePathArr = String(img || '').split('/');
-        return imagePathArr[imagePathArr.length - 1];
-    }).join(', ');
+    const displayValue = imageUrls
+        .map((img) => {
+            const imagePathArr = String(img || '').split('/');
+            return imagePathArr[imagePathArr.length - 1];
+        })
+        .join(', ');
 
     const getFileIcon = (mime: string) => {
         if (mime.includes('pdf')) return <FileText className="h-7 w-7 text-red-500" />;
@@ -119,36 +126,28 @@ export default function MediaPicker({
         <div className="space-y-2">
             {label && <Label>{label}</Label>}
 
-            <div className="flex gap-2">
+            <div className="flex w-full min-w-0 gap-2">
                 <Input
+                    className="min-w-0 flex-1"
                     value={displayValue}
                     onChange={(e) => onChange(e.target.value)}
                     placeholder={placeholder}
                     readOnly={multiple}
                 />
-                <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setIsModalOpen(true)}
-                >
-                    <ImageIcon className="h-4 w-4 mr-2" />
-                    Browse
+                <Button type="button" variant="outline" onClick={() => setIsModalOpen(true)} className="shrink-0 max-[400px]:px-2.5">
+                    <ImageIcon className="mr-0 h-4 w-4 min-[405px]:mr-2" />
+                    <span className="max-[405px]:hidden">Browse</span>
                 </Button>
                 {(imageNames.length > 0 || displayValue) && (
-                    <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        onClick={handleClear}
-                    >
-                        <X className="h-4 w-4 mx-2" />
+                    <Button type="button" variant="outline" size="icon" onClick={handleClear} className="shrink-0">
+                        <X className="mx-2 h-4 w-4" />
                     </Button>
                 )}
             </div>
 
             {/* Preview */}
             {showPreview && imageUrls.length > 0 && (
-                <div className="grid grid-cols-4 gap-2 mt-2">
+                <div className="mt-2 grid grid-cols-4 gap-2">
                     {imageUrls.map((url, index) => {
                         const mime = imageMimeTypes[index] || '';
                         const isImage = mime.startsWith('image/');
@@ -158,15 +157,15 @@ export default function MediaPicker({
                                     <img
                                         src={url}
                                         alt={`Preview ${index + 1}`}
-                                        className="w-full h-20 object-cover rounded border"
+                                        className="h-20 w-full rounded border object-cover"
                                         onError={(e) => {
                                             e.currentTarget.style.display = 'none';
                                         }}
                                     />
                                 ) : (
-                                    <div className="w-full h-20 rounded border bg-muted flex flex-col items-center justify-center gap-1">
+                                    <div className="bg-muted flex h-20 w-full flex-col items-center justify-center gap-1 rounded border">
                                         {getFileIcon(mime)}
-                                        <span className="text-xs text-muted-foreground truncate px-1 max-w-full">
+                                        <span className="text-muted-foreground max-w-full truncate px-1 text-xs">
                                             {mime.split('/')[1]?.toUpperCase() || 'FILE'}
                                         </span>
                                     </div>
@@ -182,7 +181,7 @@ export default function MediaPicker({
                                                 onChange(newValue);
                                             }
                                         }}
-                                        className="absolute top-1 right-1 h-6 w-6 p-0 bg-red-500 text-white hover:bg-red-600"
+                                        className="absolute top-1 right-1 h-6 w-6 bg-red-500 p-0 text-white hover:bg-red-600"
                                     >
                                         <Trash2 className="h-3 w-3" />
                                     </Button>
@@ -199,7 +198,7 @@ export default function MediaPicker({
                 onSelect={handleSelect}
                 multiple={multiple}
                 returnType={returnType}
-                preSelected={Array.isArray(value) ? value : (value ? [value] : [])}
+                preSelected={Array.isArray(value) ? value : value ? [value] : []}
             />
         </div>
     );

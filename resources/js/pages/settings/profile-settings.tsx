@@ -1,32 +1,30 @@
-import { PageTemplate } from '@/components/page-template';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { type NavItem } from '@/types';
-import { useEffect, useRef, useState } from 'react';
-import { User, Lock, Camera } from 'lucide-react';
-import { usePage, router } from '@inertiajs/react';
-import { type SharedData } from '@/types';
+import { toast } from '@/components/custom-toast';
 import InputError from '@/components/input-error';
+import { PageTemplate } from '@/components/page-template';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { useTranslation } from 'react-i18next';
+import { cn } from '@/lib/utils';
+import { type NavItem, type SharedData } from '@/types';
 import { getDisplayUrl } from '@/utils/helper';
-import { toast } from '@/components/custom-toast';
-
+import { router, usePage } from '@inertiajs/react';
+import { Camera, Lock, User } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const sidebarNavItems: NavItem[] = [
     {
         title: 'Profile',
         href: '#profile',
-        icon: <User className="h-4 w-4 mr-2" />,
+        icon: <User className="mr-2 h-4 w-4" />,
     },
     {
         title: 'Password',
         href: '#password',
-        icon: <Lock className="h-4 w-4 mr-2" />,
-    }
+        icon: <Lock className="mr-2 h-4 w-4" />,
+    },
 ];
 
 export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerifyEmail?: boolean; status?: string }) {
@@ -80,15 +78,14 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
             forceFormData: true,
             onFinish: () => setProfileProcessing(false),
             onSuccess: (page) => {
-                setProfileData(prev => ({ ...prev, avatar: null }));
+                setProfileData((prev) => ({ ...prev, avatar: null }));
                 setProfileErrors({});
                 if (!globalSettings?.is_demo) {
                     toast.dismiss();
                 }
                 if ((page.props as any).flash?.success) {
                     toast.success(t((page.props as any).flash.success));
-                }
-                else if ((page.props as any).flash?.error) {
+                } else if ((page.props as any).flash?.error) {
                     toast.error(t((page.props as any).flash.error));
                 }
             },
@@ -109,7 +106,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
     // Handle avatar file selection
     const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) setProfileData(prev => ({ ...prev, avatar: file }));
+        if (file) setProfileData((prev) => ({ ...prev, avatar: file }));
     };
 
     // Get avatar URL
@@ -150,11 +147,11 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                     toast.dismiss();
                 }
                 if ((errors as any).current_password) {
-                    setPasswordData(prev => ({ ...prev, current_password: '' }));
+                    setPasswordData((prev) => ({ ...prev, current_password: '' }));
                     currentPasswordInput.current?.focus();
                 }
                 if ((errors as any).password) {
-                    setPasswordData(prev => ({ ...prev, password: '', password_confirmation: '' }));
+                    setPasswordData((prev) => ({ ...prev, password: '', password_confirmation: '' }));
                     passwordInput.current?.focus();
                 }
                 if (typeof errors === 'string') {
@@ -212,10 +209,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
     };
 
     return (
-        <PageTemplate
-            title={t("Profile Settings")}
-            url="/profile"
-        >
+        <PageTemplate title={t('Profile Settings')} url="/profile">
             <style>{`
             main {
             max-width: 100vw;
@@ -225,19 +219,22 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
             overflow-x: clip !important;
             }
         `}</style>
-            <div className="flex flex-col md:flex-row gap-8">
+            <div className="flex flex-col gap-8 md:flex-row">
                 {/* Sidebar */}
-                <div className="md:w-64 flex-shrink-0">
+                <div className="flex-shrink-0 md:w-64">
                     <div className="sticky top-20">
-                        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-3 pr-4">
-                             <div className="flex flex-col gap-2">
+                        <div className="bg-card text-card-foreground rounded-lg border p-3 pr-4 shadow-sm">
+                            <div className="flex flex-col gap-2">
                                 {sidebarNavItems.map((item) => (
                                     <Button
                                         key={item.href}
                                         variant="ghost"
-                                        className={cn('w-full justify-start gap-3 rounded-lg text-sm font-normal text-card-foreground hover:bg-muted hover:font-normal', {
-                                            'bg-muted font-medium text-card-foreground': activeSection === item.href.replace('#', ''),
-                                        })}
+                                        className={cn(
+                                            'text-card-foreground hover:bg-muted w-full justify-start gap-3 rounded-lg text-sm font-normal hover:font-normal',
+                                            {
+                                                'bg-muted text-card-foreground font-medium': activeSection === item.href.replace('#', ''),
+                                            },
+                                        )}
                                         onClick={() => handleNavClick(item.href)}
                                     >
                                         {item.icon}
@@ -255,7 +252,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                     <section id="profile" ref={profileRef} className="mb-16">
                         <Card className="shadow-sm">
                             <CardHeader>
-                                <CardTitle className="text-lg font-semibold">{t("Profile Information")}</CardTitle>
+                                <CardTitle className="text-lg font-semibold">{t('Profile Information')}</CardTitle>
                                 <CardDescription>{t("Update your account's profile information and email address")}</CardDescription>
                             </CardHeader>
                             <CardContent>
@@ -272,52 +269,49 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                                                     target.src = getDisplayUrl('storage/media/avatars/avatar.png');
                                                 }}
                                             />
-                                            <AvatarFallback className="text-lg">
-                                                {auth?.user?.name?.charAt(0)?.toUpperCase() || 'U'}
-                                            </AvatarFallback>
+                                            <AvatarFallback className="text-lg">{auth?.user?.name?.charAt(0)?.toUpperCase() || 'U'}</AvatarFallback>
                                         </Avatar>
                                         <div className="flex flex-col space-y-2">
-                                            <Label htmlFor="avatar" className="cursor-pointer inline-flex items-center px-4 py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md font-medium text-sm transition-colors">
-                                                <Camera className="h-4 w-4 mr-2" />
-                                                {t("Change Avatar")}
+                                            <Label
+                                                htmlFor="avatar"
+                                                className="border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex cursor-pointer items-center rounded-md border px-4 py-2 text-sm font-medium transition-colors"
+                                            >
+                                                <Camera className="mr-2 h-4 w-4" />
+                                                {t('Change Avatar')}
                                             </Label>
-                                            <Input
-                                                id="avatar"
-                                                type="file"
-                                                accept="image/*"
-                                                onChange={handleAvatarChange}
-                                                className="hidden"
-                                            />
-                                            <p className="text-xs text-muted-foreground">
-                                                {t("JPG, PNG, GIF up to 2MB")}
-                                            </p>
+                                            <Input id="avatar" type="file" accept="image/*" onChange={handleAvatarChange} className="hidden" />
+                                            <p className="text-muted-foreground text-xs">{t('JPG, PNG, GIF up to 2MB')}</p>
                                         </div>
                                     </div>
                                     <InputError className="mt-2" message={profileErrors.avatar} />
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="name" required>{t("Name")}</Label>
+                                        <Label htmlFor="name" required>
+                                            {t('Name')}
+                                        </Label>
                                         <Input
                                             id="name"
                                             className="mt-1 block w-full"
                                             value={profileData.name}
-                                            onChange={(e) => setProfileData(prev => ({ ...prev, name: e.target.value }))}
+                                            onChange={(e) => setProfileData((prev) => ({ ...prev, name: e.target.value }))}
                                             autoComplete="name"
-                                            placeholder={t("Full name")}
+                                            placeholder={t('Full name')}
                                         />
                                         <InputError className="mt-2" message={profileErrors.name} />
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="email" required>{t("Email address")}</Label>
+                                        <Label htmlFor="email" required>
+                                            {t('Email address')}
+                                        </Label>
                                         <Input
                                             id="email"
                                             type="email"
                                             className="mt-1 block w-full"
                                             value={profileData.email}
-                                            onChange={(e) => setProfileData(prev => ({ ...prev, email: e.target.value }))}
+                                            onChange={(e) => setProfileData((prev) => ({ ...prev, email: e.target.value }))}
                                             autoComplete="username"
-                                            placeholder={t("Email address")}
+                                            placeholder={t('Email address')}
                                         />
                                         <InputError className="mt-2" message={profileErrors.email} />
                                     </div>
@@ -325,26 +319,26 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                                     {mustVerifyEmail && auth?.user?.email_verified_at === null && (
                                         <div>
                                             <p className="text-muted-foreground -mt-4 text-sm">
-                                                {t("Your email address is unverified.")}{' '}
+                                                {t('Your email address is unverified.')}{' '}
                                                 <button
                                                     type="button"
                                                     onClick={() => route('verification.send')}
-                                                    className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current dark:decoration-neutral-500 cursor-pointer"
+                                                    className="text-foreground cursor-pointer underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current dark:decoration-neutral-500"
                                                 >
-                                                    {t("Click here to resend the verification email.")}
+                                                    {t('Click here to resend the verification email.')}
                                                 </button>
                                             </p>
 
                                             {status === 'verification-link-sent' && (
                                                 <div className="mt-2 text-sm font-medium text-green-600">
-                                                    {t("A new verification link has been sent to your email address.")}
+                                                    {t('A new verification link has been sent to your email address.')}
                                                 </div>
                                             )}
                                         </div>
                                     )}
 
                                     <div className="flex items-center gap-4">
-                                        <Button disabled={profileProcessing && !globalSettings?.is_demo}>{t("Save")}</Button>
+                                        <Button disabled={profileProcessing && !globalSettings?.is_demo}>{t('Save')}</Button>
                                     </div>
                                 </form>
                             </CardContent>
@@ -355,18 +349,20 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                     <section id="password" ref={passwordRef} className="mb-16">
                         <Card className="shadow-sm">
                             <CardHeader>
-                                <CardTitle className="text-lg font-semibold">{t("Update Password")}</CardTitle>
-                                <CardDescription>{t("Ensure your account is using a long, random password to stay secure")}</CardDescription>
+                                <CardTitle className="text-lg font-semibold">{t('Update Password')}</CardTitle>
+                                <CardDescription>{t('Ensure your account is using a long, random password to stay secure')}</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <form id="password-form" onSubmit={updatePassword} className="space-y-6">
                                     <div className="grid gap-2">
-                                        <Label htmlFor="current_password" required>{t("Current password")}</Label>
+                                        <Label htmlFor="current_password" required>
+                                            {t('Current password')}
+                                        </Label>
                                         <Input
                                             id="current_password"
                                             ref={currentPasswordInput}
                                             value={passwordData.current_password}
-                                            onChange={(e) => setPasswordData(prev => ({ ...prev, current_password: e.target.value }))}
+                                            onChange={(e) => setPasswordData((prev) => ({ ...prev, current_password: e.target.value }))}
                                             type="password"
                                             className="mt-1 block w-full"
                                             autoComplete="current-password"
@@ -376,12 +372,14 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="password" required>{t("New password")}</Label>
+                                        <Label htmlFor="password" required>
+                                            {t('New password')}
+                                        </Label>
                                         <Input
                                             id="password"
                                             ref={passwordInput}
                                             value={passwordData.password}
-                                            onChange={(e) => setPasswordData(prev => ({ ...prev, password: e.target.value }))}
+                                            onChange={(e) => setPasswordData((prev) => ({ ...prev, password: e.target.value }))}
                                             type="password"
                                             className="mt-1 block w-full"
                                             autoComplete="new-password"
@@ -391,11 +389,13 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="password_confirmation" required>{t("Confirm password")}</Label>
+                                        <Label htmlFor="password_confirmation" required>
+                                            {t('Confirm password')}
+                                        </Label>
                                         <Input
                                             id="password_confirmation"
                                             value={passwordData.password_confirmation}
-                                            onChange={(e) => setPasswordData(prev => ({ ...prev, password_confirmation: e.target.value }))}
+                                            onChange={(e) => setPasswordData((prev) => ({ ...prev, password_confirmation: e.target.value }))}
                                             type="password"
                                             className="mt-1 block w-full"
                                             autoComplete="new-password"
@@ -405,7 +405,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                                     </div>
 
                                     <div className="flex items-center gap-4">
-                                        <Button disabled={passwordProcessing && !globalSettings?.is_demo}>{t("Save")}</Button>
+                                        <Button disabled={passwordProcessing && !globalSettings?.is_demo}>{t('Save')}</Button>
                                     </div>
                                 </form>
                             </CardContent>

@@ -26,14 +26,14 @@ class TwilioQuoteCreateListener
         $quote = $event->quote;
         $billingContact = $quote->billingContact;
         $account = $quote->account;
-        if (isNotificationTemplateEnabled('Quote Create','twilio', createdBy()) && !empty($billingContact->phone)) {
+        if (isNotificationTemplateEnabled('Quote Create', 'twilio', createdBy()) && !empty($billingContact->phone)) {
 
             $variables = [
                 '{quote_number}' => $quote->quote_number ?? '-',
                 '{account_name}' => $account->name ?? '-',
                 '{total_amount}' => $quote->total_amount ? number_format($quote->total_amount, 2) : '0.00',
                 '{valid_until}' => $quote->valid_until ? date('Y-m-d', strtotime($quote->valid_until)) : '-',
-                '{organization_name}' => getOrganizationName()
+                '{organization_name}' => getOrganizationName(),
             ];
 
             try {

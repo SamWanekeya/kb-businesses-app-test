@@ -47,7 +47,7 @@ class PlanSeeder extends Seeder
                 'price' => 69,
                 'yearly_price' => 662.40,
                 'duration' => 'monthly',
-                'description' =>'Advanced insurance CRM for growing agencies and brokerages with automation, renewal management, reporting and team collaboration.',
+                'description' => 'Advanced insurance CRM for growing agencies and brokerages with automation, renewal management, reporting and team collaboration.',
                 'maximum_users' => 10,
                 'maximum_projects' => 25,
                 'maximum_contacts' => 10000,

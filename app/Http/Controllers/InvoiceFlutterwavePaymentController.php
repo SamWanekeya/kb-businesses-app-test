@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class InvoiceFlutterwavePaymentController extends Controller
@@ -37,19 +36,20 @@ class InvoiceFlutterwavePaymentController extends Controller
 
             if (!isset($settings['payment_settings']['flutterwave_secret_key'])) {
                 \Log::error('Flutterwave payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+
                 return back()->withErrors(['error' => __('Flutterwave not configured')]);
             }
 
             // Verify payment with Flutterwave API
             $curl = curl_init();
-            curl_setopt_array($curl, array(
+            curl_setopt_array($curl, [
                 CURLOPT_URL => "https://api.flutterwave.com/v3/transactions/" . $validated['payment_id'] . "/verify",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HTTPHEADER => [
                     "Authorization: Bearer " . $settings['payment_settings']['flutterwave_secret_key'],
                     "Content-Type: application/json",
                 ],
-            ));
+            ]);
 
             $response = curl_exec($curl);
             $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -59,8 +59,9 @@ class InvoiceFlutterwavePaymentController extends Controller
                 \Log::error('Flutterwave API error', [
                     'invoice_id' => $invoice->id,
                     'http_code' => $httpCode,
-                    'response' => $response
+                    'response' => $response,
                 ]);
+
                 return back()->withErrors(['error' => __('Payment verification failed - API error')]);
             }
 
@@ -68,6 +69,7 @@ class InvoiceFlutterwavePaymentController extends Controller
 
             if (!$result) {
                 \Log::error('Flutterwave invalid response', ['invoice_id' => $invoice->id]);
+
                 return back()->withErrors(['error' => __('Payment verification failed - Invalid response')]);
             }
 
@@ -78,8 +80,9 @@ class InvoiceFlutterwavePaymentController extends Controller
                     \Log::error('Flutterwave amount mismatch', [
                         'invoice_id' => $invoice->id,
                         'expected' => $validated['amount'],
-                        'received' => $paidAmount
+                        'received' => $paidAmount,
                     ]);
+
                     return back()->withErrors(['error' => __('Payment amount verification failed')]);
                 }
 
@@ -95,7 +98,7 @@ class InvoiceFlutterwavePaymentController extends Controller
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
-                    'payment_id' => $validated['payment_id']
+                    'payment_id' => $validated['payment_id'],
                 ]);
 
                 return back()->with('success', __('Payment successful'));
@@ -104,16 +107,18 @@ class InvoiceFlutterwavePaymentController extends Controller
             \Log::warning('Flutterwave payment verification failed', [
                 'invoice_id' => $invoice->id,
                 'payment_id' => $validated['payment_id'],
-                'result' => $result
+                'result' => $result,
             ]);
+
             return back()->withErrors(['error' => __('Payment verification failed')]);
 
         } catch (\Exception $e) {
             \Log::error('Flutterwave payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return $this->handleInvoicePaymentError($e, 'flutterwave');
         }
     }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CaseModel;
-use App\Models\Account;
-use App\Models\Contact;
 use App\Exports\CaseExport;
+use App\Models\Account;
+use App\Models\CaseModel;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -58,7 +58,7 @@ class CaseController extends Controller
         // Handle sorting
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'subject', 'created_at'];
+        $allowedSorts = ['id', 'subject', 'created_at'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -107,7 +107,7 @@ class CaseController extends Controller
         return Inertia::render('cases/create', [
             'accounts' => $accounts,
             'contacts' => $contacts,
-            'users' => $users
+            'users' => $users,
         ]);
     }
 
@@ -131,6 +131,7 @@ class CaseController extends Controller
             ->get()
             ->map(function ($call) {
                 $call->type = 'call';
+
                 return $call;
             });
 
@@ -138,7 +139,7 @@ class CaseController extends Controller
 
         return Inertia::render('cases/show', [
             'case' => $case,
-            'meetings' => $meetings
+            'meetings' => $meetings,
         ]);
     }
 
@@ -159,7 +160,7 @@ class CaseController extends Controller
             'case' => $case,
             'accounts' => $accounts,
             'contacts' => $contacts,
-            'users' => $users
+            'users' => $users,
         ]);
     }
 
@@ -200,6 +201,7 @@ class CaseController extends Controller
 
         if (!empty($errors)) {
             $message = __('Case created successfully, but ') . implode(', ', $errors);
+
             return redirect()->back()->with('warning', $message);
         }
 
@@ -249,6 +251,7 @@ class CaseController extends Controller
         if ($case) {
             try {
                 $case->delete();
+
                 return redirect()->back()->with('success', __('Case deleted successfully.'));
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete case.'));
@@ -267,7 +270,7 @@ class CaseController extends Controller
         if ($case) {
             try {
                 $validated = $request->validate([
-                    'status' => 'required|in:new,in_progress,pending,resolved,closed'
+                    'status' => 'required|in:new,in_progress,pending,resolved,closed',
                 ]);
 
                 $case->update(['status' => $validated['status']]);
@@ -288,6 +291,7 @@ class CaseController extends Controller
         }
 
         $name = 'case_' . date('Y-m-d i:h:s');
+
         return Excel::download(new CaseExport(), $name . '.xlsx');
     }
 }

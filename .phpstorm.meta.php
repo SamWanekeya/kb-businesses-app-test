@@ -1971,7 +1971,7 @@ namespace PHPSTORM_META {
             'excel.exports.properties.keywords' => 'string',
             'excel.exports.properties.category' => 'string',
             'excel.exports.properties.manager' => 'string',
-            'excel.exports.properties.company' => 'string',
+            'excel.exports.properties.organization' => 'string',
             'excel.exports.source_handlers' => 'array',
             'excel.imports.read_only' => 'boolean',
             'excel.imports.ignore_empty' => 'boolean',
@@ -1989,7 +1989,7 @@ namespace PHPSTORM_META {
             'excel.imports.properties.keywords' => 'string',
             'excel.imports.properties.category' => 'string',
             'excel.imports.properties.manager' => 'string',
-            'excel.imports.properties.company' => 'string',
+            'excel.imports.properties.organization' => 'string',
             'excel.imports.cells.middleware' => 'array',
             'excel.extension_detector.xlsx' => 'string',
             'excel.extension_detector.xlsm' => 'string',
@@ -3126,7 +3126,7 @@ namespace PHPSTORM_META {
             'excel.exports.properties.keywords' => 'string',
             'excel.exports.properties.category' => 'string',
             'excel.exports.properties.manager' => 'string',
-            'excel.exports.properties.company' => 'string',
+            'excel.exports.properties.organization' => 'string',
             'excel.exports.source_handlers' => 'array',
             'excel.imports.read_only' => 'boolean',
             'excel.imports.ignore_empty' => 'boolean',
@@ -3144,7 +3144,7 @@ namespace PHPSTORM_META {
             'excel.imports.properties.keywords' => 'string',
             'excel.imports.properties.category' => 'string',
             'excel.imports.properties.manager' => 'string',
-            'excel.imports.properties.company' => 'string',
+            'excel.imports.properties.organization' => 'string',
             'excel.imports.cells.middleware' => 'array',
             'excel.extension_detector.xlsx' => 'string',
             'excel.extension_detector.xlsm' => 'string',
@@ -4281,7 +4281,7 @@ namespace PHPSTORM_META {
             'excel.exports.properties.keywords' => 'string',
             'excel.exports.properties.category' => 'string',
             'excel.exports.properties.manager' => 'string',
-            'excel.exports.properties.company' => 'string',
+            'excel.exports.properties.organization' => 'string',
             'excel.exports.source_handlers' => 'array',
             'excel.imports.read_only' => 'boolean',
             'excel.imports.ignore_empty' => 'boolean',
@@ -4299,7 +4299,7 @@ namespace PHPSTORM_META {
             'excel.imports.properties.keywords' => 'string',
             'excel.imports.properties.category' => 'string',
             'excel.imports.properties.manager' => 'string',
-            'excel.imports.properties.company' => 'string',
+            'excel.imports.properties.organization' => 'string',
             'excel.imports.cells.middleware' => 'array',
             'excel.extension_detector.xlsx' => 'string',
             'excel.extension_detector.xlsm' => 'string',
@@ -4402,7 +4402,7 @@ namespace PHPSTORM_META {
     override(\optional(0), type(0));
 
             registerArgumentsSet('auth', );
-        registerArgumentsSet('configs', 
+        registerArgumentsSet('configs',
 'broadcasting.default','broadcasting.connections.reverb.driver','broadcasting.connections.reverb.key','broadcasting.connections.reverb.secret','broadcasting.connections.reverb.app_id',
 'broadcasting.connections.reverb.options.host','broadcasting.connections.reverb.options.port','broadcasting.connections.reverb.options.scheme','broadcasting.connections.reverb.options.useTLS','broadcasting.connections.reverb.client_options',
 'broadcasting.connections.pusher.driver','broadcasting.connections.pusher.key','broadcasting.connections.pusher.secret','broadcasting.connections.pusher.app_id','broadcasting.connections.pusher.options.cluster',
@@ -4617,10 +4617,10 @@ namespace PHPSTORM_META {
 'excel.exports.csv.enclosure','excel.exports.csv.line_ending','excel.exports.csv.use_bom','excel.exports.csv.include_separator_line','excel.exports.csv.excel_compatibility',
 'excel.exports.csv.output_encoding','excel.exports.csv.test_auto_detect','excel.exports.properties.creator','excel.exports.properties.lastModifiedBy','excel.exports.properties.title',
 'excel.exports.properties.description','excel.exports.properties.subject','excel.exports.properties.keywords','excel.exports.properties.category','excel.exports.properties.manager',
-'excel.exports.properties.company','excel.exports.source_handlers','excel.imports.read_only','excel.imports.ignore_empty','excel.imports.heading_row.formatter',
+'excel.exports.properties.organization','excel.exports.source_handlers','excel.imports.read_only','excel.imports.ignore_empty','excel.imports.heading_row.formatter',
 'excel.imports.csv.delimiter','excel.imports.csv.enclosure','excel.imports.csv.escape_character','excel.imports.csv.contiguous','excel.imports.csv.input_encoding',
 'excel.imports.properties.creator','excel.imports.properties.lastModifiedBy','excel.imports.properties.title','excel.imports.properties.description','excel.imports.properties.subject',
-'excel.imports.properties.keywords','excel.imports.properties.category','excel.imports.properties.manager','excel.imports.properties.company','excel.imports.cells.middleware',
+'excel.imports.properties.keywords','excel.imports.properties.category','excel.imports.properties.manager','excel.imports.properties.organization','excel.imports.cells.middleware',
 'excel.extension_detector.xlsx','excel.extension_detector.xlsm','excel.extension_detector.xltx','excel.extension_detector.xltm','excel.extension_detector.xls',
 'excel.extension_detector.xlt','excel.extension_detector.ods','excel.extension_detector.ots','excel.extension_detector.slk','excel.extension_detector.xml',
 'excel.extension_detector.gnumeric','excel.extension_detector.htm','excel.extension_detector.html','excel.extension_detector.csv','excel.extension_detector.tsv',
@@ -4634,7 +4634,7 @@ namespace PHPSTORM_META {
 'ide-helper.include_class_docblocks','ide-helper.force_fqn','ide-helper.use_generics_annotations','ide-helper.macro_default_return_types.Illuminate\\Http\\Client\\Factory','ide-helper.additional_relation_types',
 'ide-helper.additional_relation_return_types','ide-helper.enforce_nullable_relationships','ide-helper.soft_deletes_force_nullable','ide-helper.post_migrate','tinker.commands',
 'tinker.alias','tinker.dont_alias','tinker.trust_project',);
-        registerArgumentsSet('middleware', 
+        registerArgumentsSet('middleware',
 'web','api','auth','auth.basic','auth.session',
 'cache.headers','can','guest','password.confirm','precognitive',
 'signed','throttle','verified','role','permission',
@@ -4745,7 +4745,7 @@ namespace PHPSTORM_META {
 'documents.show','documents.download','documents.store','documents.update','documents.destroy',
 'documents.toggle-status','document-folders.store','document-folders.update','document-folders.destroy','documents.folder',
 'chatgpt.generate','manage-language','language.load','language.save','languages.change',
-'languages.create','languages.delete','languages.toggle','login-history.index','login-history.destroy',
+'languages.create','languages.delete','languages.toggle','sign-in-history.index','sign-in-history.destroy',
 'landing-page.settings','landing-page.settings.update','landing-page.custom-pages.index','landing-page.custom-pages.create','landing-page.custom-pages.store',
 'landing-page.custom-pages.show','landing-page.custom-pages.edit','landing-page.custom-pages.update','landing-page.custom-pages.destroy','contact-messages.index',
 'contact-messages.destroy','newsletters.index','newsletters.destroy','impersonate.start','landing-page',
@@ -4781,7 +4781,7 @@ namespace PHPSTORM_META {
 'invoice.ozow.create-payment','invoice.ozow.success','invoice.ozow.callback','invoice.cashfree.create-session','invoice.cashfree.verify-payment',
 'invoice.cashfree.webhook','invoice.payments.approve','invoice.payments.reject','cookie.consent.store','cookie.consent.download',
 'invoice.preview','storage.local','storage.local.upload',);
-        registerArgumentsSet('views', 
+        registerArgumentsSet('views',
 'aamarpay-redirect','app','emails.test','vendor.mail.html.button','vendor.mail.html.footer',
 'vendor.mail.html.header','vendor.mail.html.layout','vendor.mail.html.message','vendor.mail.html.panel','vendor.mail.html.subcopy',
 'vendor.mail.html.table','vendor.mail.text.button','vendor.mail.text.footer','vendor.mail.text.header','vendor.mail.text.layout',
@@ -4799,7 +4799,7 @@ namespace PHPSTORM_META {
 'laravel-exceptions::minimal','media-library::image','media-library::placeholderSvg','media-library::responsiveImage','media-library::responsiveImageWithPlaceholder',
 'notifications::email','pagination::bootstrap-3','pagination::bootstrap-4','pagination::bootstrap-5','pagination::semantic-ui',
 'pagination::simple-bootstrap-3','pagination::simple-bootstrap-4','pagination::simple-bootstrap-5','pagination::simple-tailwind','pagination::tailwind',);
-        registerArgumentsSet('translations', 
+        registerArgumentsSet('translations',
 'C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.auth.failed','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.auth.password','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.auth.throttle','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.pagination.previous','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.pagination.next',
 'C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.passwords.reset','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.passwords.sent','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.passwords.throttled','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.passwords.token','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.passwords.user',
 'C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.accepted','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.accepted_if','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.active_url','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.after','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.after_or_equal',
@@ -4830,7 +4830,7 @@ namespace PHPSTORM_META {
 'C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.size.file','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.size.numeric','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.size.string','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.starts_with','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.string',
 'C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.timezone','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.unique','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.uploaded','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.uppercase','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.url',
 'C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.ulid','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.uuid','C:.wamp64.www.compa.kakbima.kb-businesses-app-test.vendor.laravel.framework.src.Illuminate.Translation.lang.en.validation.custom.attribute-name.rule-name',);
-        registerArgumentsSet('env', 
+        registerArgumentsSet('env',
 'APP_NAME','APP_ENV','APP_DEMO','APP_KEY','APP_DEBUG',
 'APP_URL','APP_TIMEZONE','APP_DEFAULT_LANGUAGE','APP_FALLBACK_LOCALE','APP_FAKER_LOCALE',
 'APP_MAINTENANCE_DRIVER','LOG_CHANNEL','LOG_STACK','LOG_DEPRECATIONS_CHANNEL','LOG_LEVEL',
@@ -4849,7 +4849,7 @@ namespace PHPSTORM_META {
 'CSP_STYLE_SOURCES','CSP_IMG_SOURCES','CSP_FONT_SOURCES','CSP_CONNECT_SOURCES','CSP_FRAME_SOURCES',
 'INERTIA_SSR_THROW_ON_ERROR','INERTIA_ENSURE_PAGES_EXIST','VITE_APP_NAME','VITE_APP_DEMO','VITE_SESSION_DOMAIN',
 'VITE_APP_URL','VITE_DEFAULT_LOCALE','VITE_APP_DOMAIN_NAME',);
-        
+
                 expectedArguments(\Illuminate\Support\Facades\Gate::has(), 0, argumentsSet('auth'));
     expectedArguments(\Illuminate\Support\Facades\Gate::allows(), 0, argumentsSet('auth'));
     expectedArguments(\Illuminate\Support\Facades\Gate::denies(), 0, argumentsSet('auth'));
@@ -4913,5 +4913,5 @@ namespace PHPSTORM_META {
                 expectedArguments(\Illuminate\Contracts\Translation\Translator::get(), 0, argumentsSet('translations'));
                 expectedArguments(\env(), 0, argumentsSet('env'));
                 expectedArguments(\Illuminate\Support\Env::get(), 0, argumentsSet('env'));
-            
+
 }

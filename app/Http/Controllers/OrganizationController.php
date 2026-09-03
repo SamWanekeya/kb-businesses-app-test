@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Plan;
-use App\Models\PlanOrder;
 use App\Models\LeadStatus;
 use App\Models\OpportunityStage;
+use App\Models\Plan;
+use App\Models\PlanOrder;
 use App\Models\TaskStatus;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
@@ -87,7 +87,7 @@ class OrganizationController extends Controller
         return Inertia::render('organizations/index', [
             'organizations' => $organizations,
             'plans' => $plans,
-            'filters' => $request->only(['search', 'status', 'start_date', 'end_date', 'sort_field', 'sort_direction', 'per_page', 'view', 'page'])
+            'filters' => $request->only(['search', 'status', 'start_date', 'end_date', 'sort_field', 'sort_direction', 'per_page', 'view', 'page']),
         ]);
     }
 
@@ -258,7 +258,7 @@ class OrganizationController extends Controller
                 $enabledFeatures = $plan->getEnabledFeatures();
                 $featureLabels = [
                     'kakbima_intelligence' => __('Kakbima Intelligence'),
-                    'password_protection' => __('Password Protection')
+                    'password_protection' => __('Password Protection'),
                 ];
                 foreach ($enabledFeatures as $feature) {
                     if (isset($featureLabels[$feature])) {
@@ -267,7 +267,9 @@ class OrganizationController extends Controller
                 }
             } else {
                 // Fallback to legacy columns
-                if ($plan->enable_kakbima_intelligence === 'on') $features[] = __('Kakbima Intelligence');
+                if ($plan->enable_kakbima_intelligence === 'on') {
+                    $features[] = __('Kakbima Intelligence');
+                }
             }
 
             // Monthly plan
@@ -289,7 +291,7 @@ class OrganizationController extends Controller
                 'is_trial' => $plan->is_trial,
                 'trial_days' => $plan->trial_days,
                 'is_current' => $organization->plan_id === $plan->id && ($currentBillingCycle === 'monthly'),
-                'is_default' => $plan->is_default
+                'is_default' => $plan->is_default,
             ];
 
             // Yearly plan (create a separate entry)
@@ -312,7 +314,7 @@ class OrganizationController extends Controller
                 'is_trial' => $plan->is_trial,
                 'trial_days' => $plan->trial_days,
                 'is_current' => $organization->plan_id === $plan->id && ($currentBillingCycle === 'yearly'),
-                'is_default' => $plan->is_default
+                'is_default' => $plan->is_default,
             ];
         }
 
@@ -321,11 +323,10 @@ class OrganizationController extends Controller
             'organization' => [
                 'id' => $organization->id,
                 'name' => $organization->name,
-                'current_plan_id' => $organization->plan_id
-            ]
+                'current_plan_id' => $organization->plan_id,
+            ],
         ]);
     }
-
 
     public function upgradePlan(Request $request, User $organization)
     {

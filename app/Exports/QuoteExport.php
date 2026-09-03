@@ -2,10 +2,10 @@
 
 namespace App\Exports;
 
+use App\Models\Quote;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use App\Models\Quote;
 
 class QuoteExport implements FromCollection, WithHeadings, WithMapping
 {
@@ -73,7 +73,7 @@ class QuoteExport implements FromCollection, WithHeadings, WithMapping
             "Total Amount",
             "Status",
             "Valid Until",
-            "Assigned User"
+            "Assigned User",
         ];
     }
 }

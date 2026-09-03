@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\PayoutRequest;
 use App\Models\Plan;
 use App\Models\Referral;
-use App\Models\PayoutRequest;
+use App\Models\User;
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Faker\Factory as Faker;
 
 class ReferralProgramSeeder extends Seeder
 {
@@ -35,7 +35,7 @@ class ReferralProgramSeeder extends Seeder
         $referredOrganizations = [
             'TechStart Solutions', 'Digital Marketing Pro', 'CloudSync Systems', 'DataFlow Analytics',
             'WebCraft Studios', 'MobileFirst Apps', 'SecureNet Services', 'AutoScale Tech',
-            'SmartBiz Tools', 'InnovateLab Inc', 'GrowthHack Agency', 'NextGen Software'
+            'SmartBiz Tools', 'InnovateLab Inc', 'GrowthHack Agency', 'NextGen Software',
         ];
 
         // Create 12 referred users for organization@kakbima.dev (MORE than others)

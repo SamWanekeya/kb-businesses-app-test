@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\PayoutRequest;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Faker\Factory as Faker;
 
 class PayoutRequestSeeder extends Seeder
 {
@@ -15,6 +14,7 @@ class PayoutRequestSeeder extends Seeder
 
         if ($organizations->isEmpty()) {
             $this->command->warn('No organization users found. Please seed users first.');
+
             return;
         }
 
@@ -37,8 +37,8 @@ class PayoutRequestSeeder extends Seeder
                         'Monthly commission payout request',
                         'Referral commission for Q1',
                         'Weekly payout request',
-                        'Quarterly earnings withdrawal'
-                    ])
+                        'Quarterly earnings withdrawal',
+                    ]),
                 ]);
             }
         }

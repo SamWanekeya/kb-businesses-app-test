@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\CaseModel;
 use App\Models\Account;
+use App\Models\CaseModel;
 use App\Models\Contact;
 use App\Models\User;
-use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class CaseSeeder extends Seeder
 {
@@ -18,6 +18,7 @@ class CaseSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -49,11 +50,11 @@ class CaseSeeder extends Seeder
                 'API Rate Limit Exceeded',
                 'File Upload Size Limit Issue',
                 'Two-Factor Authentication Problems',
-                'Bulk Import Data Validation Errors'
+                'Bulk Import Data Validation Errors',
             ];
 
             $caseDescriptions = [
-                'Customer is experiencing difficulties accessing their account and needs immediate assistance with login credentials.',
+                'Customer is experiencing difficulties accessing their account and needs immediate assistance with sign in credentials.',
                 'The data export feature is not functioning correctly and returns incomplete results when generating reports.',
                 'Integration with the email marketing platform is failing and causing synchronization errors.',
                 'Report generation is taking an unusually long time to complete, affecting daily operations.',
@@ -67,7 +68,7 @@ class CaseSeeder extends Seeder
                 'API requests are being rejected due to rate limit exceeded, affecting third-party integrations.',
                 'File upload functionality is rejecting files due to size limit restrictions, impacting user productivity.',
                 'Two-factor authentication system is not working properly, preventing secure access to user accounts.',
-                'Bulk data import process is failing validation checks, preventing large dataset uploads from completing.'
+                'Bulk data import process is failing validation checks, preventing large dataset uploads from completing.',
             ];
 
             for ($i = 0; $i < 15; $i++) {

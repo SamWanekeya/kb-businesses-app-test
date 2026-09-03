@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
-import { PageTemplate } from '@/components/page-template';
-import { usePage, router } from '@inertiajs/react';
-import { useTranslation } from 'react-i18next';
-import { toast } from '@/components/custom-toast';
-import { Plus } from 'lucide-react';
-import { hasPermission } from '@/utils/authorization';
-import { CrudTable } from '@/components/CrudTable';
 import { CrudDeleteModal } from '@/components/CrudDeleteModal';
+import { CrudTable } from '@/components/CrudTable';
+import { toast } from '@/components/custom-toast';
+import { PageTemplate } from '@/components/page-template';
+import { PermissionBadges } from '@/components/PermissionBadges';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { PermissionBadges } from '@/components/PermissionBadges';
+import { hasPermission } from '@/utils/authorization';
+import { router, usePage } from '@inertiajs/react';
+import { Plus } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function RolesPage() {
     const { t } = useTranslation();
@@ -21,7 +21,7 @@ export default function RolesPage() {
     const [currentItem, setCurrentItem] = useState<any>(null);
 
     const hasActiveFilters = () => searchTerm !== '';
-    const activeFilterCount = () => searchTerm ? 1 : 0;
+    const activeFilterCount = () => (searchTerm ? 1 : 0);
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -29,29 +29,40 @@ export default function RolesPage() {
     };
 
     const applyFilters = () => {
-        router.get(route('roles.index'), {
-            page: 1,
-            search: searchTerm || undefined,
-            sort_field: pageFilters.sort_field || undefined,
-            sort_direction: pageFilters.sort_direction || undefined,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('roles.index'),
+            {
+                page: 1,
+                search: searchTerm || undefined,
+                sort_field: pageFilters.sort_field || undefined,
+                sort_direction: pageFilters.sort_direction || undefined,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleSort = (field: string) => {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
-        router.get(route('roles.index'), {
-            page: 1,
-            search: searchTerm || undefined,
-            sort_field: field,
-            sort_direction: direction,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('roles.index'),
+            {
+                page: 1,
+                search: searchTerm || undefined,
+                sort_field: field,
+                sort_direction: direction,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const pageInitialState = useState(true);
     useEffect(() => {
-        if (pageInitialState[0]) { pageInitialState[1](false); return; }
+        if (pageInitialState[0]) {
+            pageInitialState[1](false);
+            return;
+        }
         applyFilters();
     }, [searchTerm]);
 
@@ -86,24 +97,30 @@ export default function RolesPage() {
             },
             onError: (errors) => {
                 if (!globalSettings?.is_demo) toast.dismiss();
-                toast.error(typeof errors === 'string' ? t(errors) : t('Failed to delete role: {{errors}}', { errors: Object.values(errors).join(', ') }));
-            }
+                toast.error(
+                    typeof errors === 'string' ? t(errors) : t('Failed to delete role: {{errors}}', { errors: Object.values(errors).join(', ') }),
+                );
+            },
         });
     };
 
     const breadcrumbs = [
         { title: t('Dashboard'), href: route('dashboard') },
         { title: t('Staff'), href: route('roles.index') },
-        { title: t('Roles') }
+        { title: t('Roles') },
     ];
 
     const pageActions = [];
     if (hasPermission(permissions, 'create-roles')) {
         pageActions.push({
             label: t('Add Role'),
-            icon: <Plus className="h-4 w-4 mr-2" />,
+            icon: <Plus className="mr-0 h-4 w-4 min-[420px]:mr-2" />,
             variant: 'default' as const,
             onClick: () => router.get(route('roles.create')),
+            className: 'h-8 w-8 min-[420px]:h-9 min-[420px]:w-auto px-0 min-[420px]:px-4',
+            labelClassName: 'hidden min-[420px]:inline',
+            tooltip: t('Add Role'),
+            tooltipClassName: 'min-[420px]:hidden',
         });
     }
 
@@ -112,12 +129,12 @@ export default function RolesPage() {
             key: 'label',
             label: t('Name'),
             sortable: true,
-            render: (value: string) => value || '-'
+            render: (value: string) => value || '-',
         },
         {
             key: 'permissions',
             label: t('Permissions'),
-            render: (value: any[]) => <PermissionBadges permissions={value || []} />
+            render: (value: any[]) => <PermissionBadges permissions={value || []} />,
         },
         {
             key: 'created_at',
@@ -134,14 +151,14 @@ export default function RolesPage() {
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
-            requiredPermission: 'view-roles'
+            requiredPermission: 'view-roles',
         },
         {
             label: t('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
-            requiredPermission: 'edit-roles'
+            requiredPermission: 'edit-roles',
         },
         {
             label: t('Delete'),
@@ -149,7 +166,7 @@ export default function RolesPage() {
             action: 'delete',
             className: 'text-red-500',
             requiredPermission: 'delete-roles',
-            condition: (row: any) => row.is_editable !== false
+            condition: (row: any) => row.is_editable !== false,
         },
     ];
 
@@ -162,7 +179,7 @@ export default function RolesPage() {
             breadcrumbs={breadcrumbs}
             noPadding
         >
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
+            <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -184,7 +201,7 @@ export default function RolesPage() {
                 />
             </div>
 
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+            <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                 <CrudTable
                     columns={columns}
                     actions={actions}
@@ -199,7 +216,7 @@ export default function RolesPage() {
                         view: 'view-roles',
                         create: 'create-roles',
                         edit: 'edit-roles',
-                        delete: 'delete-roles'
+                        delete: 'delete-roles',
                     }}
                 />
 
@@ -212,13 +229,17 @@ export default function RolesPage() {
                     onPageChange={(url) => router.get(url)}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
-                        router.get(route('roles.index'), {
-                            page: 1,
-                            search: searchTerm || undefined,
-                            sort_field: pageFilters.sort_field || undefined,
-                            sort_direction: pageFilters.sort_direction || undefined,
-                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
-                        }, { preserveState: true, preserveScroll: true });
+                        router.get(
+                            route('roles.index'),
+                            {
+                                page: 1,
+                                search: searchTerm || undefined,
+                                sort_field: pageFilters.sort_field || undefined,
+                                sort_direction: pageFilters.sort_direction || undefined,
+                                ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+                            },
+                            { preserveState: true, preserveScroll: true },
+                        );
                     }}
                 />
             </div>

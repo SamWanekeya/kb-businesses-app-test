@@ -4,51 +4,51 @@ namespace App\Providers;
 
 use App\Events\AccountCreate;
 use App\Events\CaseCreated;
-use App\Events\UserCreated;
-use App\Listeners\SendUserCreatedEmail;
+use App\Events\DeliveryOrderCreated;
+use App\Events\InvoiceCreated;
+use App\Events\InvoiceReminderSent;
 use App\Events\LeadAssigned;
 use App\Events\LeadStatusChanged;
-use App\Events\QuoteCreated;
-use App\Events\QuoteStatusChanged;
-use App\Events\SalesOrderCreated;
-use App\Events\InvoiceCreated;
-use App\Events\DeliveryOrderCreated;
-use App\Events\ReturnOrderCreated;
-use App\Events\ReceiptOrderCreated;
-use App\Events\PurchaseOrderCreated;
-use App\Events\TaskAssigned;
 use App\Events\MeetingInvitation;
 use App\Events\OpportunityCreated;
 use App\Events\OpportunityStageChanged;
-use App\Events\InvoiceReminderSent;
+use App\Events\PurchaseOrderCreated;
+use App\Events\QuoteCreated;
+use App\Events\QuoteStatusChanged;
+use App\Events\ReceiptOrderCreated;
+use App\Events\ReturnOrderCreated;
+use App\Events\SalesOrderCreated;
+use App\Events\TaskAssigned;
+use App\Events\UserCreated;
 use App\Listeners\SendAssignLeadEmail;
 use App\Listeners\SendCaseCreatedEmail;
-use App\Listeners\SendLeadStatusChangedEmail;
-use App\Listeners\SendQuoteCreatedEmail;
-use App\Listeners\SendQuoteStatusChangedEmail;
-use App\Listeners\SendSalesOrderCreatedEmail;
-use App\Listeners\SendInvoiceCreatedEmail;
 use App\Listeners\SendDeliveryOrderCreatedEmail;
-use App\Listeners\SendReturnOrderCreatedEmail;
-use App\Listeners\SendReceiptOrderCreatedEmail;
-use App\Listeners\SendPurchaseOrderCreatedEmail;
-use App\Listeners\SendTaskAssignedEmail;
+use App\Listeners\SendInvoiceCreatedEmail;
+use App\Listeners\SendInvoiceReminderEmail;
+use App\Listeners\SendLeadStatusChangedEmail;
 use App\Listeners\SendMeetingInvitationEmail;
 use App\Listeners\SendOpportunityCreatedEmail;
 use App\Listeners\SendOpportunityStageChangedEmail;
-use App\Listeners\SendInvoiceReminderEmail;
-use App\Listeners\TwilioAccountCreateListener;
-use App\Listeners\TwilioCaseCreateListener;
-use App\Listeners\TwilioLeadCreateListener;
-use App\Listeners\TwilioMettingCreateListener;
-use App\Listeners\TwilioOpportunityCreateListener;
-use App\Listeners\TwilioQuoteCreateListener;
+use App\Listeners\SendPurchaseOrderCreatedEmail;
+use App\Listeners\SendQuoteCreatedEmail;
+use App\Listeners\SendQuoteStatusChangedEmail;
+use App\Listeners\SendReceiptOrderCreatedEmail;
+use App\Listeners\SendReturnOrderCreatedEmail;
+use App\Listeners\SendSalesOrderCreatedEmail;
+use App\Listeners\SendTaskAssignedEmail;
+use App\Listeners\SendUserCreatedEmail;
 use App\Listeners\SlackAccountCreateListener;
 use App\Listeners\SlackCaseCreateListener;
 use App\Listeners\SlackLeadCreateListener;
 use App\Listeners\SlackMeetingCreateListener;
 use App\Listeners\SlackOpportunityCreateListener;
 use App\Listeners\SlackQuoteCreateListener;
+use App\Listeners\TwilioAccountCreateListener;
+use App\Listeners\TwilioCaseCreateListener;
+use App\Listeners\TwilioLeadCreateListener;
+use App\Listeners\TwilioMettingCreateListener;
+use App\Listeners\TwilioOpportunityCreateListener;
+use App\Listeners\TwilioQuoteCreateListener;
 use App\Listeners\WebhookAssignLeadListener;
 use App\Listeners\WebhookCaseCreateListener;
 use App\Listeners\WebhookMeetingInvitationListener;
@@ -65,7 +65,6 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array<class-string, array<int, class-string>>
      */
-
     protected $listen = [
         UserCreated::class => [
             SendUserCreatedEmail::class,

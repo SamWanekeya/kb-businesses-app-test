@@ -1,28 +1,23 @@
 // pages/users/index.tsx
-import { useState, useEffect } from 'react';
-import { usersConfig } from '@/config/crud/users';
+import { CrudDeleteModal } from '@/components/CrudDeleteModal';
+import { CrudFormModal } from '@/components/CrudFormModal';
+import { CrudTable } from '@/components/CrudTable';
+import { toast } from '@/components/custom-toast';
 import { PageTemplate } from '@/components/page-template';
-import { usePage, router } from '@inertiajs/react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Dialog } from '@/components/ui/dialog';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { Card } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Filter, Search, Plus, Eye, Edit, Trash2, KeyRound, Lock, Unlock, History } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { hasPermission } from '@/utils/authorization';
-import { CrudTable } from '@/components/CrudTable';
-import { CrudFormModal } from '@/components/CrudFormModal';
-import { CrudDeleteModal } from '@/components/CrudDeleteModal';
-import { Dialog } from '@/components/ui/dialog';
-import { toast } from '@/components/custom-toast';
 import { useInitials } from '@/hooks/use-initials';
-import { useTranslation } from 'react-i18next';
+import { hasPermission } from '@/utils/authorization';
 import { getDisplayUrl } from '@/utils/helper';
+import { router, usePage } from '@inertiajs/react';
+import { Edit, Eye, History, KeyRound, Lock, Plus, Trash2, Unlock } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ViewPopup from './view';
 
 export default function Users() {
@@ -32,9 +27,7 @@ export default function Users() {
     const getInitials = useInitials();
 
     // State
-    const [activeView, setActiveView] = useState(
-        ['list', 'grid'].includes(pageFilters.view) ? pageFilters.view : 'list'
-    );
+    const [activeView, setActiveView] = useState(['list', 'grid'].includes(pageFilters.view) ? pageFilters.view : 'list');
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
     const [selectedRole, setSelectedRole] = useState(pageFilters.role || 'all');
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -60,28 +53,36 @@ export default function Users() {
     };
 
     const applyFilters = () => {
-        router.get(route('users.index'), {
-            view: activeView,
-            page: 1,
-            search: searchTerm || undefined,
-            role: selectedRole !== 'all' ? selectedRole : undefined,
-            sort_field: pageFilters.sort_field || undefined,
-            sort_direction: pageFilters.sort_direction || undefined,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('users.index'),
+            {
+                view: activeView,
+                page: 1,
+                search: searchTerm || undefined,
+                role: selectedRole !== 'all' ? selectedRole : undefined,
+                sort_field: pageFilters.sort_field || undefined,
+                sort_direction: pageFilters.sort_direction || undefined,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleSort = (field: string) => {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
-        router.get(route('users.index'), {
-            view: activeView,
-            page: 1,
-            search: searchTerm || undefined,
-            role: selectedRole !== 'all' ? selectedRole : undefined,
-            sort_field: field,
-            sort_direction: direction,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('users.index'),
+            {
+                view: activeView,
+                page: 1,
+                search: searchTerm || undefined,
+                role: selectedRole !== 'all' ? selectedRole : undefined,
+                sort_field: field,
+                sort_direction: direction,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleAction = (action: string, item: any) => {
@@ -143,12 +144,12 @@ export default function Users() {
                     } else {
                         toast.error(`Failed to create user: ${Object.values(errors).join(', ')}`);
                     }
-                }
+                },
             });
         } else if (formMode === 'edit') {
             toast.loading(t('Updating user...'));
 
-            router.put(route("users.update", currentItem.id), formData, {
+            router.put(route('users.update', currentItem.id), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
                     toast.dismiss();
@@ -167,7 +168,7 @@ export default function Users() {
                     } else {
                         toast.error(`Failed to update user: ${Object.values(errors).join(', ')}`);
                     }
-                }
+                },
             });
         }
     };
@@ -175,7 +176,7 @@ export default function Users() {
     const handleDeleteConfirm = () => {
         toast.loading(t('Deleting user...'));
 
-        router.delete(route("users.destroy", currentItem.id), {
+        router.delete(route('users.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
                 toast.dismiss();
@@ -194,11 +195,11 @@ export default function Users() {
                 } else {
                     toast.error(`Failed to delete user: ${Object.values(errors).join(', ')}`);
                 }
-            }
+            },
         });
     };
 
-    const handleResetPasswordConfirm = (data: { password: string, password_confirmation: string }) => {
+    const handleResetPasswordConfirm = (data: { password: string; password_confirmation: string }) => {
         toast.loading(t('Resetting password...'));
 
         router.put(route('users.reset-password', currentItem.id), data, {
@@ -218,7 +219,7 @@ export default function Users() {
                 } else {
                     toast.error(`Failed to reset password: ${Object.values(errors).join(', ')}`);
                 }
-            }
+            },
         });
     };
 
@@ -226,29 +227,36 @@ export default function Users() {
         const newStatus = user.status === 'active' ? 'inactive' : 'active';
         toast.loading(`${newStatus === 'active' ? t('Activating') : t('Deactivating')} user...`);
 
-        router.put(route('users.toggle-status', user.id), {}, {
-            onSuccess: (page) => {
-                toast.dismiss();
-                if (page.props.flash.success) {
-                    toast.success(t(page.props.flash.success));
-                } else if (page.props.flash.error) {
-                    toast.error(t(page.props.flash.error));
-                }
+        router.put(
+            route('users.toggle-status', user.id),
+            {},
+            {
+                onSuccess: (page) => {
+                    toast.dismiss();
+                    if (page.props.flash.success) {
+                        toast.success(t(page.props.flash.success));
+                    } else if (page.props.flash.error) {
+                        toast.error(t(page.props.flash.error));
+                    }
+                },
+                onError: (errors) => {
+                    toast.dismiss();
+                    if (typeof errors === 'string') {
+                        toast.error(errors);
+                    } else {
+                        toast.error(`Failed to update user status: ${Object.values(errors).join(', ')}`);
+                    }
+                },
             },
-            onError: (errors) => {
-                toast.dismiss();
-                if (typeof errors === 'string') {
-                    toast.error(errors);
-                } else {
-                    toast.error(`Failed to update user status: ${Object.values(errors).join(', ')}`);
-                }
-            }
-        });
+        );
     };
 
     const pageInitialState = useState(true);
     useEffect(() => {
-        if (pageInitialState[0]) { pageInitialState[1](false); return; }
+        if (pageInitialState[0]) {
+            pageInitialState[1](false);
+            return;
+        }
         applyFilters();
     }, [searchTerm, selectedRole]);
 
@@ -264,10 +272,10 @@ export default function Users() {
     // Add User Logs button
     if (hasPermission(permissions, 'manage-sign-in-history')) {
         pageActions.push({
-            icon: <History className="h-4 w-4 mx-auto" />,
+            icon: <History className="mx-auto h-4 w-4" />,
             variant: 'outline',
             onClick: () => router.visit(route('sign-in-history.index')),
-            tooltip: t('Sign in History')
+            tooltip: t('Sign in History'),
         });
     }
 
@@ -275,18 +283,32 @@ export default function Users() {
     if (hasPermission(permissions, 'create-users')) {
         const canCreate = !planLimits || planLimits.can_create;
         pageActions.push({
-            label: planLimits && !canCreate ? t('User Limit Reached ({{current}}/{{max}})', { current: planLimits.current_users, max: planLimits.maximum_users }) : t('Add User'),
-            icon: <Plus className="h-4 w-4 mr-2" />,
+            label:
+                planLimits && !canCreate
+                    ? t('User Limit Reached ({{current}}/{{max}})', { current: planLimits.current_users, max: planLimits.maximum_users })
+                    : t('Add User'),
+            icon: <Plus className="mr-0 h-4 w-4 min-[300px]:mr-2" />,
             variant: canCreate ? 'default' : 'outline',
-            onClick: canCreate ? () => handleAddNew() : () => toast.error(t('User limit exceeded. Your plan allows maximum {{max}} users. Please upgrade your plan.', { max: planLimits.maximum_users })),
-            disabled: !canCreate
+            className: 'h-8 w-8 min-[300px]:h-9 min-[300px]:w-auto px-0 min-[300px]:px-4',
+            labelClassName: 'hidden min-[300px]:inline',
+            tooltip: t('Add User'),
+            tooltipClassName: 'min-[300px]:hidden',
+            onClick: canCreate
+                ? () => handleAddNew()
+                : () =>
+                      toast.error(
+                          t('User limit exceeded. Your plan allows maximum {{max}} users. Please upgrade your plan.', {
+                              max: planLimits.maximum_users,
+                          }),
+                      ),
+            disabled: !canCreate,
         });
     }
 
     const breadcrumbs = [
         { title: t('Dashboard'), href: route('dashboard') },
         { title: t('Staff'), href: route('users.index') },
-        { title: t('Users') }
+        { title: t('Users') },
     ];
 
     // Define table columns
@@ -304,11 +326,11 @@ export default function Users() {
                         </Avatar>
                         <div>
                             <div className="font-medium">{row.name}</div>
-                            <div className="text-sm text-muted-foreground">{row.email}</div>
+                            <div className="text-muted-foreground text-sm">{row.email}</div>
                         </div>
                     </div>
                 );
-            }
+            },
         },
         {
             key: 'roles',
@@ -317,15 +339,22 @@ export default function Users() {
                 if (!value || !value.length) return <span className="text-muted-foreground">No roles assigned</span>;
 
                 return value.map((role: any) => {
-                    return <span key={role.id} className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 mr-1">{role.label || role.name}</span>;
+                    return (
+                        <span
+                            key={role.id}
+                            className="mr-1 inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset"
+                        >
+                            {role.label || role.name}
+                        </span>
+                    );
                 });
-            }
+            },
         },
         {
             key: 'created_at',
             label: t('Joined'),
             sortable: true,
-            type:'date',
+            type: 'date',
             // render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
         },
     ];
@@ -337,49 +366,42 @@ export default function Users() {
             icon: 'KeyRound',
             action: 'reset-password',
             className: 'text-blue-500',
-            requiredPermission: 'reset-password-users'
+            requiredPermission: 'reset-password-users',
         },
         {
             label: t('Toggle Status'),
             icon: 'Lock',
             action: 'toggle-status',
             className: 'text-amber-500',
-            requiredPermission: 'toggle-status-users'
+            requiredPermission: 'toggle-status-users',
         },
         {
             label: t('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
-            requiredPermission: 'view-users'
+            requiredPermission: 'view-users',
         },
         {
             label: t('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
-            requiredPermission: 'edit-users'
+            requiredPermission: 'edit-users',
         },
         {
             label: t('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
-            requiredPermission: 'delete-users'
-        }
+            requiredPermission: 'delete-users',
+        },
     ];
 
     return (
-        <PageTemplate
-            title={t("Users")}
-            description={t("Manage your users.")}
-            url="/users"
-            actions={pageActions}
-            breadcrumbs={breadcrumbs}
-            noPadding
-        >
+        <PageTemplate title={t('Users')} description={t('Manage your users.')} url="/users" actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
             {/* Search and filters section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
+            <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -396,10 +418,10 @@ export default function Users() {
                                 { value: 'all', label: t('All Roles') },
                                 ...(roles || []).map((role: any) => ({
                                     value: role.id.toString(),
-                                    label: role.label || role.name
-                                }))
-                            ]
-                        }
+                                    label: role.label || role.name,
+                                })),
+                            ],
+                        },
                     ]}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
@@ -423,7 +445,7 @@ export default function Users() {
 
             {/* Content section */}
             {activeView === 'list' ? (
-                <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+                <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                     <CrudTable
                         columns={columns}
                         actions={actions}
@@ -438,7 +460,7 @@ export default function Users() {
                             view: 'view-users',
                             create: 'create-users',
                             edit: 'edit-users',
-                            delete: 'delete-users'
+                            delete: 'delete-users',
                         }}
                     />
 
@@ -448,27 +470,35 @@ export default function Users() {
                         to={users?.to || 0}
                         total={users?.total || 0}
                         links={users?.links}
-                        entityName={t("users")}
+                        entityName={t('users')}
                         onPageChange={(url) => router.get(url)}
-                        currentPerPage={pageFilters.per_page?.toString() || "10"}
+                        currentPerPage={pageFilters.per_page?.toString() || '10'}
                         onPerPageChange={(value) => {
-                            router.get(route('users.index'), {
-                                view: activeView, page: 1,
-                                search: searchTerm || undefined,
-                                role: selectedRole !== 'all' ? selectedRole : undefined,
-                                sort_field: pageFilters.sort_field || undefined,
-                                sort_direction: pageFilters.sort_direction || undefined,
-                                ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
-                            }, { preserveState: true, preserveScroll: true });
+                            router.get(
+                                route('users.index'),
+                                {
+                                    view: activeView,
+                                    page: 1,
+                                    search: searchTerm || undefined,
+                                    role: selectedRole !== 'all' ? selectedRole : undefined,
+                                    sort_field: pageFilters.sort_field || undefined,
+                                    sort_direction: pageFilters.sort_direction || undefined,
+                                    ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+                                },
+                                { preserveState: true, preserveScroll: true },
+                            );
                         }}
                     />
                 </div>
             ) : (
                 <div>
                     {/* Grid View */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         {users?.data?.map((user: any) => (
-                            <Card key={user.id} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
+                            <Card
+                                key={user.id}
+                                className="rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-900"
+                            >
                                 <div className="p-4">
                                     {/* Top: Avatar + Name + Email */}
                                     <div className="flex items-center gap-3">
@@ -484,33 +514,38 @@ export default function Users() {
                                                             target.src = getDisplayUrl('avatars/avatar.png');
                                                         }}
                                                     />
-                                                    <AvatarFallback className="text-lg">
-                                                        {user.name?.charAt(0)?.toUpperCase() || 'U'}
-                                                    </AvatarFallback>
+                                                    <AvatarFallback className="text-lg">{user.name?.charAt(0)?.toUpperCase() || 'U'}</AvatarFallback>
                                                 </Avatar>
                                             ) : null}
-                                            <div className={`h-12 w-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center text-sm font-bold ${user.avatar ? 'hidden' : ''
-                                                }`}>
+                                            <div
+                                                className={`bg-primary/10 text-primary flex h-12 w-12 items-center justify-center rounded-lg text-sm font-bold ${
+                                                    user.avatar ? 'hidden' : ''
+                                                }`}
+                                            >
                                                 {getInitials(user.name)}
                                             </div>
                                         </div>
-                                        <div className="flex-1 min-w-0">
-                                            <h3 className="text-sm font-semibold text-gray-900 dark:text-white truncate">{user.name}</h3>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
+                                        <div className="min-w-0 flex-1">
+                                            <h3 className="truncate text-sm font-semibold text-gray-900 dark:text-white">{user.name}</h3>
+                                            <p className="truncate text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
                                         </div>
                                     </div>
 
                                     {/* Divider */}
-                                    <div className="border-t border-gray-100 dark:border-gray-700 my-3" />
+                                    <div className="my-3 border-t border-gray-100 dark:border-gray-700" />
 
                                     {/* Bottom: Actions + Role badge */}
-                                    <div className="flex items-center justify-between">
+                                    <div className="flex flex-wrap items-center justify-between gap-2">
                                         <div className="flex items-center gap-1">
                                             {hasPermission(permissions, 'view-users') && (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
-                                                        <Button variant="ghost" size="sm" onClick={() => handleAction('view', user)}
-                                                            className="h-8 w-8 p-0 text-blue-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20">
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            onClick={() => handleAction('view', user)}
+                                                            className="h-8 w-8 p-0 text-blue-500 hover:bg-transparent hover:text-blue-600 dark:hover:bg-transparent"
+                                                        >
                                                             <Eye className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
@@ -520,8 +555,12 @@ export default function Users() {
                                             {hasPermission(permissions, 'edit-users') && (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
-                                                        <Button variant="ghost" size="sm" onClick={() => handleAction('edit', user)}
-                                                            className="h-8 w-8 p-0 text-amber-500 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/20">
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            onClick={() => handleAction('edit', user)}
+                                                            className="h-8 w-8 p-0 text-amber-500 hover:bg-transparent hover:text-amber-600 dark:hover:bg-transparent"
+                                                        >
                                                             <Edit className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
@@ -531,8 +570,12 @@ export default function Users() {
                                             {hasPermission(permissions, 'reset-password-users') && (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
-                                                        <Button variant="ghost" size="sm" onClick={() => handleAction('reset-password', user)}
-                                                            className="h-8 w-8 p-0 text-blue-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20">
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            onClick={() => handleAction('reset-password', user)}
+                                                            className="h-8 w-8 p-0 text-blue-500 hover:bg-transparent hover:text-blue-600 dark:hover:bg-transparent"
+                                                        >
                                                             <KeyRound className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
@@ -542,9 +585,17 @@ export default function Users() {
                                             {hasPermission(permissions, 'toggle-status-users') && (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
-                                                        <Button variant="ghost" size="sm" onClick={() => handleAction('toggle-status', user)}
-                                                            className="h-8 w-8 p-0 text-amber-500 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/20">
-                                                            {user.status === 'active' ? <Lock className="h-4 w-4 text-gray-500" /> : <Unlock className="h-4 w-4 text-gray-500" />}
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            onClick={() => handleAction('toggle-status', user)}
+                                                            className="h-8 w-8 p-0 text-amber-500 hover:bg-transparent hover:text-amber-600 dark:hover:bg-transparent"
+                                                        >
+                                                            {user.status === 'active' ? (
+                                                                <Lock className="h-4 w-4 text-gray-500" />
+                                                            ) : (
+                                                                <Unlock className="h-4 w-4 text-gray-500" />
+                                                            )}
                                                         </Button>
                                                     </TooltipTrigger>
                                                     <TooltipContent>{user.status === 'active' ? t('Disable User') : t('Enable User')}</TooltipContent>
@@ -553,8 +604,12 @@ export default function Users() {
                                             {hasPermission(permissions, 'delete-users') && (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
-                                                        <Button variant="ghost" size="sm" onClick={() => handleAction('delete', user)}
-                                                            className="h-8 w-8 p-0 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20">
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            onClick={() => handleAction('delete', user)}
+                                                            className="h-8 w-8 p-0 text-red-500 hover:bg-transparent hover:text-red-600 dark:hover:bg-transparent"
+                                                        >
                                                             <Trash2 className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
@@ -566,11 +621,11 @@ export default function Users() {
                                         {/* Role badge */}
                                         <div>
                                             {user.roles && user.roles.length > 0 ? (
-                                                <span className="inline-flex items-center rounded-md bg-primary px-2.5 py-1 text-xs font-medium text-white capitalize">
+                                                <span className="bg-primary inline-flex items-center rounded-md px-2.5 py-1 text-xs font-medium text-white capitalize">
                                                     {user.roles[0].label || user.roles[0].name}
                                                 </span>
                                             ) : (
-                                                <span className="inline-flex items-center rounded-md bg-gray-100 dark:bg-gray-700 px-2.5 py-1 text-xs font-medium text-gray-500 dark:text-gray-400">
+                                                <span className="inline-flex items-center rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-500 dark:bg-gray-700 dark:text-gray-400">
                                                     {t('No role')}
                                                 </span>
                                             )}
@@ -581,16 +636,24 @@ export default function Users() {
                         ))}
 
                         {(!users?.data || users.data.length === 0) && (
-                            <div className="col-span-full text-center py-16">
-                                <div className="mx-auto h-20 w-20 text-gray-300 dark:text-gray-600 mb-4">
-                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-full h-full">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <div className="col-span-full py-16 text-center">
+                                <div className="mx-auto mb-4 h-20 w-20 text-gray-300 dark:text-gray-600">
+                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-full w-full">
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={1}
+                                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
+                                        />
                                     </svg>
                                 </div>
-                                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">{t('No users found')}</h3>
-                                <p className="text-gray-500 dark:text-gray-400 mb-6">{t('Get started by creating your first user')}</p>
+                                <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{t('No users found')}</h3>
+                                <p className="mb-6 text-gray-500 dark:text-gray-400">{t('Get started by creating your first user')}</p>
                                 {hasPermission(permissions, 'create-users') && (
-                                    <Button onClick={handleAddNew}><Plus className="h-4 w-4 mr-2" />{t('Add User')}</Button>
+                                    <Button onClick={handleAddNew}>
+                                        <Plus className="mr-2 h-4 w-4" />
+                                        {t('Add User')}
+                                    </Button>
                                 )}
                             </div>
                         )}
@@ -598,7 +661,7 @@ export default function Users() {
 
                     {/* Pagination */}
                     <div className="mt-6">
-                        <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
                             <Pagination
                                 from={users?.from || 0}
                                 to={users?.to || 0}
@@ -609,14 +672,19 @@ export default function Users() {
                                 perPageOptions={[12, 24, 48, 96]}
                                 currentPerPage={pageFilters.per_page?.toString() || '12'}
                                 onPerPageChange={(value) => {
-                                    router.get(route('users.index'), {
-                                        view: activeView, page: 1,
-                                        search: searchTerm || undefined,
-                                        role: selectedRole !== 'all' ? selectedRole : undefined,
-                                        sort_field: pageFilters.sort_field || undefined,
-                                        sort_direction: pageFilters.sort_direction || undefined,
-                                        ...(parseInt(value) !== 12 && { per_page: parseInt(value) }),
-                                    }, { preserveState: true, preserveScroll: true });
+                                    router.get(
+                                        route('users.index'),
+                                        {
+                                            view: activeView,
+                                            page: 1,
+                                            search: searchTerm || undefined,
+                                            role: selectedRole !== 'all' ? selectedRole : undefined,
+                                            sort_field: pageFilters.sort_field || undefined,
+                                            sort_direction: pageFilters.sort_direction || undefined,
+                                            ...(parseInt(value) !== 12 && { per_page: parseInt(value) }),
+                                        },
+                                        { preserveState: true, preserveScroll: true },
+                                    );
                                 }}
                             />
                         </div>
@@ -644,7 +712,7 @@ export default function Users() {
                             type: 'password',
                             placeholder: t('Enter Password'),
                             required: true,
-                            conditional: (mode) => mode === 'create'
+                            conditional: (mode) => mode === 'create',
                         },
                         {
                             name: 'password_confirmation',
@@ -652,35 +720,40 @@ export default function Users() {
                             type: 'password',
                             placeholder: t('Confirm Password'),
                             required: true,
-                            conditional: (mode) => mode === 'create'
+                            conditional: (mode) => mode === 'create',
                         },
                         {
                             name: 'roles',
                             label: t('Role'),
                             type: 'select',
                             searchable: true,
-                            options: roles ? roles.map((role: any) => ({
-                                value: role.id.toString(),
-                                label: role.label || role.name
-                            })) : [],
+                            options: roles
+                                ? roles.map((role: any) => ({
+                                      value: role.id.toString(),
+                                      label: role.label || role.name,
+                                  }))
+                                : [],
                             required: true,
-                            emptyNote: !roles || roles.length === 0 ? {
-                                link: route('roles.index'),
-                                linkText: t('Roles')
-                            } : undefined
-                        }
+                            emptyNote:
+                                !roles || roles.length === 0
+                                    ? {
+                                          link: route('roles.index'),
+                                          linkText: t('Roles'),
+                                      }
+                                    : undefined,
+                        },
                     ],
-                    modalSize: 'lg'
+                    modalSize: 'lg',
                 }}
-                initialData={currentItem ? {
-                    ...currentItem,
-                    roles: currentItem.roles && currentItem.roles.length > 0 ? currentItem.roles[0].id.toString() : ''
-                } : null}
-                title={
-                    formMode === 'create'
-                        ? t('Add User')
-                        : t('Edit User')
+                initialData={
+                    currentItem
+                        ? {
+                              ...currentItem,
+                              roles: currentItem.roles && currentItem.roles.length > 0 ? currentItem.roles[0].id.toString() : '',
+                          }
+                        : null
                 }
+                title={formMode === 'create' ? t('Add User') : t('Edit User')}
                 mode={formMode}
             />
 
@@ -701,9 +774,15 @@ export default function Users() {
                 formConfig={{
                     fields: [
                         { name: 'password', label: t('New Password'), type: 'password', required: true, placeholder: t('Enter New Password') },
-                        { name: 'password_confirmation', label: t('Confirm Password'), type: 'password', required: true, placeholder: t('Confirm New Password') }
+                        {
+                            name: 'password_confirmation',
+                            label: t('Confirm Password'),
+                            type: 'password',
+                            required: true,
+                            placeholder: t('Confirm New Password'),
+                        },
                     ],
-                    modalSize: 'sm'
+                    modalSize: 'sm',
                 }}
                 initialData={{}}
                 title={`Reset Password for ${currentItem?.name || 'User'}`}

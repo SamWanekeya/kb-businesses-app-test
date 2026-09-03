@@ -1,14 +1,14 @@
 import { PageTemplate } from '@/components/page-template';
-import { usePage, Link,router } from '@inertiajs/react';
-import { ArrowLeft, DollarSign, Calendar, Target, BarChart3, TrendingUp, Users, User, Tag, List, Eye } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
-import { Button } from '@/components/ui/button';
-import { useTranslation } from 'react-i18next';
-import { hasPermission } from '@/utils/authorization';
 import { useInitials } from '@/hooks/use-initials';
+import { hasPermission } from '@/utils/authorization';
+import { Link, router, usePage } from '@inertiajs/react';
+import { ArrowLeft, BarChart3, Calendar, DollarSign, Eye, Tag, Target, TrendingUp, Users } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function CampaignShow() {
     const { t } = useTranslation();
@@ -22,8 +22,7 @@ export default function CampaignShow() {
         { title: t('View Campaign') },
     ];
 
-    const formatCurrency = (amount: number) =>
-        window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
+    const formatCurrency = (amount: number) => window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     const formatDate = (dateString: string) => {
         if (!dateString) return '-';
@@ -52,27 +51,26 @@ export default function CampaignShow() {
     return (
         <PageTemplate
             title={campaign.name}
-            description={(t("Campaign details and related information"))}
+            description={t('Campaign details and related information')}
             breadcrumbs={breadcrumbs}
-            actions={[{
-                label: t('Back'),
-                icon: <ArrowLeft className="h-4 w-4 mr-2" />,
-                variant: 'outline' as const,
-                onClick: () => router.visit(route('campaigns.index')),
-            }]}
+            actions={[
+                {
+                    label: t('Back'),
+                    icon: <ArrowLeft className="mr-2 h-4 w-4" />,
+                    variant: 'outline' as const,
+                    onClick: () => router.visit(route('campaigns.index')),
+                },
+            ]}
             noPadding
         >
             <div className="space-y-6">
-
                 {/* Header */}
-                <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm border p-6">
+                <div className="rounded-lg border bg-white p-6 shadow-sm dark:bg-gray-900">
                     <div className="flex items-start justify-between">
                         <div>
                             <h1 className="text-lg font-bold text-gray-900 dark:text-white">{campaign.name}</h1>
-                            {campaign.description && (
-                                <p className="text-sm text-gray-500 mt-1 max-w-2xl">{campaign.description}</p>
-                            )}
-                            <div className="flex items-center gap-4 mt-3 text-xs text-gray-500">
+                            {campaign.description && <p className="mt-1 max-w-2xl text-sm text-gray-500">{campaign.description}</p>}
+                            <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
                                 {/* <span className="flex items-center gap-1"><Tag className="h-3 w-3" />{campaign.campaign_type?.name || '-'}</span>
                                 <span className="text-gray-300">|</span>
                                 <span className="flex items-center gap-1"><List className="h-3 w-3" />{campaign.target_list?.name || '-'}</span>
@@ -80,34 +78,68 @@ export default function CampaignShow() {
                                 <span className="flex items-center gap-1"><User className="h-3 w-3" />{campaign.assigned_user?.name || t('Unassigned')}</span> */}
                             </div>
                         </div>
-                        <span className={`inline-flex items-center rounded-md px-2.5 py-1 text-xs font-medium ring-1 ring-inset ${
-                            campaign.status === 'active'
-                                ? 'bg-green-50 text-green-700 ring-green-600/20'
-                                : 'bg-red-50 text-red-700 ring-red-600/20'
-                        }`}>
+                        <span
+                            className={`inline-flex items-center rounded-md px-2.5 py-1 text-xs font-medium ring-1 ring-inset ${
+                                campaign.status === 'active'
+                                    ? 'bg-green-50 text-green-700 ring-green-600/20'
+                                    : 'bg-red-50 text-red-700 ring-red-600/20'
+                            }`}
+                        >
                             {campaign.status === 'active' ? t('Active') : t('Inactive')}
                         </span>
                     </div>
                 </div>
 
                 {/* Summary Cards */}
-                <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-                    {([
-                        { label: t('Budget'), value: formatCurrency(campaign.budget), icon: DollarSign, iconCls: 'text-emerald-600', blobCls: 'bg-emerald-50 dark:bg-emerald-900/30' },
-                        { label: t('Actual Cost'), value: formatCurrency(campaign.actual_cost), icon: BarChart3, iconCls: 'text-blue-600', blobCls: 'bg-blue-50 dark:bg-blue-900/30' },
-                        { label: t('Response Rate'), value: getResponseRate(), icon: TrendingUp, iconCls: 'text-orange-600', blobCls: 'bg-orange-50 dark:bg-orange-900/30' },
-                        { label: t('Total Leads'), value: `${campaignLeads?.length || 0}`, icon: Users, iconCls: 'text-purple-600', blobCls: 'bg-purple-50 dark:bg-purple-900/30' },
-                        { label: t('ROI'), value: calculateROI(), icon: Target, iconCls: 'text-rose-600', blobCls: 'bg-rose-50 dark:bg-rose-900/30' },
-                    ] as const).map(({ label, value, icon: Icon, iconCls, blobCls }) => (
+                <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
+                    {(
+                        [
+                            {
+                                label: t('Budget'),
+                                value: formatCurrency(campaign.budget),
+                                icon: DollarSign,
+                                iconCls: 'text-emerald-600',
+                                blobCls: 'bg-emerald-50 dark:bg-emerald-900/30',
+                            },
+                            {
+                                label: t('Actual Cost'),
+                                value: formatCurrency(campaign.actual_cost),
+                                icon: BarChart3,
+                                iconCls: 'text-blue-600',
+                                blobCls: 'bg-blue-50 dark:bg-blue-900/30',
+                            },
+                            {
+                                label: t('Response Rate'),
+                                value: getResponseRate(),
+                                icon: TrendingUp,
+                                iconCls: 'text-orange-600',
+                                blobCls: 'bg-orange-50 dark:bg-orange-900/30',
+                            },
+                            {
+                                label: t('Total Leads'),
+                                value: `${campaignLeads?.length || 0}`,
+                                icon: Users,
+                                iconCls: 'text-purple-600',
+                                blobCls: 'bg-purple-50 dark:bg-purple-900/30',
+                            },
+                            {
+                                label: t('ROI'),
+                                value: calculateROI(),
+                                icon: Target,
+                                iconCls: 'text-rose-600',
+                                blobCls: 'bg-rose-50 dark:bg-rose-900/30',
+                            },
+                        ] as const
+                    ).map(({ label, value, icon: Icon, iconCls, blobCls }) => (
                         <Card key={label} className="relative overflow-hidden">
-                            <div className={`absolute top-0 right-0 w-20 h-20 ${blobCls} rounded-bl-full`} />
+                            <div className={`absolute top-0 right-0 h-20 w-20 ${blobCls} rounded-bl-full`} />
                             <CardContent className="relative p-4">
                                 <div className="flex items-start justify-between">
                                     <div className="min-w-0 pr-2">
-                                        <p className="text-sm font-medium text-muted-foreground mb-1">{label}</p>
-                                        <p className="text-lg font-bold font-mono text-foreground truncate leading-snug">{value}</p>
+                                        <p className="text-muted-foreground mb-1 text-sm font-medium">{label}</p>
+                                        <p className="text-foreground truncate font-mono text-lg leading-snug font-bold">{value}</p>
                                     </div>
-                                    <div className={`relative z-10 p-2.5 ${blobCls} rounded-xl mt-0.5 flex-shrink-0`}>
+                                    <div className={`relative z-10 p-2.5 ${blobCls} mt-0.5 flex-shrink-0 rounded-xl`}>
                                         <Icon className={`h-5 w-5 ${iconCls}`} />
                                     </div>
                                 </div>
@@ -117,75 +149,88 @@ export default function CampaignShow() {
                 </div>
 
                 {/* Campaign Details + Budget Analysis */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                     {/* Campaign Information */}
                     <Card className="shadow-sm">
-                        <CardHeader className="border-b py-3.5 px-5">
+                        <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <Tag className="h-5 w-5 mr-3 text-muted-foreground" />
+                                <Tag className="text-muted-foreground mr-3 h-5 w-5" />
                                 {t('Campaign Information')}
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className="p-6 space-y-4">
+                        <CardContent className="space-y-4 p-6">
                             <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                                 <div>
-                                    <label className="text-xs font-medium text-muted-foreground">{t('Campaign Type')}</label>
-                                    <p className="text-sm mt-1 font-medium">{campaign.campaign_type?.name || '-'}</p>
+                                    <label className="text-muted-foreground text-xs font-medium">{t('Campaign Type')}</label>
+                                    <p className="mt-1 text-sm font-medium">{campaign.campaign_type?.name || '-'}</p>
                                 </div>
                                 <div>
-                                    <label className="text-xs font-medium text-muted-foreground">{t('Target List')}</label>
-                                    <p className="text-sm mt-1 font-medium">{campaign.target_list?.name || '-'}</p>
+                                    <label className="text-muted-foreground text-xs font-medium">{t('Target List')}</label>
+                                    <p className="mt-1 text-sm font-medium">{campaign.target_list?.name || '-'}</p>
                                 </div>
                                 <div>
-                                    <label className="text-xs font-medium text-muted-foreground">{t('Start Date')}</label>
-                                    <p className="text-sm mt-1 font-medium">{formatDate(campaign.start_date)}</p>
+                                    <label className="text-muted-foreground text-xs font-medium">{t('Start Date')}</label>
+                                    <p className="mt-1 text-sm font-medium">{formatDate(campaign.start_date)}</p>
                                 </div>
                                 <div>
-                                    <label className="text-xs font-medium text-muted-foreground">{t('End Date')}</label>
-                                    <p className="text-sm mt-1 font-medium">{formatDate(campaign.end_date)}</p>
+                                    <label className="text-muted-foreground text-xs font-medium">{t('End Date')}</label>
+                                    <p className="mt-1 text-sm font-medium">{formatDate(campaign.end_date)}</p>
                                 </div>
                                 <div>
-                                    <label className="text-xs font-medium text-muted-foreground">{t('Assigned To')}</label>
-                                    <div className="flex items-center gap-2 mt-1">
+                                    <label className="text-muted-foreground text-xs font-medium">{t('Assigned To')}</label>
+                                    <div className="mt-1 flex items-center gap-2">
                                         {campaign.assigned_user ? (
                                             <>
-                                                <Avatar className="h-6 w-6"><AvatarImage src={campaign.assigned_user.avatar} /><AvatarFallback className="text-[10px]">{getInitials(campaign.assigned_user.name)}</AvatarFallback></Avatar>
+                                                <Avatar className="h-6 w-6">
+                                                    <AvatarImage src={campaign.assigned_user.avatar} />
+                                                    <AvatarFallback className="text-[10px]">
+                                                        {getInitials(campaign.assigned_user.name)}
+                                                    </AvatarFallback>
+                                                </Avatar>
                                                 <span className="text-sm font-medium">{campaign.assigned_user.name}</span>
                                             </>
-                                        ) : <span className="text-sm font-medium">{t('Unassigned')}</span>}
+                                        ) : (
+                                            <span className="text-sm font-medium">{t('Unassigned')}</span>
+                                        )}
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="text-xs font-medium text-muted-foreground">{t('Created By')}</label>
-                                    <div className="flex items-center gap-2 mt-1">
+                                    <label className="text-muted-foreground text-xs font-medium">{t('Created By')}</label>
+                                    <div className="mt-1 flex items-center gap-2">
                                         {campaign.creator ? (
                                             <>
-                                                <Avatar className="h-6 w-6"><AvatarImage src={campaign.creator.avatar} /><AvatarFallback className="text-[10px]">{getInitials(campaign.creator.name)}</AvatarFallback></Avatar>
+                                                <Avatar className="h-6 w-6">
+                                                    <AvatarImage src={campaign.creator.avatar} />
+                                                    <AvatarFallback className="text-[10px]">{getInitials(campaign.creator.name)}</AvatarFallback>
+                                                </Avatar>
                                                 <span className="text-sm font-medium">{campaign.creator.name}</span>
                                             </>
-                                        ) : <span className="text-sm font-medium">-</span>}
+                                        ) : (
+                                            <span className="text-sm font-medium">-</span>
+                                        )}
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="text-xs font-medium text-muted-foreground">{t('Expected Response')}</label>
-                                    <p className="text-sm mt-1 font-medium">{campaign.expected_response || 0}</p>
+                                    <label className="text-muted-foreground text-xs font-medium">{t('Expected Response')}</label>
+                                    <p className="mt-1 text-sm font-medium">{campaign.expected_response || 0}</p>
                                 </div>
                                 <div>
-                                    <label className="text-xs font-medium text-muted-foreground">{t('Actual Response')}</label>
-                                    <p className="text-sm mt-1 font-medium">{campaignLeads?.length || 0} {t('leads')}</p>
+                                    <label className="text-muted-foreground text-xs font-medium">{t('Actual Response')}</label>
+                                    <p className="mt-1 text-sm font-medium">
+                                        {campaignLeads?.length || 0} {t('leads')}
+                                    </p>
                                 </div>
                             </div>
-                            <div className="border-t pt-4 grid grid-cols-2 gap-4 text-xs text-muted-foreground">
+                            <div className="text-muted-foreground grid grid-cols-2 gap-4 border-t pt-4 text-xs">
                                 <div className="flex items-center gap-1">
-                                    
                                     <span>{t('Created')}: </span>
-                                    <Calendar className="h-3 w-3" /><span className="font-medium text-gray-600">{formatDate(campaign.created_at)}</span>
+                                    <Calendar className="h-3 w-3" />
+                                    <span className="font-medium text-gray-600">{formatDate(campaign.created_at)}</span>
                                 </div>
                                 <div className="flex items-center gap-1">
-                                    
                                     <span>{t('Updated')}: </span>
-                                   <Calendar className="h-3 w-3" /> <span className="font-medium text-gray-600">{formatDate(campaign.updated_at)}</span>
+                                    <Calendar className="h-3 w-3" />{' '}
+                                    <span className="font-medium text-gray-600">{formatDate(campaign.updated_at)}</span>
                                 </div>
                             </div>
                         </CardContent>
@@ -193,54 +238,60 @@ export default function CampaignShow() {
 
                     {/* Budget Analysis */}
                     <Card className="shadow-sm">
-                        <CardHeader className="border-b py-3.5 px-5">
+                        <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
-                                <DollarSign className="h-5 w-5 mr-3 text-muted-foreground" />
+                                <DollarSign className="text-muted-foreground mr-3 h-5 w-5" />
                                 {t('Budget Analysis')}
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className="p-6 space-y-5">
-                            <div className="grid grid-cols-3 gap-3">
-                                <div className="text-center p-4 bg-green-50 rounded-lg border border-green-200">
-                                    <p className="text-xs font-medium text-muted-foreground mb-1">{t('Budget')}</p>
-                                    <p className="text-base font-bold font-mono text-green-600">{formatCurrency(campaign.budget)}</p>
+                        <CardContent className="space-y-5 p-6">
+                            <div className="grid grid-cols-3 gap-1.5 min-[450px]:gap-3">
+                                <div className="rounded-lg border border-green-200 bg-green-50 p-1.5 text-center min-[400px]:p-3">
+                                    <p className="text-muted-foreground mb-1 text-[10px] font-medium min-[400px]:text-xs">{t('Budget')}</p>
+                                    <p className="truncate font-mono text-xs font-bold text-green-600 min-[400px]:text-sm sm:text-base">
+                                        {formatCurrency(campaign.budget)}
+                                    </p>
                                 </div>
-                                <div className="text-center p-4 bg-blue-50 rounded-lg border border-blue-200">
-                                    <p className="text-xs font-medium text-muted-foreground mb-1">{t('Spent')}</p>
-                                    <p className="text-base font-bold font-mono text-blue-600">{formatCurrency(campaign.actual_cost)}</p>
+                                <div className="rounded-lg border border-blue-200 bg-blue-50 p-1.5 text-center min-[400px]:p-3">
+                                    <p className="text-muted-foreground mb-1 text-[10px] font-medium min-[400px]:text-xs">{t('Spent')}</p>
+                                    <p className="truncate font-mono text-xs font-bold text-blue-600 min-[400px]:text-sm sm:text-base">
+                                        {formatCurrency(campaign.actual_cost)}
+                                    </p>
                                 </div>
-                                <div className={`text-center p-4 rounded-lg border ${remaining >= 0 ? 'bg-purple-50 border-purple-200' : 'bg-red-50 border-red-200'}`}>
-                                    <p className="text-xs font-medium text-muted-foreground mb-1">{t('Remaining')}</p>
-                                    <p className={`text-base font-bold font-mono ${remaining >= 0 ? 'text-purple-600' : 'text-red-600'}`}>{formatCurrency(remaining)}</p>
+                                <div
+                                    className={`rounded-lg border p-1.5 text-center min-[400px]:p-3 ${remaining >= 0 ? 'border-purple-200 bg-purple-50' : 'border-red-200 bg-red-50'}`}
+                                >
+                                    <p className="text-muted-foreground mb-1 text-[10px] font-medium min-[400px]:text-xs">{t('Remaining')}</p>
+                                    <p
+                                        className={`truncate font-mono text-xs font-bold min-[400px]:text-sm sm:text-base ${remaining >= 0 ? 'text-purple-600' : 'text-red-600'}`}
+                                    >
+                                        {formatCurrency(remaining)}
+                                    </p>
                                 </div>
                             </div>
 
                             {campaign.budget > 0 && (
                                 <div>
-                                    <div className="flex justify-between text-xs text-muted-foreground mb-1.5">
+                                    <div className="text-muted-foreground mb-1.5 flex justify-between text-xs">
                                         <span>{t('Budget Used')}</span>
                                         <span className="font-medium">{budgetUsedPct.toFixed(1)}%</span>
                                     </div>
-                                    <div className="w-full bg-gray-100 rounded-full h-2">
-                                        <div
-                                            className="h-2 rounded-full transition-all bg-primary"
-                                            style={{ width: `${budgetUsedPct}%` }}
-                                        />
+                                    <div className="h-2 w-full rounded-full bg-gray-100">
+                                        <div className="bg-primary h-2 rounded-full transition-all" style={{ width: `${budgetUsedPct}%` }} />
                                     </div>
                                 </div>
                             )}
 
                             {campaign.expected_response > 0 && (
                                 <div>
-                                    <div className="flex justify-between text-xs text-muted-foreground mb-1.5">
+                                    <div className="text-muted-foreground mb-1.5 flex justify-between text-xs">
                                         <span>{t('Response Progress')}</span>
-                                        <span className="font-medium">{campaignLeads?.length || 0} / {campaign.expected_response}</span>
+                                        <span className="font-medium">
+                                            {campaignLeads?.length || 0} / {campaign.expected_response}
+                                        </span>
                                     </div>
-                                    <div className="w-full bg-gray-100 rounded-full h-2">
-                                        <div
-                                            className="h-2 rounded-full bg-primary transition-all"
-                                            style={{ width: `${responsePct}%` }}
-                                        />
+                                    <div className="h-2 w-full rounded-full bg-gray-100">
+                                        <div className="bg-primary h-2 rounded-full transition-all" style={{ width: `${responsePct}%` }} />
                                     </div>
                                 </div>
                             )}
@@ -250,11 +301,11 @@ export default function CampaignShow() {
 
                 {/* Campaign Leads */}
                 <Card className="shadow-sm">
-                    <CardHeader className="border-b py-3.5 px-5">
+                    <CardHeader className="border-b px-5 py-3.5">
                         <CardTitle className="flex items-center text-lg font-semibold">
-                            <Users className="h-5 w-5 mr-3 text-muted-foreground" />
+                            <Users className="text-muted-foreground mr-3 h-5 w-5" />
                             {t('Campaign Leads')}
-                            <span className="ml-2 inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-xs font-semibold text-muted-foreground">
+                            <span className="bg-muted text-muted-foreground ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
                                 {campaignLeads?.length || 0}
                             </span>
                         </CardTitle>
@@ -262,92 +313,103 @@ export default function CampaignShow() {
                     <CardContent className="p-0">
                         {campaignLeads?.length > 0 ? (
                             <>
-                                <table className="w-full text-sm">
-                                    <thead>
-                                        <tr className="border-b bg-[#F0F0F1] dark:bg-gray-800 text-xs text-muted-foreground">
-                                            <th className="px-6 py-3 text-left font-medium">{t('Name')}</th>
-                                            <th className="px-6 py-3 text-left font-medium">{t('Assigned To')}</th>
-                                            <th className="px-6 py-3 text-left font-medium">{t('Status')}</th>
-                                            {hasPermission(permissions, 'view-leads') && (
-                                                <th className="px-6 py-3 text-right font-medium">{t('Action')}</th>
-                                            )}
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y">
-                                        {campaignLeads.slice(0, 10).map((lead: any) => (
-                                            <tr key={lead.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                                                <td className="px-6 py-3">
-                                                    <div className="flex items-center gap-2">
-                                                        <UserInitials name={lead.name} />
-                                                        <div>
-                                                            <p className="font-medium text-gray-900 dark:text-white text-sm">{lead.name}</p>
-                                                            <p className="text-xs text-gray-500">{lead.email || '-'}</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-3">
-                                                    {lead.assigned_user ? (
-                                                        <div className="flex items-center gap-2">
-                                                            <Avatar className="h-8 w-8 shrink-0">
-                                                                <AvatarImage src={lead.assigned_user.avatar} alt={lead.assigned_user.name} />
-                                                                <AvatarFallback className="text-[10px]">{getInitials(lead.assigned_user.name)}</AvatarFallback>
-                                                            </Avatar>
-                                                            <div>
-                                                                <p className="text-sm text-gray-700 dark:text-gray-300">{lead.assigned_user.name}</p>
-                                                                <p className="text-xs text-gray-500">{lead.assigned_user.email || '-'}</p>
-                                                            </div>
-                                                        </div>
-                                                    ) : <span className="text-sm text-gray-500">{t('Unassigned')}</span>}
-                                                </td>
-                                                <td className="px-6 py-3">
-                                                    {lead.lead_status ? (
-                                                        <span
-                                                            className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
-                                                            style={{
-                                                                backgroundColor: `${lead.lead_status.color}20`,
-                                                                color: lead.lead_status.color,
-                                                                borderColor: `${lead.lead_status.color}40`,
-                                                            }}
-                                                        >
-                                                            {lead.lead_status.name}
-                                                        </span>
-                                                    ) : '-'}
-                                                </td>
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-sm">
+                                        <thead>
+                                            <tr className="text-muted-foreground border-b bg-[#F0F0F1] text-xs dark:bg-gray-800">
+                                                <th className="px-6 py-3 text-left font-medium">{t('Name')}</th>
+                                                <th className="px-6 py-3 text-left font-medium">{t('Assigned To')}</th>
+                                                <th className="px-6 py-3 text-left font-medium">{t('Status')}</th>
                                                 {hasPermission(permissions, 'view-leads') && (
-                                                    <td className="px-6 py-3 text-right">
-                                                        <TooltipProvider delayDuration={200}>
-                                                          <Tooltip>
-                                                            <TooltipTrigger asChild>
-                                                              <Link href={route('leads.show', lead.id)}>
-                                                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                                                  <Eye className="h-4 w-4 text-gray-500" />
-                                                                </Button>
-                                                              </Link>
-                                                            </TooltipTrigger>
-                                                            <TooltipContent side="top"><p>{t('View')}</p></TooltipContent>
-                                                          </Tooltip>
-                                                        </TooltipProvider>
-                                                    </td>
+                                                    <th className="px-6 py-3 text-right font-medium">{t('Action')}</th>
                                                 )}
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody className="divide-y">
+                                            {campaignLeads.slice(0, 10).map((lead: any) => (
+                                                <tr key={lead.id} className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                                    <td className="px-6 py-3">
+                                                        <div className="flex items-center gap-2">
+                                                            <UserInitials name={lead.name} />
+                                                            <div>
+                                                                <p className="text-sm font-medium text-gray-900 dark:text-white">{lead.name}</p>
+                                                                <p className="text-xs text-gray-500">{lead.email || '-'}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-3">
+                                                        {lead.assigned_user ? (
+                                                            <div className="flex items-center gap-2">
+                                                                <Avatar className="h-8 w-8 shrink-0">
+                                                                    <AvatarImage src={lead.assigned_user.avatar} alt={lead.assigned_user.name} />
+                                                                    <AvatarFallback className="text-[10px]">
+                                                                        {getInitials(lead.assigned_user.name)}
+                                                                    </AvatarFallback>
+                                                                </Avatar>
+                                                                <div>
+                                                                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                                                                        {lead.assigned_user.name}
+                                                                    </p>
+                                                                    <p className="text-xs text-gray-500">{lead.assigned_user.email || '-'}</p>
+                                                                </div>
+                                                            </div>
+                                                        ) : (
+                                                            <span className="text-sm text-gray-500">{t('Unassigned')}</span>
+                                                        )}
+                                                    </td>
+                                                    <td className="px-6 py-3">
+                                                        {lead.lead_status ? (
+                                                            <span
+                                                                className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
+                                                                style={{
+                                                                    backgroundColor: `${lead.lead_status.color}20`,
+                                                                    color: lead.lead_status.color,
+                                                                    borderColor: `${lead.lead_status.color}40`,
+                                                                }}
+                                                            >
+                                                                {lead.lead_status.name}
+                                                            </span>
+                                                        ) : (
+                                                            '-'
+                                                        )}
+                                                    </td>
+                                                    {hasPermission(permissions, 'view-leads') && (
+                                                        <td className="px-6 py-3 text-right">
+                                                            <TooltipProvider delayDuration={200}>
+                                                                <Tooltip>
+                                                                    <TooltipTrigger asChild>
+                                                                        <Link href={route('leads.show', lead.id)}>
+                                                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                                                <Eye className="h-4 w-4 text-gray-500" />
+                                                                            </Button>
+                                                                        </Link>
+                                                                    </TooltipTrigger>
+                                                                    <TooltipContent side="top">
+                                                                        <p>{t('View')}</p>
+                                                                    </TooltipContent>
+                                                                </Tooltip>
+                                                            </TooltipProvider>
+                                                        </td>
+                                                    )}
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
                                 {campaignLeads.length > 10 && (
-                                    <div className="px-6 py-3 text-center text-sm text-muted-foreground bg-gray-50 border-t">
+                                    <div className="text-muted-foreground border-t bg-gray-50 px-6 py-3 text-center text-sm">
                                         +{campaignLeads.length - 10} {t('more leads')}
                                     </div>
                                 )}
                             </>
                         ) : (
-                            <div className="text-center py-12">
-                                <Users className="h-10 w-10 mx-auto mb-3 text-gray-300" />
+                            <div className="py-12 text-center">
+                                <Users className="mx-auto mb-3 h-10 w-10 text-gray-300" />
                                 <p className="text-sm text-gray-500">{t('No leads created from this campaign yet.')}</p>
                             </div>
                         )}
                     </CardContent>
                 </Card>
-
             </div>
         </PageTemplate>
     );

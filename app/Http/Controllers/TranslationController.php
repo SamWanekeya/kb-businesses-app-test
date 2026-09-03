@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Session;
 use App\Models\Setting;
 use App\Models\User;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\File;
 
 class TranslationController extends BaseController
 {
@@ -84,7 +81,7 @@ class TranslationController extends BaseController
         $response = [
             'translations' => $translations,
             'layoutDirection' => $layoutDirection,
-            'locale' => $locale
+            'locale' => $locale,
         ];
 
         return response()->json($response);

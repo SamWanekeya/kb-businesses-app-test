@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 export interface IframePortalHandles {
@@ -9,27 +9,26 @@ interface IframePortalProps {
     children: React.ReactNode;
 }
 
-const IframePortal = forwardRef<IframePortalHandles, IframePortalProps>(
-    ({ children }, ref) => {
-        const iframeRef = useRef<HTMLIFrameElement>(null);
-        const [mountNode, setMountNode] = useState<HTMLElement | null>(null);
+const IframePortal = forwardRef<IframePortalHandles, IframePortalProps>(({ children }, ref) => {
+    const iframeRef = useRef<HTMLIFrameElement>(null);
+    const [mountNode, setMountNode] = useState<HTMLElement | null>(null);
 
-        // Expose print method to parent
-        useImperativeHandle(ref, () => ({
-            print: () => {
-                if (!iframeRef.current) return;
-                const win = iframeRef.current.contentWindow!;
-                win.focus();
-                win.print();
-            },
-        }));
-
-        useEffect(() => {
+    // Expose print method to parent
+    useImperativeHandle(ref, () => ({
+        print: () => {
             if (!iframeRef.current) return;
+            const win = iframeRef.current.contentWindow!;
+            win.focus();
+            win.print();
+        },
+    }));
 
-            const doc = iframeRef.current.contentDocument!;
-            doc.open();
-            doc.write(`
+    useEffect(() => {
+        if (!iframeRef.current) return;
+
+        const doc = iframeRef.current.contentDocument!;
+        doc.open();
+        doc.write(`
                 <!DOCTYPE html>
                 <html>
                     <head>
@@ -54,32 +53,28 @@ const IframePortal = forwardRef<IframePortalHandles, IframePortalProps>(
                     </body>
                 </html>
             `);
-            doc.close();
+        doc.close();
 
-            const root = doc.getElementById('iframe-root')!;
-            setMountNode(root);
+        const root = doc.getElementById('iframe-root')!;
+        setMountNode(root);
 
-            // Auto resize iframe
-            const resize = () => {
-                iframeRef.current!.style.height = doc.body.scrollHeight + 'px';
-            };
-            resize();
-            const observer = new ResizeObserver(resize);
-            observer.observe(doc.body);
+        // Auto resize iframe
+        const resize = () => {
+            iframeRef.current!.style.height = doc.body.scrollHeight + 'px';
+        };
+        resize();
+        const observer = new ResizeObserver(resize);
+        observer.observe(doc.body);
 
-            return () => observer.disconnect();
-        }, []);
+        return () => observer.disconnect();
+    }, []);
 
-        return (
-            <>
-                <iframe
-                    ref={iframeRef}
-                    style={{ width: '100%', border: 'none', background: '#fff' }}
-                />
-                {mountNode && createPortal(children, mountNode)}
-            </>
-        );
-    }
-);
+    return (
+        <>
+            <iframe ref={iframeRef} style={{ width: '100%', border: 'none', background: '#fff' }} />
+            {mountNode && createPortal(children, mountNode)}
+        </>
+    );
+});
 
 export default IframePortal;

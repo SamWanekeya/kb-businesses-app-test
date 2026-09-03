@@ -8,6 +8,7 @@ use App\Services\WebhookService;
 class WebhookAssignLeadListener
 {
     private static array $processedLead = [];
+
     /**
      * Create the event listener.
      */

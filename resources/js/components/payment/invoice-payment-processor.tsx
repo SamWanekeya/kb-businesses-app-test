@@ -1,42 +1,42 @@
-import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Card, CardContent } from '@/components/ui/card';
+import { toast } from '@/components/custom-toast';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { CreditCard, Banknote, Wallet } from 'lucide-react';
-import { toast } from '@/components/custom-toast';
-import { StripePaymentForm } from './stripe-payment-form';
-import { InvoicePayPalPaymentForm } from './invoice-paypal-payment-form';
-import { InvoiceRazorpayPaymentForm } from './invoice-razorpay-payment-form';
-import { InvoiceMercadoPagoPaymentForm } from './invoice-mercadopago-payment-form';
-import { InvoicePaystackPaymentForm } from './invoice-paystack-payment-form';
-import { InvoiceFlutterwavePaymentForm } from './invoice-flutterwave-payment-form';
-import { InvoicePayTabsPaymentForm } from './invoice-paytabs-payment-form';
-import { InvoiceSkrillPaymentForm } from './invoice-skrill-payment-form';
-import { InvoiceCoingatePaymentForm } from './invoice-coingate-payment-form';
-import { InvoiceBankTransferForm } from './invoice-bank-transfer-form';
-import { InvoicePayfastPaymentForm } from './invoice-payfast-payment-form';
-import { InvoiceTapPaymentForm } from './invoice-tap-payment-form';
-import { InvoiceXenditPaymentForm } from './invoice-xendit-payment-form';
-import { InvoicePayTRPaymentForm } from './invoice-paytr-payment-form';
-import { InvoiceMolliePaymentForm } from './invoice-mollie-payment-form';
-import { InvoiceToyyibPayPaymentForm } from './invoice-toyyibpay-payment-form';
-import { InvoiceBenefitPaymentForm } from './invoice-benefit-payment-form';
-import { InvoiceIyzipayPaymentForm } from './invoice-iyzipay-payment-form';
+import { Banknote, CreditCard, Wallet } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { InvoiceAamarpayPaymentForm } from './invoice-aamarpay-payment-form';
-import { InvoiceMidtransPaymentForm } from './invoice-midtrans-payment-form';
-import { InvoiceYooKassaPaymentForm } from './invoice-yookassa-payment-form';
-import { InvoicePaiementPaymentForm } from './invoice-paiement-payment-form';
-import { InvoiceCinetPayPaymentForm } from './invoice-cinetpay-payment-form';
-import { InvoicePayHerePaymentForm } from './invoice-payhere-payment-form';
-import { InvoiceFedaPayPaymentForm } from './invoice-fedapay-payment-form';
 import { InvoiceAuthorizeNetPaymentForm } from './invoice-authorizenet-payment-form';
-import { InvoiceKhaltiPaymentForm } from './invoice-khalti-payment-form';
-import { InvoiceEasebuzzPaymentForm } from './invoice-easebuzz-payment-form';
-import { InvoiceOzowPaymentForm } from './invoice-ozow-payment-form';
+import { InvoiceBankTransferForm } from './invoice-bank-transfer-form';
+import { InvoiceBenefitPaymentForm } from './invoice-benefit-payment-form';
 import { InvoiceCashfreePaymentForm } from './invoice-cashfree-payment-form';
+import { InvoiceCinetPayPaymentForm } from './invoice-cinetpay-payment-form';
+import { InvoiceCoingatePaymentForm } from './invoice-coingate-payment-form';
+import { InvoiceEasebuzzPaymentForm } from './invoice-easebuzz-payment-form';
+import { InvoiceFedaPayPaymentForm } from './invoice-fedapay-payment-form';
+import { InvoiceFlutterwavePaymentForm } from './invoice-flutterwave-payment-form';
+import { InvoiceIyzipayPaymentForm } from './invoice-iyzipay-payment-form';
+import { InvoiceKhaltiPaymentForm } from './invoice-khalti-payment-form';
+import { InvoiceMercadoPagoPaymentForm } from './invoice-mercadopago-payment-form';
+import { InvoiceMidtransPaymentForm } from './invoice-midtrans-payment-form';
+import { InvoiceMolliePaymentForm } from './invoice-mollie-payment-form';
+import { InvoiceOzowPaymentForm } from './invoice-ozow-payment-form';
+import { InvoicePaiementPaymentForm } from './invoice-paiement-payment-form';
+import { InvoicePayfastPaymentForm } from './invoice-payfast-payment-form';
+import { InvoicePayHerePaymentForm } from './invoice-payhere-payment-form';
+import { InvoicePayPalPaymentForm } from './invoice-paypal-payment-form';
+import { InvoicePaystackPaymentForm } from './invoice-paystack-payment-form';
+import { InvoicePayTabsPaymentForm } from './invoice-paytabs-payment-form';
+import { InvoicePayTRPaymentForm } from './invoice-paytr-payment-form';
+import { InvoiceRazorpayPaymentForm } from './invoice-razorpay-payment-form';
+import { InvoiceSkrillPaymentForm } from './invoice-skrill-payment-form';
+import { InvoiceTapPaymentForm } from './invoice-tap-payment-form';
+import { InvoiceToyyibPayPaymentForm } from './invoice-toyyibpay-payment-form';
+import { InvoiceXenditPaymentForm } from './invoice-xendit-payment-form';
+import { InvoiceYooKassaPaymentForm } from './invoice-yookassa-payment-form';
+import { StripePaymentForm } from './stripe-payment-form';
 
 interface PaymentMethod {
     id: string;
@@ -61,13 +61,7 @@ interface InvoicePaymentProcessorProps {
     onCancel: () => void;
 }
 
-export function InvoicePaymentProcessor({
-    invoice,
-    amount,
-    onAmountChange,
-    onSuccess,
-    onCancel
-}: InvoicePaymentProcessorProps) {
+export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuccess, onCancel }: InvoicePaymentProcessorProps) {
     const { t } = useTranslation();
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('');
     const [showPaymentForm, setShowPaymentForm] = useState(false);
@@ -83,7 +77,7 @@ export function InvoicePaymentProcessor({
                 id: 'bank',
                 name: 'Bank Transfer',
                 icon: <Banknote className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -92,7 +86,7 @@ export function InvoicePaymentProcessor({
                 id: 'stripe',
                 name: 'Stripe',
                 icon: <CreditCard className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -101,7 +95,7 @@ export function InvoicePaymentProcessor({
                 id: 'paypal',
                 name: 'PayPal',
                 icon: <Wallet className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -110,7 +104,7 @@ export function InvoicePaymentProcessor({
                 id: 'razorpay',
                 name: 'Razorpay',
                 icon: <CreditCard className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -119,7 +113,7 @@ export function InvoicePaymentProcessor({
                 id: 'mercadopago',
                 name: 'MercadoPago',
                 icon: <Wallet className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -128,7 +122,7 @@ export function InvoicePaymentProcessor({
                 id: 'paystack',
                 name: 'Paystack',
                 icon: <CreditCard className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -137,7 +131,7 @@ export function InvoicePaymentProcessor({
                 id: 'flutterwave',
                 name: 'Flutterwave',
                 icon: <Wallet className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -146,7 +140,7 @@ export function InvoicePaymentProcessor({
                 id: 'paytabs',
                 name: 'PayTabs',
                 icon: <CreditCard className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -155,7 +149,7 @@ export function InvoicePaymentProcessor({
                 id: 'skrill',
                 name: 'Skrill',
                 icon: <Wallet className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -164,7 +158,7 @@ export function InvoicePaymentProcessor({
                 id: 'coingate',
                 name: 'Coingate',
                 icon: <CreditCard className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -173,7 +167,7 @@ export function InvoicePaymentProcessor({
                 id: 'payfast',
                 name: 'PayFast',
                 icon: <CreditCard className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -182,7 +176,7 @@ export function InvoicePaymentProcessor({
                 id: 'tap',
                 name: 'Tap',
                 icon: <CreditCard className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -191,7 +185,7 @@ export function InvoicePaymentProcessor({
                 id: 'xendit',
                 name: 'Xendit',
                 icon: <CreditCard className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -200,7 +194,7 @@ export function InvoicePaymentProcessor({
                 id: 'paytr',
                 name: 'PayTR',
                 icon: <CreditCard className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -209,7 +203,7 @@ export function InvoicePaymentProcessor({
                 id: 'mollie',
                 name: 'Mollie',
                 icon: <Wallet className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -218,7 +212,7 @@ export function InvoicePaymentProcessor({
                 id: 'toyyibpay',
                 name: 'ToyyibPay',
                 icon: <CreditCard className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -227,7 +221,7 @@ export function InvoicePaymentProcessor({
                 id: 'benefit',
                 name: 'Benefit',
                 icon: <CreditCard className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -236,7 +230,7 @@ export function InvoicePaymentProcessor({
                 id: 'iyzipay',
                 name: 'Iyzipay',
                 icon: <CreditCard className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -245,7 +239,7 @@ export function InvoicePaymentProcessor({
                 id: 'aamarpay',
                 name: 'Aamarpay',
                 icon: <CreditCard className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -254,7 +248,7 @@ export function InvoicePaymentProcessor({
                 id: 'midtrans',
                 name: 'Midtrans',
                 icon: <CreditCard className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -263,7 +257,7 @@ export function InvoicePaymentProcessor({
                 id: 'yookassa',
                 name: 'YooKassa',
                 icon: <Wallet className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -272,7 +266,7 @@ export function InvoicePaymentProcessor({
                 id: 'paiement',
                 name: 'Paiement Pro',
                 icon: <CreditCard className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -281,7 +275,7 @@ export function InvoicePaymentProcessor({
                 id: 'cinetpay',
                 name: 'CinetPay',
                 icon: <Wallet className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -290,7 +284,7 @@ export function InvoicePaymentProcessor({
                 id: 'payhere',
                 name: 'PayHere',
                 icon: <CreditCard className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -299,17 +293,16 @@ export function InvoicePaymentProcessor({
                 id: 'fedapay',
                 name: 'FedaPay',
                 icon: <Wallet className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
-
 
         if (paymentSettings?.is_authorizenet_payment_mode_enabled === true || paymentSettings?.is_authorizenet_payment_mode_enabled === '1') {
             methods.push({
                 id: 'authorizenet',
                 name: 'AuthorizeNet',
                 icon: <CreditCard className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -318,7 +311,7 @@ export function InvoicePaymentProcessor({
                 id: 'khalti',
                 name: 'Khalti',
                 icon: <Wallet className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -327,7 +320,7 @@ export function InvoicePaymentProcessor({
                 id: 'easebuzz',
                 name: 'Easebuzz',
                 icon: <CreditCard className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -336,7 +329,7 @@ export function InvoicePaymentProcessor({
                 id: 'ozow',
                 name: 'Ozow',
                 icon: <Wallet className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -345,7 +338,7 @@ export function InvoicePaymentProcessor({
                 id: 'cashfree',
                 name: 'Cashfree',
                 icon: <CreditCard className="h-5 w-5" />,
-                enabled: true
+                enabled: true,
             });
         }
 
@@ -357,9 +350,10 @@ export function InvoicePaymentProcessor({
     };
 
     // Calculate due amount (total - already paid)
-    const paidAmount = invoice.payments?.reduce((total: number, payment: any) => {
-        return payment.status === 'completed' ? total + parseFloat(payment.amount || 0) : total;
-    }, 0) || 0;
+    const paidAmount =
+        invoice.payments?.reduce((total: number, payment: any) => {
+            return payment.status === 'completed' ? total + parseFloat(payment.amount || 0) : total;
+        }, 0) || 0;
     const dueAmount = invoice.total_amount - paidAmount;
 
     const handlePayNow = () => {
@@ -771,14 +765,14 @@ export function InvoicePaymentProcessor({
             {/* Invoice Summary */}
             <Card>
                 <CardContent className="p-4">
-                    <div className="flex justify-between items-center">
+                    <div className="flex items-center justify-between">
                         <div>
                             <h3 className="font-medium">Invoice #{invoice.invoice_number}</h3>
-                            <p className="text-sm text-muted-foreground">{invoice.name}</p>
+                            <p className="text-muted-foreground text-sm">{invoice.name}</p>
                         </div>
                         <div className="text-right">
                             <div className="text-lg font-bold">{formatCurrency(invoice.total_amount)}</div>
-                            <div className="text-sm text-muted-foreground">Total</div>
+                            <div className="text-muted-foreground text-sm">Total</div>
                         </div>
                     </div>
                 </CardContent>
@@ -797,7 +791,7 @@ export function InvoicePaymentProcessor({
                     step="0.01"
                     placeholder="0.00"
                 />
-                <div className="text-sm text-muted-foreground space-y-1">
+                <div className="text-muted-foreground space-y-1 text-sm">
                     <p>Total: {formatCurrency(invoice.total_amount)}</p>
                     <p>Paid: {formatCurrency(paidAmount)}</p>
                     <p className="font-medium">Due: {formatCurrency(dueAmount)}</p>
@@ -808,13 +802,9 @@ export function InvoicePaymentProcessor({
             <div className="space-y-3">
                 <Label>{t('Select Payment Method')}</Label>
                 {paymentMethods.length === 0 ? (
-                    <div className="p-4 text-center border rounded-md bg-muted/50">
-                        <p className="text-sm text-muted-foreground mb-2">
-                            {t('No payment methods configured')}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                            {t('Please contact the organization to set up payment methods.')}
-                        </p>
+                    <div className="bg-muted/50 rounded-md border p-4 text-center">
+                        <p className="text-muted-foreground mb-2 text-sm">{t('No payment methods configured')}</p>
+                        <p className="text-muted-foreground text-xs">{t('Please contact the organization to set up payment methods.')}</p>
                     </div>
                 ) : (
                     <div className="space-y-2">
@@ -822,9 +812,7 @@ export function InvoicePaymentProcessor({
                             <Card
                                 key={method.id}
                                 className={`cursor-pointer transition-colors ${
-                                    selectedPaymentMethod === method.id
-                                        ? 'border-primary bg-primary/5'
-                                        : 'hover:border-gray-300'
+                                    selectedPaymentMethod === method.id ? 'border-primary bg-primary/5' : 'hover:border-gray-300'
                                 }`}
                                 onClick={() => setSelectedPaymentMethod(method.id)}
                             >
@@ -850,11 +838,7 @@ export function InvoicePaymentProcessor({
                 <Button variant="outline" onClick={onCancel} className="flex-1">
                     {t('Cancel')}
                 </Button>
-                <Button
-                    onClick={handlePayNow}
-                    disabled={paymentMethods.length === 0 || amount <= 0 || amount > dueAmount}
-                    className="flex-1"
-                >
+                <Button onClick={handlePayNow} disabled={paymentMethods.length === 0 || amount <= 0 || amount > dueAmount} className="flex-1">
                     {t('Pay')} {formatCurrency(amount)}
                 </Button>
             </div>

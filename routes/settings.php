@@ -1,21 +1,19 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Settings\PasswordController;
-use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\InvoiceStripePaymentController;
+use App\Http\Controllers\PlanOrderController;
+use App\Http\Controllers\Settings\CurrencySettingController;
 use App\Http\Controllers\Settings\EmailSettingController;
+use App\Http\Controllers\Settings\OrganizationPaymentSettingController;
+use App\Http\Controllers\Settings\OrganizationSystemSettingsController;
+use App\Http\Controllers\Settings\PasswordController;
+use App\Http\Controllers\Settings\PaymentSettingController;
+use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\Settings\SystemSettingsController;
-use App\Http\Controllers\Settings\OrganizationSystemSettingsController;
-use App\Http\Controllers\Settings\CurrencySettingController;
-use App\Http\Controllers\PlanOrderController;
-use App\Http\Controllers\Settings\PaymentSettingController;
-use App\Http\Controllers\Settings\OrganizationPaymentSettingController;
 use App\Http\Controllers\Settings\WebhookController;
 use App\Http\Controllers\StripePaymentController;
-use App\Http\Controllers\InvoiceStripePaymentController;
-use App\Http\Controllers\PayPalPaymentController;
-use App\Http\Controllers\BankPaymentController;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 /*

@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Project;
 use App\Models\Account;
+use App\Models\Project;
 use App\Models\User;
-use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class ProjectSeeder extends Seeder
 {
@@ -17,13 +17,14 @@ class ProjectSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
         $projectTypes = [
             'CRM Implementation', 'System Integration', 'Data Migration', 'Process Automation', 'Custom Development',
             'Website Redesign', 'Mobile App Development', 'Cloud Migration', 'Security Audit', 'Database Optimization',
-            'API Development', 'E-commerce Platform', 'Business Intelligence', 'Digital Transformation', 'Infrastructure Upgrade'
+            'API Development', 'E-commerce Platform', 'Business Intelligence', 'Digital Transformation', 'Infrastructure Upgrade',
         ];
         $statuses = ['active', 'inactive', 'completed', 'on_hold'];
         $priorities = ['low', 'medium', 'high', 'urgent'];

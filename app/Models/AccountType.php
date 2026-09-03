@@ -16,7 +16,7 @@ class AccountType extends Model
         'description',
         'color',
         'status',
-        'created_by'
+        'created_by',
     ];
 
     protected $casts = [

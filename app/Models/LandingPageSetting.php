@@ -11,18 +11,18 @@ class LandingPageSetting extends Model
         'contact_email',
         'contact_phone',
         'contact_address',
-        'config_sections'
+        'config_sections',
     ];
 
     protected $attributes = [
         'organization_name' => 'Kakbima',
         'contact_email' => 'support@sales.com',
         'contact_phone' => '+1 (555) 123-4567',
-        'contact_address' => 'San Francisco, CA'
+        'contact_address' => 'San Francisco, CA',
     ];
 
     protected $casts = [
-        'config_sections' => 'array'
+        'config_sections' => 'array',
     ];
 
     public static function getSettings()
@@ -38,7 +38,7 @@ class LandingPageSetting extends Model
                         'transparent' => false,
                         'background_color' => '#ffffff',
                         'text_color' => '#1f2937',
-                        'button_style' => 'solid'
+                        'button_style' => 'solid',
                     ],
                     [
                         'key' => 'hero',
@@ -55,8 +55,8 @@ class LandingPageSetting extends Model
                         'stats' => [
                             ['value' => '5K+', 'label' => 'Businesses Powered'],
                             ['value' => '30+', 'label' => 'Modules Included'],
-                            ['value' => '99%', 'label' => 'Customer Satisfaction']
-                        ]
+                            ['value' => '99%', 'label' => 'Customer Satisfaction'],
+                        ],
                     ],
                     [
                         'key' => 'features',
@@ -71,34 +71,34 @@ class LandingPageSetting extends Model
                             [
                                 'title' => 'CRM & Lead Management',
                                 'description' => 'Capture, nurture, and convert leads with smart automation tools.',
-                                'icon' => 'users'
+                                'icon' => 'users',
                             ],
                             [
                                 'title' => 'Opportunity & Pipeline',
                                 'description' => 'Track every deal stage and source to close more sales.',
-                                'icon' => 'zap'
+                                'icon' => 'zap',
                             ],
                             [
                                 'title' => 'Quotes & Orders',
                                 'description' => 'Create professional quotes, manage sales and purchase orders with ease.',
-                                'icon' => 'globe'
+                                'icon' => 'globe',
                             ],
                             [
                                 'title' => 'Invoices & Payments',
                                 'description' => 'Automate invoices, track payments, and simplify your billing process.',
-                                'icon' => 'smartphone'
+                                'icon' => 'smartphone',
                             ],
                             [
                                 'title' => 'Projects & Tasks',
                                 'description' => 'Collaborate on projects, assign tasks, and deliver work on time.',
-                                'icon' => 'star'
+                                'icon' => 'star',
                             ],
                             [
                                 'title' => 'Reports & Analytics',
                                 'description' => 'Gain deep insights with customizable reports and dashboards.',
-                                'icon' => 'bar-chart'
-                            ]
-                        ]
+                                'icon' => 'bar-chart',
+                            ],
+                        ],
                     ],
                     [
                         'key' => 'screenshots',
@@ -109,39 +109,39 @@ class LandingPageSetting extends Model
                                 'src' => '/screenshots/dashboard.png',
                                 'alt' => 'Kakbima Dashboard Overview',
                                 'title' => 'Dashboard Overview',
-                                'description' => 'Get a complete view of leads, employees, projects, sales, projects, and performance insights in one place'
+                                'description' => 'Get a complete view of leads, employees, projects, sales, projects, and performance insights in one place',
                             ],
                             [
                                 'src' => '/screenshots/crm.png',
                                 'alt' => 'CRM & Lead Management',
                                 'title' => 'CRM & Lead Management',
-                                'description' => 'Easily manage accounts, contacts, and leads with a user-friendly CRM system'
+                                'description' => 'Easily manage accounts, contacts, and leads with a user-friendly CRM system',
                             ],
                             [
                                 'src' => '/screenshots/orders.png',
                                 'alt' => 'Quotes & Orders',
                                 'title' => 'Quotes & Orders',
-                                'description' => 'Quickly generate quotes, process orders, and track every transaction with ease'
+                                'description' => 'Quickly generate quotes, process orders, and track every transaction with ease',
                             ],
                             [
                                 'src' => '/screenshots/invoices.png',
                                 'alt' => 'Invoices & Payments',
                                 'title' => 'Invoices & Payments',
-                                'description' => 'Automate billing, manage payments, and simplify your financial workflows'
+                                'description' => 'Automate billing, manage payments, and simplify your financial workflows',
                             ],
                             [
                                 'src' => '/screenshots/projects.png',
                                 'alt' => 'Projects & Task Management',
                                 'title' => 'Projects & Tasks',
-                                'description' => 'Plan, assign, and track tasks to deliver projects on time and boost team productivity.'
+                                'description' => 'Plan, assign, and track tasks to deliver projects on time and boost team productivity.',
                             ],
                             [
                                 'src' => '/screenshots/reports.png',
                                 'alt' => 'Reports & Analytics',
                                 'title' => 'Reports & Analytics',
-                                'description' => 'Visualize your sales performance with powerful reports and real-time analytics.'
-                            ]
-                        ]
+                                'description' => 'Visualize your sales performance with powerful reports and real-time analytics.',
+                            ],
+                        ],
                     ],
                     [
                         'key' => 'why_choose_us',
@@ -151,28 +151,28 @@ class LandingPageSetting extends Model
                             [
                                 'title' => 'Quick Setup',
                                 'description' => 'Get started in minutes with a user-friendly interface and ready-to-use modules.',
-                                'icon' => 'clock'
+                                'icon' => 'clock',
                             ],
                             [
                                 'title' => 'All-in-One Solution',
                                 'description' => 'From leads to invoices, manage your entire sales process in one place.',
-                                'icon' => 'check-circle'
+                                'icon' => 'check-circle',
                             ],
                             [
                                 'title' => 'Boost Productivity',
                                 'description' => 'Streamline tasks, automate workflows, and close deals faster.',
-                                'icon' => 'zap'
+                                'icon' => 'zap',
                             ],
                             [
                                 'title' => 'Scalable & Secure',
                                 'description' => 'Built with enterprise-grade security and flexibility to grow with your business.',
-                                'icon' => 'shield'
-                            ]
+                                'icon' => 'shield',
+                            ],
                         ],
                         'stats' => [
                             ['value' => '5K+', 'label' => 'Businesses Powered', 'color' => 'blue'],
-                            ['value' => '99%', 'label' => 'Customer Satisfaction', 'color' => 'green']
-                        ]
+                            ['value' => '99%', 'label' => 'Customer Satisfaction', 'color' => 'green'],
+                        ],
                     ],
                     [
                         'key' => 'about',
@@ -186,8 +186,8 @@ class LandingPageSetting extends Model
                         'stats' => [
                             ['value' => '4+ Years', 'label' => 'Industry Experience', 'color' => 'blue'],
                             ['value' => '10K+', 'label' => 'Happy Users', 'color' => 'green'],
-                            ['value' => '5K+', 'label' => 'Businesses Powered', 'color' => 'purple']
-                        ]
+                            ['value' => '5K+', 'label' => 'Businesses Powered', 'color' => 'purple'],
+                        ],
                     ],
                     [
                         'key' => 'team',
@@ -203,7 +203,7 @@ class LandingPageSetting extends Model
                                 'bio' => 'Sales strategist and former tech executive with 15+ years of experience in scaling SaaS businesses.',
                                 'image' => '',
                                 'linkedin' => '#',
-                                'email' => 'sarah@sales.com'
+                                'email' => 'sarah@sales.com',
                             ],
                             [
                                 'name' => 'Michael Lee',
@@ -211,7 +211,7 @@ class LandingPageSetting extends Model
                                 'bio' => 'Full-stack engineer specializing in Laravel and React with a passion for building scalable SaaS platforms.',
                                 'image' => '',
                                 'linkedin' => '#',
-                                'email' => 'michael@sales.com'
+                                'email' => 'michael@sales.com',
                             ],
                             [
                                 'name' => 'Priya Sharma',
@@ -219,7 +219,7 @@ class LandingPageSetting extends Model
                                 'bio' => 'Product leader focused on delivering user-friendly sales solutions that solve real-world challenges.',
                                 'image' => '',
                                 'linkedin' => '#',
-                                'email' => 'priya@sales.com'
+                                'email' => 'priya@sales.com',
                             ],
                             [
                                 'name' => 'David Kim',
@@ -227,9 +227,9 @@ class LandingPageSetting extends Model
                                 'bio' => 'Growth marketer with expertise in SaaS positioning, customer acquisition, and brand strategy.',
                                 'image' => '',
                                 'linkedin' => '#',
-                                'email' => 'david@sales.com'
-                            ]
-                        ]
+                                'email' => 'david@sales.com',
+                            ],
+                        ],
                     ],
                     [
                         'key' => 'testimonials',
@@ -238,19 +238,19 @@ class LandingPageSetting extends Model
                         'trust_title' => 'Trusted by Businesses Worldwide',
                         'trust_stats' => [
                             ['value' => '4.9/5', 'label' => 'Average Rating', 'color' => 'blue'],
-                            ['value' => '10K+', 'label' => 'Happy Businesses', 'color' => 'green']
+                            ['value' => '10K+', 'label' => 'Happy Businesses', 'color' => 'green'],
                         ],
                         'testimonials' => [
                             ['name' => 'Alex Thompson', 'role' => 'Sales Director', 'organization' => 'TechCorp Inc.', 'content' => 'This platform has transformed how we manage leads and opportunities. Our conversion rate has doubled since adopting it!', 'rating' => 5],
                             ['name' => 'Maria Lopez', 'role' => 'Operations Manager', 'organization' => 'Global Enterprises', 'content' => 'Invoices and orders are now automated, saving us hours every week. The reports feature gives us clear insights into performance.', 'rating' => 5],
-                            ['name' => 'Ravi Patel', 'role' => 'Founder & CEO', 'organization' => 'StartUp Hub', 'content' => 'As a growing business, we needed a scalable CRM and project management tool. This SaaS delivers everything in one place!', 'rating' => 5]
-                        ]
+                            ['name' => 'Ravi Patel', 'role' => 'Founder & CEO', 'organization' => 'StartUp Hub', 'content' => 'As a growing business, we needed a scalable CRM and project management tool. This SaaS delivers everything in one place!', 'rating' => 5],
+                        ],
                     ],
                     [
                         'key' => 'plans',
                         'title' => 'Choose Your Plan',
                         'subtitle' => 'Start with our free plan and upgrade as your business grows.',
-                        'faq_text' => 'Have questions about our plans? Contact our sales team'
+                        'faq_text' => 'Have questions about our plans? Contact our sales team',
                     ],
                     [
                         'key' => 'faq',
@@ -261,29 +261,29 @@ class LandingPageSetting extends Model
                         'faqs' => [
                             [
                                 'question' => 'What makes this SaaS different from others?',
-                                'answer' => 'Unlike other tools, our platform is built to help you grow faster. With powerful automation, real-time analytics, and world-class support, you’ll get results from day one.'
+                                'answer' => 'Unlike other tools, our platform is built to help you grow faster. With powerful automation, real-time analytics, and world-class support, you’ll get results from day one.',
                             ],
                             [
                                 'question' => 'Do I need to pay upfront to get started?',
-                                'answer' => 'Not at all! You can start with our free trial today. No credit card required. Upgrade anytime when you’re ready to unlock advanced features.'
+                                'answer' => 'Not at all! You can start with our free trial today. No credit card required. Upgrade anytime when you’re ready to unlock advanced features.',
                             ],
                             [
                                 'question' => 'Can I scale my plan as my business grows?',
-                                'answer' => 'Yes! Our pricing is flexible. Start small and scale seamlessly — whether you’re a freelancer, startup, or enterprise, we have a plan tailored for your growth.'
+                                'answer' => 'Yes! Our pricing is flexible. Start small and scale seamlessly — whether you’re a freelancer, startup, or enterprise, we have a plan tailored for your growth.',
                             ],
                             [
                                 'question' => 'How secure is my data on your platform?',
-                                'answer' => 'We use enterprise-grade encryption and follow strict compliance standards, so your data is always safe. Security is our top priority.'
+                                'answer' => 'We use enterprise-grade encryption and follow strict compliance standards, so your data is always safe. Security is our top priority.',
                             ],
                             [
                                 'question' => 'What kind of support do I get?',
-                                'answer' => 'Every plan includes email support, and higher tiers unlock priority support with a dedicated account manager — so you’re never left waiting.'
+                                'answer' => 'Every plan includes email support, and higher tiers unlock priority support with a dedicated account manager — so you’re never left waiting.',
                             ],
                             [
                                 'question' => 'Why should I upgrade to a paid plan?',
-                                'answer' => 'Paid plans unlock premium features like advanced analytics, integrations, team management, and unlimited usage — giving your business the competitive edge it needs.'
-                            ]
-                        ]
+                                'answer' => 'Paid plans unlock premium features like advanced analytics, integrations, team management, and unlimited usage — giving your business the competitive edge it needs.',
+                            ],
+                        ],
                     ],
                     [
                         'key' => 'newsletter',
@@ -293,8 +293,8 @@ class LandingPageSetting extends Model
                         'benefits' => [
                             ['icon' => '📧', 'title' => 'Weekly Insights', 'description' => 'Proven sales strategies and SaaS growth hacks'],
                             ['icon' => '🚀', 'title' => 'Product Updates', 'description' => 'Stay informed about new features and improvements'],
-                            ['icon' => '📊', 'title' => 'Data-Driven Tips', 'description' => 'Learn how to optimize sales with actionable analytics']
-                        ]
+                            ['icon' => '📊', 'title' => 'Data-Driven Tips', 'description' => 'Learn how to optimize sales with actionable analytics'],
+                        ],
                     ],
                     [
                         'key' => 'contact',
@@ -304,7 +304,7 @@ class LandingPageSetting extends Model
                         'info_title' => 'Contact Information',
                         'info_description' => 'We\'re here to help and answer any question you might have.',
                         'layout' => 'split',
-                        'background_color' => '#f9fafb'
+                        'background_color' => '#f9fafb',
                     ],
                     [
                         'key' => 'footer',
@@ -316,33 +316,33 @@ class LandingPageSetting extends Model
                             'product' => [
                                 ['name' => 'Features', 'href' => '#features'],
                                 ['name' => 'Pricing', 'href' => '#pricing'],
-                                ['name' => 'Integrations', 'href' => '#integrations']
+                                ['name' => 'Integrations', 'href' => '#integrations'],
                             ],
                             'organization' => [
                                 ['name' => 'About Us', 'href' => '#about'],
                                 ['name' => 'Careers', 'href' => '#careers'],
-                                ['name' => 'Contact', 'href' => '#contact']
+                                ['name' => 'Contact', 'href' => '#contact'],
                             ],
                             'support' => [
                                 ['name' => 'Help Center', 'href' => '#help-center'],
-                                ['name' => 'FAQs', 'href' => '#faqs']
+                                ['name' => 'FAQs', 'href' => '#faqs'],
                             ],
                             'legal' => [
                                 ['name' => 'Privacy Policy', 'href' => '#privacy-policy'],
-                                ['name' => 'Terms of Service', 'href' => '#terms-of-service']
-                            ]
+                                ['name' => 'Terms of Service', 'href' => '#terms-of-service'],
+                            ],
                         ],
                         'social_links' => [
                             ['name' => 'Facebook', 'icon' => 'Facebook', 'href' => '#'],
                             ['name' => 'Twitter', 'icon' => 'Twitter', 'href' => '#'],
                             ['name' => 'LinkedIn', 'icon' => 'Linkedin', 'href' => '#'],
-                            ['name' => 'Instagram', 'icon' => 'Instagram', 'href' => '#']
+                            ['name' => 'Instagram', 'icon' => 'Instagram', 'href' => '#'],
                         ],
                         'section_titles' => [
                             'product' => 'Product',
-                            'organization' => 'Organization'
-                        ]
-                    ]
+                            'organization' => 'Organization',
+                        ],
+                    ],
                 ],
                 'theme' => [
                     'primary_color' => '#10b77f',
@@ -350,12 +350,12 @@ class LandingPageSetting extends Model
                     'accent_color' => '#f7f7f7',
                     'logo_light' => 'logo/logo-light.png',
                     'logo_dark' => 'logo/logo-dark.png',
-                    'favicon' => 'logo/favicon.png'
+                    'favicon' => 'logo/favicon.png',
                 ],
                 'seo' => [
                     'meta_title' => 'Kakbima - Boost Your Sales & Grow Faster',
                     'meta_description' => 'All-in-one Kakbima platform to manage leads, close deals, and scale your business effortlessly.',
-                    'meta_keywords' => 'sales software, CRM, lead management, deal tracking, sales automation, SaaS'
+                    'meta_keywords' => 'sales software, CRM, lead management, deal tracking, sales automation, SaaS',
                 ],
                 'custom_css' => '',
                 'custom_js' => '',
@@ -373,12 +373,12 @@ class LandingPageSetting extends Model
                     'faq' => true,
                     'newsletter' => true,
                     'contact' => true,
-                    'footer' => true
-                ]
+                    'footer' => true,
+                ],
             ];
 
             $settings = self::create([
-                'config_sections' => $defaultConfig
+                'config_sections' => $defaultConfig,
             ]);
         }
         $superAdminId = User::where('type', 'super_admin')->first()->id;
@@ -422,12 +422,14 @@ class LandingPageSetting extends Model
                         $superAdminId
                     );
                 }
+
                 return $section;
             })
             ->toArray();
 
         // ✅ Reassign back (IMPORTANT)
         $landingPageSettings->config_sections = $configSections;
+
         return $landingPageSettings;
     }
 }

@@ -4,22 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Plan;
 use App\Models\User;
-use App\Models\Setting;
-use App\Models\PlanOrder;
-use App\Models\PaymentSetting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Iyzipay\Options;
+use Iyzipay\Model\Address;
+use Iyzipay\Model\BasketItem;
+use Iyzipay\Model\BasketItemType;
+use Iyzipay\Model\Buyer;
 use Iyzipay\Model\CheckoutForm;
 use Iyzipay\Model\CheckoutFormInitialize;
-use Iyzipay\Request\CreateCheckoutFormInitializeRequest;
-use Iyzipay\Model\Locale;
 use Iyzipay\Model\Currency;
+use Iyzipay\Model\Locale;
 use Iyzipay\Model\PaymentGroup;
-use Iyzipay\Model\BasketItemType;
-use Iyzipay\Model\BasketItem;
-use Iyzipay\Model\Buyer;
-use Iyzipay\Model\Address;
+use Iyzipay\Options;
+use Iyzipay\Request\CreateCheckoutFormInitializeRequest;
 use Iyzipay\Request\RetrieveCheckoutFormRequest;
 
 class IyzipayPaymentController extends Controller
@@ -80,7 +76,7 @@ class IyzipayPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['iyzipay_secret_key']) || !isset($settings['payment_settings']['iyzipay_public_key'])) {
@@ -105,7 +101,7 @@ class IyzipayPaymentController extends Controller
                 'plan_id' => $plan->id,
                 'user_id' => $user->id,
                 'billing_cycle' => $validated['billing_cycle'],
-                'coupon_code' => $validated['coupon_code'] ?? ''
+                'coupon_code' => $validated['coupon_code'] ?? '',
             ]));
             $checkoutRequest->setEnabledInstallments([1]);
 
@@ -161,7 +157,7 @@ class IyzipayPaymentController extends Controller
                 return response()->json([
                     'success' => true,
                     'redirect_url' => $checkoutFormInitialize->getPaymentPageUrl(),
-                    'token' => $checkoutFormInitialize->getToken()
+                    'token' => $checkoutFormInitialize->getToken(),
                 ]);
             } else {
                 return response()->json(['error' => $checkoutFormInitialize->getErrorMessage()], 400);

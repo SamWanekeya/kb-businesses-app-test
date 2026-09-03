@@ -3,8 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\QuoteCreated;
-use App\Services\SlackService;
 use App\Models\User;
+use App\Services\SlackService;
 use Exception;
 
 class SlackQuoteCreateListener
@@ -25,7 +25,7 @@ class SlackQuoteCreateListener
                 '{account_name}' => $account->name ?? '-',
                 '{total_amount}' => $quote->total_amount ? number_format($quote->total_amount, 2) : '0.00',
                 '{valid_until}' => $quote->valid_until ? date('Y-m-d', strtotime($quote->valid_until)) : '-',
-                '{organization_name}' => getOrganizationName()
+                '{organization_name}' => getOrganizationName(),
             ];
 
             try {

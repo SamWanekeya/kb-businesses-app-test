@@ -39,7 +39,9 @@ class PlanController extends Controller
         $plans = $dbPlans->map(function ($plan) use ($billingCycle) {
             // Determine features based on plan attributes
             $features = [];
-            if ($plan->enable_kakbima_intelligence === 'on') $features[] = 'Kakbima Intelligence';
+            if ($plan->enable_kakbima_intelligence === 'on') {
+                $features[] = 'Kakbima Intelligence';
+            }
 
             // Get price based on billing cycle
             $price = $billingCycle === 'yearly' ? $plan->yearly_price : $plan->price;
@@ -64,11 +66,11 @@ class PlanController extends Controller
                     'projects' => $plan->maximum_projects,
                     'contacts' => $plan->maximum_contacts,
                     'accounts' => $plan->maximum_accounts,
-                    'storage' => $plan->storage_limit . ' GB'
+                    'storage' => $plan->storage_limit . ' GB',
                 ],
                 'status' => $plan->is_plan_enabled === 'on',
                 'is_default' => $plan->is_default,
-                'recommended' => false // Default to false
+                'recommended' => false, // Default to false
             ];
         })->toArray();
 
@@ -94,7 +96,7 @@ class PlanController extends Controller
             'hasDefaultPlan' => $hasDefaultPlan,
             'isAdmin' => true,
             'currency' => $currency,
-            'currencySymbol' => $currencySymbol
+            'currencySymbol' => $currencySymbol,
         ]);
     }
 
@@ -107,6 +109,7 @@ class PlanController extends Controller
         $plan->save();
 
         $status = $plan->is_plan_enabled === 'on' ? 'activated' : 'deactivated';
+
         return back()->with('success', __('Plan :status successfully', ['status' => $status]));
     }
 
@@ -118,7 +121,7 @@ class PlanController extends Controller
         $hasDefaultPlan = Plan::where('is_default', true)->exists();
 
         return Inertia::render('plans/create', [
-            'hasDefaultPlan' => $hasDefaultPlan
+            'hasDefaultPlan' => $hasDefaultPlan,
         ]);
     }
 
@@ -181,7 +184,7 @@ class PlanController extends Controller
 
         return Inertia::render('plans/edit', [
             'plan' => $plan,
-            'otherDefaultPlanExists' => $otherDefaultPlanExists
+            'otherDefaultPlanExists' => $otherDefaultPlanExists,
         ]);
     }
 
@@ -290,7 +293,9 @@ class PlanController extends Controller
             $price = $billingCycle === 'yearly' ? $plan->yearly_price : $plan->price;
 
             $features = [];
-            if ($plan->enable_kakbima_intelligence === 'on') $features[] = 'Kakbima Intelligence';
+            if ($plan->enable_kakbima_intelligence === 'on') {
+                $features[] = 'Kakbima Intelligence';
+            }
 
             return [
                 'id' => $plan->id,
@@ -306,12 +311,12 @@ class PlanController extends Controller
                     'projects' => $plan->maximum_projects,
                     'contacts' => $plan->maximum_contacts,
                     'accounts' => $plan->maximum_accounts,
-                    'storage' => $plan->storage_limit . ' GB'
+                    'storage' => $plan->storage_limit . ' GB',
                 ],
                 'is_current' => $user->plan_id === $plan->id && ($currentBillingCycle === $billingCycle),
                 'is_trial_available' => $plan->is_trial === 'on' && !$user->is_trial,
                 'is_default' => $plan->is_default,
-                'recommended' => false // Default to false
+                'recommended' => false, // Default to false
             ];
         });
 
@@ -326,6 +331,7 @@ class PlanController extends Controller
                 if ($plan['id'] == $mostSubscribedPlanId) {
                     $plan['recommended'] = true;
                 }
+
                 return $plan;
             });
         }
@@ -336,7 +342,7 @@ class PlanController extends Controller
             'currentPlan' => $user->plan,
             'userTrialUsed' => $user->is_trial,
             'currency' => $currency,
-            'currencySymbol' => $currencySymbol
+            'currencySymbol' => $currencySymbol,
         ]);
     }
 
@@ -344,7 +350,7 @@ class PlanController extends Controller
     {
         $request->validate([
             'plan_id' => 'required|exists:plans,id',
-            'billing_cycle' => 'required|in:monthly,yearly'
+            'billing_cycle' => 'required|in:monthly,yearly',
         ]);
 
         $user = auth()->user();
@@ -364,7 +370,7 @@ class PlanController extends Controller
             'user_id' => $user->id,
             'plan_id' => $plan->id,
             'duration' => $request['billing_cycle'],
-            'status' => 'pending'
+            'status' => 'pending',
         ]);
 
         return back()->with('success', __('Plan request submitted successfully'));
@@ -373,7 +379,7 @@ class PlanController extends Controller
     public function cancelRequest(Request $request)
     {
         $request->validate([
-            'request_id' => 'required|exists:plan_requests,id'
+            'request_id' => 'required|exists:plan_requests,id',
         ]);
 
         $planRequest = \App\Models\PlanRequest::findOrFail($request->request_id);
@@ -386,7 +392,7 @@ class PlanController extends Controller
     public function startTrial(Request $request)
     {
         $request->validate([
-            'plan_id' => 'required|exists:plans,id'
+            'plan_id' => 'required|exists:plans,id',
         ]);
 
         $user = auth()->user();
@@ -400,7 +406,7 @@ class PlanController extends Controller
             'plan_id' => $plan->id,
             'is_trial' => 1,
             'trial_days' => $plan->trial_days,
-            'trial_expiry_date' => now()->addDays($plan->trial_days)
+            'trial_expiry_date' => now()->addDays($plan->trial_days),
         ]);
 
         return back()->with('success', __('Trial started successfully'));
@@ -410,7 +416,7 @@ class PlanController extends Controller
     {
         $request->validate([
             'plan_id' => 'required|exists:plans,id',
-            'billing_cycle' => 'required|in:monthly,yearly'
+            'billing_cycle' => 'required|in:monthly,yearly',
         ]);
 
         $user = auth()->user();
@@ -422,7 +428,7 @@ class PlanController extends Controller
             'plan_id' => $plan->id,
             'original_price' => $price,
             'final_price' => $price,
-            'status' => 'pending'
+            'status' => 'pending',
         ]);
 
         return back()->with('success', __('Subscription request submitted successfully'));

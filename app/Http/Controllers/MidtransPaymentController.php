@@ -48,7 +48,7 @@ class MidtransPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['midtrans_secret_key'])) {
@@ -64,10 +64,10 @@ class MidtransPaymentController extends Controller
             $paymentData = [
                 'transaction_details' => [
                     'order_id' => $orderId,
-                    'gross_amount' => $amount
+                    'gross_amount' => $amount,
                 ],
                 'credit_card' => [
-                    'secure' => true
+                    'secure' => true,
                 ],
                 'customer_details' => [
                     'first_name' => $user->name ?? 'Customer',
@@ -78,9 +78,9 @@ class MidtransPaymentController extends Controller
                         'id' => $plan->id,
                         'price' => $amount,
                         'quantity' => 1,
-                        'name' => $plan->name
-                    ]
-                ]
+                        'name' => $plan->name,
+                    ],
+                ],
             ];
 
             $snapToken = $this->createSnapToken($paymentData, $settings['payment_settings']);
@@ -94,7 +94,7 @@ class MidtransPaymentController extends Controller
                     'success' => true,
                     'snap_token' => $snapToken,
                     'payment_url' => $baseUrl . '/snap/v1/transactions/' . $snapToken,
-                    'order_id' => $orderId
+                    'order_id' => $orderId,
                 ]);
             }
 
@@ -154,7 +154,7 @@ class MidtransPaymentController extends Controller
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
                 'Authorization: Basic ' . base64_encode($settings['midtrans_secret_key'] . ':'),
                 'Content-Type: application/json',
-                'Accept: application/json'
+                'Accept: application/json',
             ]);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

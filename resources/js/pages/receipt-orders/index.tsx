@@ -1,24 +1,36 @@
-import { useState, useEffect } from 'react';
-import { PageTemplate } from '@/components/page-template';
-import { usePage, router, Link } from '@inertiajs/react';
-import { Plus, FileDown } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
-import { CrudTable } from '@/components/CrudTable';
-import { CrudFormModal } from '@/components/CrudFormModal';
 import { CrudDeleteModal } from '@/components/CrudDeleteModal';
+import { CrudFormModal } from '@/components/CrudFormModal';
+import { CrudTable } from '@/components/CrudTable';
 import { toast } from '@/components/custom-toast';
-import { useTranslation } from 'react-i18next';
+import { PageTemplate } from '@/components/page-template';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { Button } from '@/components/ui/button';
-
+import { useInitials } from '@/hooks/use-initials';
+import { hasPermission } from '@/utils/authorization';
+import { Link, router, usePage } from '@inertiajs/react';
+import { FileDown, Plus } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function ReceiptOrders() {
     const { t } = useTranslation();
     const getInitials = useInitials();
-    const { auth, receiptOrders, accounts, allAccounts, contacts, purchaseOrders, returnOrders, products, taxes, users = [], allUsers = [], filters: pageFilters = {}, flash = {} } = usePage().props as any;
+    const {
+        auth,
+        receiptOrders,
+        accounts,
+        allAccounts,
+        contacts,
+        purchaseOrders,
+        returnOrders,
+        products,
+        taxes,
+        users = [],
+        allUsers = [],
+        filters: pageFilters = {},
+        flash = {},
+    } = usePage().props as any;
     const permissions = auth?.permissions || [];
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
@@ -35,7 +47,6 @@ export default function ReceiptOrders() {
         else if (flash?.warning) toast.warning(t(flash.warning));
     }, [flash]);
 
-
     const hasActiveFilters = () => {
         return searchTerm !== '' || selectedStatus !== 'all' || selectedAccount !== 'all' || selectedAssignee !== 'all';
     };
@@ -50,30 +61,38 @@ export default function ReceiptOrders() {
     };
 
     const applyFilters = () => {
-        router.get(route('receipt-orders.index'), {
-            page: 1,
-            search: searchTerm || undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
-            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-            sort_field: pageFilters.sort_field || undefined,
-            sort_direction: pageFilters.sort_direction || undefined,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('receipt-orders.index'),
+            {
+                page: 1,
+                search: searchTerm || undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                sort_field: pageFilters.sort_field || undefined,
+                sort_direction: pageFilters.sort_direction || undefined,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleSort = (field: string) => {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
-        router.get(route('receipt-orders.index'), {
-            page: 1,
-            search: searchTerm || undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
-            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-            sort_field: field,
-            sort_direction: direction,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('receipt-orders.index'),
+            {
+                page: 1,
+                search: searchTerm || undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                sort_field: field,
+                sort_direction: direction,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleAction = (action: string, item: any) => {
@@ -92,7 +111,6 @@ export default function ReceiptOrders() {
             case 'toggle-status':
                 setIsStatusModalOpen(true);
                 break;
-
         }
     };
 
@@ -111,7 +129,7 @@ export default function ReceiptOrders() {
             onError: (errors) => {
                 toast.dismiss();
                 toast.error(t('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
-            }
+            },
         });
     };
 
@@ -123,7 +141,7 @@ export default function ReceiptOrders() {
             onError: (errors) => {
                 toast.dismiss();
                 toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
-            }
+            },
         });
     };
 
@@ -131,25 +149,30 @@ export default function ReceiptOrders() {
         const newStatus = receiptOrder.status === 'pending' ? 'received' : 'pending';
         toast.loading(t('{{action}} receipt order...', { action: newStatus === 'received' ? t('Marking as received') : t('Setting to pending') }));
 
-        router.put(route('receipt-orders.toggle-status', receiptOrder.id), {}, {
-            onSuccess: (page) => {
-                toast.dismiss();
-                if (page.props.flash.success) {
-                    toast.success(t(page.props.flash.success));
-                }
+        router.put(
+            route('receipt-orders.toggle-status', receiptOrder.id),
+            {},
+            {
+                onSuccess: (page) => {
+                    toast.dismiss();
+                    if (page.props.flash.success) {
+                        toast.success(t(page.props.flash.success));
+                    }
+                },
+                onError: (errors) => {
+                    toast.dismiss();
+                    toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                },
             },
-            onError: (errors) => {
-                toast.dismiss();
-                toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
-            }
-        });
+        );
     };
-
-
 
     const pageInitialState = useState(true);
     useEffect(() => {
-        if (pageInitialState[0]) { pageInitialState[1](false); return; }
+        if (pageInitialState[0]) {
+            pageInitialState[1](false);
+            return;
+        }
         applyFilters();
     }, [searchTerm, selectedStatus, selectedAccount, selectedAssignee]);
 
@@ -166,25 +189,30 @@ export default function ReceiptOrders() {
     if (hasPermission(permissions, 'export-receipt-orders')) {
         pageActions.push({
             label: t('Export'),
-            icon: <FileDown className="h-4 w-4 mr-2" />,
+            icon: <FileDown className="mr-0 h-4 w-4 min-[470px]:mr-2" />,
             variant: 'outline',
-            onClick: () => window.location.href = route('receipt-order.export')
+            onClick: () => (window.location.href = route('receipt-order.export')),
+            className: 'h-8 w-8 min-[470px]:h-9 min-[470px]:w-auto px-0 min-[470px]:px-4',
+            labelClassName: 'hidden min-[470px]:inline',
+            tooltip: t('Export'),
+            tooltipClassName: 'min-[470px]:hidden',
         });
     }
 
     if (hasPermission(permissions, 'create-receipt-orders')) {
         pageActions.push({
             label: t('Add Receipt Order'),
-            icon: <Plus className="h-4 w-4 mr-2" />,
+            icon: <Plus className="mr-0 h-4 w-4 min-[470px]:mr-2" />,
             variant: 'default',
-            onClick: () => handleAddNew()
+            onClick: () => handleAddNew(),
+            className: 'h-8 w-8 min-[470px]:h-9 min-[470px]:w-auto px-0 min-[470px]:px-4',
+            labelClassName: 'hidden min-[470px]:inline',
+            tooltip: t('Add Receipt Order'),
+            tooltipClassName: 'min-[470px]:hidden',
         });
     }
 
-    const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Receipt Orders') }
-    ];
+    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Receipt Orders') }];
 
     const columns = [
         {
@@ -193,44 +221,59 @@ export default function ReceiptOrders() {
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: string, item: any) => (
-                <Link href={route('receipt-orders.show', item.id)} className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 hover:border-blue-400 transition-colors duration-200 border border-blue-200 cursor-pointer whitespace-nowrap" style={{ color: '#1d4ed8' }} onMouseEnter={e => (e.currentTarget.style.color = '#1d4ed8')} onMouseLeave={e => (e.currentTarget.style.color = '#1d4ed8')}>{value}</Link>
-            )
+                <Link
+                    href={route('receipt-orders.show', item.id)}
+                    className="inline-flex cursor-pointer items-center rounded-md border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium whitespace-nowrap text-blue-700 transition-colors duration-200 hover:border-blue-400 hover:bg-blue-100"
+                    style={{ color: '#1d4ed8' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = '#1d4ed8')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#1d4ed8')}
+                >
+                    {value}
+                </Link>
+            ),
         },
         {
             key: 'assigned_user',
             label: t('Assigned To'),
             className: 'whitespace-nowrap',
-            render: (value: any) => value ? (
-                <div className="flex items-center gap-2">
-                    <Avatar className="h-8 w-8 flex-shrink-0">
-                        <AvatarImage src={value.avatar} alt={value.name} />
-                        <AvatarFallback className="text-xs">{getInitials(value.name)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                        <div className="font-medium whitespace-nowrap">{value.name}</div>
-                        <div className="text-sm text-muted-foreground whitespace-nowrap">{value.email}</div>
+            render: (value: any) =>
+                value ? (
+                    <div className="flex items-center gap-2">
+                        <Avatar className="h-8 w-8 flex-shrink-0">
+                            <AvatarImage src={value.avatar} alt={value.name} />
+                            <AvatarFallback className="text-xs">{getInitials(value.name)}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <div className="font-medium whitespace-nowrap">{value.name}</div>
+                            <div className="text-muted-foreground text-sm whitespace-nowrap">{value.email}</div>
+                        </div>
                     </div>
-                </div>
-            ) : <span className="whitespace-nowrap">{t('Unassigned')}</span>
+                ) : (
+                    <span className="whitespace-nowrap">{t('Unassigned')}</span>
+                ),
         },
         {
             key: 'account',
             label: t('Account'),
             className: 'whitespace-nowrap',
-            render: (value: any) => <span className="whitespace-nowrap">{value?.name || t('-')}</span>
+            render: (value: any) => <span className="whitespace-nowrap">{value?.name || t('-')}</span>,
         },
         {
             key: 'receipt_date',
             label: t('Receipt Date'),
             sortable: true,
             className: 'whitespace-nowrap',
-            type: 'date'
+            type: 'date',
         },
         {
             key: 'total_amount',
             label: t('Total Amount'),
             className: 'whitespace-nowrap',
-            render: (value: any) => <span className="whitespace-nowrap font-mono">{window.appSettings?.formatCurrency(Number(value || 0)) || `$${Number(value || 0).toFixed(2)}`}</span>
+            render: (value: any) => (
+                <span className="font-mono whitespace-nowrap">
+                    {window.appSettings?.formatCurrency(Number(value || 0)) || `$${Number(value || 0).toFixed(2)}`}
+                </span>
+            ),
         },
         {
             key: 'status',
@@ -242,15 +285,17 @@ export default function ReceiptOrders() {
                     received: 'bg-blue-50 text-blue-700 ring-blue-600/20',
                     partial: 'bg-orange-50 text-orange-700 ring-orange-600/20',
                     completed: 'bg-green-50 text-green-700 ring-green-600/20',
-                    cancelled: 'bg-red-50 text-red-700 ring-red-600/20'
+                    cancelled: 'bg-red-50 text-red-700 ring-red-600/20',
                 };
                 return (
-                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset whitespace-nowrap ${statusColors[value as keyof typeof statusColors] || statusColors.pending}`}>
+                    <span
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${statusColors[value as keyof typeof statusColors] || statusColors.pending}`}
+                    >
                         {t(value.charAt(0).toUpperCase() + value.slice(1))}
                     </span>
                 );
-            }
-        }
+            },
+        },
     ];
 
     const actions = [
@@ -259,29 +304,29 @@ export default function ReceiptOrders() {
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
-            requiredPermission: 'toggle-status-receipt-orders'
+            requiredPermission: 'toggle-status-receipt-orders',
         },
         {
             label: t('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
-            requiredPermission: 'view-receipt-orders'
+            requiredPermission: 'view-receipt-orders',
         },
         {
             label: t('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
-            requiredPermission: 'edit-receipt-orders'
+            requiredPermission: 'edit-receipt-orders',
         },
         {
             label: t('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
-            requiredPermission: 'delete-receipt-orders'
-        }
+            requiredPermission: 'delete-receipt-orders',
+        },
     ];
 
     const statusOptions = [
@@ -290,24 +335,24 @@ export default function ReceiptOrders() {
         { value: 'received', label: t('Received') },
         { value: 'partial', label: t('Partial') },
         { value: 'completed', label: t('Completed') },
-        { value: 'cancelled', label: t('Cancelled') }
+        { value: 'cancelled', label: t('Cancelled') },
     ];
 
     const accountOptions = [
         { value: 'all', label: t('All Accounts') },
-        ...allAccounts.map((account: any) => ({ value: account.id.toString(), label: account.name }))
+        ...allAccounts.map((account: any) => ({ value: account.id.toString(), label: account.name })),
     ];
 
     return (
         <PageTemplate
-            title={t("Receipt Orders")}
-            description={t("Manage your receipt orders.")}
+            title={t('Receipt Orders')}
+            description={t('Manage your receipt orders.')}
             url="/receipt-orders"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
             noPadding
         >
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
+            <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -319,7 +364,7 @@ export default function ReceiptOrders() {
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
-                            options: statusOptions
+                            options: statusOptions,
                         },
                         {
                             name: 'account_id',
@@ -328,7 +373,7 @@ export default function ReceiptOrders() {
                             searchable: true,
                             value: selectedAccount,
                             onChange: setSelectedAccount,
-                            options: accountOptions
+                            options: accountOptions,
                         },
                         {
                             name: 'assigned_to',
@@ -340,9 +385,9 @@ export default function ReceiptOrders() {
                             options: [
                                 { value: 'all', label: t('All Users') },
                                 { value: 'unassigned', label: t('Unassigned') },
-                                ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name }))
-                            ]
-                        }
+                                ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name })),
+                            ],
+                        },
                     ]}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
@@ -350,25 +395,25 @@ export default function ReceiptOrders() {
                 />
             </div>
 
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+            <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                 <div className="overflow-x-auto">
-                <CrudTable
-                    columns={columns}
-                    actions={actions}
-                    data={receiptOrders?.data || []}
-                    from={receiptOrders?.from || 1}
-                    onAction={handleAction}
-                    sortField={pageFilters.sort_field}
-                    sortDirection={pageFilters.sort_direction}
-                    onSort={handleSort}
-                    permissions={permissions}
-                    entityPermissions={{
-                        view: 'view-receipt-orders',
-                        create: 'create-receipt-orders',
-                        edit: 'edit-receipt-orders',
-                        delete: 'delete-receipt-orders'
-                    }}
-                />
+                    <CrudTable
+                        columns={columns}
+                        actions={actions}
+                        data={receiptOrders?.data || []}
+                        from={receiptOrders?.from || 1}
+                        onAction={handleAction}
+                        sortField={pageFilters.sort_field}
+                        sortDirection={pageFilters.sort_direction}
+                        onSort={handleSort}
+                        permissions={permissions}
+                        entityPermissions={{
+                            view: 'view-receipt-orders',
+                            create: 'create-receipt-orders',
+                            edit: 'edit-receipt-orders',
+                            delete: 'delete-receipt-orders',
+                        }}
+                    />
                 </div>
 
                 <Pagination
@@ -376,20 +421,24 @@ export default function ReceiptOrders() {
                     to={receiptOrders?.to || 0}
                     total={receiptOrders?.total || 0}
                     links={receiptOrders?.links}
-                    entityName={t("receipt orders")}
+                    entityName={t('receipt orders')}
                     onPageChange={(url) => router.get(url)}
-                    currentPerPage={pageFilters.per_page?.toString() || "10"}
+                    currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
-                        router.get(route('receipt-orders.index'), {
-                            page: 1,
-                            search: searchTerm || undefined,
-                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                            account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
-                            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-                            sort_field: pageFilters.sort_field || undefined,
-                            sort_direction: pageFilters.sort_direction || undefined,
-                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
-                        }, { preserveState: true, preserveScroll: true });
+                        router.get(
+                            route('receipt-orders.index'),
+                            {
+                                page: 1,
+                                search: searchTerm || undefined,
+                                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                                sort_field: pageFilters.sort_field || undefined,
+                                sort_direction: pageFilters.sort_direction || undefined,
+                                ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+                            },
+                            { preserveState: true, preserveScroll: true },
+                        );
                     }}
                 />
             </div>
@@ -410,15 +459,15 @@ export default function ReceiptOrders() {
                                 { value: 'received', label: t('Received') },
                                 { value: 'partial', label: t('Partial') },
                                 { value: 'completed', label: t('Completed') },
-                                { value: 'cancelled', label: t('Cancelled') }
-                            ]
-                        }
+                                { value: 'cancelled', label: t('Cancelled') },
+                            ],
+                        },
                     ],
-                    modalSize: 'sm'
+                    modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
                 title={t('Change Receipt Order Status')}
-                mode='edit'
+                mode="edit"
             />
 
             <CrudDeleteModal
@@ -428,8 +477,6 @@ export default function ReceiptOrders() {
                 itemName={currentItem?.name || ''}
                 entityName={t('receipt order')}
             />
-
-
         </PageTemplate>
     );
 }

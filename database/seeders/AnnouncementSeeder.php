@@ -49,7 +49,7 @@ class AnnouncementSeeder extends Seeder
                 AnnouncementCategory::firstOrCreate(
                     [
                         'name' => $catTemplate['name'],
-                        'created_by' => $user->id
+                        'created_by' => $user->id,
                     ],
                     [
                         'description' => $catTemplate['description'],
@@ -71,7 +71,7 @@ class AnnouncementSeeder extends Seeder
                 Announcement::firstOrCreate(
                     [
                         'title' => $template['title'],
-                        'created_by' => $user->id
+                        'created_by' => $user->id,
                     ],
                     [
                         'announcement_content' => $template['announcement_content'],

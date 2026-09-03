@@ -1,16 +1,14 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { toast } from '@/components/custom-toast';
+import IframePortal from '@/components/IframePortal';
+import MediaPicker from '@/components/MediaPicker';
+import { SettingsSection } from '@/components/settings-section';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { useForm, usePage } from '@inertiajs/react';
-import axios from 'axios';
-import { useState, useRef, useCallback, useEffect } from 'react';
-import { toast } from '@/components/custom-toast';
-import { useTranslation } from 'react-i18next';
-import MediaPicker from '@/components/MediaPicker';
-import { FileText, Save } from 'lucide-react';
 import Template1 from '@/pages/sales-orders/templates/Template1';
+import Template10 from '@/pages/sales-orders/templates/Template10';
 import Template2 from '@/pages/sales-orders/templates/Template2';
 import Template3 from '@/pages/sales-orders/templates/Template3';
 import Template4 from '@/pages/sales-orders/templates/Template4';
@@ -19,9 +17,11 @@ import Template6 from '@/pages/sales-orders/templates/Template6';
 import Template7 from '@/pages/sales-orders/templates/Template7';
 import Template8 from '@/pages/sales-orders/templates/Template8';
 import Template9 from '@/pages/sales-orders/templates/Template9';
-import Template10 from '@/pages/sales-orders/templates/Template10';
-import { SettingsSection } from '@/components/settings-section';
-import IframePortal from '@/components/IframePortal';
+import { useForm, usePage } from '@inertiajs/react';
+import axios from 'axios';
+import { Save } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const templateComponents = {
     template1: Template1,
@@ -83,27 +83,21 @@ const mockData = {
             quantity: 1,
             price: 100,
             discount: 50,
-            itemTax: [
-                { name: 'Tax 0', rate: '10 %', price: '$10' },
-            ],
+            itemTax: [{ name: 'Tax 0', rate: '10 %', price: '$10' }],
         },
         {
             name: 'Item 2',
             quantity: 1,
             price: 100,
             discount: 50,
-            itemTax: [
-                { name: 'Tax 1', rate: '10 %', price: '$10' },
-            ],
+            itemTax: [{ name: 'Tax 1', rate: '10 %', price: '$10' }],
         },
         {
             name: 'Item 3',
             quantity: 1,
             price: 100,
             discount: 50,
-            itemTax: [
-                { name: 'Tax 0', rate: '10 %', price: '$10' },
-            ],
+            itemTax: [{ name: 'Tax 0', rate: '10 %', price: '$10' }],
         },
     ],
     taxesData: {
@@ -129,12 +123,36 @@ const templates = {
 };
 
 const colors = [
-    '003580', '666666', '6676ef', 'f50102', 'f9b034',
-    'fbdd03', 'c1d82f', '37a4e4', '8a7966', '6a737b',
-    '050f2c', '0e3666', '3baeff', '3368e6', 'b84592',
-    'f64f81', 'f66c5f', 'fac168', '46de98', '40c7d0',
-    'be0028', '2f9f45', '371676', '52325d', '511378',
-    '0f3866', '48c0b6', '297cc0', 'ffffff', '000000'
+    '003580',
+    '666666',
+    '6676ef',
+    'f50102',
+    'f9b034',
+    'fbdd03',
+    'c1d82f',
+    '37a4e4',
+    '8a7966',
+    '6a737b',
+    '050f2c',
+    '0e3666',
+    '3baeff',
+    '3368e6',
+    'b84592',
+    'f64f81',
+    'f66c5f',
+    'fac168',
+    '46de98',
+    '40c7d0',
+    'be0028',
+    '2f9f45',
+    '371676',
+    '52325d',
+    '511378',
+    '0f3866',
+    '48c0b6',
+    '297cc0',
+    'ffffff',
+    '000000',
 ];
 
 export default function SalesOrderTemplateSettings() {
@@ -191,7 +209,7 @@ export default function SalesOrderTemplateSettings() {
         };
 
         return (
-            <div className="transform scale-90 origin-top pt-10 w-full">
+            <div className="w-full origin-top scale-90 transform pt-10">
                 <IframePortal>
                     <SelectedTemplate
                         salesOrder={mockData.salesOrder}
@@ -215,8 +233,8 @@ export default function SalesOrderTemplateSettings() {
             setData('salesOrderLogoUrl', null);
         } else {
             fetch(route('api.media.index'))
-                .then(res => res.json())
-                .then(media => {
+                .then((res) => res.json())
+                .then((media) => {
                     const item = media.find((m: any) => m.id === Number(value));
                     if (item) {
                         setData('salesOrderLogoUrl', item.url);
@@ -259,25 +277,23 @@ export default function SalesOrderTemplateSettings() {
 
     return (
         <SettingsSection
-            title={t("Sales Order Templates")}
-            description={t("Configure sales orders template, colors, and display options")}
+            title={t('Sales Order Templates')}
+            description={t('Configure sales orders template, colors, and display options')}
             action={
-                <Button type="submit" disabled={saving} form="sales-orders-template-settings-form" size="sm">
-                    <Save className="h-4 w-4 mr-2" />
-                    {saving ? t('Saving...') : t('Save Changes')}
+                <Button type="submit" disabled={saving} form="sales-orders-template-settings-form" size="sm" className="max-[1300px]:px-2.5">
+                    <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
+                    <span className="max-[1300px]:hidden">{saving ? t('Saving...') : t('Save Changes')}</span>
                 </Button>
-            }>
+            }
+        >
             <Card>
-                <CardContent className='pt-6'>
+                <CardContent className="pt-6">
                     <form onSubmit={handleSubmit} id="sales-orders-template-settings-form" className="space-y-6">
-                        <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] lg:items-start gap-6">
+                        <div className="grid grid-cols-1 gap-6 min-[1300px]:grid-cols-[320px_1fr] min-[1300px]:items-start">
                             <div ref={settingsRef} className="space-y-4">
                                 <div className="space-y-2">
                                     <Label htmlFor="sales_order_template">{t('Sales Order Template')}</Label>
-                                    <Select
-                                        value={data.salesOrderTemplate}
-                                        onValueChange={(value) => setData('salesOrderTemplate', value)}
-                                    >
+                                    <Select value={data.salesOrderTemplate} onValueChange={(value) => setData('salesOrderTemplate', value)}>
                                         <SelectTrigger>
                                             <SelectValue placeholder={t('Select template')} />
                                         </SelectTrigger>
@@ -289,9 +305,7 @@ export default function SalesOrderTemplateSettings() {
                                             ))}
                                         </SelectContent>
                                     </Select>
-                                    {errors.salesOrderTemplate && (
-                                        <p className="text-sm text-red-600">{errors.salesOrderTemplate}</p>
-                                    )}
+                                    {errors.salesOrderTemplate && <p className="text-sm text-red-600">{errors.salesOrderTemplate}</p>}
                                 </div>
 
                                 <div className="flex items-center justify-between">
@@ -307,7 +321,7 @@ export default function SalesOrderTemplateSettings() {
 
                                 <div className="space-y-2">
                                     <Label>{t('Color Input')}</Label>
-                                    <div className="grid grid-cols-6 gap-1 w-50">
+                                    <div className="grid w-50 grid-cols-6 gap-1">
                                         {colors.map((color) => (
                                             <label key={color} className="cursor-pointer">
                                                 <input
@@ -319,10 +333,9 @@ export default function SalesOrderTemplateSettings() {
                                                     className="sr-only"
                                                 />
                                                 <div
-                                                    className={`w-6 h-6 border-2 ${data.salesOrderColor === color
-                                                        ? 'border-primary ring-2 ring-primary/20'
-                                                        : 'border-gray-300'
-                                                        }`}
+                                                    className={`h-6 w-6 border-2 ${
+                                                        data.salesOrderColor === color ? 'border-primary ring-primary/20 ring-2' : 'border-gray-300'
+                                                    }`}
                                                     style={{ backgroundColor: `#${color}` }}
                                                 />
                                             </label>
@@ -340,18 +353,17 @@ export default function SalesOrderTemplateSettings() {
                                         showPreview={true}
                                         returnType="id"
                                     />
-                                    {errors.salesOrderLogo && (
-                                        <p className="text-sm text-red-600">{errors.salesOrderLogo}</p>
-                                    )}
-                                    <p className="text-xs text-gray-500">
-                                        {t('Select a logo for sales orders')}
-                                    </p>
+                                    {errors.salesOrderLogo && <p className="text-sm text-red-600">{errors.salesOrderLogo}</p>}
+                                    <p className="text-xs text-gray-500">{t('Select a logo for sales orders')}</p>
                                 </div>
                             </div>
 
                             <div className="space-y-2">
                                 <Label>{t('Preview')}</Label>
-                                <div className="border rounded-lg overflow-y-auto overflow-x-auto bg-white lg:sticky lg:top-6" style={{ height: settingsHeight - 25 || 'auto' }}>
+                                <div
+                                    className="overflow-x-auto overflow-y-auto rounded-lg border bg-white lg:sticky lg:top-6"
+                                    style={{ height: settingsHeight - 25 || 'auto' }}
+                                >
                                     {renderPreview()}
                                 </div>
                             </div>

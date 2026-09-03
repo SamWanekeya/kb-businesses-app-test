@@ -1,13 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Pagination } from '@/components/ui/pagination';
-import { ArrowLeft, Calendar, DollarSign, Users, TrendingUp } from 'lucide-react';
-import { usePage, Link } from '@inertiajs/react';
-import { useTranslation } from 'react-i18next';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { useState, useEffect } from 'react';
 import { PageTemplate } from '@/components/page-template';
+import { Card, CardContent } from '@/components/ui/card';
+import { Pagination } from '@/components/ui/pagination';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { usePage } from '@inertiajs/react';
+import { ArrowLeft, Calendar, DollarSign, TrendingUp, Users } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface CouponUsage {
     id: number;
@@ -46,7 +43,7 @@ export default function CouponDetailsPage() {
     const breadcrumbs = [
         { title: t('Dashboard'), href: route('dashboard') },
         { title: t('Coupons'), href: route('coupons.index') },
-        { title: t('Coupon Details') }
+        { title: t('Coupon Details') },
     ];
 
     const usageColumns = [
@@ -56,48 +53,44 @@ export default function CouponDetailsPage() {
         {
             key: 'amount',
             label: t('Order Amount'),
-            render: (value: number) => <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${value.toFixed(2)}`}</span>
+            render: (value: number) => <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${value.toFixed(2)}`}</span>,
         },
         {
             key: 'discount_amount',
             label: t('Discount Applied'),
-            render: (value: number) => <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${value.toFixed(2)}`}</span>
+            render: (value: number) => <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${value.toFixed(2)}`}</span>,
         },
         {
             key: 'used_at',
             label: t('Used At'),
             sortable: true,
             render: (value: string) => (
-                <div className="flex items-center gap-1.5 text-gray-500 whitespace-nowrap">
+                <div className="flex items-center gap-1.5 whitespace-nowrap text-gray-500">
                     <Calendar className="h-3.5 w-3.5 shrink-0" />
                     <span>{window.appSettings?.formatDateTime(value, false) || value}</span>
                 </div>
-            )
-        }
+            ),
+        },
     ];
 
     const formatDiscount = (type: string, amount: number) => {
-        return type === 'percentage'
-            ? `${amount}%`
-            : (window.appSettings?.formatCurrency(amount) || `$${amount.toFixed(2)}`);
+        return type === 'percentage' ? `${amount}%` : window.appSettings?.formatCurrency(amount) || `$${amount.toFixed(2)}`;
     };
 
     const getStatusBadge = (status: boolean) => {
         return status ? (
-            <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset bg-green-50 text-green-700 ring-green-600/20">
+            <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset">
                 {t('Active')}
             </span>
         ) : (
-            <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset bg-red-50 text-red-700 ring-red-600/20">
+            <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/20 ring-inset">
                 {t('Inactive')}
             </span>
         );
     };
 
     const getTypeBadge = (type: string) => {
-        const className = type === 'percentage'
-            ? 'bg-blue-50 text-blue-700 ring-blue-600/20'
-            : 'bg-green-50 text-green-700 ring-blue-600/20';
+        const className = type === 'percentage' ? 'bg-blue-50 text-blue-700 ring-blue-600/20' : 'bg-green-50 text-green-700 ring-blue-600/20';
         const label = type === 'percentage' ? t('Percentage') : t('Flat Amount');
         return <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${className}`}>{label}</span>;
     };
@@ -108,10 +101,10 @@ export default function CouponDetailsPage() {
             actions={[
                 {
                     label: t('Back'),
-                    icon: <ArrowLeft className="h-4 w-4 mr-2" />,
+                    icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => window.history.back()
-                }
+                    onClick: () => window.history.back(),
+                },
             ]}
         >
             <div className="space-y-6">
@@ -126,13 +119,13 @@ export default function CouponDetailsPage() {
                 </div>
 
                 {/* Coupon Info Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
                     <Card>
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm font-medium text-muted-foreground">{t('Discount Value')}</p>
-                                    <h3 className="mt-2 text-xl font-semibold font-mono">{formatDiscount(coupon.type, coupon.discount_amount)}</h3>
+                                    <p className="text-muted-foreground text-sm font-medium">{t('Discount Value')}</p>
+                                    <h3 className="mt-2 font-mono text-xl font-semibold">{formatDiscount(coupon.type, coupon.discount_amount)}</h3>
                                 </div>
                                 <div className="rounded-full bg-blue-100 p-3 dark:bg-blue-900">
                                     <DollarSign className="h-5 w-5 text-blue-600 dark:text-blue-400" />
@@ -145,9 +138,11 @@ export default function CouponDetailsPage() {
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm font-medium text-muted-foreground">{t('Times Used')}</p>
-                                    <h3 className="mt-2 text-xl font-semibold">{coupon.used_count}
-                                        {coupon.use_limit_per_coupon && ` / ${coupon.use_limit_per_coupon}`}</h3>
+                                    <p className="text-muted-foreground text-sm font-medium">{t('Times Used')}</p>
+                                    <h3 className="mt-2 text-xl font-semibold">
+                                        {coupon.used_count}
+                                        {coupon.use_limit_per_coupon && ` / ${coupon.use_limit_per_coupon}`}
+                                    </h3>
                                 </div>
                                 <div className="rounded-full bg-green-100 p-3 dark:bg-green-900">
                                     <TrendingUp className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -160,7 +155,7 @@ export default function CouponDetailsPage() {
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm font-medium text-muted-foreground">{t('User Limit')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">{t('User Limit')}</p>
                                     <h3 className="mt-2 text-xl font-semibold"> {coupon.use_limit_per_user || t('Unlimited')}</h3>
                                 </div>
                                 <div className="rounded-full bg-purple-100 p-3 dark:bg-purple-900">
@@ -174,11 +169,13 @@ export default function CouponDetailsPage() {
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm font-medium text-muted-foreground">{t('Expires')}</p>
-                                    <h3 className="mt-2 text-xl font-semibold"> {coupon.expiry_date
-                                        ? window.appSettings?.formatDateTime(coupon.expiry_date, false) || coupon.expiry_date
-                                        : t('Never')
-                                    }</h3>
+                                    <p className="text-muted-foreground text-sm font-medium">{t('Expires')}</p>
+                                    <h3 className="mt-2 text-xl font-semibold">
+                                        {' '}
+                                        {coupon.expiry_date
+                                            ? window.appSettings?.formatDateTime(coupon.expiry_date, false) || coupon.expiry_date
+                                            : t('Never')}
+                                    </h3>
                                 </div>
                                 <div className="rounded-full bg-orange-100 p-3 dark:bg-orange-900">
                                     <DollarSign className="h-5 w-5 text-orange-600 dark:text-orange-400" />
@@ -190,12 +187,12 @@ export default function CouponDetailsPage() {
 
                 {/* Coupon Details */}
                 <Card className="p-6">
-                    <h2 className="text-lg font-semibold mb-4">{t('Coupon Information')}</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <h2 className="mb-4 text-lg font-semibold">{t('Coupon Information')}</h2>
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                         <div className="space-y-4">
                             <div>
                                 <label className="text-sm font-bold">{t('Coupon Code')}</label>
-                                <p className="mt-1 text-base font-mono bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded">{coupon.code}</p>
+                                <p className="mt-1 rounded bg-gray-100 px-3 py-2 font-mono text-base dark:bg-gray-800">{coupon.code}</p>
                             </div>
                             <div>
                                 <label className="text-sm font-bold">{t('Type')}</label>
@@ -206,13 +203,17 @@ export default function CouponDetailsPage() {
                             {coupon.minimum_spend && (
                                 <div>
                                     <label className="text-sm font-bold">{t('Minimum Spend')}</label>
-                                    <p className="mt-1 text-sm py-2 font-mono">{window.appSettings?.formatCurrency(coupon.minimum_spend) || `$${coupon.minimum_spend.toFixed(2)}`}</p>
+                                    <p className="mt-1 py-2 font-mono text-sm">
+                                        {window.appSettings?.formatCurrency(coupon.minimum_spend) || `$${coupon.minimum_spend.toFixed(2)}`}
+                                    </p>
                                 </div>
                             )}
                             {coupon.maximum_spend && (
                                 <div>
                                     <label className="text-sm font-bold">{t('Maximum Spend')}</label>
-                                    <p className="mt-1 text-sm py-2 font-mono">{window.appSettings?.formatCurrency(coupon.maximum_spend) || `$${coupon.maximum_spend.toFixed(2)}`}</p>
+                                    <p className="mt-1 py-2 font-mono text-sm">
+                                        {window.appSettings?.formatCurrency(coupon.maximum_spend) || `$${coupon.maximum_spend.toFixed(2)}`}
+                                    </p>
                                 </div>
                             )}
                         </div>
@@ -221,8 +222,8 @@ export default function CouponDetailsPage() {
 
                 {/* Usage History */}
                 <Card className="p-6">
-                    <h2 className="text-lg font-semibold mb-4">{t('Usage History')}</h2>
-                    <div className="border rounded-lg">
+                    <h2 className="mb-4 text-lg font-semibold">{t('Usage History')}</h2>
+                    <div className="rounded-lg border">
                         <Table>
                             <TableHeader>
                                 <TableRow>
@@ -244,7 +245,7 @@ export default function CouponDetailsPage() {
                                     ))
                                 ) : (
                                     <TableRow>
-                                        <TableCell colSpan={usageColumns.length} className="text-center py-8 text-gray-500">
+                                        <TableCell colSpan={usageColumns.length} className="py-8 text-center text-gray-500">
                                             {t('No usage history found')}
                                         </TableCell>
                                     </TableRow>
@@ -255,7 +256,7 @@ export default function CouponDetailsPage() {
 
                     {/* Pagination */}
                     {usage_history.last_page > 1 && (
-                        <div className="mt-4 border rounded-lg dark:border-gray-700 overflow-hidden">
+                        <div className="mt-4 overflow-hidden rounded-lg border dark:border-gray-700">
                             <Pagination
                                 from={usage_history.from || 0}
                                 to={usage_history.to || 0}
@@ -268,7 +269,7 @@ export default function CouponDetailsPage() {
                                     const page = urlObj.searchParams.get('page');
                                     window.location.href = route('coupons.show', {
                                         coupon: coupon.id,
-                                        page: page
+                                        page: page,
                                     });
                                 }}
                             />

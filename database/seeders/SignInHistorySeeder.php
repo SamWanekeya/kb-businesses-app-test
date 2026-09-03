@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\SignInHistory;
 use App\Models\User;
-use Illuminate\Database\Seeder;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 
 class SignInHistorySeeder extends Seeder
 {
@@ -19,6 +19,7 @@ class SignInHistorySeeder extends Seeder
 
         if ($users->isEmpty()) {
             $this->command->warn('No users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -31,7 +32,7 @@ class SignInHistorySeeder extends Seeder
             '198.51.100.78',
             '127.0.0.1',
             '192.168.0.15',
-            '10.1.1.200'
+            '10.1.1.200',
         ];
 
         // Sample browser and device data
@@ -40,32 +41,32 @@ class SignInHistorySeeder extends Seeder
                 'browser_name' => 'Chrome',
                 'os_name' => 'Windows',
                 'device_type' => 'desktop',
-                'browser_language' => 'en'
+                'browser_language' => 'en',
             ],
             [
                 'browser_name' => 'Firefox',
                 'os_name' => 'Linux',
                 'device_type' => 'desktop',
-                'browser_language' => 'en'
+                'browser_language' => 'en',
             ],
             [
                 'browser_name' => 'Safari',
                 'os_name' => 'macOS',
                 'device_type' => 'desktop',
-                'browser_language' => 'en'
+                'browser_language' => 'en',
             ],
             [
                 'browser_name' => 'Chrome',
                 'os_name' => 'Android',
                 'device_type' => 'mobile',
-                'browser_language' => 'en'
+                'browser_language' => 'en',
             ],
             [
                 'browser_name' => 'Safari',
                 'os_name' => 'iOS',
                 'device_type' => 'mobile',
-                'browser_language' => 'en'
-            ]
+                'browser_language' => 'en',
+            ],
         ];
 
         // Sample location data
@@ -81,7 +82,7 @@ class SignInHistorySeeder extends Seeder
                 'lon' => -122.4194,
                 'timezone' => 'America/Los_Angeles',
                 'isp' => 'Comcast Cable',
-                'org' => 'Comcast Cable Communications'
+                'org' => 'Comcast Cable Communications',
             ],
             [
                 'country' => 'United Kingdom',
@@ -94,7 +95,7 @@ class SignInHistorySeeder extends Seeder
                 'lon' => -0.1278,
                 'timezone' => 'Europe/London',
                 'isp' => 'British Telecom',
-                'org' => 'BT Group'
+                'org' => 'BT Group',
             ],
             [
                 'country' => 'Germany',
@@ -107,7 +108,7 @@ class SignInHistorySeeder extends Seeder
                 'lon' => 13.4050,
                 'timezone' => 'Europe/Berlin',
                 'isp' => 'Deutsche Telekom',
-                'org' => 'T-Systems'
+                'org' => 'T-Systems',
             ],
             [
                 'country' => null,
@@ -120,8 +121,8 @@ class SignInHistorySeeder extends Seeder
                 'lon' => null,
                 'timezone' => null,
                 'isp' => null,
-                'org' => null
-            ]
+                'org' => null,
+            ],
         ];
 
         // Get users by type
@@ -129,10 +130,10 @@ class SignInHistorySeeder extends Seeder
         $organizationUsers = User::where('type', 'organization')->get();
         $staffUsers = User::where('type', '!=', 'super_admin')->where('type', '!=', 'organization')->get();
 
-        // Create mixed login history records (20 total)
+        // Create mixed sign in history records (20 total)
         $recordsCreated = 0;
 
-        // Create 5 super_admin login records
+        // Create 5 super_admin sign in records
         if ($superAdminUsers->isNotEmpty()) {
             for ($i = 0; $i < 5 && $recordsCreated < 20; $i++) {
                 $user = $superAdminUsers->random();
@@ -141,7 +142,7 @@ class SignInHistorySeeder extends Seeder
             }
         }
 
-        // Create 8 organization login records
+        // Create 8 organization sign in records
         if ($organizationUsers->isNotEmpty()) {
             for ($i = 0; $i < 8 && $recordsCreated < 20; $i++) {
                 $user = $organizationUsers->random();
@@ -152,11 +153,11 @@ class SignInHistorySeeder extends Seeder
             }
         }
 
-        // Create 7 staff login records (mostly created_by=2)
+        // Create 7 staff sign in records (mostly created_by=2)
         if ($staffUsers->isNotEmpty()) {
             for ($i = 0; $i < 7 && $recordsCreated < 20; $i++) {
                 $user = $staffUsers->random();
-                $createdBy = rand(1,2);
+                $createdBy = rand(1, 2);
                 $this->createLoginRecord($user, $browserData, $locationData, $ipAddressAddresses, $createdBy);
                 $recordsCreated++;
             }
@@ -170,7 +171,7 @@ class SignInHistorySeeder extends Seeder
             $recordsCreated++;
         }
 
-        $this->command->info("{$recordsCreated} login history records created successfully.");
+        $this->command->info("{$recordsCreated} sign in history records created successfully.");
         $this->command->info('Distribution: 5 super_admin, 8 organization, 7 staff records.');
     }
 
@@ -184,9 +185,9 @@ class SignInHistorySeeder extends Seeder
         $details = array_merge($browser, $location, [
             'status' => 'success',
             'query' => $ipAddress,
-            'referrer_host' => fake()->randomElement(['localhost', 'example.com', 'app.domain.com', null]),
+            'referrer_host' => fake()->randomElement(['localhost', 'kakbima.dev', 'kakbima.com', null]),
             'referrer_path' => fake()->randomElement(['/sign-in', '/dashboard', '/home', null]),
-            'as' => null
+            'as' => null,
         ]);
 
         SignInHistory::create([
@@ -197,7 +198,7 @@ class SignInHistorySeeder extends Seeder
             'type' => $user->type,
             'created_by' => $createdBy,
             'created_at' => Carbon::now()->subDays(rand(0, 30))->subHours(rand(0, 23))->subMinutes(rand(0, 59)),
-            'updated_at' => Carbon::now()
+            'updated_at' => Carbon::now(),
         ]);
     }
 
@@ -207,6 +208,7 @@ class SignInHistorySeeder extends Seeder
             return $user->id;
         } elseif ($user->type === 'organization') {
             $superAdmin = $superAdminUsers->first();
+
             return $superAdmin ? $superAdmin->id : $user->id;
         } else {
             return $user->created_by ?: ($organizationUsers->first() ? $organizationUsers->first()->id : $user->id);

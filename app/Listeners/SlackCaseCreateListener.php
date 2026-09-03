@@ -3,8 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\CaseCreated;
-use App\Services\SlackService;
 use App\Models\User;
+use App\Services\SlackService;
 use Exception;
 
 class SlackCaseCreateListener
@@ -21,7 +21,7 @@ class SlackCaseCreateListener
         if (isNotificationTemplateEnabled('Case Create', 'slack', createdBy())) {
             $variables = [
                 '{case_subject}' => $case->subject ?? '-',
-                '{organization_name}' => 'Organization Name'
+                '{organization_name}' => 'Organization Name',
             ];
 
             try {

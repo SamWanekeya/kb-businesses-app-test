@@ -3,8 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\AccountCreate;
-use App\Services\SlackService;
 use App\Models\User;
+use App\Services\SlackService;
 use Exception;
 
 class SlackAccountCreateListener
@@ -21,7 +21,7 @@ class SlackAccountCreateListener
         if (isNotificationTemplateEnabled('Account create', 'slack', createdBy())) {
             $variables = [
                 '{account_name}' => $account->name,
-                '{organization_name}' => getOrganizationName()
+                '{organization_name}' => getOrganizationName(),
             ];
 
             try {

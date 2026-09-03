@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { useTranslation } from 'react-i18next';
 import { toast } from '@/components/custom-toast';
+import { Button } from '@/components/ui/button';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface InvoiceRazorpayPaymentFormProps {
     invoiceId: number;
@@ -21,7 +21,7 @@ export function InvoiceRazorpayPaymentForm({
     razorpayKey,
     currency = 'INR',
     onSuccess,
-    onCancel
+    onCancel,
 }: InvoiceRazorpayPaymentFormProps) {
     const { t } = useTranslation();
     const [isRazorpayLoaded, setIsRazorpayLoaded] = useState(false);
@@ -59,7 +59,7 @@ export function InvoiceRazorpayPaymentForm({
             const response = await axios.post(route('invoice.razorpay.create-order'), {
                 invoice_id: invoiceId,
                 amount: amount,
-                payment_type: paymentType
+                payment_type: paymentType,
             });
 
             if (response.data.error) {
@@ -81,35 +81,36 @@ export function InvoiceRazorpayPaymentForm({
                 name: 'Invoice Payment',
                 description: `Invoice Payment - ${paymentType}`,
                 order_id: order_id,
-                handler: function(response: any) {
+                handler: function (response: any) {
                     // Process payment on server
-                    axios.post(route('invoice.razorpay.payment'), {
-                        invoice_id: invoiceId,
-                        amount: amount,
-                        payment_type: paymentType,
-                        razorpay_payment_id: response.razorpay_payment_id,
-                        razorpay_order_id: response.razorpay_order_id,
-                        razorpay_signature: response.razorpay_signature
-                    })
-                    .then(() => {
-                        onSuccess();
-                    })
-                    .catch((error) => {
-                        const errorMsg = error.response?.data?.error || t('Payment processing failed');
-                        toast.error(errorMsg);
-                    });
+                    axios
+                        .post(route('invoice.razorpay.payment'), {
+                            invoice_id: invoiceId,
+                            amount: amount,
+                            payment_type: paymentType,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_signature: response.razorpay_signature,
+                        })
+                        .then(() => {
+                            onSuccess();
+                        })
+                        .catch((error) => {
+                            const errorMsg = error.response?.data?.error || t('Payment processing failed');
+                            toast.error(errorMsg);
+                        });
                 },
                 prefill: {
                     name: '',
                     email: '',
-                    contact: ''
+                    contact: '',
                 },
                 theme: {
-                    color: '#3B82F6'
+                    color: '#3B82F6',
                 },
                 modal: {
-                    ondismiss: onCancel
-                }
+                    ondismiss: onCancel,
+                },
             };
 
             const razorpay = new (window as any).Razorpay(options);
@@ -122,9 +123,7 @@ export function InvoiceRazorpayPaymentForm({
 
     return (
         <div className="space-y-4">
-            <p className="text-sm text-muted-foreground">
-                {t('You will be redirected to Razorpay to complete your payment.')}
-            </p>
+            <p className="text-muted-foreground text-sm">{t('You will be redirected to Razorpay to complete your payment.')}</p>
 
             <div className="flex gap-3">
                 <Button variant="outline" onClick={onCancel} className="flex-1">

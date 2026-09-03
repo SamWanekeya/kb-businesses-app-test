@@ -23,7 +23,7 @@ class AccountTypeController extends Controller
 
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'name', 'created_at'];
+        $allowedSorts = ['id', 'name', 'created_at'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -37,7 +37,7 @@ class AccountTypeController extends Controller
 
         return Inertia::render('account-types/index', [
             'accountTypes' => $accountTypes,
-            'filters' => $request->only(['search', 'status', 'sort_field', 'sort_direction', 'per_page', 'page'])
+            'filters' => $request->only(['search', 'status', 'sort_field', 'sort_direction', 'per_page', 'page']),
         ]);
     }
 
@@ -47,12 +47,12 @@ class AccountTypeController extends Controller
             'name' => 'required|string|max:255|unique:account_types,name,NULL,id,created_by,' . createdBy(),
             'description' => 'nullable|string',
             'color' => 'nullable|string|max:7',
-            'status' => 'required|in:active,inactive'
+            'status' => 'required|in:active,inactive',
         ]);
 
         AccountType::create([
             ...$request->all(),
-            'created_by' => createdBy()
+            'created_by' => createdBy(),
         ]);
 
         return redirect()->back()->with('success', __('Account type created successfully.'));
@@ -64,7 +64,7 @@ class AccountTypeController extends Controller
             'name' => 'required|string|max:255|unique:account_types,name,' . $accountType->id . ',id,created_by,' . createdBy(),
             'description' => 'nullable|string',
             'color' => 'nullable|string|max:7',
-            'status' => 'required|in:active,inactive'
+            'status' => 'required|in:active,inactive',
         ]);
 
         $accountType->update($request->all());
@@ -86,7 +86,7 @@ class AccountTypeController extends Controller
     public function toggleStatus(AccountType $accountType)
     {
         $accountType->update([
-            'status' => $accountType->status === 'active' ? 'inactive' : 'active'
+            'status' => $accountType->status === 'active' ? 'inactive' : 'active',
         ]);
 
         return redirect()->back()->with('success', __('Account type status updated successfully.'));

@@ -12,6 +12,7 @@ class ProductImport implements ToModel, WithHeadingRow
     use Importable;
 
     private $addedCount = 0;
+
     private $skippedCount = 0;
 
     public function model(array $row)
@@ -26,6 +27,7 @@ class ProductImport implements ToModel, WithHeadingRow
             $productBySku = Product::where('sku', $row['sku'])->where('created_by', createdBy())->first();
             if ($productBySku) {
                 $this->skippedCount++;
+
                 return null;
             }
         }
@@ -68,6 +70,7 @@ class ProductImport implements ToModel, WithHeadingRow
         $productData['tax_id'] = $tax?->id ?? \App\Models\Tax::where('created_by', createdBy())->value('id');
 
         $this->addedCount++;
+
         return new Product($productData);
     }
 

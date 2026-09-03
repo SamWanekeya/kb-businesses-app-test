@@ -15,7 +15,8 @@ class OrganizationSystemSettingsController extends Controller
      * - Date/time formats and timezone
      * - Excludes email verification and landing page settings
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request)

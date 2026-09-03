@@ -35,6 +35,7 @@ class InvoiceEasebuzzPaymentController extends Controller
 
             if (!isset($settings['payment_settings']['easebuzz_merchant_key']) || !isset($settings['payment_settings']['easebuzz_salt_key'])) {
                 \Log::error('Easebuzz payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+
                 return response()->json(['error' => __('Easebuzz not configured')], 400);
             }
 
@@ -60,10 +61,10 @@ class InvoiceEasebuzzPaymentController extends Controller
                 'surl' => route('invoice.easebuzz.success', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
-                    'payment_type' => $validated['payment_type']
+                    'payment_type' => $validated['payment_type'],
                 ]),
                 'furl' => route('invoice.easebuzz.failure', [
-                    'invoice_id' => $invoice->id
+                    'invoice_id' => $invoice->id,
                 ]),
                 'udf1' => $validated['payment_type'],
                 'udf2' => $validated['amount'],
@@ -82,20 +83,22 @@ class InvoiceEasebuzzPaymentController extends Controller
                     return response()->json([
                         'success' => true,
                         'payment_url' => $baseUrl . '/pay/' . $accessKey,
-                        'transaction_id' => $txnid
+                        'transaction_id' => $txnid,
                     ]);
                 }
             }
 
             \Log::error('Easebuzz payment creation failed', ['invoice_id' => $invoice->id, 'result' => $resultArray]);
+
             return response()->json(['error' => 'Payment initialization failed'], 400);
 
         } catch (\Exception $e) {
             \Log::error('Easebuzz payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
     }
@@ -139,7 +142,7 @@ class InvoiceEasebuzzPaymentController extends Controller
                 \Log::info('Easebuzz invoice payment successful', [
                     'invoice_id' => $invoice->id,
                     'amount' => $amount,
-                    'payment_type' => $paymentType
+                    'payment_type' => $paymentType,
                 ]);
 
                 return redirect()->route('invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
@@ -149,8 +152,9 @@ class InvoiceEasebuzzPaymentController extends Controller
 
         } catch (\Exception $e) {
             \Log::error('Easebuzz success callback error', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return redirect()->route('invoices.public', encrypt($request->input('invoice_id')))->with('error', __('Payment processing failed'));
         }
     }
@@ -165,7 +169,7 @@ class InvoiceEasebuzzPaymentController extends Controller
                 \Log::info('Easebuzz invoice payment failed', [
                     'invoice_id' => $invoice->id,
                     'txnid' => $request->input('txnid'),
-                    'status' => $request->input('status')
+                    'status' => $request->input('status'),
                 ]);
 
                 return redirect()->route('invoices.public', encrypt($invoice->id))->with('error', __('Payment failed or cancelled'));
@@ -175,8 +179,9 @@ class InvoiceEasebuzzPaymentController extends Controller
 
         } catch (\Exception $e) {
             \Log::error('Easebuzz failure callback error', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return redirect()->route('invoices.public', encrypt($request->input('invoice_id')))->with('error', __('Payment failed'));
         }
     }
@@ -208,7 +213,7 @@ class InvoiceEasebuzzPaymentController extends Controller
 
                         \Log::info('Easebuzz invoice payment callback successful', [
                             'invoice_id' => $invoice->id,
-                            'txnid' => $txnid
+                            'txnid' => $txnid,
                         ]);
                     }
                 }
@@ -218,8 +223,9 @@ class InvoiceEasebuzzPaymentController extends Controller
 
         } catch (\Exception $e) {
             \Log::error('Easebuzz callback error', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return response()->json(['error' => __('Callback processing failed')], 500);
         }
     }

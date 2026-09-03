@@ -38,7 +38,7 @@ class PlanRequestController extends BaseController
 
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'created_at'];
+        $allowedSorts = ['id', 'created_at'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -78,7 +78,7 @@ class PlanRequestController extends BaseController
             'payment_method' => 'manual',
             'payment_id' => null,
             'status' => 'approved',
-            'processed_at' => now()
+            'processed_at' => now(),
         ];
         createPlanOrder($data);
 

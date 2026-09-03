@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 class Permission extends BaseSpatiePermission
 {
     protected $fillable = [
@@ -11,6 +10,6 @@ class Permission extends BaseSpatiePermission
         'label',
         'description',
         'is_active',
-        'guard_name'
+        'guard_name',
     ];
 }

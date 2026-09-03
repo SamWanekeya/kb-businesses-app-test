@@ -1,15 +1,15 @@
 import { useForm } from '@inertiajs/react';
-import { Lock, Mail } from 'lucide-react';
+import { Lock } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
+import AuthButton from '@/components/auth/auth-button';
 import InputError from '@/components/input-error';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useTranslation } from 'react-i18next';
-import AuthLayout from '@/layouts/auth-layout';
-import AuthButton from '@/components/auth/auth-button';
 import { useBrand } from '@/contexts/BrandContext';
 import { THEME_COLORS } from '@/hooks/use-appearance';
+import AuthLayout from '@/layouts/auth-layout';
+import { useTranslation } from 'react-i18next';
 
 interface ResetPasswordProps {
     token: string;
@@ -43,21 +43,23 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
 
     return (
         <AuthLayout
-            title={t("Reset your password")}
-            description={t("Please enter your new password below")}
+            title={t('Reset your password')}
+            description={t('Please enter your new password below')}
             icon={<Lock className="h-7 w-7" style={{ color: primaryColor }} />}
         >
             <form onSubmit={submit} className="space-y-5">
                 <div className="space-y-4">
                     <div className="relative">
-                        <Label htmlFor="email" className="text-gray-700 dark:text-gray-300 font-medium mb-2 block" required>{t("Email")}</Label>
+                        <Label htmlFor="email" className="mb-2 block font-medium text-gray-700 dark:text-gray-300" required>
+                            {t('Email')}
+                        </Label>
                         <div className="relative">
                             <Input
                                 id="email"
                                 type="email"
                                 readOnly
                                 value={data.email}
-                                className="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg transition-all duration-200"
+                                className="h-11 w-full rounded-lg border-gray-300 bg-white text-gray-900 transition-all duration-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 style={{ '--tw-ring-color': primaryColor } as React.CSSProperties}
                             />
                         </div>
@@ -65,7 +67,9 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                     </div>
 
                     <div className="relative">
-                        <Label htmlFor="password" className="text-gray-700 dark:text-gray-300 font-medium mb-2 block">{t("Password")}</Label>
+                        <Label htmlFor="password" className="mb-2 block font-medium text-gray-700 dark:text-gray-300" required>
+                            {t('Password')}
+                        </Label>
                         <div className="relative">
                             <Input
                                 id="password"
@@ -77,7 +81,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                 value={data.password}
                                 onChange={(e) => setData('password', e.target.value)}
                                 placeholder="••••••••"
-                                className="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg transition-all duration-200"
+                                className="h-11 w-full rounded-lg border-gray-300 bg-white text-gray-900 transition-all duration-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 style={{ '--tw-ring-color': primaryColor } as React.CSSProperties}
                             />
                         </div>
@@ -85,7 +89,9 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                     </div>
 
                     <div className="relative">
-                        <Label htmlFor="password_confirmation" className="text-gray-700 dark:text-gray-300 font-medium mb-2 block">{t("Confirm password")}</Label>
+                        <Label htmlFor="password_confirmation" className="mb-2 block font-medium text-gray-700 dark:text-gray-300" required>
+                            {t('Confirm password')}
+                        </Label>
                         <div className="relative">
                             <Input
                                 id="password_confirmation"
@@ -96,7 +102,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                 value={data.password_confirmation}
                                 onChange={(e) => setData('password_confirmation', e.target.value)}
                                 placeholder="••••••••"
-                                className="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg transition-all duration-200"
+                                className="h-11 w-full rounded-lg border-gray-300 bg-white text-gray-900 transition-all duration-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 style={{ '--tw-ring-color': primaryColor } as React.CSSProperties}
                             />
                         </div>
@@ -107,10 +113,10 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                 <AuthButton
                     tabIndex={3}
                     processing={processing}
-                    className="w-full text-white py-2.5 text-sm font-medium tracking-wide transition-all duration-200 rounded-md shadow-md hover:shadow-lg transform hover:scale-[1.02]"
+                    className="w-full transform rounded-md py-2.5 text-sm font-medium tracking-wide text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg"
                     style={{ backgroundColor: primaryColor }}
                 >
-                    {t("RESET PASSWORD").toUpperCase()}
+                    {t('Reset Password')}
                 </AuthButton>
             </form>
         </AuthLayout>

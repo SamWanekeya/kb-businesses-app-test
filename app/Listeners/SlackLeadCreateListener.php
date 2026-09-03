@@ -22,7 +22,7 @@ class SlackLeadCreateListener
 
             $variables = [
                 '{lead_name}' => $lead->name ?? '-',
-                '{organization_name}' => getOrganizationName()
+                '{organization_name}' => getOrganizationName(),
             ];
 
             try {

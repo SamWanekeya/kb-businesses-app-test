@@ -1,23 +1,24 @@
-import React from 'react';
+import { toast } from '@/components/custom-toast';
 import { PageTemplate } from '@/components/page-template';
-import { usePage, useForm } from '@inertiajs/react';
-import { ArrowLeft, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useForm, usePage } from '@inertiajs/react';
+import { ArrowLeft, Copy } from 'lucide-react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { toast } from '@/components/custom-toast';
 
 function FieldError({ message }: { message?: string }) {
     if (!message) return null;
-    return <p className="text-xs text-red-500 mt-1">{message}</p>;
+    return <p className="mt-1 text-xs text-red-500">{message}</p>;
 }
 
 function SectionTitle({ title, extra }: { title: string; extra?: React.ReactNode }) {
     return (
-        <div className="flex items-center justify-between mb-5">
+        <div className="mb-5 flex items-center justify-between">
             <h2 className="text-base font-semibold text-gray-900 dark:text-white">{title}</h2>
             {extra}
         </div>
@@ -27,7 +28,6 @@ function SectionTitle({ title, extra }: { title: string; extra?: React.ReactNode
 export default function AccountCreate() {
     const { t } = useTranslation();
     const { accountTypes = [], accountIndustries = [], users = [] } = usePage().props as any;
-
 
     const { data, setData, setError, clearErrors, post, processing, errors } = useForm({
         name: '',
@@ -116,41 +116,76 @@ export default function AccountCreate() {
             title={t('Create Account')}
             description={t('Fill in the details to create a new account')}
             breadcrumbs={breadcrumbs}
-            actions={[{
-                label: t('Back'),
-                icon: <ArrowLeft className="h-4 w-4 mr-2" />,
-                variant: 'outline',
-                onClick: () => window.history.back(),
-            }]}
+            actions={[
+                {
+                    label: t('Back'),
+                    icon: <ArrowLeft className="mr-2 h-4 w-4" />,
+                    variant: 'outline',
+                    onClick: () => window.history.back(),
+                },
+            ]}
             noPadding
         >
-            <form onSubmit={handleSubmit} className="space-y-8 bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-6 rounded-lg border border-gray-200 dark:border-gray-700">
-
+            <form
+                onSubmit={handleSubmit}
+                className="space-y-8 rounded-lg border border-gray-200 bg-white p-6 text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-white"
+            >
                 {/* ── 1. Basic Information ── */}
                 <div>
                     <SectionTitle title={t('Basic Information')} />
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+                    <div className="grid grid-cols-1 gap-x-6 gap-y-5 md:grid-cols-2">
                         <div className="space-y-1.5">
-                            <Label htmlFor="name" required>{t('Account Name')}</Label>
-                            <Input id="name" value={data.name} onChange={(e) => set('name', e.target.value)} className={errors.name ? 'border-red-500' : ''} placeholder={t('e.g. Acme Corporation')} />
+                            <Label htmlFor="name" required>
+                                {t('Account Name')}
+                            </Label>
+                            <Input
+                                id="name"
+                                value={data.name}
+                                onChange={(e) => set('name', e.target.value)}
+                                className={errors.name ? 'border-red-500' : ''}
+                                placeholder={t('e.g. Acme Corporation')}
+                            />
                             <FieldError message={errors.name} />
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="email" required>{t('Email')}</Label>
-                            <Input id="email" type="email" value={data.email} onChange={(e) => set('email', e.target.value)} className={errors.email ? 'border-red-500' : ''} placeholder={t('e.g. contact@acmecorp.com')} />
+                            <Label htmlFor="email" required>
+                                {t('Email')}
+                            </Label>
+                            <Input
+                                id="email"
+                                type="email"
+                                value={data.email}
+                                onChange={(e) => set('email', e.target.value)}
+                                className={errors.email ? 'border-red-500' : ''}
+                                placeholder={t('e.g. contact@acmecorp.com')}
+                            />
                             <FieldError message={errors.email} />
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="phone" required>{t('Phone')}</Label>
-                            <Input id="phone" value={data.phone} onChange={(e) => set('phone', e.target.value)} className={errors.phone ? 'border-red-500' : ''} placeholder={t('e.g. +1 234 567 8900')} />
+                            <Label htmlFor="phone" required>
+                                {t('Phone')}
+                            </Label>
+                            <Input
+                                id="phone"
+                                value={data.phone}
+                                onChange={(e) => set('phone', e.target.value)}
+                                className={errors.phone ? 'border-red-500' : ''}
+                                placeholder={t('e.g. +1 234 567 8900')}
+                            />
                             <FieldError message={errors.phone} />
                         </div>
 
                         <div className="space-y-1.5">
                             <Label htmlFor="website">{t('Website')}</Label>
-                            <Input id="website" value={data.website} onChange={(e) => set('website', e.target.value)} className={errors.website ? 'border-red-500' : ''} placeholder="e.g. https://acmecorp.com" />
+                            <Input
+                                id="website"
+                                value={data.website}
+                                onChange={(e) => set('website', e.target.value)}
+                                className={errors.website ? 'border-red-500' : ''}
+                                placeholder="e.g. https://acmecorp.com"
+                            />
                             <FieldError message={errors.website} />
                         </div>
                     </div>
@@ -161,7 +196,7 @@ export default function AccountCreate() {
                 {/* ── 2. Classification & Assignment ── */}
                 <div>
                     <SectionTitle title={t('Classification & Assignment')} />
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+                    <div className="grid grid-cols-1 gap-x-6 gap-y-5 md:grid-cols-2">
                         <div className="space-y-1.5">
                             <Label required>{t('Account Type')}</Label>
                             <Select value={data.account_type_id} onValueChange={(v) => set('account_type_id', v)}>
@@ -170,13 +205,20 @@ export default function AccountCreate() {
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {accountTypes.map((item: any) => (
-                                        <SelectItem key={item.id} value={String(item.id)}>{item.name}</SelectItem>
+                                        <SelectItem key={item.id} value={String(item.id)}>
+                                            {item.name}
+                                        </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
                             <FieldError message={errors.account_type_id} />
                             {accountTypes.length === 0 && (
-                                <p className="text-xs mt-1">{t('Click here to add')} <a href={route('account-types.index')} className="underline font-medium">{t('Account Types')}</a></p>
+                                <p className="mt-1 text-xs">
+                                    {t('Click here to add')}{' '}
+                                    <a href={route('account-types.index')} className="font-medium underline">
+                                        {t('Account Types')}
+                                    </a>
+                                </p>
                             )}
                         </div>
 
@@ -188,13 +230,20 @@ export default function AccountCreate() {
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {users.map((u: any) => (
-                                        <SelectItem key={u.id} value={String(u.id)}>{u.name} ({u.email})</SelectItem>
+                                        <SelectItem key={u.id} value={String(u.id)}>
+                                            {u.name} ({u.email})
+                                        </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
                             <FieldError message={errors.assigned_to} />
                             {users.length === 0 && (
-                                <p className="text-xs mt-1">{t('Click here to add')} <a href={route('users.index')} className="underline font-medium">{t('Users')}</a></p>
+                                <p className="mt-1 text-xs">
+                                    {t('Click here to add')}{' '}
+                                    <a href={route('users.index')} className="font-medium underline">
+                                        {t('Users')}
+                                    </a>
+                                </p>
                             )}
                         </div>
 
@@ -206,13 +255,20 @@ export default function AccountCreate() {
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {accountIndustries.map((item: any) => (
-                                        <SelectItem key={item.id} value={String(item.id)}>{item.name}</SelectItem>
+                                        <SelectItem key={item.id} value={String(item.id)}>
+                                            {item.name}
+                                        </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
                             <FieldError message={errors.account_industry_id} />
                             {accountIndustries.length === 0 && (
-                                <p className="text-xs mt-1">{t('Click here to add')} <a href={route('account-industries.index')} className="underline font-medium">{t('Industries')}</a></p>
+                                <p className="mt-1 text-xs">
+                                    {t('Click here to add')}{' '}
+                                    <a href={route('account-industries.index')} className="font-medium underline">
+                                        {t('Industries')}
+                                    </a>
+                                </p>
                             )}
                         </div>
 
@@ -234,39 +290,78 @@ export default function AccountCreate() {
                 <hr className="border-gray-200 dark:border-gray-700" />
 
                 {/* ── 3 & 4. Billing & Shipping Address side by side ── */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                     {/* Billing */}
                     <div>
                         <SectionTitle title={t('Billing Address')} />
                         <div className="space-y-4">
                             <div className="space-y-1.5">
-                                <Label htmlFor="billing_address" required>{t('Billing Address')}</Label>
-                                <Textarea id="billing_address" value={data.billing_address} onChange={(e) => set('billing_address', e.target.value)} className={errors.billing_address ? 'border-red-500' : ''} rows={2} placeholder={t('e.g. 123 Main Street, Suite 100')} />
+                                <Label htmlFor="billing_address" required>
+                                    {t('Billing Address')}
+                                </Label>
+                                <Textarea
+                                    id="billing_address"
+                                    value={data.billing_address}
+                                    onChange={(e) => set('billing_address', e.target.value)}
+                                    className={errors.billing_address ? 'border-red-500' : ''}
+                                    rows={2}
+                                    placeholder={t('e.g. 123 Main Street, Suite 100')}
+                                />
                                 <FieldError message={errors.billing_address} />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="billing_city" required>{t('Billing City')}</Label>
-                                    <Input id="billing_city" value={data.billing_city} onChange={(e) => set('billing_city', e.target.value)} className={errors.billing_city ? 'border-red-500' : ''} placeholder={t('e.g. New York')} />
+                                    <Label htmlFor="billing_city" required>
+                                        {t('Billing City')}
+                                    </Label>
+                                    <Input
+                                        id="billing_city"
+                                        value={data.billing_city}
+                                        onChange={(e) => set('billing_city', e.target.value)}
+                                        className={errors.billing_city ? 'border-red-500' : ''}
+                                        placeholder={t('e.g. New York')}
+                                    />
                                     <FieldError message={errors.billing_city} />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="billing_state" required>{t('State')}</Label>
-                                    <Input id="billing_state" value={data.billing_state} onChange={(e) => set('billing_state', e.target.value)} className={errors.billing_state ? 'border-red-500' : ''} placeholder={t('e.g. NY')} />
+                                    <Label htmlFor="billing_state" required>
+                                        {t('State')}
+                                    </Label>
+                                    <Input
+                                        id="billing_state"
+                                        value={data.billing_state}
+                                        onChange={(e) => set('billing_state', e.target.value)}
+                                        className={errors.billing_state ? 'border-red-500' : ''}
+                                        placeholder={t('e.g. NY')}
+                                    />
                                     <FieldError message={errors.billing_state} />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="billing_country" required>{t('Billing Country')}</Label>
-                                    <Input id="billing_country" value={data.billing_country} onChange={(e) => set('billing_country', e.target.value)} className={errors.billing_country ? 'border-red-500' : ''} placeholder={t('e.g. United States')} />
+                                    <Label htmlFor="billing_country" required>
+                                        {t('Billing Country')}
+                                    </Label>
+                                    <Input
+                                        id="billing_country"
+                                        value={data.billing_country}
+                                        onChange={(e) => set('billing_country', e.target.value)}
+                                        className={errors.billing_country ? 'border-red-500' : ''}
+                                        placeholder={t('e.g. United States')}
+                                    />
                                     <FieldError message={errors.billing_country} />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="billing_postal_code" required>{t('Billing Postal Code')}</Label>
-                                    <Input id="billing_postal_code" value={data.billing_postal_code} onChange={(e) => set('billing_postal_code', e.target.value)} className={errors.billing_postal_code ? 'border-red-500' : ''} placeholder={t('e.g. 10001')} />
+                                    <Label htmlFor="billing_postal_code" required>
+                                        {t('Billing Postal Code')}
+                                    </Label>
+                                    <Input
+                                        id="billing_postal_code"
+                                        value={data.billing_postal_code}
+                                        onChange={(e) => set('billing_postal_code', e.target.value)}
+                                        className={errors.billing_postal_code ? 'border-red-500' : ''}
+                                        placeholder={t('e.g. 10001')}
+                                    />
                                     <FieldError message={errors.billing_postal_code} />
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -275,44 +370,86 @@ export default function AccountCreate() {
                     <div>
                         <SectionTitle
                             title={
-                                <span className="flex items-center gap-2">
-                                    {t('Shipping Address')}
-                                    <span className="text-sm font-normal text-gray-400">({t('Optional')})</span>
-                                </span> as any
+                                (
+                                    <span className="flex items-center gap-2">
+                                        {t('Shipping Address')}
+                                        <span className="text-sm font-normal text-gray-400">({t('Optional')})</span>
+                                    </span>
+                                ) as any
                             }
                             extra={
-                                <Button type="button" variant="outline" size="sm" onClick={copyBillingToShipping} className="text-xs">
-                                    <Copy className="h-3 w-3 mr-1" /> {t('Copy to Shipping')}
-                                </Button>
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={copyBillingToShipping}
+                                                className="flex items-center justify-center p-2 text-xs sm:gap-1 sm:px-3 sm:py-1.5"
+                                            >
+                                                <Copy className="h-3 w-3" />
+                                                <span className="hidden sm:inline">{t('Copy to Shipping')}</span>
+                                            </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>{t('Copy Billing to Shipping Address')}</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
                             }
                         />
                         <div className="space-y-4">
                             <div className="space-y-1.5">
                                 <Label htmlFor="shipping_address">{t('Shipping Address')}</Label>
-                                <Textarea id="shipping_address" value={data.shipping_address} onChange={(e) => set('shipping_address', e.target.value)} rows={2} placeholder={t('e.g. 456 Elm Street')} />
+                                <Textarea
+                                    id="shipping_address"
+                                    value={data.shipping_address}
+                                    onChange={(e) => set('shipping_address', e.target.value)}
+                                    rows={2}
+                                    placeholder={t('e.g. 456 Elm Street')}
+                                />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1.5">
                                     <Label htmlFor="shipping_city">{t('Shipping City')}</Label>
-                                    <Input id="shipping_city" value={data.shipping_city} onChange={(e) => set('shipping_city', e.target.value)} placeholder={t('e.g. Los Angeles')} />
+                                    <Input
+                                        id="shipping_city"
+                                        value={data.shipping_city}
+                                        onChange={(e) => set('shipping_city', e.target.value)}
+                                        placeholder={t('e.g. Los Angeles')}
+                                    />
                                 </div>
                                 <div className="space-y-1.5">
                                     <Label htmlFor="shipping_state">{t('Shipping State')}</Label>
-                                    <Input id="shipping_state" value={data.shipping_state} onChange={(e) => set('shipping_state', e.target.value)} placeholder={t('e.g. CA')} />
+                                    <Input
+                                        id="shipping_state"
+                                        value={data.shipping_state}
+                                        onChange={(e) => set('shipping_state', e.target.value)}
+                                        placeholder={t('e.g. CA')}
+                                    />
                                 </div>
                                 <div className="space-y-1.5">
                                     <Label htmlFor="shipping_country">{t('Shipping Country')}</Label>
-                                    <Input id="shipping_country" value={data.shipping_country} onChange={(e) => set('shipping_country', e.target.value)} placeholder={t('e.g. United States')} />
+                                    <Input
+                                        id="shipping_country"
+                                        value={data.shipping_country}
+                                        onChange={(e) => set('shipping_country', e.target.value)}
+                                        placeholder={t('e.g. United States')}
+                                    />
                                 </div>
                                 <div className="space-y-1.5">
                                     <Label htmlFor="shipping_postal_code">{t('Shipping Postal Code')}</Label>
-                                    <Input id="shipping_postal_code" value={data.shipping_postal_code} onChange={(e) => set('shipping_postal_code', e.target.value)} placeholder={t('e.g. 90001')} />
+                                    <Input
+                                        id="shipping_postal_code"
+                                        value={data.shipping_postal_code}
+                                        onChange={(e) => set('shipping_postal_code', e.target.value)}
+                                        placeholder={t('e.g. 90001')}
+                                    />
                                 </div>
-
                             </div>
                         </div>
                     </div>
-
                 </div>
 
                 {/* ── Actions ── */}
@@ -324,7 +461,6 @@ export default function AccountCreate() {
                         {processing ? t('Saving...') : t('Save')}
                     </Button>
                 </div>
-
             </form>
         </PageTemplate>
     );

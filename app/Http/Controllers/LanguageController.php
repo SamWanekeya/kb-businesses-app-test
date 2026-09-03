@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\File;
+use Inertia\Inertia;
 
 class LanguageController extends Controller
 {
-    const ALLOWED_LANGUAGES = ['en', 'es', 'fr', 'de', 'it', 'pt', 'ru', 'ja', 'zh', 'ar', 'hi', 'ko', 'th', 'vi', 'tr', 'pl', 'nl', 'da', 'sv', 'no', 'fi', 'cs', 'sk', 'hu', 'ro', 'bg', 'hr', 'sl', 'et', 'lv', 'lt', 'mt', 'ga', 'cy', 'eu', 'ca', 'gl', 'pt-BR', 'zh-CN', 'zh-TW', 'he'];
+    public const ALLOWED_LANGUAGES = ['en', 'es', 'fr', 'de', 'it', 'pt', 'ru', 'ja', 'zh', 'ar', 'hi', 'ko', 'th', 'vi', 'tr', 'pl', 'nl', 'da', 'sv', 'no', 'fi', 'cs', 'sk', 'hu', 'ro', 'bg', 'hr', 'sl', 'et', 'lv', 'lt', 'mt', 'ga', 'cy', 'eu', 'ca', 'gl', 'pt-BR', 'zh-CN', 'zh-TW', 'he'];
+
     // Show the manage language Inertia page
     public function managePage(Request $request, $lang = null)
     {
@@ -37,7 +36,7 @@ class LanguageController extends Controller
                     'name' => $lang['name'],
                     'countryCode' => $lang['countryCode'],
                     'flag' => $this->getCountryFlag($lang['countryCode']),
-                    'enabled' => $lang['enabled'] ?? true
+                    'enabled' => $lang['enabled'] ?? true,
                 ];
             })->values()->toArray();
 
@@ -71,6 +70,7 @@ class LanguageController extends Controller
             return response()->json(['error' => __('Language file not found')], 404);
         }
         $data = json_decode(File::get($langPath), true);
+
         return response()->json(['data' => $data]);
     }
 
@@ -89,6 +89,7 @@ class LanguageController extends Controller
                 if ($request->expectsJson()) {
                     return response()->json(['error' => __('Invalid request')], 400);
                 }
+
                 return redirect()->back()->with('error', __('Invalid request'));
             }
             $langPath = resource_path("lang/{$lang}.json");
@@ -96,6 +97,7 @@ class LanguageController extends Controller
                 if ($request->expectsJson()) {
                     return response()->json(['error' => __('Language file not found')], 404);
                 }
+
                 return redirect()->back()->with('error', __('Language file not found'));
             }
             File::put($langPath, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
@@ -103,11 +105,13 @@ class LanguageController extends Controller
             if ($request->expectsJson()) {
                 return response()->json(['success' => __('Language updated successfully')]);
             }
+
             return redirect()->back()->with('success', __('Language updated successfully'));
         } catch (\Exception $e) {
             if ($request->expectsJson()) {
                 return response()->json(['error' => __('Failed to update language file: ') . $e->getMessage()], 500);
             }
+
             return redirect()->back()->with('error', __('Failed to update language file: ') . $e->getMessage());
         }
     }
@@ -117,7 +121,7 @@ class LanguageController extends Controller
         $request->validate([
             'code' => 'required|string|max:10',
             'name' => 'required|string|max:255',
-            'countryCode' => 'required|string|size:2'
+            'countryCode' => 'required|string|size:2',
         ], [
             'code.required' => __('Language code is required.'),
             'code.string' => __('Language code must be a valid string.'),
@@ -149,7 +153,7 @@ class LanguageController extends Controller
                 'code' => $request->code,
                 'name' => $request->name,
                 'countryCode' => strtoupper($request->countryCode),
-                'enabled' => true
+                'enabled' => true,
             ];
 
             $result = File::put($languagesFile, json_encode($languages, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
@@ -184,7 +188,7 @@ class LanguageController extends Controller
             // Remove from language.json
             $languagesFile = resource_path('lang/language.json');
             $languages = json_decode(File::get($languagesFile), true);
-            $languages = array_filter($languages, fn($lang) => $lang['code'] !== $languageCode);
+            $languages = array_filter($languages, fn ($lang) => $lang['code'] !== $languageCode);
             File::put($languagesFile, json_encode(array_values($languages), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
             // Delete main language file
@@ -261,7 +265,8 @@ class LanguageController extends Controller
         }
 
         $codePoints = str_split(strtoupper($countryCode));
-        $codePoints = array_map(fn($char) => 127397 + ord($char), $codePoints);
+        $codePoints = array_map(fn ($char) => 127397 + ord($char), $codePoints);
+
         return mb_convert_encoding('&#' . implode(';&#', $codePoints) . ';', 'UTF-8', 'HTML-ENTITIES');
     }
 }

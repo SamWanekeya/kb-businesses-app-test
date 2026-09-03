@@ -16,14 +16,14 @@ class AccountCommentController extends Controller
             ->firstOrFail();
 
         $validated = $request->validate([
-            'comment' => 'required|string|max:1000'
+            'comment' => 'required|string|max:1000',
         ]);
 
         $comment = AccountComment::create([
             'account_id' => $account->id,
             'user_id' => auth()->id(),
             'comment' => $validated['comment'],
-            'created_by' => createdBy()
+            'created_by' => createdBy(),
         ]);
 
         AccountActivity::create([
@@ -32,7 +32,7 @@ class AccountCommentController extends Controller
             'activity_type' => 'comment',
             'title' => auth()->user()->name . ' added a comment',
             'description' => $validated['comment'],
-            'created_by' => createdBy()
+            'created_by' => createdBy(),
         ]);
 
         return redirect()->back()->with('success', __('Comment added successfully'));
@@ -50,11 +50,11 @@ class AccountCommentController extends Controller
             ->firstOrFail();
 
         $validated = $request->validate([
-            'comment' => 'required|string|max:1000'
+            'comment' => 'required|string|max:1000',
         ]);
 
         $activity->update([
-            'description' => $validated['comment']
+            'description' => $validated['comment'],
         ]);
 
         return redirect()->back()->with('success', __('Comment updated successfully'));

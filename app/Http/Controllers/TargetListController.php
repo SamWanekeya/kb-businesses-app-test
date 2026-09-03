@@ -26,7 +26,7 @@ class TargetListController extends Controller
         // Handle sorting
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'name', 'created_at'];
+        $allowedSorts = ['id', 'name', 'created_at'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -94,6 +94,7 @@ class TargetListController extends Controller
         if ($targetList) {
             try {
                 $targetList->delete();
+
                 return redirect()->back()->with('success', __('Target list deleted successfully.'));
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete target list.'));

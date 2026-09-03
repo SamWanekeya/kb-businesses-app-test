@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\Invoice;
 use App\Models\Account;
 use App\Models\Contact;
-use App\Models\Product;
-use App\Models\SalesOrder;
-use App\Models\Quote;
+use App\Models\Invoice;
 use App\Models\Opportunity;
+use App\Models\Product;
+use App\Models\Quote;
+use App\Models\SalesOrder;
 use App\Models\User;
-use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class InvoiceSeeder extends Seeder
 {
@@ -22,6 +22,7 @@ class InvoiceSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 

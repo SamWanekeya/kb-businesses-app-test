@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\Category;
-use App\Models\Brand;
-use App\Models\Tax;
 use App\Exports\ProductExport;
 use App\Imports\ProductImport;
-use App\Services\StorageConfigService;
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\Tax;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -116,10 +115,10 @@ class ProductController extends Controller
             ->get();
 
         return Inertia::render('products/create', [
-            'categories'   => $categories,
-            'brands'       => $brands,
-            'taxes'        => $taxes,
-            'users'        => $users,
+            'categories' => $categories,
+            'brands' => $brands,
+            'taxes' => $taxes,
+            'users' => $users,
             'existingSkus' => \App\Models\Product::where('created_by', createdBy())->pluck('sku'),
         ]);
     }
@@ -165,8 +164,8 @@ class ProductController extends Controller
         if ($product) {
 
             return Inertia::render('products/show', [
-                'product'          => $product,
-                'mainImage'        => $product->main_image_url,
+                'product' => $product,
+                'mainImage' => $product->main_image_url,
                 'additionalImages' => $product->additional_image_urls,
             ]);
         } else {
@@ -195,17 +194,17 @@ class ProductController extends Controller
                 ->select('id', 'name', 'email')->get();
 
             return Inertia::render('products/edit', [
-                'product'          => array_merge($product->toArray(), [
-                    'main_image_id'        => $product->main_image_id,
+                'product' => array_merge($product->toArray(), [
+                    'main_image_id' => $product->main_image_id,
                     'additional_image_ids' => $product->additional_image_ids ?: [],
                 ]),
-                'categories'       => $categories,
-                'brands'           => $brands,
-                'taxes'            => $taxes,
-                'users'            => $users,
-                'mainImage'        => $product->main_image_url,
+                'categories' => $categories,
+                'brands' => $brands,
+                'taxes' => $taxes,
+                'users' => $users,
+                'mainImage' => $product->main_image_url,
                 'additionalImages' => $product->additional_image_urls,
-                'existingSkus'     => \App\Models\Product::where('created_by', createdBy())->where('id', '!=', $id)->pluck('sku'),
+                'existingSkus' => \App\Models\Product::where('created_by', createdBy())->where('id', '!=', $id)->pluck('sku'),
             ]);
         } else {
             return redirect()->route('products.index')->with('error', __('Product not found.'));
@@ -257,6 +256,7 @@ class ProductController extends Controller
         if ($product) {
             try {
                 $product->delete();
+
                 return redirect()->back()->with('success', __('Product deleted successfully.'));
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete product.'));
@@ -293,6 +293,7 @@ class ProductController extends Controller
         }
 
         $name = 'product_' . date('Y-m-d i:h:s');
+
         return Excel::download(new ProductExport(), $name . '.xlsx');
     }
 
@@ -325,6 +326,7 @@ class ProductController extends Controller
 
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
+
             return redirect()->back()->with('error', $messages->first());
         }
 
@@ -362,7 +364,7 @@ class ProductController extends Controller
 
             return response()->json([
                 'excelColumns' => $headers,
-                'previewData' => $previewData
+                'previewData' => $previewData,
             ]);
         } catch (\Exception $e) {
             return redirect()->back()->with('error', __('Failed to parse file: :error', ['error' => $e->getMessage()]));
@@ -383,6 +385,7 @@ class ProductController extends Controller
 
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
+
             return redirect()->back()->with('error', $messages->first());
         }
 
@@ -418,7 +421,7 @@ class ProductController extends Controller
 
             $message = __('Import completed: :added products added, :skipped products skipped', [
                 'added' => $import->getAddedCount(),
-                'skipped' => $import->getSkippedCount()
+                'skipped' => $import->getSkippedCount(),
             ]);
 
             return redirect()->back()->with('success', $message);

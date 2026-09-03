@@ -14,7 +14,7 @@ class TapPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['tap_secret_key'])) {
@@ -29,7 +29,7 @@ class TapPaymentController extends Controller
             require_once app_path('Libraries/Tap/Reference.php');
             require_once app_path('Libraries/Tap/Payment.php');
             $tap = new \App\Package\Payment([
-                'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key']
+                'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key'],
             ]);
 
             $chargeData = [
@@ -48,8 +48,8 @@ class TapPaymentController extends Controller
                     'plan_id' => $plan->id,
                     'user_id' => $user->id,
                     'billing_cycle' => $validated['billing_cycle'],
-                    'coupon_code' => $validated['coupon_code'] ?? ''
-                ])]
+                    'coupon_code' => $validated['coupon_code'] ?? '',
+                ])],
             ];
 
             return $tap->charge($chargeData, true);
@@ -85,7 +85,7 @@ class TapPaymentController extends Controller
                     require_once app_path('Libraries/Tap/Reference.php');
                     require_once app_path('Libraries/Tap/Payment.php');
                     $tap = new \App\Package\Payment([
-                        'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key']
+                        'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key'],
                     ]);
 
                     // Get charge details from Tap API
@@ -125,6 +125,7 @@ class TapPaymentController extends Controller
         try {
             $chargeId = $request->input('tap_id');
             $status = $request->input('status');
+
             return response('OK', 200);
 
         } catch (\Exception $e) {

@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Permission;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
 class RoleRequest extends FormRequest
@@ -34,7 +34,7 @@ class RoleRequest extends FormRequest
             'permissions' => 'required|array',
             'permissions.*' => ['string', 'exists:permissions,name', function ($attribute, $value, $fail) {
                 $this->validatePermissionAccess($value, $fail);
-            }]
+            }],
         ];
     }
 
@@ -100,7 +100,7 @@ class RoleRequest extends FormRequest
             }
         }
 
-        $query = \App\Models\Role::where('name', $slug)->where('created_by',createdBy());
+        $query = \App\Models\Role::where('name', $slug)->where('created_by', createdBy());
 
         // If updating, exclude current role from check
         if ($roleId) {

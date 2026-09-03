@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
-import { PageTemplate } from '@/components/page-template';
-import { usePage, router } from '@inertiajs/react';
-import { hasPermission, hasRole } from '@/utils/authorization';
-import { CrudTable } from '@/components/CrudTable';
 import { CrudDeleteModal } from '@/components/CrudDeleteModal';
+import { CrudTable } from '@/components/CrudTable';
 import { toast } from '@/components/custom-toast';
-import { useTranslation } from 'react-i18next';
+import { PageTemplate } from '@/components/page-template';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { hasRole } from '@/utils/authorization';
+import { router, usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
-export default function signInHistory() {
+export default function LoginHistory() {
     const { t } = useTranslation();
     const { auth, loginHistory, filters: pageFilters = {}, globalSettings } = usePage().props as any;
     const permissions = auth?.permissions || [];
@@ -36,7 +36,7 @@ export default function signInHistory() {
 
     // Count active filters
     const activeFilterCount = () => {
-        return (searchTerm !== '' ? 1 : 0);
+        return searchTerm !== '' ? 1 : 0;
     };
 
     const handleSearch = (e: React.FormEvent) => {
@@ -45,23 +45,31 @@ export default function signInHistory() {
     };
 
     const applyFilters = () => {
-        router.get(route('sign-in-history.index'), {
-            page: 1,
-            search: searchTerm || undefined,
-            per_page: pageFilters.per_page
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('sign-in-history.index'),
+            {
+                page: 1,
+                search: searchTerm || undefined,
+                per_page: pageFilters.per_page,
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleSort = (field: string) => {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
 
-        router.get(route('sign-in-history.index'), {
-            sort_field: field,
-            sort_direction: direction,
-            page: 1,
-            search: searchTerm || undefined,
-            per_page: pageFilters.per_page
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('sign-in-history.index'),
+            {
+                sort_field: field,
+                sort_direction: direction,
+                page: 1,
+                search: searchTerm || undefined,
+                per_page: pageFilters.per_page,
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleAction = (action: string, item: any) => {
@@ -103,7 +111,7 @@ export default function signInHistory() {
                 } else {
                     toast.error(t('Failed to delete sign in history: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
-            }
+            },
         });
     };
 
@@ -116,13 +124,13 @@ export default function signInHistory() {
         breadcrumbs = [
             { title: t('Dashboard'), href: route('dashboard') },
             { title: t('Organizations'), href: route('organizations.index') },
-            { title: t('Sign in History') }
+            { title: t('Sign in History') },
         ];
     } else {
         breadcrumbs = [
             { title: t('Dashboard'), href: route('dashboard') },
             { title: t('Staff'), href: route('users.index') },
-            { title: t('Sign in History') }
+            { title: t('Sign in History') },
         ];
     }
 
@@ -136,7 +144,7 @@ export default function signInHistory() {
                     <div className="font-medium">{row.user?.name || '-'}</div>
                     <div className="text-xs text-gray-500">{row.user?.email || ''}</div>
                 </div>
-            )
+            ),
         },
         {
             key: 'user.type',
@@ -144,13 +152,13 @@ export default function signInHistory() {
             render: (_, row) => {
                 const userType = row.user?.type || '-';
                 return userType.charAt(0).toUpperCase() + userType.slice(1);
-            }
+            },
         },
         {
             key: 'ip_address',
             label: t('IP Address'),
             sortable: true,
-            render: (value) => value || '-'
+            render: (value) => value || '-',
         },
         {
             key: 'date',
@@ -173,8 +181,8 @@ export default function signInHistory() {
                 } catch {
                     return '-';
                 }
-            }
-        }
+            },
+        },
     ];
 
     // Define table actions
@@ -184,27 +192,27 @@ export default function signInHistory() {
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
-            requiredPermission: 'show-sign-in-history'
+            requiredPermission: 'show-sign-in-history',
         },
         {
             label: t('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
-            requiredPermission: 'delete-sign-in-history'
-        }
+            requiredPermission: 'delete-sign-in-history',
+        },
     ];
 
     return (
         <PageTemplate
-            title={t("Sign in History")}
-            description={t("Manage your sign in history records.")}
+            title={t('Sign in History')}
+            description={t('Manage your sign in history records.')}
             url="/sign-in-history"
             breadcrumbs={breadcrumbs}
             noPadding
         >
             {/* Search and filters section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
+            <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -213,12 +221,11 @@ export default function signInHistory() {
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
                     onResetFilters={handleResetFilters}
-
                 />
             </div>
 
             {/* Content section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+            <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                 <CrudTable
                     columns={columns}
                     actions={actions}
@@ -230,7 +237,7 @@ export default function signInHistory() {
                     onSort={handleSort}
                     permissions={permissions}
                     entityPermissions={{
-                        delete: 'delete-sign-in-history'
+                        delete: 'delete-sign-in-history',
                     }}
                 />
 
@@ -240,15 +247,19 @@ export default function signInHistory() {
                     to={loginHistory?.to || 0}
                     total={loginHistory?.total || 0}
                     links={loginHistory?.links}
-                    entityName={t("sign in records")}
+                    entityName={t('sign in records')}
                     onPageChange={(url) => router.get(url)}
-                     currentPerPage={pageFilters.per_page?.toString() || "10"}
+                    currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
-                        router.get(route('sign-in-history.index'), {
-                            page: 1,
-                            per_page: parseInt(value),
-                            search: searchTerm || undefined
-                        }, { preserveState: true, preserveScroll: true });
+                        router.get(
+                            route('sign-in-history.index'),
+                            {
+                                page: 1,
+                                per_page: parseInt(value),
+                                search: searchTerm || undefined,
+                            },
+                            { preserveState: true, preserveScroll: true },
+                        );
                     }}
                 />
             </div>
@@ -259,33 +270,35 @@ export default function signInHistory() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={`${currentItem?.user?.name || ''} `}
-                itemType={t('sign in history')}
+                itemType={t('Sign in history')}
             />
 
             {/* View Modal */}
             <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
-                <DialogContent className="max-w-xl max-h-[80vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                <DialogContent className="max-h-[80vh] max-w-xl scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>{t('Sign in Details')}</DialogTitle>
                     </DialogHeader>
                     <div className="space-y-4">
-                        <div className="flex justify-between py-2 border-b border-gray-100">
+                        <div className="flex justify-between border-b border-gray-100 py-2">
                             <span className="text-gray-600">{t('User')}</span>
                             <span className="font-medium">{currentItem?.user?.name || '-'}</span>
                         </div>
-                        <div className="flex justify-between py-2 border-b border-gray-100">
+                        <div className="flex justify-between border-b border-gray-100 py-2">
                             <span className="text-gray-600">{t('Email')}</span>
                             <span className="font-medium">{currentItem?.user?.email || '-'}</span>
                         </div>
-                        <div className="flex justify-between py-2 border-b border-gray-100">
+                        <div className="flex justify-between border-b border-gray-100 py-2">
                             <span className="text-gray-600">{t('User Type')}</span>
-                            <span className="font-medium">{currentItem?.user?.type ? currentItem.user.type.charAt(0).toUpperCase() + currentItem.user.type.slice(1) : '-'}</span>
+                            <span className="font-medium">
+                                {currentItem?.user?.type ? currentItem.user.type.charAt(0).toUpperCase() + currentItem.user.type.slice(1) : '-'}
+                            </span>
                         </div>
-                        <div className="flex justify-between py-2 border-b border-gray-100">
+                        <div className="flex justify-between border-b border-gray-100 py-2">
                             <span className="text-gray-600">{t('IP Address')}</span>
                             <span className="font-medium">{currentItem?.ip || '-'}</span>
                         </div>
-                        <div className="flex justify-between py-2 border-b border-gray-100">
+                        <div className="flex justify-between border-b border-gray-100 py-2">
                             <span className="text-gray-600">{t('Sign in Date')}</span>
                             <span className="font-medium">{window.appSettings?.formatDateTime(currentItem?.date, false) || '-'}</span>
                         </div>
@@ -293,7 +306,7 @@ export default function signInHistory() {
                             try {
                                 const details = JSON.parse(currentItem?.Details || '{}');
                                 return Object.entries(details).map(([key, value]) => (
-                                    <div key={key} className="flex justify-between py-2 border-b border-gray-100">
+                                    <div key={key} className="flex justify-between border-b border-gray-100 py-2">
                                         <span className="text-gray-600 capitalize">{key.replace(/_/g, ' ')}</span>
                                         <span className="font-medium">{String(value) || '-'}</span>
                                     </div>

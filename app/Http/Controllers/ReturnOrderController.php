@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ReturnOrder;
-use App\Models\SalesOrder;
+use App\Exports\ReturnOrderExport;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Product;
+use App\Models\ReturnOrder;
+use App\Models\SalesOrder;
 use App\Models\ShippingProviderType;
-use App\Events\ReturnOrderCreated;
-use App\Exports\ReturnOrderExport;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -23,10 +22,10 @@ class ReturnOrderController extends Controller
             ->where('created_by', createdBy());
 
         if ($request->has('search') && !empty($request->search)) {
-            $query->where(function($q) use ($request) {
+            $query->where(function ($q) use ($request) {
                 $q->where('return_number', 'like', '%' . $request->search . '%')
                   ->orWhere('name', 'like', '%' . $request->search . '%')
-                  ->orWhereHas('account', fn($q) => $q->where('name', 'like', '%' . $request->search . '%'));
+                  ->orWhereHas('account', fn ($q) => $q->where('name', 'like', '%' . $request->search . '%'));
             });
         }
 
@@ -44,7 +43,7 @@ class ReturnOrderController extends Controller
 
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'return_number', 'name', 'return_date'];
+        $allowedSorts = ['id', 'return_number', 'name', 'return_date'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -88,7 +87,7 @@ class ReturnOrderController extends Controller
             'contacts' => $contacts,
             'products' => $products,
             'shippingProviderTypes' => $shippingProviderTypes,
-            'users' => $users
+            'users' => $users,
         ]);
     }
 
@@ -151,6 +150,7 @@ class ReturnOrderController extends Controller
 
         if ($emailError) {
             $message = __('Return order created successfully, but ') . __('Email send failed: ') . $emailError;
+
             return redirect()->back()->with('warning', $message);
         }
 
@@ -182,7 +182,7 @@ class ReturnOrderController extends Controller
             'shippingProviderType',
             'creator',
             'assignedUser',
-            'products.tax'
+            'products.tax',
         ])
         ->where('created_by', createdBy())
         ->where('id', $id)
@@ -203,7 +203,7 @@ class ReturnOrderController extends Controller
                 'contacts' => $contacts,
                 'products' => $products,
                 'shippingProviderTypes' => $shippingProviderTypes,
-                'users' => $users
+                'users' => $users,
             ]);
         } else {
             return redirect()->route('return-orders.index')->with('error', __('Return order not found.'));
@@ -306,7 +306,7 @@ class ReturnOrderController extends Controller
             ->join('return_orders', 'return_orders.id', '=', 'return_order_product.return_order_id')
             ->where('return_orders.sales_order_id', $salesOrderId)
             ->where('return_orders.created_by', createdBy())
-            ->when($excludeReturnOrderId, fn($q) => $q->where('return_orders.id', '!=', $excludeReturnOrderId))
+            ->when($excludeReturnOrderId, fn ($q) => $q->where('return_orders.id', '!=', $excludeReturnOrderId))
             ->select('return_order_product.product_id', \DB::raw('SUM(return_order_product.quantity) as returned_qty'))
             ->groupBy('return_order_product.product_id')
             ->pluck('returned_qty', 'product_id');
@@ -319,19 +319,20 @@ class ReturnOrderController extends Controller
                 $orderedQty = $product->pivot->quantity ?? 1;
                 $returnedQty = (int) ($returnedQtys[$product->id] ?? 0);
                 $availableQty = max(0, $orderedQty - $returnedQty);
+
                 return [
-                    'product_id'   => $product->id,
-                    'quantity'     => $availableQty,
-                    'ordered_qty'  => $orderedQty,
+                    'product_id' => $product->id,
+                    'quantity' => $availableQty,
+                    'ordered_qty' => $orderedQty,
                     'returned_qty' => $returnedQty,
-                    'unit_price'   => $product->pivot->unit_price ?? $product->price ?? 0,
-                    'discount_type'  => $product->pivot->discount_type ?? 'none',
+                    'unit_price' => $product->pivot->unit_price ?? $product->price ?? 0,
+                    'discount_type' => $product->pivot->discount_type ?? 'none',
                     'discount_value' => $product->pivot->discount_value ?? 0,
                 ];
-            })->filter(fn($p) => $p['quantity'] > 0)->values()
+            })->filter(fn ($p) => $p['quantity'] > 0)->values(),
         ]);
     }
-    
+
     private function getFilteredProducts()
     {
         return Product::where('created_by', createdBy())->with('tax')->select('id', 'name', 'price', 'tax_id')->get();
@@ -344,6 +345,7 @@ class ReturnOrderController extends Controller
         }
 
         $name = 'return_order_' . date('Y-m-d i:h:s');
+
         return Excel::download(new ReturnOrderExport(), $name . '.xlsx');
     }
 }

@@ -13,7 +13,7 @@ class QuoteComment extends BaseModel
         'quote_id',
         'user_id',
         'comment',
-        'created_by'
+        'created_by',
     ];
 
     public function quote(): BelongsTo

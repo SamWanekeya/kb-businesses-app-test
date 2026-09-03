@@ -1,12 +1,12 @@
-import { useState, useRef, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { toast } from '@/components/custom-toast';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, CreditCard } from 'lucide-react';
-import { toast } from '@/components/custom-toast';
 import axios from 'axios';
+import { CreditCard, Loader2 } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface InvoicePayTRPaymentFormProps {
     invoiceId: number;
@@ -25,7 +25,7 @@ export function InvoicePayTRPaymentForm({
     paytrMerchantId,
     currency = 'TRY',
     onSuccess,
-    onCancel
+    onCancel,
 }: InvoicePayTRPaymentFormProps) {
     const { t } = useTranslation();
     const [isProcessing, setIsProcessing] = useState(false);
@@ -36,7 +36,7 @@ export function InvoicePayTRPaymentForm({
         name: '',
         email: '',
         phone: '',
-        address: ''
+        address: '',
     });
 
     useEffect(() => {
@@ -75,7 +75,7 @@ export function InvoicePayTRPaymentForm({
                 user_name: customerDetails.name,
                 user_email: customerDetails.email,
                 user_phone: customerDetails.phone,
-                user_address: customerDetails.address
+                user_address: customerDetails.address,
             });
 
             if (response.data.success) {
@@ -106,20 +106,10 @@ export function InvoicePayTRPaymentForm({
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="w-full h-[600px] border rounded-lg overflow-hidden">
-                        <iframe
-                            ref={iframeRef}
-                            src={iframeUrl}
-                            width="100%"
-                            height="100%"
-                            frameBorder="0"
-                            scrolling="auto"
-                            title="PayTR Payment"
-                        />
+                    <div className="h-[600px] w-full overflow-hidden rounded-lg border">
+                        <iframe ref={iframeRef} src={iframeUrl} width="100%" height="100%" frameBorder="0" scrolling="auto" title="PayTR Payment" />
                     </div>
-                    <p className="text-xs text-muted-foreground mt-2 text-center">
-                        {t('Complete your payment in the secure PayTR iframe above')}
-                    </p>
+                    <p className="text-muted-foreground mt-2 text-center text-xs">{t('Complete your payment in the secure PayTR iframe above')}</p>
                 </CardContent>
             </Card>
         );
@@ -135,14 +125,16 @@ export function InvoicePayTRPaymentForm({
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="bg-muted p-3 rounded-lg mb-4">
-                        <div className="flex justify-between items-center mb-2">
+                    <div className="bg-muted mb-4 rounded-lg p-3">
+                        <div className="mb-2 flex items-center justify-between">
                             <span className="text-sm font-medium text-gray-600">{t('Payment Type')}:</span>
                             <span className="text-sm text-gray-900 capitalize">{paymentType}</span>
                         </div>
-                        <div className="flex justify-between items-center">
+                        <div className="flex items-center justify-between">
                             <span className="text-sm font-medium text-gray-600">{t('Amount')}:</span>
-                            <span className="text-lg font-bold text-gray-900">{currency} {amount}</span>
+                            <span className="text-lg font-bold text-gray-900">
+                                {currency} {amount}
+                            </span>
                         </div>
                     </div>
 
@@ -151,7 +143,7 @@ export function InvoicePayTRPaymentForm({
                         <Input
                             id="name"
                             value={customerDetails.name}
-                            onChange={(e) => setCustomerDetails(prev => ({ ...prev, name: e.target.value }))}
+                            onChange={(e) => setCustomerDetails((prev) => ({ ...prev, name: e.target.value }))}
                             placeholder={t('Enter full name')}
                             required
                         />
@@ -163,7 +155,7 @@ export function InvoicePayTRPaymentForm({
                             id="email"
                             type="email"
                             value={customerDetails.email}
-                            onChange={(e) => setCustomerDetails(prev => ({ ...prev, email: e.target.value }))}
+                            onChange={(e) => setCustomerDetails((prev) => ({ ...prev, email: e.target.value }))}
                             placeholder={t('Enter email address')}
                             required
                         />
@@ -174,13 +166,11 @@ export function InvoicePayTRPaymentForm({
                         <Input
                             id="phone"
                             value={customerDetails.phone}
-                            onChange={(e) => setCustomerDetails(prev => ({ ...prev, phone: e.target.value }))}
+                            onChange={(e) => setCustomerDetails((prev) => ({ ...prev, phone: e.target.value }))}
                             placeholder="+905xxxxxxxxx"
                             required
                         />
-                        <p className="text-xs text-muted-foreground">
-                            {t('Turkish phone number format: +905xxxxxxxxx')}
-                        </p>
+                        <p className="text-muted-foreground text-xs">{t('Turkish phone number format: +905xxxxxxxxx')}</p>
                     </div>
 
                     <div className="space-y-2">
@@ -188,16 +178,14 @@ export function InvoicePayTRPaymentForm({
                         <Input
                             id="address"
                             value={customerDetails.address}
-                            onChange={(e) => setCustomerDetails(prev => ({ ...prev, address: e.target.value }))}
+                            onChange={(e) => setCustomerDetails((prev) => ({ ...prev, address: e.target.value }))}
                             placeholder={t('Enter address (optional)')}
                         />
                     </div>
 
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                    <div className="rounded-lg border border-blue-200 bg-blue-50 p-3">
                         <p className="text-sm font-medium text-blue-900">{t('Secure Payment via PayTR')}</p>
-                        <p className="text-xs text-blue-700 mt-1">
-                            {t('Credit Card, Debit Card - Real-time payment processing')}
-                        </p>
+                        <p className="mt-1 text-xs text-blue-700">{t('Credit Card, Debit Card - Real-time payment processing')}</p>
                     </div>
 
                     <div className="flex gap-3 pt-4">

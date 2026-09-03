@@ -22,6 +22,4 @@ class OpportunityStage extends BaseModel
     {
         return $this->belongsTo(User::class, 'created_by');
     }
-
-
 }

@@ -4,12 +4,15 @@ namespace App\Libraries\Coingate;
 
 class Coingate
 {
-    const VERSION = '3.0.5';
-    const USER_AGENT_ORIGIN = 'CoinGate PHP Library';
+    public const VERSION = '3.0.5';
+    public const USER_AGENT_ORIGIN = 'CoinGate PHP Library';
 
     public static $auth_token = '';
+
     public static $environment = 'live';
+
     public static $user_agent = '';
+
     public static $curlopt_ssl_verifypeer = true;
 
     public static function config($authentication)
@@ -44,11 +47,11 @@ class Coingate
         $headers[] = 'Authorization: Token ' . self::$auth_token;
         $curl = curl_init();
 
-        $curl_options = array(
+        $curl_options = [
             CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_URL => $url
-        );
-        
+            CURLOPT_URL => $url,
+        ];
+
         if ($method == 'POST') {
             $headers[] = 'Content-Type: application/x-www-form-urlencoded';
             $curl_options[CURLOPT_POST] = 1;
@@ -59,22 +62,22 @@ class Coingate
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($curl, CURLOPT_USERAGENT, $user_agent);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $curlopt_ssl_verifypeer);
-        
+
         // Debug logging
         \Log::info('CoinGate Request Debug', [
             'url' => $url,
             'headers' => $headers,
             'auth_token' => substr(self::$auth_token, 0, 10) . '...',
-            'environment' => self::$environment
+            'environment' => self::$environment,
         ]);
 
         $raw_response = curl_exec($curl);
         $decoded_response = json_decode($raw_response, true);
         $response = $decoded_response ? $decoded_response : $raw_response;
         $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        
+
         curl_close($curl);
-        
+
         if ($method == 'GET') {
             return $response;
         } else {

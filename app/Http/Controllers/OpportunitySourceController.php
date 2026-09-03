@@ -29,7 +29,7 @@ class OpportunitySourceController extends Controller
         // Handle sorting
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'name', 'created_at'];
+        $allowedSorts = ['id', 'name', 'created_at'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -97,6 +97,7 @@ class OpportunitySourceController extends Controller
         if ($opportunitySource) {
             try {
                 $opportunitySource->delete();
+
                 return redirect()->back()->with('success', __('Opportunity source deleted successfully.'));
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete opportunity source.'));

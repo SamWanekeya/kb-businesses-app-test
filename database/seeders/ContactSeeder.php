@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Contact;
 use App\Models\Account;
+use App\Models\Contact;
 use App\Models\User;
-use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class ContactSeeder extends Seeder
 {
@@ -17,6 +17,7 @@ class ContactSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 

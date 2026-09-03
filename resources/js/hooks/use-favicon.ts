@@ -1,25 +1,25 @@
-import { useEffect } from 'react';
 import { useBrand } from '@/contexts/BrandContext';
 import { getDisplayUrl } from '@/utils/helper';
+import { useEffect } from 'react';
 
 export function useFavicon() {
-  const { favicon } = useBrand();
+    const { favicon } = useBrand();
 
-  useEffect(() => {
-    if (!favicon) return;
+    useEffect(() => {
+        if (!favicon) return;
 
-    // Convert relative path to full URL if needed
-    const faviconUrl = getDisplayUrl(favicon);
+        // Convert relative path to full URL if needed
+        const faviconUrl = getDisplayUrl(favicon);
 
-    // Update favicon in document head
-    let link = document.querySelector("link[rel*='icon']") as HTMLLinkElement;
+        // Update favicon in document head
+        let link = document.querySelector("link[rel*='icon']") as HTMLLinkElement;
 
-    if (!link) {
-      link = document.createElement('link');
-      link.rel = 'icon';
-      document.head.appendChild(link);
-    }
+        if (!link) {
+            link = document.createElement('link');
+            link.rel = 'icon';
+            document.head.appendChild(link);
+        }
 
-    link.href = faviconUrl;
-  }, [favicon]);
+        link.href = faviconUrl;
+    }, [favicon]);
 }

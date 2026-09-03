@@ -17,6 +17,7 @@ class TargetListSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -26,7 +27,7 @@ class TargetListSeeder extends Seeder
             ['name' => 'Existing Customers', 'description' => 'Current customer base'],
             ['name' => 'Cold Prospects', 'description' => 'Prospects requiring nurturing'],
             ['name' => 'Hot Leads', 'description' => 'Ready-to-convert leads'],
-            ['name' => 'Industry Specific', 'description' => 'Targeted industry contacts']
+            ['name' => 'Industry Specific', 'description' => 'Targeted industry contacts'],
         ];
 
         foreach ($organizationUsers as $organization) {

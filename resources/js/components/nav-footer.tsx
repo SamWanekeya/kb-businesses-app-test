@@ -13,7 +13,7 @@ export function NavFooter({
 }) {
     // Check if the document is in RTL mode
     const isRtl = document.documentElement.dir === 'rtl';
-    
+
     // Determine the actual position considering RTL mode
     const effectivePosition = isRtl ? (position === 'left' ? 'right' : 'left') : position;
     return (

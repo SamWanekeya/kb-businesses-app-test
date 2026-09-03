@@ -14,6 +14,7 @@ class AccountTypeSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -23,7 +24,7 @@ class AccountTypeSeeder extends Seeder
             ['name' => 'Strategic Partner', 'description' => 'Key business partners', 'color' => '#F59E0B'],
             ['name' => 'Supplier/Vendor', 'description' => 'Suppliers and vendors', 'color' => '#8B5CF6'],
             ['name' => 'Reseller/Channel', 'description' => 'Authorized resellers and partners', 'color' => '#06B6D4'],
-            ['name' => 'Prospect', 'description' => 'Potential customers', 'color' => '#84CC16']
+            ['name' => 'Prospect', 'description' => 'Potential customers', 'color' => '#84CC16'],
         ];
 
         foreach ($organizationUsers as $organization) {

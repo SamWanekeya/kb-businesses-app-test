@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import { toast } from '@/components/custom-toast';
 import axios from 'axios';
+import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface InvoiceFlutterwavePaymentFormProps {
     invoiceId: number;
@@ -20,7 +20,7 @@ export function InvoiceFlutterwavePaymentForm({
     flutterwaveKey,
     currency = 'NGN',
     onSuccess,
-    onCancel
+    onCancel,
 }: InvoiceFlutterwavePaymentFormProps) {
     const { t } = useTranslation();
     const initialized = useRef(false);
@@ -54,20 +54,21 @@ export function InvoiceFlutterwavePaymentForm({
                 callback: function (data: any) {
                     if (data.status === 'successful') {
                         // Process payment on server
-                        axios.post(route('invoice.flutterwave.payment'), {
-                            invoice_id: invoiceId,
-                            amount: amount,
-                            payment_type: paymentType,
-                            payment_id: data.transaction_id,
-                            tx_ref: data.tx_ref,
-                        })
-                        .then(() => {
-                            onSuccess();
-                        })
-                        .catch((error) => {
-                            const errorMsg = error.response?.data?.error || t('Payment processing failed');
-                            toast.error(errorMsg);
-                        });
+                        axios
+                            .post(route('invoice.flutterwave.payment'), {
+                                invoice_id: invoiceId,
+                                amount: amount,
+                                payment_type: paymentType,
+                                payment_id: data.transaction_id,
+                                tx_ref: data.tx_ref,
+                            })
+                            .then(() => {
+                                onSuccess();
+                            })
+                            .catch((error) => {
+                                const errorMsg = error.response?.data?.error || t('Payment processing failed');
+                                toast.error(errorMsg);
+                            });
                     } else {
                         toast.error(t('Payment was not completed'));
                         onCancel();

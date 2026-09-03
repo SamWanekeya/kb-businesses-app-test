@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class InvoicePaystackPaymentController extends Controller
@@ -36,19 +35,20 @@ class InvoicePaystackPaymentController extends Controller
 
             if (!isset($settings['payment_settings']['paystack_secret_key'])) {
                 \Log::error('Paystack payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+
                 return back()->withErrors(['error' => __('Paystack not configured')]);
             }
 
             // Verify payment with Paystack API
             $curl = curl_init();
-            curl_setopt_array($curl, array(
+            curl_setopt_array($curl, [
                 CURLOPT_URL => "https://api.paystack.co/transaction/verify/" . $validated['payment_id'],
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HTTPHEADER => [
                     "Authorization: Bearer " . $settings['payment_settings']['paystack_secret_key'],
                     "Cache-Control: no-cache",
                 ],
-            ));
+            ]);
 
             $response = curl_exec($curl);
             curl_close($curl);
@@ -62,8 +62,9 @@ class InvoicePaystackPaymentController extends Controller
                     \Log::error('Paystack amount mismatch', [
                         'invoice_id' => $invoice->id,
                         'expected' => $validated['amount'],
-                        'received' => $paystackAmount
+                        'received' => $paystackAmount,
                     ]);
+
                     return back()->withErrors(['error' => __('Payment amount mismatch')]);
                 }
 
@@ -79,7 +80,7 @@ class InvoicePaystackPaymentController extends Controller
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
-                    'payment_id' => $validated['payment_id']
+                    'payment_id' => $validated['payment_id'],
                 ]);
 
                 return back()->with('success', __('Payment successful'));
@@ -88,16 +89,18 @@ class InvoicePaystackPaymentController extends Controller
             \Log::warning('Paystack payment verification failed', [
                 'invoice_id' => $invoice->id,
                 'payment_id' => $validated['payment_id'],
-                'result' => $result
+                'result' => $result,
             ]);
+
             return back()->withErrors(['error' => __('Payment verification failed')]);
 
         } catch (\Exception $e) {
             \Log::error('Paystack payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return $this->handleInvoicePaymentError($e, 'paystack');
         }
     }

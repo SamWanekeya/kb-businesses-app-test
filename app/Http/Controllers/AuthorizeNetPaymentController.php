@@ -12,7 +12,7 @@ class AuthorizeNetPaymentController extends Controller
     // Supported countries and currencies for AuthorizeNet
     private const SUPPORTED_COUNTRIES = ['US', 'CA', 'GB', 'AU'];
     private const SUPPORTED_CURRENCIES = [
-        'USD', 'CAD', 'CHF', 'DKK', 'EUR', 'GBP', 'NOK', 'PLN', 'SEK', 'AUD', 'NZD'
+        'USD', 'CAD', 'CHF', 'DKK', 'EUR', 'GBP', 'NOK', 'PLN', 'SEK', 'AUD', 'NZD',
     ];
 
     public function createPaymentForm(Request $request)
@@ -183,7 +183,7 @@ class AuthorizeNetPaymentController extends Controller
             return [
                 'success' => false,
                 'error' => __('Transaction processing failed. Please check your card details and try again.'),
-                'transaction_id' => null
+                'transaction_id' => null,
             ];
         }
     }
@@ -194,7 +194,7 @@ class AuthorizeNetPaymentController extends Controller
             return [
                 'success' => false,
                 'error' => __('No response received from payment gateway'),
-                'transaction_id' => null
+                'transaction_id' => null,
             ];
         }
 
@@ -209,7 +209,7 @@ class AuthorizeNetPaymentController extends Controller
             return [
                 'success' => false,
                 'error' => $this->getFriendlyErrorMessage($errorMessage),
-                'transaction_id' => null
+                'transaction_id' => null,
             ];
         }
 
@@ -219,7 +219,7 @@ class AuthorizeNetPaymentController extends Controller
             return [
                 'success' => false,
                 'error' => __('Invalid transaction response'),
-                'transaction_id' => null
+                'transaction_id' => null,
             ];
         }
 
@@ -231,7 +231,7 @@ class AuthorizeNetPaymentController extends Controller
                 return [
                     'success' => true,
                     'error' => null,
-                    'transaction_id' => $tresponse->getTransId()
+                    'transaction_id' => $tresponse->getTransId(),
                 ];
 
             case '2': // Declined
@@ -243,7 +243,7 @@ class AuthorizeNetPaymentController extends Controller
                 return [
                     'success' => false,
                     'error' => $this->getFriendlyErrorMessage($errorMessage),
-                    'transaction_id' => null
+                    'transaction_id' => null,
                 ];
 
             case '3': // Error
@@ -255,21 +255,21 @@ class AuthorizeNetPaymentController extends Controller
                 return [
                     'success' => false,
                     'error' => $this->getFriendlyErrorMessage($errorMessage),
-                    'transaction_id' => null
+                    'transaction_id' => null,
                 ];
 
             case '4': // Held for Review
                 return [
                     'success' => false,
                     'error' => __('Transaction is being reviewed. Please contact support.'),
-                    'transaction_id' => $tresponse->getTransId()
+                    'transaction_id' => $tresponse->getTransId(),
                 ];
 
             default:
                 return [
                     'success' => false,
                     'error' => __('Unknown transaction response'),
-                    'transaction_id' => null
+                    'transaction_id' => null,
                 ];
         }
     }
@@ -311,7 +311,7 @@ class AuthorizeNetPaymentController extends Controller
                 !isset($settings['payment_settings']['authorizenet_transaction_key'])) {
                 return response()->json([
                     'success' => false,
-                    'message' => __('AuthorizeNet credentials not configured')
+                    'message' => __('AuthorizeNet credentials not configured'),
                 ]);
             }
 
@@ -335,7 +335,7 @@ class AuthorizeNetPaymentController extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => __('AuthorizeNet connection successful'),
-                    'mode' => $settings['payment_settings']['authorizenet_mode']
+                    'mode' => $settings['payment_settings']['authorizenet_mode'],
                 ]);
             } else {
                 $errorMessage = __('Connection failed');
@@ -345,14 +345,14 @@ class AuthorizeNetPaymentController extends Controller
 
                 return response()->json([
                     'success' => false,
-                    'message' => $errorMessage
+                    'message' => $errorMessage,
                 ]);
             }
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => __('Connection test failed: ') . $e->getMessage()
+                'message' => __('Connection test failed: ') . $e->getMessage(),
             ]);
         }
     }

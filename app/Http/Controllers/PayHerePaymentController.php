@@ -51,7 +51,7 @@ class PayHerePaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['payhere_merchant_id'])) {
@@ -67,7 +67,7 @@ class PayHerePaymentController extends Controller
                     'plan_id' => $plan->id,
                     'user_id' => $user->id,
                     'billing_cycle' => $validated['billing_cycle'],
-                    'coupon_code' => $validated['coupon_code'] ?? ''
+                    'coupon_code' => $validated['coupon_code'] ?? '',
                 ]),
                 'cancel_url' => route('plans.index'),
                 'notify_url' => route('payhere.callback'),
@@ -104,7 +104,7 @@ class PayHerePaymentController extends Controller
                 'success' => true,
                 'payment_url' => $baseUrl . '/pay/checkout',
                 'payment_data' => $paymentData,
-                'order_id' => $orderId
+                'order_id' => $orderId,
             ]);
 
         } catch (\Exception $e) {

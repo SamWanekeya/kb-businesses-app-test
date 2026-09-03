@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
-use App\Models\Account;
 use App\Exports\ProjectExport;
+use App\Models\Account;
+use App\Models\Project;
 use App\Models\User;
-use Maatwebsite\Excel\Facades\Excel;
-
-
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProjectController extends Controller
 {
@@ -78,10 +76,11 @@ class ProjectController extends Controller
         $projects->getCollection()->transform(function ($project) use ($taskData) {
             $row = $taskData[$project->id] ?? null;
             $total = $row ? (int) $row->total : 0;
-            $done  = $row ? (int) $row->done_count : 0;
-            $project->task_total    = $total;
-            $project->task_done     = $done;
+            $done = $row ? (int) $row->done_count : 0;
+            $project->task_total = $total;
+            $project->task_done = $done;
             $project->task_progress = $total > 0 ? (int) round(($done / $total) * 100) : 0;
+
             return $project;
         });
 
@@ -116,12 +115,12 @@ class ProjectController extends Controller
             }
         }
         $stats = [
-            'total'    => (clone $statsQuery)->count(),
-            'ongoing'  => (clone $statsQuery)->where('status', 'active')->count(),
-            'on_hold'  => (clone $statsQuery)->where('status', 'on_hold')->count(),
-            'completed'=> (clone $statsQuery)->where('status', 'completed')->count(),
+            'total' => (clone $statsQuery)->count(),
+            'ongoing' => (clone $statsQuery)->where('status', 'active')->count(),
+            'on_hold' => (clone $statsQuery)->where('status', 'on_hold')->count(),
+            'completed' => (clone $statsQuery)->where('status', 'completed')->count(),
             'inactive' => (clone $statsQuery)->where('status', 'inactive')->count(),
-            'overdue'  => (clone $statsQuery)->whereNotIn('status', ['completed'])->whereNotNull('end_date')->whereDate('end_date', '<', now())->count(),
+            'overdue' => (clone $statsQuery)->whereNotIn('status', ['completed'])->whereNotNull('end_date')->whereDate('end_date', '<', now())->count(),
         ];
 
         // Get plan limits
@@ -132,7 +131,7 @@ class ProjectController extends Controller
         $planLimits = [
             'current_projects' => $currentProjectCount,
             'maximum_projects' => $plan->maximum_projects,
-            'can_create' => $currentProjectCount < $plan->maximum_projects
+            'can_create' => $currentProjectCount < $plan->maximum_projects,
         ];
 
         return Inertia::render('projects/index', [
@@ -182,6 +181,7 @@ class ProjectController extends Controller
             ->get()
             ->map(function ($call) {
                 $call->type = 'call';
+
                 return $call;
             });
 
@@ -289,6 +289,7 @@ class ProjectController extends Controller
         if ($project) {
             try {
                 $project->delete();
+
                 return redirect()->back()->with('success', __('Project deleted successfully.'));
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete project.'));
@@ -307,7 +308,7 @@ class ProjectController extends Controller
         if ($project) {
             try {
                 $validated = $request->validate([
-                    'status' => 'required|in:active,inactive,completed,on_hold'
+                    'status' => 'required|in:active,inactive,completed,on_hold',
                 ]);
 
                 $project->update(['status' => $validated['status']]);
@@ -328,6 +329,7 @@ class ProjectController extends Controller
         }
 
         $name = 'project_' . date('Y-m-d_H-i-s');
+
         return Excel::download(new ProjectExport(), $name . '.xlsx');
     }
 }

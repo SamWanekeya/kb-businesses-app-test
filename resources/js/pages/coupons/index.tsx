@@ -1,20 +1,19 @@
 // pages/coupons/index.tsx
-import { useEffect, useState } from 'react';
+import { CrudDeleteModal } from '@/components/CrudDeleteModal';
+import { CrudFormModal } from '@/components/CrudFormModal';
+import { CrudTable } from '@/components/CrudTable';
+import { toast } from '@/components/custom-toast';
 import { PageTemplate } from '@/components/page-template';
-import { usePage, router, Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { CrudTable } from '@/components/CrudTable';
-import { CrudFormModal } from '@/components/CrudFormModal';
-import { CrudDeleteModal } from '@/components/CrudDeleteModal';
-import { toast } from '@/components/custom-toast';
-import { useTranslation } from 'react-i18next';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { Copy, Plus } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { hasPermission } from '@/utils/authorization';
-import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
+import { router, usePage } from '@inertiajs/react';
+import { Plus } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function CouponsPage() {
     const { t } = useTranslation();
@@ -36,7 +35,10 @@ export default function CouponsPage() {
     const [pageInitialState, setPageInitialState] = useState(true);
 
     useEffect(() => {
-        if (pageInitialState) { setPageInitialState(false); return; }
+        if (pageInitialState) {
+            setPageInitialState(false);
+            return;
+        }
         applyFilters();
     }, [selectedType, selectedStatus, dateFrom, dateTo]);
 
@@ -47,11 +49,13 @@ export default function CouponsPage() {
 
     // Count active filters
     const activeFilterCount = () => {
-        return (selectedType !== 'all' ? 1 : 0) +
+        return (
+            (selectedType !== 'all' ? 1 : 0) +
             (selectedStatus !== 'all' ? 1 : 0) +
             (dateFrom !== '' ? 1 : 0) +
             (dateTo !== '' ? 1 : 0) +
-            (searchTerm !== '' ? 1 : 0);
+            (searchTerm !== '' ? 1 : 0)
+        );
     };
 
     const handleSearch = (e: React.FormEvent) => {
@@ -60,32 +64,40 @@ export default function CouponsPage() {
     };
 
     const applyFilters = () => {
-        router.get(route('coupons.index'), {
-            page: 1,
-            search: searchTerm || undefined,
-            type: selectedType !== 'all' ? selectedType : undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            date_from: dateFrom || undefined,
-            date_to: dateTo || undefined,
-            ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
-            ...(pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('coupons.index'),
+            {
+                page: 1,
+                search: searchTerm || undefined,
+                type: selectedType !== 'all' ? selectedType : undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                date_from: dateFrom || undefined,
+                date_to: dateTo || undefined,
+                ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+                ...(pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleSort = (field: string) => {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
 
-        router.get(route('coupons.index'), {
-            sort_field: field,
-            sort_direction: direction,
-            page: 1,
-            search: searchTerm || undefined,
-            type: selectedType !== 'all' ? selectedType : undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            date_from: dateFrom || undefined,
-            date_to: dateTo || undefined,
-            per_page: pageFilters.per_page
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('coupons.index'),
+            {
+                sort_field: field,
+                sort_direction: direction,
+                page: 1,
+                search: searchTerm || undefined,
+                type: selectedType !== 'all' ? selectedType : undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                date_from: dateFrom || undefined,
+                date_to: dateTo || undefined,
+                per_page: pageFilters.per_page,
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleAction = (action: string, item: any) => {
@@ -160,7 +172,7 @@ export default function CouponsPage() {
                     } else {
                         toast.error(t('Failed to create coupon: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
-                }
+                },
             });
         } else if (formMode === 'edit') {
             if (!globalSettings?.is_demo) {
@@ -188,7 +200,7 @@ export default function CouponsPage() {
                     } else {
                         toast.error(t('Failed to update coupon: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
-                }
+                },
             });
         }
     };
@@ -219,7 +231,7 @@ export default function CouponsPage() {
                 } else {
                     toast.error(t('Failed to delete coupon: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
-            }
+            },
         });
     };
 
@@ -232,28 +244,32 @@ export default function CouponsPage() {
             toast.loading(t(coupon.status ? 'Deactivating' : 'Activating') + ' ' + t('coupon...'));
         }
 
-        router.put(route('coupons.toggle-status', coupon.id), {}, {
-            onSuccess: (page) => {
-                if (!globalSettings?.is_demo) {
-                    toast.dismiss();
-                }
-                if (page.props.flash.success) {
-                    toast.success(t(page.props.flash.success));
-                } else if (page.props.flash.error) {
-                    toast.error(t(page.props.flash.error));
-                }
+        router.put(
+            route('coupons.toggle-status', coupon.id),
+            {},
+            {
+                onSuccess: (page) => {
+                    if (!globalSettings?.is_demo) {
+                        toast.dismiss();
+                    }
+                    if (page.props.flash.success) {
+                        toast.success(t(page.props.flash.success));
+                    } else if (page.props.flash.error) {
+                        toast.error(t(page.props.flash.error));
+                    }
+                },
+                onError: (errors) => {
+                    if (!globalSettings?.is_demo) {
+                        toast.dismiss();
+                    }
+                    if (typeof errors === 'string') {
+                        toast.error(t(errors));
+                    } else {
+                        toast.error(t('Failed to update coupon status: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    }
+                },
             },
-            onError: (errors) => {
-                if (!globalSettings?.is_demo) {
-                    toast.dismiss();
-                }
-                if (typeof errors === 'string') {
-                    toast.error(t(errors));
-                } else {
-                    toast.error(t('Failed to update coupon status: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                }
-            }
-        });
+        );
     };
 
     const handleCopyCode = async (code: string) => {
@@ -263,9 +279,7 @@ export default function CouponsPage() {
             setTimeout(() => {
                 setCopiedCode(null);
             }, 2000);
-        } catch (err) {
-
-        }
+        } catch (err) {}
     };
 
     // Define page actions
@@ -274,23 +288,24 @@ export default function CouponsPage() {
     if (hasPermission(permissions, 'create-coupons')) {
         pageActions.push({
             label: t('Add Coupon'),
-            icon: <Plus className="h-4 w-4 mr-2" />,
+            icon: <Plus className="mr-0 h-4 w-4 min-[380px]:mr-2" />,
             variant: 'default',
-            onClick: () => handleAddNew()
+            onClick: () => handleAddNew(),
+            className: 'h-8 w-8 min-[380px]:h-9 min-[380px]:w-auto px-0 min-[380px]:px-4',
+            labelClassName: 'hidden min-[380px]:inline',
+            tooltip: t('Add Coupon'),
+            tooltipClassName: 'min-[380px]:hidden',
         });
     }
 
-    const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Coupons') }
-    ];
+    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Coupons') }];
 
     // Define table columns
     const columns = [
         {
             key: 'name',
             label: t('Name'),
-            sortable: true
+            sortable: true,
         },
         {
             key: 'code',
@@ -300,59 +315,59 @@ export default function CouponsPage() {
                 <div className="flex flex-col items-start">
                     <button
                         onClick={() => handleCopyCode(value)}
-                        className="px-3 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors font-mono text-sm cursor-pointer"
+                        className="cursor-pointer rounded-md bg-gray-100 px-3 py-1.5 font-mono text-sm transition-colors hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700"
                     >
                         {value}
                     </button>
-                    {copiedCode === value && (
-                        <span className="text-xs text-red-600 dark:text-red-400 mt-1 font-medium ml-3">
-                            {t('Copied!')}
-                        </span>
-                    )}
+                    {copiedCode === value && <span className="mt-1 ml-3 text-xs font-medium text-red-600 dark:text-red-400">{t('Copied!')}</span>}
                 </div>
-            )
+            ),
         },
         {
             key: 'type',
             label: t('Type'),
             sortable: true,
-            render: (value) => value === 'percentage' ? t('Percentage') : t('Flat Amount')
+            render: (value) => (value === 'percentage' ? t('Percentage') : t('Flat Amount')),
         },
         {
             key: 'minimum_spend',
             label: t('Min Spend'),
-            render: (value) => value ? <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${parseFloat(value).toFixed(2)}`}</span> : '-'
+            render: (value) =>
+                value ? <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${parseFloat(value).toFixed(2)}`}</span> : '-',
         },
         {
             key: 'maximum_spend',
             label: t('Max Spend'),
-            render: (value) => value ? <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${parseFloat(value).toFixed(2)}`}</span> : '-'
+            render: (value) =>
+                value ? <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${parseFloat(value).toFixed(2)}`}</span> : '-',
         },
         {
             key: 'discount_amount',
             label: t('Discount'),
             render: (_, row) => {
                 const amount = parseFloat(row.discount_amount);
-                return row.type === 'percentage'
-                    ? `${amount}%`
-                    : <span className="font-mono">{window.appSettings?.formatCurrency(amount) || `$${amount.toFixed(2)}`}</span>;
-            }
+                return row.type === 'percentage' ? (
+                    `${amount}%`
+                ) : (
+                    <span className="font-mono">{window.appSettings?.formatCurrency(amount) || `$${amount.toFixed(2)}`}</span>
+                );
+            },
         },
         {
             key: 'use_limit_per_coupon',
             label: t('Coupon Limit'),
-            render: (value) => value || t('Unlimited')
+            render: (value) => value || t('Unlimited'),
         },
         {
             key: 'use_limit_per_user',
             label: t('User Limit'),
-            render: (value) => value || t('Unlimited')
+            render: (value) => value || t('Unlimited'),
         },
         {
             key: 'expiry_date',
             label: t('Expiry Date'),
             sortable: true,
-            type: 'date'
+            type: 'date',
             // render: (value) => window.appSettings?.formatDateTime(value, false) || '-'
         },
         {
@@ -360,13 +375,10 @@ export default function CouponsPage() {
             label: t('Status'),
             render: (_, row) => (
                 <div className="flex items-center">
-                    <Switch
-                        checked={!!row.status}
-                        onCheckedChange={() => handleToggleStatus(row)}
-                    />
+                    <Switch checked={!!row.status} onCheckedChange={() => handleToggleStatus(row)} />
                 </div>
-            )
-        }
+            ),
+        },
     ];
 
     // Define table actions
@@ -376,35 +388,35 @@ export default function CouponsPage() {
             icon: 'Eye',
             action: 'view-details',
             className: 'text-blue-500',
-            requiredPermission: 'view-coupons'
+            requiredPermission: 'view-coupons',
         },
         {
             label: t('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
-            requiredPermission: 'create-coupons'
+            requiredPermission: 'create-coupons',
         },
         {
             label: t('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
-            requiredPermission: 'delete-coupons'
-        }
+            requiredPermission: 'delete-coupons',
+        },
     ];
 
     // Prepare filter options
     const typeOptions = [
         { value: 'all', label: t('All Types') },
         { value: 'percentage', label: t('Percentage') },
-        { value: 'flat', label: t('Flat Amount') }
+        { value: 'flat', label: t('Flat Amount') },
     ];
 
     const statusOptions = [
         { value: 'all', label: t('All Status') },
         { value: '1', label: t('Active') },
-        { value: '0', label: t('Inactive') }
+        { value: '0', label: t('Inactive') },
     ];
 
     return (
@@ -417,7 +429,7 @@ export default function CouponsPage() {
             noPadding
         >
             {/* Search and filters section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
+            <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -429,7 +441,7 @@ export default function CouponsPage() {
                             type: 'select',
                             value: selectedType,
                             onChange: setSelectedType,
-                            options: typeOptions
+                            options: typeOptions,
                         },
                         {
                             name: 'status',
@@ -437,32 +449,31 @@ export default function CouponsPage() {
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
-                            options: statusOptions
+                            options: statusOptions,
                         },
                         {
                             name: 'date_from',
                             label: t('Date From'),
                             type: 'date',
                             value: dateFrom,
-                            onChange: setDateFrom
+                            onChange: setDateFrom,
                         },
                         {
                             name: 'date_to',
                             label: t('Date To'),
                             type: 'date',
                             value: dateTo,
-                            onChange: setDateTo
-                        }
+                            onChange: setDateTo,
+                        },
                     ]}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
                     onResetFilters={handleResetFilters}
-
                 />
             </div>
 
             {/* Content section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+            <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                 <CrudTable
                     columns={columns}
                     actions={actions}
@@ -477,7 +488,7 @@ export default function CouponsPage() {
                         view: 'view-coupons',
                         create: 'create-coupons',
                         edit: 'create-coupons',
-                        delete: 'delete-coupons'
+                        delete: 'delete-coupons',
                     }}
                 />
 
@@ -487,20 +498,24 @@ export default function CouponsPage() {
                     to={coupons?.to || 0}
                     total={coupons?.total || 0}
                     links={coupons?.links}
-                    entityName={t("coupons")}
+                    entityName={t('coupons')}
                     onPageChange={(url) => router.get(url)}
-                    currentPerPage={pageFilters.per_page?.toString() || "10"}
+                    currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
-                        router.get(route('coupons.index'), {
-                            page: 1,
-                            per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
-                            search: searchTerm || undefined,
-                            type: selectedType !== 'all' ? selectedType : undefined,
-                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                            date_from: dateFrom || undefined,
-                            date_to: dateTo || undefined,
-                            ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
-                        }, { preserveState: true, preserveScroll: true });
+                        router.get(
+                            route('coupons.index'),
+                            {
+                                page: 1,
+                                per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
+                                search: searchTerm || undefined,
+                                type: selectedType !== 'all' ? selectedType : undefined,
+                                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                date_from: dateFrom || undefined,
+                                date_to: dateTo || undefined,
+                                ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+                            },
+                            { preserveState: true, preserveScroll: true },
+                        );
                     }}
                 />
             </div>
@@ -518,7 +533,7 @@ export default function CouponsPage() {
                             type: 'text',
                             required: true,
                             placeholder: t('Enter coupon name'),
-                            width: 'calc(50% - 0.5rem)'
+                            width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'type',
@@ -527,9 +542,9 @@ export default function CouponsPage() {
                             required: true,
                             options: [
                                 { value: 'percentage', label: t('Percentage (%)') },
-                                { value: 'flat', label: t('Fixed Amount ($)') }
+                                { value: 'flat', label: t('Fixed Amount ($)') },
                             ],
-                            width: 'calc(50% - 0.5rem)'
+                            width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'discount_amount',
@@ -539,7 +554,7 @@ export default function CouponsPage() {
                             min: 0,
                             step: 0.01,
                             placeholder: t('Enter value'),
-                            width: 'calc(50% - 0.5rem)'
+                            width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'use_limit_per_coupon',
@@ -547,7 +562,7 @@ export default function CouponsPage() {
                             type: 'number',
                             min: 1,
                             placeholder: t('Leave empty for unlimited'),
-                            width: 'calc(50% - 0.5rem)'
+                            width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'code_type',
@@ -556,10 +571,10 @@ export default function CouponsPage() {
                             required: true,
                             options: [
                                 { value: 'manual', label: t('Manual Entry') },
-                                { value: 'auto', label: t('Auto Generate') }
+                                { value: 'auto', label: t('Auto Generate') },
                             ],
                             defaultValue: 'manual',
-                            width: 'calc(50% - 0.5rem)'
+                            width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'code',
@@ -603,7 +618,7 @@ export default function CouponsPage() {
                                         )}
                                     </div>
                                 );
-                            }
+                            },
                         },
                         {
                             name: 'minimum_spend',
@@ -612,7 +627,7 @@ export default function CouponsPage() {
                             min: 0,
                             step: 0.01,
                             placeholder: t('Optional'),
-                            width: 'calc(50% - 0.5rem)'
+                            width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'maximum_spend',
@@ -621,7 +636,7 @@ export default function CouponsPage() {
                             min: 0,
                             step: 0.01,
                             placeholder: t('Optional'),
-                            width: 'calc(50% - 0.5rem)'
+                            width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'use_limit_per_user',
@@ -629,26 +644,20 @@ export default function CouponsPage() {
                             type: 'number',
                             min: 1,
                             placeholder: t('Leave empty for unlimited'),
-                            width: 'calc(50% - 0.5rem)'
+                            width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'expiry_date',
                             label: t('Expiry Date'),
                             type: 'date',
-                            width: 'calc(50% - 0.5rem)'
+                            width: 'calc(50% - 0.5rem)',
                         },
                     ],
                     modalSize: '4xl',
-                    layout: 'flex'
+                    layout: 'flex',
                 }}
                 initialData={currentItem}
-                title={
-                    formMode === 'create'
-                        ? t('Add Coupon')
-                        : formMode === 'edit'
-                            ? t('Edit Coupon')
-                            : t('View Coupon')
-                }
+                title={formMode === 'create' ? t('Add Coupon') : formMode === 'edit' ? t('Edit Coupon') : t('View Coupon')}
                 mode={formMode}
             />
 

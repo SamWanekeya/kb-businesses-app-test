@@ -24,11 +24,11 @@ class TwilioLeadCreateListener
     public function handle(LeadAssigned $event): void
     {
         $lead = $event->lead;
-        if (isNotificationTemplateEnabled('Lead Create','twilio', createdBy()) && $lead->phone) {
+        if (isNotificationTemplateEnabled('Lead Create', 'twilio', createdBy()) && $lead->phone) {
 
             $variables = [
                 '{lead_name}' => $lead->name ?? '-',
-                '{organization_name}' => getOrganizationName()
+                '{organization_name}' => getOrganizationName(),
             ];
 
             try {

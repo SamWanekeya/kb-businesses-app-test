@@ -29,6 +29,7 @@ class NotificationTemplate extends Model
     public function getContentForOrganization($organizationId = null)
     {
         $organizationId = $organizationId ?? createdBy();
+
         return $this->notificationTemplateLangs()->where('created_by', $organizationId);
     }
 

@@ -24,14 +24,14 @@ class FlutterwavePaymentController extends Controller
 
             // Verify payment with Flutterwave API
             $curl = curl_init();
-            curl_setopt_array($curl, array(
+            curl_setopt_array($curl, [
                 CURLOPT_URL => "https://api.flutterwave.com/v3/transactions/" . $validated['payment_id'] . "/verify",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HTTPHEADER => [
                     "Authorization: Bearer " . $settings['payment_settings']['flutterwave_secret_key'],
                     "Content-Type: application/json",
                 ],
-            ));
+            ]);
 
             $response = curl_exec($curl);
             $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -49,9 +49,9 @@ class FlutterwavePaymentController extends Controller
 
             if ($result['status'] === 'success' && $result['data']['status'] === 'successful') {
                 // Check if payment amount matches plan price
-                if($validated['billing_cycle'] === 'monthly') {
+                if ($validated['billing_cycle'] === 'monthly') {
                     $expectedAmount = $plan->price;
-                }else if($validated['billing_cycle'] === 'yearly') {
+                } elseif ($validated['billing_cycle'] === 'yearly') {
                     $expectedAmount = $plan->yearly_price;
                 }
                 $paidAmount = $result['data']['amount'];

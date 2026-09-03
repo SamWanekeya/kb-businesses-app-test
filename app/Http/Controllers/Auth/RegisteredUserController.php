@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\LeadStatus;
+use App\Models\OpportunityStage;
 use App\Models\Plan;
 use App\Models\Referral;
 use App\Models\ReferralSetting;
-use App\Models\LeadStatus;
-use App\Models\OpportunityStage;
 use App\Models\TaskStatus;
-use App\Services\UserService;
+use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,7 +17,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
-use Inertia\Response;
 
 class RegisteredUserController extends Controller
 {
@@ -121,6 +119,7 @@ class RegisteredUserController extends Controller
         $emailVerificationEnabled = getSetting('emailVerification', false);
         if ($emailVerificationEnabled) {
             event(new Registered($user));
+
             return redirect()->route('verification.notice');
         }
 
@@ -129,6 +128,7 @@ class RegisteredUserController extends Controller
         if ($planId) {
             return redirect()->route('plans.index', ['selected' => $planId]);
         }
+
         return to_route('dashboard');
     }
 

@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Plan;
 use App\Models\Referral;
 use App\Models\User;
-use App\Models\Plan;
-use App\Models\ReferralSetting;
-use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class ReferralSeeder extends Seeder
 {
@@ -19,6 +18,7 @@ class ReferralSeeder extends Seeder
 
         if ($users->isEmpty() || $plans->isEmpty()) {
             $this->command->warn('No users or plans found. Please seed users and plans first.');
+
             return;
         }
 

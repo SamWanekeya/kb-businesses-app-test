@@ -1,13 +1,13 @@
+import { toast } from '@/components/custom-toast';
 import { PageTemplate } from '@/components/page-template';
-import { usePage, useForm } from '@inertiajs/react';
-import { ArrowLeft, Trash2, Plus, PackagePlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { useForm, usePage } from '@inertiajs/react';
+import { ArrowLeft, PackagePlus, Plus, Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { toast } from '@/components/custom-toast';
 
 export default function OpportunityCreate() {
     const { t } = useTranslation();
@@ -32,7 +32,11 @@ export default function OpportunityCreate() {
         notes: '',
         assigned_to: '',
         status: 'active',
-        products: [{ product_id: '', quantity: '1', unit_price: '0', discount_type: 'none', discount_value: '0' }] as { product_id: string; quantity: string; unit_price: string }[],
+        products: [{ product_id: '', quantity: '1', unit_price: '0', discount_type: 'none', discount_value: '0' }] as {
+            product_id: string;
+            quantity: string;
+            unit_price: string;
+        }[],
     });
 
     const breadcrumbs = [
@@ -53,7 +57,10 @@ export default function OpportunityCreate() {
 
     const removeProductRow = (index: number) => {
         if (data.products.length <= 1) return;
-        setData('products', data.products.filter((_, i) => i !== index));
+        setData(
+            'products',
+            data.products.filter((_, i) => i !== index),
+        );
     };
 
     const updateProductRow = (index: number, field: string, value: string) => {
@@ -131,22 +138,22 @@ export default function OpportunityCreate() {
             title={t('Create Opportunity')}
             description={t('Fill in the details to create a new opportunity')}
             breadcrumbs={breadcrumbs}
-            actions={[{
-                label: t('Back'),
-                icon: <ArrowLeft className="h-4 w-4 mr-2" />,
-                variant: 'outline',
-                onClick: () => window.history.back(),
-            }]}
+            actions={[
+                {
+                    label: t('Back'),
+                    icon: <ArrowLeft className="mr-2 h-4 w-4" />,
+                    variant: 'outline',
+                    onClick: () => window.history.back(),
+                },
+            ]}
             noPadding
         >
             <form onSubmit={handleSubmit} className="space-y-6">
-
                 {/* ROW 1 — Basic Information + Classification */}
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-stretch">
-
+                <div className="grid grid-cols-1 items-stretch gap-6 xl:grid-cols-2">
                     {/* Basic Information */}
-                    <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 flex flex-col h-full">
-                        <div className="border-b border-gray-200 px-6 py-4 bg-gray-50 dark:border-gray-700 dark:bg-gray-700">
+                    <div className="flex h-full flex-col rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                        <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
                             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Basic Information')}</h2>
                         </div>
                         <div className="space-y-4 p-6">
@@ -179,19 +186,29 @@ export default function OpportunityCreate() {
                                 {errors.description && <p className="text-xs text-red-500">{errors.description}</p>}
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
                                     <Label htmlFor="close_date" className="text-sm font-medium">
                                         {t('Close Date')}
                                     </Label>
-                                    <div className="cursor-pointer" onClick={(e) => { const input = (e.currentTarget as HTMLElement).querySelector('input'); try { (input as any)?.showPicker?.(); } catch { input?.focus(); } }}>
-                                    <Input
-                                        id="close_date"
-                                        type="date"
-                                        value={data.close_date}
-                                        onChange={(e) => handleInputChange('close_date', e.target.value)}
-                                        className={`cursor-pointer ${errors.close_date ? 'border-red-500' : ''}`}
-                                    />
+                                    <div
+                                        className="cursor-pointer"
+                                        onClick={(e) => {
+                                            const input = (e.currentTarget as HTMLElement).querySelector('input');
+                                            try {
+                                                (input as any)?.showPicker?.();
+                                            } catch {
+                                                input?.focus();
+                                            }
+                                        }}
+                                    >
+                                        <Input
+                                            id="close_date"
+                                            type="date"
+                                            value={data.close_date}
+                                            onChange={(e) => handleInputChange('close_date', e.target.value)}
+                                            className={`cursor-pointer ${errors.close_date ? 'border-red-500' : ''}`}
+                                        />
                                     </div>
                                     {errors.close_date && <p className="text-xs text-red-500">{errors.close_date}</p>}
                                 </div>
@@ -229,73 +246,117 @@ export default function OpportunityCreate() {
                     </div>
 
                     {/* Classification */}
-                    <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 flex flex-col h-full">
-                        <div className="border-b border-gray-200 px-6 py-4 bg-gray-50 dark:border-gray-700 dark:bg-gray-700">
+                    <div className="flex h-full flex-col rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                        <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
                             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Classification')}</h2>
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
-                                <Label className="text-sm font-medium" required>{t('Account')}</Label>
+                                <Label className="text-sm font-medium" required>
+                                    {t('Account')}
+                                </Label>
                                 <Select value={data.account_id} onValueChange={(v) => handleInputChange('account_id', v)}>
                                     <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={t('Select account')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {accounts.map((a: any) => (
-                                            <SelectItem key={a.id} value={String(a.id)}>{a.name}</SelectItem>
+                                            <SelectItem key={a.id} value={String(a.id)}>
+                                                {a.name}
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
                                 {errors.account_id && <p className="text-xs text-red-500">{errors.account_id}</p>}
-                                {accounts.length === 0 && <p className="text-xs mt-1">{t('Click here to add')} <a href={route('accounts.index')} className="underline font-medium">{t('Accounts')}</a></p>}
+                                {accounts.length === 0 && (
+                                    <p className="mt-1 text-xs">
+                                        {t('Click here to add')}{' '}
+                                        <a href={route('accounts.index')} className="font-medium underline">
+                                            {t('Accounts')}
+                                        </a>
+                                    </p>
+                                )}
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-sm font-medium" required>{t('Contact')}</Label>
+                                <Label className="text-sm font-medium" required>
+                                    {t('Contact')}
+                                </Label>
                                 <Select value={data.contact_id} onValueChange={(v) => handleInputChange('contact_id', v)}>
                                     <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={t('Select contact')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {contacts.map((c: any) => (
-                                            <SelectItem key={c.id} value={String(c.id)}>{c.name}</SelectItem>
+                                            <SelectItem key={c.id} value={String(c.id)}>
+                                                {c.name}
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
                                 {errors.contact_id && <p className="text-xs text-red-500">{errors.contact_id}</p>}
-                                {contacts.length === 0 && <p className="text-xs mt-1">{t('Click here to add')} <a href={route('contacts.index')} className="underline font-medium">{t('Contacts')}</a></p>}
+                                {contacts.length === 0 && (
+                                    <p className="mt-1 text-xs">
+                                        {t('Click here to add')}{' '}
+                                        <a href={route('contacts.index')} className="font-medium underline">
+                                            {t('Contacts')}
+                                        </a>
+                                    </p>
+                                )}
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-sm font-medium" required>{t('Stage')}</Label>
+                                <Label className="text-sm font-medium" required>
+                                    {t('Stage')}
+                                </Label>
                                 <Select value={data.opportunity_stage_id} onValueChange={(v) => handleInputChange('opportunity_stage_id', v)}>
                                     <SelectTrigger className={errors.opportunity_stage_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={t('Select stage')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {opportunityStages.map((s: any) => (
-                                            <SelectItem key={s.id} value={String(s.id)}>{s.name}</SelectItem>
+                                            <SelectItem key={s.id} value={String(s.id)}>
+                                                {s.name}
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
                                 {errors.opportunity_stage_id && <p className="text-xs text-red-500">{errors.opportunity_stage_id}</p>}
-                                {opportunityStages.length === 0 && <p className="text-xs mt-1">{t('Click here to add')} <a href={route('opportunity-stages.index')} className="underline font-medium">{t('Opportunity Stages')}</a></p>}
+                                {opportunityStages.length === 0 && (
+                                    <p className="mt-1 text-xs">
+                                        {t('Click here to add')}{' '}
+                                        <a href={route('opportunity-stages.index')} className="font-medium underline">
+                                            {t('Opportunity Stages')}
+                                        </a>
+                                    </p>
+                                )}
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-sm font-medium" required>{t('Source')}</Label>
+                                <Label className="text-sm font-medium" required>
+                                    {t('Source')}
+                                </Label>
                                 <Select value={data.opportunity_source_id} onValueChange={(v) => handleInputChange('opportunity_source_id', v)}>
                                     <SelectTrigger className={errors.opportunity_source_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={t('Select source')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {opportunitySources.map((s: any) => (
-                                            <SelectItem key={s.id} value={String(s.id)}>{s.name}</SelectItem>
+                                            <SelectItem key={s.id} value={String(s.id)}>
+                                                {s.name}
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
                                 {errors.opportunity_source_id && <p className="text-xs text-red-500">{errors.opportunity_source_id}</p>}
-                                {opportunitySources.length === 0 && <p className="text-xs mt-1">{t('Click here to add')} <a href={route('opportunity-sources.index')} className="underline font-medium">{t('Opportunity Sources')}</a></p>}
+                                {opportunitySources.length === 0 && (
+                                    <p className="mt-1 text-xs">
+                                        {t('Click here to add')}{' '}
+                                        <a href={route('opportunity-sources.index')} className="font-medium underline">
+                                            {t('Opportunity Sources')}
+                                        </a>
+                                    </p>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -303,123 +364,273 @@ export default function OpportunityCreate() {
 
                 {/* ROW 2 — Products */}
                 <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
-                    <div className="border-b border-gray-200 px-6 py-4 bg-gray-50 dark:border-gray-700 dark:bg-gray-700 flex items-center justify-between">
+                    <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
                         <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Products')}</h2>
                         <Button type="button" size="sm" onClick={addProductRow}>
-                            <Plus className="h-4 w-4 mr-1" />
+                            <Plus className="mr-1 h-4 w-4" />
                             {t('Add Product')}
                         </Button>
                     </div>
                     <div className="p-6">
-                        {errors.products && <p className="text-xs text-red-500 mb-3">{errors.products}</p>}
+                        {errors.products && <p className="mb-3 text-xs text-red-500">{errors.products}</p>}
 
                         {data.products.length === 0 ? (
                             <div
-                                className="flex flex-col items-center justify-center py-14 border-2 border-dashed rounded-xl cursor-pointer hover:border-primary/40 hover:bg-primary/5 transition-all group"
+                                className="hover:border-primary/40 hover:bg-primary/5 group flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed py-14 transition-all"
                                 onClick={addProductRow}
                             >
-                                <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                                    <PackagePlus className="h-7 w-7 text-primary" />
+                                <div className="bg-primary/10 group-hover:bg-primary/20 mb-4 flex h-14 w-14 items-center justify-center rounded-full transition-colors">
+                                    <PackagePlus className="text-primary h-7 w-7" />
                                 </div>
-                                <p className="text-sm font-semibold text-foreground">{t('No products added yet')}</p>
-                                <p className="text-xs text-muted-foreground mt-1">{t('Click here or use the Add Product button above')}</p>
+                                <p className="text-foreground text-sm font-semibold">{t('No products added yet')}</p>
+                                <p className="text-muted-foreground mt-1 text-xs">{t('Click here or use the Add Product button above')}</p>
                             </div>
                         ) : (
-                            <div className="overflow-x-auto">
-                                <table className="w-full text-sm">
-                                    <thead>
-                                        <tr className="border-t border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-xs font-semibold text-gray-600 dark:text-gray-400">
-                                            <th className="px-3 py-2 text-left">{t('Product')} <span className="text-red-500">*</span></th>
-                                            <th className="px-3 py-2 text-left w-16">{t('Qty')} <span className="text-red-500">*</span></th>
-                                            <th className="px-3 py-2 text-left w-20">{t('Unit Price')} <span className="text-red-500">*</span></th>
-                                            <th className="px-3 py-2 text-left w-40">{t('Tax')}</th>
-                                            <th className="px-3 py-2 text-left w-32">{t('Line Total')}</th>
-                                            <th className="px-3 py-2 w-10"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {data.products.map((row, i) => {
-                                            const lineTotal = calcLineTotal(row);
-                                            const taxAmt = calcTaxAmount(row);
-                                            const tax = getProductTax(row.product_id);
-                                            return (
-                                                <tr key={i} className="border-b hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                                                    <td className="px-3 py-2 w-48">
+                            <>
+                                {/* Desktop/Tablet Table */}
+                                <div className="hidden overflow-x-auto md:block">
+                                    <table className="w-full text-sm">
+                                        <thead>
+                                            <tr className="border-t border-b border-gray-200 bg-gray-50 text-xs font-semibold text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">
+                                                <th className="px-3 py-2 text-left">
+                                                    {t('Product')} <span className="text-red-500">*</span>
+                                                </th>
+                                                <th className="w-16 px-3 py-2 text-left">
+                                                    {t('Qty')} <span className="text-red-500">*</span>
+                                                </th>
+                                                <th className="w-20 px-3 py-2 text-left">
+                                                    {t('Unit Price')} <span className="text-red-500">*</span>
+                                                </th>
+                                                <th className="w-40 px-3 py-2 text-left">{t('Tax')}</th>
+                                                <th className="w-32 px-3 py-2 text-left">{t('Line Total')}</th>
+                                                <th className="w-10 px-3 py-2"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {data.products.map((row, i) => {
+                                                const lineTotal = calcLineTotal(row);
+                                                const taxAmt = calcTaxAmount(row);
+                                                const tax = getProductTax(row.product_id);
+                                                return (
+                                                    <tr key={i} className="border-b hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                                        <td className="w-48 px-3 py-2">
+                                                            <Select
+                                                                value={row.product_id}
+                                                                onValueChange={(v) => updateProductRow(i, 'product_id', v)}
+                                                            >
+                                                                <SelectTrigger className={errors[`products.${i}.product_id`] ? 'border-red-500' : ''}>
+                                                                    <SelectValue placeholder={t('Select product')} />
+                                                                </SelectTrigger>
+                                                                <SelectContent searchable>
+                                                                    {productOptions
+                                                                        .filter(
+                                                                            (p: any) =>
+                                                                                !data.products.some(
+                                                                                    (r, ri) => ri !== i && String(r.product_id) === String(p.id),
+                                                                                ),
+                                                                        )
+                                                                        .map((p: any) => (
+                                                                            <SelectItem key={p.id} value={String(p.id)}>
+                                                                                {p.name}
+                                                                            </SelectItem>
+                                                                        ))}
+                                                                </SelectContent>
+                                                            </Select>
+                                                            {errors[`products.${i}.product_id`] && (
+                                                                <p className="mt-1 text-xs text-red-500">{errors[`products.${i}.product_id`]}</p>
+                                                            )}
+                                                            {i === 0 && productOptions.length === 0 && (
+                                                                <p className="mt-1 text-xs">
+                                                                    {t('Click here to add')}{' '}
+                                                                    <a href={route('products.index')} className="font-medium underline">
+                                                                        {t('Products')}
+                                                                    </a>
+                                                                </p>
+                                                            )}
+                                                        </td>
+                                                        <td className="px-3 py-2">
+                                                            <Input
+                                                                type="number"
+                                                                min="1"
+                                                                value={row.quantity}
+                                                                onChange={(e) => updateProductRow(i, 'quantity', e.target.value)}
+                                                                className={`w-full text-left ${errors[`products.${i}.quantity`] ? 'border-red-500' : ''}`}
+                                                                placeholder="1"
+                                                            />
+                                                            {errors[`products.${i}.quantity`] && (
+                                                                <p className="mt-1 text-xs text-red-500">{errors[`products.${i}.quantity`]}</p>
+                                                            )}
+                                                        </td>
+                                                        <td className="px-3 py-2">
+                                                            <Input
+                                                                type="number"
+                                                                step="0.01"
+                                                                min="0"
+                                                                value={row.unit_price}
+                                                                onChange={(e) => updateProductRow(i, 'unit_price', e.target.value)}
+                                                                className={`w-full text-left ${errors[`products.${i}.unit_price`] ? 'border-red-500' : ''}`}
+                                                                placeholder="0.00"
+                                                            />
+                                                            {errors[`products.${i}.unit_price`] && (
+                                                                <p className="mt-1 text-xs text-red-500">{errors[`products.${i}.unit_price`]}</p>
+                                                            )}
+                                                        </td>
+                                                        <td className="px-3 py-2 text-left">
+                                                            <span className="text-muted-foreground text-sm font-medium">
+                                                                {tax ? `${tax.name} (${parseFloat(tax.rate).toFixed(2)}%)` : t('No Tax')}
+                                                            </span>
+                                                        </td>
+                                                        <td className="px-3 py-2 text-left">
+                                                            <span className="font-mono text-sm font-medium text-gray-900 dark:text-white">
+                                                                {fmt(lineTotal + taxAmt)}
+                                                            </span>
+                                                        </td>
+                                                        <td className="px-3 py-2 text-left">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => removeProductRow(i)}
+                                                                disabled={data.products.length <= 1}
+                                                                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors disabled:cursor-not-allowed disabled:opacity-30"
+                                                            >
+                                                                <Trash2 className="h-4 w-4 text-gray-500" />
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                {/* Mobile Stacked Cards */}
+                                <div className="block space-y-4 md:hidden">
+                                    {data.products.map((row, i) => {
+                                        const lineTotal = calcLineTotal(row);
+                                        const taxAmt = calcTaxAmount(row);
+                                        const tax = getProductTax(row.product_id);
+                                        return (
+                                            <div
+                                                key={i}
+                                                className="border-border relative space-y-3 rounded-lg border bg-gray-50/50 p-4 dark:bg-gray-800/30"
+                                            >
+                                                <div className="flex items-center justify-between border-b pb-2">
+                                                    <span className="text-muted-foreground text-xs font-semibold">
+                                                        {t('Product #{{index}}', { index: i + 1 })}
+                                                    </span>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => removeProductRow(i)}
+                                                        disabled={data.products.length <= 1}
+                                                        className="flex h-8 w-8 items-center justify-center rounded-md text-red-500 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-30"
+                                                    >
+                                                        <Trash2 className="h-4 w-4 text-gray-500" />
+                                                    </button>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <div>
+                                                        <label className="text-muted-foreground mb-1 block text-xs font-medium">
+                                                            {t('Product')} *
+                                                        </label>
                                                         <Select value={row.product_id} onValueChange={(v) => updateProductRow(i, 'product_id', v)}>
-                                                            <SelectTrigger className={errors[`products.${i}.product_id`] ? 'border-red-500' : ''}>
+                                                            <SelectTrigger
+                                                                className={errors[`products.${i}.product_id`] ? 'w-full border-red-500' : 'w-full'}
+                                                            >
                                                                 <SelectValue placeholder={t('Select product')} />
                                                             </SelectTrigger>
                                                             <SelectContent searchable>
-                                                                {productOptions.filter((p: any) => !data.products.some((r, ri) => ri !== i && String(r.product_id) === String(p.id))).map((p: any) => (
-                                                                    <SelectItem key={p.id} value={String(p.id)}>{p.name}</SelectItem>
-                                                                ))}
+                                                                {productOptions
+                                                                    .filter(
+                                                                        (p: any) =>
+                                                                            !data.products.some(
+                                                                                (r, ri) => ri !== i && String(r.product_id) === String(p.id),
+                                                                            ),
+                                                                    )
+                                                                    .map((p: any) => (
+                                                                        <SelectItem key={p.id} value={String(p.id)}>
+                                                                            {p.name}
+                                                                        </SelectItem>
+                                                                    ))}
                                                             </SelectContent>
                                                         </Select>
-                                                        {errors[`products.${i}.product_id`] && <p className="text-xs text-red-500 mt-1">{errors[`products.${i}.product_id`]}</p>}
-                                                        {i === 0 && productOptions.length === 0 && <p className="text-xs mt-1">{t('Click here to add')} <a href={route('products.index')} className="underline font-medium">{t('Products')}</a></p>}
-                                                    </td>
-                                                    <td className="px-3 py-2">
-                                                        <Input
-                                                            type="number" min="1"
-                                                            value={row.quantity}
-                                                            onChange={(e) => updateProductRow(i, 'quantity', e.target.value)}
-                                                            className={`text-left w-full ${errors[`products.${i}.quantity`] ? 'border-red-500' : ''}`}
-                                                            placeholder="1"
-                                                        />
-                                                        {errors[`products.${i}.quantity`] && <p className="text-xs text-red-500 mt-1">{errors[`products.${i}.quantity`]}</p>}
-                                                    </td>
-                                                    <td className="px-3 py-2">
-                                                        <Input
-                                                            type="number" step="0.01" min="0"
-                                                            value={row.unit_price}
-                                                            onChange={(e) => updateProductRow(i, 'unit_price', e.target.value)}
-                                                            className={`text-left w-full ${errors[`products.${i}.unit_price`] ? 'border-red-500' : ''}`}
-                                                            placeholder="0.00"
-                                                        />
-                                                        {errors[`products.${i}.unit_price`] && <p className="text-xs text-red-500 mt-1">{errors[`products.${i}.unit_price`]}</p>}
-                                                    </td>
-                                                    <td className="px-3 py-2 text-left">
-                                                        <span className="text-sm font-medium text-muted-foreground">
-                                                            {tax ? `${tax.name} (${parseFloat(tax.rate).toFixed(2)}%)` : t('No Tax')}
+                                                        {errors[`products.${i}.product_id`] && (
+                                                            <p className="mt-1 text-xs text-red-500">{errors[`products.${i}.product_id`]}</p>
+                                                        )}
+                                                        {i === 0 && productOptions.length === 0 && (
+                                                            <p className="mt-1 text-xs">
+                                                                {t('Click here to add')}{' '}
+                                                                <a href={route('products.index')} className="font-medium underline">
+                                                                    {t('Products')}
+                                                                </a>
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                    <div className="grid grid-cols-2 gap-3">
+                                                        <div>
+                                                            <label className="text-muted-foreground mb-1 block text-xs font-medium">
+                                                                {t('Qty')} *
+                                                            </label>
+                                                            <Input
+                                                                type="number"
+                                                                min="1"
+                                                                value={row.quantity}
+                                                                onChange={(e) => updateProductRow(i, 'quantity', e.target.value)}
+                                                                className={`w-full text-left ${errors[`products.${i}.quantity`] ? 'border-red-500' : ''}`}
+                                                                placeholder="1"
+                                                            />
+                                                            {errors[`products.${i}.quantity`] && (
+                                                                <p className="mt-1 text-xs text-red-500">{errors[`products.${i}.quantity`]}</p>
+                                                            )}
+                                                        </div>
+                                                        <div>
+                                                            <label className="text-muted-foreground mb-1 block text-xs font-medium">
+                                                                {t('Unit Price')} *
+                                                            </label>
+                                                            <Input
+                                                                type="number"
+                                                                step="0.01"
+                                                                min="0"
+                                                                value={row.unit_price}
+                                                                onChange={(e) => updateProductRow(i, 'unit_price', e.target.value)}
+                                                                className={`w-full text-left ${errors[`products.${i}.unit_price`] ? 'border-red-500' : ''}`}
+                                                                placeholder="0.00"
+                                                            />
+                                                            {errors[`products.${i}.unit_price`] && (
+                                                                <p className="mt-1 text-xs text-red-500">{errors[`products.${i}.unit_price`]}</p>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                    <div className="mt-2 flex items-center justify-between border-t pt-2 text-xs">
+                                                        <span className="text-muted-foreground">
+                                                            {t('Tax')}: {tax ? `${tax.name} (${parseFloat(tax.rate).toFixed(2)}%)` : t('No Tax')}
                                                         </span>
-                                                    </td>
-                                                    <td className="px-3 py-2 text-left">
-                                                        <span className="text-sm font-medium text-gray-900 dark:text-white font-mono">{fmt(lineTotal + taxAmt)}</span>
-                                                    </td>
-                                                    <td className="px-3 py-2 text-left">
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => removeProductRow(i)}
-                                                            disabled={data.products.length <= 1}
-                                                            className="h-8 w-8 flex items-center justify-center rounded-md text-gray-500 transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
-                                                        >
-                                                            <Trash2 className="h-4 w-4 text-gray-500"/>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
-                            </div>
+                                                        <span className="text-foreground font-mono font-semibold">
+                                                            {t('Total')}: {fmt(lineTotal + taxAmt)}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </>
                         )}
                     </div>
 
                     {/* Totals panel — card footer */}
                     {data.products.length > 0 && (
-                        <div className="border-t border-gray-200 dark:border-gray-700 px-6 py-4 flex justify-end">
+                        <div className="flex justify-end border-t border-gray-200 px-6 py-4 dark:border-gray-700">
                             <div className="w-72 space-y-2">
-                                <div className="flex justify-between items-center">
+                                <div className="flex items-center justify-between">
                                     <span className="text-sm text-gray-500 dark:text-gray-400">{t('Subtotal')}</span>
-                                    <span className="text-sm font-medium text-gray-900 dark:text-white font-mono">{fmt(subtotal)}</span>
+                                    <span className="font-mono text-sm font-medium text-gray-900 dark:text-white">{fmt(subtotal)}</span>
                                 </div>
-                                <div className="flex justify-between items-center">
+                                <div className="flex items-center justify-between">
                                     <span className="text-sm text-gray-500 dark:text-gray-400">{t('Tax')}</span>
-                                    <span className="text-sm font-medium text-gray-900 dark:text-white font-mono">{fmt(totalTax)}</span>
+                                    <span className="font-mono text-sm font-medium text-gray-900 dark:text-white">{fmt(totalTax)}</span>
                                 </div>
-                                <div className="flex justify-between items-center border-t border-gray-200 dark:border-gray-600 pt-2">
+                                <div className="flex items-center justify-between border-t border-gray-200 pt-2 dark:border-gray-600">
                                     <span className="text-sm font-bold text-gray-900 dark:text-white">{t('Grand Total')}</span>
-                                    <span className="text-base font-bold text-green-600 dark:text-green-400 font-mono">{fmt(grandTotal)}</span>
+                                    <span className="font-mono text-base font-bold text-green-600 dark:text-green-400">{fmt(grandTotal)}</span>
                                 </div>
                             </div>
                         </div>
@@ -428,36 +639,47 @@ export default function OpportunityCreate() {
 
                 {/* ROW 3 — Assignment */}
                 <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
-                    <div className="border-b border-gray-200 px-6 py-4 bg-gray-50 dark:border-gray-700 dark:bg-gray-700">
+                    <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
                         <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Assignment')}</h2>
                     </div>
                     <div className="space-y-4 p-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-2">
-                                <Label className="text-sm font-medium" required>{t('Assign To')}</Label>
+                                <Label className="text-sm font-medium" required>
+                                    {t('Assign To')}
+                                </Label>
                                 <Select value={data.assigned_to} onValueChange={(v) => handleInputChange('assigned_to', v)}>
                                     <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={t('Select user')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {users.map((u: any) => (
-                                            <SelectItem key={u.id} value={String(u.id)}>{u.name} ({u.email})</SelectItem>
+                                            <SelectItem key={u.id} value={String(u.id)}>
+                                                {u.name} ({u.email})
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
                                 {errors.assigned_to && <p className="text-xs text-red-500">{errors.assigned_to}</p>}
-                                {users.length === 0 && <p className="text-xs mt-1">{t('Click here to add')} <a href={route('users.index')} className="underline font-medium">{t('Users')}</a></p>}
+                                {users.length === 0 && (
+                                    <p className="mt-1 text-xs">
+                                        {t('Click here to add')}{' '}
+                                        <a href={route('users.index')} className="font-medium underline">
+                                            {t('Users')}
+                                        </a>
+                                    </p>
+                                )}
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Actions */}
-                <div className="flex justify-end space-x-4">
-                    <Button type="button" variant="outline" onClick={() => window.history.back()}>
+                <div className="mt-6 flex flex-col-reverse justify-end gap-3 sm:flex-row sm:gap-4">
+                    <Button type="button" variant="outline" onClick={() => window.history.back()} className="w-full sm:w-auto">
                         {t('Cancel')}
                     </Button>
-                    <Button type="submit" disabled={processing}>
+                    <Button type="submit" disabled={processing} className="w-full sm:w-auto">
                         {processing ? t('Creating...') : t('Save')}
                     </Button>
                 </div>

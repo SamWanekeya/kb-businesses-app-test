@@ -7,14 +7,14 @@ import { usePage } from '@inertiajs/react';
  * @returns boolean indicating if the user has the permission
  */
 export const hasPermission = (permission: string): boolean => {
-  const { auth } = usePage().props as any;
-  
-  if (!auth || !auth.user || !auth.permissions) {
-    return false;
-  }
-  
-  // Check if user has the specific permission
-  return auth.permissions.includes(permission);
+    const { auth } = usePage().props as any;
+
+    if (!auth || !auth.user || !auth.permissions) {
+        return false;
+    }
+
+    // Check if user has the specific permission
+    return auth.permissions.includes(permission);
 };
 
 /**
@@ -23,12 +23,12 @@ export const hasPermission = (permission: string): boolean => {
  * @returns boolean indicating if the user has any of the permissions
  */
 export const hasAnyPermission = (permissions: string[]): boolean => {
-  const { auth } = usePage().props as any;
-  
-  if (!auth || !auth.user || !auth.permissions) {
-    return false;
-  }
-  
-  // Check if user has any of the permissions
-  return permissions.some(permission => auth.permissions.includes(permission));
+    const { auth } = usePage().props as any;
+
+    if (!auth || !auth.user || !auth.permissions) {
+        return false;
+    }
+
+    // Check if user has any of the permissions
+    return permissions.some((permission) => auth.permissions.includes(permission));
 };

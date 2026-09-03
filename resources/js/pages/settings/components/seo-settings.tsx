@@ -137,21 +137,25 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
             title={t('SEO Settings')}
             description={t("Configure SEO settings to improve your website's search engine visibility")}
             action={
-                <Button type="submit" form="seo-settings-form" size="sm" className="gap-2 bg-green-600 text-white hover:bg-green-700" disabled={isSaving}>
-                    <Save className="h-4 w-4" />
-                    {isSaving ? t('Saving...') : t('Save Changes')}
+                <Button
+                    type="submit"
+                    form="seo-settings-form"
+                    size="sm"
+                    className="gap-2 bg-green-600 text-white hover:bg-green-700 max-[1300px]:px-2.5"
+                    disabled={isSaving}
+                >
+                    <Save className="h-4 w-4 max-[1300px]:mr-0" />
+                    <span className="max-[1300px]:hidden">{isSaving ? t('Saving...') : t('Save Changes')}</span>
                 </Button>
             }
         >
             <Card>
-                <CardContent className='mt-6'>
+                <CardContent className="mt-6">
                     <form id="seo-settings-form" onSubmit={submitSeoSettings}>
                         {/* Two-column grid: 3/5 form | 2/5 preview */}
                         <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
-
                             {/* ── LEFT: form fields ── */}
                             <div className="space-y-5 lg:col-span-3">
-
                                 {/* Meta Keywords */}
                                 <div className="space-y-1.5">
                                     <Label htmlFor="metaKeywords">
@@ -189,7 +193,9 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
                                         </span>
                                     </div>
                                     <p className="text-muted-foreground text-xs">
-                                        {t('Write a compelling description that summarizes your page content and encourages clicks from search results.')}
+                                        {t(
+                                            'Write a compelling description that summarizes your page content and encourages clicks from search results.',
+                                        )}
                                     </p>
                                 </div>
 
@@ -199,7 +205,10 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
                                         {t('Meta Image')} <span className="text-red-500">*</span>
                                     </Label>
                                     <div className="border-input flex h-10 w-full items-center overflow-hidden rounded-md border bg-transparent text-sm">
-                                        <label htmlFor="metaImageUpload" className="flex flex-1 cursor-pointer items-center gap-2 px-3 py-2 select-none">
+                                        <label
+                                            htmlFor="metaImageUpload"
+                                            className="flex flex-1 cursor-pointer items-center gap-2 px-3 py-2 select-none"
+                                        >
                                             <Upload className="text-muted-foreground h-4 w-4 shrink-0" />
                                             <span className="text-muted-foreground">{hasImage ? t('Change Image') : t('Upload Image')}</span>
                                         </label>
@@ -218,14 +227,15 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
                                             </>
                                         )}
                                     </div>
-                                    <p className="text-muted-foreground text-xs">{t('Recommended size: 1200x630px for optimal social media sharing.')}</p>
+                                    <p className="text-muted-foreground text-xs">
+                                        {t('Recommended size: 1200x630px for optimal social media sharing.')}
+                                    </p>
                                 </div>
                             </div>
 
                             {/* ── RIGHT: SEO Preview panel ── */}
                             <div className="lg:col-span-2">
                                 <div className="h-full space-y-3 rounded-xl border p-4">
-
                                     {/* Panel header */}
                                     <div className="flex items-center gap-2 text-sm font-semibold">
                                         <Search className="text-muted-foreground h-4 w-4" />
@@ -233,8 +243,7 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
                                     </div>
 
                                     {/* Social Media Preview card */}
-                                    <div className="rounded-lg border overflow-hidden">
-
+                                    <div className="overflow-hidden rounded-lg border">
                                         {/* Card title */}
                                         <div className="px-3 pt-3 pb-2">
                                             <p className="text-muted-foreground text-xs font-semibold">{t('Social Media Preview')}</p>
@@ -246,7 +255,7 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
                                             <div className="w-8 shrink-0 bg-gray-200 dark:bg-gray-600" />
 
                                             {/* Image area */}
-                                            <div className="flex flex-1 aspect-[1200/630] items-center justify-center overflow-hidden bg-white dark:bg-gray-800 shadow-sm">
+                                            <div className="flex aspect-[1200/630] flex-1 items-center justify-center overflow-hidden bg-white shadow-sm dark:bg-gray-800">
                                                 {previewImageSrc && !imageError ? (
                                                     <img
                                                         src={previewImageSrc}
@@ -294,7 +303,6 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
                                             </li>
                                         </ul>
                                     </div>
-
                                 </div>
                             </div>
                         </div>

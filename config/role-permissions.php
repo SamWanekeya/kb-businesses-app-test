@@ -16,7 +16,7 @@ return [
         'coupons',
         'appointments',
         'businesses',
-        'settings'
+        'settings',
     ],
 
     'organization' => [
@@ -67,5 +67,5 @@ return [
         'announcement_categories',
         // 'notification_templates',
         'reports',
-    ]
+    ],
 ];

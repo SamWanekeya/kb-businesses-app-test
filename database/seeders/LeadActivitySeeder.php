@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\LeadActivity;
 use App\Models\Lead;
+use App\Models\LeadActivity;
 use App\Models\User;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class LeadActivitySeeder extends Seeder
 {
@@ -17,6 +17,7 @@ class LeadActivitySeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -27,7 +28,7 @@ class LeadActivitySeeder extends Seeder
             'Lead is interested but needs budget approval.',
             'Scheduled demo for next Tuesday.',
             'Competitor comparison requested.',
-            'Decision maker identified. Moving forward.'
+            'Decision maker identified. Moving forward.',
         ];
 
         foreach ($organizationUsers as $organization) {
@@ -63,7 +64,7 @@ class LeadActivitySeeder extends Seeder
                         'old_values' => ['lead_status_id' => 1],
                         'new_values' => [
                             'lead_status_id' => $lead->lead_status_id,
-                            'lead_status_color' => $lead->lead_status->color
+                            'lead_status_color' => $lead->lead_status->color,
                         ],
                         'created_by' => $lead->created_by,
                         'created_at' => $faker->dateTimeBetween($lead->created_at, 'now'),

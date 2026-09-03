@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
-use Inertia\Inertia;
-use App\Models\Permission;
-use Illuminate\Support\Str;
 use App\Http\Requests\RoleRequest;
+use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class RoleController extends BaseController
 {
     /**
      * Constructor to apply middleware
      */
-
 
     /**
      * Display a listing of the resource.
@@ -36,7 +35,7 @@ class RoleController extends BaseController
         // Handle sorting
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'label', 'name', 'created_at'];
+        $allowedSorts = ['id', 'label', 'name', 'created_at'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -51,7 +50,7 @@ class RoleController extends BaseController
         $permissions = $this->getFilteredPermissions();
 
         return Inertia::render('roles/index', [
-            'roles'       => $roles,
+            'roles' => $roles,
             'permissions' => $permissions,
             'filters' => $request->all(['search', 'sort_field', 'sort_direction', 'per_page', 'page']),
         ]);
@@ -84,7 +83,7 @@ class RoleController extends BaseController
                     ->orWhereIn('name', [
                         'manage-email-settings',
                         'manage-system-settings',
-                        'manage-brand-settings'
+                        'manage-brand-settings',
                     ]);
             });
         }
@@ -122,7 +121,7 @@ class RoleController extends BaseController
                     ->orWhereIn('name', [
                         'manage-email-settings',
                         'manage-system-settings',
-                        'manage-brand-settings'
+                        'manage-brand-settings',
                     ]);
             });
         }
@@ -170,6 +169,7 @@ class RoleController extends BaseController
 
             return redirect()->route('roles.index')->with('success', __('Role created successfully with Permissions!'));
         }
+
         return redirect()->back()->with('error', __('Unable to create Role with permissions. Please try again!'));
     }
 
@@ -185,7 +185,7 @@ class RoleController extends BaseController
             $permissions = $this->getFilteredPermissions();
 
             return Inertia::render('roles/show', [
-                'role'        => $role,
+                'role' => $role,
                 'permissions' => $permissions,
             ]);
         } else {
@@ -205,7 +205,7 @@ class RoleController extends BaseController
             $permissions = $this->getFilteredPermissions();
 
             return Inertia::render('roles/edit', [
-                'role'        => $role,
+                'role' => $role,
                 'permissions' => $permissions,
             ]);
         } else {
@@ -239,6 +239,7 @@ class RoleController extends BaseController
 
             return redirect()->route('roles.index')->with('success', __('Role updated successfully with Permissions!'));
         }
+
         return redirect()->back()->with('error', __('Unable to update Role with permissions. Please try again!'));
     }
 
@@ -262,6 +263,7 @@ class RoleController extends BaseController
 
             return redirect()->route('roles.index')->with('success', __('Role deleted successfully!'));
         }
+
         return redirect()->back()->with('error', __('Unable to delete Role. Please try again!'));
     }
 }

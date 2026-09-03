@@ -61,7 +61,7 @@ class SendQuoteCreatedEmail
                 }
 
                 // Send email to assigned user if exists
-                if ($assignedUser && $assignedUser->email &&  (!$billingContact || $assignedUser->email !== $billingContact->email)) {
+                if ($assignedUser && $assignedUser->email && (!$billingContact || $assignedUser->email !== $billingContact->email)) {
                     $this->emailService->sendTemplateEmailWithLanguage(
                         templateName: 'Quote Created',
                         variables: $variables,

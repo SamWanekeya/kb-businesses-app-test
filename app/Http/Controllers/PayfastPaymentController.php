@@ -23,7 +23,7 @@ class PayfastPaymentController extends Controller
 
         try {
             $userID = User::where('type', 'super_admin')->first()?->id;
-            $settings = getPaymentMethodConfig('payfast',$userID);
+            $settings = getPaymentMethodConfig('payfast', $userID);
             $isLive = ($settings['mode'] ?? 'sandbox') === 'live';
 
             if (!$settings['merchant_id'] || !$settings['merchant_key']) {
@@ -31,7 +31,7 @@ class PayfastPaymentController extends Controller
             }
 
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
 
             if ($pricing['final_price'] < 5.00) {
                 return response()->json(['success' => false, 'error' => __('Minimum amount is R5.00')]);
@@ -46,7 +46,7 @@ class PayfastPaymentController extends Controller
                 'payment_method' => 'payfast',
                 'coupon_code' => $validated['coupon_code'] ?? null,
                 'payment_id' => $paymentId,
-                'status' => 'pending'
+                'status' => 'pending',
             ]);
 
             $data = [
@@ -79,7 +79,7 @@ class PayfastPaymentController extends Controller
             return response()->json([
                 'success' => true,
                 'inputs' => $htmlForm,
-                'action' => $endpoint
+                'action' => $endpoint,
             ]);
 
         } catch (\Exception $e) {
@@ -100,6 +100,7 @@ class PayfastPaymentController extends Controller
         if ($passPhrase !== null) {
             $getString .= '&passphrase=' . urlencode(trim($passPhrase));
         }
+
         return md5($getString);
     }
 
@@ -141,7 +142,7 @@ class PayfastPaymentController extends Controller
                     // Update order status
                     $planOrder->update([
                         'status' => 'approved',
-                        'processed_at' => now()
+                        'processed_at' => now(),
                     ]);
 
                     // Assign plan to user
@@ -165,7 +166,6 @@ class PayfastPaymentController extends Controller
             return response('ERROR', 500);
         }
     }
-
 
     private function verifyPayfastSignature($pfData, $passphrase = '')
     {
@@ -206,7 +206,7 @@ class PayfastPaymentController extends Controller
             // Always process the payment on success return
             $planOrder->update([
                 'status' => 'approved',
-                'processed_at' => now()
+                'processed_at' => now(),
             ]);
 
             // Assign plan to user

@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Plan;
 use App\Models\User;
-use App\Models\PaymentSetting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class CashfreeController extends Controller
 {
@@ -39,7 +38,7 @@ class CashfreeController extends Controller
             'secret_key' => $settings['payment_settings']['cashfree_secret_key'] ?? null,
             'mode' => $mode,
             'base_url' => $baseUrl,
-            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'INR'
+            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'INR',
         ];
     }
 
@@ -57,7 +56,7 @@ class CashfreeController extends Controller
         $headers = [
             'x-client-id' => $credentials['app_id'],
             'x-client-secret' => $credentials['secret_key'],
-            'x-api-version' => '2023-08-01'
+            'x-api-version' => '2023-08-01',
         ];
 
         if ($data) {
@@ -85,7 +84,7 @@ class CashfreeController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
 
             $credentials = $this->getCashfreeCredentials();
 
@@ -117,18 +116,18 @@ class CashfreeController extends Controller
                     'customer_id' => 'user_' . $user->id,
                     'customer_name' => $user->name ?: 'Customer',
                     'customer_email' => $user->email ?: 'customer@kakbima.dev',
-                    'customer_phone' => $phone
+                    'customer_phone' => $phone,
                 ],
                 'order_meta' => [
                     'return_url' => route('dashboard'),
-                    'notify_url' => route('cashfree.webhook')
+                    'notify_url' => route('cashfree.webhook'),
                 ],
                 'order_note' => 'Plan Subscription - ' . $plan->name,
                 'order_tags' => [
                     'plan_id' => (string)$plan->id,
                     'billing_cycle' => (string)($validated['billing_cycle'] ?? 'monthly'),
-                    'user_id' => (string)$user->id
-                ]
+                    'user_id' => (string)$user->id,
+                ],
             ];
 
             // Make API call
@@ -139,17 +138,17 @@ class CashfreeController extends Controller
                 'order_id' => $orderId,
                 'amount' => $amount,
                 'currency' => 'INR',
-                'mode' => $credentials['mode']
+                'mode' => $credentials['mode'],
             ]);
         } catch (\Exception $e) {
             Log::error('Cashfree payment session creation failed', [
                 'error' => $e->getMessage(),
                 'mode' => $credentials['mode'] ?? 'unknown',
-                'user_id' => auth()->id()
+                'user_id' => auth()->id(),
             ]);
 
             return response()->json([
-                'error' => 'Failed to create payment session: ' . $e->getMessage()
+                'error' => 'Failed to create payment session: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -161,7 +160,7 @@ class CashfreeController extends Controller
     {
         $validated = validatePaymentRequest($request, [
             'order_id' => 'required|string',
-            'cf_payment_id' => 'nullable|string'
+            'cf_payment_id' => 'nullable|string',
         ]);
 
         try {
@@ -208,8 +207,9 @@ class CashfreeController extends Controller
         } catch (\Exception $e) {
             Log::error('Cashfree payment verification failed', [
                 'error' => $e->getMessage(),
-                'order_id' => $validated['order_id'] ?? 'unknown'
+                'order_id' => $validated['order_id'] ?? 'unknown',
             ]);
+
             return response()->json(['error' => __('Payment verification failed: ') . $e->getMessage()], 500);
         }
     }

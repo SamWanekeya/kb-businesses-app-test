@@ -8,7 +8,6 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -45,7 +44,7 @@ class ProfileController extends Controller
             // Handle avatar upload
             if ($request->hasFile('avatar')) {
                 // Delete old avatar if exists
-                $relativePath=str_replace(url('/storage/media') . '/', '', $request?->user()?->avatar);
+                $relativePath = str_replace(url('/storage/media') . '/', '', $request?->user()?->avatar);
                 if ($request->user()->avatar && check_file($relativePath)) {
                     delete_file($relativePath);
                 }
@@ -77,7 +76,7 @@ class ProfileController extends Controller
         } catch (\Exception $e) {
             \Log::error('Profile update failed', [
                 'error' => $e->getMessage(),
-                'user_id' => $request->user()->id
+                'user_id' => $request->user()->id,
             ]);
 
             return back()->withErrors(['avatar' => 'Failed to update profile. Please try again.']);

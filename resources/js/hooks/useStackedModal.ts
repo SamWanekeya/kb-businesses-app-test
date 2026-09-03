@@ -1,31 +1,31 @@
-import { useState, useEffect } from 'react';
 import { useModalStack } from '@/contexts/ModalStackContext';
+import { useEffect, useState } from 'react';
 
 export function useStackedModal(baseId?: string, externalIsOpen?: boolean) {
-  const { registerModal, unregisterModal, getZIndex } = useModalStack();
-  const [modalId] = useState(() => baseId || `modal-${Date.now()}-${Math.random()}`);
-  const [internalIsOpen, setInternalIsOpen] = useState(false);
-  
-  const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
+    const { registerModal, unregisterModal, getZIndex } = useModalStack();
+    const [modalId] = useState(() => baseId || `modal-${Date.now()}-${Math.random()}`);
+    const [internalIsOpen, setInternalIsOpen] = useState(false);
 
-  useEffect(() => {
-    if (isOpen) {
-      registerModal(modalId);
-    } else {
-      unregisterModal(modalId);
-    }
-    return () => unregisterModal(modalId);
-  }, [isOpen, modalId, registerModal, unregisterModal]);
+    const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
 
-  const zIndex = getZIndex(modalId);
+    useEffect(() => {
+        if (isOpen) {
+            registerModal(modalId);
+        } else {
+            unregisterModal(modalId);
+        }
+        return () => unregisterModal(modalId);
+    }, [isOpen, modalId, registerModal, unregisterModal]);
 
-  return {
-    modalId,
-    isOpen,
-    setIsOpen: setInternalIsOpen,
-    zIndex,
-    open: () => setInternalIsOpen(true),
-    close: () => setInternalIsOpen(false),
-    toggle: () => setInternalIsOpen(prev => !prev)
-  };
+    const zIndex = getZIndex(modalId);
+
+    return {
+        modalId,
+        isOpen,
+        setIsOpen: setInternalIsOpen,
+        zIndex,
+        open: () => setInternalIsOpen(true),
+        close: () => setInternalIsOpen(false),
+        toggle: () => setInternalIsOpen((prev) => !prev),
+    };
 }

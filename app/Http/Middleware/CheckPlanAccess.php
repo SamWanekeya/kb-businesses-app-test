@@ -2,10 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
-use Illuminate\Http\Request;
 use App\Models\Plan;
 use App\Models\User;
+use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class CheckPlanAccess
@@ -23,8 +23,8 @@ class CheckPlanAccess
             return $next($request);
         }
 
-       if ($user->type !== 'organization') {
-               $organization = User::find($user->created_by);
+        if ($user->type !== 'organization') {
+            $organization = User::find($user->created_by);
             if ($organization && $organization->type === 'organization' && !$organization->hasActivePlan()) {
                 auth()->logout();
                 throw ValidationException::withMessages([
@@ -58,15 +58,16 @@ class CheckPlanAccess
                         'billing_cycle' => 'monthly',
                         'payment_method' => 'manual',
                         'status' => 'approved',
-                        'processed_at' => now()
+                        'processed_at' => now(),
                     ];
                     createPlanOrder($data);
+
                     return $next($request);
                 } else {
                     $user->update([
                         'plan_id' => null,
                         'is_trial' => 0,
-                        'trial_expiry_date' => null
+                        'trial_expiry_date' => null,
                     ]);
                 }
             } elseif ($user->isPlanExpired() || !$user->hasActivePlan()) {

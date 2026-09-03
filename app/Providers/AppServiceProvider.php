@@ -2,25 +2,24 @@
 
 namespace App\Providers;
 
-use App\Models\User;
-use App\Models\Plan;
-use App\Models\Lead;
 use App\Models\Account;
+use App\Models\Invoice;
+use App\Models\Lead;
 use App\Models\Opportunity;
+use App\Models\Plan;
+use App\Models\PurchaseOrder;
 use App\Models\Quote;
 use App\Models\SalesOrder;
-use App\Models\Invoice;
-use App\Models\PurchaseOrder;
-use App\Observers\UserObserver;
-use App\Observers\PlanObserver;
-use App\Observers\LeadObserver;
+use App\Models\User;
 use App\Observers\AccountObserver;
+use App\Observers\InvoiceObserver;
+use App\Observers\LeadObserver;
 use App\Observers\OpportunityObserver;
+use App\Observers\PlanObserver;
+use App\Observers\PurchaseOrderObserver;
 use App\Observers\QuoteObserver;
 use App\Observers\SalesOrderObserver;
-use App\Observers\InvoiceObserver;
-use App\Observers\PurchaseOrderObserver;
-use App\Providers\AssetServiceProvider;
+use App\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

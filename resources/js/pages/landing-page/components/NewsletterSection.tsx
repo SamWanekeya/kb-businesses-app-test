@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useForm, usePage } from '@inertiajs/react';
-import { Mail, CheckCircle } from 'lucide-react';
 import { toast } from '@/components/custom-toast';
+import { useForm, usePage } from '@inertiajs/react';
+import { CheckCircle, Mail } from 'lucide-react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface NewsletterSectionProps {
@@ -28,7 +28,7 @@ export default function NewsletterSection({ flash, settings, sectionData, brandC
     const { t } = useTranslation();
 
     const { data, setData, post, processing, errors, reset } = useForm({
-        email: ''
+        email: '',
     });
 
     const { props } = usePage();
@@ -41,12 +41,12 @@ export default function NewsletterSection({ flash, settings, sectionData, brandC
             onSuccess: (page) => {
                 setIsSubmitted(true);
                 reset();
-                const success=page.props.flash?.success;
-                const error=page.props.flash?.error;
-                if(success){
+                const success = page.props.flash?.success;
+                const error = page.props.flash?.error;
+                if (success) {
                     setNewsLetterSuccessMessage(success);
                 }
-                if(error){
+                if (error) {
                     setNewsLetterSuccessMessage(false);
                     toast.error(error);
                 }
@@ -54,82 +54,79 @@ export default function NewsletterSection({ flash, settings, sectionData, brandC
             },
             onError: () => {
                 toast.error(t('Please check your email and try again.'));
-            }
+            },
         });
     };
 
     return (
-        <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <div className="bg-white rounded-xl p-8 md:p-12 border border-gray-200">
-                    <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: `${brandColor}15` }}>
-                        <Mail className="w-8 h-8" style={{ color: brandColor }} />
+        <section className="bg-gray-50 py-12 sm:py-16 lg:py-20">
+            <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+                <div className="rounded-xl border border-gray-200 bg-white p-8 md:p-12">
+                    <div
+                        className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full"
+                        style={{ backgroundColor: `${brandColor}15` }}
+                    >
+                        <Mail className="h-8 w-8" style={{ color: brandColor }} />
                     </div>
 
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                        {sectionData?.title || t('Stay Updated with Kakbima')}
-                    </h2>
-                    <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed font-medium" id="newsletter-description">
+                    <h2 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">{sectionData?.title || t('Stay Updated with Kakbima')}</h2>
+                    <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed font-medium text-gray-600" id="newsletter-description">
                         {sectionData?.subtitle || t('Get the latest sales strategies, product updates, and growth insights.')}
                     </p>
 
                     {newsLetterSuccessMessage && (
-                        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6 max-w-md mx-auto">
+                        <div className="mx-auto mb-6 max-w-md rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-700">
                             <div className="flex items-center gap-2">
-                                <CheckCircle className="w-5 h-5" />
+                                <CheckCircle className="h-5 w-5" />
                                 <span>{newsLetterSuccessMessage}</span>
                             </div>
                         </div>
                     )}
 
-                    <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-                        <div className="flex flex-col sm:flex-row gap-4">
+                    <form onSubmit={handleSubmit} className="mx-auto max-w-md">
+                        <div className="flex flex-col gap-4 sm:flex-row">
                             <div className="flex-1">
                                 <input
                                     type="email"
                                     value={data.email}
                                     onChange={(e) => setData('email', e.target.value)}
                                     placeholder={t('Enter your email address')}
-                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:border-gray-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                    className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-gray-500 focus:ring-2 disabled:cursor-not-allowed disabled:bg-gray-100"
                                     style={{ '--tw-ring-color': brandColor } as React.CSSProperties}
                                     required
                                     disabled={processing}
                                     aria-label={t('Email address for newsletter subscription')}
                                     aria-describedby="newsletter-description"
                                 />
-                                {errors.email && (
-                                    <p className="text-red-600 text-sm mt-1">{errors.email}</p>
-                                )}
+                                {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
                             </div>
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="text-white px-8 py-3 rounded-lg transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-w-[120px] cursor-pointer"
+                                className="flex min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-lg px-8 py-3 font-semibold text-white transition-colors disabled:cursor-not-allowed disabled:opacity-50"
                                 style={{ backgroundColor: brandColor }}
                                 aria-label={processing ? t('Subscribing to newsletter') : t('Subscribe to newsletter')}
                             >
-                                {processing && (
-                                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                )}
+                                {processing && <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>}
                                 {processing ? t('Subscribing...') : t('Subscribe')}
                             </button>
                         </div>
                     </form>
 
-                    <p className="text-gray-500 text-sm mt-4">
+                    <p className="mt-4 text-sm text-gray-500">
                         {sectionData?.privacy_text || t('We value your privacy — no spam, unsubscribe anytime.')}
                     </p>
 
                     {/* Benefits */}
                     {sectionData?.benefits && sectionData.benefits.length > 0 && (
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-8 sm:mt-12">
+                        <div className="mt-8 grid grid-cols-1 gap-4 sm:mt-12 sm:grid-cols-3 sm:gap-6">
                             {sectionData.benefits.map((benefit, index) => (
                                 <div key={index} className="text-center">
-                                    <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                                        <span className="text-gray-700 text-xl">{benefit.icon}</span>
+                                    <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
+                                        <span className="text-xl text-gray-700">{benefit.icon}</span>
                                     </div>
-                                    <h3 className="text-gray-900 font-semibold mb-2">{benefit.title}</h3>
-                                    <p className="text-gray-600 text-sm">{benefit.description}</p>
+                                    <h3 className="mb-2 font-semibold text-gray-900">{benefit.title}</h3>
+                                    <p className="text-sm text-gray-600">{benefit.description}</p>
                                 </div>
                             ))}
                         </div>

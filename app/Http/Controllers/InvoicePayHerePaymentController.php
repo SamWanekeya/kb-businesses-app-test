@@ -35,6 +35,7 @@ class InvoicePayHerePaymentController extends Controller
 
             if (!isset($settings['payment_settings']['payhere_merchant_id'])) {
                 \Log::error('PayHere payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+
                 return response()->json(['error' => __('PayHere not configured')], 400);
             }
 
@@ -45,7 +46,7 @@ class InvoicePayHerePaymentController extends Controller
                 'return_url' => route('invoice.payhere.success', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
-                    'payment_type' => $validated['payment_type']
+                    'payment_type' => $validated['payment_type'],
                 ]),
                 'cancel_url' => route('invoices.public', $invoice->id),
                 'notify_url' => route('invoice.payhere.callback'),
@@ -82,15 +83,16 @@ class InvoicePayHerePaymentController extends Controller
                 'success' => true,
                 'payment_url' => $baseUrl . '/pay/checkout',
                 'payment_data' => $paymentData,
-                'order_id' => $orderId
+                'order_id' => $orderId,
             ]);
 
         } catch (\Exception $e) {
             \Log::error('PayHere payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
     }
@@ -118,17 +120,19 @@ class InvoicePayHerePaymentController extends Controller
                     \Log::info('PayHere invoice payment successful', [
                         'invoice_id' => $invoice->id,
                         'amount' => $amount,
-                        'payment_type' => $paymentType
+                        'payment_type' => $paymentType,
                     ]);
 
                     return redirect()->route('invoices.public', $invoice->id)->with('success', __('Payment successful'));
                 }
             }
+
             return redirect()->route('invoices.public', $invoiceId)->with('error', __('Payment verification failed'));
         } catch (\Exception $e) {
             \Log::error('PayHere success callback error', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return redirect()->route('invoices.public', $request->input('invoice_id'))->with('error', __('Payment processing failed'));
         }
     }
@@ -159,7 +163,7 @@ class InvoicePayHerePaymentController extends Controller
 
                         \Log::info('PayHere invoice payment callback successful', [
                             'invoice_id' => $invoice->id,
-                            'order_id' => $orderId
+                            'order_id' => $orderId,
                         ]);
                     }
                 }
@@ -169,8 +173,9 @@ class InvoicePayHerePaymentController extends Controller
 
         } catch (\Exception $e) {
             \Log::error('PayHere callback error', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return response()->json(['error' => __('Callback processing failed')], 500);
         }
     }

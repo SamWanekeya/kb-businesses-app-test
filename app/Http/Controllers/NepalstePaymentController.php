@@ -82,7 +82,7 @@ class NepalstePaymentController extends Controller
                 return response()->json([
                     'success' => true,
                     'payment_url' => $response['payment_url'],
-                    'order_id' => $orderId
+                    'order_id' => $orderId,
                 ]);
             }
 
@@ -90,6 +90,7 @@ class NepalstePaymentController extends Controller
 
         } catch (\Exception $e) {
             \Log::error('Nepalste payment creation error: ' . $e->getMessage());
+
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
     }
@@ -127,6 +128,7 @@ class NepalstePaymentController extends Controller
 
         } catch (\Exception $e) {
             \Log::error('Nepalste success error: ' . $e->getMessage());
+
             return redirect()->route('plans.index')->with('error', 'Payment processing failed');
         }
     }
@@ -167,6 +169,7 @@ class NepalstePaymentController extends Controller
 
         } catch (\Exception $e) {
             \Log::error('Nepalste callback error: ' . $e->getMessage());
+
             return response()->json(['error' => 'Callback processing failed'], 500);
         }
     }
@@ -183,7 +186,7 @@ class NepalstePaymentController extends Controller
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
                 'consumer_key' => $settings['nepalste_public_key'],
-                'consumer_secret' => $settings['nepalste_secret_key']
+                'consumer_secret' => $settings['nepalste_secret_key'],
             ]));
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
                 'Content-Type: application/json',
@@ -197,11 +200,12 @@ class NepalstePaymentController extends Controller
 
             \Log::info('Nepalste Access Token Response', [
                 'response' => $response,
-                'http_code' => $httpCode
+                'http_code' => $httpCode,
             ]);
 
             if ($httpCode === 200) {
                 $decoded = json_decode($response, true);
+
                 return $decoded['token'] ?? null;
             }
 
@@ -209,6 +213,7 @@ class NepalstePaymentController extends Controller
 
         } catch (\Exception $e) {
             \Log::error('Nepalste access token error: ' . $e->getMessage());
+
             return null;
         }
     }
@@ -235,7 +240,7 @@ class NepalstePaymentController extends Controller
                 'response' => $response,
                 'http_code' => $httpCode,
                 'url' => $url,
-                'data' => $data
+                'data' => $data,
             ]);
 
             if ($httpCode === 200) {
@@ -249,6 +254,7 @@ class NepalstePaymentController extends Controller
 
         } catch (\Exception $e) {
             \Log::error('Nepalste payment request error: ' . $e->getMessage());
+
             return false;
         }
     }

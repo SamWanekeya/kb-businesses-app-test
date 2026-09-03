@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DeliveryOrder;
-use App\Models\SalesOrder;
+use App\Exports\DeliveryOrderExport;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\DeliveryOrder;
 use App\Models\Product;
+use App\Models\SalesOrder;
 use App\Models\ShippingProviderType;
-use App\Exports\DeliveryOrderExport;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -25,7 +25,7 @@ class DeliveryOrderController extends Controller
             $query->where(function ($q) use ($request) {
                 $q->where('delivery_number', 'like', '%' . $request->search . '%')
                     ->orWhere('name', 'like', '%' . $request->search . '%')
-                    ->orWhereHas('account', fn($q) => $q->where('name', 'like', '%' . $request->search . '%'));
+                    ->orWhereHas('account', fn ($q) => $q->where('name', 'like', '%' . $request->search . '%'));
             });
         }
 
@@ -93,7 +93,7 @@ class DeliveryOrderController extends Controller
             'salesOrders' => $salesOrders,
             'products' => $products,
             'shippingProviderTypes' => $shippingProviderTypes,
-            'users' => $users
+            'users' => $users,
         ]);
     }
 
@@ -164,6 +164,7 @@ class DeliveryOrderController extends Controller
 
         if ($emailError) {
             $message = __('Delivery order created successfully, but ') . __('Email send failed: ') . $emailError;
+
             return redirect()->back()->with('warning', $message);
         }
 
@@ -181,7 +182,7 @@ class DeliveryOrderController extends Controller
                 'shippingProviderType',
                 'creator',
                 'assignedUser',
-                'products'
+                'products',
             ])
             ->first();
 
@@ -203,12 +204,12 @@ class DeliveryOrderController extends Controller
             'shippingProviderType',
             'creator',
             'assignedUser',
-            'products'
+            'products',
         ])
             ->where('created_by', createdBy())
             ->where('id', $id)
             ->first();
-            
+
         if ($deliveryOrder) {
             $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
             $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
@@ -224,12 +225,13 @@ class DeliveryOrderController extends Controller
                 'salesOrders' => $salesOrders,
                 'products' => $products,
                 'shippingProviderTypes' => $shippingProviderTypes,
-                'users' => $users
+                'users' => $users,
             ]);
         } else {
             return redirect()->route('delivery-orders.index')->with('error', __('Delivery order not found.'));
         }
     }
+
     public function update(Request $request, $deliveryOrderId)
     {
         $deliveryOrder = DeliveryOrder::where('id', $deliveryOrderId)
@@ -324,7 +326,7 @@ class DeliveryOrderController extends Controller
         }
 
         $validated = $request->validate([
-            'status' => 'required|in:pending,in_transit,delivered,cancelled'
+            'status' => 'required|in:pending,in_transit,delivered,cancelled',
         ]);
 
         $deliveryOrder->update(['status' => $validated['status']]);
@@ -343,7 +345,7 @@ class DeliveryOrderController extends Controller
         }
 
         $validated = $request->validate([
-            'assigned_to' => 'required|exists:users,id'
+            'assigned_to' => 'required|exists:users,id',
         ]);
 
         $deliveryOrder->update(['assigned_to' => $validated['assigned_to']]);
@@ -358,6 +360,7 @@ class DeliveryOrderController extends Controller
         }
 
         $name = 'delivery_order_' . date('Y-m-d i:h:s');
+
         return Excel::download(new DeliveryOrderExport(), $name . '.xlsx');
     }
 
@@ -372,18 +375,18 @@ class DeliveryOrderController extends Controller
         }
 
         return response()->json([
-            'account_id'               => $salesOrder->account_id,
-            'contact_id'               => $salesOrder->billing_contact_id ?? $salesOrder->contact_id,
+            'account_id' => $salesOrder->account_id,
+            'contact_id' => $salesOrder->billing_contact_id ?? $salesOrder->contact_id,
             'shipping_provider_type_id' => $salesOrder->shipping_provider_type_id,
-            'delivery_address'         => $salesOrder->shipping_address,
-            'delivery_city'            => $salesOrder->shipping_city,
-            'delivery_state'           => $salesOrder->shipping_state,
-            'delivery_postal_code'     => $salesOrder->shipping_postal_code,
-            'delivery_country'         => $salesOrder->shipping_country,
-            'products'                 => $salesOrder->products->map(function ($product) {
+            'delivery_address' => $salesOrder->shipping_address,
+            'delivery_city' => $salesOrder->shipping_city,
+            'delivery_state' => $salesOrder->shipping_state,
+            'delivery_postal_code' => $salesOrder->shipping_postal_code,
+            'delivery_country' => $salesOrder->shipping_country,
+            'products' => $salesOrder->products->map(function ($product) {
                 return [
-                    'product_id'  => $product->id,
-                    'quantity'    => $product->pivot->quantity ?? 1,
+                    'product_id' => $product->id,
+                    'quantity' => $product->pivot->quantity ?? 1,
                     'unit_weight' => 0,
                 ];
             }),

@@ -1,25 +1,22 @@
-import { useState, useEffect } from 'react';
-import { PageTemplate } from '@/components/page-template';
-import { usePage, router, Link } from '@inertiajs/react';
-import { Plus, Eye, Edit, Trash2, Download, FileDown } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
-import { CrudTable } from '@/components/CrudTable';
 import { CrudDeleteModal } from '@/components/CrudDeleteModal';
 import { CrudFormModal } from '@/components/CrudFormModal';
+import { CrudTable } from '@/components/CrudTable';
 import { toast } from '@/components/custom-toast';
-import { useTranslation } from 'react-i18next';
-import { Pagination } from '@/components/ui/pagination';
-import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
+import { PageTemplate } from '@/components/page-template';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
+import { Pagination } from '@/components/ui/pagination';
+import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Textarea } from '@/components/ui/textarea';
-import { CheckCircle, XCircle } from 'lucide-react';
-import { Calendar } from 'lucide-react';
+import { useInitials } from '@/hooks/use-initials';
+import { hasPermission } from '@/utils/authorization';
 import { capitalize, getDisplayUrl } from '@/utils/helper';
+import { Link, router, usePage } from '@inertiajs/react';
+import { Calendar, CheckCircle, FileDown, Plus, XCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function Invoices() {
     const { t } = useTranslation();
@@ -32,7 +29,24 @@ export default function Invoices() {
         else if (flash?.warning) toast.warning ? toast.warning(t(flash.warning)) : toast.error(t(flash.warning));
     }, [flash]);
 
-    const { auth, invoices, accounts, allAccounts, contacts, salesOrders, quotes, opportunities, products, availableSalesOrders, users = [], allUsers = [], filters: pageFilters = {}, publicUrlBase, encryptedInvoiceIds, pendingPayments = [] } = usePage().props as any;
+    const {
+        auth,
+        invoices,
+        accounts,
+        allAccounts,
+        contacts,
+        salesOrders,
+        quotes,
+        opportunities,
+        products,
+        availableSalesOrders,
+        users = [],
+        allUsers = [],
+        filters: pageFilters = {},
+        publicUrlBase,
+        encryptedInvoiceIds,
+        pendingPayments = [],
+    } = usePage().props as any;
     const permissions = auth?.permissions || [];
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
@@ -48,8 +62,6 @@ export default function Invoices() {
     const [showReminderHistoryModal, setShowReminderHistoryModal] = useState(false);
     const [reminderHistory, setReminderHistory] = useState<any[]>([]);
 
-
-
     const hasActiveFilters = () => {
         return searchTerm !== '' || selectedStatus !== 'all' || selectedAccount !== 'all' || selectedAssignee !== 'all';
     };
@@ -64,30 +76,38 @@ export default function Invoices() {
     };
 
     const applyFilters = () => {
-        router.get(route('invoices.index'), {
-            page: 1,
-            search: searchTerm || undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
-            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-            sort_field: pageFilters.sort_field || undefined,
-            sort_direction: pageFilters.sort_direction || undefined,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('invoices.index'),
+            {
+                page: 1,
+                search: searchTerm || undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                sort_field: pageFilters.sort_field || undefined,
+                sort_direction: pageFilters.sort_direction || undefined,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleSort = (field: string) => {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
-        router.get(route('invoices.index'), {
-            page: 1,
-            search: searchTerm || undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
-            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-            sort_field: field,
-            sort_direction: direction,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('invoices.index'),
+            {
+                page: 1,
+                search: searchTerm || undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                sort_field: field,
+                sort_direction: direction,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleAction = (action: string, item: any) => {
@@ -138,7 +158,7 @@ export default function Invoices() {
                 } else {
                     toast.error(`Failed to delete invoice: ${Object.values(errors).join(', ')}`);
                 }
-            }
+            },
         });
     };
 
@@ -149,7 +169,7 @@ export default function Invoices() {
             },
             onError: (errors) => {
                 toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
-            }
+            },
         });
     };
 
@@ -157,53 +177,64 @@ export default function Invoices() {
         const newStatus = invoice.status === 'draft' ? 'sent' : 'draft';
         toast.loading(`${newStatus === 'sent' ? t('Sending') : t('Setting to draft')} invoice...`);
 
-        router.put(route('invoices.toggle-status', invoice.id), {}, {
-            onSuccess: (page) => {
-                toast.dismiss();
-                if (page.props.flash.success) {
-                    toast.success(t(page.props.flash.success));
-                } else if (page.props.flash.error) {
-                    toast.error(t(page.props.flash.error));
-                }
+        router.put(
+            route('invoices.toggle-status', invoice.id),
+            {},
+            {
+                onSuccess: (page) => {
+                    toast.dismiss();
+                    if (page.props.flash.success) {
+                        toast.success(t(page.props.flash.success));
+                    } else if (page.props.flash.error) {
+                        toast.error(t(page.props.flash.error));
+                    }
+                },
+                onError: (errors) => {
+                    toast.dismiss();
+                    if (typeof errors === 'string') {
+                        toast.error(errors);
+                    } else {
+                        toast.error(`Failed to update status: ${Object.values(errors).join(', ')}`);
+                    }
+                },
             },
-            onError: (errors) => {
-                toast.dismiss();
-                if (typeof errors === 'string') {
-                    toast.error(errors);
-                } else {
-                    toast.error(`Failed to update status: ${Object.values(errors).join(', ')}`);
-                }
-            }
-        });
+        );
     };
 
     const handleCopyInvoiceLink = (invoice: any) => {
         const baseUrl = publicUrlBase?.endsWith('/') ? publicUrlBase.slice(0, -1) : publicUrlBase;
         const encryptedId = encryptedInvoiceIds[invoice.id];
         const invoiceUrl = `${baseUrl}/invoices/public/${encryptedId}`;
-        navigator.clipboard.writeText(invoiceUrl).then(() => {
-            toast.success(t('Invoice link copied to clipboard!'));
-        }).catch(() => {
-            toast.error(t('Failed to copy invoice link'));
-        });
+        navigator.clipboard
+            .writeText(invoiceUrl)
+            .then(() => {
+                toast.success(t('Invoice link copied to clipboard!'));
+            })
+            .catch(() => {
+                toast.error(t('Failed to copy invoice link'));
+            });
     };
 
     const handleSendReminder = (invoice: any, type: string) => {
         toast.loading(t('Sending payment reminder...'));
 
-        router.post(route('invoices.send-reminder', invoice.id), { type }, {
-            onSuccess: () => {
-                toast.dismiss();
+        router.post(
+            route('invoices.send-reminder', invoice.id),
+            { type },
+            {
+                onSuccess: () => {
+                    toast.dismiss();
+                },
+                onError: (errors) => {
+                    toast.dismiss();
+                    if (typeof errors === 'string') {
+                        toast.error(errors);
+                    } else {
+                        toast.error(`Failed to send reminder: ${Object.values(errors).join(', ')}`);
+                    }
+                },
             },
-            onError: (errors) => {
-                toast.dismiss();
-                if (typeof errors === 'string') {
-                    toast.error(errors);
-                } else {
-                    toast.error(`Failed to send reminder: ${Object.values(errors).join(', ')}`);
-                }
-            }
-        });
+        );
     };
 
     const handleReminderHistory = async (invoice: any) => {
@@ -263,7 +294,7 @@ export default function Invoices() {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
                 },
-                body: JSON.stringify({ notes: rejectNotes })
+                body: JSON.stringify({ notes: rejectNotes }),
             });
             const data = await response.json();
             toast.dismiss();
@@ -289,13 +320,12 @@ export default function Invoices() {
         }
     };
 
-
-
-
-
     const pageInitialState = useState(true);
     useEffect(() => {
-        if (pageInitialState[0]) { pageInitialState[1](false); return; }
+        if (pageInitialState[0]) {
+            pageInitialState[1](false);
+            return;
+        }
         applyFilters();
     }, [searchTerm, selectedStatus, selectedAccount, selectedAssignee]);
 
@@ -313,25 +343,30 @@ export default function Invoices() {
     if (hasPermission(permissions, 'export-invoices')) {
         pageActions.push({
             label: t('Export'),
-            icon: <FileDown className="h-4 w-4 mr-2" />,
+            icon: <FileDown className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
             variant: 'outline',
-            onClick: () => window.location.href = route('invoice.export')
+            onClick: () => (window.location.href = route('invoice.export')),
+            className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
+            labelClassName: 'hidden min-[400px]:inline',
+            tooltip: t('Export'),
+            tooltipClassName: 'min-[400px]:hidden',
         });
     }
 
     if (hasPermission(permissions, 'create-invoices')) {
         pageActions.push({
             label: t('Add Invoice'),
-            icon: <Plus className="h-4 w-4 mr-2" />,
+            icon: <Plus className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
             variant: 'default',
-            onClick: () => handleAddNew()
+            onClick: () => handleAddNew(),
+            className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
+            labelClassName: 'hidden min-[400px]:inline',
+            tooltip: t('Add Invoice'),
+            tooltipClassName: 'min-[400px]:hidden',
         });
     }
 
-    const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Invoices') }
-    ];
+    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Invoices') }];
 
     const columns = [
         {
@@ -340,37 +375,52 @@ export default function Invoices() {
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: string, item: any) => (
-                <Link href={route('invoices.show', item.id)} className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 hover:border-blue-400 transition-colors duration-200 border border-blue-200 cursor-pointer whitespace-nowrap" style={{ color: '#1d4ed8' }} onMouseEnter={e => (e.currentTarget.style.color = '#1d4ed8')} onMouseLeave={e => (e.currentTarget.style.color = '#1d4ed8')}>{value}</Link>
-            )
+                <Link
+                    href={route('invoices.show', item.id)}
+                    className="inline-flex cursor-pointer items-center rounded-md border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium whitespace-nowrap text-blue-700 transition-colors duration-200 hover:border-blue-400 hover:bg-blue-100"
+                    style={{ color: '#1d4ed8' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = '#1d4ed8')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#1d4ed8')}
+                >
+                    {value}
+                </Link>
+            ),
         },
         {
             key: 'name',
             label: t('Name'),
             sortable: true,
-            render: (value: string) => <span className="whitespace-nowrap font-medium">{value || '-'}</span>
+            render: (value: string) => <span className="font-medium whitespace-nowrap">{value || '-'}</span>,
         },
         {
             key: 'assigned_user',
             label: t('Assigned To'),
             className: 'whitespace-nowrap',
-            render: (value: any) => value ? (
-                <div className="flex items-center gap-2">
-                    <Avatar className="h-8 w-8 flex-shrink-0">
-                        <AvatarImage src={value.avatar} alt={value.name} />
-                        <AvatarFallback className="text-xs">{getInitials(value.name)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                        <div className="font-medium whitespace-nowrap">{value.name}</div>
-                        <div className="text-sm text-muted-foreground whitespace-nowrap">{value.email}</div>
+            render: (value: any) =>
+                value ? (
+                    <div className="flex items-center gap-2">
+                        <Avatar className="h-8 w-8 flex-shrink-0">
+                            <AvatarImage src={value.avatar} alt={value.name} />
+                            <AvatarFallback className="text-xs">{getInitials(value.name)}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <div className="font-medium whitespace-nowrap">{value.name}</div>
+                            <div className="text-muted-foreground text-sm whitespace-nowrap">{value.email}</div>
+                        </div>
                     </div>
-                </div>
-            ) : <span className="whitespace-nowrap">{t('Unassigned')}</span>
+                ) : (
+                    <span className="whitespace-nowrap">{t('Unassigned')}</span>
+                ),
         },
         {
             key: 'total_amount',
             label: t('Total Amount'),
             className: 'whitespace-nowrap',
-            render: (value: any) => <span className="whitespace-nowrap font-mono">{window.appSettings?.formatCurrency(Number(value || 0)) || `$${Number(value || 0).toFixed(2)}`}</span>
+            render: (value: any) => (
+                <span className="font-mono whitespace-nowrap">
+                    {window.appSettings?.formatCurrency(Number(value || 0)) || `$${Number(value || 0).toFixed(2)}`}
+                </span>
+            ),
         },
         {
             key: 'status',
@@ -384,26 +434,36 @@ export default function Invoices() {
                     paid: 'bg-green-50 text-green-700 ring-green-600/20',
                     partially_paid: 'bg-orange-50 text-orange-700 ring-orange-600/20',
                     overdue: 'bg-red-50 text-red-700 ring-red-600/20',
-                    cancelled: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20'
+                    cancelled: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20',
                 };
                 const getStatusLabel = (status: string) => {
                     switch (status) {
-                        case 'draft': return t('Draft');
-                        case 'sent': return t('Sent');
-                        case 'pending': return t('Pending');
-                        case 'paid': return t('Paid');
-                        case 'partially_paid': return t('Partially Paid');
-                        case 'overdue': return t('Overdue');
-                        case 'cancelled': return t('Cancelled');
-                        default: return t('Draft');
+                        case 'draft':
+                            return t('Draft');
+                        case 'sent':
+                            return t('Sent');
+                        case 'pending':
+                            return t('Pending');
+                        case 'paid':
+                            return t('Paid');
+                        case 'partially_paid':
+                            return t('Partially Paid');
+                        case 'overdue':
+                            return t('Overdue');
+                        case 'cancelled':
+                            return t('Cancelled');
+                        default:
+                            return t('Draft');
                     }
                 };
                 return (
-                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset whitespace-nowrap ${statusColors[value as keyof typeof statusColors] || statusColors.draft}`}>
+                    <span
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${statusColors[value as keyof typeof statusColors] || statusColors.draft}`}
+                    >
                         {getStatusLabel(value)}
                     </span>
                 );
-            }
+            },
         },
         // {
         //     key: 'due_date',
@@ -417,19 +477,17 @@ export default function Invoices() {
         //     )
         // }
         {
-    key: 'due_date',
-    label: t('Due Date'),
-    sortable: true,
-    className: 'whitespace-nowrap',
-    render: (value: string, item: any) => (
-        <span className={`flex items-center gap-2 whitespace-nowrap ${
-            item.status === 'overdue' ? 'text-red-600' : 'text-gray-500'
-        }`}>
-            <Calendar className="h-4 w-4 shrink-0" />
-            <span>{window.appSettings?.formatDateTime(value, false) || '-'}</span>
-        </span>
-    )
-}
+            key: 'due_date',
+            label: t('Due Date'),
+            sortable: true,
+            className: 'whitespace-nowrap',
+            render: (value: string, item: any) => (
+                <span className={`flex items-center gap-2 whitespace-nowrap ${item.status === 'overdue' ? 'text-red-600' : 'text-gray-500'}`}>
+                    <Calendar className="h-4 w-4 shrink-0" />
+                    <span>{window.appSettings?.formatDateTime(value, false) || '-'}</span>
+                </span>
+            ),
+        },
     ];
 
     const actions = [
@@ -439,7 +497,7 @@ export default function Invoices() {
             action: 'send-reminder',
             className: 'text-purple-500',
             requiredPermission: 'send-reminder-invoices',
-            condition: (item: any) => ['pending', 'overdue', 'partially_paid'].includes(item.status)
+            condition: (item: any) => ['pending', 'overdue', 'partially_paid'].includes(item.status),
         },
         // {
         //     label: t('Reminder History'),
@@ -453,36 +511,36 @@ export default function Invoices() {
             icon: 'Copy',
             action: 'copy-link',
             className: 'text-purple-500',
-            requiredPermission: 'view-invoices'
+            requiredPermission: 'view-invoices',
         },
         {
             label: t('Change Status'),
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
-            requiredPermission: 'toggle-status-invoices'
+            requiredPermission: 'toggle-status-invoices',
         },
         {
             label: t('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
-            requiredPermission: 'view-invoices'
+            requiredPermission: 'view-invoices',
         },
         {
             label: t('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
-            requiredPermission: 'edit-invoices'
+            requiredPermission: 'edit-invoices',
         },
         {
             label: t('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
-            requiredPermission: 'delete-invoices'
-        }
+            requiredPermission: 'delete-invoices',
+        },
     ];
 
     const statusOptions = [
@@ -493,19 +551,19 @@ export default function Invoices() {
         { value: 'paid', label: t('Paid') },
         { value: 'partially_paid', label: t('Partially Paid') },
         { value: 'overdue', label: t('Overdue') },
-        { value: 'cancelled', label: t('Cancelled') }
+        { value: 'cancelled', label: t('Cancelled') },
     ];
 
     return (
         <PageTemplate
-            title={t("Invoices")}
-            description={t("Manage your invoices.")}
+            title={t('Invoices')}
+            description={t('Manage your invoices.')}
             url="/invoices"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
             noPadding
         >
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
+            <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -517,7 +575,7 @@ export default function Invoices() {
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
-                            options: statusOptions
+                            options: statusOptions,
                         },
                         {
                             name: 'account_id',
@@ -528,8 +586,8 @@ export default function Invoices() {
                             onChange: setSelectedAccount,
                             options: [
                                 { value: 'all', label: t('All Accounts') },
-                                ...allAccounts?.map((acc: any) => ({ value: acc.id.toString(), label: acc.name })) || []
-                            ]
+                                ...(allAccounts?.map((acc: any) => ({ value: acc.id.toString(), label: acc.name })) || []),
+                            ],
                         },
                         {
                             name: 'assigned_to',
@@ -541,9 +599,9 @@ export default function Invoices() {
                             options: [
                                 { value: 'all', label: t('All Users') },
                                 { value: 'unassigned', label: t('Unassigned') },
-                                ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name }))
-                            ]
-                        }
+                                ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name })),
+                            ],
+                        },
                     ]}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
@@ -553,29 +611,38 @@ export default function Invoices() {
 
             {/* Pending Invoice Payments Section */}
             {pendingPayments.length > 0 && (
-                <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 p-4">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('Pending Invoice Payments')}</h3>
+                <div className="mb-4 rounded-lg bg-white p-4 shadow dark:bg-gray-900">
+                    <h3 className="mb-4 text-lg font-semibold text-gray-800">{t('Pending Invoice Payments')}</h3>
                     <div className="space-y-3">
                         {pendingPayments.map((payment: any) => (
-                            <div key={payment.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div key={payment.id} className="flex items-center justify-between rounded-lg border p-3">
                                 <div className="flex-1">
                                     <div className="flex items-center space-x-4">
                                         <div>
-                                            <p className="font-medium text-gray-900">
-                                                Invoice #{payment.invoice.invoice_number}
-                                            </p>
+                                            <p className="font-medium text-gray-900">Invoice #{payment.invoice.invoice_number}</p>
                                             <p className="text-sm text-gray-500">
                                                 {payment.payment_method === 'bank' ? t('Bank Transfer') : payment.payment_method} -
-                                                <span className="font-mono">{window.appSettings?.formatCurrency(Number(payment.amount)) || `$${Number(payment.amount).toFixed(2)}`}</span> ({payment.payment_type})
+                                                <span className="font-mono">
+                                                    {window.appSettings?.formatCurrency(Number(payment.amount)) ||
+                                                        `$${Number(payment.amount).toFixed(2)}`}
+                                                </span>{' '}
+                                                ({payment.payment_type})
                                             </p>
                                             {payment.receipt_path && (
-                                                <a href={getDisplayUrl(payment.receipt_path)} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:underline">
+                                                <a
+                                                    href={getDisplayUrl(payment.receipt_path)}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-xs text-blue-600 hover:underline"
+                                                >
                                                     {t('View Receipt')}
                                                 </a>
                                             )}
                                         </div>
                                         <div className="text-sm text-gray-500">
-                                            {t('Requested')}: {window.appSettings?.formatDateTime(payment.created_at, false) || new Date(payment.created_at).toLocaleDateString()}
+                                            {t('Requested')}:{' '}
+                                            {window.appSettings?.formatDateTime(payment.created_at, false) ||
+                                                new Date(payment.created_at).toLocaleDateString()}
                                         </div>
                                     </div>
                                 </div>
@@ -583,19 +650,19 @@ export default function Invoices() {
                                     <Button
                                         size="sm"
                                         variant="outline"
-                                        className="text-green-600 border-green-600 hover:bg-green-50"
+                                        className="border-green-600 text-green-600 hover:bg-green-50"
                                         onClick={() => handleApprovePayment(payment)}
                                     >
-                                        <CheckCircle className="h-4 w-4 mr-1" />
+                                        <CheckCircle className="mr-1 h-4 w-4" />
                                         {t('Approve')}
                                     </Button>
                                     <Button
                                         size="sm"
                                         variant="outline"
-                                        className="text-red-600 border-red-600 hover:bg-red-50"
+                                        className="border-red-600 text-red-600 hover:bg-red-50"
                                         onClick={() => handleRejectPayment(payment)}
                                     >
-                                        <XCircle className="h-4 w-4 mr-1" />
+                                        <XCircle className="mr-1 h-4 w-4" />
                                         {t('Reject')}
                                     </Button>
                                 </div>
@@ -605,25 +672,25 @@ export default function Invoices() {
                 </div>
             )}
 
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+            <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                 <div className="overflow-x-auto">
-                <CrudTable
-                    columns={columns}
-                    actions={actions}
-                    data={invoices?.data || []}
-                    from={invoices?.from || 1}
-                    onAction={handleAction}
-                    sortField={pageFilters.sort_field}
-                    sortDirection={pageFilters.sort_direction}
-                    onSort={handleSort}
-                    permissions={permissions}
-                    entityPermissions={{
-                        view: 'view-invoices',
-                        create: 'create-invoices',
-                        edit: 'edit-invoices',
-                        delete: 'delete-invoices'
-                    }}
-                />
+                    <CrudTable
+                        columns={columns}
+                        actions={actions}
+                        data={invoices?.data || []}
+                        from={invoices?.from || 1}
+                        onAction={handleAction}
+                        sortField={pageFilters.sort_field}
+                        sortDirection={pageFilters.sort_direction}
+                        onSort={handleSort}
+                        permissions={permissions}
+                        entityPermissions={{
+                            view: 'view-invoices',
+                            create: 'create-invoices',
+                            edit: 'edit-invoices',
+                            delete: 'delete-invoices',
+                        }}
+                    />
                 </div>
 
                 <Pagination
@@ -631,24 +698,27 @@ export default function Invoices() {
                     to={invoices?.to || 0}
                     total={invoices?.total || 0}
                     links={invoices?.links}
-                    entityName={t("invoices")}
+                    entityName={t('invoices')}
                     onPageChange={(url) => router.get(url)}
-                    currentPerPage={pageFilters.per_page?.toString() || "10"}
+                    currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
-                        router.get(route('invoices.index'), {
-                            page: 1,
-                            search: searchTerm || undefined,
-                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                            account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
-                            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-                            sort_field: pageFilters.sort_field || undefined,
-                            sort_direction: pageFilters.sort_direction || undefined,
-                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
-                        }, { preserveState: true, preserveScroll: true });
+                        router.get(
+                            route('invoices.index'),
+                            {
+                                page: 1,
+                                search: searchTerm || undefined,
+                                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                                sort_field: pageFilters.sort_field || undefined,
+                                sort_direction: pageFilters.sort_direction || undefined,
+                                ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+                            },
+                            { preserveState: true, preserveScroll: true },
+                        );
                     }}
                 />
             </div>
-
 
             <CrudFormModal
                 isOpen={isStatusModalOpen}
@@ -668,15 +738,15 @@ export default function Invoices() {
                                 { value: 'paid', label: t('Paid') },
                                 { value: 'partially_paid', label: t('Partially Paid') },
                                 { value: 'overdue', label: t('Overdue') },
-                                { value: 'cancelled', label: t('Cancelled') }
-                            ]
-                        }
+                                { value: 'cancelled', label: t('Cancelled') },
+                            ],
+                        },
                     ],
-                    modalSize: 'sm'
+                    modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
                 title={t('Change Invoice Status')}
-                mode='edit'
+                mode="edit"
             />
 
             <CrudDeleteModal
@@ -695,7 +765,9 @@ export default function Invoices() {
                     </DialogHeader>
                     <div className="space-y-4">
                         <p className="text-sm text-gray-600">
-                            {t('Are you sure you want to reject this payment for Invoice #{{invoiceNumber}}?', { invoiceNumber: currentPayment?.invoice?.invoice_number })}
+                            {t('Are you sure you want to reject this payment for Invoice #{{invoiceNumber}}?', {
+                                invoiceNumber: currentPayment?.invoice?.invoice_number,
+                            })}
                         </p>
                         <div>
                             <Label htmlFor="reject-notes">{t('Rejection Notes (Optional)')}</Label>
@@ -721,35 +793,38 @@ export default function Invoices() {
 
             {/* Reminder History Modal */}
             <Dialog open={showReminderHistoryModal} onOpenChange={setShowReminderHistoryModal}>
-                <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
+                <DialogContent className="flex max-h-[80vh] max-w-2xl flex-col overflow-hidden">
                     <DialogHeader>
                         <DialogTitle>{t('Invoice Payment Reminder History')}</DialogTitle>
                     </DialogHeader>
-                    <div className="mt-4 overflow-y-auto flex-1">
+                    <div className="mt-4 flex-1 overflow-y-auto">
                         {reminderHistory.length === 0 ? (
-                            <p className="text-sm text-gray-500 text-center py-4">{t('No reminders sent yet')}</p>
+                            <p className="py-4 text-center text-sm text-gray-500">{t('No reminders sent yet')}</p>
                         ) : (
                             <div className="overflow-x-auto">
                                 <table className="min-w-full divide-y divide-gray-200">
-                                    <thead className="bg-gray-50 sticky top-0">
+                                    <thead className="sticky top-0 bg-gray-50">
                                         <tr>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">{t('Sent At')}</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">{t('Type')}</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">{t('Sent By')}</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">{t('Sent At')}</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">{t('Type')}</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">{t('Sent By')}</th>
                                         </tr>
                                     </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200">
+                                    <tbody className="divide-y divide-gray-200 bg-white">
                                         {reminderHistory.map((reminder: any, index: number) => (
                                             <tr key={index}>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                    {window.appSettings?.formatDateTime(reminder.created_at, false) || new Date(reminder.created_at).toLocaleString()}
+                                                <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
+                                                    {window.appSettings?.formatDateTime(reminder.created_at, false) ||
+                                                        new Date(reminder.created_at).toLocaleString()}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset bg-purple-50 text-purple-700 ring-purple-600/20">
+                                                    <span className="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-purple-600/20 ring-inset">
                                                         {capitalize(reminder.type)}
                                                     </span>
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{reminder.sent_by?.name || t('-')}</td>
+                                                <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
+                                                    {reminder.sent_by?.name || t('-')}
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -759,7 +834,6 @@ export default function Invoices() {
                     </div>
                 </DialogContent>
             </Dialog>
-
         </PageTemplate>
     );
 }

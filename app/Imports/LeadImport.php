@@ -2,19 +2,19 @@
 
 namespace App\Imports;
 
-use App\Models\Lead;
-use App\Models\User;
 use App\Events\LeadAssigned;
+use App\Models\Lead;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Events\AfterImport;
 
 class LeadImport implements ToModel, WithHeadingRow, WithEvents
 {
     private $addedCount = 0;
+
     private $skippedCount = 0;
+
     private $leads = [];
 
     public function model(array $row)
@@ -29,6 +29,7 @@ class LeadImport implements ToModel, WithHeadingRow, WithEvents
             $leadByEmail = Lead::where('email', $row['email'])->where('created_by', createdBy())->first();
             if ($leadByEmail) {
                 $this->skippedCount++;
+
                 return null;
             }
         }
@@ -81,22 +82,23 @@ class LeadImport implements ToModel, WithHeadingRow, WithEvents
 
         $this->addedCount++;
         array_push($this->leads, $leadData['email']);
+
         return new Lead($leadData);
     }
 
     public function registerEvents(): array
     {
         return [
-            AfterImport::class => function(AfterImport $event) {
+            AfterImport::class => function (AfterImport $event) {
                 // Fire LeadAssigned event for all imported leads
                 Lead::where('created_by', createdBy())
                 ->whereIn('email', $this->leads)
                 ->orderBy('id', 'desc')
                 ->take($this->addedCount)
                 ->get()
-                ->each(function($lead) {
-                        event(new LeadAssigned($lead));
-                    });
+                ->each(function ($lead) {
+                    event(new LeadAssigned($lead));
+                });
             },
         ];
     }

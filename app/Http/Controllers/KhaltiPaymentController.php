@@ -51,7 +51,7 @@ class KhaltiPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
             if (!isset($settings['payment_settings']['khalti_public_key'])) {
                 return response()->json(['error' => __('Khalti not configured')], 400);

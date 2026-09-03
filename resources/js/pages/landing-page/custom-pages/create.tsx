@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { router, usePage } from '@inertiajs/react';
+import { toast } from '@/components/custom-toast';
+import { PageTemplate } from '@/components/page-template';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
 import { Switch } from '@/components/ui/switch';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { ArrowLeft } from 'lucide-react';
-import { PageTemplate } from '@/components/page-template';
-import { toast } from '@/components/custom-toast';
-import { useTranslation } from 'react-i18next';
+import { Textarea } from '@/components/ui/textarea';
 import { Toaster } from '@/components/ui/toaster';
+import { router, usePage } from '@inertiajs/react';
+import { ArrowLeft } from 'lucide-react';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function CreateCustomPage() {
     const { t } = useTranslation();
@@ -23,7 +23,7 @@ export default function CreateCustomPage() {
         meta_title: '',
         meta_description: '',
         is_active: true,
-        sort_order: 0
+        sort_order: 0,
     };
 
     const [formData, setFormData] = useState(defaultData);
@@ -71,7 +71,7 @@ export default function CreateCustomPage() {
                 } else {
                     toast.error(t('Failed to create page'));
                 }
-            }
+            },
         });
     };
 
@@ -87,15 +87,15 @@ export default function CreateCustomPage() {
                 { title: t('Dashboard'), href: route('dashboard') },
                 { title: t('Landing Page'), href: route('landing-page') },
                 { title: t('Custom Pages'), href: route('landing-page.custom-pages.index') },
-                { title: t('Create') }
+                { title: t('Create') },
             ]}
             actions={[
                 {
                     label: t('Back'),
-                    icon: <ArrowLeft className="h-4 w-4 mr-2" />,
+                    icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.get(route('landing-page.custom-pages.index'))
-                }
+                    onClick: () => router.get(route('landing-page.custom-pages.index')),
+                },
             ]}
         >
             <Card>
@@ -121,9 +121,7 @@ export default function CreateCustomPage() {
                                 className={`w-full ${errors.title ? 'border-red-500' : ''}`}
                             />
                             {errors.title && <p className="text-xs text-red-500">{errors.title}</p>}
-                            <p className="text-xs text-muted-foreground">
-                                {t('The title will be used to automatically generate the URL slug')}
-                            </p>
+                            <p className="text-muted-foreground text-xs">{t('The title will be used to automatically generate the URL slug')}</p>
                         </div>
 
                         {/* Content */}
@@ -138,16 +136,16 @@ export default function CreateCustomPage() {
                                     placeholder={t('Write your page content here...')}
                                 />
                             </div>
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-muted-foreground text-xs">
                                 {t('Use the editor toolbar to format your content with headings, lists, links, and more')}
                             </p>
                         </div>
 
                         {/* SEO Section */}
-                        <div className="space-y-4 pt-4 border-t">
+                        <div className="space-y-4 border-t pt-4">
                             <h3 className="text-sm font-semibold">{t('SEO Settings')}</h3>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 {/* Meta Title */}
                                 <div className="space-y-2">
                                     <Label htmlFor="meta_title" className="text-sm font-medium">
@@ -160,7 +158,7 @@ export default function CreateCustomPage() {
                                         placeholder={t('SEO optimized title')}
                                         maxLength={60}
                                     />
-                                    <p className="text-xs text-muted-foreground">
+                                    <p className="text-muted-foreground text-xs">
                                         {t('Recommended: 50-60 characters')} ({formData.meta_title.length}/60)
                                     </p>
                                 </div>
@@ -178,9 +176,7 @@ export default function CreateCustomPage() {
                                         placeholder="0"
                                         min="0"
                                     />
-                                    <p className="text-xs text-muted-foreground">
-                                        {t('Lower numbers appear first in navigation')}
-                                    </p>
+                                    <p className="text-muted-foreground text-xs">{t('Lower numbers appear first in navigation')}</p>
                                 </div>
                             </div>
 
@@ -197,27 +193,27 @@ export default function CreateCustomPage() {
                                     rows={3}
                                     maxLength={160}
                                 />
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-muted-foreground text-xs">
                                     {t('Recommended: 150-160 characters')} ({formData.meta_description.length}/160)
                                 </p>
                             </div>
                         </div>
 
                         {/* Publish Settings */}
-                        <div className="space-y-4 pt-4 border-t">
+                        <div className="space-y-4 border-t pt-4">
                             <h3 className="text-sm font-semibold">{t('Publish Settings')}</h3>
 
-                            <div className="flex items-start space-x-3 p-4 bg-muted/50 rounded-lg">
+                            <div className="bg-muted/50 flex items-start space-x-3 rounded-lg p-4">
                                 <Switch
                                     id="is_active"
                                     checked={formData.is_active}
                                     onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
                                 />
                                 <div className="flex-1">
-                                    <Label htmlFor="is_active" className="text-sm font-medium cursor-pointer">
+                                    <Label htmlFor="is_active" className="cursor-pointer text-sm font-medium">
                                         {t('Publish Page')}
                                     </Label>
-                                    <p className="text-xs text-muted-foreground mt-1">
+                                    <p className="text-muted-foreground mt-1 text-xs">
                                         {formData.is_active
                                             ? t('This page will be visible to the public immediately')
                                             : t('This page will be saved as a draft and hidden from public view')}
@@ -227,13 +223,11 @@ export default function CreateCustomPage() {
                         </div>
 
                         {/* Form Actions */}
-                        <div className="flex justify-end space-x-3 pt-6 border-t">
+                        <div className="flex justify-end space-x-3 border-t pt-6">
                             <Button type="button" variant="outline" onClick={handleCancel}>
                                 {t('Cancel')}
                             </Button>
-                            <Button type="submit">
-                                {t('Save')}
-                            </Button>
+                            <Button type="submit">{t('Save')}</Button>
                         </div>
                     </form>
                 </CardContent>

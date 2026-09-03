@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Currency;
-use App\Models\Referral;
 use App\Models\PayoutRequest;
+use App\Models\Referral;
 use App\Models\ReferralSetting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ReferralController extends Controller
@@ -116,7 +115,7 @@ class ReferralController extends Controller
             'totalCommissionEarned' => $totalCommissionEarned,
             'referredUsers' => $referredUsers,
             'currency' => $currency,
-            'currencySymbol' => $currencySymbol
+            'currencySymbol' => $currencySymbol,
         ]);
     }
 
@@ -207,10 +206,9 @@ class ReferralController extends Controller
             'recentReferredUsers' => $recentReferredUsers,
             'referredUsers' => $referredUsers,
             'currency' => $currency,
-            'currencySymbol' => $currencySymbol
+            'currencySymbol' => $currencySymbol,
         ]);
     }
-
 
     public function updateSettings(Request $request)
     {
@@ -262,6 +260,7 @@ class ReferralController extends Controller
     public function approvePayoutRequest(PayoutRequest $payoutRequest)
     {
         $payoutRequest->update(['status' => 'approved']);
+
         return back()->with('success', __('Payout request approved'));
     }
 
@@ -271,9 +270,9 @@ class ReferralController extends Controller
             'status' => 'rejected',
             'notes' => $request->notes,
         ]);
+
         return back()->with('success', __('Payout request rejected'));
     }
-
 
     public function getReferredUsers(Request $request)
     {
@@ -307,11 +306,12 @@ class ReferralController extends Controller
                 ->paginate(15)
                 ->withQueryString();
         }
+
         return Inertia::render('referral/referred-users', [
             'referredUsers' => $referredUsers,
             'userType' => $user->isSuperAdmin() ? 'super_admin' : 'organization',
             'currency' => $currency,
-            'currencySymbol' => $currencySymbol
+            'currencySymbol' => $currencySymbol,
         ]);
     }
 

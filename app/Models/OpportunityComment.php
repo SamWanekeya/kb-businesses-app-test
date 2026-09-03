@@ -13,7 +13,7 @@ class OpportunityComment extends BaseModel
         'opportunity_id',
         'user_id',
         'comment',
-        'created_by'
+        'created_by',
     ];
 
     public function opportunity(): BelongsTo

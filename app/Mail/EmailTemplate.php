@@ -8,11 +8,15 @@ use Illuminate\Queue\SerializesModels;
 
 class EmailTemplate extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public $subject;
+
     public $content;
+
     public $fromEmail;
+
     public $fromName;
 
     /**

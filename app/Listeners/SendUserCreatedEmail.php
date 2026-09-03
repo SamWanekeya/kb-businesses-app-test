@@ -13,7 +13,8 @@ class SendUserCreatedEmail
 
     public function __construct(
         private EmailTemplateService $emailService,
-    ) {}
+    ) {
+    }
 
     public function handle(UserCreated $event): void
     {

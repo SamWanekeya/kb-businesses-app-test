@@ -3,11 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\Account;
-use App\Models\AccountType;
 use App\Models\AccountIndustry;
+use App\Models\AccountType;
 use App\Models\User;
-use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class AccountSeeder extends Seeder
 {
@@ -18,6 +18,7 @@ class AccountSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -25,7 +26,7 @@ class AccountSeeder extends Seeder
             'TechCorp', 'HealthPlus', 'RetailMax', 'FinanceHub', 'ManufacturePro', 'EduSoft', 'LogisticsPro', 'GreenEnergy',
             'AutoMotive', 'FoodService', 'RealEstate', 'Construction', 'Marketing', 'Consulting', 'Insurance', 'Travel',
             'Fashion', 'Sports', 'Entertainment', 'Agriculture', 'Mining', 'Telecom', 'Banking', 'Pharma',
-            'Aerospace', 'Chemical', 'Textile', 'Furniture', 'Jewelry', 'Publishing', 'Gaming', 'Security'
+            'Aerospace', 'Chemical', 'Textile', 'Furniture', 'Jewelry', 'Publishing', 'Gaming', 'Security',
         ];
 
         $organizationSuffixes = ['Inc', 'LLC', 'Corp', 'Ltd', 'Group', 'Solutions', 'Services', 'Systems', 'Technologies', 'Enterprises'];

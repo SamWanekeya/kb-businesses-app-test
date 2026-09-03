@@ -1,11 +1,12 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PermissionRequest;
 use App\Models\Permission;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Auth;
 
 class PermissionController extends BaseController
 {
@@ -19,6 +20,7 @@ class PermissionController extends BaseController
     public function index()
     {
         $permissions = Permission::withPermissionCheck()->latest()->paginate(10);
+
         return Inertia::render('permissions/index', [
             'permissions' => $permissions,
         ]);
@@ -38,16 +40,17 @@ class PermissionController extends BaseController
     public function store(PermissionRequest $request)
     {
         $permission = Permission::create([
-            'module'      => $request->module,
-            'label'       => $request->label,
-            'name'        => Str::slug($request->label),
+            'module' => $request->module,
+            'label' => $request->label,
+            'name' => Str::slug($request->label),
             'description' => $request->description,
-            'created_by'  => Auth::id(),
+            'created_by' => Auth::id(),
         ]);
 
         if ($permission) {
             return redirect()->route('permissions.index')->with('success', __('Permission created successfully!'));
         }
+
         return redirect()->back()->with('error', __('Unable to create Permission. Please try again!'));
     }
 
@@ -73,14 +76,16 @@ class PermissionController extends BaseController
     public function update(PermissionRequest $request, Permission $permission)
     {
         if ($permission) {
-            $permission->module      = $request->module;
-            $permission->label       = $request->label;
-            $permission->name        = Str::slug($request->label);
+            $permission->module = $request->module;
+            $permission->label = $request->label;
+            $permission->name = Str::slug($request->label);
             $permission->description = $request->description;
 
             $permission->save();
+
             return redirect()->route('permissions.index')->with('success', __('Permission updated successfully!'));
         }
+
         return redirect()->back()->with('error', __('Unable to update Permission. Please try again!'));
     }
 
@@ -91,6 +96,7 @@ class PermissionController extends BaseController
     {
         if ($permission) {
             $permission->delete();
+
             return redirect()->route('permissions.index')->with('success', __('Permission deleted successfully!'));
         }
 

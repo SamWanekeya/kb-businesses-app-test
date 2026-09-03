@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Head } from '@inertiajs/react';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { toast } from '@/components/custom-toast';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Head } from '@inertiajs/react';
+import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import { ArrowLeft, CreditCard, Loader2 } from 'lucide-react';
-import { router } from '@inertiajs/react';
-import { toast } from '@/components/custom-toast';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Invoice {
     id: number;
@@ -26,10 +25,6 @@ interface Props {
     paymentSettings: any;
     currency: string;
 }
-
-
-
-
 
 const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
     const { t } = useTranslation();
@@ -114,7 +109,7 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
 
             <div className="space-y-2">
                 <Label>{t('Card details')}</Label>
-                <div className="p-3 border rounded-md">
+                <div className="rounded-md border p-3">
                     <CardElement />
                 </div>
             </div>
@@ -123,24 +118,22 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
                 <Button
                     type="button"
                     variant="outline"
-                    onClick={() => window.location.href = route('invoices.public', invoice.id)}
+                    onClick={() => (window.location.href = route('invoices.public', invoice.id))}
                     disabled={processing}
                     className="flex-1"
                 >
                     {t('Cancel')}
                 </Button>
-                <Button
-                    type="submit"
-                    disabled={!stripe || processing}
-                    className="flex-1"
-                >
+                <Button type="submit" disabled={!stripe || processing} className="flex-1">
                     {processing ? (
                         <>
-                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                             {t('Processing...')}
                         </>
                     ) : (
-                        t('Pay {{amount}}', { amount: window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}` })
+                        t('Pay {{amount}}', {
+                            amount: window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`,
+                        })
                     )}
                 </Button>
             </div>
@@ -167,23 +160,23 @@ export default function InvoicePayment({ invoice, paymentMethod, amount, payment
             <Head title={t('Pay Invoice {{invoiceNumber}}', { invoiceNumber: invoice.invoice_number })} />
 
             <div className="min-h-screen bg-gray-50 py-8">
-                <div className="max-w-2xl mx-auto px-4">
+                <div className="mx-auto max-w-2xl px-4">
                     <div className="mb-6">
                         <Button
                             variant="outline"
-                            onClick={() => window.location.href = route('invoices.public', invoice.id)}
+                            onClick={() => (window.location.href = route('invoices.public', invoice.id))}
                             className="flex items-center gap-2"
                         >
-                            <ArrowLeft className="w-4 h-4" />
+                            <ArrowLeft className="h-4 w-4" />
                             {t('Back')}
                         </Button>
                     </div>
 
-                    <div className="bg-white rounded-lg shadow-sm border mb-6">
+                    <div className="mb-6 rounded-lg border bg-white shadow-sm">
                         <div className="p-6">
-                            <div className="flex items-center gap-3 mb-4">
-                                <div className="p-2 bg-blue-100 rounded-lg">
-                                    <CreditCard className="w-6 h-6 text-blue-600" />
+                            <div className="mb-4 flex items-center gap-3">
+                                <div className="rounded-lg bg-blue-100 p-2">
+                                    <CreditCard className="h-6 w-6 text-blue-600" />
                                 </div>
                                 <div>
                                     <h1 className="text-2xl font-bold">
@@ -193,7 +186,7 @@ export default function InvoicePayment({ invoice, paymentMethod, amount, payment
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
+                            <div className="grid grid-cols-1 gap-4 rounded-lg bg-gray-50 p-4 md:grid-cols-3">
                                 <div>
                                     <p className="text-sm text-gray-600">{t('Payment Type')}</p>
                                     <p className="font-semibold capitalize">{t('{{paymentType}} Payment', { paymentType })}</p>
@@ -213,24 +206,17 @@ export default function InvoicePayment({ invoice, paymentMethod, amount, payment
                     <Card>
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
-                                <CreditCard className="w-5 h-5" />
+                                <CreditCard className="h-5 w-5" />
                                 {t('Payment Details')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
                             {paymentMethod === 'stripe' && paymentSettings.key && stripePromise ? (
                                 <Elements stripe={stripePromise}>
-                                    <StripeCheckoutForm
-                                        invoice={invoice}
-                                        amount={amount}
-                                        paymentType={paymentType}
-                                    />
+                                    <StripeCheckoutForm invoice={invoice} amount={amount} paymentType={paymentType} />
                                 </Elements>
-
                             ) : (
-                                <div className="p-4 text-center text-red-500">
-                                    {t('Payment method not configured')}
-                                </div>
+                                <div className="p-4 text-center text-red-500">{t('Payment method not configured')}</div>
                             )}
                         </CardContent>
                     </Card>
@@ -239,4 +225,3 @@ export default function InvoicePayment({ invoice, paymentMethod, amount, payment
         </>
     );
 }
-

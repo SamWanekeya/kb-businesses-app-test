@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\MediaItem;
 use App\Models\User;
 use App\Services\StorageConfigService;
-use App\Services\DynamicStorageService;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -78,6 +77,7 @@ class MediaController extends Controller
         }
 
         $baseUrl = request()->getSchemeAndHttpHost();
+
         return $baseUrl . $url;
     }
 
@@ -89,7 +89,7 @@ class MediaController extends Controller
         \Log::error('Media upload error', [
             'file' => $fileName,
             'error' => $message,
-            'trace' => $e->getTraceAsString()
+            'trace' => $e->getTraceAsString(),
         ]);
 
         // Handle media library collection errors
@@ -97,6 +97,7 @@ class MediaController extends Controller
             if (str_contains($message, 'mime:')) {
                 return __("File type not allowed: :extension. Please check your storage settings.", ['extension' => $extension]);
             }
+
             return __("File format not supported: :extension. Please check your storage settings.", ['extension' => $extension]);
         }
 
@@ -110,6 +111,7 @@ class MediaController extends Controller
             if ($maxSizeMB) {
                 return __("Max :max MB is allowed.", ['max' => $maxSizeMB]);
             }
+
             return __("File too large: :extension", ['extension' => $extension]);
         }
 
@@ -147,7 +149,7 @@ class MediaController extends Controller
         // Normalize allowed file types to handle case sensitivity
         $allowedTypes = $config['allowed_file_types'];
         $normalizedTypes = strtolower($allowedTypes);
-        $maxSizeKB =  (int)($config['storage_maximum_upload_size'] ?? 2048);
+        $maxSizeKB = (int)($config['storage_maximum_upload_size'] ?? 2048);
         $maxSizeMB = round($maxSizeKB / 1024, 2);
         $validationRules = StorageConfigService::getFileValidationRules();
 
@@ -157,7 +159,7 @@ class MediaController extends Controller
             'files.*' => array_merge(['file'], $validationRules),
         ], [
             'files.*.mimes' => __('Only these file types are allowed: :type', [
-                'type' => strtoupper(str_replace(',', ', ', $allowedTypes))
+                'type' => strtoupper(str_replace(',', ', ', $allowedTypes)),
             ]),
             'files.*.max' => __('File size cannot exceed :max MB.', ['max' => $maxSizeMB]),
         ]);
@@ -167,7 +169,7 @@ class MediaController extends Controller
                 'message' => __('File validation failed'),
                 'errors' => $validator->errors()->all(),
                 'allowed_types' => $config['allowed_file_types'],
-                'maximum_size_mb' => $maxSizeMB
+                'maximum_size_mb' => $maxSizeMB,
             ], 422);
         }
 
@@ -226,7 +228,7 @@ class MediaController extends Controller
                 }
                 $errors[] = [
                     'file' => $file->getClientOriginalName(),
-                    'error' => $this->getUserFriendlyError($e, $file->getClientOriginalName(), $maxSizeMB)
+                    'error' => $this->getUserFriendlyError($e, $file->getClientOriginalName(), $maxSizeMB),
                 ];
             }
         }
@@ -234,18 +236,18 @@ class MediaController extends Controller
         if (count($uploadedMedia) > 0 && empty($errors)) {
             return response()->json([
                 'message' => count($uploadedMedia) . __(' file(s) uploaded successfully'),
-                'data' => $uploadedMedia
+                'data' => $uploadedMedia,
             ]);
         } elseif (count($uploadedMedia) > 0 && !empty($errors)) {
             return response()->json([
                 'message' => count($uploadedMedia) . ' uploaded, ' . count($errors) . ' failed',
                 'data' => $uploadedMedia,
-                'errors' => array_column($errors, 'error')
+                'errors' => array_column($errors, 'error'),
             ]);
         } else {
             return response()->json([
                 'message' => 'Upload failed',
-                'errors' => array_column($errors, 'error')
+                'errors' => array_column($errors, 'error'),
             ], 422);
         }
     }
@@ -312,10 +314,14 @@ class MediaController extends Controller
     private function checkStorageLimit($files)
     {
         $user = auth()->user();
-        if ($user->type === 'super_admin') return null;
+        if ($user->type === 'super_admin') {
+            return null;
+        }
 
         $limit = $this->getUserStorageLimit($user);
-        if (!$limit) return null;
+        if (!$limit) {
+            return null;
+        }
 
         $uploadSize = collect($files)->sum('size');
         $currentUsage = $this->getUserStorageUsage($user);
@@ -323,7 +329,7 @@ class MediaController extends Controller
         if (($currentUsage + $uploadSize) > $limit) {
             return response()->json([
                 'message' => __('Storage limit exceeded'),
-                'errors' => [__('Please delete files or upgrade plan')]
+                'errors' => [__('Please delete files or upgrade plan')],
             ], 422);
         }
 
@@ -351,6 +357,7 @@ class MediaController extends Controller
         if ($user->type === 'organization') {
             // Get storage usage for organization and all its staff
             $organizationUsers = User::where('created_by', $user->id)->pluck('id')->push($user->id);
+
             return Media::whereIn('user_id', $organizationUsers)->sum('size');
         }
 
@@ -359,6 +366,7 @@ class MediaController extends Controller
             $organization = User::find($user->created_by);
             if ($organization) {
                 $organizationUsers = User::where('created_by', $organization->id)->pluck('id')->push($organization->id);
+
                 return Media::whereIn('user_id', $organizationUsers)->sum('size');
             }
         }
@@ -369,7 +377,7 @@ class MediaController extends Controller
 
     private function updateStorageUsage($user, $size)
     {
-        if($user->storage_limit==0){
+        if ($user->storage_limit == 0) {
             $user->increment('storage_limit', $this->getUserStorageUsage($user));
         }
         $user->increment('storage_limit', $size);
@@ -392,7 +400,7 @@ class MediaController extends Controller
 
             return response()->json([
                 'message' => __('Storage configuration error'),
-                'errors' => [__('Unable to access storage. Please check storage settings.')]
+                'errors' => [__('Unable to access storage. Please check storage settings.')],
             ], 500);
         }
     }

@@ -15,7 +15,7 @@ class SlackService
                 return false;
             }
 
-            $template = NotificationTemplate::where('name', $templateName)->where('type','slack')->first();
+            $template = NotificationTemplate::where('name', $templateName)->where('type', 'slack')->first();
 
             if (!$template) {
                 throw new Exception("Notification template '{$templateName}' not found");
@@ -65,7 +65,7 @@ class SlackService
         }
 
         $response = Http::post($webhookUrl, [
-            'text' => $message
+            'text' => $message,
         ]);
 
         if (!$response->successful()) {

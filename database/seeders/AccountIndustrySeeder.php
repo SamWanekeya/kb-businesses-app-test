@@ -14,6 +14,7 @@ class AccountIndustrySeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -25,7 +26,7 @@ class AccountIndustrySeeder extends Seeder
             ['name' => 'Retail & E-commerce', 'description' => 'Online and retail stores', 'color' => '#8B5CF6'],
             ['name' => 'Education & Training', 'description' => 'Educational institutions and training', 'color' => '#F59E0B'],
             ['name' => 'Professional Services', 'description' => 'Consulting and business services', 'color' => '#06B6D4'],
-            ['name' => 'Real Estate & Construction', 'description' => 'Property and construction services', 'color' => '#84CC16']
+            ['name' => 'Real Estate & Construction', 'description' => 'Property and construction services', 'color' => '#84CC16'],
         ];
 
         foreach ($organizationUsers as $organization) {

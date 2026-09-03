@@ -46,7 +46,9 @@ class DemoModeMiddleware
     private function isUpdateOrDeleteRoute(Request $request): bool
     {
         $route = $request->route();
-        if (!$route) return false;
+        if (!$route) {
+            return false;
+        }
 
         $routeName = $route->getName();
         $uri = $request->getPathInfo();
@@ -69,7 +71,7 @@ class DemoModeMiddleware
             'languages/{languageCode}',
             'languages/{languageCode}/toggle',
             'referral/settings',
-            'api/chatgpt/generate'
+            'api/chatgpt/generate',
         ];
 
         foreach ($restrictedPatterns as $pattern) {
@@ -97,7 +99,7 @@ class DemoModeMiddleware
             'languages.delete',
             'referral.settings.update',
             'landing-page.custom-pages.store',
-            'invoices.send-reminder'
+            'invoices.send-reminder',
         ];
 
         if ($routeName) {
@@ -121,7 +123,7 @@ class DemoModeMiddleware
         if ($request->expectsJson() || $request->is('api/*')) {
             return response()->json([
                 'message' => $message,
-                'demo_mode' => true
+                'demo_mode' => true,
             ], 403);
         }
 

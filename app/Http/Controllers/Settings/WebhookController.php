@@ -4,14 +4,15 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Models\Webhook;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class WebhookController extends Controller
 {
     public function index(): JsonResponse
     {
         $webhooks = Webhook::where('user_id', auth()->id())->get();
+
         return response()->json($webhooks);
     }
 
@@ -32,7 +33,7 @@ class WebhookController extends Controller
 
         return response()->json([
             'webhook' => $webhook,
-            'message' => __('Webhook created successfully')
+            'message' => __('Webhook created successfully'),
         ]);
     }
 
@@ -56,7 +57,7 @@ class WebhookController extends Controller
 
         return response()->json([
             'webhook' => $webhook,
-            'message' => __('Webhook updated successfully')
+            'message' => __('Webhook updated successfully'),
         ]);
     }
 

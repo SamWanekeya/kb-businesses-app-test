@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Plan;
 use App\Models\PlanOrder;
-use App\Models\PaymentSetting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Mollie\Api\MollieApiClient;
 
 class MolliePaymentController extends Controller
@@ -17,7 +15,7 @@ class MolliePaymentController extends Controller
 
         return [
             'api_key' => $settings['payment_settings']['mollie_api_key'] ?? null,
-            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'EUR'
+            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'EUR',
         ];
     }
 
@@ -30,12 +28,12 @@ class MolliePaymentController extends Controller
             'customer_details' => 'required|array',
             'customer_details.firstName' => 'required|string',
             'customer_details.lastName' => 'required|string',
-            'customer_details.email' => 'required|email'
+            'customer_details.email' => 'required|email',
         ]);
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
             $credentials = $this->getMollieCredentials();
 
             if (!$credentials['api_key']) {
@@ -52,7 +50,7 @@ class MolliePaymentController extends Controller
                 'payment_method' => 'mollie',
                 'coupon_code' => $validated['coupon_code'] ?? null,
                 'payment_id' => $paymentId,
-                'status' => 'pending'
+                'status' => 'pending',
             ]);
 
             // Initialize Mollie SDK
@@ -62,7 +60,7 @@ class MolliePaymentController extends Controller
             $paymentData = [
                 'amount' => [
                     'currency' => $credentials['currency'],
-                    'value' => number_format($pricing['final_price'], 2, '.', '')
+                    'value' => number_format($pricing['final_price'], 2, '.', ''),
                 ],
                 'description' => 'Plan Subscription - ' . $plan->name,
                 'redirectUrl' => route('mollie.success'),
@@ -70,8 +68,8 @@ class MolliePaymentController extends Controller
                     'payment_id' => $paymentId,
                     'plan_id' => $plan->id,
                     'user_id' => auth()->id(),
-                    'billing_cycle' => $validated['billing_cycle']
-                ]
+                    'billing_cycle' => $validated['billing_cycle'],
+                ],
             ];
 
             // Only add webhook URL if not localhost
@@ -118,7 +116,7 @@ class MolliePaymentController extends Controller
                 'payment_method' => 'mollie',
                 'coupon_code' => $validated['coupon_code'] ?? null,
                 'payment_id' => $paymentId,
-                'status' => 'pending'
+                'status' => 'pending',
             ]);
 
             // Initialize Mollie SDK
@@ -128,7 +126,7 @@ class MolliePaymentController extends Controller
             $payment = $mollie->payments->create([
                 'amount' => [
                     'currency' => $credentials['currency'],
-                    'value' => number_format($pricing['final_price'], 2, '.', '')
+                    'value' => number_format($pricing['final_price'], 2, '.', ''),
                 ],
                 'description' => 'Plan Subscription - ' . $plan->name,
                 'redirectUrl' => route('mollie.success'),
@@ -137,8 +135,8 @@ class MolliePaymentController extends Controller
                     'payment_id' => $paymentId,
                     'plan_id' => $plan->id,
                     'user_id' => auth()->id(),
-                    'billing_cycle' => $validated['billing_cycle']
-                ]
+                    'billing_cycle' => $validated['billing_cycle'],
+                ],
             ]);
 
             // Update the plan order with the actual Mollie payment ID
@@ -148,7 +146,7 @@ class MolliePaymentController extends Controller
             return response()->json([
                 'success' => true,
                 'payment_id' => $payment->id,
-                'checkout_url' => $payment->getCheckoutUrl()
+                'checkout_url' => $payment->getCheckoutUrl(),
             ]);
 
         } catch (\Exception $e) {
@@ -159,7 +157,7 @@ class MolliePaymentController extends Controller
     public function checkPaymentStatus(Request $request)
     {
         $validated = $request->validate([
-            'payment_id' => 'required|string'
+            'payment_id' => 'required|string',
         ]);
 
         try {
@@ -173,7 +171,7 @@ class MolliePaymentController extends Controller
                 'status' => $payment->status,
                 'is_paid' => $payment->isPaid(),
                 'is_failed' => $payment->isFailed(),
-                'is_canceled' => $payment->isCanceled()
+                'is_canceled' => $payment->isCanceled(),
             ]);
 
         } catch (\Exception $e) {

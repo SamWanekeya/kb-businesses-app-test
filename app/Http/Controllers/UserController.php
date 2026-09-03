@@ -17,7 +17,7 @@ class UserController extends BaseController
      */
     public function index(Request $request)
     {
-        $authUser     = Auth::user();
+        $authUser = Auth::user();
         $authUserRole = $authUser->roles->first()?->name;
         // Allow super_admin, admin, product-manager, contact-manager, viewer
         if (!$authUser->hasPermissionTo('manage-users')) {
@@ -83,7 +83,7 @@ class UserController extends BaseController
             $planLimits = [
                 'current_users' => $currentUserCount,
                 'maximum_users' => $organizationUser->plan->maximum_users,
-                'can_create' => $currentUserCount < $organizationUser->plan->maximum_users
+                'can_create' => $currentUserCount < $organizationUser->plan->maximum_users,
             ];
         }
 
@@ -91,7 +91,7 @@ class UserController extends BaseController
             'users' => $users,
             'roles' => $roles,
             'planLimits' => $planLimits,
-            'filters' => $request->only(['search', 'role', 'sort_field', 'sort_direction', 'per_page', 'view', 'page'])
+            'filters' => $request->only(['search', 'role', 'sort_field', 'sort_direction', 'per_page', 'view', 'page']),
         ]);
     }
 
@@ -131,10 +131,10 @@ class UserController extends BaseController
         }
 
         $user = User::create([
-            'name'       => $request->name,
-            'email'      => $request->email,
-            'password'   => Hash::make($request->password),
-            'created_by' => $created_by
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'created_by' => $created_by,
         ]);
 
         if ($user && $request->roles) {
@@ -158,6 +158,7 @@ class UserController extends BaseController
 
             return redirect()->route('users.index')->with('success', __('User created with roles'));
         }
+
         return redirect()->back()->with('error', __('Unable to create User. Please try again!'));
     }
 
@@ -167,7 +168,7 @@ class UserController extends BaseController
     public function update(UserRequest $request, User $user)
     {
         if ($user) {
-            $user->name  = $request->name;
+            $user->name = $request->name;
             $user->email = $request->email;
 
             // find and syncing role
@@ -185,8 +186,10 @@ class UserController extends BaseController
             }
 
             $user->save();
+
             return redirect()->route('users.index')->with('success', __('User updated with roles'));
         }
+
         return redirect()->back()->with('error', __('Unable to update User. Please try again!'));
     }
 
@@ -197,8 +200,10 @@ class UserController extends BaseController
     {
         if ($user) {
             $user->delete();
+
             return redirect()->route('users.index')->with('success', __('User deleted with roles'));
         }
+
         return redirect()->back()->with('error', __('Unable to delete User. Please try again!'));
     }
 
@@ -234,7 +239,7 @@ class UserController extends BaseController
 
         return Inertia::render('users/show', [
             'user' => $user->load(['roles', 'creator']),
-            'meetings' => $meetings
+            'meetings' => $meetings,
         ]);
     }
 
@@ -248,7 +253,6 @@ class UserController extends BaseController
 
         return redirect()->route('users.index')->with('success', __('User status updated successfully'));
     }
-
 
     /**
      * Display all user logs created by current user

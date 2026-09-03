@@ -10,7 +10,7 @@ class Role extends BaseSpatieRole
         'description',
         'is_active',
         'guard_name',
-        'created_by'
+        'created_by',
     ];
 
     protected $appends = ['is_system_role'];
@@ -28,6 +28,7 @@ class Role extends BaseSpatieRole
     public function getIsSystemRoleAttribute()
     {
         $systemRoles = ['super_admin', 'super-admin', 'organization'];
+
         return in_array(strtolower($this->name), $systemRoles);
     }
 }

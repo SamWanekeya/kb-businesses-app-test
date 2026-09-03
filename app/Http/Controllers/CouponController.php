@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Coupon;
 use App\Http\Requests\CouponRequest;
+use App\Models\Coupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -45,8 +45,8 @@ class CouponController extends BaseController
 
         // Handle sorting with validation
         $sortField = $request->input('sort_field', 'id');
-        $sortDirection = $request->input('sort_direction','desc');
-        $allowedSorts=['id', 'name', 'type', 'expiry_date', 'code'];
+        $sortDirection = $request->input('sort_direction', 'desc');
+        $allowedSorts = ['id', 'name', 'type', 'expiry_date', 'code'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -104,7 +104,7 @@ class CouponController extends BaseController
 
         return Inertia::render('coupons/show', [
             'coupon' => $coupon,
-            'usage_history' => $paginatedUsage
+            'usage_history' => $paginatedUsage,
         ]);
     }
 
@@ -156,7 +156,7 @@ class CouponController extends BaseController
         $request->validate([
             'coupon_code' => 'required|string',
             'plan_id' => 'required|integer',
-            'amount' => 'required|numeric|min:0'
+            'amount' => 'required|numeric|min:0',
         ]);
 
         $coupon = Coupon::where('code', $request->coupon_code)
@@ -166,7 +166,7 @@ class CouponController extends BaseController
         if (!$coupon) {
             return response()->json([
                 'valid' => false,
-                'message' => __('Invalid or inactive coupon code')
+                'message' => __('Invalid or inactive coupon code'),
             ], 400);
         }
 
@@ -174,7 +174,7 @@ class CouponController extends BaseController
         if ($coupon->expiry_date && $coupon->expiry_date < now()) {
             return response()->json([
                 'valid' => false,
-                'message' => __('Coupon has expired')
+                'message' => __('Coupon has expired'),
             ], 400);
         }
 
@@ -182,7 +182,7 @@ class CouponController extends BaseController
         if ($coupon->use_limit_per_coupon && $coupon->used_count >= $coupon->use_limit_per_coupon) {
             return response()->json([
                 'valid' => false,
-                'message' => __('Coupon usage limit exceeded')
+                'message' => __('Coupon usage limit exceeded'),
             ], 400);
         }
 
@@ -190,7 +190,7 @@ class CouponController extends BaseController
         if ($coupon->minimum_spend && $request->amount < $coupon->minimum_spend) {
             return response()->json([
                 'valid' => false,
-                'message' => __('Minimum spend requirement not met')
+                'message' => __('Minimum spend requirement not met'),
             ], 400);
         }
 
@@ -200,8 +200,8 @@ class CouponController extends BaseController
                 'id' => $coupon->id,
                 'code' => $coupon->code,
                 'type' => $coupon->type,
-                'value' => $coupon->discount_amount
-            ]
+                'value' => $coupon->discount_amount,
+            ],
         ]);
     }
 
@@ -211,11 +211,11 @@ class CouponController extends BaseController
     public function toggleStatus(Coupon $coupon)
     {
         $coupon->update([
-            'status' => !$coupon->status
+            'status' => !$coupon->status,
         ]);
 
         return redirect()->back()->with([
-            'success' => __('Coupon status updated successfully!')
+            'success' => __('Coupon status updated successfully!'),
         ]);
     }
 

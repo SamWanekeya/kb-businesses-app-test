@@ -6,9 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use App\Services\StorageConfigService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
-
 
 class SystemSettingsController extends Controller
 {
@@ -21,7 +18,8 @@ class SystemSettingsController extends Controller
      * - Email verification requirements
      * - Landing page enable/disable toggle
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request)
@@ -36,7 +34,7 @@ class SystemSettingsController extends Controller
                 'emailVerification' => 'boolean',
                 'landingPageEnabled' => 'boolean',
                 'registrationEnabled' => 'boolean',
-                'termsConditionsPage' => 'nullable|url'
+                'termsConditionsPage' => 'nullable|url',
             ]);
 
             foreach ($validated as $key => $value) {
@@ -52,7 +50,8 @@ class SystemSettingsController extends Controller
     /**
      * Update the brand settings.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function updateBrand(Request $request)
@@ -71,9 +70,9 @@ class SystemSettingsController extends Controller
                 'settings.sidebarStyle' => 'nullable|string|in:plain,colored,gradient',
                 'settings.layoutDirection' => 'nullable|string|in:left,right',
                 'settings.themeMode' => 'nullable|string|in:light,dark,system',
-            ],[
-                'settings.titleText.required' =>'Title Text is required',
-                'settings.footerText.required' =>'Footer Text is required'
+            ], [
+                'settings.titleText.required' => 'Title Text is required',
+                'settings.footerText.required' => 'Footer Text is required',
             ]);
 
             $userId = auth()->id();
@@ -90,7 +89,8 @@ class SystemSettingsController extends Controller
     /**
      * Update the recaptcha settings.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function updateRecaptcha(Request $request)
@@ -116,7 +116,8 @@ class SystemSettingsController extends Controller
     /**
      * Update the chatgpt settings.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function updateChatgpt(Request $request)
@@ -137,12 +138,11 @@ class SystemSettingsController extends Controller
         }
     }
 
-
-
     /**
      * Update the cookie settings.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function updateCookie(Request $request)
@@ -172,7 +172,8 @@ class SystemSettingsController extends Controller
     /**
      * Update the SEO settings.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function updateSeo(Request $request)
@@ -180,7 +181,7 @@ class SystemSettingsController extends Controller
         try {
             $rules = [
                 'metaKeywords' => 'required|string|max:255',
-                'metaDescription' => 'required|string|max:160'
+                'metaDescription' => 'required|string|max:160',
             ];
 
             if ($request->hasFile('metaImage')) {
@@ -208,7 +209,7 @@ class SystemSettingsController extends Controller
                         ->withErrors(['metaImage' => $upload['msg']])
                         ->withInput();
                 }
-            }else{
+            } else {
                 updateSetting('metaImage', $validated['metaImage']);
             }
 
@@ -221,7 +222,8 @@ class SystemSettingsController extends Controller
     /**
      * Update the Google Calendar settings.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function updateGoogleCalendar(Request $request)
@@ -231,8 +233,8 @@ class SystemSettingsController extends Controller
                 'googleCalendarEnabled' => 'boolean',
                 'googleCalendarId' => 'required_if:googleCalendarEnabled,1|nullable|string|max:255',
                 'googleCalendarJson' => 'nullable|file|mimes:json|max:2048',
-            ],[
-                'googleCalendarId.required_if'=>'Google Calendar ID is required'
+            ], [
+                'googleCalendarId.required_if' => 'Google Calendar ID is required',
             ]);
 
             $userId = createdBy();
@@ -340,16 +342,16 @@ class SystemSettingsController extends Controller
             }
         } catch (\Exception $e) {
             updateSetting('is_googlecalendar_sync', '0', createdBy());
+
             return redirect()->back()->withErrors(['error' => __('Failed to sync Google Calendar: :error', ['error' => $e->getMessage()])]);
         }
     }
 
-
-
     /**
      * Update the storage settings.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function updateStorage(Request $request)
@@ -425,7 +427,7 @@ class SystemSettingsController extends Controller
 
         return response()->json([
             'allowed_file_types' => $settings['allowed_file_types'] ?? 'jpg,png,webp,gif',
-            'maximum_file_size_mb' => $settings['maximum_file_size_mb'] ?? 2
+            'maximum_file_size_mb' => $settings['maximum_file_size_mb'] ?? 2,
         ]);
     }
 
@@ -464,7 +466,7 @@ class SystemSettingsController extends Controller
         foreach ($templates as $template) {
             $notifications[] = [
                 'name' => $template->name,
-                'label' => str_replace(' ', ' ', $template->name)
+                'label' => str_replace(' ', ' ', $template->name),
             ];
         }
 
@@ -474,7 +476,8 @@ class SystemSettingsController extends Controller
     /**
      * Update email notification settings.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateEmailNotifications(Request $request)
@@ -540,7 +543,7 @@ class SystemSettingsController extends Controller
         foreach ($templates as $template) {
             $notifications[] = [
                 'name' => $template->name,
-                'label' => str_replace(' ', ' ', $template->name)
+                'label' => str_replace(' ', ' ', $template->name),
             ];
         }
 
@@ -557,14 +560,15 @@ class SystemSettingsController extends Controller
         return response()->json([
             'twilio_sid' => getSetting('twilio_sid', ''),
             'twilio_token' => getSetting('twilio_token', ''),
-            'twilio_from' => getSetting('twilio_from', '')
+            'twilio_from' => getSetting('twilio_from', ''),
         ]);
     }
 
     /**
      * Update Twilio notification settings.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateTwilioNotifications(Request $request)
@@ -576,7 +580,7 @@ class SystemSettingsController extends Controller
             $rules = [
                 'twilio_sid' => 'nullable|string',
                 'twilio_token' => 'nullable|string',
-                'twilio_from' => 'nullable|string'
+                'twilio_from' => 'nullable|string',
             ];
 
             foreach ($availableTemplates as $templateId => $templateName) {
@@ -609,14 +613,15 @@ class SystemSettingsController extends Controller
     /**
      * Send test SMS.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function sendTestSMS(Request $request)
     {
         try {
             $validated = $request->validate([
-                'phone' => 'required|string'
+                'phone' => 'required|string',
             ]);
 
             $twilio = $this->getTwilioConfig()->getData(true);
@@ -632,7 +637,7 @@ class SystemSettingsController extends Controller
             $message = __('This is a test SMS from :app_name. Your Twilio configuration is working correctly!', ['app_name' => config('app.name')]);
             $twilio->messages->create($validated['phone'], [
                 'from' => $from,
-                'body' => $message
+                'body' => $message,
             ]);
 
             return redirect()->back()->with('success', __('Test SMS sent successfully to :phone', ['phone' => $validated['phone']]));
@@ -676,7 +681,7 @@ class SystemSettingsController extends Controller
         foreach ($templates as $template) {
             $notifications[] = [
                 'name' => $template->name,
-                'label' => str_replace(' ', ' ', $template->name)
+                'label' => str_replace(' ', ' ', $template->name),
             ];
         }
 
@@ -691,14 +696,15 @@ class SystemSettingsController extends Controller
     public function getSlackConfig()
     {
         return response()->json([
-            'slack_webhook_url' => getSetting('slack_webhook_url', '')
+            'slack_webhook_url' => getSetting('slack_webhook_url', ''),
         ]);
     }
 
     /**
      * Update Slack notification settings.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function updateSlackNotifications(Request $request)
@@ -708,7 +714,7 @@ class SystemSettingsController extends Controller
             $availableTemplates = \App\Models\NotificationTemplate::where('type', 'slack')->pluck('name', 'id')->toArray();
 
             $rules = [
-                'slack_webhook_url' => 'nullable|string|url'
+                'slack_webhook_url' => 'nullable|string|url',
             ];
 
             foreach ($availableTemplates as $templateId => $templateName) {
@@ -739,7 +745,8 @@ class SystemSettingsController extends Controller
     /**
      * Send test Slack message.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function sendTestSlack(Request $request)
@@ -754,7 +761,7 @@ class SystemSettingsController extends Controller
             $message = __('This is a test message from :app_name. Your Slack configuration is working correctly!', ['app_name' => config('app.name')]);
 
             $response = \Illuminate\Support\Facades\Http::post($webhookUrl, [
-                'text' => $message
+                'text' => $message,
             ]);
 
             if (!$response->successful()) {
@@ -814,7 +821,7 @@ class SystemSettingsController extends Controller
         if (!empty($validated['invoiceLogoId'])) {
             $settingsToSave['invoiceLogoId'] = $validated['invoiceLogoId'];
         } else {
-            $settingsToSave['invoiceLogoId'] = NULL;
+            $settingsToSave['invoiceLogoId'] = null;
         }
 
         foreach ($settingsToSave as $key => $data) {
@@ -852,7 +859,7 @@ class SystemSettingsController extends Controller
         if (!empty($validated['quoteLogoId'])) {
             $settingsToSave['quoteLogoId'] = $validated['quoteLogoId'];
         } else {
-            $settingsToSave['quoteLogoId'] = NULL;
+            $settingsToSave['quoteLogoId'] = null;
         }
 
         foreach ($settingsToSave as $key => $data) {
@@ -890,7 +897,7 @@ class SystemSettingsController extends Controller
         if (!empty($validated['salesOrderLogoId'])) {
             $settingsToSave['salesOrderLogoId'] = $validated['salesOrderLogoId'];
         } else {
-            $settingsToSave['salesOrderLogoId'] = NULL;
+            $settingsToSave['salesOrderLogoId'] = null;
         }
 
         foreach ($settingsToSave as $key => $data) {

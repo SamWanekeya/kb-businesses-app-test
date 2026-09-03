@@ -26,6 +26,7 @@ class UserNotificationTemplate extends Model
      * Get user notification template settings
      *
      * @param int $userId
+     *
      * @return array
      */
     public static function getUserNotificationTemplateSettings($userId)

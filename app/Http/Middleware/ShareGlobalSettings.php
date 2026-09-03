@@ -4,9 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
+use Inertia\Inertia;
 
 class ShareGlobalSettings
 {
@@ -24,7 +24,7 @@ class ShareGlobalSettings
             Inertia::share([
                 'globalSettings' => function () {
                     return settings(); // Use our helper function
-                }
+                },
             ]);
         }
 

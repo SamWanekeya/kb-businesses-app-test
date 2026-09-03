@@ -1,14 +1,14 @@
+import { toast } from '@/components/custom-toast';
+import { SettingsSection } from '@/components/settings-section';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { router } from '@inertiajs/react';
-import { Save } from 'lucide-react';
-import { SettingsSection } from '@/components/settings-section';
 import axios from 'axios';
-import { toast } from '@/components/custom-toast';
-import { Card, CardContent } from '@/components/ui/card';
+import { Save } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface NotificationItem {
     name: string;
@@ -24,26 +24,26 @@ export default function EmailNotificationSettings() {
 
     useEffect(() => {
         // Load available notifications
-        axios.get(route('settings.email-notifications.available'))
-            .then(response => {
+        axios
+            .get(route('settings.email-notifications.available'))
+            .then((response) => {
                 setAvailableNotifications(response.data);
             })
-            .catch(error => {
-            });
+            .catch((error) => {});
 
         // Load current settings
-        axios.get(route('settings.email-notifications.get'))
-            .then(response => {
+        axios
+            .get(route('settings.email-notifications.get'))
+            .then((response) => {
                 setNotifications(response.data);
             })
-            .catch(error => {
-            });
+            .catch((error) => {});
     }, []);
 
     const handleToggle = (key: string, enabled: boolean) => {
-        setNotifications(prev => ({
+        setNotifications((prev) => ({
             ...prev,
-            [key]: enabled
+            [key]: enabled,
         }));
     };
 
@@ -70,26 +70,26 @@ export default function EmailNotificationSettings() {
             onError: () => {
                 setProcessing(false);
                 toast.error('Failed to update email notification settings.');
-            }
+            },
         });
     };
 
     return (
         <SettingsSection
-            title={t("Email Notification Settings")}
-            description={t("Configure which email notifications are sent")}
+            title={t('Email Notification Settings')}
+            description={t('Configure which email notifications are sent')}
             action={
-                <Button onClick={handleSave} disabled={processing} size="sm">
-                    <Save className="h-4 w-4 mr-2" />
-                    {processing ? t('Saving...') : t('Save Changes')}
+                <Button onClick={handleSave} disabled={processing} size="sm" className="max-[1300px]:px-2.5">
+                    <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
+                    <span className="max-[1300px]:hidden">{processing ? t('Saving...') : t('Save Changes')}</span>
                 </Button>
             }
         >
             <Card>
                 <CardContent className="pt-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {availableNotifications.map(item => (
-                            <div key={item.name} className="flex items-center justify-between p-4 border rounded-md">
+                    <div className="grid grid-cols-1 gap-4 min-[1300px]:grid-cols-2 min-[1600px]:grid-cols-3">
+                        {availableNotifications.map((item) => (
+                            <div key={item.name} className="flex items-center justify-between rounded-md border p-4">
                                 <div>
                                     <Label htmlFor={item.name} className="text-sm font-medium">
                                         {t(item.label)}

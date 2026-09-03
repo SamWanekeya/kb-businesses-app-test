@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Opportunity;
+use App\Exports\OpportunityExport;
 use App\Models\Account;
 use App\Models\Contact;
-use App\Models\Product;
-use App\Models\OpportunityStage;
+use App\Models\Opportunity;
 use App\Models\OpportunitySource;
-use App\Exports\OpportunityExport;
+use App\Models\OpportunityStage;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -53,7 +53,7 @@ class OpportunityController extends Controller
         // Handle sorting
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'name', 'amount', 'close_date', 'created_at'];
+        $allowedSorts = ['id', 'name', 'amount', 'close_date', 'created_at'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -127,12 +127,12 @@ class OpportunityController extends Controller
             ->where('status', 'active')->select('id', 'name', 'email')->get();
 
         return Inertia::render('opportunities/create', [
-            'accounts'                    => $accounts,
-            'contacts'                    => $contacts,
-            'products'                    => $products,
-            'opportunityStages'           => $opportunityStages,
-            'opportunitySources'          => $opportunitySources,
-            'users'                       => $users,
+            'accounts' => $accounts,
+            'contacts' => $contacts,
+            'products' => $products,
+            'opportunityStages' => $opportunityStages,
+            'opportunitySources' => $opportunitySources,
+            'users' => $users,
             'prefilledOpportunityStageId' => $request->get('opportunity_stage_id', ''),
         ]);
     }
@@ -198,6 +198,7 @@ class OpportunityController extends Controller
 
         if (!empty($errors)) {
             $message = __('opportunity created successfully, but ') . implode(', ', $errors);
+
             return redirect()->back()->with('warning', $message);
         }
 
@@ -222,14 +223,18 @@ class OpportunityController extends Controller
         $parentCalls = \App\Models\Call::where('created_by', createdBy())
             ->where('parent_module', 'opportunity')->where('parent_id', $opportunityId)
             ->with(['creator', 'assignedUser'])->get()
-            ->map(function ($call) { $call->type = 'call'; return $call; });
+            ->map(function ($call) {
+                $call->type = 'call';
+
+                return $call;
+            });
 
         $meetings = $parentMeetings->merge($parentCalls)->sortByDesc('start_date')->values();
 
         return Inertia::render('opportunities/show', [
             'opportunity' => $opportunity,
             'streamItems' => $opportunity->activities()->orderBy('created_at', 'asc')->get(),
-            'meetings'    => $meetings,
+            'meetings' => $meetings,
         ]);
     }
 
@@ -263,13 +268,13 @@ class OpportunityController extends Controller
             ->where('status', 'active')->select('id', 'name', 'email')->get();
 
         return Inertia::render('opportunities/edit', [
-            'opportunity'        => $opportunity,
-            'accounts'           => $accounts,
-            'contacts'           => $contacts,
-            'products'           => $products,
-            'opportunityStages'  => $opportunityStages,
+            'opportunity' => $opportunity,
+            'accounts' => $accounts,
+            'contacts' => $contacts,
+            'products' => $products,
+            'opportunityStages' => $opportunityStages,
             'opportunitySources' => $opportunitySources,
-            'users'              => $users,
+            'users' => $users,
         ]);
     }
 
@@ -360,6 +365,7 @@ class OpportunityController extends Controller
             try {
                 $opportunity->products()->detach();
                 $opportunity->delete();
+
                 return redirect()->back()->with('success', __('Opportunity deleted successfully.'));
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete opportunity.'));
@@ -434,7 +440,7 @@ class OpportunityController extends Controller
             event(new \App\Events\OpportunityStageChanged($opportunity, $oldStageName, $newStageName));
         }
         $opportunity->update([
-            'opportunity_stage_id' => $validated['opportunity_stage_id']
+            'opportunity_stage_id' => $validated['opportunity_stage_id'],
         ]);
 
         return redirect()->back()->with('success', __('Opportunity status updated successfully.'));
@@ -447,6 +453,7 @@ class OpportunityController extends Controller
         }
 
         $name = 'opportunity_' . date('Y-m-d i:h:s');
+
         return Excel::download(new OpportunityExport(), $name . '.xlsx');
     }
 }

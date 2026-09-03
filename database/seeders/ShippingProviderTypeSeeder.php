@@ -17,6 +17,7 @@ class ShippingProviderTypeSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -25,7 +26,7 @@ class ShippingProviderTypeSeeder extends Seeder
             ['name' => 'Standard Shipping', 'color' => '#3B82F6', 'description' => 'Regular delivery within 3-5 business days'],
             ['name' => 'Economy Shipping', 'color' => '#10b77f', 'description' => 'Cost-effective delivery within 5-7 business days'],
             ['name' => 'Overnight Delivery', 'color' => '#F59E0B', 'description' => 'Next day delivery service'],
-            ['name' => 'International Shipping', 'color' => '#8B5CF6', 'description' => 'International delivery service']
+            ['name' => 'International Shipping', 'color' => '#8B5CF6', 'description' => 'International delivery service'],
         ];
 
         foreach ($organizationUsers as $organization) {

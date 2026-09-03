@@ -1,16 +1,15 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { CrudTable } from '@/components/CrudTable';
+import { toast } from '@/components/custom-toast';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { CrudTable } from '@/components/CrudTable';
-import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { router, useForm } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
-import { useForm, router } from '@inertiajs/react';
-import { toast } from '@/components/custom-toast';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface PayoutRequestsProps {
     userType: string;
@@ -47,14 +46,43 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                 if (typeof errors === 'string') {
                     toast.error(t(errors));
                 }
-            }
+            },
         });
     };
 
     const handleAction = (action: string, item: any) => {
         if (action === 'approve') {
-            router.post(route('referral.payout-request.approve', item.id), {}, {
+            router.post(
+                route('referral.payout-request.approve', item.id),
+                {},
+                {
+                    onSuccess: (page) => {
+                        if (page.props.flash.success) {
+                            toast.success(t(page.props.flash.success));
+                        } else if (page.props.flash.error) {
+                            toast.error(t(page.props.flash.error));
+                        }
+                    },
+                    onError: (errors) => {
+                        if (typeof errors === 'string') {
+                            toast.error(t(errors));
+                        }
+                    },
+                },
+            );
+        } else if (action === 'reject') {
+            setCurrentItem(item);
+            setIsRejectModalOpen(true);
+        }
+    };
+
+    const handleRejectConfirm = (notes: string) => {
+        router.post(
+            route('referral.payout-request.reject', currentItem.id),
+            { notes },
+            {
                 onSuccess: (page) => {
+                    setIsRejectModalOpen(false);
                     if (page.props.flash.success) {
                         toast.success(t(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -65,48 +93,36 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                     if (typeof errors === 'string') {
                         toast.error(t(errors));
                     }
-                }
-            });
-        } else if (action === 'reject') {
-            setCurrentItem(item);
-            setIsRejectModalOpen(true);
-        }
-    };
-
-    const handleRejectConfirm = (notes: string) => {
-        router.post(route('referral.payout-request.reject', currentItem.id), { notes }, {
-            onSuccess: (page) => {
-                setIsRejectModalOpen(false);
-                if (page.props.flash.success) {
-                    toast.success(t(page.props.flash.success));
-                } else if (page.props.flash.error) {
-                    toast.error(t(page.props.flash.error));
-                }
+                },
             },
-            onError: (errors) => {
-                if (typeof errors === 'string') {
-                    toast.error(t(errors));
-                }
-            }
-        });
+        );
     };
 
     // Define table columns
     const columns = [
-        ...(userType === 'super_admin' ? [{
-            key: 'organization.name',
-            label: t('Organization'),
-            render: (_, row) => (
-                <div>
-                    <p className="text-sm font-semibold">{row.organization?.name}</p>
-                    <p className="text-xs text-muted-foreground">{row.organization?.email}</p>
-                </div>
-            )
-        }] : []),
+        ...(userType === 'super_admin'
+            ? [
+                  {
+                      key: 'organization.name',
+                      label: t('Organization'),
+                      render: (_, row) => (
+                          <div>
+                              <p className="text-sm font-semibold">{row.organization?.name}</p>
+                              <p className="text-muted-foreground text-xs">{row.organization?.email}</p>
+                          </div>
+                      ),
+                  },
+              ]
+            : []),
         {
             key: 'amount',
             label: t('Amount'),
-            render: (value) => <span className="font-mono">{currencySymbol}{value}</span>
+            render: (value) => (
+                <span className="font-mono">
+                    {currencySymbol}
+                    {value}
+                </span>
+            ),
         },
         {
             key: 'status',
@@ -115,40 +131,45 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                 const statusColors: Record<string, string> = {
                     pending: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20',
                     approved: 'bg-green-50 text-green-700 ring-green-600/20',
-                    rejected: 'bg-red-50 text-red-700 ring-red-600/20'
+                    rejected: 'bg-red-50 text-red-700 ring-red-600/20',
                 };
                 return (
-                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset capitalize ${statusColors[value] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}>
+                    <span
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium capitalize ring-1 ring-inset ${statusColors[value] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}
+                    >
                         {t(value)}
                     </span>
                 );
-            }
+            },
         },
         {
             key: 'created_at',
             label: t('Date'),
             type: 'date',
             // render: (value) => window.appSettings?.formatDateTime(value, false) || new Date(value).toLocaleDateString()
-        }
+        },
     ];
 
     // Define table actions
-    const actions = userType === 'super_admin' ? [
-        {
-            label: t('Approve'),
-            icon: 'Check',
-            action: 'approve',
-            className: 'text-green-500',
-            condition: (row) => row.status === 'pending'
-        },
-        {
-            label: t('Reject'),
-            icon: 'X',
-            action: 'reject',
-            className: 'text-red-500',
-            condition: (row) => row.status === 'pending'
-        }
-    ] : [];
+    const actions =
+        userType === 'super_admin'
+            ? [
+                  {
+                      label: t('Approve'),
+                      icon: 'Check',
+                      action: 'approve',
+                      className: 'text-green-500',
+                      condition: (row) => row.status === 'pending',
+                  },
+                  {
+                      label: t('Reject'),
+                      icon: 'X',
+                      action: 'reject',
+                      className: 'text-red-500',
+                      condition: (row) => row.status === 'pending',
+                  },
+              ]
+            : [];
 
     return (
         <div className="space-y-6">
@@ -159,7 +180,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                         <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
                             <DialogTrigger asChild>
                                 <Button disabled={stats.availableBalance < settings.threshold_amount}>
-                                    <Plus className="h-4 w-4 mr-2" />
+                                    <Plus className="me-2 h-4 w-4" />
                                     {t('Request Payout')}
                                 </Button>
                             </DialogTrigger>
@@ -182,9 +203,21 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                                         />
                                         {errors.amount && <p className="text-sm text-red-500">{errors.amount}</p>}
                                     </div>
-                                    <div className="text-sm text-muted-foreground">
-                                        <p>{t('Available Balance')}: <span className="font-mono">{currencySymbol}{stats.availableBalance}</span></p>
-                                        <p>{t('Minimum Amount')}: <span className="font-mono">{currencySymbol}{settings.threshold_amount}</span></p>
+                                    <div className="text-muted-foreground text-sm">
+                                        <p>
+                                            {t('Available Balance')}:{' '}
+                                            <span className="font-mono">
+                                                {currencySymbol}
+                                                {stats.availableBalance}
+                                            </span>
+                                        </p>
+                                        <p>
+                                            {t('Minimum Amount')}:{' '}
+                                            <span className="font-mono">
+                                                {currencySymbol}
+                                                {settings.threshold_amount}
+                                            </span>
+                                        </p>
                                     </div>
                                     <DialogFooter>
                                         <Button type="button" variant="outline" onClick={() => setShowCreateDialog(false)}>
@@ -199,7 +232,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                         </Dialog>
                     </CardHeader>
                     <CardContent>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-muted-foreground text-sm">
                             {stats.availableBalance < settings.threshold_amount
                                 ? t('You need at least {{amount}} to request a payout', { amount: `${currencySymbol}${settings.threshold_amount}` })
                                 : t('You can request up to {{amount}} for payout', { amount: `${currencySymbol}${stats.availableBalance}` })}
@@ -215,7 +248,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+                    <div className="overflow-x-auto rounded-lg bg-white shadow dark:bg-gray-900">
                         <CrudTable
                             columns={columns}
                             actions={actions}
@@ -234,21 +267,18 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                     <DialogHeader>
                         <DialogTitle>{t('Reject Payout Request')}</DialogTitle>
                     </DialogHeader>
-                    <form onSubmit={(e) => {
-                        e.preventDefault();
-                        const formData = new FormData(e.currentTarget);
-                        const notes = formData.get('notes') as string;
-                        handleRejectConfirm(notes);
-                    }}>
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            const formData = new FormData(e.currentTarget);
+                            const notes = formData.get('notes') as string;
+                            handleRejectConfirm(notes);
+                        }}
+                    >
                         <div className="space-y-4">
                             <div>
                                 <Label htmlFor="notes">{t('Rejection Reason (Optional)')}</Label>
-                                <Textarea
-                                    id="notes"
-                                    name="notes"
-                                    placeholder={t('Enter rejection reason...')}
-                                    className="mt-1"
-                                />
+                                <Textarea id="notes" name="notes" placeholder={t('Enter rejection reason...')} className="mt-1" />
                             </div>
                         </div>
                         <DialogFooter>

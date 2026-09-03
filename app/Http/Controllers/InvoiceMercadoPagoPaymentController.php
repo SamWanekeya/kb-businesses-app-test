@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
-use App\Models\User;
 use Illuminate\Http\Request;
-use MercadoPago\SDK;
-use MercadoPago\Preference;
 use MercadoPago\Item;
+use MercadoPago\Preference;
+use MercadoPago\SDK;
 
 class InvoiceMercadoPagoPaymentController extends Controller
 {
@@ -52,7 +51,7 @@ class InvoiceMercadoPagoPaymentController extends Controller
             $preference->back_urls = [
                 "success" => route('invoice.mercadopago.success'),
                 "failure" => route('invoice.mercadopago.failure'),
-                "pending" => route('invoice.mercadopago.pending')
+                "pending" => route('invoice.mercadopago.pending'),
             ];
 
             $externalReference = "invoice_{$invoice->id}_{$validated['amount']}_{$validated['payment_type']}_" . time();
@@ -71,14 +70,15 @@ class InvoiceMercadoPagoPaymentController extends Controller
             return response()->json([
                 'preference_id' => $preference->id,
                 'redirect_url' => $redirectUrl,
-                'mode' => $mode
+                'mode' => $mode,
             ]);
 
         } catch (\Exception $e) {
             \Log::error('MercadoPago preference creation failed', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -133,7 +133,7 @@ class InvoiceMercadoPagoPaymentController extends Controller
                     'invoice_id' => $invoiceId,
                     'amount' => $amount,
                     'payment_type' => $paymentType,
-                    'payment_id' => $paymentId
+                    'payment_id' => $paymentId,
                 ]);
 
                 return redirect()->route('invoices.public', $invoice)->with('success', __('Payment successful'));
@@ -146,8 +146,9 @@ class InvoiceMercadoPagoPaymentController extends Controller
         } catch (\Exception $e) {
             \Log::error('MercadoPago payment processing failed', [
                 'error' => $e->getMessage(),
-                'status' => $status
+                'status' => $status,
             ]);
+
             return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment processing failed'));
         }
     }

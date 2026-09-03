@@ -1,6 +1,6 @@
-import React from 'react';
 import QRCodeComponent from '@/components/QRCodeComponent';
 import { useBrand } from '@/contexts/BrandContext';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface Template1Props {
@@ -17,12 +17,16 @@ interface Template1Props {
 export default function Template1({ salesOrder, items, taxesData, settings, color, qr_invoice, qrCodeSvg, styles: externalStyles }: Template1Props) {
     const { logoDark } = useBrand();
     const { t } = useTranslation();
-    const fontColor = color === 'ffffff' || color === 'fbdd03' || color === 'c1d82f' || color === '46de98' || color === '40c7d0' || color === 'fac168' ? '#000000' : '#ffffff';
+    const fontColor =
+        color === 'ffffff' || color === 'fbdd03' || color === 'c1d82f' || color === '46de98' || color === '40c7d0' || color === 'fac168'
+            ? '#000000'
+            : '#ffffff';
     const borderColor = color === 'ffffff' ? '#000000' : `#${color}`;
 
     const formatCurrency = (amount: number | string): React.ReactNode => {
         if (typeof amount === 'string' && amount.startsWith('<')) return amount;
-        const val = (window as any).appSettings?.formatCurrency(Number(amount)) || `$${Number(amount)}`; return <span style={{fontFamily:'monospace'}}>{val}</span>;
+        const val = (window as any).appSettings?.formatCurrency(Number(amount)) || `$${Number(amount)}`;
+        return <span style={{ fontFamily: 'monospace' }}>{val}</span>;
     };
 
     const formatValue = (value: any, fallback: string = '') => {
@@ -120,11 +124,7 @@ export default function Template1({ salesOrder, items, taxesData, settings, colo
                         <tbody>
                             <tr>
                                 <td style={styles.headerCell}>
-                                    <img
-                                        src={settings.salesOrderLogo || logoDark}
-                                        style={{ maxWidth: '150px',maxHeight:'150px' }}
-                                        alt="Logo"
-                                    />
+                                    <img src={settings.salesOrderLogo || logoDark} style={{ maxWidth: '150px', maxHeight: '150px' }} alt="Logo" />
                                 </td>
                                 <td className="text-right" style={{ ...styles.headerCell, textAlign: 'right' }}>
                                     <h3 style={{ textTransform: 'uppercase', fontSize: '40px', fontWeight: 'bold' }}>{t('SALES ORDER')}</h3>
@@ -139,7 +139,12 @@ export default function Template1({ salesOrder, items, taxesData, settings, colo
                                 <td style={styles.headerCell}>
                                     <strong>{t('From')}:</strong>
                                     <p style={{ margin: '10px 0', lineHeight: '1.5' }}>
-                                        {formatValue(salesOrder.creator?.name) && <>{formatValue(salesOrder.creator.name)}<br /></>}
+                                        {formatValue(salesOrder.creator?.name) && (
+                                            <>
+                                                {formatValue(salesOrder.creator.name)}
+                                                <br />
+                                            </>
+                                        )}
                                         {formatValue(salesOrder.creator?.email) && <>{formatValue(salesOrder.creator.email)}</>}
                                     </p>
                                 </td>
@@ -148,20 +153,23 @@ export default function Template1({ salesOrder, items, taxesData, settings, colo
                                         <tbody>
                                             <tr>
                                                 <td className="text-right" style={{ ...styles.noSpace }}></td>
-                                                <td className="text-right" style={{ ...styles.noSpace, textAlign: 'right', paddingLeft: '10px' }}>{t('Number')}: {formatValue(salesOrder.sales_order_number)}</td>
+                                                <td className="text-right" style={{ ...styles.noSpace, textAlign: 'right', paddingLeft: '10px' }}>
+                                                    {t('Number')}: {formatValue(salesOrder.sales_order_number)}
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td style={styles.noSpace}></td>
-                                                <td className="text-right" style={{ ...styles.noSpace, textAlign: 'right', paddingLeft: '10px' }}>{t('Order Date')}: {formatValue(salesOrder.order_date)}<br />{t('Delivery Date')}: {formatValue(salesOrder.delivery_date)}</td>
+                                                <td className="text-right" style={{ ...styles.noSpace, textAlign: 'right', paddingLeft: '10px' }}>
+                                                    {t('Order Date')}: {formatValue(salesOrder.order_date)}
+                                                    <br />
+                                                    {t('Delivery Date')}: {formatValue(salesOrder.delivery_date)}
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td colSpan={2} style={styles.noSpace}>
                                                     {qr_invoice === 'on' && (
                                                         <div className="view-qrcode" style={styles.qrCode}>
-                                                            <QRCodeComponent
-                                                                text={window.location.href}
-                                                                size={114}
-                                                            />
+                                                            <QRCodeComponent text={window.location.href} size={114} />
                                                         </div>
                                                     )}
                                                 </td>
@@ -181,23 +189,35 @@ export default function Template1({ salesOrder, items, taxesData, settings, colo
                                 <td style={{ verticalAlign: 'top' }}>
                                     <strong style={{ marginBottom: '10px', display: 'block' }}>{t('Bill To')}:</strong>
                                     <p style={{ margin: 0, lineHeight: '1.5' }}>
-                                        {formatValue(salesOrder.billing_contact?.name)}<br />
-                                        {formatValue(salesOrder.billing_contact?.email)}<br />
-                                        {formatValue(salesOrder.billing_contact?.phone)}<br />
-                                        {formatValue(salesOrder.billing_address)}<br />
-                                        {formatValue(salesOrder.billing_postal_code)}<br />
-                                        {formatValue(salesOrder.billing_city)} {formatValue(salesOrder.billing_state)} {formatValue(salesOrder.billing_country)}
+                                        {formatValue(salesOrder.billing_contact?.name)}
+                                        <br />
+                                        {formatValue(salesOrder.billing_contact?.email)}
+                                        <br />
+                                        {formatValue(salesOrder.billing_contact?.phone)}
+                                        <br />
+                                        {formatValue(salesOrder.billing_address)}
+                                        <br />
+                                        {formatValue(salesOrder.billing_postal_code)}
+                                        <br />
+                                        {formatValue(salesOrder.billing_city)} {formatValue(salesOrder.billing_state)}{' '}
+                                        {formatValue(salesOrder.billing_country)}
                                     </p>
                                 </td>
                                 <td className="text-right" style={{ verticalAlign: 'top', textAlign: 'right' }}>
                                     <strong style={{ marginBottom: '10px', display: 'block' }}>{t('Ship To')}:</strong>
                                     <p style={{ margin: 0, lineHeight: '1.5' }}>
-                                        {formatValue(salesOrder.shipping_contact?.name)}<br />
-                                        {formatValue(salesOrder.shipping_contact?.email)}<br />
-                                        {formatValue(salesOrder.shipping_contact?.phone)}<br />
-                                        {formatValue(salesOrder.shipping_address)}<br />
-                                        {formatValue(salesOrder.shipping_postal_code)}<br />
-                                        {formatValue(salesOrder.shipping_city)} {formatValue(salesOrder.shipping_state)} {formatValue(salesOrder.shipping_country)}
+                                        {formatValue(salesOrder.shipping_contact?.name)}
+                                        <br />
+                                        {formatValue(salesOrder.shipping_contact?.email)}
+                                        <br />
+                                        {formatValue(salesOrder.shipping_contact?.phone)}
+                                        <br />
+                                        {formatValue(salesOrder.shipping_address)}
+                                        <br />
+                                        {formatValue(salesOrder.shipping_postal_code)}
+                                        <br />
+                                        {formatValue(salesOrder.shipping_city)} {formatValue(salesOrder.shipping_state)}{' '}
+                                        {formatValue(salesOrder.shipping_country)}
                                     </p>
                                 </td>
                             </tr>
@@ -212,7 +232,9 @@ export default function Template1({ salesOrder, items, taxesData, settings, colo
                                 <th style={styles.th}>{t('Rate')}</th>
                                 <th style={styles.th}>{t('Tax')} (%)</th>
                                 <th style={styles.th}>{t('Discount')}</th>
-                                <th style={styles.th}>{t('Price')} <small style={{ display: 'block', fontSize: '12px' }}>{t('before tax & discount')}</small></th>
+                                <th style={styles.th}>
+                                    {t('Price')} <small style={{ display: 'block', fontSize: '12px' }}>{t('before tax & discount')}</small>
+                                </th>
                             </tr>
                             {items.map((item, index) => (
                                 <tr key={index}>
@@ -222,12 +244,19 @@ export default function Template1({ salesOrder, items, taxesData, settings, colo
                                     <td style={styles.td}>
                                         {item.itemTax?.map((tax: any, taxIndex: number) => (
                                             <span key={taxIndex}>
-                                                {tax.name} ({tax.rate})<br />{tax.price}
+                                                {tax.name} ({tax.rate})<br />
+                                                {tax.price}
                                             </span>
                                         ))}
                                     </td>
                                     <td style={styles.td}>{item.discount ? formatCurrency(item.discount) : '-'}</td>
-                                    <td style={styles.td}>{formatCurrency(typeof item.price === 'string' && item.price.startsWith('<') ? item.price : (Number(item.price) * Number(item.quantity)))}</td>
+                                    <td style={styles.td}>
+                                        {formatCurrency(
+                                            typeof item.price === 'string' && item.price.startsWith('<')
+                                                ? item.price
+                                                : Number(item.price) * Number(item.quantity),
+                                        )}
+                                    </td>
                                 </tr>
                             ))}
                             <tr>
@@ -245,18 +274,26 @@ export default function Template1({ salesOrder, items, taxesData, settings, colo
                                             {salesOrder.total_discount > 0 && (
                                                 <tr>
                                                     <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{t('Discount')}:</td>
-                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>{formatCurrency(salesOrder.total_discount)}</td>
+                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
+                                                        {formatCurrency(salesOrder.total_discount)}
+                                                    </td>
                                                 </tr>
                                             )}
                                             {Object.entries(taxesData || {}).map(([taxName, taxPrice]) => (
                                                 <tr key={taxName}>
                                                     <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{taxName}:</td>
-                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>{formatCurrency(taxPrice as number)}</td>
+                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
+                                                        {formatCurrency(taxPrice as number)}
+                                                    </td>
                                                 </tr>
                                             ))}
                                             <tr>
-                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}><strong>{t('Total')}:</strong></td>
-                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}><strong>{formatCurrency(salesOrder.total_amount || 0)}</strong></td>
+                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>
+                                                    <strong>{t('Total')}:</strong>
+                                                </td>
+                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
+                                                    <strong>{formatCurrency(salesOrder.total_amount || 0)}</strong>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>

@@ -36,6 +36,7 @@ class InvoiceCinetPayPaymentController extends Controller
 
             if (!isset($settings['payment_settings']['cinetpay_site_id']) || !isset($settings['payment_settings']['cinetpay_api_key'])) {
                 \Log::error('CinetPay payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+
                 return response()->json(['error' => __('CinetPay not configured')], 400);
             }
 
@@ -52,7 +53,7 @@ class InvoiceCinetPayPaymentController extends Controller
                 'return_url' => route('invoice.cinetpay.success', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
-                    'payment_type' => $validated['payment_type']
+                    'payment_type' => $validated['payment_type'],
                 ]),
                 'channels' => 'ALL',
                 'metadata' => json_encode([
@@ -68,7 +69,7 @@ class InvoiceCinetPayPaymentController extends Controller
                 'customer_city' => $invoice->billing_city ?? 'Abidjan',
                 'customer_country' => 'CI',
                 'customer_state' => 'CI',
-                'customer_zip_code' =>  preg_replace('/[\s-]/', '', $invoice->billing_postal_code) ?? '00000',
+                'customer_zip_code' => preg_replace('/[\s-]/', '', $invoice->billing_postal_code) ?? '00000',
             ];
 
             $response = $this->callCinetPayAPI($apiData);
@@ -78,21 +79,23 @@ class InvoiceCinetPayPaymentController extends Controller
                     'success' => true,
                     'payment_url' => $response['data']['payment_url'],
                     'payment_token' => $response['data']['payment_token'],
-                    'transaction_id' => $transactionId
+                    'transaction_id' => $transactionId,
                 ]);
             }
 
             \Log::error('CinetPay payment creation failed', ['invoice_id' => $invoice->id, 'response' => $response]);
+
             return response()->json([
-                'error' => $response['message'] ?? __('Payment creation failed')
+                'error' => $response['message'] ?? __('Payment creation failed'),
             ], 400);
 
         } catch (\Exception $e) {
             \Log::error('CinetPay payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
     }
@@ -108,7 +111,7 @@ class InvoiceCinetPayPaymentController extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
-            'User-Agent: SalesyCRM/1.0'
+            'User-Agent: SalesyCRM/1.0',
         ]);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
@@ -119,6 +122,7 @@ class InvoiceCinetPayPaymentController extends Controller
         if (curl_error($ch)) {
             Log::error('CinetPay cURL error: ' . curl_error($ch));
             curl_close($ch);
+
             return null;
         }
 
@@ -154,17 +158,19 @@ class InvoiceCinetPayPaymentController extends Controller
                     \Log::info('CinetPay invoice payment successful', [
                         'invoice_id' => $invoice->id,
                         'amount' => $amount,
-                        'payment_type' => $paymentType
+                        'payment_type' => $paymentType,
                     ]);
 
                     return redirect()->route('invoices.public', $invoice->id)->with('success', __('Payment successful'));
                 }
             }
+
             return redirect()->route('invoices.public', $invoiceId)->with('error', __('Payment verification failed'));
         } catch (\Exception $e) {
             \Log::error('CinetPay success callback error', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return redirect()->route('invoices.public', $request->input('invoice_id'))->with('error', __('Payment processing failed'));
         }
     }
@@ -195,7 +201,7 @@ class InvoiceCinetPayPaymentController extends Controller
 
                         \Log::info('CinetPay invoice payment callback successful', [
                             'invoice_id' => $invoice->id,
-                            'transaction_id' => $transactionId
+                            'transaction_id' => $transactionId,
                         ]);
                     }
                 }
@@ -205,8 +211,9 @@ class InvoiceCinetPayPaymentController extends Controller
 
         } catch (\Exception $e) {
             \Log::error('CinetPay callback error', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return response()->json(['error' => __('Callback processing failed')], 500);
         }
     }

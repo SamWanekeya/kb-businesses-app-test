@@ -23,7 +23,7 @@ class AccountIndustryController extends Controller
 
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'name', 'created_at'];
+        $allowedSorts = ['id', 'name', 'created_at'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -37,7 +37,7 @@ class AccountIndustryController extends Controller
 
         return Inertia::render('account-industries/index', [
             'accountIndustries' => $accountIndustries,
-            'filters' => $request->only(['search', 'status', 'sort_field', 'sort_direction', 'per_page', 'page'])
+            'filters' => $request->only(['search', 'status', 'sort_field', 'sort_direction', 'per_page', 'page']),
         ]);
     }
 
@@ -47,12 +47,12 @@ class AccountIndustryController extends Controller
             'name' => 'required|string|max:255|unique:account_industries,name,NULL,id,created_by,' . createdBy(),
             'description' => 'nullable|string',
             'color' => 'nullable|string|max:7',
-            'status' => 'required|in:active,inactive'
+            'status' => 'required|in:active,inactive',
         ]);
 
         AccountIndustry::create([
             ...$request->all(),
-            'created_by' => createdBy()
+            'created_by' => createdBy(),
         ]);
 
         return redirect()->back()->with('success', __('Account industry created successfully'));
@@ -64,7 +64,7 @@ class AccountIndustryController extends Controller
             'name' => 'required|string|max:255|unique:account_industries,name,' . $accountIndustry->id . ',id,created_by,' . createdBy(),
             'description' => 'nullable|string',
             'color' => 'nullable|string|max:7',
-            'status' => 'required|in:active,inactive'
+            'status' => 'required|in:active,inactive',
         ]);
 
         $accountIndustry->update($request->all());
@@ -86,7 +86,7 @@ class AccountIndustryController extends Controller
     public function toggleStatus(AccountIndustry $accountIndustry)
     {
         $accountIndustry->update([
-            'status' => $accountIndustry->status === 'active' ? 'inactive' : 'active'
+            'status' => $accountIndustry->status === 'active' ? 'inactive' : 'active',
         ]);
 
         return redirect()->back()->with('success', __('Account industry status updated successfully'));

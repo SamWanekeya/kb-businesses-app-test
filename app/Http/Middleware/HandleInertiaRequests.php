@@ -1,16 +1,15 @@
 <?php
+
 namespace App\Http\Middleware;
 
+use App\Models\Currency;
+use App\Models\PlanOrder;
+use App\Models\Setting;
+use App\Models\User;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
-use App\Models\Currency;
-use App\Models\User;
-use App\Models\Setting;
-use App\Models\PlanOrder;
-use App\Services\StorageConfigService;
-use Closure;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -63,7 +62,7 @@ class HandleInertiaRequests extends Middleware
             ];
             $storageSettings = [
                 'allowed_file_types' => 'jpg,png,webp,gif',
-                'maximum_file_size_mb' => 2
+                'maximum_file_size_mb' => 2,
             ];
         } else {
             // Get system settings
@@ -75,12 +74,12 @@ class HandleInertiaRequests extends Middleware
             if ($currency) {
                 $currencySettings = [
                     'currencySymbol' => $currency->symbol,
-                    'currencyNname' => $currency->name
+                    'currencyNname' => $currency->name,
                 ];
             } else {
                 $currencySettings = [
-                    'currencySymbol' =>  '$',
-                    'currencyNname' => 'US Dollar'
+                    'currencySymbol' => '$',
+                    'currencyNname' => 'US Dollar',
                 ];
             }
 
@@ -97,19 +96,19 @@ class HandleInertiaRequests extends Middleware
                     $maxSizeKB = (int)($storageSettingsData['storage_maximum_upload_size'] ?? 2048);
                     $storageSettings = [
                         'allowed_file_types' => $storageSettingsData['storage_file_types'] ?? 'jpg,png,webp,gif',
-                        'maximum_file_size_mb' => round($maxSizeKB / 1024, 2)
+                        'maximum_file_size_mb' => round($maxSizeKB / 1024, 2),
                     ];
                 } else {
                     $storageSettings = [
                         'allowed_file_types' => 'jpg,png,webp,gif',
-                        'maximum_file_size_mb' => 2
+                        'maximum_file_size_mb' => 2,
                     ];
                 }
             } catch (\Exception $e) {
                 // Fallback to default settings if service fails
                 $storageSettings = [
                     'allowed_file_types' => 'jpg,png,webp,gif',
-                    'maximum_file_size_mb' => 2
+                    'maximum_file_size_mb' => 2,
                 ];
             }
 
@@ -173,7 +172,7 @@ class HandleInertiaRequests extends Middleware
                     $registrationEnabledSetting = Setting::where('user_id', $superAdmin->id)
                         ->where('key', 'registrationEnabled')
                         ->first();
-                    $superAdminRegistrationEnabled = $registrationEnabledSetting ? (($registrationEnabledSetting->value == "1") ? true: false) : true;
+                    $superAdminRegistrationEnabled = $registrationEnabledSetting ? (($registrationEnabledSetting->value == "1") ? true : false) : true;
                 }
             } catch (\Exception $e) {
                 $superAdminRegistrationEnabled = false;
@@ -189,55 +188,55 @@ class HandleInertiaRequests extends Middleware
             $globalSettings['registrationEnabled'] = $superAdminRegistrationEnabled;
             $globalSettings['themeMode'] = getSetting('themeMode', $settings['themeMode'] ?? 'light', auth()?->id());
 
-        //     // Add cookie consent setting
-        //     $cookieSetting = Setting::where('key', 'strictlyNecessaryCookies')->first();
-        //     $globalSettings['strictlyNecessaryCookies'] = $cookieSetting ? (int)$cookieSetting->value : 0;
-        //
-        // Get layout direction from Super Administrator settings for public pages
+            //     // Add cookie consent setting
+            //     $cookieSetting = Setting::where('key', 'strictlyNecessaryCookies')->first();
+            //     $globalSettings['strictlyNecessaryCookies'] = $cookieSetting ? (int)$cookieSetting->value : 0;
+            //
+            // Get layout direction from Super Administrator settings for public pages
             if (config('app.is_demo')) {
                 $globalSettings['layoutDirection'] = $request->cookie('layoutDirection', 'left');
             } else {
                 // $globalSettings['layoutDirection'] = $globalSettings['layoutDirection'] ?? 'left';
-             $globalSettings['layoutDirection'] = getSetting('layoutDirection', $settings['layoutDirection'] ?? 'left', auth()?->id());
+                $globalSettings['layoutDirection'] = getSetting('layoutDirection', $settings['layoutDirection'] ?? 'left', auth()?->id());
 
             }
             if (auth()->user() && auth()->user()->hasRole('organization')) {
                 $lastPlanOrder = PlanOrder::where('user_id', auth()->id())->orderByDesc('processed_at')->first();
-                if($lastPlanOrder){
-                    $globalSettings['planExirationDate'] = $lastPlanOrder->billing_cycle == 'monthly' ? ($lastPlanOrder?->processed_at?->addMonth() ?? null) : ($lastPlanOrder?->processed_at?->addYear()?? null);
+                if ($lastPlanOrder) {
+                    $globalSettings['planExirationDate'] = $lastPlanOrder->billing_cycle == 'monthly' ? ($lastPlanOrder?->processed_at?->addMonth() ?? null) : ($lastPlanOrder?->processed_at?->addYear() ?? null);
 
-                    }
+                }
             }
 
         }
 
         return [
             ...parent::share($request),
-            'name'  => config('app.name'),
-            'base_url'  => config('app.url'),
-            'image_url'  => getImageUrlPrefix(),
+            'name' => config('app.name'),
+            'base_url' => config('app.url'),
+            'image_url' => getImageUrlPrefix(),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'csrf_token' => csrf_token(),
-            'auth'  => [
-                'user'        => $request->user()?->load('plan', 'creator.plan'),
-                'roles'       => fn() => $request->user()?->roles->pluck('name'),
-                'permissions' => fn() => $request->user()?->getAllPermissions()->pluck('name'),
+            'auth' => [
+                'user' => $request->user()?->load('plan', 'creator.plan'),
+                'roles' => fn () => $request->user()?->roles->pluck('name'),
+                'permissions' => fn () => $request->user()?->getAllPermissions()->pluck('name'),
             ],
             'userLanguage' => config('app.is_demo')
                 ? $request->cookie('app_language', $request->user()?->lang ?? $globalSettings['defaultLanguage'] ?? 'en')
                 : ($request->user()?->lang ?? $globalSettings['defaultLanguage'] ?? 'en'),
             'isImpersonating' => session('impersonated_by') ? true : false,
-            'ziggy' => fn(): array => [
-                ...(new Ziggy)->toArray(),
+            'ziggy' => fn (): array => [
+                ...(new Ziggy())->toArray(),
                 'location' => $request->url(),
             ],
             'flash' => [
                 'success' => $request->session()->get('success'),
-                'error'   => $request->session()->get('error'),
+                'error' => $request->session()->get('error'),
             ],
             'globalSettings' => $globalSettings,
             'storageSettings' => $storageSettings,
-            'is_demo' => config('app.is_demo',false)
+            'is_demo' => config('app.is_demo', false),
         ];
     }
 }

@@ -18,7 +18,7 @@ class InvoicePayTRPaymentController extends Controller
             'merchant_id' => $settings['payment_settings']['paytr_merchant_id'] ?? null,
             'merchant_key' => $settings['payment_settings']['paytr_merchant_key'] ?? null,
             'merchant_salt' => $settings['payment_settings']['paytr_merchant_salt'] ?? null,
-            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'TRY'
+            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'TRY',
         ];
     }
 
@@ -50,7 +50,7 @@ class InvoicePayTRPaymentController extends Controller
             $user_basket = json_encode([[
                 "Invoice #{$invoice->invoice_number} - " . ucfirst($validated['payment_type']) . ' payment',
                 number_format($validated['amount'], 2),
-                1
+                1,
             ]]);
 
             // Generate hash according to PayTR documentation
@@ -85,7 +85,7 @@ class InvoicePayTRPaymentController extends Controller
                 'merchant_fail_url' => route('invoice.paytr.failure') . '?invoice_id=' . $invoice->id,
                 'timeout_limit' => 30,
                 'currency' => $credentials['currency'],
-                'test_mode' => 1
+                'test_mode' => 1,
             ];
 
             $response = Http::asForm()->timeout(40)->post('https://www.paytr.com/odeme/api/get-token', $post_data);
@@ -96,7 +96,7 @@ class InvoicePayTRPaymentController extends Controller
                     return response()->json([
                         'success' => true,
                         'token' => $result['token'],
-                        'iframe_url' => 'https://www.paytr.com/odeme/guvenli/' . $result['token']
+                        'iframe_url' => 'https://www.paytr.com/odeme/guvenli/' . $result['token'],
                     ]);
                 } else {
                     throw new \Exception($result['reason'] ?? __('Token generation failed'));
@@ -107,8 +107,9 @@ class InvoicePayTRPaymentController extends Controller
         } catch (\Exception $e) {
             \Log::error('PayTR invoice payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -139,7 +140,7 @@ class InvoicePayTRPaymentController extends Controller
                 'invoice_id' => $invoiceId,
                 'amount' => $amount,
                 'payment_type' => $paymentType,
-                'merchant_oid' => $merchantOid
+                'merchant_oid' => $merchantOid,
             ]);
 
             return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('success', __('Payment completed successfully!'));
@@ -147,8 +148,9 @@ class InvoicePayTRPaymentController extends Controller
         } catch (\Exception $e) {
             \Log::error('PayTR invoice success callback error', [
                 'error' => $e->getMessage(),
-                'request' => $request->all()
+                'request' => $request->all(),
             ]);
+
             return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment verification failed.'));
         }
     }
@@ -160,7 +162,7 @@ class InvoicePayTRPaymentController extends Controller
 
             \Log::warning('PayTR invoice payment failed', [
                 'invoice_id' => $invoiceId,
-                'request' => $request->all()
+                'request' => $request->all(),
             ]);
 
             if ($invoiceId) {
@@ -187,12 +189,14 @@ class InvoicePayTRPaymentController extends Controller
 
             if (!$invoiceId) {
                 \Log::error('PayTR invoice callback: Could not extract invoice ID', ['merchant_oid' => $merchant_oid]);
+
                 return response('ERROR', 500);
             }
 
             $invoice = Invoice::find($invoiceId);
             if (!$invoice) {
                 \Log::error('PayTR invoice callback: Invoice not found', ['invoice_id' => $invoiceId]);
+
                 return response('ERROR', 500);
             }
 
@@ -206,13 +210,13 @@ class InvoicePayTRPaymentController extends Controller
                 \Log::info('PayTR invoice callback verified', [
                     'merchant_oid' => $merchant_oid,
                     'invoice_id' => $invoiceId,
-                    'status' => $status
+                    'status' => $status,
                 ]);
             } else {
                 \Log::warning('PayTR invoice callback hash mismatch or failed status', [
                     'merchant_oid' => $merchant_oid,
                     'status' => $status,
-                    'hash_match' => $hash === $calculatedHash
+                    'hash_match' => $hash === $calculatedHash,
                 ]);
             }
 
@@ -220,8 +224,9 @@ class InvoicePayTRPaymentController extends Controller
         } catch (\Exception $e) {
             \Log::error('PayTR invoice callback error', [
                 'error' => $e->getMessage(),
-                'request' => $request->all()
+                'request' => $request->all(),
             ]);
+
             return response('ERROR', 500);
         }
     }

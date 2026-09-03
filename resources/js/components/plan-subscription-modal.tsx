@@ -1,6 +1,6 @@
+import { PaymentProcessor } from '@/components/payment/payment-processor';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useTranslation } from 'react-i18next';
-import { PaymentProcessor } from '@/components/payment/payment-processor';
 
 interface PaymentMethod {
     id: string;
@@ -26,30 +26,23 @@ interface PlanSubscriptionModalProps {
     currencySymbol?: string;
 }
 
-export function PlanSubscriptionModal({
-    isOpen,
-    onClose,
-    plan,
-    billingCycle,
-    paymentMethods,
-    currencySymbol
-}: PlanSubscriptionModalProps) {
+export function PlanSubscriptionModal({ isOpen, onClose, plan, billingCycle, paymentMethods, currencySymbol }: PlanSubscriptionModalProps) {
     const { t } = useTranslation();
 
     const handlePaymentSuccess = () => {
         onClose();
     };
 
-    const enabledPaymentMethods = paymentMethods.filter(method => method.enabled);
+    const enabledPaymentMethods = paymentMethods.filter((method) => method.enabled);
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="max-w-lg max-h-[90vh] flex flex-col">
+            <DialogContent className="flex max-h-[90vh] max-w-lg flex-col">
                 <DialogHeader className="flex-shrink-0">
                     <DialogTitle>{t('Subscribe to {{planName}}', { planName: plan.name })}</DialogTitle>
                 </DialogHeader>
 
-                <div className="overflow-y-auto flex-1 pr-2">
+                <div className="flex-1 overflow-y-auto pr-2">
                     <PaymentProcessor
                         plan={plan}
                         billingCycle={billingCycle}

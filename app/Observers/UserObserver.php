@@ -2,8 +2,8 @@
 
 namespace App\Observers;
 
-use App\Models\User;
 use App\Models\Plan;
+use App\Models\User;
 
 class UserObserver
 {
@@ -43,20 +43,20 @@ class UserObserver
         } elseif ($user->type === 'organization') {
             copySettingsFromSuperAdmin($user->id);
         }
-         if ($user->type == 'organization') {
-                if ($user->plan_id) {
-                    $data = [
-                        'user_id' => $user->id,
-                        'plan_id' => $user->plan_id,
-                        // 'billing_cycle'=>'monthly',
-                        'payment_method' => 'manual',
-                        'coupon_code' => null,
-                        'payment_id' => null,
-                        'status' => 'approved',
-                        'processed_at' => now(),
-                    ];
-                    createPlanOrder($data);
-                }
+        if ($user->type == 'organization') {
+            if ($user->plan_id) {
+                $data = [
+                    'user_id' => $user->id,
+                    'plan_id' => $user->plan_id,
+                    // 'billing_cycle'=>'monthly',
+                    'payment_method' => 'manual',
+                    'coupon_code' => null,
+                    'payment_id' => null,
+                    'status' => 'approved',
+                    'processed_at' => now(),
+                ];
+                createPlanOrder($data);
             }
+        }
     }
 }

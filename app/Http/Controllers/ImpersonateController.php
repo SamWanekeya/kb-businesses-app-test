@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Lab404\Impersonate\Impersonate;
 
 class ImpersonateController extends Controller
 {
@@ -18,7 +17,7 @@ class ImpersonateController extends Controller
             'acting_user_id' => auth()->id(),
             'impersonated_user_id' => $userId,
             'ip_address' => $request->ip_address(),
-            'timestamp' => now()
+            'timestamp' => now(),
         ]);
 
         $originalUserId = auth()->id();
@@ -36,7 +35,7 @@ class ImpersonateController extends Controller
     public function leave(Request $request)
     {
         Log::info('Impersonation ended', [
-            'timestamp' => now()
+            'timestamp' => now(),
         ]);
 
         $originalUserId = session('impersonated_by');

@@ -3,14 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
-use App\Models\User;
-use App\Models\Setting;
-use App\Models\PlanOrder;
-use App\Models\PaymentSetting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Stripe\Stripe;
 use Stripe\PaymentIntent;
+use Stripe\Stripe;
 
 class StripePaymentController extends Controller
 {

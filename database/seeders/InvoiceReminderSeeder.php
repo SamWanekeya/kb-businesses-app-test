@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Invoice;
 use App\Models\InvoiceReminder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class InvoiceReminderSeeder extends Seeder
@@ -16,7 +15,7 @@ class InvoiceReminderSeeder extends Seeder
     {
         $invoices = Invoice::get();
         foreach ($invoices as $invoice) {
-            $count=rand(1,3);
+            $count = rand(1, 3);
             for ($i = 0; $i < $count; $i++) {
                 InvoiceReminder::create([
                     'invoice_id' => $invoice->id,

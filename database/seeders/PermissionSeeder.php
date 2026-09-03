@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Arr;
+use Spatie\Permission\Models\Permission;
 
 class PermissionSeeder extends Seeder
 {
@@ -499,9 +499,9 @@ class PermissionSeeder extends Seeder
             ['name' => 'toggle-status-announcements', 'module' => 'announcements', 'label' => 'Toggle Status Announcements', 'description' => 'Can toggle status announcements'],
 
             // Sign in History management
-            ['name' => 'manage-login-history', 'module' => 'sign_in_history', 'label' => 'Manage Sign in History', 'description' => 'Can manage login history'],
-            ['name' => 'show-login-history', 'module' => 'sign_in_history', 'label' => 'Show Sign in History', 'description' => 'Can view login history'],
-            ['name' => 'delete-login-history', 'module' => 'sign_in_history', 'label' => 'Delete Sign in History', 'description' => 'Can delete login history'],
+            ['name' => 'manage-sign-in-history', 'module' => 'sign_in_history', 'label' => 'Manage Sign in History', 'description' => 'Can manage sign in history'],
+            ['name' => 'show-sign-in-history', 'module' => 'sign_in_history', 'label' => 'Show Sign in History', 'description' => 'Can view sign in history'],
+            ['name' => 'delete-sign-in-history', 'module' => 'sign_in_history', 'label' => 'Delete Sign in History', 'description' => 'Can delete sign in history'],
         ];
 
         // foreach ($permissions as $permission) {

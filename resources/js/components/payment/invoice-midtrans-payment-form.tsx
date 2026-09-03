@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, CreditCard, AlertCircle } from 'lucide-react';
 import { router } from '@inertiajs/react';
+import { AlertCircle, CreditCard, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface InvoiceMidtransPaymentFormProps {
     invoiceId: number;
@@ -97,33 +97,39 @@ export function InvoiceMidtransPaymentForm({
             },
             onClose: () => {
                 setIsLoading(false);
-            }
+            },
         });
     };
 
     const handlePaymentSuccess = (result: any, orderId: string) => {
-        router.visit(route('invoice.midtrans.success', {
-            invoice_id: invoiceId,
-            amount: amount,
-            payment_type: paymentType,
-            order_id: orderId,
-            transaction_status: result.transaction_status,
-        }), {
-            onSuccess: () => {
-                onSuccess();
+        router.visit(
+            route('invoice.midtrans.success', {
+                invoice_id: invoiceId,
+                amount: amount,
+                payment_type: paymentType,
+                order_id: orderId,
+                transaction_status: result.transaction_status,
+            }),
+            {
+                onSuccess: () => {
+                    onSuccess();
+                },
+                onError: () => {
+                    setError(t('Payment processing failed'));
+                    setIsLoading(false);
+                },
             },
-            onError: () => {
-                setError(t('Payment processing failed'));
-                setIsLoading(false);
-            },
-        });
+        );
     };
 
     const formatPrice = (price: number) => {
-        return window.appSettings?.formatCurrency(Number(price || 0)) || new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: currency,
-        }).format(price);
+        return (
+            window.appSettings?.formatCurrency(Number(price || 0)) ||
+            new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: currency,
+            }).format(price)
+        );
     };
 
     return (
@@ -142,19 +148,19 @@ export function InvoiceMidtransPaymentForm({
                     </Alert>
                 )}
 
-                <div className="bg-muted p-4 rounded-lg">
-                    <div className="flex justify-between items-center">
+                <div className="bg-muted rounded-lg p-4">
+                    <div className="flex items-center justify-between">
                         <span className="font-medium">{t('Payment Amount')}</span>
                         <span className="text-lg font-bold">{formatPrice(amount)}</span>
                     </div>
-                    <div className="text-sm text-muted-foreground mt-1">
+                    <div className="text-muted-foreground mt-1 text-sm">
                         {t('Payment Type')}: {t(paymentType === 'full' ? 'Full Payment' : 'Partial Payment')}
                     </div>
                 </div>
 
-                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                    <h4 className="font-medium text-blue-900 mb-2">{t('Supported Payment Methods')}</h4>
-                    <ul className="text-sm text-blue-800 space-y-1">
+                <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
+                    <h4 className="mb-2 font-medium text-blue-900">{t('Supported Payment Methods')}</h4>
+                    <ul className="space-y-1 text-sm text-blue-800">
                         <li>• Credit/Debit Cards</li>
                         <li>• Bank Transfer</li>
                         <li>• E-Wallets (GoPay, OVO, DANA)</li>
@@ -163,19 +169,10 @@ export function InvoiceMidtransPaymentForm({
                 </div>
 
                 <div className="flex gap-3">
-                    <Button
-                        variant="outline"
-                        onClick={onCancel}
-                        disabled={isLoading}
-                        className="flex-1"
-                    >
+                    <Button variant="outline" onClick={onCancel} disabled={isLoading} className="flex-1">
                         {t('Cancel')}
                     </Button>
-                    <Button
-                        onClick={handlePayment}
-                        disabled={isLoading || !midtransClientKey}
-                        className="flex-1"
-                    >
+                    <Button onClick={handlePayment} disabled={isLoading || !midtransClientKey} className="flex-1">
                         {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -189,7 +186,6 @@ export function InvoiceMidtransPaymentForm({
                         )}
                     </Button>
                 </div>
-
             </CardContent>
         </Card>
     );

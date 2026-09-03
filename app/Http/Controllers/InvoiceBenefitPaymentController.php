@@ -54,7 +54,7 @@ class InvoiceBenefitPaymentController extends Controller
                     "middle_name" => "",
                     "last_name" => "",
                     "email" => $invoice->customer_email ?? 'customer@kakbima.dev',
-                    "phone" => ["country_code" => "973", "number" => "33123456"]
+                    "phone" => ["country_code" => "973", "number" => "33123456"],
                 ],
                 "source" => ["id" => "src_bh.benefit"],
                 "post" => ["url" => route('invoice.benefit.callback')],
@@ -62,8 +62,8 @@ class InvoiceBenefitPaymentController extends Controller
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
-                    'order_id' => $orderID
-                ])]
+                    'order_id' => $orderID,
+                ])],
             ];
 
             $response = \Http::withHeaders([
@@ -78,14 +78,14 @@ class InvoiceBenefitPaymentController extends Controller
                     return response()->json([
                         'success' => true,
                         'redirect_url' => $res['transaction']['url'],
-                        'transaction_id' => $orderID
+                        'transaction_id' => $orderID,
                     ]);
                 }
             }
 
             \Log::error('Benefit payment initialization failed', [
                 'invoice_id' => $invoice->id,
-                'response' => $response->body()
+                'response' => $response->body(),
             ]);
 
             return response()->json(['success' => false, 'message' => __('Payment initialization failed')], 500);
@@ -94,8 +94,9 @@ class InvoiceBenefitPaymentController extends Controller
             \Log::error('Benefit invoice payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return response()->json(['success' => false, 'message' => __('Payment processing failed')], 500);
         }
     }
@@ -127,7 +128,7 @@ class InvoiceBenefitPaymentController extends Controller
                 'invoice_id' => $invoiceId,
                 'amount' => $amount,
                 'payment_type' => $paymentType,
-                'payment_id' => $tapId ?? $orderId
+                'payment_id' => $tapId ?? $orderId,
             ]);
 
             return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('success', __('Payment completed successfully!'));
@@ -135,8 +136,9 @@ class InvoiceBenefitPaymentController extends Controller
         } catch (\Exception $e) {
             \Log::error('Benefit success callback error', [
                 'error' => $e->getMessage(),
-                'request' => $request->all()
+                'request' => $request->all(),
             ]);
+
             return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment verification failed'));
         }
     }
@@ -147,7 +149,7 @@ class InvoiceBenefitPaymentController extends Controller
             $payload = $request->all();
 
             \Log::info('Benefit invoice callback received', [
-                'payload' => $payload
+                'payload' => $payload,
             ]);
 
             return response('OK', 200);
@@ -155,8 +157,9 @@ class InvoiceBenefitPaymentController extends Controller
         } catch (\Exception $e) {
             \Log::error('Benefit invoice callback error', [
                 'error' => $e->getMessage(),
-                'request' => $request->all()
+                'request' => $request->all(),
             ]);
+
             return response(__('Callback processing failed'), 500);
         }
     }

@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 use Illuminate\Support\Facades\Schema;
+use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 
 trait AutoApplyPermissionCheck
 {
@@ -11,6 +11,7 @@ trait AutoApplyPermissionCheck
      * Apply permission check to a model query
      *
      * @param string $modelClass The fully qualified model class name
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function queryWithPermission($modelClass)
@@ -23,6 +24,7 @@ trait AutoApplyPermissionCheck
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param string $module The module name (e.g., 'roles', 'permissions')
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function applyPermissionScope($query, $module)
@@ -65,6 +67,7 @@ trait AutoApplyPermissionCheck
                 if (Schema::hasColumn($query->getModel()->getTable(), 'created_by')) {
                     return $query->where('created_by', $user->id);
                 }
+
                 return $query;
             }
         }
@@ -75,6 +78,7 @@ trait AutoApplyPermissionCheck
                 if (Schema::hasColumn($query->getModel()->getTable(), 'created_by')) {
                     return $query->where('created_by', $user->id);
                 }
+
                 return $query;
             }
         } catch (PermissionDoesNotExist $e) {
@@ -84,6 +88,7 @@ trait AutoApplyPermissionCheck
                 if (Schema::hasColumn($query->getModel()->getTable(), 'created_by')) {
                     return $query->where('created_by', $user->id);
                 }
+
                 return $query;
             }
         }

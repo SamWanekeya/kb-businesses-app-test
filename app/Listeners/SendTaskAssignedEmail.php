@@ -46,19 +46,19 @@ class SendTaskAssignedEmail
             ];
 
             try {
-            // Send email to billing contact if exists
-            if ($assignedUser && $assignedUser->email) {
-                $createdByUser = User::find(createdBy());
-                $userLanguage = $createdByUser->lang ?? 'en';
-                $this->emailService->sendTemplateEmailWithLanguage(
-                    templateName: 'Task Assigned',
-                    variables: $variables,
-                    toEmail: $assignedUser->email,
-                    toName: $assignedUser->name,
-                    language: $userLanguage
-                );
-            }
-        } catch (Exception $e) {
+                // Send email to billing contact if exists
+                if ($assignedUser && $assignedUser->email) {
+                    $createdByUser = User::find(createdBy());
+                    $userLanguage = $createdByUser->lang ?? 'en';
+                    $this->emailService->sendTemplateEmailWithLanguage(
+                        templateName: 'Task Assigned',
+                        variables: $variables,
+                        toEmail: $assignedUser->email,
+                        toName: $assignedUser->name,
+                        language: $userLanguage
+                    );
+                }
+            } catch (Exception $e) {
                 // Store error in session for frontend notification
                 session()->flash('email_error', 'Failed to send Task Assigned email: ' . $e->getMessage());
             }

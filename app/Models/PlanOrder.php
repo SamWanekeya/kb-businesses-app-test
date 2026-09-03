@@ -24,7 +24,7 @@ class PlanOrder extends Model
         'processed_at',
         'processed_by',
         'notes',
-        'receipt_path'
+        'receipt_path',
     ];
 
     protected $casts = [
@@ -32,7 +32,7 @@ class PlanOrder extends Model
         'processed_at' => 'datetime',
         'original_price' => 'decimal:2',
         'discount_amount' => 'decimal:2',
-        'final_price' => 'decimal:2'
+        'final_price' => 'decimal:2',
     ];
 
     protected static function boot()
@@ -69,12 +69,12 @@ class PlanOrder extends Model
         return $this->belongsTo(Coupon::class);
     }
 
- public function approve($processedBy = null)
+    public function approve($processedBy = null)
     {
         $this->update([
             'status' => 'approved',
             'processed_at' => now(),
-            'processed_by' => $processedBy
+            'processed_by' => $processedBy,
         ]);
 
         // Assign plan to user when approved
@@ -95,7 +95,7 @@ class PlanOrder extends Model
             'status' => 'rejected',
             'processed_at' => now(),
             'processed_by' => $processedBy,
-            'notes' => $notes
+            'notes' => $notes,
         ]);
     }
 

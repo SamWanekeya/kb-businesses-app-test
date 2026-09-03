@@ -72,7 +72,7 @@ class PaiementPaymentController extends Controller
                 'customerPhoneNumber' => $user->phone ?? '01234567',
                 'notificationURL' => route('paiement.callback'),
                 'returnURL' => route('paiement.success'),
-                'returnContext' => json_encode(['plan_id' => $plan->id, 'user_id' => $user->id])
+                'returnContext' => json_encode(['plan_id' => $plan->id, 'user_id' => $user->id]),
             ];
 
             $ch = curl_init();
@@ -90,10 +90,11 @@ class PaiementPaymentController extends Controller
 
             if ($httpCode === 200 && $response) {
                 $responseData = json_decode($response, true);
+
                 return response()->json([
                     'success' => true,
                     'payment_response' => $responseData,
-                    'transaction_id' => $transactionId
+                    'transaction_id' => $transactionId,
                 ]);
             }
 

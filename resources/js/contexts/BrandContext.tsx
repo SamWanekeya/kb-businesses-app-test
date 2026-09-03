@@ -1,7 +1,7 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { Appearance, ThemeColor } from '@/hooks/use-appearance';
 import { getCookie, isDemoMode } from '@/utils/cookie-utils';
 import { getDisplayUrl } from '@/utils/helper';
-import { Appearance, ThemeColor } from '@/hooks/use-appearance';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { LayoutPosition } from './LayoutContext';
 // Default brand settings
 export const DEFAULT_BRAND_SETTINGS: BrandSettings = {
@@ -37,7 +37,6 @@ export interface BrandSettings {
 
 // Get brand settings from props or cookies/localStorage as fallback
 export const getBrandSettings = (userSettings?: Record<string, string>): BrandSettings => {
-
     // In demo mode, prioritize cookies over backend settings
     if (isDemoMode()) {
         try {
@@ -102,9 +101,8 @@ export function BrandProvider({ children, globalSettings, user }: { children: Re
         if (isDemo) {
             return null; // This will force getBrandSettings to use cookies
         }
-        const isPublicRoute = window.location.pathname.includes('/public/') ||
-            window.location.pathname === '/' ||
-            window.location.pathname.includes('/auth/');
+        const isPublicRoute =
+            window.location.pathname.includes('/public/') || window.location.pathname === '/' || window.location.pathname.includes('/auth/');
 
         // For public routes (landing page, auth pages), always use super_admin settings
         if (isPublicRoute) {
@@ -112,7 +110,7 @@ export function BrandProvider({ children, globalSettings, user }: { children: Re
                 ...globalSettings,
                 favicon: getDisplayUrl(globalSettings.favicon),
                 logoDark: getDisplayUrl(globalSettings.logoDark),
-                logoLight: getDisplayUrl(globalSettings.logoLight)
+                logoLight: getDisplayUrl(globalSettings.logoLight),
             };
         }
 
@@ -122,7 +120,7 @@ export function BrandProvider({ children, globalSettings, user }: { children: Re
                 ...user.globalSettings,
                 favicon: getDisplayUrl(user.globalSettings?.favicon),
                 logoDark: getDisplayUrl(user.globalSettings?.logoDark),
-                logoLight: getDisplayUrl(user.globalSettings?.logoLight)
+                logoLight: getDisplayUrl(user.globalSettings?.logoLight),
             };
         }
 
@@ -131,13 +129,11 @@ export function BrandProvider({ children, globalSettings, user }: { children: Re
             ...globalSettings,
             favicon: getDisplayUrl(globalSettings.favicon),
             logoDark: getDisplayUrl(globalSettings.logoDark),
-            logoLight: getDisplayUrl(globalSettings.logoLight)
+            logoLight: getDisplayUrl(globalSettings.logoLight),
         };
     };
 
-    const [brandSettings, setBrandSettings] = useState<BrandSettings>(() =>
-        getBrandSettings(getEffectiveSettings())
-    );
+    const [brandSettings, setBrandSettings] = useState<BrandSettings>(() => getBrandSettings(getEffectiveSettings()));
 
     // Listen for changes in settings
     useEffect(() => {
@@ -152,8 +148,7 @@ export function BrandProvider({ children, globalSettings, user }: { children: Re
                     // Merge cookie settings with effective settings
                     effectiveSettings = { ...effectiveSettings, ...parsedCookieSettings };
                 }
-            } catch (error) {
-            }
+            } catch (error) {}
         }
 
         const updatedSettings = getBrandSettings(effectiveSettings);
@@ -168,19 +163,23 @@ export function BrandProvider({ children, globalSettings, user }: { children: Re
         // Apply theme settings immediately for landing page (both demo and non-demo modes)
         if (updatedSettings) {
             // Apply theme color globally
-            const color = updatedSettings.themeColor === 'custom' ? updatedSettings.customColor : {
-                blue: '#A12582',
-                green: '#10b77f',
-                purple: '#8b5cf6',
-                orange: '#f97316',
-                red: '#ef4444'
-            }[updatedSettings.themeColor] || '#A12582';
+            const color =
+                updatedSettings.themeColor === 'custom'
+                    ? updatedSettings.customColor
+                    : {
+                          blue: '#A12582',
+                          green: '#10b77f',
+                          purple: '#8b5cf6',
+                          orange: '#f97316',
+                          red: '#ef4444',
+                      }[updatedSettings.themeColor] || '#A12582';
 
             document.documentElement.style.setProperty('--theme-color', color);
             document.documentElement.style.setProperty('--primary', color);
 
             // Apply theme mode
-            const isDark = updatedSettings.themeMode === 'dark' ||
+            const isDark =
+                updatedSettings.themeMode === 'dark' ||
                 (updatedSettings.themeMode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
             document.documentElement.classList.toggle('dark', isDark);
             document.body.classList.toggle('dark', isDark);
@@ -193,14 +192,10 @@ export function BrandProvider({ children, globalSettings, user }: { children: Re
     }, [globalSettings, user]);
 
     const updateBrandSettings = (newSettings: Partial<BrandSettings>) => {
-        setBrandSettings(prev => ({ ...prev, ...newSettings }));
+        setBrandSettings((prev) => ({ ...prev, ...newSettings }));
     };
 
-    return (
-        <BrandContext.Provider value={{ ...brandSettings, updateBrandSettings }}>
-            {children}
-        </BrandContext.Provider>
-    );
+    return <BrandContext.Provider value={{ ...brandSettings, updateBrandSettings }}>{children}</BrandContext.Provider>;
 }
 
 export function useBrand() {

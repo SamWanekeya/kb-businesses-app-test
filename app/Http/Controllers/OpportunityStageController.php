@@ -29,7 +29,7 @@ class OpportunityStageController extends Controller
         // Handle sorting
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'name', 'probability', 'created_at'];
+        $allowedSorts = ['id', 'name', 'probability', 'created_at'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -101,6 +101,7 @@ class OpportunityStageController extends Controller
         if ($opportunityStage) {
             try {
                 $opportunityStage->delete();
+
                 return redirect()->back()->with('success', __('Opportunity stage deleted successfully.'));
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete opportunity stage.'));

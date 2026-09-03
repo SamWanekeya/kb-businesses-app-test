@@ -1,14 +1,13 @@
-import { useState } from 'react';
+import { toast } from '@/components/custom-toast';
 import { PageTemplate } from '@/components/page-template';
-import { usePage, useForm ,router} from '@inertiajs/react';
-import { ArrowLeft, Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { router, useForm, usePage } from '@inertiajs/react';
+import { ArrowLeft, Plus, Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { toast } from '@/components/custom-toast';
 
 type ProductRow = {
     id: number;
@@ -21,14 +20,7 @@ type ProductRow = {
 
 export default function PurchaseOrderEdit() {
     const { t } = useTranslation();
-    const {
-        purchaseOrder,
-        accounts = [],
-        contacts = [],
-        salesOrders = [],
-        products: productOptions = [],
-        users = [],
-    } = usePage().props as any;
+    const { purchaseOrder, accounts = [], contacts = [], salesOrders = [], products: productOptions = [], users = [] } = usePage().props as any;
 
     const { data, setData, setError, clearErrors, put, processing, errors } = useForm({
         name: purchaseOrder.name || '',
@@ -97,13 +89,13 @@ export default function PurchaseOrderEdit() {
                     shipping_country: details.shipping_country || '',
                     products: details.products?.length
                         ? details.products.map((p: any, i: number) => ({
-                            id: Date.now() + i,
-                            product_id: String(p.product_id),
-                            quantity: String(p.quantity || 1),
-                            unit_price: String(p.unit_price ?? 0),
-                            discount_type: p.discount_type || 'none',
-                            discount_value: String(p.discount_value || '0'),
-                        }))
+                              id: Date.now() + i,
+                              product_id: String(p.product_id),
+                              quantity: String(p.quantity || 1),
+                              unit_price: String(p.unit_price ?? 0),
+                              discount_type: p.discount_type || 'none',
+                              discount_value: String(p.discount_value || '0'),
+                          }))
                         : prev.products,
                 }));
                 clearErrors('account_id' as any);
@@ -114,15 +106,21 @@ export default function PurchaseOrderEdit() {
                     details.products.forEach((_: any, i: number) => clearErrors(`products.${i}.product_id` as any));
                 }
             }
-        } catch { }
+        } catch {}
     };
 
     const addProductRow = () =>
-        setData('products', [...data.products, { id: Date.now(), product_id: '', quantity: '1', unit_price: '0', discount_type: 'none', discount_value: '0' }]);
+        setData('products', [
+            ...data.products,
+            { id: Date.now(), product_id: '', quantity: '1', unit_price: '0', discount_type: 'none', discount_value: '0' },
+        ]);
 
     const removeProductRow = (id: number) => {
         if (data.products.length <= 1) return;
-        setData('products', data.products.filter((r) => r.id !== id));
+        setData(
+            'products',
+            data.products.filter((r) => r.id !== id),
+        );
     };
 
     const updateProductRow = (id: number, field: string, value: string) => {
@@ -175,8 +173,7 @@ export default function PurchaseOrderEdit() {
         if (!data.order_date) errs.order_date = t('Order Date is required');
         if (!data.assigned_to) errs.assigned_to = t('Assign To is required');
 
-        if (!data.products.length || data.products.every((r: any) => !r.product_id))
-            errs.products = t('At least one product is required');
+        if (!data.products.length || data.products.every((r: any) => !r.product_id)) errs.products = t('At least one product is required');
 
         data.products.forEach((row, i) => {
             if (!row.product_id) errs[`products.${i}.product_id`] = t('Product is required');
@@ -192,7 +189,9 @@ export default function PurchaseOrderEdit() {
         toast.loading(t('Updating purchase order...'));
         put(route('purchase-orders.update', purchaseOrder.id), {
             onSuccess: () => toast.dismiss(),
-            onError: () => { toast.dismiss(); },
+            onError: () => {
+                toast.dismiss();
+            },
         });
     };
 
@@ -201,25 +200,28 @@ export default function PurchaseOrderEdit() {
             title={t('Edit Purchase Order')}
             description={t('Update purchase order details and related information')}
             breadcrumbs={breadcrumbs}
-            actions={[{
-                label: t('Back'),
-                icon: <ArrowLeft className="h-4 w-4 mr-2" />,
-                variant: 'outline',
-                onClick: () =>router.visit(route('purchase-orders.index'))
-            }]}
+            actions={[
+                {
+                    label: t('Back'),
+                    icon: <ArrowLeft className="mr-2 h-4 w-4" />,
+                    variant: 'outline',
+                    onClick: () => router.visit(route('purchase-orders.index')),
+                },
+            ]}
             noPadding
         >
             <form onSubmit={handleSubmit}>
-                <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
-
+                <div className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     {/* ── PURCHASE ORDER DETAILS ── */}
-                    <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
                         <p className="text-base font-bold text-gray-900 dark:text-white">{t('Purchase Order Details')}</p>
                     </div>
 
-                    <div className="px-6 py-5 space-y-4 border-b border-gray-200 dark:border-gray-700">
+                    <div className="space-y-4 border-b border-gray-200 px-6 py-5 dark:border-gray-700">
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium" required>{t('Purchase Order Name')}</Label>
+                            <Label className="text-sm font-medium" required>
+                                {t('Purchase Order Name')}
+                            </Label>
                             <Input
                                 value={data.name}
                                 onChange={(e) => set('name', e.target.value)}
@@ -240,16 +242,20 @@ export default function PurchaseOrderEdit() {
                         </div>
 
                         {/* Sales Order + Account */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium" required>{t('Sales Order')}</Label>
+                                <Label className="text-sm font-medium" required>
+                                    {t('Sales Order')}
+                                </Label>
                                 <Select value={data.sales_order_id} onValueChange={handleSalesOrderChange}>
                                     <SelectTrigger className={errors.sales_order_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={t('Select sales order')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {salesOrders.map((so: any) => (
-                                            <SelectItem key={so.id} value={String(so.id)}>{so.name}</SelectItem>
+                                            <SelectItem key={so.id} value={String(so.id)}>
+                                                {so.name}
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
@@ -257,14 +263,18 @@ export default function PurchaseOrderEdit() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium" required>{t('Account')}</Label>
+                                <Label className="text-sm font-medium" required>
+                                    {t('Account')}
+                                </Label>
                                 <Select value={data.account_id} onValueChange={(v) => set('account_id', v)}>
                                     <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={t('Select account')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {accounts.map((a: any) => (
-                                            <SelectItem key={a.id} value={String(a.id)}>{a.name}</SelectItem>
+                                            <SelectItem key={a.id} value={String(a.id)}>
+                                                {a.name}
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
@@ -273,16 +283,20 @@ export default function PurchaseOrderEdit() {
                         </div>
 
                         {/* Billing Contact + Shipping Contact */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium" required>{t('Billing Contact')}</Label>
+                                <Label className="text-sm font-medium" required>
+                                    {t('Billing Contact')}
+                                </Label>
                                 <Select value={data.billing_contact_id} onValueChange={(v) => set('billing_contact_id', v)}>
                                     <SelectTrigger className={errors.billing_contact_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={t('Select billing contact')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {contacts.map((c: any) => (
-                                            <SelectItem key={c.id} value={String(c.id)}>{c.name}</SelectItem>
+                                            <SelectItem key={c.id} value={String(c.id)}>
+                                                {c.name}
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
@@ -290,14 +304,18 @@ export default function PurchaseOrderEdit() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium" required>{t('Shipping Contact')}</Label>
+                                <Label className="text-sm font-medium" required>
+                                    {t('Shipping Contact')}
+                                </Label>
                                 <Select value={data.shipping_contact_id} onValueChange={(v) => set('shipping_contact_id', v)}>
                                     <SelectTrigger className={errors.shipping_contact_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={t('Select shipping contact')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {contacts.map((c: any) => (
-                                            <SelectItem key={c.id} value={String(c.id)}>{c.name}</SelectItem>
+                                            <SelectItem key={c.id} value={String(c.id)}>
+                                                {c.name}
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
@@ -306,7 +324,7 @@ export default function PurchaseOrderEdit() {
                         </div>
 
                         {/* Status + Order Date */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1">
                                 <Label className="text-sm font-medium">{t('Status')}</Label>
                                 <Select value={data.status} onValueChange={(v) => set('status', v)}>
@@ -324,43 +342,69 @@ export default function PurchaseOrderEdit() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium" required>{t('Order Date')}</Label>
-                                <div className="cursor-pointer" onClick={(e) => { const input = (e.currentTarget as HTMLElement).querySelector('input'); try { (input as any)?.showPicker?.(); } catch { input?.focus(); } }}>
-                                <Input
-                                    type="date"
-                                    value={data.order_date}
-                                    onChange={(e) => set('order_date', e.target.value)}
-                                    className={`cursor-pointer ${errors.order_date ? 'border-red-500' : ''}`}
-                                />
+                                <Label className="text-sm font-medium" required>
+                                    {t('Order Date')}
+                                </Label>
+                                <div
+                                    className="cursor-pointer"
+                                    onClick={(e) => {
+                                        const input = (e.currentTarget as HTMLElement).querySelector('input');
+                                        try {
+                                            (input as any)?.showPicker?.();
+                                        } catch {
+                                            input?.focus();
+                                        }
+                                    }}
+                                >
+                                    <Input
+                                        type="date"
+                                        value={data.order_date}
+                                        onChange={(e) => set('order_date', e.target.value)}
+                                        className={`cursor-pointer ${errors.order_date ? 'border-red-500' : ''}`}
+                                    />
                                 </div>
                                 {errors.order_date && <p className="text-xs text-red-500">{errors.order_date}</p>}
                             </div>
                         </div>
 
                         {/* Expected Delivery Date + Assign To */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1">
                                 <Label className="text-sm font-medium">{t('Expected Delivery Date')}</Label>
-                                <div className="cursor-pointer" onClick={(e) => { const input = (e.currentTarget as HTMLElement).querySelector('input'); try { (input as any)?.showPicker?.(); } catch { input?.focus(); } }}>
-                                <Input
-                                    type="date"
-                                    value={data.expected_delivery_date}
-                                    onChange={(e) => set('expected_delivery_date', e.target.value)}
-                                    className={`cursor-pointer ${errors.expected_delivery_date ? 'border-red-500' : ''}`}
-                                />
+                                <div
+                                    className="cursor-pointer"
+                                    onClick={(e) => {
+                                        const input = (e.currentTarget as HTMLElement).querySelector('input');
+                                        try {
+                                            (input as any)?.showPicker?.();
+                                        } catch {
+                                            input?.focus();
+                                        }
+                                    }}
+                                >
+                                    <Input
+                                        type="date"
+                                        value={data.expected_delivery_date}
+                                        onChange={(e) => set('expected_delivery_date', e.target.value)}
+                                        className={`cursor-pointer ${errors.expected_delivery_date ? 'border-red-500' : ''}`}
+                                    />
                                 </div>
                                 {errors.expected_delivery_date && <p className="text-xs text-red-500">{errors.expected_delivery_date}</p>}
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium" required>{t('Assign To')}</Label>
+                                <Label className="text-sm font-medium" required>
+                                    {t('Assign To')}
+                                </Label>
                                 <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
                                     <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={t('Select user')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {users.map((u: any) => (
-                                            <SelectItem key={u.id} value={String(u.id)}>{u.name} ({u.email})</SelectItem>
+                                            <SelectItem key={u.id} value={String(u.id)}>
+                                                {u.name} ({u.email})
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
@@ -370,69 +414,125 @@ export default function PurchaseOrderEdit() {
                     </div>
 
                     {/* ── PRODUCTS ── */}
-                    <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                    <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 dark:border-gray-700">
                         <p className="text-base font-bold text-gray-900 dark:text-white">{t('Products')}</p>
                         <Button type="button" size="sm" onClick={addProductRow}>
-                            <Plus className="h-4 w-4 mr-1" />
+                            <Plus className="mr-1 h-4 w-4" />
                             {t('Add Product')}
                         </Button>
                     </div>
 
-                    <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
-                        {errors.products && <p className="text-xs text-red-500 mb-3">{errors.products}</p>}
+                    <div className="border-b border-gray-200 px-6 py-5 dark:border-gray-700">
+                        {errors.products && <p className="mb-3 text-xs text-red-500">{errors.products}</p>}
 
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-sm">
-                                <thead>
-                                    <tr className="border-b bg-gray-50 dark:bg-gray-800 text-xs font-semibold text-gray-600 dark:text-gray-400">
-                                        <th className="px-4 py-3 text-left min-w-[180px]">{t('Product')} <span className="text-red-500">*</span></th>
-                                        <th className="px-4 py-3 text-left w-24">{t('Qty')} <span className="text-red-500">*</span></th>
-                                        <th className="px-4 py-3 text-left w-32">{t('Unit Price')} <span className="text-red-500">*</span></th>
-                                        <th className="px-4 py-3 text-left w-36">{t('Discount Type')}</th>
-                                        <th className="px-4 py-3 text-left w-28">{t('Discount Val')}</th>
-                                        <th className="px-4 py-3 text-left w-32">{t('Tax')}</th>
-                                        <th className="px-4 py-3 text-left w-28">{t('Total')}</th>
-                                        <th className="px-4 py-3 w-10"></th>
+                        <div className="overflow-x-auto p-4 md:p-0">
+                            <table className="block w-full text-sm xl:table">
+                                <thead className="hidden xl:table-header-group">
+                                    <tr className="border-b bg-gray-50 text-xs font-semibold text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                                        <th className="min-w-[180px] px-4 py-3 text-left">
+                                            {t('Product')} <span className="text-red-500">*</span>
+                                        </th>
+                                        <th className="w-24 px-4 py-3 text-left">
+                                            {t('Qty')} <span className="text-red-500">*</span>
+                                        </th>
+                                        <th className="w-32 px-4 py-3 text-left">
+                                            {t('Unit Price')} <span className="text-red-500">*</span>
+                                        </th>
+                                        <th className="w-36 px-4 py-3 text-left">{t('Discount Type')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{t('Discount Val')}</th>
+                                        <th className="w-32 px-4 py-3 text-left">{t('Tax')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{t('Total')}</th>
+                                        <th className="w-10 px-4 py-3"></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody className="block space-y-4 divide-y divide-gray-200 xl:table-row-group xl:space-y-0 xl:divide-y-0">
                                     {data.products.map((row, i) => {
                                         const disc = calcDiscount(row);
                                         const tax = calcTax(row);
                                         const total = calcLineTotal(row) - disc + tax;
                                         return (
-                                            <tr key={row.id} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                                                <td className="px-4 py-3 min-w-[180px]">
+                                            <tr
+                                                key={row.id}
+                                                className="border-border relative grid grid-cols-1 gap-3 rounded-lg border border-b border-gray-100 bg-gray-50/50 p-4 hover:bg-gray-50 sm:grid-cols-2 xl:table-row xl:gap-0 xl:space-y-0 xl:border-b xl:bg-transparent dark:border-gray-700 dark:bg-gray-800/30 dark:hover:bg-gray-800/50"
+                                            >
+                                                <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-[180px] xl:px-4 xl:py-3">
+                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                        {t('Product')} <span className="text-red-500">*</span>
+                                                    </span>
                                                     <Select value={row.product_id} onValueChange={(v) => updateProductRow(row.id, 'product_id', v)}>
                                                         <SelectTrigger className={errors[`products.${i}.product_id`] ? 'border-red-500' : ''}>
                                                             <SelectValue placeholder={t('Select product')} />
                                                         </SelectTrigger>
                                                         <SelectContent searchable>
                                                             {productOptions
-                                                                .filter((p: any) => !data.products.some((r, ri) => ri !== i && String(r.product_id) === String(p.id)))
-                                                                .map((p: any) => <SelectItem key={p.id} value={String(p.id)}>{p.name}</SelectItem>)
-                                                            }
+                                                                .filter(
+                                                                    (p: any) =>
+                                                                        !data.products.some(
+                                                                            (r, ri) => ri !== i && String(r.product_id) === String(p.id),
+                                                                        ),
+                                                                )
+                                                                .map((p: any) => (
+                                                                    <SelectItem key={p.id} value={String(p.id)}>
+                                                                        {p.name}
+                                                                    </SelectItem>
+                                                                ))}
                                                         </SelectContent>
                                                     </Select>
-                                                    {errors[`products.${i}.product_id`] && <p className="text-xs text-red-500 mt-1">{errors[`products.${i}.product_id`]}</p>}
-                                                    {i === 0 && productOptions.length === 0 && <p className="text-xs mt-1">{t('Click here to add')} <a href={route('products.index')} className="underline font-medium">{t('Products')}</a></p>}
+                                                    {errors[`products.${i}.product_id`] && (
+                                                        <p className="mt-1 text-xs text-red-500">{errors[`products.${i}.product_id`]}</p>
+                                                    )}
+                                                    {i === 0 && productOptions.length === 0 && (
+                                                        <p className="mt-1 text-xs">
+                                                            {t('Click here to add')}{' '}
+                                                            <a href={route('products.index')} className="font-medium underline">
+                                                                {t('Products')}
+                                                            </a>
+                                                        </p>
+                                                    )}
                                                 </td>
-                                                <td className="px-4 py-3 w-24">
-                                                    <Input type="number" min="1" value={row.quantity}
+                                                <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-24 xl:px-4 xl:py-3">
+                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                        {t('Qty')} <span className="text-red-500">*</span>
+                                                    </span>
+                                                    <Input
+                                                        type="number"
+                                                        min="1"
+                                                        value={row.quantity}
                                                         onChange={(e) => updateProductRow(row.id, 'quantity', e.target.value)}
-                                                        className={errors[`products.${i}.quantity`] ? 'border-red-500' : ''} />
-                                                    {errors[`products.${i}.quantity`] && <p className="text-xs text-red-500 mt-1">{errors[`products.${i}.quantity`]}</p>}
+                                                        className={errors[`products.${i}.quantity`] ? 'border-red-500' : ''}
+                                                    />
+                                                    {errors[`products.${i}.quantity`] && (
+                                                        <p className="mt-1 text-xs text-red-500">{errors[`products.${i}.quantity`]}</p>
+                                                    )}
                                                 </td>
-                                                <td className="px-4 py-3 w-32">
-                                                    <Input type="number" step="0.01" min="0" value={row.unit_price}
+                                                <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
+                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                        {t('Unit Price')} <span className="text-red-500">*</span>
+                                                    </span>
+                                                    <Input
+                                                        type="number"
+                                                        step="0.01"
+                                                        min="0"
+                                                        value={row.unit_price}
                                                         onChange={(e) => updateProductRow(row.id, 'unit_price', e.target.value)}
                                                         placeholder="0"
-                                                        className={errors[`products.${i}.unit_price`] ? 'border-red-500' : ''} />
-                                                    {errors[`products.${i}.unit_price`] && <p className="text-xs text-red-500 mt-1">{errors[`products.${i}.unit_price`]}</p>}
+                                                        className={errors[`products.${i}.unit_price`] ? 'border-red-500' : ''}
+                                                    />
+                                                    {errors[`products.${i}.unit_price`] && (
+                                                        <p className="mt-1 text-xs text-red-500">{errors[`products.${i}.unit_price`]}</p>
+                                                    )}
                                                 </td>
-                                                <td className="px-4 py-3 w-36">
-                                                    <Select value={row.discount_type} onValueChange={(v) => updateProductRow(row.id, 'discount_type', v)}>
-                                                        <SelectTrigger><SelectValue /></SelectTrigger>
+                                                <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-36 xl:px-4 xl:py-3">
+                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                        {t('Discount Type')}
+                                                    </span>
+                                                    <Select
+                                                        value={row.discount_type}
+                                                        onValueChange={(v) => updateProductRow(row.id, 'discount_type', v)}
+                                                    >
+                                                        <SelectTrigger>
+                                                            <SelectValue />
+                                                        </SelectTrigger>
                                                         <SelectContent>
                                                             <SelectItem value="none">{t('None')}</SelectItem>
                                                             <SelectItem value="percentage">{t('Percentage (%)')}</SelectItem>
@@ -440,22 +540,41 @@ export default function PurchaseOrderEdit() {
                                                         </SelectContent>
                                                     </Select>
                                                 </td>
-                                                <td className="px-4 py-3 w-28">
-                                                    <Input type="number" step="0.01" min="0" value={row.discount_value}
+                                                <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
+                                                    <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
+                                                        {t('Discount Val')}
+                                                    </span>
+                                                    <Input
+                                                        type="number"
+                                                        step="0.01"
+                                                        min="0"
+                                                        value={row.discount_value}
                                                         onChange={(e) => updateProductRow(row.id, 'discount_value', e.target.value)}
                                                         disabled={row.discount_type === 'none'}
-                                                        placeholder="0" className="disabled:opacity-40" />
+                                                        placeholder="0"
+                                                        className="disabled:opacity-40"
+                                                    />
                                                 </td>
-                                                <td className="px-4 py-3 w-32 whitespace-nowrap">
-                                                    <span className="text-sm font-medium text-muted-foreground">
-                                                        {(() => { const p = productOptions.find((p: any) => String(p.id) === row.product_id); return p?.tax ? `${p.tax.name} (${parseFloat(p.tax.rate).toFixed(2)}%)` : t('No Tax'); })()}
+                                                <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-32 xl:px-4 xl:py-3">
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{t('Tax')}</span>
+                                                    <span className="text-muted-foreground text-sm font-medium">
+                                                        {(() => {
+                                                            const p = productOptions.find((p: any) => String(p.id) === row.product_id);
+                                                            return p?.tax ? `${p.tax.name} (${parseFloat(p.tax.rate).toFixed(2)}%)` : t('No Tax');
+                                                        })()}
                                                     </span>
                                                 </td>
-                                                <td className="px-4 py-3 w-28 font-medium font-mono">{fmt(total)}</td>
-                                                <td className="px-4 py-3 w-10">
-                                                    <button type="button" onClick={() => removeProductRow(row.id)}
+                                                <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-mono font-medium xl:table-cell xl:w-28 xl:px-4 xl:py-3">
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{t('Total')}</span>
+                                                    <span>{fmt(total)}</span>
+                                                </td>
+                                                <td className="col-span-1 block w-full border-t px-0 py-0 pt-2 text-right sm:col-span-2 xl:table-cell xl:w-10 xl:border-t-0 xl:px-4 xl:py-3 xl:pt-0 xl:text-left">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => removeProductRow(row.id)}
                                                         disabled={data.products.length <= 1}
-                                                        className="p-1.5 rounded text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed">
+                                                        className="cursor-pointer rounded p-1.5 text-gray-500 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30 dark:hover:bg-gray-700"
+                                                    >
                                                         <Trash2 className="h-4 w-4 text-gray-500" />
                                                     </button>
                                                 </td>
@@ -471,19 +590,19 @@ export default function PurchaseOrderEdit() {
                                 <div className="min-w-[260px] space-y-1.5">
                                     <div className="flex justify-between text-sm text-gray-600">
                                         <span>{t('Subtotal')}</span>
-                                        <span className="font-medium font-mono">{fmt(subtotal + totalDiscount)}</span>
+                                        <span className="font-mono font-medium">{fmt(subtotal + totalDiscount)}</span>
                                     </div>
                                     <div className="flex justify-between text-sm text-red-600">
                                         <span>{t('Discount')}</span>
-                                        <span className="font-medium font-mono">-{fmt(totalDiscount)}</span>
+                                        <span className="font-mono font-medium">-{fmt(totalDiscount)}</span>
                                     </div>
                                     <div className="flex justify-between text-sm text-gray-600">
                                         <span>{t('Tax')}</span>
-                                        <span className="font-medium font-mono">{fmt(totalTax)}</span>
+                                        <span className="font-mono font-medium">{fmt(totalTax)}</span>
                                     </div>
-                                    <div className="flex justify-between text-base font-bold text-gray-900 border-t pt-2">
+                                    <div className="flex justify-between border-t pt-2 text-base font-bold text-gray-900">
                                         <span>{t('Grand Total')}</span>
-                                        <span className="text-green-600 text-lg font-mono">{fmt(grandTotal)}</span>
+                                        <span className="font-mono text-lg text-green-600">{fmt(grandTotal)}</span>
                                     </div>
                                 </div>
                             </div>
@@ -491,7 +610,7 @@ export default function PurchaseOrderEdit() {
                     </div>
 
                     {/* ── ACTIONS ── */}
-                    <div className="px-6 py-4 flex justify-end gap-3">
+                    <div className="flex justify-end gap-3 px-6 py-4">
                         <Button type="button" variant="outline" onClick={() => router.visit(route('purchase-orders.index'))}>
                             {t('Cancel')}
                         </Button>

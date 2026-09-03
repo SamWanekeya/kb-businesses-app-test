@@ -14,6 +14,7 @@ class TaxSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -22,7 +23,7 @@ class TaxSeeder extends Seeder
             ['name' => 'GST', 'rate' => 18.00, 'description' => 'Goods and Services Tax'],
             ['name' => 'Sales Tax', 'rate' => 8.50, 'description' => 'State sales tax'],
             ['name' => 'Luxury Tax', 'rate' => 25.00, 'description' => 'Tax for luxury goods'],
-            ['name' => 'Export Exempt', 'rate' => 0.00, 'description' => 'Tax exemption for exports']
+            ['name' => 'Export Exempt', 'rate' => 0.00, 'description' => 'Tax exemption for exports'],
         ];
 
         foreach ($organizationUsers as $organization) {

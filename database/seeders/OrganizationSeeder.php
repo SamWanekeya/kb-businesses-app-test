@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use App\Models\Plan;
 use App\Models\Setting;
+use App\Models\User;
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Faker\Factory as Faker;
 
 class OrganizationSeeder extends Seeder
 {
@@ -38,7 +38,7 @@ class OrganizationSeeder extends Seeder
             'Weyland-Yutani Corp',
             'Tyrell Corporation',
             'Rekall Inc',
-            'Virtucon Industries'
+            'Virtucon Industries',
         ];
 
         // Create organization users

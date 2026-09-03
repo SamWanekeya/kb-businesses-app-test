@@ -49,7 +49,7 @@ class AamarpayPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['aamarpay_store_id']) || !isset($settings['payment_settings']['aamarpay_signature'])) {
@@ -89,14 +89,14 @@ class AamarpayPaymentController extends Controller
                     'price' => $pricing['final_price'],
                     'order_id' => $orderID,
                     'user_id' => $user->id,
-                    'billing_cycle' => $validated['billing_cycle']
+                    'billing_cycle' => $validated['billing_cycle'],
                 ]),
                 'fail_url' => route('aamarpay.success', [
                     'response' => 'failure',
                     'coupon' => $validated['coupon_code'] ?? '',
                     'plan_id' => $plan->id,
                     'price' => $pricing['final_price'],
-                    'order_id' => $orderID
+                    'order_id' => $orderID,
                 ]),
                 'cancel_url' => route('aamarpay.success', ['response' => 'cancel']),
                 'signature_key' => $settings['payment_settings']['aamarpay_signature'],

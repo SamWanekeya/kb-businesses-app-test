@@ -35,6 +35,7 @@ class InvoicePaiementPaymentController extends Controller
 
             if (!isset($settings['payment_settings']['paiement_merchant_id'])) {
                 \Log::error('Paiement Pro payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+
                 return response()->json(['error' => __('Paiement Pro not configured')], 400);
             }
 
@@ -55,13 +56,13 @@ class InvoicePaiementPaymentController extends Controller
                 'returnURL' => route('invoice.paiement.success', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
-                    'payment_type' => $validated['payment_type']
+                    'payment_type' => $validated['payment_type'],
                 ]),
                 'returnContext' => json_encode([
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
-                    'payment_type' => $validated['payment_type']
-                ])
+                    'payment_type' => $validated['payment_type'],
+                ]),
             ];
 
             $ch = curl_init();
@@ -79,22 +80,25 @@ class InvoicePaiementPaymentController extends Controller
 
             if ($httpCode === 200 && $response) {
                 $responseData = json_decode($response, true);
+
                 return response()->json([
                     'success' => true,
                     'payment_response' => $responseData,
-                    'transaction_id' => $transactionId
+                    'transaction_id' => $transactionId,
                 ]);
             }
 
             \Log::error('Paiement Pro payment creation failed', ['invoice_id' => $invoice->id, 'http_code' => $httpCode]);
+
             return response()->json(['error' => __('Payment initialization failed')], 500);
 
         } catch (\Exception $e) {
             \Log::error('Paiement Pro payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
     }
@@ -122,17 +126,19 @@ class InvoicePaiementPaymentController extends Controller
                     \Log::info('Paiement Pro invoice payment successful', [
                         'invoice_id' => $invoice->id,
                         'amount' => $amount,
-                        'payment_type' => $paymentType
+                        'payment_type' => $paymentType,
                     ]);
 
                     return redirect()->route('invoices.public', $invoice->id)->with('success', __('Payment successful'));
                 }
             }
+
             return redirect()->route('invoices.public', $invoiceId)->with('error', __('Payment verification failed'));
         } catch (\Exception $e) {
             \Log::error('Paiement Pro success callback error', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return redirect()->route('invoices.public', $request->input('invoice_id'))->with('error', __('Payment processing failed'));
         }
     }
@@ -163,7 +169,7 @@ class InvoicePaiementPaymentController extends Controller
 
                         \Log::info('Paiement Pro invoice payment callback successful', [
                             'invoice_id' => $invoice->id,
-                            'transaction_id' => $transactionId
+                            'transaction_id' => $transactionId,
                         ]);
                     }
                 }
@@ -173,8 +179,9 @@ class InvoicePaiementPaymentController extends Controller
 
         } catch (\Exception $e) {
             \Log::error('Paiement Pro callback error', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return response()->json(['error' => __('Callback processing failed')], 500);
         }
     }

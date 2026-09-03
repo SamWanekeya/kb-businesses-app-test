@@ -45,7 +45,7 @@ class InvoicePaymentService
             'amount' => $payment->amount,
             'payment_type' => $payment->payment_type,
             'payment_method' => $payment->payment_method,
-            'status' => $payment->status
+            'status' => $payment->status,
         ]);
 
         return $payment;
@@ -63,7 +63,7 @@ class InvoicePaymentService
         $payment->update([
             'status' => 'completed',
             'processed_at' => now(),
-            'notes' => $payment->notes . ($notes ? ' | Approved: ' . $notes : ' | Approved')
+            'notes' => $payment->notes . ($notes ? ' | Approved: ' . $notes : ' | Approved'),
         ]);
 
         // Update invoice status
@@ -72,7 +72,7 @@ class InvoicePaymentService
         Log::info('Payment approved', [
             'payment_id' => $paymentId,
             'invoice_id' => $payment->invoice_id,
-            'amount' => $payment->amount
+            'amount' => $payment->amount,
         ]);
 
         return $payment;
@@ -89,13 +89,13 @@ class InvoicePaymentService
 
         $payment->update([
             'status' => 'failed',
-            'notes' => $payment->notes . ($reason ? ' | Rejected: ' . $reason : ' | Rejected')
+            'notes' => $payment->notes . ($reason ? ' | Rejected: ' . $reason : ' | Rejected'),
         ]);
 
         Log::info('Payment rejected', [
             'payment_id' => $paymentId,
             'invoice_id' => $payment->invoice_id,
-            'reason' => $reason
+            'reason' => $reason,
         ]);
 
         return $payment;
@@ -117,7 +117,7 @@ class InvoicePaymentService
             'is_fully_paid' => $invoice->isFullyPaid(),
             'is_partially_paid' => $invoice->isPartiallyPaid(),
             'payment_status' => $invoice->status,
-            'payments' => $invoice->payments()->orderBy('created_at', 'desc')->get()
+            'payments' => $invoice->payments()->orderBy('created_at', 'desc')->get(),
         ];
     }
 

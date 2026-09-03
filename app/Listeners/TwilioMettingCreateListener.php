@@ -30,7 +30,7 @@ class TwilioMettingCreateListener
         $creator = $meeting->creator;
         $assignedUser = $meeting->assignedUser;
 
-        if (isNotificationTemplateEnabled('Meeting Create','twilio', createdBy()) && !empty($meeting->attendees)) {
+        if (isNotificationTemplateEnabled('Meeting Create', 'twilio', createdBy()) && !empty($meeting->attendees)) {
             $variables = [
                 '{meeting_subject}' => $meeting->title ?? '-',
                 '{meeting_date}' => date('Y-m-d', strtotime($meeting->start_date)) ?? '-',

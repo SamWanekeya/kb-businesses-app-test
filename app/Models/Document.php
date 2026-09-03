@@ -10,7 +10,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Document extends BaseModel implements HasMedia
 {
-    use HasFactory, InteractsWithMedia;
+    use HasFactory;
+    use InteractsWithMedia;
 
     protected $fillable = [
         'name',
@@ -37,7 +38,7 @@ class Document extends BaseModel implements HasMedia
     protected $appends = [
         'attachment_url',
         'attachment_name',
-        'attachment_size'
+        'attachment_size',
     ];
 
     /**
@@ -107,9 +108,11 @@ class Document extends BaseModel implements HasMedia
     {
         if ($this->attachment) {
             $media = \Spatie\MediaLibrary\MediaCollections\Models\Media::find($this->attachment);
+
             return $media && $media->exists() ? $media->getUrl() : null;
         }
         $media = $this->getFirstMedia('attachments');
+
         return $media ? $media->getUrl() : null;
     }
 
@@ -117,9 +120,11 @@ class Document extends BaseModel implements HasMedia
     {
         if ($this->attachment) {
             $media = \Spatie\MediaLibrary\MediaCollections\Models\Media::find($this->attachment);
+
             return $media && $media->exists() ? $media->name : null;
         }
         $media = $this->getFirstMedia('attachments');
+
         return $media ? $media->name : null;
     }
 
@@ -127,9 +132,11 @@ class Document extends BaseModel implements HasMedia
     {
         if ($this->attachment) {
             $media = \Spatie\MediaLibrary\MediaCollections\Models\Media::find($this->attachment);
+
             return $media && $media->exists() ? $media->size : null;
         }
         $media = $this->getFirstMedia('attachments');
+
         return $media ? $media->size : null;
     }
 }

@@ -58,6 +58,7 @@ class Plan extends Model
      * Get the price based on billing cycle
      *
      * @param string $cycle 'monthly' or 'yearly'
+     *
      * @return float
      */
     public function getPriceForCycle($cycle = 'monthly')

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\MediaLibrary\HasMedia;
@@ -12,7 +11,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Product extends BaseModel implements HasMedia
 {
-    use HasFactory, InteractsWithMedia;
+    use HasFactory;
+    use InteractsWithMedia;
 
     protected $fillable = [
         'name',
@@ -101,9 +101,11 @@ class Product extends BaseModel implements HasMedia
     {
         if ($this->main_image_id) {
             $media = \Spatie\MediaLibrary\MediaCollections\Models\Media::find($this->main_image_id);
+
             return $media && $media->exists() ? $media->getUrl() : $this->getDefaultImageUrl();
         }
         $media = $this->getFirstMedia('main');
+
         return $media && $media->exists() ? $media->getUrl() : $this->getDefaultImageUrl();
     }
 
@@ -117,18 +119,20 @@ class Product extends BaseModel implements HasMedia
         if ($this->additional_image_ids) {
             return collect($this->additional_image_ids)->map(function ($mediaId) {
                 $media = \Spatie\MediaLibrary\MediaCollections\Models\Media::find($mediaId);
+
                 return $media ? [
                     'id' => $media->id,
                     'url' => $media->getUrl(),
-                    'thumb_url' => $media->getUrl('thumb')
+                    'thumb_url' => $media->getUrl('thumb'),
                 ] : null;
             })->filter();
         }
+
         return $this->getMedia('additional')->map(function ($media) {
             return [
                 'id' => $media->id,
                 'url' => $media->getUrl(),
-                'thumb_url' => $media->getUrl('thumb')
+                'thumb_url' => $media->getUrl('thumb'),
             ];
         });
     }
@@ -147,7 +151,7 @@ class Product extends BaseModel implements HasMedia
                 'id' => $mainMedia->id,
                 'collection_name' => 'main',
                 'original_url' => $mainMedia->getUrl(),
-                'thumb_url' => $mainMedia->getUrl('thumb')
+                'thumb_url' => $mainMedia->getUrl('thumb'),
             ];
         }
 
@@ -158,7 +162,7 @@ class Product extends BaseModel implements HasMedia
                     'id' => $media->id,
                     'collection_name' => 'additional',
                     'original_url' => $media->getUrl(),
-                    'thumb_url' => $media->getUrl('thumb')
+                    'thumb_url' => $media->getUrl('thumb'),
                 ];
             }
         }

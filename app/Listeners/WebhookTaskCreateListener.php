@@ -8,6 +8,7 @@ use App\Services\WebhookService;
 class WebhookTaskCreateListener
 {
     private static array $processedTask = [];
+
     /**
      * Create the event listener.
      */

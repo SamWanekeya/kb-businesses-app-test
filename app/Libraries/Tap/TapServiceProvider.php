@@ -1,16 +1,16 @@
 <?php
 
 namespace App\Package;
+
 use Illuminate\Support\ServiceProvider;
 
 class TapServiceProvider extends ServiceProvider
 {
-
-  /**
-     * Bootstrap the application events.
-     *
-     * @return void
-     */
+    /**
+       * Bootstrap the application events.
+       *
+       * @return void
+       */
     public function boot()
     {
         $this->publishes([
@@ -29,12 +29,12 @@ class TapServiceProvider extends ServiceProvider
         $packageConfigFile = __DIR__.'/../config/tap_payment.php';
 
         $this->mergeConfigFrom(
-            $packageConfigFile, 'tap_payment'
+            $packageConfigFile,
+            'tap_payment'
         );
 
         //$this->registerBindings();
     }
-
 
     /**
      * Registers app bindings and aliases.

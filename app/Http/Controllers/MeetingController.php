@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Meeting;
-use App\Models\Lead;
-use App\Models\Contact;
 use App\Models\MeetingAttendee;
 use App\Services\GoogleCalendarService;
 use Illuminate\Http\Request;
@@ -19,7 +17,7 @@ class MeetingController extends Controller
             ? \Carbon\Carbon::parse($request->date)->format('Y-m-d')
             : \Carbon\Carbon::today()->format('Y-m-d');
 
-        $selectedYear  = $request->filled('year')  ? (int) $request->year  : (int) \Carbon\Carbon::parse($selectedDate)->format('Y');
+        $selectedYear = $request->filled('year') ? (int) $request->year : (int) \Carbon\Carbon::parse($selectedDate)->format('Y');
         $selectedMonth = $request->filled('month') ? (int) $request->month : (int) \Carbon\Carbon::parse($selectedDate)->format('n');
 
         // Base query scoped to tenant
@@ -28,11 +26,11 @@ class MeetingController extends Controller
             ->where('created_by', createdBy());
 
         $monthStart = \Carbon\Carbon::create($selectedYear, $selectedMonth, 1)->startOfMonth();
-        $monthEnd   = $monthStart->copy()->endOfMonth();
+        $monthEnd = $monthStart->copy()->endOfMonth();
 
         if (IsDemo()) {
             // Pick 10 record to show a spread of demo data
-            $meetings  = (clone $baseQuery)->take(10)->get();
+            $meetings = (clone $baseQuery)->take(10)->get();
             // Every day of the visible month gets a dot
             $meetingDates = collect();
             $cursor = $monthStart->copy();
@@ -57,7 +55,7 @@ class MeetingController extends Controller
             $meetingDates = collect();
             foreach ($meetingRanges as $m) {
                 $cursor = \Carbon\Carbon::parse($m->start_date)->max($monthStart->copy());
-                $end    = \Carbon\Carbon::parse($m->end_date)->min($monthEnd->copy());
+                $end = \Carbon\Carbon::parse($m->end_date)->min($monthEnd->copy());
                 while ($cursor->lte($end)) {
                     $meetingDates->push($cursor->format('Y-m-d'));
                     $cursor->addDay();
@@ -68,30 +66,30 @@ class MeetingController extends Controller
 
         // Build summary from the already-fetched collection (same as reference)
         $summary = [
-            'planned'  => $meetings->where('status', 'planned')->count(),
-            'held'     => $meetings->where('status', 'held')->count(),
+            'planned' => $meetings->where('status', 'planned')->count(),
+            'held' => $meetings->where('status', 'held')->count(),
             'not_held' => $meetings->where('status', 'not_held')->count(),
         ];
 
-        $userQuery   = \App\Models\User::where('created_by', createdBy());
-        $allUsers    = (clone $userQuery)->select('id', 'name', 'email', 'avatar')->get();
-        $users       = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
+        $userQuery = \App\Models\User::where('created_by', createdBy());
+        $allUsers = (clone $userQuery)->select('id', 'name', 'email', 'avatar')->get();
+        $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
         $allContacts = \App\Models\Contact::where('created_by', createdBy())->select('id', 'name')->get();
-        $allLeads    = \App\Models\Lead::where('created_by', createdBy())->select('id', 'name')->get();
+        $allLeads = \App\Models\Lead::where('created_by', createdBy())->select('id', 'name')->get();
 
         return Inertia::render('meetings/index', [
-            'meetings'      => $meetings,
-            'users'         => $users,
-            'allUsers'      => $allUsers,
-            'allContacts'   => $allContacts,
-            'allLeads'      => $allLeads,
-            'summary'       => $summary,
-            'meetingDates'  => $meetingDates,
-            'selectedDate'  => $selectedDate,
+            'meetings' => $meetings,
+            'users' => $users,
+            'allUsers' => $allUsers,
+            'allContacts' => $allContacts,
+            'allLeads' => $allLeads,
+            'summary' => $summary,
+            'meetingDates' => $meetingDates,
+            'selectedDate' => $selectedDate,
             'selectedMonth' => $selectedMonth,
-            'selectedYear'  => $selectedYear,
-            'filters'       => $request->all(['search', 'status', 'assigned_to', 'sort_field', 'sort_direction', 'date', 'month', 'year']),
-            'settings'      => settings(createdBy()),
+            'selectedYear' => $selectedYear,
+            'filters' => $request->all(['search', 'status', 'assigned_to', 'sort_field', 'sort_direction', 'date', 'month', 'year']),
+            'settings' => settings(createdBy()),
         ]);
     }
 
@@ -202,6 +200,7 @@ class MeetingController extends Controller
 
                 if ($meetingConflict || $callConflict) {
                     $attendeeName = $this->getAttendeeName($attendee['type'], $attendee['id']);
+
                     return redirect()->back()->withErrors(['attendees' => __(':name is already scheduled for another meeting or call during this time.', ['name' => $attendeeName])])->withInput();
                 }
             }
@@ -245,7 +244,7 @@ class MeetingController extends Controller
                         'activity_type' => 'Meeting Created',
                         'title' => auth()->user()->name . ' created a meeting: ' . $meeting->title,
                         'description' => 'Meeting scheduled for ' . date('M j, Y', strtotime($meeting->start_date)) . ' at ' . date('g:i A', strtotime($meeting->start_time)),
-                        'created_by' => createdBy()
+                        'created_by' => createdBy(),
                     ]);
                     break;
                 case 'lead':
@@ -255,7 +254,7 @@ class MeetingController extends Controller
                         'activity_type' => 'Meeting Created',
                         'title' => auth()->user()->name . ' created a meeting: ' . $meeting->title,
                         'description' => 'Meeting scheduled for ' . date('M j, Y', strtotime($meeting->start_date)) . ' at ' . date('g:i A', strtotime($meeting->start_time)),
-                        'created_by' => createdBy()
+                        'created_by' => createdBy(),
                     ]);
                     break;
                 case 'opportunity':
@@ -265,7 +264,7 @@ class MeetingController extends Controller
                         'activity_type' => 'Meeting Created',
                         'title' => auth()->user()->name . ' created a meeting: ' . $meeting->title,
                         'description' => 'Meeting scheduled for ' . date('M j, Y', strtotime($meeting->start_date)) . ' at ' . date('g:i A', strtotime($meeting->start_time)),
-                        'created_by' => createdBy()
+                        'created_by' => createdBy(),
                     ]);
                     break;
             }
@@ -284,7 +283,7 @@ class MeetingController extends Controller
                                 'activity_type' => 'Meeting Attendee',
                                 'title' => auth()->user()->name . ' added ' . $contact->name . ' to meeting: ' . $meeting->title,
                                 'description' => 'Contact added as attendee to meeting scheduled for ' . date('M j, Y', strtotime($meeting->start_date)),
-                                'created_by' => createdBy()
+                                'created_by' => createdBy(),
                             ]);
                         }
                         break;
@@ -297,7 +296,7 @@ class MeetingController extends Controller
                                 'activity_type' => 'Meeting Attendee',
                                 'title' => auth()->user()->name . ' added ' . $lead->name . ' to meeting: ' . $meeting->title,
                                 'description' => 'Lead added as attendee to meeting scheduled for ' . date('M j, Y', strtotime($meeting->start_date)),
-                                'created_by' => createdBy()
+                                'created_by' => createdBy(),
                             ]);
                         }
                         break;
@@ -324,6 +323,7 @@ class MeetingController extends Controller
 
         if (!empty($errors)) {
             $message = __('Meeting created successfully, but ') . implode(', ', $errors);
+
             return redirect()->back()->with('warning', $message);
         }
 
@@ -387,6 +387,7 @@ class MeetingController extends Controller
 
                 if ($meetingConflict || $callConflict) {
                     $attendeeName = $this->getAttendeeName($attendee['type'], $attendee['id']);
+
                     return redirect()->back()->withErrors(['attendees' => __(':name is already scheduled for another meeting or call during this time.', ['name' => $attendeeName])])->withInput();
                 }
             }
@@ -434,6 +435,7 @@ class MeetingController extends Controller
         }
 
         $meeting->delete();
+
         return redirect()->back()->with('success', __('Meeting deleted successfully.'));
     }
 
@@ -444,7 +446,7 @@ class MeetingController extends Controller
             ->firstOrFail();
 
         $validated = $request->validate([
-            'status' => 'required|in:planned,held,not_held'
+            'status' => 'required|in:planned,held,not_held',
         ]);
 
         $meeting->update(['status' => $validated['status']]);
@@ -522,11 +524,15 @@ class MeetingController extends Controller
                 break;
             case 'contact':
                 $records = \App\Models\Contact::where('created_by', createdBy())->where('status', 'active')->select('id', 'name', 'email')->get()
-                    ->map(function ($contact) { return ['id' => $contact->id, 'name' => $contact->name]; });
+                    ->map(function ($contact) {
+                        return ['id' => $contact->id, 'name' => $contact->name];
+                    });
                 break;
             case 'lead':
                 $records = \App\Models\Lead::where('created_by', createdBy())->where('status', 'active')->select('id', 'name', 'email')->get()
-                    ->map(function ($lead) { return ['id' => $lead->id, 'name' => $lead->name]; });
+                    ->map(function ($lead) {
+                        return ['id' => $lead->id, 'name' => $lead->name];
+                    });
                 break;
         }
 
@@ -575,12 +581,15 @@ class MeetingController extends Controller
         switch ($type) {
             case 'user':
                 $user = \App\Models\User::find($id);
+
                 return $user ? $user->name : 'Unknown';
             case 'contact':
                 $contact = \App\Models\Contact::find($id);
+
                 return $contact ? $contact->name : 'Unknown';
             case 'lead':
                 $lead = \App\Models\Lead::find($id);
+
                 return $lead ? $lead->name : 'Unknown';
             default:
                 return 'Unknown';

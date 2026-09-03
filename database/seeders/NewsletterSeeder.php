@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Newsletter;
-use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class NewsletterSeeder extends Seeder
 {

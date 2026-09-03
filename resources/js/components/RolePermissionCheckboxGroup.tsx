@@ -1,11 +1,10 @@
 // components/RolePermissionCheckboxGroup.tsx
-import { useState, useEffect } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { IndeterminateCheckbox } from '@/components/ui/indeterminate-checkbox';
 import { Label } from '@/components/ui/label';
-import { cn } from '@/lib/utils';
-import { useTranslation } from 'react-i18next';
 import { capitalize } from '@/utils/helper';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Permission {
     id: string | number;
@@ -20,12 +19,7 @@ interface RolePermissionCheckboxGroupProps {
     disabled?: boolean;
 }
 
-export function RolePermissionCheckboxGroup({
-    permissions,
-    selectedPermissions,
-    onChange,
-    disabled = false
-}: RolePermissionCheckboxGroupProps) {
+export function RolePermissionCheckboxGroup({ permissions, selectedPermissions, onChange, disabled = false }: RolePermissionCheckboxGroupProps) {
     const { t } = useTranslation();
     const [selected, setSelected] = useState<string[]>([]);
 
@@ -35,8 +29,8 @@ export function RolePermissionCheckboxGroup({
     // Get all permission IDs
     const getAllPermissionIds = (): string[] => {
         const allIds: string[] = [];
-        Object.values(filteredPermissions).forEach(group => {
-            group.forEach(permission => {
+        Object.values(filteredPermissions).forEach((group) => {
+            group.forEach((permission) => {
                 allIds.push(permission.id.toString());
             });
         });
@@ -45,7 +39,7 @@ export function RolePermissionCheckboxGroup({
 
     // Get all permission IDs for a specific module
     const getModulePermissionIds = (module: string): string[] => {
-        return filteredPermissions[module]?.map(permission => permission.id.toString()) || [];
+        return filteredPermissions[module]?.map((permission) => permission.id.toString()) || [];
     };
 
     // Initialize selected permissions
@@ -58,8 +52,8 @@ export function RolePermissionCheckboxGroup({
         try {
             const nameMap = {};
 
-            Object.values(filteredPermissions).forEach(group => {
-                group.forEach(permission => {
+            Object.values(filteredPermissions).forEach((group) => {
+                group.forEach((permission) => {
                     nameMap[permission.name] = permission.id.toString();
                 });
             });
@@ -67,22 +61,26 @@ export function RolePermissionCheckboxGroup({
             let processedPermissions: string[] = [];
 
             if (Array.isArray(selectedPermissions)) {
-                processedPermissions = selectedPermissions.map(p => {
-                    if (typeof p === 'object' && p !== null) {
-                        if ('id' in p) return p.id.toString();
-                        if ('name' in p) return nameMap[p.name] || p.name;
-                    }
-                    return nameMap[String(p)] || String(p);
-                }).filter(Boolean);
-            } else if (typeof selectedPermissions === 'object' && selectedPermissions !== null) {
-                if ('permissions' in selectedPermissions && Array.isArray(selectedPermissions.permissions)) {
-                    processedPermissions = selectedPermissions.permissions.map(p => {
+                processedPermissions = selectedPermissions
+                    .map((p) => {
                         if (typeof p === 'object' && p !== null) {
                             if ('id' in p) return p.id.toString();
                             if ('name' in p) return nameMap[p.name] || p.name;
                         }
                         return nameMap[String(p)] || String(p);
-                    }).filter(Boolean);
+                    })
+                    .filter(Boolean);
+            } else if (typeof selectedPermissions === 'object' && selectedPermissions !== null) {
+                if ('permissions' in selectedPermissions && Array.isArray(selectedPermissions.permissions)) {
+                    processedPermissions = selectedPermissions.permissions
+                        .map((p) => {
+                            if (typeof p === 'object' && p !== null) {
+                                if ('id' in p) return p.id.toString();
+                                if ('name' in p) return nameMap[p.name] || p.name;
+                            }
+                            return nameMap[String(p)] || String(p);
+                        })
+                        .filter(Boolean);
                 }
             }
 
@@ -93,9 +91,7 @@ export function RolePermissionCheckboxGroup({
     }, [selectedPermissions]);
 
     const handlePermissionChange = (permissionId: string, checked: boolean) => {
-        const newSelected = checked
-            ? [...selected, permissionId]
-            : selected.filter(id => id !== permissionId);
+        const newSelected = checked ? [...selected, permissionId] : selected.filter((id) => id !== permissionId);
 
         setSelected(newSelected);
         updateParent(newSelected);
@@ -107,10 +103,10 @@ export function RolePermissionCheckboxGroup({
         let newSelected: string[];
 
         if (checked) {
-            const permissionsToAdd = modulePermissionIds.filter(id => !selected.includes(id));
+            const permissionsToAdd = modulePermissionIds.filter((id) => !selected.includes(id));
             newSelected = [...selected, ...permissionsToAdd];
         } else {
-            newSelected = selected.filter(id => !modulePermissionIds.includes(id));
+            newSelected = selected.filter((id) => !modulePermissionIds.includes(id));
         }
 
         setSelected(newSelected);
@@ -126,15 +122,17 @@ export function RolePermissionCheckboxGroup({
     const updateParent = (newSelected: string[]) => {
         const idToNameMap = {};
 
-        Object.values(filteredPermissions).forEach(group => {
-            group.forEach(permission => {
+        Object.values(filteredPermissions).forEach((group) => {
+            group.forEach((permission) => {
                 idToNameMap[permission.id.toString()] = permission.name;
             });
         });
 
-        const permissionNames = newSelected.map(id => {
-            return idToNameMap[id] || id;
-        }).filter(name => !!name);
+        const permissionNames = newSelected
+            .map((id) => {
+                return idToNameMap[id] || id;
+            })
+            .filter((name) => !!name);
 
         onChange(permissionNames);
     };
@@ -145,21 +143,21 @@ export function RolePermissionCheckboxGroup({
     // Check if all permissions in a module are selected
     const isModuleSelected = (module: string): boolean => {
         const modulePermissionIds = getModulePermissionIds(module);
-        return modulePermissionIds.every(id => selected.includes(id)) && modulePermissionIds.length > 0;
+        return modulePermissionIds.every((id) => selected.includes(id)) && modulePermissionIds.length > 0;
     };
 
     // Check if some but not all permissions in a module are selected
     const isModuleIndeterminate = (module: string): boolean => {
         const modulePermissionIds = getModulePermissionIds(module);
-        const selectedCount = modulePermissionIds.filter(id => selected.includes(id)).length;
+        const selectedCount = modulePermissionIds.filter((id) => selected.includes(id)).length;
         return selectedCount > 0 && selectedCount < modulePermissionIds.length;
     };
 
     return (
         <div className="space-y-6">
             {/* Select All Checkbox */}
-            {!disabled &&
-                <div className="border rounded shadow-sm p-3 bg-gray-50">
+            {!disabled && (
+                <div className="rounded border bg-gray-50 p-3 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-2">
                             <IndeterminateCheckbox
@@ -168,53 +166,61 @@ export function RolePermissionCheckboxGroup({
                                 onCheckedChange={(checked) => handleSelectAll(checked === true)}
                             />
                             <Label htmlFor="select-all-permissions-checkbox" className="font-medium">
-                                {t("Select All Permissions")}
+                                {t('Select All Permissions')}
                             </Label>
                         </div>
                         <div className="text-xs text-gray-500">
-                            {selected.length} {t("of")} {getAllPermissionIds().length} {t("selected")}
+                            {selected.length} {t('of')} {getAllPermissionIds().length} {t('selected')}
                         </div>
                     </div>
                 </div>
-            }
+            )}
 
             {/* Module Permissions */}
             <div className="space-y-6">
                 {Object.entries(filteredPermissions).map(([module, modulePermissions]) => (
-                    <div key={module} className="border rounded shadow-sm">
+                    <div key={module} className="rounded border shadow-sm">
                         {/* Module Header */}
-                        <div className="flex items-center justify-between p-3 bg-gray-50 border-b">
+                        <div className="flex items-center justify-between border-b bg-gray-50 p-3">
                             <div className="flex items-center space-x-2">
-                                {!disabled && <IndeterminateCheckbox
-                                    id={`module-checkbox-${module.replace(/\s+/g, '-').toLowerCase()}`}
-                                    checked={isModuleSelected(module)}
-                                    indeterminate={isModuleIndeterminate(module)}
-                                    onCheckedChange={(checked) => handleModuleChange(module, checked === true)}
-                                    disabled={disabled}
-                                />}
+                                {!disabled && (
+                                    <IndeterminateCheckbox
+                                        id={`module-checkbox-${module.replace(/\s+/g, '-').toLowerCase()}`}
+                                        checked={isModuleSelected(module)}
+                                        indeterminate={isModuleIndeterminate(module)}
+                                        onCheckedChange={(checked) => handleModuleChange(module, checked === true)}
+                                        disabled={disabled}
+                                    />
+                                )}
                                 <Label htmlFor={`module-checkbox-${module.replace(/\s+/g, '-').toLowerCase()}`} className="font-medium">
                                     {capitalize(module)}
                                 </Label>
                             </div>
-                            {!disabled && <div className="text-xs text-gray-500">
-                                {modulePermissions.filter(p => selected.includes(p.id.toString())).length} of {modulePermissions.length} {t("selected")}
-                            </div>}
+                            {!disabled && (
+                                <div className="text-xs text-gray-500">
+                                    {modulePermissions.filter((p) => selected.includes(p.id.toString())).length} of {modulePermissions.length}{' '}
+                                    {t('selected')}
+                                </div>
+                            )}
                         </div>
 
                         {/* Individual Permissions */}
                         <div className="p-3">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                                 {modulePermissions.map((permission) => (
                                     <div key={permission.id} className="flex items-center space-x-2">
-                                        {!disabled && <Checkbox
-                                            id={`permission-checkbox-${permission.id.toString().replace(/\s+/g, '-').toLowerCase()}`}
-                                            checked={selected.includes(permission.id.toString()) || selected.includes(permission.name)}
-                                            onCheckedChange={(checked) =>
-                                                handlePermissionChange(permission.id.toString(), checked === true)
-                                            }
-                                            disabled={disabled}
-                                        />}
-                                        <Label htmlFor={`permission-checkbox-${permission.id.toString().replace(/\s+/g, '-').toLowerCase()}`} className="text-sm truncate">
+                                        {!disabled && (
+                                            <Checkbox
+                                                id={`permission-checkbox-${permission.id.toString().replace(/\s+/g, '-').toLowerCase()}`}
+                                                checked={selected.includes(permission.id.toString()) || selected.includes(permission.name)}
+                                                onCheckedChange={(checked) => handlePermissionChange(permission.id.toString(), checked === true)}
+                                                disabled={disabled}
+                                            />
+                                        )}
+                                        <Label
+                                            htmlFor={`permission-checkbox-${permission.id.toString().replace(/\s+/g, '-').toLowerCase()}`}
+                                            className="truncate text-sm"
+                                        >
                                             {capitalize(permission.label)}
                                         </Label>
                                     </div>

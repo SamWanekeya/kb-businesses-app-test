@@ -1,14 +1,14 @@
+import { toast } from '@/components/custom-toast';
+import { SettingsSection } from '@/components/settings-section';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useState, useEffect } from 'react';
-import { Save } from 'lucide-react';
-import { SettingsSection } from '@/components/settings-section';
-import { useTranslation } from 'react-i18next';
 import { router, usePage } from '@inertiajs/react';
-import { toast } from '@/components/custom-toast';
-import { Card, CardContent } from '@/components/ui/card';
+import { Save } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface ChatGptSettingsProps {
     settings?: Record<string, string>;
@@ -22,40 +22,41 @@ export default function ChatGptSettings({ settings = {} }: ChatGptSettingsProps)
     // Default settings
     const defaultSettings = {
         chatgptKey: '',
-        chatgptModel: 'gpt-3.5-turbo'
+        chatgptModel: 'gpt-3.5-turbo',
     };
 
     // Combine settings from props and page props
-    const settingsData = Object.keys(settings).length > 0
-        ? settings
-        : (pageProps.settings || {});
+    const settingsData = Object.keys(settings).length > 0 ? settings : pageProps.settings || {};
 
     // Initialize state with merged settings
     const [chatgptSettings, setChatgptSettings] = useState(() => ({
         chatgptKey: settingsData.chatgptKey || defaultSettings.chatgptKey,
-        chatgptModel: settingsData.chatgptModel || defaultSettings.chatgptModel
+        chatgptModel: settingsData.chatgptModel || defaultSettings.chatgptModel,
     }));
 
     // Update state when settings change
     useEffect(() => {
         if (Object.keys(settingsData).length > 0) {
-            const mergedSettings = Object.keys(defaultSettings).reduce((acc, key) => {
-                acc[key] = settingsData[key] || defaultSettings[key];
-                return acc;
-            }, {} as Record<string, string>);
+            const mergedSettings = Object.keys(defaultSettings).reduce(
+                (acc, key) => {
+                    acc[key] = settingsData[key] || defaultSettings[key];
+                    return acc;
+                },
+                {} as Record<string, string>,
+            );
 
-            setChatgptSettings(prevSettings => ({
+            setChatgptSettings((prevSettings) => ({
                 ...prevSettings,
-                ...mergedSettings
+                ...mergedSettings,
             }));
         }
     }, [settingsData]);
 
     // Handle form changes
     const handleSettingsChange = (field: string, value: string) => {
-        setChatgptSettings(prev => ({
+        setChatgptSettings((prev) => ({
             ...prev,
-            [field]: value
+            [field]: value,
         }));
     };
 
@@ -81,44 +82,43 @@ export default function ChatGptSettings({ settings = {} }: ChatGptSettingsProps)
                 setProcessing(false);
                 const errorMessage = errors.error || Object.values(errors).join(', ') || t('Failed to update Chat GPT settings');
                 toast.error(errorMessage);
-            }
+            },
         });
     };
 
     return (
         <SettingsSection
-            title={t("Chat GPT Settings")}
-            description={t("Configure Chat GPT integration settings for AI-powered features")}
+            title={t('Chat GPT Settings')}
+            description={t('Configure Chat GPT integration settings for AI-powered features')}
             action={
                 <Button type="submit" disabled={processing} form="chatgpt-settings-form" size="sm">
-                    <Save className="h-4 w-4 mr-2" />
-                    {processing ? t("Saving...") : t("Save Changes")}
+                    <Save className="mr-2 h-4 w-4" />
+                    {processing ? t('Saving...') : t('Save Changes')}
                 </Button>
             }
         >
             <Card>
-                <CardContent className='mt-6'>
+                <CardContent className="mt-6">
                     <form id="chatgpt-settings-form" onSubmit={submitChatgptSettings} className="space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="grid gap-2 md:col-span-2" >
-                                <Label htmlFor="chatgptKey" required>{t("Chat GPT Key")}</Label>
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                            <div className="grid gap-2 md:col-span-2">
+                                <Label htmlFor="chatgptKey" required>
+                                    {t('Chat GPT Key')}
+                                </Label>
                                 <Input
                                     id="chatgptKey"
                                     type="password"
                                     value={chatgptSettings.chatgptKey}
                                     onChange={(e) => handleSettingsChange('chatgptKey', e.target.value)}
-                                    placeholder={t("Enter your OpenAI API key")}
+                                    placeholder={t('Enter your OpenAI API key')}
                                 />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="chatgptModel">{t("Chat GPT Model Name")}</Label>
-                                <Select
-                                    value={chatgptSettings.chatgptModel}
-                                    onValueChange={(value) => handleSettingsChange('chatgptModel', value)}
-                                >
+                                <Label htmlFor="chatgptModel">{t('Chat GPT Model Name')}</Label>
+                                <Select value={chatgptSettings.chatgptModel} onValueChange={(value) => handleSettingsChange('chatgptModel', value)}>
                                     <SelectTrigger>
-                                        <SelectValue placeholder={t("Select Chat GPT model")} />
+                                        <SelectValue placeholder={t('Select Chat GPT model')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="gpt-3.5-turbo">GPT-3.5 Turbo</SelectItem>

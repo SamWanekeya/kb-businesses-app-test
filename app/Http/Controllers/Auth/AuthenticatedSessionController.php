@@ -16,15 +16,15 @@ use Inertia\Response;
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Show the login page.
+     * Show the sign in page.
      */
     public function create(Request $request): Response
     {
-       return Inertia::render('auth/sign-in', [
-            'canResetPassword' => Route::has('password.request'),
-            'status' => $request->session()->get('status'),
-            'settings' => settings()
-        ]);
+        return Inertia::render('auth/sign-in', [
+             'canResetPassword' => Route::has('password.request'),
+             'status' => $request->session()->get('status'),
+             'settings' => settings(),
+         ]);
     }
 
     /**
@@ -71,12 +71,12 @@ class AuthenticatedSessionController extends Controller
             'referrer_host' => $request->headers->get('referer') ? parse_url($request->headers->get('referer'), PHP_URL_HOST) : null,
             'referrer_path' => $request->headers->get('referer') ? parse_url($request->headers->get('referer'), PHP_URL_PATH) : null,
         ]);
-        $ipAddressHistory             = new signInHistory();
-        $ipAddressHistory->user_id    = Auth::id();
-        $ipAddressHistory->ip_address         = $ipAddress;
-        $ipAddressHistory->date       = now()->toDateString();
-        $ipAddressHistory->details    = $details;
-        $ipAddressHistory->type       = Auth::user()->type;
+        $ipAddressHistory = new signInHistory();
+        $ipAddressHistory->user_id = Auth::id();
+        $ipAddressHistory->ip_address = $ipAddress;
+        $ipAddressHistory->date = now()->toDateString();
+        $ipAddressHistory->details = $details;
+        $ipAddressHistory->type = Auth::user()->type;
         $ipAddressHistory->created_by = createdBy();
         $ipAddressHistory->save();
     }
@@ -87,6 +87,7 @@ class AuthenticatedSessionController extends Controller
             $response = Http::timeout(5)->get("http://ip-api.com/json/{$ipAddress}");
             if ($response->successful()) {
                 $data = $response->json();
+
                 return [
                     'country' => $data['country'] ?? null,
                     'countryCode' => $data['countryCode'] ?? null,
@@ -106,6 +107,7 @@ class AuthenticatedSessionController extends Controller
         } catch (\Exception $e) {
             // Ignore API errors
         }
+
         return ['query' => $ipAddress];
     }
 }

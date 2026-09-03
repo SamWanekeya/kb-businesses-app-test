@@ -13,12 +13,12 @@ class SignInHistory extends Model
         'date',
         'details',
         'type',
-        'created_by'
+        'created_by',
     ];
 
     protected $casts = [
         'details' => 'array',
-        'date' => 'date'
+        'date' => 'date',
     ];
 
     public function user(): BelongsTo

@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\DocumentType;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 
 class DocumentTypeSeeder extends Seeder
 {
@@ -14,6 +14,7 @@ class DocumentTypeSeeder extends Seeder
 
         if ($organizations->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -33,7 +34,7 @@ class DocumentTypeSeeder extends Seeder
                 DocumentType::firstOrCreate(
                     [
                         'type_name' => $typeName,
-                        'created_by' => $organization->id
+                        'created_by' => $organization->id,
                     ],
                     [
                         'type_name' => $typeName,

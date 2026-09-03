@@ -7,18 +7,18 @@ use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Iyzipay\Options;
+use Iyzipay\Model\Address;
+use Iyzipay\Model\BasketItem;
+use Iyzipay\Model\BasketItemType;
+use Iyzipay\Model\Buyer;
 use Iyzipay\Model\CheckoutForm;
 use Iyzipay\Model\CheckoutFormInitialize;
+use Iyzipay\Model\Currency;
+use Iyzipay\Model\Locale;
+use Iyzipay\Model\PaymentGroup;
+use Iyzipay\Options;
 use Iyzipay\Request\CreateCheckoutFormInitializeRequest;
 use Iyzipay\Request\RetrieveCheckoutFormRequest;
-use Iyzipay\Model\Locale;
-use Iyzipay\Model\Currency;
-use Iyzipay\Model\PaymentGroup;
-use Iyzipay\Model\BasketItemType;
-use Iyzipay\Model\BasketItem;
-use Iyzipay\Model\Buyer;
-use Iyzipay\Model\Address;
 
 class InvoiceIyzipayPaymentController extends Controller
 {
@@ -133,7 +133,7 @@ class InvoiceIyzipayPaymentController extends Controller
                 return response()->json([
                     'success' => true,
                     'redirect_url' => $checkoutFormInitialize->getPaymentPageUrl(),
-                    'token' => $checkoutFormInitialize->getToken()
+                    'token' => $checkoutFormInitialize->getToken(),
                 ]);
             } else {
                 return response()->json(['error' => $checkoutFormInitialize->getErrorMessage()], 400);
@@ -143,8 +143,9 @@ class InvoiceIyzipayPaymentController extends Controller
             \Log::error('Iyzipay invoice payment form creation error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return response()->json(['error' => __('Payment form creation failed')], 500);
         }
     }
@@ -181,7 +182,7 @@ class InvoiceIyzipayPaymentController extends Controller
                     'invoice_id' => $invoice->id,
                     'amount' => $amount,
                     'payment_type' => $paymentType,
-                    'payment_id' => $paymentResult->getPaymentId()
+                    'payment_id' => $paymentResult->getPaymentId(),
                 ]);
 
                 return redirect()->route('invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
@@ -192,8 +193,9 @@ class InvoiceIyzipayPaymentController extends Controller
         } catch (\Exception $e) {
             \Log::error('Iyzipay invoice payment callback error', [
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return redirect()->route('invoices.public', encrypt($request->input('invoice_id') ?? 0))->withErrors(['error' => __('Payment processing failed')]);
         }
     }

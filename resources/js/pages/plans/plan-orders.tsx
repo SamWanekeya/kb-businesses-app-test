@@ -1,20 +1,20 @@
 // pages/plans/plan-orders.tsx
-import { useState, useEffect } from 'react';
-import { PageTemplate } from '@/components/page-template';
-import { usePage, router } from '@inertiajs/react';
-import { Button } from '@/components/ui/button';
 import { CrudTable } from '@/components/CrudTable';
 import { toast } from '@/components/custom-toast';
-import { useTranslation } from 'react-i18next';
+import { PageTemplate } from '@/components/page-template';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { ShoppingCart, Calendar, CheckCircle, CreditCard, User, Tag, Download, UserCheck, FileText } from 'lucide-react';
-import { capitalize, getDisplayUrl } from '@/utils/helper';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useInitials } from '@/hooks/use-initials';
+import { capitalize, getDisplayUrl } from '@/utils/helper';
+import { router, usePage } from '@inertiajs/react';
+import { Calendar, CheckCircle, CreditCard, Download, FileText, ShoppingCart, Tag, User, UserCheck } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function PlanOrdersPage() {
     const { t } = useTranslation();
@@ -37,10 +37,7 @@ export default function PlanOrdersPage() {
 
     // Count active filters
     const activeFilterCount = () => {
-        return (selectedStatus !== 'all' ? 1 : 0) +
-            (dateFrom !== '' ? 1 : 0) +
-            (dateTo !== '' ? 1 : 0) +
-            (searchTerm !== '' ? 1 : 0);
+        return (selectedStatus !== 'all' ? 1 : 0) + (dateFrom !== '' ? 1 : 0) + (dateTo !== '' ? 1 : 0) + (searchTerm !== '' ? 1 : 0);
     };
 
     const handleSearch = (e: React.FormEvent) => {
@@ -49,30 +46,38 @@ export default function PlanOrdersPage() {
     };
 
     const applyFilters = () => {
-        router.get(route('plan-orders.index'), {
-            page: 1,
-            search: searchTerm || undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            date_from: dateFrom || undefined,
-            date_to: dateTo || undefined,
-            ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
-            ...(pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('plan-orders.index'),
+            {
+                page: 1,
+                search: searchTerm || undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                date_from: dateFrom || undefined,
+                date_to: dateTo || undefined,
+                ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+                ...(pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleSort = (field: string) => {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
 
-        router.get(route('plan-orders.index'), {
-            sort_field: field,
-            sort_direction: direction,
-            page: 1,
-            search: searchTerm || undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            date_from: dateFrom || undefined,
-            date_to: dateTo || undefined,
-            per_page: pageFilters.per_page
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('plan-orders.index'),
+            {
+                sort_field: field,
+                sort_direction: direction,
+                page: 1,
+                search: searchTerm || undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                date_from: dateFrom || undefined,
+                date_to: dateTo || undefined,
+                per_page: pageFilters.per_page,
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleAction = (action: string, item: any) => {
@@ -81,8 +86,52 @@ export default function PlanOrdersPage() {
                 toast.loading(t('Approving plan order...'));
             }
 
-            router.post(route('plan-orders.approve', item.id), {}, {
+            router.post(
+                route('plan-orders.approve', item.id),
+                {},
+                {
+                    onSuccess: (page) => {
+                        if (!globalSettings?.is_demo) {
+                            toast.dismiss();
+                        }
+                        if (page.props.flash.success) {
+                            toast.success(t(page.props.flash.success));
+                        } else if (page.props.flash.error) {
+                            toast.error(t(page.props.flash.error));
+                        }
+                    },
+                    onError: (errors) => {
+                        if (!globalSettings?.is_demo) {
+                            toast.dismiss();
+                        }
+                        if (typeof errors === 'string') {
+                            toast.error(t(errors));
+                        } else {
+                            toast.error(t('Failed to approve plan order: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        }
+                    },
+                },
+            );
+        } else if (action === 'reject') {
+            setCurrentItem(item);
+            setIsRejectModalOpen(true);
+        } else if (action === 'view') {
+            setCurrentItem(item);
+            setIsViewModalOpen(true);
+        }
+    };
+
+    const handleRejectConfirm = (notes: string) => {
+        if (!globalSettings?.is_demo) {
+            toast.loading(t('Rejecting plan order...'));
+        }
+
+        router.post(
+            route('plan-orders.reject', currentItem.id),
+            { notes },
+            {
                 onSuccess: (page) => {
+                    setIsRejectModalOpen(false);
                     if (!globalSettings?.is_demo) {
                         toast.dismiss();
                     }
@@ -99,52 +148,19 @@ export default function PlanOrdersPage() {
                     if (typeof errors === 'string') {
                         toast.error(t(errors));
                     } else {
-                        toast.error(t('Failed to approve plan order: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        toast.error(t('Failed to reject plan order: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
-                }
-            });
-        } else if (action === 'reject') {
-            setCurrentItem(item);
-            setIsRejectModalOpen(true);
-        } else if (action === 'view') {
-            setCurrentItem(item);
-            setIsViewModalOpen(true);
-        }
-    };
-
-    const handleRejectConfirm = (notes: string) => {
-        if (!globalSettings?.is_demo) {
-            toast.loading(t('Rejecting plan order...'));
-        }
-
-        router.post(route('plan-orders.reject', currentItem.id), { notes }, {
-            onSuccess: (page) => {
-                setIsRejectModalOpen(false);
-                if (!globalSettings?.is_demo) {
-                    toast.dismiss();
-                }
-                if (page.props.flash.success) {
-                    toast.success(t(page.props.flash.success));
-                } else if (page.props.flash.error) {
-                    toast.error(t(page.props.flash.error));
-                }
+                },
             },
-            onError: (errors) => {
-                if (!globalSettings?.is_demo) {
-                    toast.dismiss();
-                }
-                if (typeof errors === 'string') {
-                    toast.error(t(errors));
-                } else {
-                    toast.error(t('Failed to reject plan order: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                }
-            }
-        });
+        );
     };
 
     const [pageInitialState, setPageInitialState] = useState(true);
     useEffect(() => {
-        if (pageInitialState) { setPageInitialState(false); return; }
+        if (pageInitialState) {
+            setPageInitialState(false);
+            return;
+        }
         applyFilters();
     }, [selectedStatus, dateFrom, dateTo]);
 
@@ -159,7 +175,7 @@ export default function PlanOrdersPage() {
     const breadcrumbs = [
         { title: t('Dashboard'), href: route('dashboard') },
         { title: t('Plans'), href: route('plans.index') },
-        { title: t('Plan Orders') }
+        { title: t('Plan Orders') },
     ];
 
     // Define table columns
@@ -167,7 +183,7 @@ export default function PlanOrdersPage() {
         pending: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20',
         approved: 'bg-green-50 text-green-700 ring-green-600/20',
         rejected: 'bg-red-50 text-red-700 ring-red-600/20',
-        completed: 'bg-blue-50 text-blue-700 ring-blue-600/20'
+        completed: 'bg-blue-50 text-blue-700 ring-blue-600/20',
     };
 
     const columns = [
@@ -175,7 +191,7 @@ export default function PlanOrdersPage() {
             key: 'order_number',
             label: t('Order Number'),
             className: 'whitespace-nowrap',
-            render: (value) => <span className="whitespace-nowrap">{value || '-'}</span>
+            render: (value) => <span className="whitespace-nowrap">{value || '-'}</span>,
         },
         {
             key: 'user.name',
@@ -190,12 +206,12 @@ export default function PlanOrdersPage() {
                             <AvatarFallback>{getInitials(row.user?.name || '')}</AvatarFallback>
                         </Avatar>
                         <div>
-                            <div className="whitespace-nowrap font-medium">{row.user?.name || '-'}</div>
-                            <div className="text-sm text-muted-foreground whitespace-nowrap">{row.user?.email || ''}</div>
+                            <div className="font-medium whitespace-nowrap">{row.user?.name || '-'}</div>
+                            <div className="text-muted-foreground text-sm whitespace-nowrap">{row.user?.email || ''}</div>
                         </div>
                     </div>
                 );
-            }
+            },
         },
         {
             key: 'plan.name',
@@ -205,89 +221,104 @@ export default function PlanOrdersPage() {
                 const planName = row.plan?.name;
                 if (!planName) return '-';
                 return (
-                    <span className="inline-flex items-center rounded-md px-2 py-1 text-sm font-medium bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20 whitespace-nowrap">
+                    <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-sm font-medium whitespace-nowrap text-blue-700 ring-1 ring-blue-600/20 ring-inset">
                         {capitalize(planName)}
                     </span>
                 );
-            }
+            },
         },
         {
             key: 'original_price',
             label: t('Original Price'),
             className: 'whitespace-nowrap',
-            render: (value) => <span className="whitespace-nowrap font-mono">{window.appSettings.formatCurrency(value) || '0'}</span>
+            render: (value) => <span className="font-mono whitespace-nowrap">{window.appSettings.formatCurrency(value) || '0'}</span>,
         },
         {
             key: 'discount_amount',
             label: t('Discount'),
             className: 'whitespace-nowrap',
-            render: (value) => <span className="whitespace-nowrap font-mono">{value > 0 ? `-${window.appSettings.formatCurrency(value)}` : '-'}</span>
+            render: (value) => (
+                <span className="font-mono whitespace-nowrap">{value > 0 ? `-${window.appSettings.formatCurrency(value)}` : '-'}</span>
+            ),
         },
         {
             key: 'final_price',
             label: t('Final Price'),
             sortable: true,
             className: 'whitespace-nowrap',
-            render: (value) => <span className="whitespace-nowrap font-mono">{window.appSettings.formatCurrency(value) || '0'}</span>
+            render: (value) => <span className="font-mono whitespace-nowrap">{window.appSettings.formatCurrency(value) || '0'}</span>,
         },
         {
             key: 'status',
             label: t('Status'),
             className: 'whitespace-nowrap',
             render: (value) => (
-                <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset capitalize whitespace-nowrap ${statusColors[value] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}>
+                <span
+                    className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap capitalize ring-1 ring-inset ${statusColors[value] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}
+                >
                     {t(value)}
                 </span>
-            )
+            ),
         },
         {
             key: 'receipt_path',
             label: t('Receipt'),
             className: 'whitespace-nowrap',
-            render: (value) => value ? (
-                <a href={getDisplayUrl(value)} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} title={t('View Receipt')}>
-                    <FileText className="h-4 w-4 text-green-600 hover:text-green-800" />
-                </a>
-            ) : '-'
+            render: (value) =>
+                value ? (
+                    <a
+                        href={getDisplayUrl(value)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        title={t('View Receipt')}
+                    >
+                        <FileText className="h-4 w-4 text-green-600 hover:text-green-800" />
+                    </a>
+                ) : (
+                    '-'
+                ),
         },
         {
             key: 'ordered_at',
             label: t('Order Date'),
             sortable: true,
             className: 'whitespace-nowrap',
-            type: 'date'
-        }
+            type: 'date',
+        },
     ];
 
     // Define table actions - only visible to super admin
     const getInitials = useInitials();
     const isSuperAdmin = auth?.user?.type === 'super_admin';
-    const actions = isSuperAdmin ? [
-        {
-            label: t('View'),
-            icon: 'Eye',
-            action: 'view',
-            className: 'text-blue-500',
-            requiredPermission: 'view-plan-orders',
-            // condition: (row) => row.payment_method === 'bank'
-        },
-        {
-            label: t('Approve'),
-            icon: 'Check',
-            action: 'approve',
-            className: 'text-green-500',
-            requiredPermission: 'approve-plan-orders',
-            condition: (row) => row.status === 'pending'
-        },
-        {
-            label: t('Reject'),
-            icon: 'X',
-            action: 'reject',
-            className: 'text-red-500',
-            requiredPermission: 'reject-plan-orders',
-            condition: (row) => row.status === 'pending'
-        }
-    ] : [];
+    const actions = isSuperAdmin
+        ? [
+              {
+                  label: t('View'),
+                  icon: 'Eye',
+                  action: 'view',
+                  className: 'text-blue-500',
+                  requiredPermission: 'view-plan-orders',
+                  // condition: (row) => row.payment_method === 'bank'
+              },
+              {
+                  label: t('Approve'),
+                  icon: 'Check',
+                  action: 'approve',
+                  className: 'text-green-500',
+                  requiredPermission: 'approve-plan-orders',
+                  condition: (row) => row.status === 'pending',
+              },
+              {
+                  label: t('Reject'),
+                  icon: 'X',
+                  action: 'reject',
+                  className: 'text-red-500',
+                  requiredPermission: 'reject-plan-orders',
+                  condition: (row) => row.status === 'pending',
+              },
+          ]
+        : [];
 
     // Prepare status options for filter
     const statusOptions = [
@@ -295,7 +326,7 @@ export default function PlanOrdersPage() {
         { value: 'pending', label: t('Pending') },
         { value: 'approved', label: t('Approved') },
         { value: 'rejected', label: t('Rejected') },
-        { value: 'completed', label: t('Completed') }
+        { value: 'completed', label: t('Completed') },
     ];
 
     return (
@@ -307,7 +338,7 @@ export default function PlanOrdersPage() {
             noPadding
         >
             {/* Search and filters section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
+            <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -319,22 +350,22 @@ export default function PlanOrdersPage() {
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
-                            options: statusOptions
+                            options: statusOptions,
                         },
                         {
                             name: 'date_from',
                             label: t('Date From'),
                             type: 'date',
                             value: dateFrom,
-                            onChange: setDateFrom
+                            onChange: setDateFrom,
                         },
                         {
                             name: 'date_to',
                             label: t('Date To'),
                             type: 'date',
                             value: dateTo,
-                            onChange: setDateTo
-                        }
+                            onChange: setDateTo,
+                        },
                     ]}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
@@ -343,19 +374,19 @@ export default function PlanOrdersPage() {
             </div>
 
             {/* Content section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+            <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                 <div className="overflow-x-auto">
-                <CrudTable
-                    columns={columns}
-                    actions={actions}
-                    data={planOrders?.data || []}
-                    from={planOrders?.from || 1}
-                    onAction={handleAction}
-                    sortField={pageFilters.sort_field}
-                    sortDirection={pageFilters.sort_direction}
-                    onSort={handleSort}
-                    permissions={permissions}
-                />
+                    <CrudTable
+                        columns={columns}
+                        actions={actions}
+                        data={planOrders?.data || []}
+                        from={planOrders?.from || 1}
+                        onAction={handleAction}
+                        sortField={pageFilters.sort_field}
+                        sortDirection={pageFilters.sort_direction}
+                        onSort={handleSort}
+                        permissions={permissions}
+                    />
                 </div>
 
                 {/* Pagination section */}
@@ -364,133 +395,147 @@ export default function PlanOrdersPage() {
                     to={planOrders?.to || 0}
                     total={planOrders?.total || 0}
                     links={planOrders?.links}
-                    entityName={t("plan orders")}
+                    entityName={t('plan orders')}
                     onPageChange={(url) => router.get(url)}
-                    currentPerPage={pageFilters.per_page?.toString() || "10"}
+                    currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
-                        router.get(route('plan-orders.index'), {
-                            page: 1,
-                            per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
-                            search: searchTerm || undefined,
-                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                            date_from: dateFrom || undefined,
-                            date_to: dateTo || undefined,
-                            ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
-                        }, { preserveState: true, preserveScroll: true });
+                        router.get(
+                            route('plan-orders.index'),
+                            {
+                                page: 1,
+                                per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
+                                search: searchTerm || undefined,
+                                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                date_from: dateFrom || undefined,
+                                date_to: dateTo || undefined,
+                                ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+                            },
+                            { preserveState: true, preserveScroll: true },
+                        );
                     }}
                 />
             </div>
 
             {/* View Modal */}
             <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
-                <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto p-0" onOpenAutoFocus={(e) => e.preventDefault()}>
-                    <DialogHeader className="px-6 pt-6 pb-4 border-b">
+                <DialogContent className="max-h-[90vh] max-w-xl overflow-y-auto p-0" onOpenAutoFocus={(e) => e.preventDefault()}>
+                    <DialogHeader className="border-b px-6 pt-6 pb-4">
                         <div className="flex items-center gap-3">
-                            <div className="p-2 bg-primary/10 rounded-lg">
-                                <ShoppingCart className="h-5 w-5 text-primary" />
+                            <div className="bg-primary/10 rounded-lg p-2">
+                                <ShoppingCart className="text-primary h-5 w-5" />
                             </div>
                             <DialogTitle className="text-xl font-semibold">{t('Plan Order Details')}</DialogTitle>
                         </div>
                     </DialogHeader>
 
                     {currentItem && (
-                        <div className="px-6 py-4 pb-6 space-y-4">
+                        <div className="space-y-4 px-6 py-4 pb-6">
                             {/* Order Number | Order Date */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div>
-                                    <label className="text-sm font-medium text-gray-500 flex items-center gap-2">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         <ShoppingCart className="h-4 w-4" />
                                         {t('Order Number')}
                                     </label>
                                     <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{currentItem.order_number || '-'}</p>
                                 </div>
                                 <div>
-                                    <label className="text-sm font-medium text-gray-500 flex items-center gap-2">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         <Calendar className="h-4 w-4" />
                                         {t('Order Date')}
                                     </label>
-                                    <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{window.appSettings?.formatDateTime(currentItem.ordered_at, false) || '-'}</p>
+                                    <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">
+                                        {window.appSettings?.formatDateTime(currentItem.ordered_at, false) || '-'}
+                                    </p>
                                 </div>
                             </div>
 
                             {/* Status | Payment Method */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div>
-                                    <label className="text-sm font-medium text-gray-500 flex items-center gap-2">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         <CheckCircle className="h-4 w-4" />
                                         {t('Status')}
                                     </label>
                                     <div className="mt-1">
-                                        <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset capitalize ${statusColors[currentItem.status] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}>
+                                        <span
+                                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium capitalize ring-1 ring-inset ${statusColors[currentItem.status] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}
+                                        >
                                             {t(currentItem.status)}
                                         </span>
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="text-sm font-medium text-gray-500 flex items-center gap-2">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         <CreditCard className="h-4 w-4" />
                                         {t('Payment Method')}
                                     </label>
-                                    <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white capitalize">{currentItem.payment_method || '-'}</p>
+                                    <p className="mt-1 text-sm font-medium text-gray-900 capitalize dark:text-white">
+                                        {currentItem.payment_method || '-'}
+                                    </p>
                                 </div>
                             </div>
 
                             {/* User | Plan */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div>
-                                    <label className="text-sm font-medium text-gray-500 flex items-center gap-2">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         <User className="h-4 w-4" />
                                         {t('User')}
                                     </label>
                                     <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{currentItem.user?.name || '-'}</p>
-                                    <p className="text-xs text-muted-foreground">{currentItem.user?.email || ''}</p>
+                                    <p className="text-muted-foreground text-xs">{currentItem.user?.email || ''}</p>
                                 </div>
                                 <div>
-                                    <label className="text-sm font-medium text-gray-500 flex items-center gap-2">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         <Tag className="h-4 w-4" />
                                         {t('Plan')}
                                     </label>
                                     <div className="mt-1">
-                                        <span className="inline-flex items-center rounded-md bg-blue-50 dark:bg-blue-900/30 px-2 py-1 text-xs font-medium text-blue-700 dark:text-blue-300 ring-1 ring-inset ring-blue-700/10">
+                                        <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset dark:bg-blue-900/30 dark:text-blue-300">
                                             {capitalize(currentItem.plan?.name || '-')}
                                         </span>
                                     </div>
-                                    <p className="mt-1 text-xs text-muted-foreground capitalize">{currentItem.billing_cycle || ''}</p>
+                                    <p className="text-muted-foreground mt-1 text-xs capitalize">{currentItem.billing_cycle || ''}</p>
                                 </div>
                             </div>
 
                             {/* Original Price | Discount */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div>
-                                    <label className="text-sm font-medium text-gray-500 flex items-center gap-2">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         <CreditCard className="h-4 w-4" />
                                         {t('Original Price')}
                                     </label>
-                                    <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white font-mono">{window.appSettings.formatCurrency(currentItem.original_price)}</p>
+                                    <p className="mt-1 font-mono text-sm font-medium text-gray-900 dark:text-white">
+                                        {window.appSettings.formatCurrency(currentItem.original_price)}
+                                    </p>
                                 </div>
                                 <div>
-                                    <label className="text-sm font-medium text-gray-500 flex items-center gap-2">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         <Tag className="h-4 w-4" />
                                         {t('Discount')}
                                     </label>
-                                    <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white font-mono">
+                                    <p className="mt-1 font-mono text-sm font-medium text-gray-900 dark:text-white">
                                         {currentItem.discount_amount > 0 ? `-${window.appSettings.formatCurrency(currentItem.discount_amount)}` : '-'}
                                     </p>
                                 </div>
                             </div>
 
                             {/* Final Price | Payment Receipt */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div>
-                                    <label className="text-sm font-medium text-gray-500 flex items-center gap-2">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         <CreditCard className="h-4 w-4" />
                                         {t('Final Price')}
                                     </label>
-                                    <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white font-mono">{window.appSettings.formatCurrency(currentItem.final_price)}</p>
+                                    <p className="mt-1 font-mono text-sm font-medium text-gray-900 dark:text-white">
+                                        {window.appSettings.formatCurrency(currentItem.final_price)}
+                                    </p>
                                 </div>
                                 {currentItem.receipt_path && (
                                     <div>
-                                        <label className="text-sm font-medium text-gray-500 flex items-center gap-2">
+                                        <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                             <Download className="h-4 w-4" />
                                             {t('Payment Receipt')}
                                         </label>
@@ -505,22 +550,20 @@ export default function PlanOrdersPage() {
                                                     document.body.appendChild(link);
                                                     link.click();
                                                     document.body.removeChild(link);
-                                                }
-                                                }
+                                                }}
                                             >
                                                 {t('Download Receipt')}
                                             </Button>
-
                                         </div>
                                     </div>
                                 )}
                             </div>
                             {/* Processed By | Notes - only when present */}
                             {(currentItem.processedBy || currentItem.notes) && (
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                     {currentItem.processedBy && (
                                         <div>
-                                            <label className="text-sm font-medium text-gray-500 flex items-center gap-2">
+                                            <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                                 <UserCheck className="h-4 w-4" />
                                                 {t('Processed By')}
                                             </label>
@@ -529,7 +572,7 @@ export default function PlanOrdersPage() {
                                     )}
                                     {currentItem.notes && (
                                         <div>
-                                            <label className="text-sm font-medium text-gray-500 flex items-center gap-2">
+                                            <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                                 <FileText className="h-4 w-4" />
                                                 {t('Notes')}
                                             </label>
@@ -549,21 +592,18 @@ export default function PlanOrdersPage() {
                     <DialogHeader>
                         <DialogTitle>{t('Reject Plan Order')}</DialogTitle>
                     </DialogHeader>
-                    <form onSubmit={(e) => {
-                        e.preventDefault();
-                        const formData = new FormData(e.currentTarget);
-                        const notes = formData.get('notes') as string;
-                        handleRejectConfirm(notes);
-                    }}>
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            const formData = new FormData(e.currentTarget);
+                            const notes = formData.get('notes') as string;
+                            handleRejectConfirm(notes);
+                        }}
+                    >
                         <div className="space-y-4">
                             <div>
                                 <Label htmlFor="notes">{t('Rejection Reason (Optional)')}</Label>
-                                <Textarea
-                                    id="notes"
-                                    name="notes"
-                                    placeholder={t('Enter rejection reason...')}
-                                    className="mt-1"
-                                />
+                                <Textarea id="notes" name="notes" placeholder={t('Enter rejection reason...')} className="mt-1" />
                             </div>
                         </div>
                         <DialogFooter className="mt-6">

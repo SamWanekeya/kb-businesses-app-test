@@ -18,7 +18,7 @@ class AccountActivity extends BaseModel
         'old_values',
         'new_values',
         'field_changed',
-        'created_by'
+        'created_by',
     ];
 
     protected $casts = [

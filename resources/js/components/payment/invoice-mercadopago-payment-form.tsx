@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { useTranslation } from 'react-i18next';
-import { Loader2 } from 'lucide-react';
 import { toast } from '@/components/custom-toast';
+import { Button } from '@/components/ui/button';
 import axios from 'axios';
+import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface InvoiceMercadoPagoPaymentFormProps {
     invoiceId: number;
@@ -22,27 +22,31 @@ export function InvoiceMercadoPagoPaymentForm({
     accessToken,
     currency = 'BRL',
     onSuccess,
-    onCancel
+    onCancel,
 }: InvoiceMercadoPagoPaymentFormProps) {
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
-    
+
     const handlePayment = async () => {
         try {
             setIsLoading(true);
-            
+
             // Create preference and redirect to MercadoPago checkout
-            const response = await axios.post(route('invoice.mercadopago.create-preference'), {
-                invoice_id: invoiceId,
-                amount: amount,
-                payment_type: paymentType
-            }, {
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            });
-            
+            const response = await axios.post(
+                route('invoice.mercadopago.create-preference'),
+                {
+                    invoice_id: invoiceId,
+                    amount: amount,
+                    payment_type: paymentType,
+                },
+                {
+                    headers: {
+                        Accept: 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                },
+            );
+
             if (response.data.redirect_url) {
                 // Redirect to MercadoPago checkout
                 window.location.href = response.data.redirect_url;
@@ -56,25 +60,19 @@ export function InvoiceMercadoPagoPaymentForm({
             setIsLoading(false);
         }
     };
-    
+
     return (
         <div className="space-y-4">
-            <p className="text-sm text-muted-foreground">
-                {t('You will be redirected to MercadoPago to complete your payment.')}
-            </p>
-            
+            <p className="text-muted-foreground text-sm">{t('You will be redirected to MercadoPago to complete your payment.')}</p>
+
             <div className="flex gap-3">
                 <Button variant="outline" onClick={onCancel} className="flex-1" disabled={isLoading}>
                     {t('Cancel')}
                 </Button>
-                <Button 
-                    onClick={handlePayment}
-                    className="flex-1"
-                    disabled={isLoading}
-                >
+                <Button onClick={handlePayment} className="flex-1" disabled={isLoading}>
                     {isLoading ? (
                         <>
-                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                             {t('Processing...')}
                         </>
                     ) : (

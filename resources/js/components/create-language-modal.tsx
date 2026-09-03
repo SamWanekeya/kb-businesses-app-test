@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { toast } from '@/components/custom-toast';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { toast } from '@/components/custom-toast';
 import { RefreshCw } from 'lucide-react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface CreateLanguageModalProps {
@@ -18,7 +18,7 @@ export function CreateLanguageModal({ open, onOpenChange, onSuccess }: CreateLan
     const [formData, setFormData] = useState({
         code: '',
         name: '',
-        countryCode: ''
+        countryCode: '',
     });
     const [isLoading, setIsLoading] = useState(false);
 
@@ -32,10 +32,10 @@ export function CreateLanguageModal({ open, onOpenChange, onSuccess }: CreateLan
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
-                    'Accept': 'application/json',
+                    Accept: 'application/json',
                     'X-Requested-With': 'XMLHttpRequest',
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(formData),
             });
 
             const data = await response.json();
@@ -101,7 +101,7 @@ export function CreateLanguageModal({ open, onOpenChange, onSuccess }: CreateLan
                         <Button type="submit" disabled={isLoading}>
                             {isLoading ? (
                                 <>
-                                    <RefreshCw className="h-4 w-4 animate-spin mr-2" />
+                                    <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
                                     {t('Creating...')}
                                 </>
                             ) : (

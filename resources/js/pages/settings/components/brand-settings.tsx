@@ -1,24 +1,22 @@
-import { useState, useEffect } from 'react';
+import MediaPicker from '@/components/MediaPicker';
+import { SettingsSection } from '@/components/settings-section';
+import { ThemePreview } from '@/components/theme-preview';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { ThemePreview } from '@/components/theme-preview';
-import { useAppearance, type Appearance, type ThemeColor } from '@/hooks/use-appearance';
+import { Separator } from '@/components/ui/separator';
+import { getBrandSettings, useBrand } from '@/contexts/BrandContext';
 import { useLayout, type LayoutPosition } from '@/contexts/LayoutContext';
 import { useSidebarSettings } from '@/contexts/SidebarContext';
-import { getBrandSettings, useBrand } from '@/contexts/BrandContext';
-import { Separator } from '@/components/ui/separator';
-import { toast } from 'sonner';
-import { Palette, Save, Upload, Check, Layout, Moon, FileText, Sidebar as SidebarIcon } from 'lucide-react';
-import { SettingsSection } from '@/components/settings-section';
-import { SidebarPreview } from '@/components/sidebar-preview';
-import MediaPicker from '@/components/MediaPicker';
-import { useTranslation } from 'react-i18next';
-import { usePage, router } from '@inertiajs/react';
-import { setCookie, getCookie, isDemoMode } from '@/utils/cookie-utils';
+import { useAppearance, type Appearance, type ThemeColor } from '@/hooks/use-appearance';
+import { getCookie, isDemoMode } from '@/utils/cookie-utils';
 import { getDisplayUrl } from '@/utils/helper';
-import { Card, CardContent } from '@/components/ui/card';
+import { router, usePage } from '@inertiajs/react';
+import { Check, FileText, Layout, Moon, Palette, Save, Sidebar as SidebarIcon, Upload } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 
 // Define the brand settings interface
 export interface BrandSettings {
@@ -50,7 +48,6 @@ export const DEFAULT_BRAND_SETTINGS: BrandSettings = {
     themeMode: 'light',
 };
 
-
 interface BrandSettingsProps {
     userSettings?: Record<string, string>;
 }
@@ -65,12 +62,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
     const [activeSection, setActiveSection] = useState<'logos' | 'text' | 'theme'>('logos');
 
     // Get theme hooks
-    const {
-        updateAppearance,
-        updateThemeColor,
-        updateCustomColor,
-        saveThemeSettings
-    } = useAppearance();
+    const { updateAppearance, updateThemeColor, updateCustomColor, saveThemeSettings } = useAppearance();
 
     const { updatePosition, saveLayoutPosition } = useLayout();
     const { updateVariant, updateStyle, saveSidebarSettings } = useSidebarSettings();
@@ -94,20 +86,19 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
             // In non-demo mode, sidebar settings come from database via currentGlobalSettings
 
             if (sidebarSettings) {
-                setSettings(prev => ({
+                setSettings((prev) => ({
                     ...prev,
                     sidebarVariant: sidebarSettings.variant || prev.sidebarVariant,
-                    sidebarStyle: sidebarSettings.style || prev.sidebarStyle
+                    sidebarStyle: sidebarSettings.style || prev.sidebarStyle,
                 }));
             }
-        } catch (error) {
-        }
+        } catch (error) {}
     }, [currentGlobalSettings, userSettings, isSaving]);
 
     // Handle input changes
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setSettings(prev => ({ ...prev, [name]: value }));
+        setSettings((prev) => ({ ...prev, [name]: value }));
 
         // Update brand context if the input is for a logo
         if (['logoLight', 'logoDark', 'favicon'].includes(name)) {
@@ -123,10 +114,10 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
         if (!url.startsWith('http')) return url;
 
         // Extract the path after /storage/media
-        const mediaStoragePath='/storage/media/';
+        const mediaStoragePath = '/storage/media/';
         const storageIndex = url.indexOf(mediaStoragePath);
         if (storageIndex !== -1) {
-            return url.substring(storageIndex+mediaStoragePath.length);
+            return url.substring(storageIndex + mediaStoragePath.length);
         }
         const defaultPath = url.indexOf('/images/');
         if (defaultPath !== -1) {
@@ -141,7 +132,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
         // If URL is empty, use default logo
         if (!url) {
             const defaultValue = DEFAULT_BRAND_SETTINGS[name as keyof BrandSettings] as string;
-            setSettings(prev => ({ ...prev, [name]: defaultValue }));
+            setSettings((prev) => ({ ...prev, [name]: defaultValue }));
             updateBrandSettings({ [name]: getDisplayUrl(defaultValue) });
             return;
         }
@@ -151,10 +142,10 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
         const relativePath = convertToRelativePath(url);
 
         // Reset error state for this logo
-        setLogoErrors(prev => ({ ...prev, [name]: false }));
+        setLogoErrors((prev) => ({ ...prev, [name]: false }));
 
         // Update settings state with relative path
-        setSettings(prev => ({ ...prev, [name]: relativePath }));
+        setSettings((prev) => ({ ...prev, [name]: relativePath }));
 
         // Update brand context with corrected URL for immediate preview
         updateBrandSettings({ [name]: getDisplayUrl(relativePath) });
@@ -167,45 +158,43 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
     const [logoErrors, setLogoErrors] = useState({
         logoDark: false,
         logoLight: false,
-        favicon: false
+        favicon: false,
     });
-
-
 
     // Handle theme color change
     const handleThemeColorChange = (color: ThemeColor) => {
-        setSettings(prev => ({ ...prev, themeColor: color }));
+        setSettings((prev) => ({ ...prev, themeColor: color }));
         updateThemeColor(color);
     };
 
     // Handle custom color change
     const handleCustomColorChange = (color: string) => {
-        setSettings(prev => ({ ...prev, customColor: color }));
+        setSettings((prev) => ({ ...prev, customColor: color }));
         // Set as active custom color when user is editing it
         updateCustomColor(color, true);
     };
 
     // Handle sidebar variant change
     const handleSidebarVariantChange = (variant: string) => {
-        setSettings(prev => ({ ...prev, sidebarVariant: variant }));
+        setSettings((prev) => ({ ...prev, sidebarVariant: variant }));
         updateVariant(variant as any);
     };
 
     // Handle sidebar style change
     const handleSidebarStyleChange = (style: string) => {
-        setSettings(prev => ({ ...prev, sidebarStyle: style }));
+        setSettings((prev) => ({ ...prev, sidebarStyle: style }));
         updateStyle(style);
     };
 
     // Handle layout direction change
     const handleLayoutDirectionChange = (direction: LayoutPosition) => {
-        setSettings(prev => ({ ...prev, layoutDirection: direction }));
+        setSettings((prev) => ({ ...prev, layoutDirection: direction }));
         updatePosition(direction);
     };
 
     // Handle theme mode change
     const handleThemeModeChange = (mode: Appearance) => {
-        setSettings(prev => ({ ...prev, themeMode: mode }));
+        setSettings((prev) => ({ ...prev, themeMode: mode }));
         // Only update appearance, don't let it reset the theme color
         updateAppearance(mode);
         // Immediately reapply the current theme color to prevent it from changing
@@ -243,7 +232,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
         updateBrandSettings({
             logoLight: getDisplayUrl(settings.logoLight),
             logoDark: getDisplayUrl(settings.logoDark),
-            favicon: getDisplayUrl(settings.favicon)
+            favicon: getDisplayUrl(settings.favicon),
         });
 
         // Individual update functions already handled storage (cookies in demo mode, localStorage in normal mode)
@@ -251,100 +240,104 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
 
         // Save to database using Inertia
 
-        router.post(route('settings.brand.update'), {
-            settings: settings
-        }, {
-            preserveScroll: true,
-            onSuccess: (page) => {
-                setIsLoading(false);
-                const successMessage = page.props.flash?.success;
-                const errorMessage = page.props.flash?.error;
-
-                if (successMessage) {
-                    toast.success(successMessage);
-                    // Reset saving state after success
-                    setTimeout(() => setIsSaving(false), 500);
-                } else if (errorMessage) {
-                    toast.error(errorMessage);
-                }
+        router.post(
+            route('settings.brand.update'),
+            {
+                settings: settings,
             },
-            onError: (errors) => {
-                setIsLoading(false);
-                setIsSaving(false);
-                const errorMessage = errors.error || Object.values(errors).join(', ') || t('Failed to save brand settings');
-                toast.error(errorMessage);
-            }
-        });
+            {
+                preserveScroll: true,
+                onSuccess: (page) => {
+                    setIsLoading(false);
+                    const successMessage = page.props.flash?.success;
+                    const errorMessage = page.props.flash?.error;
+
+                    if (successMessage) {
+                        toast.success(successMessage);
+                        // Reset saving state after success
+                        setTimeout(() => setIsSaving(false), 500);
+                    } else if (errorMessage) {
+                        toast.error(errorMessage);
+                    }
+                },
+                onError: (errors) => {
+                    setIsLoading(false);
+                    setIsSaving(false);
+                    const errorMessage = errors.error || Object.values(errors).join(', ') || t('Failed to save brand settings');
+                    toast.error(errorMessage);
+                },
+            },
+        );
     };
 
     return (
         <SettingsSection
-            title={t("Brand Settings")}
+            title={t('Brand Settings')}
             description={t("Customize your application's branding and appearance")}
             action={
-                <Button onClick={saveSettings} disabled={isLoading} size="sm">
-                    <Save className="h-4 w-4 mr-2" />
-                    {isLoading ? t('Saving...') : t('Save Changes')}
+                <Button onClick={saveSettings} disabled={isLoading} size="sm" className="max-[1300px]:px-2.5">
+                    <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
+                    <span className="max-[1300px]:hidden">{isLoading ? t('Saving...') : t('Save Changes')}</span>
                 </Button>
             }
         >
             <Card>
-                <CardContent className='mt-6'>
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div className="lg:col-span-2">
-                            <div className="flex space-x-2 mb-6">
+                <CardContent className="mt-6">
+                    <div className="grid grid-cols-1 gap-6 min-[1230px]:grid-cols-3">
+                        <div className="min-[1230px]:col-span-2">
+                            <div className="mb-6 grid w-full grid-cols-3 gap-2 max-[1230px]:grid-cols-1">
                                 <Button
-                                    variant={activeSection === 'logos' ? "default" : "outline"}
+                                    variant={activeSection === 'logos' ? 'default' : 'outline'}
                                     size="sm"
                                     onClick={() => setActiveSection('logos')}
                                     className="flex-1"
                                 >
-                                    <Upload className="h-4 w-4 mr-2" />
-                                    {t("Logos")}
+                                    <Upload className="mr-2 h-4 w-4" />
+                                    {t('Logos')}
                                 </Button>
                                 <Button
-                                    variant={activeSection === 'text' ? "default" : "outline"}
+                                    variant={activeSection === 'text' ? 'default' : 'outline'}
                                     size="sm"
                                     onClick={() => setActiveSection('text')}
                                     className="flex-1"
                                 >
-                                    <FileText className="h-4 w-4 mr-2" />
-                                    {t("Text")}
+                                    <FileText className="mr-2 h-4 w-4" />
+                                    {t('Text')}
                                 </Button>
                                 <Button
-                                    variant={activeSection === 'theme' ? "default" : "outline"}
+                                    variant={activeSection === 'theme' ? 'default' : 'outline'}
                                     size="sm"
                                     onClick={() => setActiveSection('theme')}
                                     className="flex-1"
                                 >
-                                    <Palette className="h-4 w-4 mr-2" />
-                                    {t("Theme")}
+                                    <Palette className="mr-2 h-4 w-4" />
+                                    {t('Theme')}
                                 </Button>
                             </div>
 
                             {/* Logos Section */}
                             {activeSection === 'logos' && (
                                 <div className="space-y-6">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="grid grid-cols-1 gap-6 min-[1400px]:grid-cols-2">
                                         <div className="space-y-3">
-                                            <Label>{t("Logo Dark")}</Label>
+                                            <Label>{t('Logo Dark')}</Label>
                                             <div className="flex flex-col gap-3">
-                                                <div className="border rounded-md p-4 flex items-center justify-center bg-muted/30 dark:bg-white h-32">
+                                                <div className="bg-muted/30 flex h-32 items-center justify-center rounded-md border p-4 dark:bg-white">
                                                     {settings.logoDark && !logoErrors.logoDark ? (
                                                         <img
                                                             key={`preview-dark-${Date.now()}`}
                                                             src={getDisplayUrl(settings.logoDark)}
                                                             alt="Dark Logo"
                                                             className="max-h-full max-w-full object-contain"
-                                                            onError={() => setLogoErrors(prev => ({ ...prev, logoDark: true }))}
+                                                            onError={() => setLogoErrors((prev) => ({ ...prev, logoDark: true }))}
                                                         />
                                                     ) : (
                                                         <div className="text-muted-foreground flex flex-col items-center gap-2">
-                                                            <div className="h-12 w-24 bg-muted flex items-center justify-center rounded border border-dashed">
-                                                                <span className="font-semibold text-muted-foreground">{t("Logo")}</span>
+                                                            <div className="bg-muted flex h-12 w-24 items-center justify-center rounded border border-dashed">
+                                                                <span className="text-muted-foreground font-semibold">{t('Logo')}</span>
                                                             </div>
                                                             <span className="text-xs">
-                                                                {logoErrors.logoDark ? "Failed to load image" : "No logo selected"}
+                                                                {logoErrors.logoDark ? 'Failed to load image' : 'No logo selected'}
                                                             </span>
                                                         </div>
                                                     )}
@@ -360,24 +353,24 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                         </div>
 
                                         <div className="space-y-3">
-                                            <Label>{t("Logo Light")}</Label>
+                                            <Label>{t('Logo Light')}</Label>
                                             <div className="flex flex-col gap-3">
-                                                <div className="border rounded-md p-4 flex items-center justify-center bg-black h-32">
+                                                <div className="flex h-32 items-center justify-center rounded-md border bg-black p-4">
                                                     {settings.logoLight && !logoErrors.logoLight ? (
                                                         <img
                                                             key={`preview-light-${Date.now()}`}
                                                             src={getDisplayUrl(settings.logoLight)}
                                                             alt="Light Logo"
                                                             className="max-h-full max-w-full object-contain"
-                                                            onError={() => setLogoErrors(prev => ({ ...prev, logoLight: true }))}
+                                                            onError={() => setLogoErrors((prev) => ({ ...prev, logoLight: true }))}
                                                         />
                                                     ) : (
                                                         <div className="text-muted-foreground flex flex-col items-center gap-2">
-                                                            <div className="h-12 w-24 bg-muted flex items-center justify-center rounded border border-dashed">
-                                                                <span className="font-semibold text-muted-foreground">{t("Logo")}</span>
+                                                            <div className="bg-muted flex h-12 w-24 items-center justify-center rounded border border-dashed">
+                                                                <span className="text-muted-foreground font-semibold">{t('Logo')}</span>
                                                             </div>
                                                             <span className="text-xs">
-                                                                {logoErrors.logoLight ? "Failed to load image" : "No logo selected"}
+                                                                {logoErrors.logoLight ? 'Failed to load image' : 'No logo selected'}
                                                             </span>
                                                         </div>
                                                     )}
@@ -393,24 +386,24 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                         </div>
 
                                         <div className="space-y-3">
-                                            <Label>{t("Favicon")}</Label>
+                                            <Label>{t('Favicon')}</Label>
                                             <div className="flex flex-col gap-3">
-                                                <div className="border rounded-md p-4 flex items-center justify-center bg-muted/30 h-20">
+                                                <div className="bg-muted/30 flex h-20 items-center justify-center rounded-md border p-4">
                                                     {settings.favicon && !logoErrors.favicon ? (
                                                         <img
                                                             key={`preview-favicon-${Date.now()}`}
                                                             src={getDisplayUrl(settings.favicon)}
                                                             alt="Favicon"
                                                             className="h-16 w-16 object-contain"
-                                                            onError={() => setLogoErrors(prev => ({ ...prev, favicon: true }))}
+                                                            onError={() => setLogoErrors((prev) => ({ ...prev, favicon: true }))}
                                                         />
                                                     ) : (
                                                         <div className="text-muted-foreground flex flex-col items-center gap-1">
-                                                            <div className="h-10 w-10 bg-muted flex items-center justify-center rounded border border-dashed">
-                                                                <span className="font-semibold text-xs text-muted-foreground">{t("Icon")}</span>
+                                                            <div className="bg-muted flex h-10 w-10 items-center justify-center rounded border border-dashed">
+                                                                <span className="text-muted-foreground text-xs font-semibold">{t('Icon')}</span>
                                                             </div>
                                                             <span className="text-xs">
-                                                                {logoErrors.favicon ? "Failed to load image" : "No favicon selected"}
+                                                                {logoErrors.favicon ? 'Failed to load image' : 'No favicon selected'}
                                                             </span>
                                                         </div>
                                                     )}
@@ -433,7 +426,9 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                 <div className="space-y-6">
                                     <div className="grid grid-cols-1 gap-6">
                                         <div className="space-y-3">
-                                            <Label htmlFor="titleText" required>{t("Title Text")}</Label>
+                                            <Label htmlFor="titleText" required>
+                                                {t('Title Text')}
+                                            </Label>
                                             <Input
                                                 id="titleText"
                                                 name="titleText"
@@ -441,13 +436,13 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                 onChange={handleInputChange}
                                                 placeholder="Kakbima"
                                             />
-                                            <p className="text-xs text-muted-foreground">
-                                                {t("Application title displayed in the browser tab")}
-                                            </p>
+                                            <p className="text-muted-foreground text-xs">{t('Application title displayed in the browser tab')}</p>
                                         </div>
 
                                         <div className="space-y-3">
-                                            <Label htmlFor="footerText" required>{t("Footer Text")}</Label>
+                                            <Label htmlFor="footerText" required>
+                                                {t('Footer Text')}
+                                            </Label>
                                             <Input
                                                 id="footerText"
                                                 name="footerText"
@@ -455,9 +450,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                 onChange={handleInputChange}
                                                 placeholder="© 2026 Kakbima. All rights reserved."
                                             />
-                                            <p className="text-xs text-muted-foreground">
-                                                {t("Text displayed in the footer")}
-                                            </p>
+                                            <p className="text-muted-foreground text-xs">{t('Text displayed in the footer')}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -470,44 +463,46 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                         {/* Theme Color Section */}
                                         <div className="space-y-4">
                                             <div className="flex items-center">
-                                                <Palette className="h-5 w-5 mr-2 text-muted-foreground" />
-                                                <h3 className="text-base font-medium">{t("Theme Color")}</h3>
+                                                <Palette className="text-muted-foreground mr-2 h-5 w-5" />
+                                                <h3 className="text-base font-medium">{t('Theme Color')}</h3>
                                             </div>
                                             <Separator className="my-2" />
 
                                             <div className="grid grid-cols-6 gap-2">
-                                                {Object.entries({ blue: '#A12582', green: '#10b77f', purple: '#8b5cf6', orange: '#f97316', red: '#ef4444' }).map(([color, hex]) => (
+                                                {Object.entries({
+                                                    blue: '#A12582',
+                                                    green: '#10b77f',
+                                                    purple: '#8b5cf6',
+                                                    orange: '#f97316',
+                                                    red: '#ef4444',
+                                                }).map(([color, hex]) => (
                                                     <Button
                                                         key={color}
                                                         type="button"
-                                                        variant={settings.themeColor === color ? "default" : "outline"}
-                                                        className="h-8 w-full p-0 relative"
+                                                        variant={settings.themeColor === color ? 'default' : 'outline'}
+                                                        className="relative h-8 w-full p-0"
                                                         style={{ backgroundColor: settings.themeColor === color ? hex : 'transparent' }}
                                                         onClick={() => handleThemeColorChange(color as ThemeColor)}
                                                     >
-                                                        <span
-                                                            className="absolute inset-1 rounded-sm"
-                                                            style={{ backgroundColor: hex }}
-                                                        />
+                                                        <span className="absolute inset-1 rounded-sm" style={{ backgroundColor: hex }} />
                                                     </Button>
                                                 ))}
                                                 <Button
                                                     type="button"
-                                                    variant={settings.themeColor === 'custom' ? "default" : "outline"}
-                                                    className="h-8 w-full p-0 relative"
-                                                    style={{ backgroundColor: settings.themeColor === 'custom' ? settings.customColor : 'transparent' }}
+                                                    variant={settings.themeColor === 'custom' ? 'default' : 'outline'}
+                                                    className="relative h-8 w-full p-0"
+                                                    style={{
+                                                        backgroundColor: settings.themeColor === 'custom' ? settings.customColor : 'transparent',
+                                                    }}
                                                     onClick={() => handleThemeColorChange('custom')}
                                                 >
-                                                    <span
-                                                        className="absolute inset-1 rounded-sm"
-                                                        style={{ backgroundColor: settings.customColor }}
-                                                    />
+                                                    <span className="absolute inset-1 rounded-sm" style={{ backgroundColor: settings.customColor }} />
                                                 </Button>
                                             </div>
 
                                             {settings.themeColor === 'custom' && (
-                                                <div className="space-y-2 mt-4">
-                                                    <Label htmlFor="customColor">{t("Custom Color")}</Label>
+                                                <div className="mt-4 space-y-2">
+                                                    <Label htmlFor="customColor">{t('Custom Color')}</Label>
                                                     <div className="flex gap-2">
                                                         <div className="relative">
                                                             <Input
@@ -515,10 +510,10 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                                 type="color"
                                                                 value={settings.customColor}
                                                                 onChange={(e) => handleCustomColorChange(e.target.value)}
-                                                                className="absolute inset-0 opacity-0 cursor-pointer"
+                                                                className="absolute inset-0 cursor-pointer opacity-0"
                                                             />
                                                             <div
-                                                                className="w-10 h-10 rounded border cursor-pointer"
+                                                                className="h-10 w-10 cursor-pointer rounded border"
                                                                 style={{ backgroundColor: settings.customColor }}
                                                             />
                                                         </div>
@@ -538,61 +533,63 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                         {/* Sidebar Section */}
                                         <div className="space-y-4">
                                             <div className="flex items-center">
-                                                <SidebarIcon className="h-5 w-5 mr-2 text-muted-foreground" />
-                                                <h3 className="text-base font-medium">{t("Sidebar")}</h3>
+                                                <SidebarIcon className="text-muted-foreground mr-2 h-5 w-5" />
+                                                <h3 className="text-base font-medium">{t('Sidebar')}</h3>
                                             </div>
                                             <Separator className="my-2" />
 
                                             <div className="space-y-6">
                                                 <div>
-                                                    <Label className="mb-2 block">{t("Sidebar Variant")}</Label>
-                                                    <div className="grid grid-cols-3 gap-3">
+                                                    <Label className="mb-2 block">{t('Sidebar Variant')}</Label>
+                                                    <div className="grid grid-cols-3 gap-3 max-[450px]:grid-cols-1">
                                                         {['inset', 'floating', 'minimal'].map((variant) => (
                                                             <Button
                                                                 key={variant}
                                                                 type="button"
-                                                                variant={settings.sidebarVariant === variant ? "default" : "outline"}
+                                                                variant={settings.sidebarVariant === variant ? 'default' : 'outline'}
                                                                 className="h-10 justify-start"
                                                                 style={{
-                                                                    backgroundColor: settings.sidebarVariant === variant ?
-                                                                        (settings.themeColor === 'custom' ? settings.customColor : null) :
-                                                                        'transparent'
+                                                                    backgroundColor:
+                                                                        settings.sidebarVariant === variant
+                                                                            ? settings.themeColor === 'custom'
+                                                                                ? settings.customColor
+                                                                                : null
+                                                                            : 'transparent',
                                                                 }}
                                                                 onClick={() => handleSidebarVariantChange(variant)}
                                                             >
                                                                 {variant.charAt(0).toUpperCase() + variant.slice(1)}
-                                                                {settings.sidebarVariant === variant && (
-                                                                    <Check className="h-4 w-4 ml-2" />
-                                                                )}
+                                                                {settings.sidebarVariant === variant && <Check className="ml-2 h-4 w-4" />}
                                                             </Button>
                                                         ))}
                                                     </div>
                                                 </div>
 
                                                 <div>
-                                                    <Label className="mb-2 block">{t("Sidebar Style")}</Label>
-                                                    <div className="grid grid-cols-3 gap-3">
+                                                    <Label className="mb-2 block">{t('Sidebar Style')}</Label>
+                                                    <div className="grid grid-cols-3 gap-3 max-[450px]:grid-cols-1">
                                                         {[
                                                             { id: 'plain', name: 'Plain' },
                                                             { id: 'colored', name: 'Colored' },
-                                                            { id: 'gradient', name: 'Gradient' }
+                                                            { id: 'gradient', name: 'Gradient' },
                                                         ].map((style) => (
                                                             <Button
                                                                 key={style.id}
                                                                 type="button"
-                                                                variant={settings.sidebarStyle === style.id ? "default" : "outline"}
+                                                                variant={settings.sidebarStyle === style.id ? 'default' : 'outline'}
                                                                 className="h-10 justify-start"
                                                                 style={{
-                                                                    backgroundColor: settings.sidebarStyle === style.id ?
-                                                                        (settings.themeColor === 'custom' ? settings.customColor : null) :
-                                                                        'transparent'
+                                                                    backgroundColor:
+                                                                        settings.sidebarStyle === style.id
+                                                                            ? settings.themeColor === 'custom'
+                                                                                ? settings.customColor
+                                                                                : null
+                                                                            : 'transparent',
                                                                 }}
                                                                 onClick={() => handleSidebarStyleChange(style.id)}
                                                             >
                                                                 {style.name}
-                                                                {settings.sidebarStyle === style.id && (
-                                                                    <Check className="h-4 w-4 ml-2" />
-                                                                )}
+                                                                {settings.sidebarStyle === style.id && <Check className="ml-2 h-4 w-4" />}
                                                             </Button>
                                                         ))}
                                                     </div>
@@ -603,45 +600,47 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                         {/* Layout Section */}
                                         <div className="space-y-4">
                                             <div className="flex items-center">
-                                                <Layout className="h-5 w-5 mr-2 text-muted-foreground" />
-                                                <h3 className="text-base font-medium">{t("Layout")}</h3>
+                                                <Layout className="text-muted-foreground mr-2 h-5 w-5" />
+                                                <h3 className="text-base font-medium">{t('Layout')}</h3>
                                             </div>
                                             <Separator className="my-2" />
 
                                             <div className="space-y-2">
-                                                <Label className="mb-2 block">{t("Layout Direction")}</Label>
+                                                <Label className="mb-2 block">{t('Layout Direction')}</Label>
                                                 <div className="grid grid-cols-2 gap-2">
                                                     <Button
                                                         type="button"
-                                                        variant={settings.layoutDirection === "left" ? "default" : "outline"}
+                                                        variant={settings.layoutDirection === 'left' ? 'default' : 'outline'}
                                                         className="h-10 justify-start"
                                                         style={{
-                                                            backgroundColor: settings.layoutDirection === "left" ?
-                                                                (settings.themeColor === 'custom' ? settings.customColor : null) :
-                                                                'transparent'
+                                                            backgroundColor:
+                                                                settings.layoutDirection === 'left'
+                                                                    ? settings.themeColor === 'custom'
+                                                                        ? settings.customColor
+                                                                        : null
+                                                                    : 'transparent',
                                                         }}
-                                                        onClick={() => handleLayoutDirectionChange("left")}
+                                                        onClick={() => handleLayoutDirectionChange('left')}
                                                     >
-                                                        {t("Left-to-Right")}
-                                                        {settings.layoutDirection === "left" && (
-                                                            <Check className="h-4 w-4 ml-2" />
-                                                        )}
+                                                        {t('Left-to-Right')}
+                                                        {settings.layoutDirection === 'left' && <Check className="ml-2 h-4 w-4" />}
                                                     </Button>
                                                     <Button
                                                         type="button"
-                                                        variant={settings.layoutDirection === "right" ? "default" : "outline"}
+                                                        variant={settings.layoutDirection === 'right' ? 'default' : 'outline'}
                                                         className="h-10 justify-start"
                                                         style={{
-                                                            backgroundColor: settings.layoutDirection === "right" ?
-                                                                (settings.themeColor === 'custom' ? settings.customColor : null) :
-                                                                'transparent'
+                                                            backgroundColor:
+                                                                settings.layoutDirection === 'right'
+                                                                    ? settings.themeColor === 'custom'
+                                                                        ? settings.customColor
+                                                                        : null
+                                                                    : 'transparent',
                                                         }}
-                                                        onClick={() => handleLayoutDirectionChange("right")}
+                                                        onClick={() => handleLayoutDirectionChange('right')}
                                                     >
-                                                        {t("Right-to-Left")}
-                                                        {settings.layoutDirection === "right" && (
-                                                            <Check className="h-4 w-4 ml-2" />
-                                                        )}
+                                                        {t('Right-to-Left')}
+                                                        {settings.layoutDirection === 'right' && <Check className="ml-2 h-4 w-4" />}
                                                     </Button>
                                                 </div>
                                             </div>
@@ -650,60 +649,63 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                         {/* Mode Section */}
                                         <div className="space-y-4">
                                             <div className="flex items-center">
-                                                <Moon className="h-5 w-5 mr-2 text-muted-foreground" />
-                                                <h3 className="text-base font-medium">{t("Theme Mode")}</h3>
+                                                <Moon className="text-muted-foreground mr-2 h-5 w-5" />
+                                                <h3 className="text-base font-medium">{t('Theme Mode')}</h3>
                                             </div>
                                             <Separator className="my-2" />
 
                                             <div className="space-y-2">
-                                                <div className="grid grid-cols-3 gap-2">
+                                                <div className="grid grid-cols-3 gap-2 max-[450px]:grid-cols-1">
                                                     <Button
                                                         type="button"
-                                                        variant={settings.themeMode === "light" ? "default" : "outline"}
+                                                        variant={settings.themeMode === 'light' ? 'default' : 'outline'}
                                                         className="h-10 justify-start"
                                                         style={{
-                                                            backgroundColor: settings.themeMode === "light" ?
-                                                                (settings.themeColor === 'custom' ? settings.customColor : null) :
-                                                                'transparent'
+                                                            backgroundColor:
+                                                                settings.themeMode === 'light'
+                                                                    ? settings.themeColor === 'custom'
+                                                                        ? settings.customColor
+                                                                        : null
+                                                                    : 'transparent',
                                                         }}
-                                                        onClick={() => handleThemeModeChange("light")}
+                                                        onClick={() => handleThemeModeChange('light')}
                                                     >
-                                                        {t("Light")}
-                                                        {settings.themeMode === "light" && (
-                                                            <Check className="h-4 w-4 ml-2" />
-                                                        )}
+                                                        {t('Light')}
+                                                        {settings.themeMode === 'light' && <Check className="ml-2 h-4 w-4" />}
                                                     </Button>
                                                     <Button
                                                         type="button"
-                                                        variant={settings.themeMode === "dark" ? "default" : "outline"}
+                                                        variant={settings.themeMode === 'dark' ? 'default' : 'outline'}
                                                         className="h-10 justify-start"
                                                         style={{
-                                                            backgroundColor: settings.themeMode === "dark" ?
-                                                                (settings.themeColor === 'custom' ? settings.customColor : null) :
-                                                                'transparent'
+                                                            backgroundColor:
+                                                                settings.themeMode === 'dark'
+                                                                    ? settings.themeColor === 'custom'
+                                                                        ? settings.customColor
+                                                                        : null
+                                                                    : 'transparent',
                                                         }}
-                                                        onClick={() => handleThemeModeChange("dark")}
+                                                        onClick={() => handleThemeModeChange('dark')}
                                                     >
-                                                        {t("Dark")}
-                                                        {settings.themeMode === "dark" && (
-                                                            <Check className="h-4 w-4 ml-2" />
-                                                        )}
+                                                        {t('Dark')}
+                                                        {settings.themeMode === 'dark' && <Check className="ml-2 h-4 w-4" />}
                                                     </Button>
                                                     <Button
                                                         type="button"
-                                                        variant={settings.themeMode === "system" ? "default" : "outline"}
+                                                        variant={settings.themeMode === 'system' ? 'default' : 'outline'}
                                                         className="h-10 justify-start"
                                                         style={{
-                                                            backgroundColor: settings.themeMode === "system" ?
-                                                                (settings.themeColor === 'custom' ? settings.customColor : null) :
-                                                                'transparent'
+                                                            backgroundColor:
+                                                                settings.themeMode === 'system'
+                                                                    ? settings.themeColor === 'custom'
+                                                                        ? settings.customColor
+                                                                        : null
+                                                                    : 'transparent',
                                                         }}
-                                                        onClick={() => handleThemeModeChange("system")}
+                                                        onClick={() => handleThemeModeChange('system')}
                                                     >
-                                                        {t("System")}
-                                                        {settings.themeMode === "system" && (
-                                                            <Check className="h-4 w-4 ml-2" />
-                                                        )}
+                                                        {t('System')}
+                                                        {settings.themeMode === 'system' && <Check className="ml-2 h-4 w-4" />}
                                                     </Button>
                                                 </div>
                                             </div>
@@ -714,21 +716,25 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                         </div>
 
                         {/* Preview Column */}
-                        <div className="lg:col-span-1">
+                        <div className="min-[1230px]:col-span-1">
                             <div className="sticky top-20 space-y-6">
-                                <div className="border rounded-md p-4">
-                                    <div className="flex items-center gap-2 mb-4">
+                                <div className="rounded-md border p-4">
+                                    <div className="mb-4 flex items-center gap-2">
                                         <Palette className="h-4 w-4" />
-                                        <h3 className="font-medium">{t("Live Preview")}</h3>
+                                        <h3 className="font-medium">{t('Live Preview')}</h3>
                                     </div>
 
                                     {/* Comprehensive Theme Preview */}
                                     <ThemePreview />
 
                                     {/* Text Preview */}
-                                    <div className="mt-4 pt-4 border-t">
-                                        <div className="text-xs mb-2 text-muted-foreground">{t("Title:")} <span className="font-medium text-foreground">{settings.titleText}</span></div>
-                                        <div className="text-xs text-muted-foreground">{t("Footer:")} <span className="font-medium text-foreground">{settings.footerText}</span></div>
+                                    <div className="mt-4 border-t pt-4">
+                                        <div className="text-muted-foreground mb-2 text-xs">
+                                            {t('Title:')} <span className="text-foreground font-medium">{settings.titleText}</span>
+                                        </div>
+                                        <div className="text-muted-foreground text-xs">
+                                            {t('Footer:')} <span className="text-foreground font-medium">{settings.footerText}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

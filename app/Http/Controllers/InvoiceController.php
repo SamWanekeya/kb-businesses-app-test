@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Invoice;
-use App\Models\SalesOrder;
-use App\Models\Quote;
-use App\Models\Opportunity;
+use App\Exports\InvoiceExport;
 use App\Models\Account;
 use App\Models\Contact;
-use App\Models\Product;
+use App\Models\Invoice;
+use App\Models\Opportunity;
 use App\Models\PlanOrder;
-use App\Exports\InvoiceExport;
+use App\Models\Product;
+use App\Models\Quote;
+use App\Models\SalesOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -38,7 +37,7 @@ class InvoiceController extends Controller
             $query->where(function ($q) use ($request) {
                 $q->where('invoice_number', 'like', '%' . $request->search . '%')
                     ->orWhere('name', 'like', '%' . $request->search . '%')
-                    ->orWhereHas('account', fn($q) => $q->where('name', 'like', '%' . $request->search . '%'));
+                    ->orWhereHas('account', fn ($q) => $q->where('name', 'like', '%' . $request->search . '%'));
             });
         }
 
@@ -117,7 +116,7 @@ class InvoiceController extends Controller
             'quotes' => $quotes,
             'opportunities' => $opportunities,
             'products' => $products,
-            'users' => $users
+            'users' => $users,
         ]);
     }
 
@@ -164,7 +163,7 @@ class InvoiceController extends Controller
                     return redirect()->back()->withErrors(['error' => __("Insufficient stock for product: :name. Available: :stock, Required: :required", [
                         'name' => $productModel->name,
                         'stock' => $productModel->stock_quantity,
-                        'required' => $product['quantity']
+                        'required' => $product['quantity'],
                     ])]);
                 }
             }
@@ -207,6 +206,7 @@ class InvoiceController extends Controller
 
         if ($emailError) {
             $message = __('Invoice created successfully, but ') . __('Email send failed: ') . $emailError;
+
             return redirect()->route('invoices.index')->with('warning', $message);
         }
 
@@ -228,7 +228,7 @@ class InvoiceController extends Controller
                 'products.tax',
                 'payments',
                 'activities.user',
-                'reminders.sentBy'
+                'reminders.sentBy',
             ])
             ->first();
 
@@ -248,7 +248,7 @@ class InvoiceController extends Controller
         ]);
     }
 
-     public function edit($id)
+    public function edit($id)
     {
         $invoice = Invoice::with([
             'salesOrder',
@@ -258,7 +258,7 @@ class InvoiceController extends Controller
             'contact',
             'creator',
             'assignedUser',
-            'products.tax'
+            'products.tax',
         ])
             ->where('created_by', createdBy())
             ->where('id', $id)
@@ -280,7 +280,7 @@ class InvoiceController extends Controller
                 'quotes' => $quotes,
                 'opportunities' => $opportunities,
                 'products' => $products,
-                'users' => $users
+                'users' => $users,
             ]);
         } else {
             return redirect()->route('invoices.index')->with('error', __('Invoice not found.'));
@@ -351,7 +351,7 @@ class InvoiceController extends Controller
                         return redirect()->back()->withErrors(['error' => __("Insufficient stock for product: :name. Available: :stock, Required: :required", [
                             'name' => $productModel->name,
                             'stock' => $productModel->stock_quantity,
-                            'required' => $product['quantity']
+                            'required' => $product['quantity'],
                         ])]);
                     }
                 }
@@ -392,6 +392,7 @@ class InvoiceController extends Controller
             return redirect()->route('invoices.index')->with('success', __('Invoice updated successfully.'));
         } catch (\Exception $e) {
             DB::rollBack();
+
             return redirect()->back()->with('error', __('Something went wrong. Please try again later.'));
         }
     }
@@ -443,15 +444,13 @@ class InvoiceController extends Controller
         }
 
         $validated = $request->validate([
-            'status' => 'required|in:draft,sent,pending,paid,partially_paid,overdue,cancelled'
+            'status' => 'required|in:draft,sent,pending,paid,partially_paid,overdue,cancelled',
         ]);
 
         $invoice->update(['status' => $validated['status']]);
 
         return redirect()->back()->with('success', __('Invoice status updated successfully.'));
     }
-
-
 
     public function assignUser(Request $request, $invoiceId)
     {
@@ -464,7 +463,7 @@ class InvoiceController extends Controller
         }
 
         $validated = $request->validate([
-            'assigned_to' => 'required|exists:users,id'
+            'assigned_to' => 'required|exists:users,id',
         ]);
 
         $invoice->update(['assigned_to' => $validated['assigned_to']]);
@@ -573,7 +572,7 @@ class InvoiceController extends Controller
                     'contact',
                     'products.tax',
                     'payments',
-                    'creator'
+                    'creator',
                 ])
                 ->first();
 
@@ -647,8 +646,8 @@ class InvoiceController extends Controller
                 'invoice_id' => $invoiceId,
                 'amount' => $validated['amount'],
                 'payment_type' => $validated['payment_type'],
-                'payment_method' => $validated['payment_method']
-            ]
+                'payment_method' => $validated['payment_method'],
+            ],
         ]);
 
         // Redirect to payment method
@@ -665,8 +664,6 @@ class InvoiceController extends Controller
                 return back()->withErrors(['error' => __('Invalid payment method')]);
         }
     }
-
-
 
     public function showPaymentPage(Request $request, $method)
     {
@@ -732,7 +729,7 @@ class InvoiceController extends Controller
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 
-        return Excel::download(new InvoiceExport, 'invoices-' . now()->format('Y-m-d-H-i-s') . '.xlsx');
+        return Excel::download(new InvoiceExport(), 'invoices-' . now()->format('Y-m-d-H-i-s') . '.xlsx');
     }
 
     public function getSalesOrderDetails($salesOrderId)
@@ -762,9 +759,9 @@ class InvoiceController extends Controller
                     'quantity' => $product->pivot->quantity ?? 1,
                     'unit_price' => $product->pivot->unit_price ?? $product->price ?? 0,
                     'discount_type' => $product->pivot->discount_type ?? 'none',
-                    'discount_value' => $product->pivot->discount_value ?? 0
+                    'discount_value' => $product->pivot->discount_value ?? 0,
                 ];
-            })
+            }),
         ]);
     }
 
@@ -793,9 +790,9 @@ class InvoiceController extends Controller
                     'quantity' => $product->pivot->quantity ?? 1,
                     'unit_price' => $product->pivot->unit_price ?? $product->price ?? 0,
                     'discount_type' => $product->pivot->discount_type ?? 'none',
-                    'discount_value' => $product->pivot->discount_value ?? 0
+                    'discount_value' => $product->pivot->discount_value ?? 0,
                 ];
-            })
+            }),
         ]);
     }
 
@@ -819,9 +816,9 @@ class InvoiceController extends Controller
                     'quantity' => $product->pivot->quantity ?? 1,
                     'unit_price' => $product->pivot->unit_price ?? $product->price ?? 0,
                     'discount_type' => $product->pivot->discount_type ?? 'none',
-                    'discount_value' => $product->pivot->discount_value ?? 0
+                    'discount_value' => $product->pivot->discount_value ?? 0,
                 ];
-            })
+            }),
         ]);
     }
 
@@ -918,7 +915,7 @@ class InvoiceController extends Controller
             'account' => (object) [
                 'name' => 'Sample Client',
                 'email' => 'client@kakbima.dev',
-                'phone' => '(555) 123-4567'
+                'phone' => '(555) 123-4567',
             ],
             'billing_address' => '456 Client Avenue',
             'billing_city' => 'Client City',
@@ -928,15 +925,15 @@ class InvoiceController extends Controller
                 (object) [
                     'name' => 'Web Development',
                     'pivot' => (object) ['quantity' => 10, 'unit_price' => 75, 'total_price' => 750],
-                    'tax' => (object) ['name' => 'VAT', 'rate' => 10]
+                    'tax' => (object) ['name' => 'VAT', 'rate' => 10],
                 ],
                 (object) [
                     'name' => 'Design Services',
                     'pivot' => (object) ['quantity' => 5, 'unit_price' => 50, 'total_price' => 250],
-                    'tax' => (object) ['name' => 'VAT', 'rate' => 10]
-                ]
+                    'tax' => (object) ['name' => 'VAT', 'rate' => 10],
+                ],
             ],
-            'notes' => 'Thank you for your business!'
+            'notes' => 'Thank you for your business!',
         ];
 
         $templateColor = '#' . $color;
@@ -947,7 +944,7 @@ class InvoiceController extends Controller
             'templateId' => (int) $templateId,
             'templateColor' => $templateColor,
             'settings' => $settings,
-            'isPreview' => $isPreview
+            'isPreview' => $isPreview,
         ]);
     }
 }

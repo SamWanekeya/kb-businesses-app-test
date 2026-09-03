@@ -1,38 +1,57 @@
-import { useState, useEffect } from 'react';
-import { PageTemplate } from '@/components/page-template';
-import { usePage, router } from '@inertiajs/react';
-import { Plus, Eye, Edit, Trash2, Phone, Calendar, Clock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
-import { useInitials } from '@/hooks/use-initials';
-import UserInitials from '@/components/user-initials';
-import { hasPermission } from '@/utils/authorization';
-import { CrudTable } from '@/components/CrudTable';
-import { CrudFormModal } from '@/components/CrudFormModal';
 import { CrudDeleteModal } from '@/components/CrudDeleteModal';
+import { CrudFormModal } from '@/components/CrudFormModal';
+import { CrudTable } from '@/components/CrudTable';
 import { toast } from '@/components/custom-toast';
-import { useTranslation } from 'react-i18next';
+import { PageTemplate } from '@/components/page-template';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import UserInitials from '@/components/user-initials';
+import { useInitials } from '@/hooks/use-initials';
+import { hasPermission } from '@/utils/authorization';
 import { capitalize } from '@/utils/helper';
+import { router, usePage } from '@inertiajs/react';
+import { Calendar, Plus } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function Calls() {
     const { t } = useTranslation();
     const getInitials = useInitials();
-    const { auth, calls, users = [], allUsers = [], allContacts = [], allLeads = [], filters: pageFilters = {}, settings = {} } = usePage().props as any;
+    const {
+        auth,
+        calls,
+        users = [],
+        allUsers = [],
+        allContacts = [],
+        allLeads = [],
+        filters: pageFilters = {},
+        settings = {},
+    } = usePage().props as any;
 
-    const userMap: Record<number, any>    = Object.fromEntries(allUsers.map((u: any) => [u.id, u]));
+    const userMap: Record<number, any> = Object.fromEntries(allUsers.map((u: any) => [u.id, u]));
     const contactMap: Record<number, any> = Object.fromEntries(allContacts.map((c: any) => [c.id, c]));
-    const leadMap: Record<number, any>    = Object.fromEntries(allLeads.map((l: any) => [l.id, l]));
+    const leadMap: Record<number, any> = Object.fromEntries(allLeads.map((l: any) => [l.id, l]));
 
     const resolveAttendees = (call: any) =>
-        (call.attendees || []).map((a: any) => {
-            if (a.attendee_type === 'user')    { const u = userMap[a.attendee_id];    return u ? { name: u.name, avatar: u.avatar, type: 'user' }    : null; }
-            if (a.attendee_type === 'contact') { const c = contactMap[a.attendee_id]; return c ? { name: c.name, avatar: null, type: 'contact' } : null; }
-            if (a.attendee_type === 'lead')    { const l = leadMap[a.attendee_id];    return l ? { name: l.name, avatar: null, type: 'lead' }    : null; }
-            return null;
-        }).filter(Boolean);
+        (call.attendees || [])
+            .map((a: any) => {
+                if (a.attendee_type === 'user') {
+                    const u = userMap[a.attendee_id];
+                    return u ? { name: u.name, avatar: u.avatar, type: 'user' } : null;
+                }
+                if (a.attendee_type === 'contact') {
+                    const c = contactMap[a.attendee_id];
+                    return c ? { name: c.name, avatar: null, type: 'contact' } : null;
+                }
+                if (a.attendee_type === 'lead') {
+                    const l = leadMap[a.attendee_id];
+                    return l ? { name: l.name, avatar: null, type: 'lead' } : null;
+                }
+                return null;
+            })
+            .filter(Boolean);
     const permissions = auth?.permissions || [];
     const isGoogleCalendarSynced = settings?.googleCalendarEnabled === '1';
 
@@ -54,28 +73,36 @@ export default function Calls() {
     };
 
     const applyFilters = () => {
-        router.get(route('calls.index'), {
-            page: 1,
-            search: searchTerm || undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-            sort_field: pageFilters.sort_field || undefined,
-            sort_direction: pageFilters.sort_direction || undefined,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('calls.index'),
+            {
+                page: 1,
+                search: searchTerm || undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                sort_field: pageFilters.sort_field || undefined,
+                sort_direction: pageFilters.sort_direction || undefined,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleSort = (field: string) => {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
-        router.get(route('calls.index'), {
-            sort_field: field,
-            sort_direction: direction,
-            page: 1,
-            search: searchTerm || undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('calls.index'),
+            {
+                sort_field: field,
+                sort_direction: direction,
+                page: 1,
+                search: searchTerm || undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleAction = (action: string, item: any) => {
@@ -105,9 +132,7 @@ export default function Calls() {
 
     const handleFormSubmit = (formData: any) => {
         if (formData.attendees && Array.isArray(formData.attendees)) {
-            formData.attendees = formData.attendees.filter((attendee: any) =>
-                attendee.type && attendee.id && attendee.id !== ''
-            );
+            formData.attendees = formData.attendees.filter((attendee: any) => attendee.type && attendee.id && attendee.id !== '');
         }
 
         if (formData.parent_id) {
@@ -129,12 +154,14 @@ export default function Calls() {
                 },
                 onError: (errors) => {
                     toast.dismiss();
-                    const errorMessages = Object.entries(errors).map(([field, messages]) => {
-                        const messageArray = Array.isArray(messages) ? messages : [messages];
-                        return `${field}: ${messageArray.join(', ')}`;
-                    }).join('; ');
+                    const errorMessages = Object.entries(errors)
+                        .map(([field, messages]) => {
+                            const messageArray = Array.isArray(messages) ? messages : [messages];
+                            return `${field}: ${messageArray.join(', ')}`;
+                        })
+                        .join('; ');
                     toast.error(errorMessages);
-                }
+                },
             });
         } else if (formMode === 'edit') {
             toast.loading(t('Updating call...'));
@@ -150,12 +177,14 @@ export default function Calls() {
                 },
                 onError: (errors) => {
                     toast.dismiss();
-                    const errorMessages = Object.entries(errors).map(([field, messages]) => {
-                        const messageArray = Array.isArray(messages) ? messages : [messages];
-                        return `${field}: ${messageArray.join(', ')}`;
-                    }).join('; ');
+                    const errorMessages = Object.entries(errors)
+                        .map(([field, messages]) => {
+                            const messageArray = Array.isArray(messages) ? messages : [messages];
+                            return `${field}: ${messageArray.join(', ')}`;
+                        })
+                        .join('; ');
                     toast.error(errorMessages);
-                }
+                },
             });
         }
     };
@@ -175,7 +204,7 @@ export default function Calls() {
             onError: (errors) => {
                 toast.dismiss();
                 toast.error(t('Failed to delete call: {{errors}}', { errors: Object.values(errors).join(', ') }));
-            }
+            },
         });
     };
 
@@ -193,30 +222,37 @@ export default function Calls() {
             onError: (errors) => {
                 toast.dismiss();
                 toast.error(t('Failed to update call status: {{errors}}', { errors: Object.values(errors).join(', ') }));
-            }
+            },
         });
     };
 
     const handleToggleStatus = (call: any) => {
         const newStatus = call.status === 'planned' ? 'held' : 'planned';
         toast.loading(`${newStatus === 'held' ? t('Marking as held') : t('Marking as planned')} call...`);
-        router.put(route('calls.toggle-status', call.id), {}, {
-            onSuccess: (page) => {
-                toast.dismiss();
-                if (page.props.flash.success) {
-                    toast.success(t(page.props.flash.success));
-                }
+        router.put(
+            route('calls.toggle-status', call.id),
+            {},
+            {
+                onSuccess: (page) => {
+                    toast.dismiss();
+                    if (page.props.flash.success) {
+                        toast.success(t(page.props.flash.success));
+                    }
+                },
+                onError: (errors) => {
+                    toast.dismiss();
+                    toast.error(t('Failed to update call status: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                },
             },
-            onError: (errors) => {
-                toast.dismiss();
-                toast.error(t('Failed to update call status: {{errors}}', { errors: Object.values(errors).join(', ') }));
-            }
-        });
+        );
     };
 
     const pageInitialState = useState(true);
     useEffect(() => {
-        if (pageInitialState[0]) { pageInitialState[1](false); return; }
+        if (pageInitialState[0]) {
+            pageInitialState[1](false);
+            return;
+        }
         applyFilters();
     }, [searchTerm, selectedStatus, selectedAssignee]);
 
@@ -228,42 +264,40 @@ export default function Calls() {
     if (hasPermission(permissions, 'create-calls')) {
         pageActions.push({
             label: t('Add Call'),
-            icon: <Plus className="h-4 w-4 mr-2" />,
+            icon: <Plus className="mr-2 h-4 w-4" />,
             variant: 'default',
-            onClick: () => handleAddNew()
+            onClick: () => handleAddNew(),
         });
     }
 
-    const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Calls') }
-    ];
+    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Calls') }];
 
     const columns = [
         {
             key: 'title',
             label: t('Title'),
             sortable: true,
-            render: (value: string) => (
-                <div className="font-medium whitespace-nowrap">{value}</div>
-            )
+            render: (value: string) => <div className="font-medium whitespace-nowrap">{value}</div>,
         },
         {
             key: 'assigned_user',
             label: t('Assigned To'),
             className: 'whitespace-nowrap',
-            render: (value: any) => value ? (
-                <div className="flex items-center gap-2">
-                    <Avatar className="h-8 w-8 flex-shrink-0">
-                        <AvatarImage src={value.avatar} alt={value.name} />
-                        <AvatarFallback className="text-xs">{getInitials(value.name)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                        <div className="font-medium whitespace-nowrap">{value.name}</div>
-                        <div className="text-sm text-muted-foreground whitespace-nowrap">{value.email}</div>
+            render: (value: any) =>
+                value ? (
+                    <div className="flex items-center gap-2">
+                        <Avatar className="h-8 w-8 flex-shrink-0">
+                            <AvatarImage src={value.avatar} alt={value.name} />
+                            <AvatarFallback className="text-xs">{getInitials(value.name)}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <div className="font-medium whitespace-nowrap">{value.name}</div>
+                            <div className="text-muted-foreground text-sm whitespace-nowrap">{value.email}</div>
+                        </div>
                     </div>
-                </div>
-            ) : <span className="whitespace-nowrap">{t('Unassigned')}</span>
+                ) : (
+                    <span className="whitespace-nowrap">{t('Unassigned')}</span>
+                ),
         },
         {
             key: 'start_date',
@@ -273,26 +307,29 @@ export default function Calls() {
             render: (value: string, row: any) => (
                 <div className="flex flex-col gap-1 whitespace-nowrap">
                     <span className="flex items-center gap-1 text-xs text-gray-500">
-                        <Calendar className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
+                        <Calendar className="h-3.5 w-3.5 flex-shrink-0 text-gray-400" />
                         {window.appSettings?.formatDateTime(`${value.split('T')[0]}T${row.start_time}`, true) || '-'}
                     </span>
                     <span className="flex items-center gap-1 text-xs text-gray-500">
-                        <Calendar className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
+                        <Calendar className="h-3.5 w-3.5 flex-shrink-0 text-gray-400" />
                         {window.appSettings?.formatDateTime(`${row.end_date.split('T')[0]}T${row.end_time}`, true) || '-'}
                     </span>
                 </div>
-            )
+            ),
         },
-        
+
         {
             key: 'parent_module',
             label: t('Related To'),
             className: 'whitespace-nowrap',
-            render: (value: string, row: any) => value ? (
-                <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset bg-blue-50 text-blue-700 ring-blue-600/20 whitespace-nowrap">
-                    {capitalize(value)}
-                </span>
-            ) : <span className="whitespace-nowrap">-</span>
+            render: (value: string, row: any) =>
+                value ? (
+                    <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium whitespace-nowrap text-blue-700 ring-1 ring-blue-600/20 ring-inset">
+                        {capitalize(value)}
+                    </span>
+                ) : (
+                    <span className="whitespace-nowrap">-</span>
+                ),
         },
         {
             key: 'attendees',
@@ -302,7 +339,7 @@ export default function Calls() {
                 const visible = att.slice(0, 3);
                 const extra = att.length - 3;
                 return visible.length > 0 ? (
-                    <div className="flex -space-x-0 items-center">
+                    <div className="flex items-center -space-x-0">
                         {visible.map((a: any, i: number) => (
                             <TooltipProvider key={i}>
                                 <Tooltip>
@@ -314,7 +351,9 @@ export default function Calls() {
                                                     <AvatarFallback className="text-[10px]">{getInitials(a.name)}</AvatarFallback>
                                                 </Avatar>
                                             ) : (
-                                                <div className="h-6 w-6 [&_[data-slot=avatar]]:h-6 [&_[data-slot=avatar]]:w-6 [&_[data-slot=avatar-fallback]]:text-[9px]"><UserInitials name={a.name} /></div>
+                                                <div className="h-6 w-6 [&_[data-slot=avatar-fallback]]:text-[9px] [&_[data-slot=avatar]]:h-6 [&_[data-slot=avatar]]:w-6">
+                                                    <UserInitials name={a.name} />
+                                                </div>
                                             )}
                                         </div>
                                     </TooltipTrigger>
@@ -326,19 +365,25 @@ export default function Calls() {
                             <TooltipProvider>
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <div className="h-6 w-6 ring-2 ring-white dark:ring-gray-900 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-[9px] font-semibold text-gray-700 dark:text-gray-200 cursor-pointer">+{extra}</div>
+                                        <div className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-gray-200 text-[9px] font-semibold text-gray-700 ring-2 ring-white dark:bg-gray-600 dark:text-gray-200 dark:ring-gray-900">
+                                            +{extra}
+                                        </div>
                                     </TooltipTrigger>
                                     <TooltipContent>
                                         <div className="flex flex-col gap-0.5">
-                                            {att.slice(3).map((a: any, i: number) => <span key={i}>{a.name}</span>)}
+                                            {att.slice(3).map((a: any, i: number) => (
+                                                <span key={i}>{a.name}</span>
+                                            ))}
                                         </div>
                                     </TooltipContent>
                                 </Tooltip>
                             </TooltipProvider>
                         )}
                     </div>
-                ) : <span className="text-muted-foreground text-xs">-</span>;
-            }
+                ) : (
+                    <span className="text-muted-foreground text-xs">-</span>
+                );
+            },
         },
         {
             key: 'status',
@@ -347,26 +392,36 @@ export default function Calls() {
             render: (value: string) => {
                 const getStatusColor = (status: string) => {
                     switch (status) {
-                        case 'planned': return 'bg-blue-50 text-blue-700 ring-blue-600/20';
-                        case 'held': return 'bg-green-50 text-green-700 ring-green-600/20';
-                        case 'not_held': return 'bg-red-50 text-red-700 ring-red-600/20';
-                        default: return 'bg-gray-50 text-gray-700 ring-gray-600/20';
+                        case 'planned':
+                            return 'bg-blue-50 text-blue-700 ring-blue-600/20';
+                        case 'held':
+                            return 'bg-green-50 text-green-700 ring-green-600/20';
+                        case 'not_held':
+                            return 'bg-red-50 text-red-700 ring-red-600/20';
+                        default:
+                            return 'bg-gray-50 text-gray-700 ring-gray-600/20';
                     }
                 };
                 const getStatusLabel = (status: string) => {
                     switch (status) {
-                        case 'planned': return t('Planned');
-                        case 'held': return t('Held');
-                        case 'not_held': return t('Not Held');
-                        default: return status;
+                        case 'planned':
+                            return t('Planned');
+                        case 'held':
+                            return t('Held');
+                        case 'not_held':
+                            return t('Not Held');
+                        default:
+                            return status;
                     }
                 };
                 return (
-                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset whitespace-nowrap ${getStatusColor(value)}`}>
+                    <span
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${getStatusColor(value)}`}
+                    >
                         {getStatusLabel(value)}
                     </span>
                 );
-            }
+            },
         },
         // {
         //     key: 'created_at',
@@ -383,41 +438,34 @@ export default function Calls() {
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
-            requiredPermission: 'toggle-status-calls'
+            requiredPermission: 'toggle-status-calls',
         },
         {
             label: t('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
-            requiredPermission: 'view-calls'
+            requiredPermission: 'view-calls',
         },
         {
             label: t('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
-            requiredPermission: 'edit-calls'
+            requiredPermission: 'edit-calls',
         },
         {
             label: t('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
-            requiredPermission: 'delete-calls'
-        }
+            requiredPermission: 'delete-calls',
+        },
     ];
 
     return (
-        <PageTemplate
-            title={t("Calls")}
-            description={t("Manage your calls.")}
-            url="/calls"
-            actions={pageActions}
-            breadcrumbs={breadcrumbs}
-            noPadding
-        >
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
+        <PageTemplate title={t('Calls')} description={t('Manage your calls.')} url="/calls" actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
+            <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -433,8 +481,8 @@ export default function Calls() {
                                 { value: 'all', label: t('All Status') },
                                 { value: 'planned', label: t('Planned') },
                                 { value: 'held', label: t('Held') },
-                                { value: 'not_held', label: t('Not Held') }
-                            ]
+                                { value: 'not_held', label: t('Not Held') },
+                            ],
                         },
                         {
                             name: 'assigned_to',
@@ -448,10 +496,10 @@ export default function Calls() {
                                 { value: 'unassigned', label: t('Unassigned') },
                                 ...allUsers.map((user: any) => ({
                                     value: user.id.toString(),
-                                    label: user.name
-                                }))
-                            ]
-                        }
+                                    label: user.name,
+                                })),
+                            ],
+                        },
                     ]}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
@@ -459,25 +507,25 @@ export default function Calls() {
                 />
             </div>
 
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+            <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                 <div className="overflow-x-auto">
-                <CrudTable
-                    columns={columns}
-                    actions={actions}
-                    data={calls?.data || []}
-                    from={calls?.from || 1}
-                    onAction={handleAction}
-                    sortField={pageFilters.sort_field}
-                    sortDirection={pageFilters.sort_direction}
-                    onSort={handleSort}
-                    permissions={permissions}
-                    entityPermissions={{
-                        view: 'view-calls',
-                        create: 'create-calls',
-                        edit: 'edit-calls',
-                        delete: 'delete-calls'
-                    }}
-                />
+                    <CrudTable
+                        columns={columns}
+                        actions={actions}
+                        data={calls?.data || []}
+                        from={calls?.from || 1}
+                        onAction={handleAction}
+                        sortField={pageFilters.sort_field}
+                        sortDirection={pageFilters.sort_direction}
+                        onSort={handleSort}
+                        permissions={permissions}
+                        entityPermissions={{
+                            view: 'view-calls',
+                            create: 'create-calls',
+                            edit: 'edit-calls',
+                            delete: 'delete-calls',
+                        }}
+                    />
                 </div>
 
                 <Pagination
@@ -485,19 +533,23 @@ export default function Calls() {
                     to={calls?.to || 0}
                     total={calls?.total || 0}
                     links={calls?.links}
-                    entityName={t("calls")}
+                    entityName={t('calls')}
                     onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
-                    currentPerPage={pageFilters.per_page?.toString() || "10"}
+                    currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
-                        router.get(route('calls.index'), {
-                            page: 1,
-                            search: searchTerm || undefined,
-                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-                            sort_field: pageFilters.sort_field || undefined,
-                            sort_direction: pageFilters.sort_direction || undefined,
-                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
-                        }, { preserveState: true, preserveScroll: true });
+                        router.get(
+                            route('calls.index'),
+                            {
+                                page: 1,
+                                search: searchTerm || undefined,
+                                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                                sort_field: pageFilters.sort_field || undefined,
+                                sort_direction: pageFilters.sort_direction || undefined,
+                                ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+                            },
+                            { preserveState: true, preserveScroll: true },
+                        );
                     }}
                 />
             </div>
@@ -508,8 +560,19 @@ export default function Calls() {
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
-                        { name: 'title', label: t('Call Title'), type: 'text' as const, required: true, placeholder: t('e.g. Follow-up Call, Sales Discovery, Support Call') },
-                        { name: 'description', label: t('Description'), type: 'textarea' as const, placeholder: t('Enter call description or agenda...') },
+                        {
+                            name: 'title',
+                            label: t('Call Title'),
+                            type: 'text' as const,
+                            required: true,
+                            placeholder: t('e.g. Follow-up Call, Sales Discovery, Support Call'),
+                        },
+                        {
+                            name: 'description',
+                            label: t('Description'),
+                            type: 'textarea' as const,
+                            placeholder: t('Enter call description or agenda...'),
+                        },
                         { name: 'start_date', label: t('Start Date'), type: 'date' as const, required: true },
                         { name: 'end_date', label: t('End Date'), type: 'date' as const, required: true },
                         { name: 'start_time', label: t('Start Time'), type: 'time' as const, required: true },
@@ -525,8 +588,8 @@ export default function Calls() {
                                 { value: 'contact', label: t('Contact') },
                                 { value: 'opportunity', label: t('Opportunity') },
                                 { value: 'case', label: t('Case') },
-                                { value: 'project', label: t('Project') }
-                            ]
+                                { value: 'project', label: t('Project') },
+                            ],
                         },
                         {
                             name: 'parent_id',
@@ -545,7 +608,7 @@ export default function Calls() {
                                     contact: route('contacts.index'),
                                     opportunity: route('opportunities.index'),
                                     case: route('cases.index'),
-                                    project: route('projects.index')
+                                    project: route('projects.index'),
                                 };
                                 const labels: Record<string, string> = {
                                     lead: t('Leads'),
@@ -553,14 +616,14 @@ export default function Calls() {
                                     contact: t('Contacts'),
                                     opportunity: t('Opportunities'),
                                     case: t('Cases'),
-                                    project: t('Projects')
+                                    project: t('Projects'),
                                 };
                                 return { link: routes[parentModule], linkText: labels[parentModule] };
                             },
                             conditional: (mode: string, formData: any) => {
                                 const parentModule = formData.parent_module;
                                 return parentModule && parentModule !== 'none';
-                            }
+                            },
                         },
                         {
                             name: 'attendees',
@@ -576,8 +639,8 @@ export default function Calls() {
                                     options: [
                                         { value: 'user', label: t('User') },
                                         { value: 'contact', label: t('Contact') },
-                                        { value: 'lead', label: t('Lead') }
-                                    ]
+                                        { value: 'lead', label: t('Lead') },
+                                    ],
                                 },
                                 {
                                     name: 'id',
@@ -594,17 +657,17 @@ export default function Calls() {
                                         const routes: Record<string, string> = {
                                             user: route('users.index'),
                                             contact: route('contacts.index'),
-                                            lead: route('leads.index')
+                                            lead: route('leads.index'),
                                         };
                                         const labels: Record<string, string> = {
                                             user: t('Users'),
                                             contact: t('Contacts'),
-                                            lead: t('Leads')
+                                            lead: t('Leads'),
                                         };
                                         return { link: routes[attendeeType], linkText: labels[attendeeType] };
-                                    }
-                                }
-                            ]
+                                    },
+                                },
+                            ],
                         },
                         {
                             name: 'assigned_to',
@@ -613,9 +676,7 @@ export default function Calls() {
                             required: true,
                             searchable: true,
                             emptyNote: { link: route('users.index'), linkText: t('Users') },
-                            options: [
-                                ...users.map((user: any) => ({ value: user.id, label: `${user.name} (${user.email})` }))
-                            ]
+                            options: [...users.map((user: any) => ({ value: user.id, label: `${user.name} (${user.email})` }))],
                         },
                         {
                             name: 'status',
@@ -624,34 +685,37 @@ export default function Calls() {
                             options: [
                                 { value: 'planned', label: t('Planned') },
                                 { value: 'held', label: t('Held') },
-                                { value: 'not_held', label: t('Not Held') }
+                                { value: 'not_held', label: t('Not Held') },
                             ],
-                            defaultValue: 'planned'
+                            defaultValue: 'planned',
                         },
-                        ...(isGoogleCalendarSynced ? [{
-                            name: 'sync_with_google_calendar',
-                            label: t('Sync with Google Calendar'),
-                            type: 'switch' as const,
-                            defaultValue: false,
-                            conditional: (mode: string) => mode === 'create'
-                        }] : [])
+                        ...(isGoogleCalendarSynced
+                            ? [
+                                  {
+                                      name: 'sync_with_google_calendar',
+                                      label: t('Sync with Google Calendar'),
+                                      type: 'switch' as const,
+                                      defaultValue: false,
+                                      conditional: (mode: string) => mode === 'create',
+                                  },
+                              ]
+                            : []),
                     ],
-                    modalSize: 'xl'
+                    modalSize: 'xl',
                 }}
-                initialData={currentItem ? {
-                    ...currentItem,
-                    attendees: currentItem.attendees?.map((attendee: any) => ({
-                        type: attendee.attendee_type,
-                        id: attendee.attendee_id
-                    })) || []
-                } : {}}
-                title={
-                    formMode === 'create'
-                        ? t('Add Call')
-                        : formMode === 'edit'
-                            ? t('Edit Call')
-                            : t('View Call')
+                initialData={
+                    currentItem
+                        ? {
+                              ...currentItem,
+                              attendees:
+                                  currentItem.attendees?.map((attendee: any) => ({
+                                      type: attendee.attendee_type,
+                                      id: attendee.attendee_id,
+                                  })) || [],
+                          }
+                        : {}
                 }
+                title={formMode === 'create' ? t('Add Call') : formMode === 'edit' ? t('Edit Call') : t('View Call')}
                 mode={formMode}
             />
 
@@ -670,15 +734,15 @@ export default function Calls() {
                             options: [
                                 { value: 'planned', label: t('Planned') },
                                 { value: 'held', label: t('Held') },
-                                { value: 'not_held', label: t('Not Held') }
-                            ]
-                        }
+                                { value: 'not_held', label: t('Not Held') },
+                            ],
+                        },
                     ],
-                    modalSize: 'sm'
+                    modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
                 title={t('Change Call Status')}
-                mode='edit'
+                mode="edit"
             />
 
             <CrudDeleteModal

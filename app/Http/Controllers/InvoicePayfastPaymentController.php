@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class InvoicePayfastPaymentController extends Controller
@@ -79,15 +78,16 @@ class InvoicePayfastPaymentController extends Controller
             return response()->json([
                 'success' => true,
                 'inputs' => $htmlForm,
-                'action' => $endpoint
+                'action' => $endpoint,
             ]);
 
         } catch (\Exception $e) {
             \Log::error('PayFast invoice payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return response()->json(['success' => false, 'error' => __('Payment failed')]);
         }
     }
@@ -133,7 +133,7 @@ class InvoicePayfastPaymentController extends Controller
                         \Log::info('PayFast invoice payment successful', [
                             'invoice_id' => $invoice->id,
                             'payment_id' => $paymentId,
-                            'amount' => $amount
+                            'amount' => $amount,
                         ]);
                     }
                 }
@@ -143,8 +143,9 @@ class InvoicePayfastPaymentController extends Controller
         } catch (\Exception $e) {
             \Log::error('PayFast invoice callback error', [
                 'error' => $e->getMessage(),
-                'data' => $request->all()
+                'data' => $request->all(),
             ]);
+
             return response('ERROR', 500);
         }
     }
@@ -176,6 +177,7 @@ class InvoicePayfastPaymentController extends Controller
 
         } catch (\Exception $e) {
             \Log::error('PayFast success error', ['error' => $e->getMessage()]);
+
             return redirect()->back()->with('error', __('Payment verification failed'));
         }
     }
@@ -212,6 +214,7 @@ class InvoicePayfastPaymentController extends Controller
         if ($passPhrase !== null) {
             $getString .= '&passphrase=' . urlencode(trim($passPhrase));
         }
+
         return md5($getString);
     }
 
@@ -224,6 +227,4 @@ class InvoicePayfastPaymentController extends Controller
 
         return hash_equals($expectedSignature, $signature);
     }
-
-
 }

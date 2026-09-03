@@ -17,6 +17,7 @@ class LeadSourceSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -26,7 +27,7 @@ class LeadSourceSeeder extends Seeder
             ['name' => 'Email Campaign', 'description' => 'Leads from email marketing campaigns'],
             ['name' => 'Referral', 'description' => 'Leads from customer referrals'],
             ['name' => 'Cold Call', 'description' => 'Leads from cold calling activities'],
-            ['name' => 'Trade Show', 'description' => 'Leads from trade shows and events']
+            ['name' => 'Trade Show', 'description' => 'Leads from trade shows and events'],
         ];
 
         foreach ($organizationUsers as $organization) {

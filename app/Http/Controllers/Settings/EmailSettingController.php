@@ -22,13 +22,13 @@ class EmailSettingController extends Controller
         $settings = [
             'provider' => getSetting('email_provider', 'smtp'),
             'driver' => getSetting('email_driver', 'smtp'),
-            'host' => getSetting('email_host', 'smtp.example.com'),
+            'host' => getSetting('email_host', 'smtp.kakbima.dev'),
             'port' => getSetting('email_port', '587'),
             'username' => getSetting('email_username', 'user@kakbima.dev'),
             'password' => getSetting('email_password', ''),
             'encryption' => getSetting('email_encryption', 'tls'),
             'fromAddress' => getSetting('email_from_address', 'noreply@kakbima.dev'),
-            'fromName' => getSetting('email_from_name', 'Kakbima')
+            'fromName' => getSetting('email_from_name', 'Kakbima'),
         ];
 
         // Mask password if it exists
@@ -42,7 +42,7 @@ class EmailSettingController extends Controller
     /**
      * Update email settings for the authenticated user.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      */
     public function updateEmailSettings(Request $request)
     {
@@ -80,7 +80,7 @@ class EmailSettingController extends Controller
     /**
      * Send a test email.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      */
     public function sendTestEmail(Request $request)
     {
@@ -98,12 +98,12 @@ class EmailSettingController extends Controller
         $settings = [
             'provider' => getSetting('email_provider', 'smtp'),
             'driver' => getSetting('email_driver', 'smtp'),
-            'host' => getSetting('email_host', 'smtp.example.com'),
+            'host' => getSetting('email_host', 'smtp.kakbima.dev'),
             'port' => getSetting('email_port', '587'),
             'username' => getSetting('email_username', 'user@kakbima.dev'),
             'encryption' => getSetting('email_encryption', 'tls'),
             'fromAddress' => getSetting('email_from_address', 'noreply@kakbima.dev'),
-            'fromName' => getSetting('email_from_name', 'Kakbima')
+            'fromName' => getSetting('email_from_name', 'Kakbima'),
         ];
 
         // Get the actual password (not masked)
@@ -125,18 +125,19 @@ class EmailSettingController extends Controller
             // Send test email
             Mail::to($request->email)->send(new TestMail());
 
-            return redirect()->back()->with('success', __('Test email sent successfully to :email', ["email" =>  $request->email]));
+            return redirect()->back()->with('success', __('Test email sent successfully to :email', ["email" => $request->email]));
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', __('Failed to send test email: :message' , ["message" => $e->getMessage()]));
+            return redirect()->back()->with('error', __('Failed to send test email: :message', ["message" => $e->getMessage()]));
         }
     }
 
     /**
      * Get a setting value for a user.
      *
-     * @param  int  $userId
-     * @param  string  $key
-     * @param  mixed  $default
+     * @param int $userId
+     * @param string $key
+     * @param mixed $default
+     *
      * @return mixed
      */
 

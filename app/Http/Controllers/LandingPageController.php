@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContactMessage;
+use App\Models\LandingPageCustomPage;
+use App\Models\LandingPageSetting;
+use App\Models\Newsletter;
+use App\Models\Plan;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Plan;
-use App\Models\LandingPageSetting;
-use App\Models\LandingPageCustomPage;
-use App\Models\Business;
-use App\Models\Contact;
-use App\Models\ContactMessage;
-use App\Models\Newsletter;
-use App\Models\User;
 
 class LandingPageController extends Controller
 {
@@ -29,7 +26,9 @@ class LandingPageController extends Controller
 
         $plans = Plan::where('is_plan_enabled', 'on')->get()->map(function ($plan) {
             $features = [];
-            if ($plan->enable_kakbima_intelligence === 'on') $features[] = 'Kakbima Intelligence';
+            if ($plan->enable_kakbima_intelligence === 'on') {
+                $features[] = 'Kakbima Intelligence';
+            }
 
 
             return [
@@ -45,10 +44,10 @@ class LandingPageController extends Controller
                     'projects' => $plan->maximum_projects == -1 ? 'Unlimited' : $plan->maximum_projects,
                     'contacts' => $plan->maximum_contacts == -1 ? 'Unlimited' : $plan->maximum_contacts,
                     'accounts' => $plan->maximum_accounts == -1 ? 'Unlimited' : $plan->maximum_accounts,
-                    'storage' => $plan->storage_limit . ' GB'
+                    'storage' => $plan->storage_limit . ' GB',
                 ],
                 'is_plan_enabled' => $plan->is_plan_enabled,
-                'is_popular' => false // Will be set based on subscriber count
+                'is_popular' => false, // Will be set based on subscriber count
             ];
         });
 
@@ -63,6 +62,7 @@ class LandingPageController extends Controller
                 if ($plan['id'] == $mostSubscribedPlanId && $plan['price'] != '0') {
                     $plan['is_popular'] = true;
                 }
+
                 return $plan;
             });
         }
@@ -72,7 +72,7 @@ class LandingPageController extends Controller
             'testimonials' => [],
             'faqs' => [],
             'customPages' => LandingPageCustomPage::active()->ordered()->get() ?? [],
-            'settings' => $landingSettings
+            'settings' => $landingSettings,
         ]);
     }
 
@@ -82,7 +82,7 @@ class LandingPageController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'subject' => 'required|string|max:255',
-            'message' => 'required|string'
+            'message' => 'required|string',
         ]);
 
         ContactMessage::create([
@@ -98,7 +98,7 @@ class LandingPageController extends Controller
     public function subscribe(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|max:255'
+            'email' => 'required|email|max:255',
         ]);
 
         try {
@@ -121,7 +121,7 @@ class LandingPageController extends Controller
         $landingSettings = LandingPageSetting::getSettings();
 
         return Inertia::render('landing-page/settings', [
-            'settings' => $landingSettings
+            'settings' => $landingSettings,
         ]);
     }
 
@@ -132,7 +132,7 @@ class LandingPageController extends Controller
             'contact_email' => 'required|email|max:255',
             'contact_phone' => 'required|string|max:255',
             'contact_address' => 'required|string|max:255',
-            'config_sections' => 'required|array'
+            'config_sections' => 'required|array',
         ]);
         $landingSettings = LandingPageSetting::getSettings();
         $landingSettings->update($request->all());

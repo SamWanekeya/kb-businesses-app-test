@@ -3,7 +3,6 @@
 namespace App\Listeners;
 
 use App\Events\AccountCreate;
-use App\Events\LeadAssigned;
 use App\Models\User;
 use App\Services\TwilioService;
 use Exception;
@@ -25,11 +24,11 @@ class TwilioAccountCreateListener
     public function handle(AccountCreate $event): void
     {
         $account = $event->account;
-        if (isNotificationTemplateEnabled('Account create','twilio', createdBy()) && $account->phone) {
+        if (isNotificationTemplateEnabled('Account create', 'twilio', createdBy()) && $account->phone) {
 
             $variables = [
                 '{account_name}' => $account->name,
-                '{organization_name}' => getOrganizationName()
+                '{organization_name}' => getOrganizationName(),
             ];
 
             try {

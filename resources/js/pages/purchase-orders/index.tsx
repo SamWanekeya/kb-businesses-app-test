@@ -1,22 +1,34 @@
-import { useState, useEffect } from 'react';
-import { PageTemplate } from '@/components/page-template';
-import { usePage, router, Link } from '@inertiajs/react';
-import { Plus, FileDown } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
-import { CrudTable } from '@/components/CrudTable';
-import { CrudFormModal } from '@/components/CrudFormModal';
 import { CrudDeleteModal } from '@/components/CrudDeleteModal';
+import { CrudFormModal } from '@/components/CrudFormModal';
+import { CrudTable } from '@/components/CrudTable';
 import { toast } from '@/components/custom-toast';
-import { useTranslation } from 'react-i18next';
+import { PageTemplate } from '@/components/page-template';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
+import { useInitials } from '@/hooks/use-initials';
+import { hasPermission } from '@/utils/authorization';
+import { Link, router, usePage } from '@inertiajs/react';
+import { FileDown, Plus } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function PurchaseOrders() {
     const { t } = useTranslation();
     const getInitials = useInitials();
-    const { auth, purchaseOrders, accounts, allAccounts, contacts, salesOrders, products, users = [], allUsers = [], filters: pageFilters = {}, flash = {} } = usePage().props as any;
+    const {
+        auth,
+        purchaseOrders,
+        accounts,
+        allAccounts,
+        contacts,
+        salesOrders,
+        products,
+        users = [],
+        allUsers = [],
+        filters: pageFilters = {},
+        flash = {},
+    } = usePage().props as any;
     const permissions = auth?.permissions || [];
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
@@ -35,11 +47,19 @@ export default function PurchaseOrders() {
     }, [flash]);
 
     const hasActiveFilters = () => {
-        return searchTerm !== '' || selectedStatus !== 'all' || selectedAccount !== 'all' || selectedSalesOrder !== 'all' || selectedAssignee !== 'all';
+        return (
+            searchTerm !== '' || selectedStatus !== 'all' || selectedAccount !== 'all' || selectedSalesOrder !== 'all' || selectedAssignee !== 'all'
+        );
     };
 
     const activeFilterCount = () => {
-        return (searchTerm ? 1 : 0) + (selectedStatus !== 'all' ? 1 : 0) + (selectedAccount !== 'all' ? 1 : 0) + (selectedSalesOrder !== 'all' ? 1 : 0) + (selectedAssignee !== 'all' ? 1 : 0);
+        return (
+            (searchTerm ? 1 : 0) +
+            (selectedStatus !== 'all' ? 1 : 0) +
+            (selectedAccount !== 'all' ? 1 : 0) +
+            (selectedSalesOrder !== 'all' ? 1 : 0) +
+            (selectedAssignee !== 'all' ? 1 : 0)
+        );
     };
 
     const handleSearch = (e: React.FormEvent) => {
@@ -48,32 +68,40 @@ export default function PurchaseOrders() {
     };
 
     const applyFilters = () => {
-        router.get(route('purchase-orders.index'), {
-            page: 1,
-            search: searchTerm || undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
-            sales_order_id: selectedSalesOrder !== 'all' ? selectedSalesOrder : undefined,
-            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-            sort_field: pageFilters.sort_field || undefined,
-            sort_direction: pageFilters.sort_direction || undefined,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('purchase-orders.index'),
+            {
+                page: 1,
+                search: searchTerm || undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                sales_order_id: selectedSalesOrder !== 'all' ? selectedSalesOrder : undefined,
+                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                sort_field: pageFilters.sort_field || undefined,
+                sort_direction: pageFilters.sort_direction || undefined,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleSort = (field: string) => {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
-        router.get(route('purchase-orders.index'), {
-            page: 1,
-            search: searchTerm || undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
-            sales_order_id: selectedSalesOrder !== 'all' ? selectedSalesOrder : undefined,
-            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-            sort_field: field,
-            sort_direction: direction,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('purchase-orders.index'),
+            {
+                page: 1,
+                search: searchTerm || undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                sales_order_id: selectedSalesOrder !== 'all' ? selectedSalesOrder : undefined,
+                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                sort_field: field,
+                sort_direction: direction,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleAction = (action: string, item: any) => {
@@ -110,7 +138,7 @@ export default function PurchaseOrders() {
             onError: (errors) => {
                 toast.dismiss();
                 toast.error(t('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
-            }
+            },
         });
     };
 
@@ -121,30 +149,37 @@ export default function PurchaseOrders() {
             },
             onError: (errors) => {
                 toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
-            }
+            },
         });
     };
 
     const handleToggleStatus = (purchaseOrder: any) => {
         toast.loading(t('Updating purchase order status...'));
 
-        router.put(route('purchase-orders.toggle-status', purchaseOrder.id), {}, {
-            onSuccess: (page) => {
-                toast.dismiss();
-                if (page.props.flash.success) {
-                    toast.success(t(page.props.flash.success));
-                }
+        router.put(
+            route('purchase-orders.toggle-status', purchaseOrder.id),
+            {},
+            {
+                onSuccess: (page) => {
+                    toast.dismiss();
+                    if (page.props.flash.success) {
+                        toast.success(t(page.props.flash.success));
+                    }
+                },
+                onError: (errors) => {
+                    toast.dismiss();
+                    toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                },
             },
-            onError: (errors) => {
-                toast.dismiss();
-                toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
-            }
-        });
+        );
     };
 
     const pageInitialState = useState(true);
     useEffect(() => {
-        if (pageInitialState[0]) { pageInitialState[1](false); return; }
+        if (pageInitialState[0]) {
+            pageInitialState[1](false);
+            return;
+        }
         applyFilters();
     }, [searchTerm, selectedStatus, selectedAccount, selectedSalesOrder, selectedAssignee]);
 
@@ -162,25 +197,30 @@ export default function PurchaseOrders() {
     if (hasPermission(permissions, 'export-purchase-orders')) {
         pageActions.push({
             label: t('Export'),
-            icon: <FileDown className="h-4 w-4 mr-2" />,
+            icon: <FileDown className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
             variant: 'outline',
-            onClick: () => window.location.href = route('purchase-order.export')
+            onClick: () => (window.location.href = route('purchase-order.export')),
+            className: 'h-8 w-8 min-[500px]:h-9 min-[500px]:w-auto px-0 min-[500px]:px-4',
+            labelClassName: 'hidden min-[500px]:inline',
+            tooltip: t('Export'),
+            tooltipClassName: 'min-[500px]:hidden',
         });
     }
 
     if (hasPermission(permissions, 'create-purchase-orders')) {
         pageActions.push({
             label: t('Add Purchase Order'),
-            icon: <Plus className="h-4 w-4 mr-2" />,
+            icon: <Plus className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
             variant: 'default',
-            onClick: () => handleAddNew()
+            onClick: () => handleAddNew(),
+            className: 'h-8 w-8 min-[500px]:h-9 min-[500px]:w-auto px-0 min-[500px]:px-4',
+            labelClassName: 'hidden min-[500px]:inline',
+            tooltip: t('Add Purchase Order'),
+            tooltipClassName: 'min-[500px]:hidden',
         });
     }
 
-    const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Purchase Orders') }
-    ];
+    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Purchase Orders') }];
 
     const columns = [
         {
@@ -189,44 +229,55 @@ export default function PurchaseOrders() {
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: string, item: any) => (
-                <Link href={route('purchase-orders.show', item.id)} className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 hover:border-blue-400 transition-colors duration-200 border border-blue-200 cursor-pointer whitespace-nowrap" style={{ color: '#1d4ed8' }} onMouseEnter={e => (e.currentTarget.style.color = '#1d4ed8')} onMouseLeave={e => (e.currentTarget.style.color = '#1d4ed8')}>{value}</Link>
-            )
+                <Link
+                    href={route('purchase-orders.show', item.id)}
+                    className="inline-flex cursor-pointer items-center rounded-md border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium whitespace-nowrap text-blue-700 transition-colors duration-200 hover:border-blue-400 hover:bg-blue-100"
+                    style={{ color: '#1d4ed8' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = '#1d4ed8')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#1d4ed8')}
+                >
+                    {value}
+                </Link>
+            ),
         },
         {
             key: 'name',
             label: t('Name'),
             sortable: true,
-            render: (value: string) => <span className="whitespace-nowrap font-medium">{value || '-'}</span>
+            render: (value: string) => <span className="font-medium whitespace-nowrap">{value || '-'}</span>,
         },
         {
             key: 'assigned_user',
             label: t('Assigned To'),
             className: 'whitespace-nowrap',
-            render: (value: any) => value ? (
-                <div className="flex items-center gap-2">
-                    <Avatar className="h-8 w-8 flex-shrink-0">
-                        <AvatarImage src={value.avatar} alt={value.name} />
-                        <AvatarFallback className="text-xs">{getInitials(value.name)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                        <div className="font-medium whitespace-nowrap">{value.name}</div>
-                        <div className="text-sm text-muted-foreground whitespace-nowrap">{value.email}</div>
+            render: (value: any) =>
+                value ? (
+                    <div className="flex items-center gap-2">
+                        <Avatar className="h-8 w-8 flex-shrink-0">
+                            <AvatarImage src={value.avatar} alt={value.name} />
+                            <AvatarFallback className="text-xs">{getInitials(value.name)}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <div className="font-medium whitespace-nowrap">{value.name}</div>
+                            <div className="text-muted-foreground text-sm whitespace-nowrap">{value.email}</div>
+                        </div>
                     </div>
-                </div>
-            ) : <span className="whitespace-nowrap">{t('Unassigned')}</span>
+                ) : (
+                    <span className="whitespace-nowrap">{t('Unassigned')}</span>
+                ),
         },
         {
             key: 'sales_order',
             label: t('Sales Order'),
             className: 'whitespace-nowrap',
-            render: (value: any) => <span className="whitespace-nowrap">{value?.name || t('-')}</span>
+            render: (value: any) => <span className="whitespace-nowrap">{value?.name || t('-')}</span>,
         },
         {
             key: 'order_date',
             label: t('Order Date'),
             sortable: true,
             className: 'whitespace-nowrap',
-            type: 'date'
+            type: 'date',
         },
         {
             key: 'status',
@@ -238,14 +289,16 @@ export default function PurchaseOrders() {
                     sent: 'bg-blue-50 text-blue-700 ring-blue-600/20',
                     confirmed: 'bg-green-50 text-green-700 ring-green-600/20',
                     received: 'bg-purple-50 text-purple-700 ring-purple-600/20',
-                    cancelled: 'bg-red-50 text-red-700 ring-red-600/20'
+                    cancelled: 'bg-red-50 text-red-700 ring-red-600/20',
                 };
                 return (
-                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset whitespace-nowrap ${statusColors[value as keyof typeof statusColors] || statusColors.draft}`}>
+                    <span
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${statusColors[value as keyof typeof statusColors] || statusColors.draft}`}
+                    >
                         {t(value.charAt(0).toUpperCase() + value.slice(1))}
                     </span>
                 );
-            }
+            },
         },
         // {
         //     key: 'created_at',
@@ -262,29 +315,29 @@ export default function PurchaseOrders() {
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
-            requiredPermission: 'toggle-status-purchase-orders'
+            requiredPermission: 'toggle-status-purchase-orders',
         },
         {
             label: t('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
-            requiredPermission: 'view-purchase-orders'
+            requiredPermission: 'view-purchase-orders',
         },
         {
             label: t('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
-            requiredPermission: 'edit-purchase-orders'
+            requiredPermission: 'edit-purchase-orders',
         },
         {
             label: t('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
-            requiredPermission: 'delete-purchase-orders'
-        }
+            requiredPermission: 'delete-purchase-orders',
+        },
     ];
 
     const statusOptions = [
@@ -293,19 +346,19 @@ export default function PurchaseOrders() {
         { value: 'sent', label: t('Sent') },
         { value: 'confirmed', label: t('Confirmed') },
         { value: 'received', label: t('Received') },
-        { value: 'cancelled', label: t('Cancelled') }
+        { value: 'cancelled', label: t('Cancelled') },
     ];
 
     return (
         <PageTemplate
-            title={t("Purchase Orders")}
-            description={t("Manage your purchase orders.")}
+            title={t('Purchase Orders')}
+            description={t('Manage your purchase orders.')}
             url="/purchase-orders"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
             noPadding
         >
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
+            <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -317,7 +370,7 @@ export default function PurchaseOrders() {
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
-                            options: statusOptions
+                            options: statusOptions,
                         },
                         {
                             name: 'account_id',
@@ -328,8 +381,8 @@ export default function PurchaseOrders() {
                             onChange: setSelectedAccount,
                             options: [
                                 { value: 'all', label: t('All Accounts') },
-                                ...allAccounts?.map((acc: any) => ({ value: acc.id.toString(), label: acc.name })) || []
-                            ]
+                                ...(allAccounts?.map((acc: any) => ({ value: acc.id.toString(), label: acc.name })) || []),
+                            ],
                         },
                         {
                             name: 'sales_order_id',
@@ -340,8 +393,8 @@ export default function PurchaseOrders() {
                             onChange: setSelectedSalesOrder,
                             options: [
                                 { value: 'all', label: t('All Sales Orders') },
-                                ...salesOrders?.map((so: any) => ({ value: so.id.toString(), label: so.name })) || []
-                            ]
+                                ...(salesOrders?.map((so: any) => ({ value: so.id.toString(), label: so.name })) || []),
+                            ],
                         },
                         {
                             name: 'assigned_to',
@@ -353,9 +406,9 @@ export default function PurchaseOrders() {
                             options: [
                                 { value: 'all', label: t('All Users') },
                                 { value: 'unassigned', label: t('Unassigned') },
-                                ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name }))
-                            ]
-                        }
+                                ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name })),
+                            ],
+                        },
                     ]}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
@@ -363,25 +416,25 @@ export default function PurchaseOrders() {
                 />
             </div>
 
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+            <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                 <div className="overflow-x-auto">
-                <CrudTable
-                    columns={columns}
-                    actions={actions}
-                    data={purchaseOrders?.data || []}
-                    from={purchaseOrders?.from || 1}
-                    onAction={handleAction}
-                    sortField={pageFilters.sort_field}
-                    sortDirection={pageFilters.sort_direction}
-                    onSort={handleSort}
-                    permissions={permissions}
-                    entityPermissions={{
-                        view: 'view-purchase-orders',
-                        create: 'create-purchase-orders',
-                        edit: 'edit-purchase-orders',
-                        delete: 'delete-purchase-orders'
-                    }}
-                />
+                    <CrudTable
+                        columns={columns}
+                        actions={actions}
+                        data={purchaseOrders?.data || []}
+                        from={purchaseOrders?.from || 1}
+                        onAction={handleAction}
+                        sortField={pageFilters.sort_field}
+                        sortDirection={pageFilters.sort_direction}
+                        onSort={handleSort}
+                        permissions={permissions}
+                        entityPermissions={{
+                            view: 'view-purchase-orders',
+                            create: 'create-purchase-orders',
+                            edit: 'edit-purchase-orders',
+                            delete: 'delete-purchase-orders',
+                        }}
+                    />
                 </div>
 
                 <Pagination
@@ -389,21 +442,25 @@ export default function PurchaseOrders() {
                     to={purchaseOrders?.to || 0}
                     total={purchaseOrders?.total || 0}
                     links={purchaseOrders?.links}
-                    entityName={t("purchase orders")}
+                    entityName={t('purchase orders')}
                     onPageChange={(url) => router.get(url)}
-                    currentPerPage={pageFilters.per_page?.toString() || "10"}
+                    currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
-                        router.get(route('purchase-orders.index'), {
-                            page: 1,
-                            search: searchTerm || undefined,
-                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                            account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
-                            sales_order_id: selectedSalesOrder !== 'all' ? selectedSalesOrder : undefined,
-                            assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
-                            sort_field: pageFilters.sort_field || undefined,
-                            sort_direction: pageFilters.sort_direction || undefined,
-                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
-                        }, { preserveState: true, preserveScroll: true });
+                        router.get(
+                            route('purchase-orders.index'),
+                            {
+                                page: 1,
+                                search: searchTerm || undefined,
+                                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                account_id: selectedAccount !== 'all' ? selectedAccount : undefined,
+                                sales_order_id: selectedSalesOrder !== 'all' ? selectedSalesOrder : undefined,
+                                assigned_to: selectedAssignee !== 'all' ? selectedAssignee : undefined,
+                                sort_field: pageFilters.sort_field || undefined,
+                                sort_direction: pageFilters.sort_direction || undefined,
+                                ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+                            },
+                            { preserveState: true, preserveScroll: true },
+                        );
                     }}
                 />
             </div>
@@ -424,15 +481,15 @@ export default function PurchaseOrders() {
                                 { value: 'sent', label: t('Sent') },
                                 { value: 'confirmed', label: t('Confirmed') },
                                 { value: 'received', label: t('Received') },
-                                { value: 'cancelled', label: t('Cancelled') }
-                            ]
-                        }
+                                { value: 'cancelled', label: t('Cancelled') },
+                            ],
+                        },
                     ],
-                    modalSize: 'sm'
+                    modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
                 title={t('Change Purchase Order Status')}
-                mode='edit'
+                mode="edit"
             />
 
             <CrudDeleteModal

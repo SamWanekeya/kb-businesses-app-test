@@ -3,8 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\CaseCreated;
-use App\Services\TwilioService;
 use App\Models\User;
+use App\Services\TwilioService;
 use Exception;
 
 class TwilioCaseCreateListener
@@ -26,10 +26,10 @@ class TwilioCaseCreateListener
         $case = $event->case;
         $assignedUser = $case->assignedUser;
         $contact = $case->contact;
-        if (isNotificationTemplateEnabled('Case Create','twilio', createdBy()) && !empty($contact->phone)) {
+        if (isNotificationTemplateEnabled('Case Create', 'twilio', createdBy()) && !empty($contact->phone)) {
             $variables = [
                 '{case_subject}' => $case->subject ?? '-',
-                '{organization_name}' => 'Organization Name'
+                '{organization_name}' => 'Organization Name',
             ];
 
             try {

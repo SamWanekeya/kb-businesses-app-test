@@ -1,19 +1,19 @@
-import { useForm, router } from '@inertiajs/react';
-import { FormEventHandler, useState, useEffect } from 'react';
+import { useForm } from '@inertiajs/react';
+import { Building2, Copy, Eye, EyeOff, ShieldCheck, User, Users } from 'lucide-react';
+import { FormEventHandler, useEffect, useState } from 'react';
 
+import AuthButton from '@/components/auth/auth-button';
 import InputError from '@/components/input-error';
+import Recaptcha, { useRecaptchaSettings } from '@/components/recaptcha';
 import TextLink from '@/components/text-link';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useTranslation } from 'react-i18next';
-import AuthLayout from '@/layouts/auth-layout';
-import AuthButton from '@/components/auth/auth-button';
-import Recaptcha, { useRecaptchaSettings } from '@/components/recaptcha';
 import { useBrand } from '@/contexts/BrandContext';
 import { THEME_COLORS } from '@/hooks/use-appearance';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
+import AuthLayout from '@/layouts/auth-layout';
 import { isRegistrationEnabled } from '@/utils/helper';
+import { useTranslation } from 'react-i18next';
 
 type LoginForm = {
     email: string;
@@ -31,11 +31,13 @@ interface Business {
 
 interface LoginProps {
     status?: string;
-    canResetPassword: boolean;
+    canResetPassword?: boolean;
     demoBusinesses?: Business[];
+    demoUsers?: { super_admin: string; organization: string; user: string };
+    demoPassword?: string;
 }
 
-export default function Login({ status, canResetPassword, demoBusinesses = [] }: LoginProps) {
+export default function Login({ status, canResetPassword, demoBusinesses = [], demoUsers, demoPassword = 'password' }: LoginProps) {
     const { t } = useTranslation();
     const [recaptchaToken, setRecaptchaToken] = useState<string>('');
     const { themeColor, customColor } = useBrand();
@@ -43,6 +45,7 @@ export default function Login({ status, canResetPassword, demoBusinesses = [] }:
     const [isDemo, setIsDemo] = useState<boolean>(false);
     const { recaptchaEnabled } = useRecaptchaSettings();
     const [showRecaptchaError, setShowRecaptchaError] = useState<boolean>(false);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
 
     // Always show business buttons by default
     const [showBusinessButtons, setShowBusinessButtons] = useState<boolean>(true);
@@ -63,7 +66,7 @@ export default function Login({ status, canResetPassword, demoBusinesses = [] }:
             setData({
                 email: 'organization@kakbima.dev',
                 password: 'password',
-                remember: false
+                remember: false,
             });
         }
     }, []);
@@ -81,11 +84,23 @@ export default function Login({ status, canResetPassword, demoBusinesses = [] }:
         const formData = { ...data, recaptcha_token: recaptchaToken };
         post(route('login'), {
             data: formData,
-            onFinish: () => reset('password')
+            onFinish: () => reset('password'),
         });
     };
 
     // No longer needed as we're using router.post directly in the button handlers
+
+    const handleCopyCredentials = (email: string) => {
+        setData({
+            ...data,
+            email: email,
+            password: demoPassword || 'password',
+        });
+
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(email);
+        }
+    };
 
     const openBusinessInNewTab = (businessId: number, slug: string, e: React.MouseEvent) => {
         // Prevent the default form submission
@@ -96,22 +111,34 @@ export default function Login({ status, canResetPassword, demoBusinesses = [] }:
         const url = route('public.vcard.show.direct', slug);
         window.open(url, '_blank');
     };
-  const planExpiredMessage = (errors as any).plan_expired;
+    const planExpiredMessage = (errors as any).plan_expired;
     const displayStatus = planExpiredMessage || status;
     const displayStatusType = planExpiredMessage ? 'error' : 'success';
 
     return (
-           <AuthLayout
-            title={t("Log in to your account")}
-            description={t("Enter your credentials to access your account")}
+        <AuthLayout
+            title={t('Welcome back!')}
+            description={t('Sign in to continue to your account')}
             status={displayStatus}
             statusType={displayStatusType}
         >
-            <form className="space-y-5" onSubmit={submit}>
+            <form className="space-y-3 sm:space-y-4" onSubmit={submit}>
                 <div className="space-y-4">
                     <div className="relative">
-                        <Label htmlFor="email" className="text-gray-700 dark:text-gray-300 font-medium mb-2 block" required>{t("Email address")}</Label>
+                        <Label htmlFor="email" className="mb-2 block font-medium text-gray-700 dark:text-gray-300" required>
+                            {t('Email address')}
+                        </Label>
                         <div className="relative">
+                            <div className="pointer-events-none absolute inset-y-0 flex items-center ltr:left-0 ltr:pl-3 rtl:right-0 rtl:pr-3">
+                                <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                    ></path>
+                                </svg>
+                            </div>
                             <Input
                                 id="email"
                                 type="email"
@@ -121,8 +148,8 @@ export default function Login({ status, canResetPassword, demoBusinesses = [] }:
                                 autoComplete="email"
                                 value={data.email}
                                 onChange={(e) => setData('email', e.target.value)}
-                                placeholder={t("Enter your email")}
-                                className="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg transition-all duration-200"
+                                placeholder="organization@kakbima.dev"
+                                className="h-11 w-full rounded-lg border-gray-200 bg-white text-gray-900 transition-all duration-200 ltr:pl-10 rtl:pr-10 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 style={{ '--tw-ring-color': primaryColor } as React.CSSProperties}
                             />
                         </div>
@@ -130,46 +157,70 @@ export default function Login({ status, canResetPassword, demoBusinesses = [] }:
                     </div>
 
                     <div>
-                        <div className="flex items-center justify-between mb-2">
-                            <Label htmlFor="password" className="text-gray-700 dark:text-gray-300 font-medium" required>{t("Password")}</Label>
+                        <div className="mb-2 flex items-center justify-between">
+                            <Label htmlFor="password" className="font-medium text-gray-700 dark:text-gray-300" required>
+                                {t('Password')}
+                            </Label>
                             {canResetPassword && (
                                 <TextLink
                                     href={route('password.request')}
-                                    className="text-sm transition-colors duration-200 no-underline hover:underline hover:underline-primary"
+                                    className="hover:underline-primary text-sm no-underline transition-colors duration-200 hover:underline"
                                     style={{ color: primaryColor }}
                                     tabIndex={5}
                                 >
-                                    {t("Forgot password?")}
+                                    {t('Forgot password?')}
                                 </TextLink>
                             )}
                         </div>
                         <div className="relative">
+                            <div className="pointer-events-none absolute inset-y-0 flex items-center ltr:left-0 ltr:pl-3 rtl:right-0 rtl:pr-3">
+                                <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                                    ></path>
+                                </svg>
+                            </div>
                             <Input
                                 id="password"
-                                type="password"
+                                type={showPassword ? 'text' : 'password'}
                                 required
                                 tabIndex={2}
                                 autoComplete="current-password"
                                 value={data.password}
                                 onChange={(e) => setData('password', e.target.value)}
-                                placeholder={t("Enter your password")}
-                                className="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg transition-all duration-200"
+                                placeholder="••••••••••••"
+                                className="h-11 w-full rounded-lg border-gray-200 bg-white px-10 text-gray-900 transition-all duration-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 style={{ '--tw-ring-color': primaryColor } as React.CSSProperties}
                             />
+                            <div className="absolute inset-y-0 flex items-center ltr:right-0 ltr:pr-3 rtl:left-0 rtl:pl-3">
+                                <button
+                                    type="button"
+                                    tabIndex={-1}
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="text-gray-400 hover:text-gray-600 focus:outline-none"
+                                >
+                                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                </button>
+                            </div>
                         </div>
                         <InputError message={errors.password} />
                     </div>
 
-                    <div className="flex items-center !mt-4 !mb-5">
+                    <div className="!mt-2.5 !mb-3 flex items-center">
                         <Checkbox
                             id="remember"
                             name="remember"
                             checked={data.remember}
                             onClick={() => setData('remember', !data.remember)}
                             tabIndex={3}
-                            className="w-[14px] h-[14px] border border-gray-300 rounded"
+                            className="h-[14px] w-[14px] rounded border border-gray-300 dark:border-gray-600"
                         />
-                        <Label htmlFor="remember" className="ml-2 text-sm text-gray-600">{t("Remember me")}</Label>
+                        <Label htmlFor="remember" className="text-sm text-gray-600 ltr:ml-2 rtl:mr-2 dark:text-gray-400">
+                            {t('Remember me')}
+                        </Label>
                     </div>
                 </div>
 
@@ -183,99 +234,138 @@ export default function Login({ status, canResetPassword, demoBusinesses = [] }:
                 />
 
                 {showRecaptchaError && recaptchaEnabled && !recaptchaToken && (
-                    <p className="text-sm text-red-600 dark:text-red-400 text-center -mt-2">
-                        {t("Please complete the reCAPTCHA verification")}
-                    </p>
+                    <p className="-mt-2 text-center text-sm text-red-600 dark:text-red-400">{t('Please complete the reCAPTCHA verification')}</p>
                 )}
 
                 <AuthButton
                     tabIndex={4}
                     processing={processing}
-                    className="w-full text-white py-2.5 text-sm font-medium tracking-wide transition-all duration-200 rounded-md shadow-md hover:shadow-lg transform hover:scale-[1.02]"
+                    className="w-full transform rounded-md py-2.5 text-sm font-medium tracking-wide text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg"
                     style={{ backgroundColor: primaryColor }}
                 >
-                    {t("Sign in")}
+                    {t('Sign in')}
                 </AuthButton>
-                {isRegistrationEnabled() && <div className="text-center">
-                    <p className="text-sm text-gray-500">{t("Don't have an account?")}{' '}
-                        <TextLink
-                            href={route('register')}
-                            className="font-medium hover:underline"
-                            style={{ color: primaryColor }}
-                            tabIndex={6}
-                        >
-                            {t("Sign up")}
-                        </TextLink>
-                    </p>
-                </div>}
+                {isRegistrationEnabled() && (
+                    <div className="text-center">
+                        <p className="text-sm text-gray-500">
+                            {t("Don't have an account?")}{' '}
+                            <TextLink href={route('register')} className="font-medium hover:underline" style={{ color: primaryColor }} tabIndex={6}>
+                                {t('Sign up')}
+                            </TextLink>
+                        </p>
+                    </div>
+                )}
 
                 {isDemo && (
                     <>
-                        {/* Divider */}
-                        <div className="my-5">
-                            <div className="flex items-center">
-                                <div className="flex-1 h-px bg-gray-200"></div>
-                                <div className="w-2 h-2 rotate-45 mx-4" style={{ backgroundColor: primaryColor }}></div>
-                                <div className="flex-1 h-px bg-gray-200"></div>
-                            </div>
-                        </div>
+                        <div className="mt-3 border-t border-gray-100/60 pt-3 sm:mt-4 sm:pt-4 dark:border-gray-700">
+                            <div className="rounded-xl border border-gray-100 bg-white p-3 shadow-sm sm:p-4 dark:border-gray-700 dark:bg-gray-800">
+                                <div className="mb-2 flex items-center sm:mb-3">
+                                    <Users className="h-4 w-4 ltr:mr-2 rtl:ml-2" style={{ color: primaryColor }} />
+                                    <h3 className="text-xs font-semibold text-gray-900 sm:text-sm dark:text-white">
+                                        {t('Demo Sign in Credentials')}
+                                    </h3>
+                                </div>
 
-                        <div>
-                            <h3 className="text-sm font-medium text-gray-900 tracking-wider mb-4 text-center">{t('Quick Access')}</h3>
-                            <div className="grid grid-cols-2 gap-3">
-                                <Button
-                                    type="button"
-                                    onClick={() => {
-                                        if (recaptchaEnabled && !recaptchaToken) return;
-                                        router.post(route('login'), {
-                                            email: 'rootadmin@kakbima.dev',
-                                            password: 'password',
-                                            remember: false,
-                                            recaptcha_token: recaptchaToken
-                                        });
-                                    }}
-                                    disabled={recaptchaEnabled && !recaptchaToken}
-                                    className="group relative py-2 px-4 border text-[13px] font-medium text-white transition-all duration-200 rounded-md shadow-sm hover:shadow-md transform hover:scale-[1.02]"
-                                    style={{ backgroundColor: primaryColor, borderColor: primaryColor }}
-                                >
-                                    {t('Sign in as Super Administrator')}
-                                </Button>
-
-                                <Button
-                                    type="button"
-                                    onClick={() => {
-                                        if (recaptchaEnabled && !recaptchaToken) return;
-                                        router.post(route('login'), {
-                                            email: 'organization@kakbima.dev',
-                                            password: 'password',
-                                            remember: false,
-                                            recaptcha_token: recaptchaToken
-                                        });
-                                    }}
-                                    disabled={recaptchaEnabled && !recaptchaToken}
-                                    className="group relative py-2 px-4 border text-[13px] font-medium text-white transition-all duration-200 rounded-md shadow-sm hover:shadow-md transform hover:scale-[1.02]"
-                                    style={{ backgroundColor: primaryColor, borderColor: primaryColor }}
-                                >
-                                    {t('Sign in as Organization')}
-                                </Button>
-
-                                <Button
-                                    type="button"
-                                    onClick={() => {
-                                        if (recaptchaEnabled && !recaptchaToken) return;
-                                        router.post(route('login'), {
-                                            email: 'sarahjohnson@kakbima.dev',
-                                            password: 'password',
-                                            remember: false,
-                                            recaptcha_token: recaptchaToken
-                                        });
-                                    }}
-                                    disabled={recaptchaEnabled && !recaptchaToken}
-                                    className="group relative py-2 px-4 border text-[13px] font-medium text-white transition-all duration-200 rounded-md shadow-sm hover:shadow-md transform hover:scale-[1.02]"
-                                    style={{ backgroundColor: primaryColor, borderColor: primaryColor }}
-                                >
-                                    {t('Sign in as User')}
-                                </Button>
+                                <div className="w-full overflow-hidden rounded-lg border border-gray-100 dark:border-gray-700">
+                                    <table className="w-full table-fixed text-xs sm:text-[13px] ltr:text-left rtl:text-right">
+                                        <thead style={{ backgroundColor: `${primaryColor}10` }}>
+                                            <tr className="border-b border-gray-100 text-gray-900 dark:border-gray-700 dark:text-gray-100">
+                                                <th className="w-[35%] py-2 font-semibold ltr:pl-3 rtl:pr-3">{t('Role')}</th>
+                                                <th className="w-[35%] truncate py-2 font-semibold">{t('Email')}</th>
+                                                <th className="w-[20%] py-2 font-semibold">{t('Password')}</th>
+                                                <th className="w-[10%] py-2 ltr:pr-3 rtl:pl-3"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-gray-100/80 dark:divide-gray-700">
+                                            <tr>
+                                                <td className="py-2 ltr:pl-3 rtl:pr-3">
+                                                    <div className="flex items-center">
+                                                        <div className="hidden h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-green-50 sm:flex ltr:mr-2 rtl:ml-2 dark:bg-green-900/30">
+                                                            <ShieldCheck className="h-3 w-3" style={{ color: primaryColor }} />
+                                                        </div>
+                                                        <span className="truncate font-medium text-gray-900 dark:text-gray-100">
+                                                            {t('Super Admin')}
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td
+                                                    className="truncate py-2 text-gray-600 ltr:pr-2 rtl:pl-2 dark:text-gray-300"
+                                                    title="super_admin@kakbima.dev"
+                                                >
+                                                    super_admin@kakbima.dev
+                                                </td>
+                                                <td className="truncate py-2 font-mono text-sm text-gray-600 dark:text-gray-300">password</td>
+                                                <td className="py-2 ltr:pr-3 ltr:text-right rtl:pl-3 rtl:text-left">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleCopyCredentials('super_admin@kakbima.dev')}
+                                                        className="inline-flex cursor-pointer items-center justify-center rounded p-1.5 transition-colors hover:opacity-80"
+                                                        style={{ backgroundColor: `${primaryColor}15` }}
+                                                    >
+                                                        <Copy className="h-3.5 w-3.5" style={{ color: primaryColor }} />
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="py-2 ltr:pl-3 rtl:pr-3">
+                                                    <div className="flex items-center">
+                                                        <div className="hidden h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-green-50 sm:flex ltr:mr-2 rtl:ml-2 dark:bg-green-900/30">
+                                                            <Building2 className="h-3 w-3" style={{ color: primaryColor }} />
+                                                        </div>
+                                                        <span className="truncate font-medium text-gray-900 dark:text-gray-100">
+                                                            {t('Organization')}
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td
+                                                    className="truncate py-2 text-gray-600 ltr:pr-2 rtl:pl-2 dark:text-gray-300"
+                                                    title="organization@kakbima.dev"
+                                                >
+                                                    organization@kakbima.dev
+                                                </td>
+                                                <td className="truncate py-2 font-mono text-sm text-gray-600 dark:text-gray-300">password</td>
+                                                <td className="py-2 ltr:pr-3 ltr:text-right rtl:pl-3 rtl:text-left">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleCopyCredentials('organization@kakbima.dev')}
+                                                        className="inline-flex cursor-pointer items-center justify-center rounded p-1.5 transition-colors hover:opacity-80"
+                                                        style={{ backgroundColor: `${primaryColor}15` }}
+                                                    >
+                                                        <Copy className="h-3.5 w-3.5" style={{ color: primaryColor }} />
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="py-2 ltr:pl-3 rtl:pr-3">
+                                                    <div className="flex items-center">
+                                                        <div className="hidden h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-blue-50 sm:flex ltr:mr-2 rtl:ml-2 dark:bg-blue-900/30">
+                                                            <User className="h-3 w-3" style={{ color: primaryColor }} />
+                                                        </div>
+                                                        <span className="truncate font-medium text-gray-900 dark:text-gray-100">{t('User')}</span>
+                                                    </div>
+                                                </td>
+                                                <td
+                                                    className="truncate py-2 text-gray-600 ltr:pr-2 rtl:pl-2 dark:text-gray-300"
+                                                    title="sarahjohnson@kakbima.dev"
+                                                >
+                                                    sarahjohnson@kakbima.dev
+                                                </td>
+                                                <td className="truncate py-2 font-mono text-sm text-gray-600 dark:text-gray-300">password</td>
+                                                <td className="py-2 ltr:pr-3 ltr:text-right rtl:pl-3 rtl:text-left">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleCopyCredentials('sarahjohnson@kakbima.dev')}
+                                                        className="inline-flex cursor-pointer items-center justify-center rounded p-1.5 transition-colors hover:opacity-80"
+                                                        style={{ backgroundColor: `${primaryColor}15` }}
+                                                    >
+                                                        <Copy className="h-3.5 w-3.5" style={{ color: primaryColor }} />
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </>

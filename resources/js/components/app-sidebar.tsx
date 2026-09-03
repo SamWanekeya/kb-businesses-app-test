@@ -1,17 +1,45 @@
 import { NavMain } from '@/components/nav-main';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader} from '@/components/ui/sidebar';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@/components/ui/sidebar';
+import { useBrand } from '@/contexts/BrandContext';
 import { useLayout } from '@/contexts/LayoutContext';
 import { useSidebarSettings } from '@/contexts/SidebarContext';
-import { useBrand } from '@/contexts/BrandContext';
 import { type NavItem } from '@/types';
-import { Link, usePage} from '@inertiajs/react';
-import { Folder, LayoutGrid, ShoppingBag, Users, Settings, FileText, Briefcase, Calendar, CreditCard, Ticket, Gift, CalendarDays, Image, Building2, Phone, TrendingUp, Package, Megaphone, DollarSign, Palette, Mail, Activity, NotebookPen, MegaphoneIcon, TicketPercent, Search, X } from 'lucide-react';
-import AppLogo from './app-logo';
-import { useEffect, useState, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import { hasPermission } from '@/utils/authorization';
 import { getDisplayUrl } from '@/utils/helper';
-
+import { Link, usePage } from '@inertiajs/react';
+import {
+    Activity,
+    Briefcase,
+    Building2,
+    Calendar,
+    CalendarDays,
+    ChevronRight,
+    CreditCard,
+    DollarSign,
+    FileText,
+    Folder,
+    Gift,
+    Image,
+    LayoutGrid,
+    LogOut,
+    Mail,
+    Megaphone,
+    MegaphoneIcon,
+    NotebookPen,
+    Package,
+    Palette,
+    Phone,
+    Search,
+    Settings,
+    ShoppingBag,
+    Ticket,
+    TicketPercent,
+    TrendingUp,
+    Users,
+    X,
+} from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export function AppSidebar() {
     const { t, i18n } = useTranslation();
@@ -45,7 +73,6 @@ export function AppSidebar() {
             group: t('Management'),
         },
 
-
         {
             title: t('Plans'),
             icon: CreditCard,
@@ -53,17 +80,17 @@ export function AppSidebar() {
             children: [
                 {
                     title: t('Plans'),
-                    href: route('plans.index')
+                    href: route('plans.index'),
                 },
                 {
                     title: t('Plan Request'),
-                    href: route('plan-requests.index')
+                    href: route('plan-requests.index'),
                 },
                 {
                     title: t('Plan Orders'),
-                    href: route('plan-orders.index')
-                }
-            ]
+                    href: route('plan-orders.index'),
+                },
+            ],
         },
         {
             title: t('Coupons'),
@@ -91,21 +118,21 @@ export function AppSidebar() {
             children: [
                 {
                     title: t('Landing Page'),
-                    href: route('landing-page')
+                    href: route('landing-page'),
                 },
                 {
                     title: t('Custom Pages'),
-                    href: route('landing-page.custom-pages.index')
+                    href: route('landing-page.custom-pages.index'),
                 },
                 {
                     title: t('Contact Inquiries'),
-                    href: route('contact-messages.index')
+                    href: route('contact-messages.index'),
                 },
                 {
                     title: t('Newsletters'),
-                    href: route('newsletters.index')
+                    href: route('newsletters.index'),
                 },
-            ]
+            ],
         },
         {
             title: t('Email Templates'),
@@ -118,7 +145,7 @@ export function AppSidebar() {
             href: route('settings'),
             icon: Settings,
             group: t('System Control'),
-        }
+        },
     ];
 
     const getOrganizationNavItems = (): NavItem[] => {
@@ -134,7 +161,11 @@ export function AppSidebar() {
             });
         }
 
-        if (hasPermission(permissions, 'manage-meetings') || hasPermission(permissions, 'manage-calls') || hasPermission(permissions, 'manage-project-tasks')) {
+        if (
+            hasPermission(permissions, 'manage-meetings') ||
+            hasPermission(permissions, 'manage-calls') ||
+            hasPermission(permissions, 'manage-project-tasks')
+        ) {
             items.push({
                 title: t('Calendar'),
                 href: route('calendar.index'),
@@ -154,7 +185,7 @@ export function AppSidebar() {
                     { title: t('Product Reports'), href: route('reports.product-reports') },
                     { title: t('Contact Reports'), href: route('reports.customers') },
                     { title: t('Project Reports'), href: route('reports.projects') },
-                ]
+                ],
             });
         }
 
@@ -242,7 +273,12 @@ export function AppSidebar() {
 
         // ── 4. Procurement & Fulfillment ─────────────────────────────
         if (hasPermission(permissions, 'manage-purchase-orders')) {
-            items.push({ title: t('Purchase Orders'), href: route('purchase-orders.index'), icon: ShoppingBag, group: t('Procurement & Fulfillment') });
+            items.push({
+                title: t('Purchase Orders'),
+                href: route('purchase-orders.index'),
+                icon: ShoppingBag,
+                group: t('Procurement & Fulfillment'),
+            });
         }
 
         if (hasPermission(permissions, 'manage-delivery-orders')) {
@@ -254,7 +290,12 @@ export function AppSidebar() {
         }
 
         if (hasPermission(permissions, 'manage-shipping-provider-types')) {
-            items.push({ title: t('Shipping Provider Types'), href: route('shipping-provider-types.index'), icon: Ticket, group: t('Procurement & Fulfillment') });
+            items.push({
+                title: t('Shipping Provider Types'),
+                href: route('shipping-provider-types.index'),
+                icon: Ticket,
+                group: t('Procurement & Fulfillment'),
+            });
         }
 
         // ── 5. Catalog ───────────────────────────────────────────────
@@ -274,7 +315,6 @@ export function AppSidebar() {
         if (productSetupChildren.length > 0) {
             items.push({ title: t('Product Setup'), icon: Package, group: t('Catalog'), children: productSetupChildren });
         }
-
 
         // ── 6. Collaboration ─────────────────────────────────────────
         if (hasPermission(permissions, 'manage-meetings')) {
@@ -384,30 +424,43 @@ export function AppSidebar() {
     const [sidebarStyle, setSidebarStyle] = useState({});
     const [searchQuery, setSearchQuery] = useState('');
 
-    useEffect(() => {
+    const [userMenuOpen, setUserMenuOpen] = useState(false);
+    const userMenuRef = useRef<HTMLDivElement>(null);
 
+    useEffect(() => {
         // Apply styles based on sidebar style
         if (style === 'colored') {
             setSidebarStyle({ backgroundColor: 'var(--primary)', color: 'white' });
         } else if (style === 'gradient') {
             setSidebarStyle({
                 background: 'linear-gradient(to bottom, var(--primary), color-mix(in srgb, var(--primary), transparent 20%))',
-                color: 'white'
+                color: 'white',
             });
         } else {
             setSidebarStyle({});
         }
     }, [style]);
+    useEffect(() => {
+        const handler = (e: MouseEvent) => {
+            if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+                setUserMenuOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handler);
+
+        return () => {
+            document.removeEventListener('mousedown', handler);
+        };
+    }, []);
 
     const filterNavItems = (items: NavItem[], query: string): NavItem[] => {
         if (!query.trim()) return items;
         const q = query.toLowerCase();
         const result: NavItem[] = [];
-        items.forEach(item => {
+        items.forEach((item) => {
             if (item.children) {
-                const matchedChildren = item.children.filter(child =>
-                    child.title.toLowerCase().includes(q)
-                );
+                const matchedChildren = item.children.filter((child) => child.title.toLowerCase().includes(q));
                 if (item.title.toLowerCase().includes(q)) {
                     result.push(item);
                 } else if (matchedChildren.length > 0) {
@@ -438,17 +491,12 @@ export function AppSidebar() {
     };
 
     return (
-        <Sidebar
-            side={effectivePosition}
-            collapsible={collapsible}
-            variant={variant}
-            className={style !== 'plain' ? 'sidebar-custom-style' : ''}
-        >
+        <Sidebar side={effectivePosition} collapsible={collapsible} variant={variant} className={style !== 'plain' ? 'sidebar-custom-style' : ''}>
             <SidebarHeader className={style !== 'plain' ? 'sidebar-styled' : ''} style={sidebarStyle}>
-                <div className="flex justify-center items-center p-2">
+                <div className="flex items-center justify-center p-2">
                     <Link href={getFirstAvailableHref()} prefetch className="flex items-center justify-center">
                         {/* Logo for expanded sidebar */}
-                        <div className="group-data-[collapsible=icon]:hidden flex items-center">
+                        <div className="flex items-center group-data-[collapsible=icon]:hidden">
                             {(() => {
                                 const isDark = document.documentElement.classList.contains('dark');
                                 const currentLogo = isDark ? logoLight : logoDark;
@@ -463,15 +511,13 @@ export function AppSidebar() {
                                         onError={() => updateBrandSettings({ [isDark ? 'logoLight' : 'logoDark']: '' })}
                                     />
                                 ) : (
-                                    <div className="h-12 text-inherit font-semibold flex items-center text-lg tracking-tight">
-                                        Kakbima
-                                    </div>
+                                    <div className="flex h-12 items-center text-lg font-semibold tracking-tight text-inherit">Kakbima</div>
                                 );
                             })()}
                         </div>
 
                         {/* Icon for collapsed sidebar */}
-                        <div className="h-8 w-8 hidden group-data-[collapsible=icon]:block">
+                        <div className="hidden h-8 w-8 group-data-[collapsible=icon]:block">
                             {(() => {
                                 const displayFavicon = favicon ? getDisplayUrl(favicon) : '';
 
@@ -484,7 +530,7 @@ export function AppSidebar() {
                                         onError={() => updateBrandSettings({ favicon: '' })}
                                     />
                                 ) : (
-                                    <div className="h-8 w-8 bg-primary text-white rounded flex items-center justify-center font-bold shadow-sm">
+                                    <div className="bg-primary flex h-8 w-8 items-center justify-center rounded font-bold text-white shadow-sm">
                                         W
                                     </div>
                                 );
@@ -494,20 +540,20 @@ export function AppSidebar() {
                 </div>
 
                 {/* Search Input */}
-                <div className="group-data-[collapsible=icon]:hidden px-2 pb-2">
+                <div className="px-2 pb-2 group-data-[collapsible=icon]:hidden">
                     <div className="relative">
-                        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
+                        <Search className="absolute top-1/2 left-2.5 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
                         <input
                             type="text"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder={t('Search menu...')}
-                            className="w-full rounded-md border-1 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 py-1.5 pl-8 pr-7 text-sm text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                            className="focus:border-primary focus:ring-primary w-full rounded-md border-1 border-gray-300 bg-gray-50 py-1.5 pr-7 pl-8 text-sm text-gray-700 placeholder-gray-400 transition-all outline-none focus:ring-1 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:placeholder-gray-500"
                         />
                         {searchQuery && (
                             <button
                                 onClick={() => setSearchQuery('')}
-                                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                                className="absolute top-1/2 right-2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                             >
                                 <X className="h-3.5 w-3.5" />
                             </button>
@@ -522,115 +568,153 @@ export function AppSidebar() {
                 <NavMain searchQuery={searchQuery} items={filteredNavItems} position={effectivePosition} />
             </SidebarContent>
 
+            <SidebarFooter className={userRole === 'organization' ? 'border-t' : ''}>
+                {userRole === 'organization' &&
+                    (() => {
+                        const user = auth.user;
+                        const plan = user?.plan;
 
-           <SidebarFooter className='p-3'>
-                {/* Plan Active UI — SaaS + Organization only */}
-                {userRole === 'organization' && (() => {
-                    const user = auth.user;
-                    const plan = user?.plan;
+                        const isActive = user?.is_plan_active === 1;
+                        const isTrial = user?.is_trial == 1;
 
-                    const planName = plan?.name ?? t('No Plan');
-                    const isActive = user?.is_plan_active === 1;
-                    const isTrial = user?.is_trial;
+                        const expiryDate = isTrial ? user?.trial_expiry_date : user?.plan_expiry_date || globalSettings?.planExirationDate;
 
-                    const expiryDate = isTrial == 1 ? user?.trial_expiry_date : (user?.plan_expiry_date ||  globalSettings?.planExirationDate);
-                    const daysLeft = expiryDate
-                        ? Math.ceil((new Date(expiryDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
-                        : null;
-                    const isExpired = daysLeft == null || daysLeft <= 0;
-                    const isExpiringSoon = daysLeft !== null && daysLeft > 0 && daysLeft <= 7;
+                        const daysLeft = expiryDate ? Math.ceil((new Date(expiryDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)) : null;
 
-                    return (
-                        <div className="group-data-[collapsible=icon]:hidden">
-                            <div
-                                className={`relative rounded-xl overflow-hidden ${isExpired ? 'rounded-lg border bg-card text-card-foreground shadow-sm bg-gradient-to-r from-red-500 to-red-400' : 'bg-primary border-t border-t-[color-mix(in_srgb,var(--primary),white_20%)]'}`}
-                            >
-                                {/* Decorative circles */}
-                                <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }} />
-                                <div className="absolute -bottom-3 -left-3 w-10 h-10 rounded-full" style={{ backgroundColor: 'rgba(255,255,255,0.06)' }} />
+                        const isExpired = daysLeft == null || daysLeft <= 0;
 
-                                <div className="relative p-5">
-                                    {/* Header row */}
-                                    <div className="flex items-start justify-between mb-3">
-                                        <div className="flex items-center gap-2">
-                                            <div className="p-1.5 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
-                                                <CreditCard className="h-4 w-4 text-white" />
-                                            </div>
-                                            <div>
-                                                <p className="text-xs font-semibold leading-tight mb-1" style={{ color: 'rgba(255,255,255,0.9)' }}>{t('Current Plan')}</p>
-                                                <p className="text-sm font-bold text-white leading-tight">{planName}</p>
-                                            </div>
-                                        </div>
-                                        {/* Status badge */}
-                                        <span
-                                            className="text-xs font-bold px-3 py-1 rounded-full tracking-wide"
-                                            style={{ backgroundColor: 'rgba(255,255,255,0.25)', color: 'white', border: '1px solid rgba(255,255,255,0.35)' }}
+                        let subText = '';
+
+                        if (isExpired) {
+                            subText = t('Plan expired');
+                        } else if (!plan) {
+                            subText = t('No Plan');
+                        } else if (isTrial) {
+                            subText = daysLeft !== null ? t('Trial · {{n}} days left', { n: daysLeft }) : t('Trial');
+                        } else if (daysLeft !== null && daysLeft <= 7) {
+                            subText = t('Expires in {{n}} days', { n: daysLeft });
+                        } else {
+                            subText = plan.name;
+                        }
+
+                        return (
+                            <div ref={userMenuRef} className="relative group-data-[collapsible=icon]:hidden">
+                                {/* Popup panel — expands above */}
+                                {userMenuOpen && (
+                                    <div className="absolute right-0 bottom-full left-0 z-50 mb-2 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-900">
+                                        {/* User info row */}
+                                        <Link
+                                            href={route('profile')}
+                                            onClick={() => setUserMenuOpen(false)}
+                                            className="flex items-center gap-3 border-b border-gray-100 px-3 py-3 transition-colors hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-800"
                                         >
-                                            {isExpired ? t('Expired') : isTrial == 1 ? t('Trial') : t('Active')}
-                                        </span>
-                                    </div>
-
-                                    {/* Divider */}
-                                    <div className="mb-3" style={{ borderTop: '1px solid rgba(255,255,255,0.2)' }} />
-
-                                    {/* Expiry info */}
-                                    <div className="mb-3 space-y-1.5">
-                                        {expiryDate ? (
-                                            <>
-                                                <div className="flex items-center justify-between">
-                                                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.9)' }}>
-                                                        {isExpired ? t('Expired on') : isTrial == 1 ? t('Trial expires') : t('Plan expires')}
-                                                    </span>
-                                                    <span className="text-xs font-bold text-white">
-                                                        {window.appSettings?.formatDateTime(expiryDate, false) || new Date(expiryDate).toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' })}
-                                                    </span>
-                                                </div>
-                                                <div className="flex items-center justify-between">
-                                                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.9)' }}>{!isExpired ? t('Days left') : t('Days since expiration')}</span>
-                                                    <span className="text-xs font-bold text-white">
-                                                        {isExpired ? -daysLeft : daysLeft} {t('days')}
-                                                    </span>
-                                                </div>
-                                                {/* Progress bar */}
-                                                {!isExpired && daysLeft !== null && daysLeft <= 30 && (
-                                                    <div className="mt-1">
-                                                        <div className="h-1.5 w-full rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
-                                                            <div
-                                                                className="h-full rounded-full transition-all"
-                                                                style={{ width: `${Math.max(5, (daysLeft / 30) * 100)}%`, backgroundColor: 'rgba(255,255,255,0.9)' }}
-                                                            />
-                                                        </div>
+                                            <div className="relative shrink-0">
+                                                {user?.avatar ? (
+                                                    <img src={user.avatar} alt={user.name} className="h-9 w-9 rounded-full object-cover" />
+                                                ) : (
+                                                    <div className="bg-primary line-clamp-1 flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold text-white">
+                                                        {user?.name?.charAt(0).toUpperCase()}
                                                     </div>
                                                 )}
-                                            </>
+                                            </div>
+                                            <div className="min-w-0 flex-1 text-left">
+                                                <p className="line-clamp-1 truncate text-sm font-semibold text-gray-900 dark:text-white">
+                                                    {user?.name}
+                                                </p>
+                                                <p className="line-clamp-1 truncate text-xs text-gray-500 dark:text-gray-400">{user?.email}</p>
+                                            </div>
+                                            <ChevronRight className="h-4 w-4 shrink-0 text-gray-400" />
+                                        </Link>
+
+                                        {/* Actions */}
+                                        <div className="py-1">
+                                            <Link
+                                                href={route('referral.index')}
+                                                onClick={() => setUserMenuOpen(false)}
+                                                className="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
+                                            >
+                                                <Gift className="h-4 w-4 text-gray-400" />
+                                                {t('Referral Program')}
+                                            </Link>
+
+                                            <Link
+                                                href={route('plans.index')}
+                                                onClick={() => setUserMenuOpen(false)}
+                                                className="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
+                                            >
+                                                <CreditCard className="h-4 w-4 text-gray-400" />
+                                                {t('Plans')}
+                                            </Link>
+
+                                            <Link
+                                                href={route('settings')}
+                                                onClick={() => setUserMenuOpen(false)}
+                                                className="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
+                                            >
+                                                <Settings className="h-4 w-4 text-gray-400" />
+                                                {t('Settings')}
+                                            </Link>
+                                        </div>
+
+                                        <div className="border-t border-gray-100 py-1 dark:border-gray-800">
+                                            <Link
+                                                href={route('logout')}
+                                                method="post"
+                                                as="button"
+                                                onClick={() => setUserMenuOpen(false)}
+                                                className="flex w-full cursor-pointer items-center gap-3 px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
+                                            >
+                                                <LogOut className="h-4 w-4 text-gray-400" />
+                                                {t('Log out')}
+                                            </Link>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Trigger card */}
+                                <button
+                                    type="button"
+                                    onClick={() => setUserMenuOpen((v) => !v)}
+                                    className="flex w-full cursor-pointer items-center gap-3 rounded-xl bg-black/10 px-3 py-2.5 transition-colors dark:bg-white/10"
+                                >
+                                    <div className="shrink-0">
+                                        {user?.avatar ? (
+                                            <img src={user.avatar} alt={user.name} className="h-8 w-8 rounded-full object-cover" />
                                         ) : (
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.9)' }}>{t('Status')}</span>
-                                                <span className="text-xs font-bold text-white">
-                                                    {isActive ? t('No expiry') : t('Inactive')}
-                                                </span>
+                                            <div className="bg-primary flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold text-white">
+                                                {user?.name?.charAt(0).toUpperCase()}
                                             </div>
                                         )}
                                     </div>
 
-                                    {/* Upgrade button */}
+                                    <div className="min-w-0 flex-1 text-left">
+                                        <p className="text-sidebar-foreground line-clamp-1 truncate text-sm font-medium">{user?.name}</p>
+
+                                        <p
+                                            className={`line-clamp-1 truncate text-xs ${
+                                                isExpired
+                                                    ? 'text-red-400'
+                                                    : daysLeft !== null && daysLeft <= 7
+                                                      ? 'text-orange-500'
+                                                      : 'text-sidebar-foreground/60'
+                                            }`}
+                                        >
+                                            {subText}
+                                        </p>
+                                    </div>
+
                                     <Link
                                         href={route('plans.index')}
-                                        className={`flex items-center justify-center gap-1.5 w-full text-xs font-semibold py-2 px-3 rounded-lg transition-all duration-200 ${isExpired? 'text-red-500 hover:!text-red-500' : 'text-primary hover:text-primary'}`}
-                                        style={{ backgroundColor: 'rgba(255,255,255,0.95)'}}
-                                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'white')}
-                                        onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.95)')}
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="shrink-0 rounded-lg border border-gray-300 bg-white px-2.5 py-1 text-xs font-semibold text-gray-900 hover:bg-gray-100 hover:!text-gray-900"
                                     >
-                                        <CreditCard className="h-3.5 w-3.5" />
-                                        <span>{isExpired || !isActive ? t('Renew Plan') : t('Upgrade Plan')}</span>
+                                        {isExpired || !isActive ? t('Renew') : t('Upgrade')}
                                     </Link>
-                                </div>
+                                </button>
                             </div>
-                        </div>
-                    );
-                })()}
+                        );
+                    })()}
             </SidebarFooter>
-
         </Sidebar>
     );
 }

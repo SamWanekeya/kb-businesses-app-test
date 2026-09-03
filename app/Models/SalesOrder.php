@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use App\Observers\SalesOrderObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use App\Observers\SalesOrderObserver;
 
 #[ObservedBy([SalesOrderObserver::class])]
 class SalesOrder extends BaseModel
@@ -144,7 +144,7 @@ class SalesOrder extends BaseModel
             'subtotal' => $subtotal,
             'discount_amount' => $totalDiscountAmount,
             'tax_amount' => $taxAmount,
-            'total_amount' => $totalAmount
+            'total_amount' => $totalAmount,
         ]);
 
         return $totalAmount;

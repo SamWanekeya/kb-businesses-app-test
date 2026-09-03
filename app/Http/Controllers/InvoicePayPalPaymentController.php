@@ -46,7 +46,7 @@ class InvoicePayPalPaymentController extends Controller
                 'invoice_id' => $invoice->id,
                 'amount' => $validated['amount'],
                 'payment_type' => $validated['payment_type'],
-                'payment_id' => $validated['payment_id']
+                'payment_id' => $validated['payment_id'],
             ]);
 
             return back()->with('success', __('Payment successful'));
@@ -55,8 +55,9 @@ class InvoicePayPalPaymentController extends Controller
             \Log::error('PayPal payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return back()->withErrors(['error' => __('Payment processing failed. Please try again or contact support.')]);
         }
     }

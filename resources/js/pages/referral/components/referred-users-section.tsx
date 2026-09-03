@@ -1,11 +1,10 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Pagination } from '@/components/ui/pagination';
-import { useTranslation } from 'react-i18next';
-import { router } from '@inertiajs/react';
-import { Users, Calendar, DollarSign, CheckCircle } from 'lucide-react';
-import { use } from 'react';
 import { useInitials } from '@/hooks/use-initials';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { router } from '@inertiajs/react';
+import { Calendar, CheckCircle, DollarSign, Users } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface ReferredUser {
     id: number;
@@ -49,7 +48,13 @@ interface ReferredUsersSectionProps {
     currencySymbol: string;
 }
 
-export default function ReferredUsersSection({ referredUsers, usersWithPlans, totalCommissionEarned, userType, currencySymbol }: ReferredUsersSectionProps) {
+export default function ReferredUsersSection({
+    referredUsers,
+    usersWithPlans,
+    totalCommissionEarned,
+    userType,
+    currencySymbol,
+}: ReferredUsersSectionProps) {
     const { t } = useTranslation();
     const getInitials = useInitials();
 
@@ -71,25 +76,25 @@ export default function ReferredUsersSection({ referredUsers, usersWithPlans, to
             return {
                 name: user.plan.name,
                 price: latestOrder.final_price,
-                cycle: isYearly ? 'year' : 'month'
+                cycle: isYearly ? 'year' : 'month',
             };
         }
 
         return {
             name: user.plan.name,
             price: user.plan.price,
-            cycle: 'month'
+            cycle: 'month',
         };
     };
 
     return (
         <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                 <Card>
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-medium text-muted-foreground">{t('Total Referred Users')}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{t('Total Referred Users')}</p>
                                 <p className="mt-2 text-2xl font-bold">{referredUsers.total}</p>
                             </div>
                             <div className="rounded-full bg-green-100 p-3 dark:bg-green-900">
@@ -103,7 +108,7 @@ export default function ReferredUsersSection({ referredUsers, usersWithPlans, to
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-medium text-muted-foreground">{t('Users with Plans')}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{t('Users with Plans')}</p>
                                 <p className="mt-2 text-2xl font-bold">{usersWithPlans}</p>
                             </div>
                             <div className="rounded-full bg-blue-100 p-3 dark:bg-blue-900">
@@ -117,8 +122,11 @@ export default function ReferredUsersSection({ referredUsers, usersWithPlans, to
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-medium text-muted-foreground">{t('Total Commission Earned')}</p>
-                                <p className="mt-2 text-2xl font-bold font-mono">{currencySymbol}{(totalCommissionEarned || 0).toFixed(2)}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{t('Total Commission Earned')}</p>
+                                <p className="mt-2 font-mono text-2xl font-bold">
+                                    {currencySymbol}
+                                    {(totalCommissionEarned || 0).toFixed(2)}
+                                </p>
                             </div>
                             <div className="rounded-full bg-yellow-100 p-3 dark:bg-yellow-900">
                                 <DollarSign className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
@@ -134,60 +142,65 @@ export default function ReferredUsersSection({ referredUsers, usersWithPlans, to
                 </CardHeader>
                 <CardContent>
                     {referredUsers.data.length === 0 ? (
-                        <div className="text-center py-12">
-                            <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                            <p className="text-base font-semibold text-muted-foreground mb-2">{t('No referred users yet')}</p>
-                            <p className="text-sm text-muted-foreground">
+                        <div className="py-12 text-center">
+                            <Users className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
+                            <p className="text-muted-foreground mb-2 text-base font-semibold">{t('No referred users yet')}</p>
+                            <p className="text-muted-foreground text-sm">
                                 {userType === 'super_admin'
                                     ? t('No users have registered using referral codes yet.')
-                                    : t('Share your referral link to start earning commissions.')
-                                }
+                                    : t('Share your referral link to start earning commissions.')}
                             </p>
                         </div>
                     ) : (
                         <div className="space-y-4">
                             {referredUsers.data.map((user) => (
-                                <div key={user.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
-                                    <div className="flex items-start justify-between gap-4">
-                                        <div className="flex items-start space-x-3 flex-1">
-                                            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                                                {user?.avatar ?
-                                                    <Avatar className="w-12 h-12 rounded-full object-cover shrink-0">
+                                <div key={user.id} className="rounded-lg border p-4 transition-shadow hover:shadow-md">
+                                    <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
+                                        <div className="flex min-w-0 flex-1 items-start space-x-3">
+                                            <div className="bg-primary/10 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full">
+                                                {user?.avatar ? (
+                                                    <Avatar className="h-12 w-12 shrink-0 rounded-full object-cover">
                                                         <AvatarImage src={user.avatar} />
                                                         <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
                                                     </Avatar>
-                                                    :
-                                                    <span className="text-sm font-medium text-primary">
-                                                        {user.name.charAt(0).toUpperCase()}
-                                                    </span>}
+                                                ) : (
+                                                    <span className="text-primary text-sm font-medium">{user.name.charAt(0).toUpperCase()}</span>
+                                                )}
                                             </div>
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-semibold">{user.name}</p>
-                                                <p className="text-sm text-muted-foreground mb-2">{user.email}</p>
+                                            <div className="min-w-0 flex-1">
+                                                <p className="truncate text-sm font-semibold" title={user.name}>
+                                                    {user.name}
+                                                </p>
+                                                <p className="text-muted-foreground mb-2 truncate text-sm" title={user.email}>
+                                                    {user.email}
+                                                </p>
                                                 <div className="flex items-center space-x-2">
-                                                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                                                    <span className="text-xs text-muted-foreground">
-                                                        {t('Registered')} {window.appSettings?.formatDateTime(user.created_at, false) || new Date(user.created_at).toLocaleDateString()}
+                                                    <Calendar className="text-muted-foreground h-4 w-4" />
+                                                    <span className="text-muted-foreground truncate text-xs">
+                                                        {t('Registered')}{' '}
+                                                        {window.appSettings?.formatDateTime(user.created_at, false) ||
+                                                            new Date(user.created_at).toLocaleDateString()}
                                                     </span>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div className="flex items-start space-x-6 flex-shrink-0">
-                                            <div className="text-right">
+                                        <div className="flex w-full flex-shrink-0 flex-row justify-between gap-6 sm:w-auto sm:items-start sm:justify-end">
+                                            <div className="text-start sm:text-end">
                                                 {(() => {
                                                     const planInfo = getPlanDisplayInfo(user);
                                                     return planInfo ? (
                                                         <div>
-                                                            <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 mb-1.5">
+                                                            <span className="mb-1.5 inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset">
                                                                 {planInfo.name}
                                                             </span>
-                                                            <p className="text-sm text-muted-foreground font-mono">
-                                                                {currencySymbol}{planInfo.price}/{t(planInfo.cycle)}
+                                                            <p className="text-muted-foreground font-mono text-sm">
+                                                                {currencySymbol}
+                                                                {planInfo.price}/{t(planInfo.cycle)}
                                                             </p>
                                                         </div>
                                                     ) : (
-                                                        <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                                                        <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset">
                                                             {t('No Plan')}
                                                         </span>
                                                     );
@@ -195,29 +208,29 @@ export default function ReferredUsersSection({ referredUsers, usersWithPlans, to
                                             </div>
 
                                             {getTotalCommission(user) > 0 && (
-                                                <div className="text-right min-w-[80px]">
-                                                    <p className="text-sm font-semibold text-green-600 font-mono">
-                                                        +{currencySymbol}{getTotalCommission(user)?.toFixed(2)}
+                                                <div className="min-w-[80px] text-end">
+                                                    <p className="font-mono text-sm font-semibold text-green-600">
+                                                        +{currencySymbol}
+                                                        {getTotalCommission(user)?.toFixed(2)}
                                                     </p>
-                                                    <p className="text-xs text-muted-foreground mt-1">
-                                                        {t('Commission')}
-                                                    </p>
+                                                    <p className="text-muted-foreground mt-1 text-xs">{t('Commission')}</p>
                                                 </div>
                                             )}
                                         </div>
                                     </div>
 
                                     {user.referrals && user.referrals.length > 0 && (
-                                        <div className="mt-4 pt-4 border-t">
-                                            <p className="text-sm font-semibold mb-2">{t('Commission History')}</p>
+                                        <div className="mt-4 border-t pt-4">
+                                            <p className="mb-2 text-sm font-semibold">{t('Commission History')}</p>
                                             <div className="space-y-2">
                                                 {user.referrals.map((referral) => (
-                                                    <div key={referral.id} className="flex justify-between items-center">
-                                                        <span className="text-sm text-muted-foreground">
+                                                    <div key={referral.id} className="flex items-center justify-between">
+                                                        <span className="text-muted-foreground text-sm">
                                                             {referral.commission_percentage}% {t('commission')}
                                                         </span>
-                                                        <span className="text-sm font-semibold text-green-600 font-mono">
-                                                            +{currencySymbol}{referral.amount}
+                                                        <span className="font-mono text-sm font-semibold text-green-600">
+                                                            +{currencySymbol}
+                                                            {referral.amount}
                                                         </span>
                                                     </div>
                                                 ))}
@@ -233,7 +246,7 @@ export default function ReferredUsersSection({ referredUsers, usersWithPlans, to
 
             {referredUsers.last_page > 1 && (
                 <Pagination
-                    className='rounded-lg'
+                    className="rounded-lg"
                     from={referredUsers.from}
                     to={referredUsers.to}
                     total={referredUsers.total}
@@ -245,7 +258,7 @@ export default function ReferredUsersSection({ referredUsers, usersWithPlans, to
                         router.visit(url, {
                             preserveState: true,
                             preserveScroll: true,
-                            only: ['referredUsers']
+                            only: ['referredUsers'],
                         });
                     }}
                     hidePerPage={true}

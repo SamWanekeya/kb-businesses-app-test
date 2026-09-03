@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
-use App\Models\Setting;
-use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 use App\Models\Currency;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
 use App\Models\Webhook;
 use App\Models\Workspace;
+use Inertia\Inertia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class SettingsController extends Controller
@@ -170,7 +169,7 @@ class SettingsController extends Controller
             'ozow_private_key',
             'ozow_api_key',
             'cashfree_secret_key',
-            'cashfree_public_key'
+            'cashfree_public_key',
         ];
 
         foreach ($sensitiveKeys as $key) {

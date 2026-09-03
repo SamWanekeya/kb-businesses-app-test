@@ -17,7 +17,7 @@ class TwilioService
             }
 
             // Get notification template
-            $template = NotificationTemplate::where('name', $templateName)->where('type','twilio')->first();
+            $template = NotificationTemplate::where('name', $templateName)->where('type', 'twilio')->first();
 
             if (!$template) {
                 throw new Exception("Notification template '{$templateName}' not found");
@@ -59,7 +59,7 @@ class TwilioService
 
     private function isTwilioNotificationEnabled(string $templateName): bool
     {
-        return isNotificationTemplateEnabled($templateName,'twilio', createdBy());
+        return isNotificationTemplateEnabled($templateName, 'twilio', createdBy());
     }
 
     private function sendSMS(string $toPhone, string $message): bool
@@ -75,7 +75,7 @@ class TwilioService
         $twilio = new Client($twilioSid, $twilioToken);
         $twilio->messages->create($toPhone, [
             'from' => $twilioFrom,
-            'body' => $message
+            'body' => $message,
         ]);
 
         return true;

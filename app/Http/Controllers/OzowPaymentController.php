@@ -49,7 +49,7 @@ class OzowPaymentController extends Controller
 
         try {
             $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
 
             if (!isset($settings['payment_settings']['ozow_site_key']) || !isset($settings['payment_settings']['ozow_private_key']) || !isset($settings['payment_settings']['ozow_api_key'])) {
@@ -100,7 +100,7 @@ class OzowPaymentController extends Controller
                 CURLOPT_HTTPHEADER => [
                     'Accept: application/json',
                     'ApiKey: ' . $apiKey,
-                    'Content-Type: application/json'
+                    'Content-Type: application/json',
                 ],
             ]);
 
@@ -112,7 +112,7 @@ class OzowPaymentController extends Controller
                 return response()->json([
                     'success' => true,
                     'payment_url' => $json_attendance->url,
-                    'transaction_id' => $transactionReference
+                    'transaction_id' => $transactionReference,
                 ]);
             } else {
                 return response()->json(['error' => __('Payment creation failed')], 500);
@@ -159,7 +159,7 @@ class OzowPaymentController extends Controller
             return response()->json(['status' => 'success']);
 
         } catch (\Exception $e) {
-           return response()->json(['error' => __('Callback processing failed')], 500);
+            return response()->json(['error' => __('Callback processing failed')], 500);
         }
     }
 }

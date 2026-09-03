@@ -1,19 +1,18 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { toast } from '@/components/custom-toast';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
-import { useTranslation } from 'react-i18next';
+import { Textarea } from '@/components/ui/textarea';
 import { useForm } from '@inertiajs/react';
-import { toast } from '@/components/custom-toast';
 import { Save } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface ReferralSettingsProps {
     settings: any;
     currencySymbol?: string;
     globalSettings?: any;
-
 }
 
 export default function ReferralSettings({ settings, currencySymbol, globalSettings }: ReferralSettingsProps) {
@@ -33,8 +32,8 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
         }
 
         post(route('referral.settings.update'), {
-              preserveScroll: true,
-              onSuccess: (page) => {
+            preserveScroll: true,
+            onSuccess: (page) => {
                 if (!globalSettings?.is_demo) {
                     toast.dismiss();
                 }
@@ -43,8 +42,8 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
                 } else if (page.props.flash.error) {
                     toast.error(t(page.props.flash.error));
                 }
-              },
-              onError: (errors) => {
+            },
+            onError: (errors) => {
                 if (!globalSettings?.is_demo) {
                     toast.dismiss();
                 }
@@ -53,8 +52,8 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
                 } else {
                     toast.error(t('Failed to update referral settings: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
-              }
-            });
+            },
+        });
     };
 
     return (
@@ -65,17 +64,15 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
             <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="flex items-center space-x-2">
-                        <Switch
-                            id="is_enabled"
-                            checked={data.is_enabled}
-                            onCheckedChange={(checked) => setData('is_enabled', checked)}
-                        />
+                        <Switch id="is_enabled" checked={data.is_enabled} onCheckedChange={(checked) => setData('is_enabled', checked)} />
                         <Label htmlFor="is_enabled">{t('Enable Referral Program')}</Label>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div>
-                            <Label htmlFor="commission_percentage" required>{t('Commission Percentage (%)')}</Label>
+                            <Label htmlFor="commission_percentage" required>
+                                {t('Commission Percentage (%)')}
+                            </Label>
                             <Input
                                 id="commission_percentage"
                                 type="number"
@@ -85,13 +82,13 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
                                 value={data.commission_percentage}
                                 onChange={(e) => setData('commission_percentage', e.target.value)}
                             />
-                            {errors.commission_percentage && (
-                                <p className="text-sm text-red-500">{errors.commission_percentage}</p>
-                            )}
+                            {errors.commission_percentage && <p className="text-sm text-red-500">{errors.commission_percentage}</p>}
                         </div>
 
                         <div>
-                            <Label htmlFor="threshold_amount" required>{t('Minimum Threshold Amount')} {currencySymbol}</Label>
+                            <Label htmlFor="threshold_amount" required>
+                                {t('Minimum Threshold Amount')} {currencySymbol}
+                            </Label>
                             <Input
                                 id="threshold_amount"
                                 type="number"
@@ -100,14 +97,14 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
                                 value={data.threshold_amount}
                                 onChange={(e) => setData('threshold_amount', e.target.value)}
                             />
-                            {errors.threshold_amount && (
-                                <p className="text-sm text-red-500">{errors.threshold_amount}</p>
-                            )}
+                            {errors.threshold_amount && <p className="text-sm text-red-500">{errors.threshold_amount}</p>}
                         </div>
                     </div>
 
                     <div>
-                        <Label htmlFor="guidelines" required>{t('Referral Guidelines')}</Label>
+                        <Label htmlFor="guidelines" required>
+                            {t('Referral Guidelines')}
+                        </Label>
                         <Textarea
                             id="guidelines"
                             value={data.guidelines}
@@ -115,14 +112,12 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
                             placeholder={t('Enter referral program guidelines and terms...')}
                             rows={6}
                         />
-                        {errors.guidelines && (
-                            <p className="text-sm text-red-500">{errors.guidelines}</p>
-                        )}
+                        {errors.guidelines && <p className="text-sm text-red-500">{errors.guidelines}</p>}
                     </div>
 
                     <div className="flex justify-end">
                         <Button type="submit" disabled={processing} size="sm">
-                            <Save className="mr-2 h-4 w-4" />
+                            <Save className="me-2 h-4 w-4" />
                             {processing ? t('Saving...') : t('Save Settings')}
                         </Button>
                     </div>

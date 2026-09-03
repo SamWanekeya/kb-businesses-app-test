@@ -31,6 +31,7 @@ class AssignDefaultPlanToUsers extends Command
 
         if (!$defaultPlan) {
             $this->error(__('No default plan found. Please create a default plan first.'));
+
             return 1;
         }
 

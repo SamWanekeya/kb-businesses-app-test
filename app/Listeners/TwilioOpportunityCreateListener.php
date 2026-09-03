@@ -6,7 +6,6 @@ use App\Events\OpportunityCreated;
 use App\Models\User;
 use App\Services\TwilioService;
 use Exception;
-use PhpParser\Node\Expr\Empty_;
 
 class TwilioOpportunityCreateListener
 {
@@ -27,7 +26,7 @@ class TwilioOpportunityCreateListener
         $opportunity = $event->opportunity;
         $account = $opportunity->account;
         $contact = $opportunity->contact;
-        if (isNotificationTemplateEnabled('Opportunity create','twilio', createdBy()) && !empty($contact->phone)) {
+        if (isNotificationTemplateEnabled('Opportunity create', 'twilio', createdBy()) && !empty($contact->phone)) {
             $variables = [
                 '{opportunity_name}' => $opportunity->name ?? '-',
                 '{amount}' => $opportunity->amount ?? '-',

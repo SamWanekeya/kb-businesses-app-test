@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import { Calendar } from 'lucide-react';
+import { CrudDeleteModal } from '@/components/CrudDeleteModal';
+import { CrudTable } from '@/components/CrudTable';
+import { toast } from '@/components/custom-toast';
 import { PageTemplate } from '@/components/page-template';
-import { router, usePage } from '@inertiajs/react';
+import { Dialog } from '@/components/ui/dialog';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { CrudTable } from '@/components/CrudTable';
-import { CrudDeleteModal } from '@/components/CrudDeleteModal';
-import { Dialog } from '@/components/ui/dialog';
-import { toast } from '@/components/custom-toast';
+import { router, usePage } from '@inertiajs/react';
+import { Calendar } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ViewPopup from './view';
 
@@ -26,29 +26,40 @@ export default function ContactMessagesIndex() {
     };
 
     const applyFilters = () => {
-        router.get(route('contact-messages.index'), {
-            page: 1,
-            search: searchTerm || undefined,
-            sort_field: pageFilters.sort_field || undefined,
-            sort_direction: pageFilters.sort_direction || undefined,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page })
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('contact-messages.index'),
+            {
+                page: 1,
+                search: searchTerm || undefined,
+                sort_field: pageFilters.sort_field || undefined,
+                sort_direction: pageFilters.sort_direction || undefined,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleSort = (field: string) => {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
-        router.get(route('contact-messages.index'), {
-            page: 1,
-            search: searchTerm || undefined,
-            sort_field: field,
-            sort_direction: direction,
-            ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page })
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('contact-messages.index'),
+            {
+                page: 1,
+                search: searchTerm || undefined,
+                sort_field: field,
+                sort_direction: direction,
+                ...(parseInt(pageFilters.per_page) !== 10 && pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const pageInitialState = useState(true);
     useEffect(() => {
-        if (pageInitialState[0]) { pageInitialState[1](false); return; }
+        if (pageInitialState[0]) {
+            pageInitialState[1](false);
+            return;
+        }
         applyFilters();
     }, [searchTerm]);
 
@@ -72,43 +83,43 @@ export default function ContactMessagesIndex() {
             onError: () => {
                 toast.error(t('Failed to delete contact message'));
                 setIsDeleteModalOpen(false);
-            }
+            },
         });
     };
 
     const breadcrumbs = [
         { title: t('Dashboard'), href: route('dashboard') },
         { title: t('Landing Page'), href: route('landing-page') },
-        { title: t('Contact Inquiries') }
+        { title: t('Contact Inquiries') },
     ];
 
     const columns = [
         {
             key: 'name',
             label: t('Name'),
-            sortable: true
+            sortable: true,
         },
         {
             key: 'email',
             label: t('Email'),
-            sortable: true
+            sortable: true,
         },
         {
             key: 'created_at',
             label: t('Date'),
             sortable: true,
             render: (value: string) => (
-                <div className="flex items-center gap-1.5 text-gray-500 whitespace-nowrap">
+                <div className="flex items-center gap-1.5 whitespace-nowrap text-gray-500">
                     <Calendar className="h-3.5 w-3.5 shrink-0" />
                     <span>{window.appSettings?.formatDateTime(value, false) || '-'}</span>
                 </div>
-            )
-        }
+            ),
+        },
     ];
 
     const actions = [
         { label: t('View'), icon: 'Eye', action: 'view', className: 'text-blue-500' },
-        { label: t('Delete'), icon: 'Trash2', action: 'delete', className: 'text-red-500' }
+        { label: t('Delete'), icon: 'Trash2', action: 'delete', className: 'text-red-500' },
     ];
 
     return (
@@ -119,19 +130,19 @@ export default function ContactMessagesIndex() {
             breadcrumbs={breadcrumbs}
             noPadding
         >
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
+            <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
                     onSearch={handleSearch}
                     filters={[]}
                     hasActiveFilters={() => searchTerm !== ''}
-                    activeFilterCount={() => searchTerm ? 1 : 0}
+                    activeFilterCount={() => (searchTerm ? 1 : 0)}
                     onResetFilters={handleResetFilters}
                 />
             </div>
 
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+            <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                 <CrudTable
                     columns={columns}
                     actions={actions}
@@ -154,13 +165,17 @@ export default function ContactMessagesIndex() {
                     onPageChange={(url) => router.get(url)}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
-                        router.get(route('contact-messages.index'), {
-                            page: 1,
-                            search: searchTerm || undefined,
-                            sort_field: pageFilters.sort_field || undefined,
-                            sort_direction: pageFilters.sort_direction || undefined,
-                            ...(parseInt(value) !== 10 && { per_page: parseInt(value) })
-                        }, { preserveState: true, preserveScroll: true });
+                        router.get(
+                            route('contact-messages.index'),
+                            {
+                                page: 1,
+                                search: searchTerm || undefined,
+                                sort_field: pageFilters.sort_field || undefined,
+                                sort_direction: pageFilters.sort_direction || undefined,
+                                ...(parseInt(value) !== 10 && { per_page: parseInt(value) }),
+                            },
+                            { preserveState: true, preserveScroll: true },
+                        );
                     }}
                 />
             </div>

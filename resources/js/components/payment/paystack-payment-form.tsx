@@ -1,104 +1,104 @@
-import { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import { toast } from '@/components/custom-toast';
 import { usePaymentProcessor } from '@/hooks/usePaymentProcessor';
+import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface PaystackPaymentFormProps {
-  planId: number;
-  planPrice: number;
-  couponCode: string;
-  billingCycle: string;
-  paystackKey: string;
-  currency: string;
-  onSuccess: () => void;
-  onCancel: () => void;
+    planId: number;
+    planPrice: number;
+    couponCode: string;
+    billingCycle: string;
+    paystackKey: string;
+    currency: string;
+    onSuccess: () => void;
+    onCancel: () => void;
 }
 
 export function PaystackPaymentForm({
-  planId,
-  planPrice,
-  couponCode,
-  billingCycle,
-  paystackKey,
-  currency,
-  onSuccess,
-  onCancel
-}: PaystackPaymentFormProps) {
-  const { t } = useTranslation();
-  const initialized = useRef(false);
-
-  const { processPayment } = usePaymentProcessor({
+    planId,
+    planPrice,
+    couponCode,
+    billingCycle,
+    paystackKey,
+    currency,
     onSuccess,
-    onError: (error) => toast.error(error)
-  });
+    onCancel,
+}: PaystackPaymentFormProps) {
+    const { t } = useTranslation();
+    const initialized = useRef(false);
 
-  useEffect(() => {
-    if (!paystackKey || initialized.current) return;
+    const { processPayment } = usePaymentProcessor({
+        onSuccess,
+        onError: (error) => toast.error(error),
+    });
 
-    const script = document.createElement('script');
-    script.src = 'https://js.paystack.co/v1/inline.js';
-    script.async = true;
+    useEffect(() => {
+        if (!paystackKey || initialized.current) return;
 
-    script.onload = () => {
-      initialized.current = true;
+        const script = document.createElement('script');
+        script.src = 'https://js.paystack.co/v1/inline.js';
+        script.async = true;
 
-      // Hide parent modal temporarily
-      const modalBackdrop = document.querySelector('[data-radix-dialog-overlay]');
-      if (modalBackdrop) {
-        (modalBackdrop as HTMLElement).style.display = 'none';
-      }
+        script.onload = () => {
+            initialized.current = true;
 
-      const handler = window.PaystackPop.setup({
-        key: paystackKey,
-        email: 'user@kakbima.dev', // Should be dynamic
-        amount: Math.round(Number(planPrice) * 100), // Convert to kobo as integer
-        currency: currency.toUpperCase(),
-        callback: function(response: any) {
-          // Restore modal backdrop
-          if (modalBackdrop) {
-            (modalBackdrop as HTMLElement).style.display = '';
-          }
-          processPayment('paystack', {
-            planId,
-            billingCycle,
-            couponCode,
-            payment_id: response.reference,
-          });
-        },
-        onClose: function() {
-          // Restore modal backdrop
-          if (modalBackdrop) {
-            (modalBackdrop as HTMLElement).style.display = '';
-          }
-          onCancel();
-        }
-      });
+            // Hide parent modal temporarily
+            const modalBackdrop = document.querySelector('[data-radix-dialog-overlay]');
+            if (modalBackdrop) {
+                (modalBackdrop as HTMLElement).style.display = 'none';
+            }
 
-      handler.openIframe();
-    };
+            const handler = window.PaystackPop.setup({
+                key: paystackKey,
+                email: 'user@kakbima.dev', // Should be dynamic
+                amount: Math.round(Number(planPrice) * 100), // Convert to kobo as integer
+                currency: currency.toUpperCase(),
+                callback: function (response: any) {
+                    // Restore modal backdrop
+                    if (modalBackdrop) {
+                        (modalBackdrop as HTMLElement).style.display = '';
+                    }
+                    processPayment('paystack', {
+                        planId,
+                        billingCycle,
+                        couponCode,
+                        payment_id: response.reference,
+                    });
+                },
+                onClose: function () {
+                    // Restore modal backdrop
+                    if (modalBackdrop) {
+                        (modalBackdrop as HTMLElement).style.display = '';
+                    }
+                    onCancel();
+                },
+            });
 
-    document.head.appendChild(script);
+            handler.openIframe();
+        };
 
-    return () => {
-      if (document.head.contains(script)) {
-        document.head.removeChild(script);
-      }
-    };
-  }, [paystackKey, planId, billingCycle, couponCode, currency]);
+        document.head.appendChild(script);
 
-  if (!paystackKey) {
-    return <div className="p-4 text-center text-red-500">{t('Paystack not configured')}</div>;
-  }
+        return () => {
+            if (document.head.contains(script)) {
+                document.head.removeChild(script);
+            }
+        };
+    }, [paystackKey, planId, billingCycle, couponCode, currency]);
 
-  return (
-    <div className="p-4 text-center">
-      <p>{t('Redirecting to Paystack...')}</p>
-    </div>
-  );
+    if (!paystackKey) {
+        return <div className="p-4 text-center text-red-500">{t('Paystack not configured')}</div>;
+    }
+
+    return (
+        <div className="p-4 text-center">
+            <p>{t('Redirecting to Paystack...')}</p>
+        </div>
+    );
 }
 
 declare global {
-  interface Window {
-    PaystackPop?: any;
-  }
+    interface Window {
+        PaystackPop?: any;
+    }
 }

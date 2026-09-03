@@ -29,7 +29,7 @@ class NotificationTemplateController extends Controller
         // Sorting
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'name'];
+        $allowedSorts = ['id', 'name'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -48,7 +48,7 @@ class NotificationTemplateController extends Controller
                 $request->only(['search', 'sort_field', 'sort_direction', 'per_page', 'page']),
                 ['type' => $selectedType]
             ),
-            'types' => $types
+            'types' => $types,
         ]);
     }
 
@@ -72,7 +72,7 @@ class NotificationTemplateController extends Controller
         if ($template->name === 'Lead Create') {
             $variables = [
                 '{lead_name}' => 'Lead Name',
-                '{organization_name}' => 'Organization Name'
+                '{organization_name}' => 'Organization Name',
             ];
         } elseif ($template->name === 'Opportunity create') {
             $variables = [
@@ -80,13 +80,13 @@ class NotificationTemplateController extends Controller
                 '{amount}' => 'Opportunity Amount',
                 '{account_name}' => 'Account Name',
                 '{close_date}' => 'Close Date',
-                '{organization_name}' => 'Organization Name'
+                '{organization_name}' => 'Organization Name',
 
             ];
         } elseif ($template->name === 'Account create') {
             $variables = [
                 '{account_name}' => 'Account Name',
-                '{organization_name}' => 'Organization Name'
+                '{organization_name}' => 'Organization Name',
 
             ];
         } elseif ($template->name === 'Quote Create') {
@@ -95,12 +95,12 @@ class NotificationTemplateController extends Controller
                 '{account_name}' => 'Account Name',
                 '{total_amount}' => 'Total Amount',
                 '{valid_until}' => 'Valid Until Date',
-                '{organization_name}' => 'Organization Name'
+                '{organization_name}' => 'Organization Name',
             ];
         } elseif ($template->name === 'Case Create') {
             $variables = [
                 '{case_subject}' => 'Case Subject',
-                '{organization_name}' => 'Organization Name'
+                '{organization_name}' => 'Organization Name',
             ];
         } elseif ($template->name === 'Meeting Create') {
             $variables = [
@@ -108,18 +108,16 @@ class NotificationTemplateController extends Controller
                 '{meeting_date}' => 'Meeting Date',
                 '{meeting_time}' => 'Meeting Time',
                 '{attendee_count}' => 'Attendee Count',
-                '{organization_name}' => 'Organization Name'
+                '{organization_name}' => 'Organization Name',
             ];
         }
 
         return Inertia::render('notification-templates/show', [
             'template' => $template,
             'languages' => $languages,
-            'variables' => $variables
+            'variables' => $variables,
         ]);
     }
-
-
 
     public function updateContent(NotificationTemplate $notificationTemplate, Request $request)
     {
@@ -127,7 +125,7 @@ class NotificationTemplateController extends Controller
             $request->validate([
                 'lang' => 'required|string|max:10',
                 'title' => 'required|string|max:255',
-                'notification_template_content' => 'required|string'
+                'notification_template_content' => 'required|string',
             ]);
 
             $notificationTemplate->notificationTemplateLangs()
@@ -137,11 +135,11 @@ class NotificationTemplateController extends Controller
                     [
                         'parent_id' => $notificationTemplate->id,
                         'lang' => $request->lang,
-                        'created_by' => createdBy()
+                        'created_by' => createdBy(),
                     ],
                     [
                         'title' => $request->title,
-                        'notification_template_content' => $request->notification_template_content
+                        'notification_template_content' => $request->notification_template_content,
                     ]
                 );
 

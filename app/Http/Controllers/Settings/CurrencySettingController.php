@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Currency;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Inertia\Inertia;
 
 class CurrencySettingController extends Controller
 {
@@ -25,12 +24,12 @@ class CurrencySettingController extends Controller
                 'currencySymbolSpace' => 'required|boolean',
                 'currencySymbolPosition' => 'required|string|in:before,after',
             ]);
-            
+
             // Update settings using helper function
-            foreach ($validated as $key => $value) { 
+            foreach ($validated as $key => $value) {
                 updateSetting($key, $value);
             }
-            
+
             return redirect()->back()->with('success', __('Currency settings updated successfully.'));
         } catch (\Exception $e) {
             return redirect()->back()->with('error', __('Failed to update currency settings: :error', ['error' => $e->getMessage()]));

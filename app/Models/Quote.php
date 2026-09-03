@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use App\Observers\QuoteObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use App\Observers\QuoteObserver;
 
 #[ObservedBy([QuoteObserver::class])]
 class Quote extends BaseModel
@@ -100,8 +100,6 @@ class Quote extends BaseModel
         return $this->belongsTo(ShippingProviderType::class);
     }
 
-
-
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'quote_products')
@@ -148,7 +146,7 @@ class Quote extends BaseModel
         $this->update([
             'subtotal' => $subtotal,
             'discount_amount' => $totalDiscountAmount,
-            'total_amount' => $totalAmount
+            'total_amount' => $totalAmount,
         ]);
 
         return $totalAmount;

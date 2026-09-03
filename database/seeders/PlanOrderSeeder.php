@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Plan;
 use App\Models\Coupon;
+use App\Models\Plan;
 use App\Models\PlanOrder;
-use Illuminate\Database\Seeder;
+use App\Models\User;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class PlanOrderSeeder extends Seeder
 {
@@ -26,6 +26,7 @@ class PlanOrderSeeder extends Seeder
 
         if ($organizationUsers->isEmpty() || $plans->isEmpty()) {
             $this->command->warn('No organization users or plans found. Please run UserSeeder and PlanSeeder first.');
+
             return;
         }
 
@@ -68,7 +69,7 @@ class PlanOrderSeeder extends Seeder
                             'Payment failed - insufficient funds',
                             'Invalid payment method',
                             'Fraud detection triggered',
-                            'User requested cancellation'
+                            'User requested cancellation',
                         ]);
                     }
                 }

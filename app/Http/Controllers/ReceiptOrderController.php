@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ReceiptOrder;
-use App\Models\PurchaseOrder;
+use App\Exports\ReceiptOrderExport;
 use App\Models\Account;
-use App\Models\ReturnOrder;
 use App\Models\Contact;
 use App\Models\Product;
+use App\Models\PurchaseOrder;
+use App\Models\ReceiptOrder;
+use App\Models\ReturnOrder;
 use App\Models\Tax;
-use App\Exports\ReceiptOrderExport;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -26,7 +26,7 @@ class ReceiptOrderController extends Controller
             $query->where(function ($q) use ($request) {
                 $q->where('receipt_number', 'like', '%' . $request->search . '%')
                     ->orWhere('name', 'like', '%' . $request->search . '%')
-                    ->orWhereHas('account', fn($q) => $q->where('name', 'like', '%' . $request->search . '%'));
+                    ->orWhereHas('account', fn ($q) => $q->where('name', 'like', '%' . $request->search . '%'));
             });
         }
 
@@ -100,7 +100,7 @@ class ReceiptOrderController extends Controller
             'returnOrders' => $returnOrders,
             'products' => $products,
             'taxes' => $taxes,
-            'users' => $users
+            'users' => $users,
         ]);
     }
 
@@ -169,6 +169,7 @@ class ReceiptOrderController extends Controller
 
         if ($emailError) {
             $message = __('Receipt order created successfully, but ') . __('Email send failed: ') . $emailError;
+
             return redirect()->back()->with('warning', $message);
         }
 
@@ -186,7 +187,7 @@ class ReceiptOrderController extends Controller
                 'contact',
                 'creator',
                 'assignedUser',
-                'products.tax'
+                'products.tax',
             ])
             ->first();
 
@@ -195,7 +196,7 @@ class ReceiptOrderController extends Controller
         }
 
         return Inertia::render('receipt-orders/show', [
-            'receiptOrder' => $receiptOrder
+            'receiptOrder' => $receiptOrder,
         ]);
     }
 
@@ -208,7 +209,7 @@ class ReceiptOrderController extends Controller
             'contact',
             'creator',
             'assignedUser',
-            'products.tax'
+            'products.tax',
         ])
             ->where('created_by', createdBy())
             ->where('id', $id)
@@ -230,12 +231,13 @@ class ReceiptOrderController extends Controller
                 'returnOrders' => $returnOrders,
                 'products' => $products,
                 'taxes' => $taxes,
-                'users' => $users
+                'users' => $users,
             ]);
         } else {
             return redirect()->route('receipt-orders.index')->with('error', __('Receipt order not found.'));
         }
     }
+
     public function update(Request $request, $receiptOrderId)
     {
         $receiptOrder = ReceiptOrder::where('id', $receiptOrderId)
@@ -328,7 +330,7 @@ class ReceiptOrderController extends Controller
         }
 
         $validated = $request->validate([
-            'status' => 'required|in:pending,received,partial,completed,cancelled'
+            'status' => 'required|in:pending,received,partial,completed,cancelled',
         ]);
 
         $receiptOrder->update(['status' => $validated['status']]);
@@ -347,15 +349,13 @@ class ReceiptOrderController extends Controller
         }
 
         $validated = $request->validate([
-            'assigned_to' => 'required|exists:users,id'
+            'assigned_to' => 'required|exists:users,id',
         ]);
 
         $receiptOrder->update(['assigned_to' => $validated['assigned_to']]);
 
         return redirect()->back()->with('success', __('User assigned to receipt order successfully.'));
     }
-
-
 
     public function getPurchaseOrderDetails($purchaseOrderId)
     {
@@ -377,13 +377,11 @@ class ReceiptOrderController extends Controller
                     'quantity' => $product->pivot->quantity ?? 1,
                     'unit_price' => $product->pivot->unit_price ?? $product->price ?? 0,
                     'discount_type' => $product->pivot->discount_type ?? 'none',
-                    'discount_value' => $product->pivot->discount_value ?? 0
+                    'discount_value' => $product->pivot->discount_value ?? 0,
                 ];
-            })
+            }),
         ]);
     }
-
-
 
     public function getReturnOrderDetails($returnOrderId)
     {
@@ -405,9 +403,9 @@ class ReceiptOrderController extends Controller
                     'quantity' => $product->pivot->quantity ?? 1,
                     'unit_price' => $product->pivot->unit_price ?? $product->price ?? 0,
                     'discount_type' => 'none',
-                    'discount_value' => 0
+                    'discount_value' => 0,
                 ];
-            })
+            }),
         ]);
     }
 
@@ -440,6 +438,7 @@ class ReceiptOrderController extends Controller
         }
 
         $name = 'receipt_order_' . date('Y-m-d i:h:s');
+
         return Excel::download(new ReceiptOrderExport(), $name . '.xlsx');
     }
 }

@@ -1,16 +1,15 @@
-import React from 'react';
-import { Head, usePage } from '@inertiajs/react';
-import { CreditCard, Users, Smartphone, QrCode } from 'lucide-react';
-import { ReactNode, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import CookieConsentBanner from '@/components/CookieConsentBanner';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { useBrand } from '@/contexts/BrandContext';
-import { useAppearance, THEME_COLORS } from '@/hooks/use-appearance';
-import { useFavicon } from '@/hooks/use-favicon';
-import CookieConsentBanner from '@/components/CookieConsentBanner';
 import { useLayout } from '@/contexts/LayoutContext';
-import { getCookie, isDemoMode } from '@/utils/cookie-utils';
+import { THEME_COLORS, useAppearance } from '@/hooks/use-appearance';
+import { useFavicon } from '@/hooks/use-favicon';
 import i18n from '@/i18n';
+import { getCookie } from '@/utils/cookie-utils';
+import { Head, usePage } from '@inertiajs/react';
+import { CreditCard } from 'lucide-react';
+import React, { ReactNode, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface AuthLayoutProps {
     children: ReactNode;
@@ -22,34 +21,22 @@ interface AuthLayoutProps {
 }
 
 function hexToAdjustedRgba(hex, opacity = 1, adjust = 0) {
-    hex = hex.replace("#", "");
+    hex = hex.replace('#', '');
     let r = parseInt(hex.slice(0, 2), 16);
     let g = parseInt(hex.slice(2, 4), 16);
     let b = parseInt(hex.slice(4, 6), 16);
     const clamp = (v) => Math.max(-1, Math.min(1, v));
-    const getF = (ch) =>
-        typeof adjust === "number" ? clamp(adjust) : clamp(adjust[ch] ?? 0);
-    const adj = (c, f) =>
-        f < 0 ? Math.floor(c * (1 + f)) : Math.floor(c + (255 - c) * f);
-    const rr = adj(r, getF("r"));
-    const gg = adj(g, getF("g"));
-    const bb = adj(b, getF("b"));
+    const getF = (ch) => (typeof adjust === 'number' ? clamp(adjust) : clamp(adjust[ch] ?? 0));
+    const adj = (c, f) => (f < 0 ? Math.floor(c * (1 + f)) : Math.floor(c + (255 - c) * f));
+    const rr = adj(r, getF('r'));
+    const gg = adj(g, getF('g'));
+    const bb = adj(b, getF('b'));
     return opacity === 1
-        ? `#${rr.toString(16).padStart(2, "0")}${gg
-            .toString(16)
-            .padStart(2, "0")}${bb.toString(16).padStart(2, "0")}`.toUpperCase()
+        ? `#${rr.toString(16).padStart(2, '0')}${gg.toString(16).padStart(2, '0')}${bb.toString(16).padStart(2, '0')}`.toUpperCase()
         : `rgba(${rr}, ${gg}, ${bb}, ${opacity})`;
 }
 
-
-export default function AuthLayout({
-    children,
-    title,
-    description,
-    icon,
-    status,
-    statusType = 'success',
-}: AuthLayoutProps) {
+export default function AuthLayout({ children, title, description, icon, status, statusType = 'success' }: AuthLayoutProps) {
     useFavicon();
     const { t } = useTranslation();
     const [mounted, setMounted] = useState(false);
@@ -57,7 +44,7 @@ export default function AuthLayout({
     const { appearance } = useAppearance();
     const globalSettings = (usePage().props as any).globalSettings;
     const userLanguage = (usePage().props as any).userLanguage;
-    const {position} =useLayout();
+    const { position } = useLayout();
 
     const currentLogo = appearance === 'dark' ? logoLight : logoDark;
     const primaryColor = themeColor === 'custom' ? customColor : THEME_COLORS[themeColor as keyof typeof THEME_COLORS];
@@ -86,7 +73,6 @@ export default function AuthLayout({
 
     // RTL Support for auth pages - Apply immediately and persist
     const applyRTLDirection = React.useCallback(() => {
-
         const currentLang = i18n.language || globalSettings?.defaultLanguage || 'en';
         const isRTLLanguage = ['ar', 'he'].includes(currentLang);
         let dir = 'ltr';
@@ -118,47 +104,48 @@ export default function AuthLayout({
 
         observer.observe(document.documentElement, {
             attributes: true,
-            attributeFilter: ['dir']
+            attributeFilter: ['dir'],
         });
 
         return () => {
             observer.disconnect();
-            // Reset to LTR when leaving auth layout            
+            // Reset to LTR when leaving auth layout
             document.documentElement.dir = 'ltr';
             document.documentElement.setAttribute('dir', 'ltr');
             document.body.dir = 'ltr';
         };
     }, [applyRTLDirection]);
 
-
     return (
-        <div className="min-h-screen bg-gray-50 relative overflow-hidden">
+        <div className="relative min-h-screen overflow-hidden bg-gray-50">
             <Head title={title} />
 
             {/* Enhanced Background Design */}
             <div className="absolute inset-0">
-
                 {/* Elegant Pattern Overlay */}
-                <div className="absolute inset-0 opacity-70" style={{
-                    backgroundImage: `radial-gradient(circle at 30% 70%, ${primaryColor} 1px, transparent 1px)`,
-                    backgroundSize: '80px 80px'
-                }}></div>
+                <div
+                    className="absolute inset-0 opacity-70"
+                    style={{
+                        backgroundImage: `radial-gradient(circle at 30% 70%, ${primaryColor} 1px, transparent 1px)`,
+                        backgroundSize: '80px 80px',
+                    }}
+                ></div>
             </div>
 
             {/* Language Dropdown - Top Right */}
-            <div className="absolute top-6 right-6 z-10 md:block hidden">
-                <LanguageSwitcher  />
+            <div className="absolute top-6 right-6 z-10 hidden md:block">
+                <LanguageSwitcher />
             </div>
 
-            <div className="flex items-center justify-center min-h-screen p-6">
+            <div className="flex min-h-screen items-center justify-center p-6">
                 <div className="w-full max-w-md">
                     {/* Logo */}
-                    <div className="text-center mb-8">
-                        <div className="relative lg:inline-block pb-2 lg:px-6">
+                    <div className="mb-8 text-center">
+                        <div className="relative pb-2 lg:inline-block lg:px-6">
                             {currentLogo ? (
-                                <img src={currentLogo} alt="Logo" className="w-auto mx-auto" />
+                                <img src={currentLogo} alt="Logo" className="mx-auto w-auto" />
                             ) : (
-                                <CreditCard className="h-8 w-8 mx-auto" style={{ color: primaryColor }} />
+                                <CreditCard className="mx-auto h-8 w-8" style={{ color: primaryColor }} />
                             )}
                         </div>
                     </div>
@@ -166,12 +153,18 @@ export default function AuthLayout({
                     {/* Main Card */}
                     <div className="relative">
                         {/* Corner accents */}
-                        <div className="absolute -top-3 -left-3 w-6 h-6 border-l-2 border-t-2 rounded-tl-md" style={{ borderColor: primaryColor }}></div>
-                        <div className="absolute -bottom-3 -right-3 w-6 h-6 border-r-2 border-b-2 rounded-br-md" style={{ borderColor: primaryColor }}></div>
+                        <div
+                            className="absolute -top-3 -left-3 h-6 w-6 rounded-tl-md border-t-2 border-l-2"
+                            style={{ borderColor: primaryColor }}
+                        ></div>
+                        <div
+                            className="absolute -right-3 -bottom-3 h-6 w-6 rounded-br-md border-r-2 border-b-2"
+                            style={{ borderColor: primaryColor }}
+                        ></div>
 
-                        <div className="bg-white border border-gray-200 rounded-lg lg:p-8 p-4 lg:pt-5 shadow-sm">
+                        <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm lg:p-8 lg:pt-5">
                             {/* Header */}
-                            <div className="text-center mb-4">
+                            <div className="mb-4 text-center">
                                 {icon && (
                                     <div
                                         className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full"
@@ -180,18 +173,19 @@ export default function AuthLayout({
                                         {icon}
                                     </div>
                                 )}
-                                <h1 className="sm:text-2xl text-xl font-semibold text-gray-900 mb-1.5 tracking-wide">{title}</h1>
-                                <div className="w-12 h-px mx-auto mb-2.5" style={{ backgroundColor: primaryColor }}></div>
-                                {description && (
-                                    <p className="text-gray-700 text-sm">{description}</p>
-                                )}
+                                <h1 className="mb-1.5 text-xl font-semibold tracking-wide text-gray-900 sm:text-2xl">{title}</h1>
+                                <div className="mx-auto mb-2.5 h-px w-12" style={{ backgroundColor: primaryColor }}></div>
+                                {description && <p className="text-sm text-gray-700">{description}</p>}
                             </div>
 
                             {status && (
-                                <div className={`mb-6 text-center text-sm font-medium ${statusType === 'success'
-                                    ? 'text-green-700 bg-green-50 border-green-200'
-                                    : 'text-red-700 bg-red-50 border-red-200'
-                                    } p-3 rounded-lg border`}>
+                                <div
+                                    className={`mb-6 text-center text-sm font-medium ${
+                                        statusType === 'success'
+                                            ? 'border-green-200 bg-green-50 text-green-700'
+                                            : 'border-red-200 bg-red-50 text-red-700'
+                                    } rounded-lg border p-3`}
+                                >
                                     {status}
                                 </div>
                             )}
@@ -201,11 +195,13 @@ export default function AuthLayout({
                     </div>
 
                     {/* Footer */}
-                    <div className="text-center mt-6">
-                        <div className="lg:px-9 lg:relative lg:inline-flex">
-                            <div className="inline-flex items-center space-x-2 bg-white backdrop-blur-sm rounded-md px-4 py-2 border border-gray-200">
+                    <div className="mt-6 text-center">
+                        <div className="lg:relative lg:inline-flex lg:px-9">
+                            <div className="inline-flex items-center space-x-2 rounded-md border border-gray-200 bg-white px-4 py-2 backdrop-blur-sm">
                                 {/* <div className="w-1 h-1 rounded-full" style={{ backgroundColor: primaryColor }}></div> */}
-                                <p className="text-sm text-gray-500">{globalSettings?.footerText || `© ${new Date().getFullYear()} ${globalSettings?.organization_name || 'Kakbima'}`}</p>
+                                <p className="text-sm text-gray-500">
+                                    {globalSettings?.footerText || `© ${new Date().getFullYear()} ${globalSettings?.organization_name || 'Kakbima'}`}
+                                </p>
                                 {/* <div className="w-1 h-1 rounded-full" style={{ backgroundColor: primaryColor }}></div> */}
                             </div>
                         </div>

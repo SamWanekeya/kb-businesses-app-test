@@ -50,7 +50,7 @@ html[dir='rtl'] [data-sonner-toast][data-styled='true'] [data-close-button],
 @theme {
     --font-sans:
         /* 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; */
-                'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+        'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -215,7 +215,7 @@ html[dir='rtl'] [data-sonner-toast][data-styled='true'] [data-close-button],
         background: #f3f4f6;
         border-radius: 3px;
     } */
-     *::-webkit-scrollbar {
+    *::-webkit-scrollbar {
         width: 4px;
         height: 4px;
     }
@@ -224,7 +224,6 @@ html[dir='rtl'] [data-sonner-toast][data-styled='true'] [data-close-button],
         background: transparent;
         border-radius: 3px;
     }
-
 
     *::-webkit-scrollbar-thumb {
         background: #9ca3af;
@@ -253,13 +252,13 @@ html[dir='rtl'] [data-sonner-toast][data-styled='true'] [data-close-button],
     }
 
     /* Ensure all text inputs have proper dark mode styling */
-    .dark input[type="text"],
-    .dark input[type="email"],
-    .dark input[type="password"],
-    .dark input[type="number"],
-    .dark input[type="tel"],
-    .dark input[type="url"],
-    .dark input[type="search"],
+    .dark input[type='text'],
+    .dark input[type='email'],
+    .dark input[type='password'],
+    .dark input[type='number'],
+    .dark input[type='tel'],
+    .dark input[type='url'],
+    .dark input[type='search'],
     .dark textarea,
     .dark select {
         background-color: var(--color-card);
@@ -268,197 +267,200 @@ html[dir='rtl'] [data-sonner-toast][data-styled='true'] [data-close-button],
     }
 
     /* Ensure all SVG icons respect dark mode */
-    .dark svg:not([fill="none"]) {
+    .dark svg:not([fill='none']) {
         fill: currentColor;
     }
 }
 
 /* Theme color variables */
 :root {
-  --theme-color: #A12582;
+    --theme-color: #a12582;
 }
 
 /* Apply theme color to various elements */
 .theme-color {
-  color: var(--theme-color);
+    color: var(--theme-color);
 }
 
 .theme-bg {
-  background-color: var(--theme-color);
+    background-color: var(--theme-color);
 }
 
 .theme-border {
-  border-color: var(--theme-color);
+    border-color: var(--theme-color);
 }
 
 .theme-ring {
-  --tw-ring-color: var(--theme-color);
+    --tw-ring-color: var(--theme-color);
 }
 
 /* Override primary colors with theme color */
 :root {
-  --primary: var(--theme-color);
-  --chart-1: var(--theme-color);
+    --primary: var(--theme-color);
+    --chart-1: var(--theme-color);
 }
 
 .dark {
-  --primary: var(--theme-color);
-  --chart-1: var(--theme-color);
+    --primary: var(--theme-color);
+    --chart-1: var(--theme-color);
 }
 
 /* Apply theme color to buttons and interactive elements */
 .btn-primary,
 .bg-primary,
-button[type="submit"],
+button[type='submit'],
 .active-nav-item {
-  background-color: var(--theme-color);
+    background-color: var(--theme-color);
 }
 
 a:hover,
 .text-primary {
-  color: var(--theme-color);
+    color: var(--theme-color);
 }
 
 .border-primary {
-  border-color: var(--theme-color);
+    border-color: var(--theme-color);
 }
 
 .ring-primary {
-  --tw-ring-color: var(--theme-color);
+    --tw-ring-color: var(--theme-color);
 }
 
 /* Dark mode table styles */
 .dark table {
-  color: var(--foreground);
+    color: var(--foreground);
 }
 
 .dark thead tr {
-  background-color: var(--secondary);
-  border-color: var(--border);
+    background-color: var(--secondary);
+    border-color: var(--border);
 }
 
 .dark tbody tr {
-  border-color: var(--border);
-  background-color: var(--card);
+    border-color: var(--border);
+    background-color: var(--card);
 }
 
 .dark tbody tr:hover {
-  background-color: var(--secondary);
+    background-color: var(--secondary);
 }
 
 .dark th,
 .dark td {
-  color: var(--foreground);
+    color: var(--foreground);
 }
 
 .dark th {
-  color: var(--muted-foreground);
+    color: var(--muted-foreground);
 }
 
 /* Ensure all tables in dark mode have proper styling */
-.dark [role="table"],
+.dark [role='table'],
 .dark table {
-  --tw-border-opacity: 1;
-  border-color: rgba(55, 65, 81, var(--tw-border-opacity));
+    --tw-border-opacity: 1;
+    border-color: rgba(55, 65, 81, var(--tw-border-opacity));
 }
 
-.dark [role="row"],
+.dark [role='row'],
 .dark tr {
-  border-color: var(--border);
+    border-color: var(--border);
 }
 
-.dark [role="cell"],
-.dark [role="columnheader"],
+.dark [role='cell'],
+.dark [role='columnheader'],
 .dark td,
 .dark th {
-  color: var(--foreground);
+    color: var(--foreground);
 }
 
-.dark [role="cell"] p,
+.dark [role='cell'] p,
 .dark td p {
-  color: var(--foreground);
+    color: var(--foreground);
 }
 
-.dark [role="cell"] .text-muted-foreground,
+.dark [role='cell'] .text-muted-foreground,
 .dark td .text-muted-foreground {
-  color: var(--muted-foreground);
+    color: var(--muted-foreground);
 }
 
 /* Dark mode pagination styles */
 .dark .pagination-container {
-  background-color: var(--card);
-  border-color: var(--border);
+    background-color: var(--card);
+    border-color: var(--border);
 }
 
 .dark .pagination-text {
-  color: var(--muted-foreground);
+    color: var(--muted-foreground);
 }
 
 .dark .pagination-text span {
-  color: var(--foreground);
+    color: var(--foreground);
 }
 
 .dark button[disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 /* Iyzipay Checkout Form Styles */
 .iyzipay-checkout-form {
-  width: 100%;
-  min-height: 400px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  overflow: hidden;
+    width: 100%;
+    min-height: 400px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .iyzipay-checkout-form iframe {
-  width: 100%;
-  min-height: 600px;
-  height: 600px;
-  border: none;
-  border-radius: 8px;
+    width: 100%;
+    min-height: 600px;
+    height: 600px;
+    border: none;
+    border-radius: 8px;
 }
 
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
-  .iyzipay-checkout-form {
-    border-color: #374151;
-    background-color: #1f2937;
-  }
+    .iyzipay-checkout-form {
+        border-color: #374151;
+        background-color: #1f2937;
+    }
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
-  .iyzipay-checkout-form {
-    min-height: 500px;
-  }
+    .iyzipay-checkout-form {
+        min-height: 500px;
+    }
 
-  .iyzipay-checkout-form iframe {
-    min-height: 500px;
-  }
+    .iyzipay-checkout-form iframe {
+        min-height: 500px;
+    }
 }
 
 /* Loading state */
 .iyzipay-checkout-form.loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8fafc;
 }
 
 .iyzipay-checkout-form.loading::before {
-  content: '';
-  width: 40px;
-  height: 40px;
-  border: 4px solid #e2e8f0;
-  border-top: 4px solid #A12582;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+    content: '';
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e2e8f0;
+    border-top: 4px solid #a12582;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
-

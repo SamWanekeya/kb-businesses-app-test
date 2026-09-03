@@ -1,11 +1,10 @@
 import { Button } from '@/components/ui/button';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { DatePicker } from '@/components/ui/date-picker';
-import { Filter, Search, List, LayoutGrid, Grid3X3, Columns, RefreshCcw, X } from 'lucide-react';
-import { flushSync } from 'react-dom';
-import { useTranslation } from 'react-i18next';
+import { Columns, Filter, Grid3X3, LayoutGrid, List, RefreshCcw, Search, X } from 'lucide-react';
 import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface ViewOption {
     value: string;
@@ -54,21 +53,21 @@ export function SearchAndFilterBar({
     onViewChange,
     viewOptions = [
         { value: 'list', label: 'List View', icon: 'List' },
-        { value: 'grid', label: 'Grid View', icon: 'Grid3X3' }
+        { value: 'grid', label: 'Grid View', icon: 'Grid3X3' },
     ],
 }: SearchAndFiltersProps) {
     const { t } = useTranslation();
 
     // Build active filter pills from non-empty filter values
-    const activeFilters = filters.filter(f => {
+    const activeFilters = filters.filter((f) => {
         if (!f.value) return false;
-        if (typeof f.value === 'string' && (f.value === 'all' || f.value === '' )) return false;
+        if (typeof f.value === 'string' && (f.value === 'all' || f.value === '')) return false;
         return true;
     });
 
     const getFilterLabel = (filter: FilterOption) => {
         if (filter.type === 'select' && filter.options) {
-            const opt = filter.options.find(o => o.value === filter.value);
+            const opt = filter.options.find((o) => o.value === filter.value);
             return opt?.label ?? String(filter.value);
         }
         if (filter.value instanceof Date) {
@@ -99,29 +98,31 @@ export function SearchAndFilterBar({
 
     return (
         <div className="w-full p-3">
-            <div className="flex flex-wrap gap-2 items-center justify-between">
-                <div className="flex flex-wrap items-center gap-2">
-                    <form ref={formRef} onSubmit={onSearch} className="flex gap-2">
-                        <div className="relative w-64">
-                            <Search className="absolute left-2.5 top-2 h-4 w-4 text-muted-foreground" />
+            <div className="flex w-full min-w-0 flex-wrap items-center justify-between gap-2">
+                <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+                    <form ref={formRef} onSubmit={onSearch} className="flex w-full min-w-0 gap-2 sm:w-auto">
+                        <div className="relative w-full min-w-0 sm:w-64">
+                            <Search className="text-muted-foreground absolute top-2 left-2.5 h-4 w-4" />
                             <Input
-                                placeholder={searchPlaceholder || t("Search...")}
+                                placeholder={searchPlaceholder || t('Search...')}
                                 value={searchTerm}
                                 onChange={(e) => onSearchChange(e.target.value)}
-                                className="w-full px-9 h-8"
+                                className="h-8 w-full min-w-0 px-9"
                             />
-                            {searchTerm && <X className="absolute right-2.5 top-2 h-4 w-4 text-muted-foreground cursor-pointer" onClick={(e) => onSearchChange('')} />}
+                            {searchTerm && (
+                                <X
+                                    className="text-muted-foreground absolute top-2 right-2.5 h-4 w-4 cursor-pointer"
+                                    onClick={(e) => onSearchChange('')}
+                                />
+                            )}
                         </div>
                     </form>
 
                     {filters.map((filter) => (
                         <div key={filter.name} className="space-y-2">
                             {filter.type === 'select' && filter.options && (
-                                <Select
-                                    value={filter.value as string}
-                                    onValueChange={(value) => filter.onChange(value)}
-                                >
-                                    <SelectTrigger className="w-auto h-9 gap-2">
+                                <Select value={filter.value as string} onValueChange={(value) => filter.onChange(value)}>
+                                    <SelectTrigger className="h-9 w-auto gap-2">
                                         <SelectValue placeholder={t(`All ${filter.label}`)} />
                                     </SelectTrigger>
                                     <SelectContent searchable={filter.searchable}>
@@ -145,42 +146,45 @@ export function SearchAndFilterBar({
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
-                    {filters.length > 0 && <>
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-9 text-gray-500 bg-transparent hover:bg-transparent hover:text-gray-500 dark:text-gray-700  dark:hover:text-gray-700"
-                            onClick={onResetFilters}
-                            hidden={!hasActiveFilters()}
-                        >
-                            <RefreshCcw />
-                            {t("Clear Filters")}
-                        </Button>
-                        <Button
-                            variant={hasActiveFilters() ? "default" : "outline"}
-                            size="sm"
-                            className="h-8 px-2 py-1 cursor-default"
-                        >
-                            <Filter className="h-4 w-4 mr-1.5" />
-                            {t('Filters')}
-                            {hasActiveFilters() && (
-                                <span className="ml-1 bg-primary-foreground text-primary rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                                    {activeFilterCount()}
-                                </span>
-                            )}
-                        </Button>
-                    </>}
+                    {filters.length > 0 && (
+                        <>
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-9 bg-transparent text-gray-500 hover:bg-transparent hover:text-gray-500 dark:text-gray-700 dark:hover:text-gray-700"
+                                onClick={onResetFilters}
+                                hidden={!hasActiveFilters()}
+                            >
+                                <RefreshCcw />
+                                {t('Clear Filters')}
+                            </Button>
+                            <Button variant={hasActiveFilters() ? 'default' : 'outline'} size="sm" className="h-8 cursor-default px-2 py-1">
+                                <Filter className="mr-1.5 h-4 w-4" />
+                                {t('Filters')}
+                                {hasActiveFilters() && (
+                                    <span className="bg-primary-foreground text-primary ml-1 flex h-5 w-5 items-center justify-center rounded-full text-xs">
+                                        {activeFilterCount()}
+                                    </span>
+                                )}
+                            </Button>
+                        </>
+                    )}
                     {showViewToggle && onViewChange && (
-                        <div className="border rounded-md p-0.5 mr-2">
+                        <div className="mr-2 rounded-md border p-0.5">
                             {viewOptions.map((option) => {
-                                const IconComponent = option.icon === 'List' ? List :
-                                    option.icon === 'Grid3X3' ? Grid3X3 :
-                                        option.icon === 'Columns' ? Columns : LayoutGrid;
+                                const IconComponent =
+                                    option.icon === 'List'
+                                        ? List
+                                        : option.icon === 'Grid3X3'
+                                          ? Grid3X3
+                                          : option.icon === 'Columns'
+                                            ? Columns
+                                            : LayoutGrid;
                                 return (
                                     <Button
                                         key={option.value}
                                         size="sm"
-                                        variant={activeView === option.value ? "default" : "ghost"}
+                                        variant={activeView === option.value ? 'default' : 'ghost'}
                                         className="h-7 px-2"
                                         onClick={() => onViewChange(option.value)}
                                         title={option.label}
@@ -200,14 +204,12 @@ export function SearchAndFilterBar({
                     {activeFilters.map((filter) => (
                         <span
                             key={filter.name}
-                            className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset bg-gray-50 text-gray-700 ring-gray-600/20"
+                            className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-700 ring-1 ring-gray-600/20 ring-inset"
                         >
-                            <span>{filter.label}: {getFilterLabel(filter)}</span>
-                            <button
-                                type="button"
-                                onClick={() => removeFilter(filter)}
-                                className="ml-0.5 rounded-full p-0.5 cursor-pointer"
-                            >
+                            <span>
+                                {filter.label}: {getFilterLabel(filter)}
+                            </span>
+                            <button type="button" onClick={() => removeFilter(filter)} className="ml-0.5 cursor-pointer rounded-full p-0.5">
                                 <X className="h-2.5 w-2.5" />
                             </button>
                         </span>

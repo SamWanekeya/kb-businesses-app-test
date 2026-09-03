@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\ContactMessage;
-use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class ContactMessageSeeder extends Seeder
 {
@@ -22,7 +22,7 @@ class ContactMessageSeeder extends Seeder
             'General question',
             'Business proposal',
             'Integration support',
-            'Account setup help'
+            'Account setup help',
         ];
 
         for ($i = 1; $i <= 10; $i++) {

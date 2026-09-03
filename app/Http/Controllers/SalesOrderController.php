@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SalesOrder;
-use App\Models\Quote;
+use App\Exports\SalesOrderExport;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Product;
+use App\Models\Quote;
+use App\Models\SalesOrder;
 use App\Models\ShippingProviderType;
 use App\Models\Tax;
-use App\Exports\SalesOrderExport;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -24,10 +24,10 @@ class SalesOrderController extends Controller
             ->where('created_by', createdBy());
 
         if ($request->has('search') && !empty($request->search)) {
-            $query->where(function($q) use ($request) {
+            $query->where(function ($q) use ($request) {
                 $q->where('order_number', 'like', '%' . $request->search . '%')
                   ->orWhere('name', 'like', '%' . $request->search . '%')
-                  ->orWhereHas('account', fn($q) => $q->where('name', 'like', '%' . $request->search . '%'));
+                  ->orWhereHas('account', fn ($q) => $q->where('name', 'like', '%' . $request->search . '%'));
             });
         }
 
@@ -49,7 +49,7 @@ class SalesOrderController extends Controller
 
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'order_number', 'name', 'order_date', 'created_at'];
+        $allowedSorts = ['id', 'order_number', 'name', 'order_date', 'created_at'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -105,7 +105,7 @@ class SalesOrderController extends Controller
             'products' => $products,
             'shippingProviderTypes' => $shippingProviderTypes,
             'taxes' => $taxes,
-            'users' => $users
+            'users' => $users,
         ]);
     }
 
@@ -180,13 +180,14 @@ class SalesOrderController extends Controller
 
         if ($emailError) {
             $message = __('Sales order created successfully, but ') . __('Email send failed: ') . $emailError;
+
             return redirect()->back()->with('warning', $message);
         }
 
         return redirect()->route('sales-orders.index', $salesOrder->id)->with('success', __('Sales order created successfully.'));
     }
 
-     public function show($salesOrderId)
+    public function show($salesOrderId)
     {
         $salesOrder = SalesOrder::where('id', $salesOrderId)
             ->where('created_by', createdBy())
@@ -200,7 +201,7 @@ class SalesOrderController extends Controller
                 'creator',
                 'assignedUser',
                 'products.tax',
-                'activities.user'
+                'activities.user',
             ])
             ->first();
 
@@ -210,7 +211,7 @@ class SalesOrderController extends Controller
 
         return Inertia::render('sales-orders/show', [
             'salesOrder' => $salesOrder,
-            'streamItems' => $salesOrder->activities
+            'streamItems' => $salesOrder->activities,
         ]);
     }
 
@@ -225,32 +226,32 @@ class SalesOrderController extends Controller
             'shippingProviderType',
             'creator',
             'assignedUser',
-            'products.tax'
+            'products.tax',
         ])
         ->where('created_by', createdBy())
         ->where('id', $id)
             ->first();
 
         if ($salesOrder) {
-        $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
-        $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
-        $quotes = Quote::where('created_by', createdBy())->select('id', 'name', 'quote_number')->get();
-        $products = $this->getFilteredProducts();
-        $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
-        $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
-        $users = \App\Models\User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+            $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
+            $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
+            $quotes = Quote::where('created_by', createdBy())->select('id', 'name', 'quote_number')->get();
+            $products = $this->getFilteredProducts();
+            $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
+            $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
+            $users = \App\Models\User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
-        return Inertia::render('sales-orders/edit', [
-            'salesOrder' => $salesOrder,
-            'accounts' => $accounts,
-            'contacts' => $contacts,
-            'quotes' => $quotes,
-            'products' => $products,
-            'shippingProviderTypes' => $shippingProviderTypes,
-            'taxes' => $taxes,
-            'users' => $users
-        ]);
-          } else {
+            return Inertia::render('sales-orders/edit', [
+                'salesOrder' => $salesOrder,
+                'accounts' => $accounts,
+                'contacts' => $contacts,
+                'quotes' => $quotes,
+                'products' => $products,
+                'shippingProviderTypes' => $shippingProviderTypes,
+                'taxes' => $taxes,
+                'users' => $users,
+            ]);
+        } else {
             return redirect()->route('sales-orders.index')->with('error', __('Sales order not found.'));
         }
     }
@@ -353,7 +354,7 @@ class SalesOrderController extends Controller
         }
 
         $validated = $request->validate([
-            'status' => 'required|in:draft,confirmed,processing,shipped,delivered,cancelled'
+            'status' => 'required|in:draft,confirmed,processing,shipped,delivered,cancelled',
         ]);
 
         $salesOrder->update(['status' => $validated['status']]);
@@ -372,7 +373,7 @@ class SalesOrderController extends Controller
         }
 
         $validated = $request->validate([
-            'assigned_to' => 'required|exists:users,id'
+            'assigned_to' => 'required|exists:users,id',
         ]);
 
         $salesOrder->update(['assigned_to' => $validated['assigned_to']]);
@@ -446,7 +447,7 @@ class SalesOrderController extends Controller
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 
-        return Excel::download(new SalesOrderExport, 'sales-orders-' . now()->format('Y-m-d-H-i-s') . '.xlsx');
+        return Excel::download(new SalesOrderExport(), 'sales-orders-' . now()->format('Y-m-d-H-i-s') . '.xlsx');
     }
 
     public function getQuoteDetails($quoteId)
@@ -481,9 +482,9 @@ class SalesOrderController extends Controller
                     'quantity' => $product->pivot->quantity ?? 1,
                     'unit_price' => $product->pivot->unit_price ?? $product->price ?? 0,
                     'discount_type' => $product->pivot->discount_type ?? 'none',
-                    'discount_value' => $product->pivot->discount_value ?? 0
+                    'discount_value' => $product->pivot->discount_value ?? 0,
                 ];
-            })
+            }),
         ]);
     }
 
@@ -502,7 +503,7 @@ class SalesOrderController extends Controller
                     'assignedUser',
                     'quote',
                     'shippingProviderType',
-                    'activities.user'
+                    'activities.user',
                 ])
                 ->first();
 

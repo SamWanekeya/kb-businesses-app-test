@@ -17,7 +17,7 @@ class LandingPageCustomPageSeeder extends Seeder
                 'meta_title' => 'About Us - Kakbima Platform',
                 'meta_description' => 'Learn more about our Kakbima platform – designed to simplify sales management, optimize pipelines, and accelerate revenue growth for businesses worldwide.',
                 'is_active' => true,
-                'sort_order' => 1
+                'sort_order' => 1,
             ],
 
             [
@@ -27,7 +27,7 @@ class LandingPageCustomPageSeeder extends Seeder
                 'meta_title' => 'Privacy Policy - Kakbima',
                 'meta_description' => 'Read the privacy policy of our Kakbima platform to understand how sales, lead, and customer data is collected, used, and protected.',
                 'is_active' => true,
-                'sort_order' => 2
+                'sort_order' => 2,
             ],
 
             [
@@ -43,7 +43,7 @@ class LandingPageCustomPageSeeder extends Seeder
                                 &bull; Reporting, analytics, and integrations<br><br>
                                 <b>User Responsibilities:</b> As a user of our Kakbima, you agree to:<br>
                                 &bull; Provide accurate and updated information when creating an account<br>
-                                &bull; Maintain confidentiality of your login credentials<br>
+                                &bull; Maintain confidentiality of your sign in credentials<br>
                                 &bull; Ensure that all uploaded content complies with applicable laws<br>
                                 &bull; Use the platform only for lawful sales and CRM management purposes<br><br>
                                 <b>Subscription & Payments:</b> You agree to pay all fees associated with your chosen plan in accordance with the billing terms. Failure to pay may result in suspension or termination of your account.<br><br>
@@ -53,7 +53,7 @@ class LandingPageCustomPageSeeder extends Seeder
                 'meta_title' => 'Terms of Service - Kakbima',
                 'meta_description' => 'Read our terms of service to understand the rules and responsibilities for using our Kakbima platform.',
                 'is_active' => true,
-                'sort_order' => 3
+                'sort_order' => 3,
             ],
 
             [
@@ -63,7 +63,7 @@ class LandingPageCustomPageSeeder extends Seeder
                 'meta_title' => 'Contact Us - Kakbima Support',
                 'meta_description' => 'Reach out to our Kakbima support team for inquiries, demos, pricing, or technical assistance. We’re here to help you succeed.',
                 'is_active' => true,
-                'sort_order' => 4
+                'sort_order' => 4,
             ],
 
             [
@@ -84,7 +84,7 @@ class LandingPageCustomPageSeeder extends Seeder
                 'meta_title' => 'FAQ - Kakbima Help Center',
                 'meta_description' => 'Get answers to frequently asked questions about Kakbima, including features, pricing plans, integrations, and support options.',
                 'is_active' => true,
-                'sort_order' => 5
+                'sort_order' => 5,
             ],
 
             [
@@ -116,8 +116,8 @@ class LandingPageCustomPageSeeder extends Seeder
                 'meta_title' => 'Refund Policy - Kakbima',
                 'meta_description' => 'Read about the Kakbima refund policy, including our 30-day money-back guarantee and eligibility details.',
                 'is_active' => true,
-                'sort_order' => 6
-            ]
+                'sort_order' => 6,
+            ],
 
         ];
 

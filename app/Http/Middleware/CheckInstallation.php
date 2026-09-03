@@ -57,6 +57,7 @@ class CheckInstallation
         try {
             Artisan::call('migrate:status');
             $output = Artisan::output();
+
             return strpos($output, 'Pending') !== false;
         } catch (\Exception $e) {
             return false;

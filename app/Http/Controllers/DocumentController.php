@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Document;
-use App\Models\User;
 use App\Models\Account;
+use App\Models\Document;
 use App\Models\DocumentFolder;
 use App\Models\DocumentType;
 use App\Models\Opportunity;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -36,9 +36,9 @@ class DocumentController extends Controller
             ->toArray();
 
         return Inertia::render('documents/index', [
-            'rootFolders'   => $rootFolders,
+            'rootFolders' => $rootFolders,
             'parentFolders' => $parentFolders,
-            'filters'       => $request->only(['search', 'page']),
+            'filters' => $request->only(['search', 'page']),
             // 'users'         => User::where('created_by', createdBy())->where('status', 'active')->select('id', 'name', 'email')->get(),
             // 'accounts'      => Account::where('created_by', createdBy())->where('status', 'active')->select('id', 'name')->get(),
             // 'folders'       => DocumentFolder::where('created_by', createdBy())->select('id', 'name')->get(),
@@ -70,6 +70,7 @@ class DocumentController extends Controller
             'opportunities' => $opportunities,
         ]);
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -120,11 +121,11 @@ class DocumentController extends Controller
         $document->load(['account', 'folder', 'type', 'opportunity', 'creator', 'assignedUser', 'media']);
 
         return Inertia::render('documents/show', [
-            'document'      => $document,
-            'users'         => User::where('created_by', createdBy())->select('id', 'name', 'email')->get(),
-            'accounts'      => Account::where('created_by', createdBy())->select('id', 'name')->get(),
-            'folders'       => DocumentFolder::where('created_by', createdBy())->select('id', 'name')->get(),
-            'types'         => DocumentType::where('created_by', createdBy())->select('id', 'type_name')->get(),
+            'document' => $document,
+            'users' => User::where('created_by', createdBy())->select('id', 'name', 'email')->get(),
+            'accounts' => Account::where('created_by', createdBy())->select('id', 'name')->get(),
+            'folders' => DocumentFolder::where('created_by', createdBy())->select('id', 'name')->get(),
+            'types' => DocumentType::where('created_by', createdBy())->select('id', 'type_name')->get(),
             'opportunities' => Opportunity::where('created_by', createdBy())->select('id', 'name')->get(),
         ]);
     }
@@ -153,6 +154,7 @@ class DocumentController extends Controller
             'opportunities' => $opportunities,
         ]);
     }
+
     /**
      * Update the specified resource in storage.
      */
@@ -220,6 +222,7 @@ class DocumentController extends Controller
         if ($folderId) {
             return redirect()->route('documents.folder', $folderId)->with('success', __('Document deleted successfully.'));
         }
+
         return redirect()->route('documents.index')->with('success', __('Document deleted successfully.'));
     }
 
@@ -249,6 +252,7 @@ class DocumentController extends Controller
             if (!$media) {
                 abort(404, __('File not found'));
             }
+
             return response()->download($media->getPath(), $media->file_name);
         }
         $media = $document->getFirstMedia('attachments');

@@ -1,9 +1,8 @@
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useTranslation } from 'react-i18next';
-import { router } from '@inertiajs/react';
 import { DatePicker } from '@/components/ui/date-picker';
+import { router } from '@inertiajs/react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface ReportFiltersProps {
     filters: {
@@ -41,11 +40,11 @@ export function ReportFilters({ filters, additionalFilters }: ReportFiltersProps
     };
 
     return (
-        <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
-            <form onSubmit={handleFilterSubmit} className="flex items-center gap-2 p-3">
-                <div className="flex flex-1 items-center gap-2 w-full">
+        <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
+            <form onSubmit={handleFilterSubmit} className="flex flex-col items-stretch gap-3 p-3 min-[1070px]:flex-row min-[1070px]:items-center">
+                <div className="flex w-full flex-1 flex-col items-stretch gap-3 min-[1070px]:flex-row min-[1070px]:items-center">
                     <div className="flex flex-1 items-center gap-2">
-                        <p className="text-sm font-medium shrink-0">{t('From Date :')}</p>
+                        <p className="w-20 shrink-0 text-sm font-medium min-[1070px]:w-auto">{t('From Date :')}</p>
                         <div className="flex-1" style={{ minWidth: 0 }}>
                             <DatePicker
                                 id="date_from"
@@ -58,7 +57,7 @@ export function ReportFilters({ filters, additionalFilters }: ReportFiltersProps
                         </div>
                     </div>
                     <div className="flex flex-1 items-center gap-2">
-                        <p className="text-sm font-medium shrink-0">{t('To Date :')}</p>
+                        <p className="w-20 shrink-0 text-sm font-medium min-[1070px]:w-auto">{t('To Date :')}</p>
                         <div className="flex-1" style={{ minWidth: 0 }}>
                             <DatePicker
                                 id="date_to"
@@ -72,9 +71,13 @@ export function ReportFilters({ filters, additionalFilters }: ReportFiltersProps
                     </div>
                     {additionalFilters}
                 </div>
-                <div className="flex items-center gap-2 shrink-0">
-                    <Button type="submit" size="sm" className="h-9">{t('Apply Filters')}</Button>
-                    <Button type="button" size="sm" className="h-9" variant="outline" onClick={handleClearFilters}>{t('Clear Filters')}</Button>
+                <div className="mt-2 flex shrink-0 items-center justify-end gap-2 min-[1070px]:mt-0">
+                    <Button type="submit" size="sm" className="h-9 w-full min-[1070px]:w-auto">
+                        {t('Apply Filters')}
+                    </Button>
+                    <Button type="button" size="sm" className="h-9 w-full min-[1070px]:w-auto" variant="outline" onClick={handleClearFilters}>
+                        {t('Clear Filters')}
+                    </Button>
                 </div>
             </form>
         </div>

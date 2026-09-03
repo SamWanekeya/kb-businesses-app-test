@@ -98,6 +98,7 @@ class ShippingProviderTypeController extends Controller
         if ($shippingProviderType) {
             try {
                 $shippingProviderType->delete();
+
                 return redirect()->back()->with('success', __('Shipping provider type deleted successfully.'));
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete shipping provider type.'));
@@ -119,7 +120,7 @@ class ShippingProviderTypeController extends Controller
         }
 
         return Inertia::render('shipping-provider-types/show', [
-            'shippingProviderType' => $shippingProviderType
+            'shippingProviderType' => $shippingProviderType,
         ]);
     }
 

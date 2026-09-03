@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class InvoiceXenditPaymentController extends Controller
@@ -33,20 +32,20 @@ class InvoiceXenditPaymentController extends Controller
                 'currency' => 'PHP',
                 'customer' => [
                     'given_names' => $invoice->account->name ?? $invoice->contact->name ?? 'Customer',
-                    'email' => $invoice->account->email ?? $invoice->contact->email ?? 'customer@kakbima.dev'
+                    'email' => $invoice->account->email ?? $invoice->contact->email ?? 'customer@kakbima.dev',
                 ],
                 'success_redirect_url' => route('invoice.xendit.success', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
-                    'external_id' => $externalId
+                    'external_id' => $externalId,
                 ]),
-                'failure_redirect_url' => route('invoices.public', encrypt($invoice->id))
+                'failure_redirect_url' => route('invoices.public', encrypt($invoice->id)),
             ];
 
             $response = \Http::withHeaders([
                 'Authorization' => 'Basic ' . base64_encode($settings['payment_settings']['xendit_api_key'] . ':'),
-                'Content-Type' => 'application/json'
+                'Content-Type' => 'application/json',
             ])->post('https://api.xendit.co/v2/invoices', $invoiceData);
 
             if ($response->successful()) {
@@ -55,7 +54,7 @@ class InvoiceXenditPaymentController extends Controller
                     return response()->json([
                         'success' => true,
                         'payment_url' => $result['invoice_url'],
-                        'external_id' => $externalId
+                        'external_id' => $externalId,
                     ]);
                 }
             }
@@ -90,20 +89,20 @@ class InvoiceXenditPaymentController extends Controller
                 'currency' => 'PHP',
                 'customer' => [
                     'given_names' => $invoice->account->name ?? $invoice->contact->name ?? 'Customer',
-                    'email' => $invoice->account->email ?? $invoice->contact->email ?? 'customer@kakbima.dev'
+                    'email' => $invoice->account->email ?? $invoice->contact->email ?? 'customer@kakbima.dev',
                 ],
                 'success_redirect_url' => route('invoice.xendit.success', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
-                    'external_id' => $externalId
+                    'external_id' => $externalId,
                 ]),
-                'failure_redirect_url' => route('invoices.public', encrypt($invoice->id))
+                'failure_redirect_url' => route('invoices.public', encrypt($invoice->id)),
             ];
 
             $response = \Http::withHeaders([
                 'Authorization' => 'Basic ' . base64_encode($settings['payment_settings']['xendit_api_key'] . ':'),
-                'Content-Type' => 'application/json'
+                'Content-Type' => 'application/json',
             ])->post('https://api.xendit.co/v2/invoices', $invoiceData);
 
             if ($response->successful()) {
@@ -112,7 +111,7 @@ class InvoiceXenditPaymentController extends Controller
                     return response()->json([
                         'success' => true,
                         'payment_url' => $result['invoice_url'],
-                        'external_id' => $externalId
+                        'external_id' => $externalId,
                     ]);
                 }
             }
@@ -150,7 +149,7 @@ class InvoiceXenditPaymentController extends Controller
                 'invoice_id' => $invoiceId,
                 'amount' => $amount,
                 'payment_type' => $paymentType,
-                'external_id' => $externalId
+                'external_id' => $externalId,
             ]);
 
             return redirect()->route('invoices.public', encrypt($invoiceId))
@@ -159,12 +158,13 @@ class InvoiceXenditPaymentController extends Controller
         } catch (\Exception $e) {
             \Log::error('Xendit invoice success error', [
                 'error' => $e->getMessage(),
-                'request' => $request->all()
+                'request' => $request->all(),
             ]);
             $invoiceId = $request->input('invoice_id');
             if ($invoiceId) {
                 return redirect()->route('invoices.public', encrypt($invoiceId))->with('error', __('Payment verification failed'));
             }
+
             return redirect()->back()->with('error', __('Payment verification failed'));
         }
     }
@@ -178,7 +178,7 @@ class InvoiceXenditPaymentController extends Controller
             \Log::info('Xendit invoice callback received', [
                 'external_id' => $externalId,
                 'status' => $status,
-                'all_data' => $request->all()
+                'all_data' => $request->all(),
             ]);
 
             if ($status === 'PAID') {
@@ -208,7 +208,7 @@ class InvoiceXenditPaymentController extends Controller
                             \Log::info('Xendit invoice payment successful via callback', [
                                 'invoice_id' => $invoice->id,
                                 'external_id' => $externalId,
-                                'amount' => $amount
+                                'amount' => $amount,
                             ]);
                         }
                     }
@@ -220,8 +220,9 @@ class InvoiceXenditPaymentController extends Controller
         } catch (\Exception $e) {
             \Log::error('Xendit invoice callback error', [
                 'error' => $e->getMessage(),
-                'data' => $request->all()
+                'data' => $request->all(),
             ]);
+
             return response('Error', 500);
         }
     }

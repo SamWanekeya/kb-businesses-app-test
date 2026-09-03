@@ -50,17 +50,17 @@ class LoginRequest extends FormRequest
         }
         // Check if user account is inactive
         $user = Auth::user();
-            if ($user->status === 'inactive') {
-                Auth::logout();
-                throw ValidationException::withMessages([
-                    'email' => __('Your account is inactive. Please contact administrator.'),
-                ]);
-            }
+        if ($user->status === 'inactive') {
+            Auth::logout();
+            throw ValidationException::withMessages([
+                'email' => __('Your account is inactive. Please contact administrator.'),
+            ]);
+        }
         RateLimiter::clear($this->throttleKey());
     }
 
     /**
-     * Ensure the login request is not rate limited.
+     * Ensure the sign in request is not rate limited.
      *
      * @throws \Illuminate\Validation\ValidationException
      */

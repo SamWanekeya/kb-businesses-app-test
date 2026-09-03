@@ -7,7 +7,6 @@ use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 
 class InvoiceCashfreePaymentController extends Controller
@@ -35,6 +34,7 @@ class InvoiceCashfreePaymentController extends Controller
 
             if (!isset($settings['payment_settings']['cashfree_public_key']) || !isset($settings['payment_settings']['cashfree_secret_key'])) {
                 \Log::error('Cashfree payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+
                 return response()->json(['error' => __('Cashfree not configured')], 400);
             }
 
@@ -59,18 +59,18 @@ class InvoiceCashfreePaymentController extends Controller
                     'customer_id' => 'inv_customer_' . $invoice->id,
                     'customer_name' => $invoice->name ?: 'Customer',
                     'customer_email' => $invoice->email ?: $organization->email,
-                    'customer_phone' => $phone
+                    'customer_phone' => $phone,
                 ],
                 'order_meta' => [
                     'return_url' => route('invoices.public', encrypt($invoice->id)),
-                    'notify_url' => route('invoice.cashfree.webhook')
+                    'notify_url' => route('invoice.cashfree.webhook'),
                 ],
                 'order_note' => 'Invoice Payment - ' . $invoice->invoice_number,
                 'order_tags' => [
                     'invoice_id' => (string)$invoice->id,
                     'amount' => (string)$validated['amount'],
-                    'payment_type' => (string)$validated['payment_type']
-                ]
+                    'payment_type' => (string)$validated['payment_type'],
+                ],
             ];
 
             $responseData = $this->makeCashfreeApiCall('post', '/orders', $orderData, $settings['payment_settings']);
@@ -80,14 +80,15 @@ class InvoiceCashfreePaymentController extends Controller
                 'order_id' => $orderId,
                 'amount' => $amount,
                 'currency' => 'INR',
-                'mode' => $settings['payment_settings']['cashfree_mode']
+                'mode' => $settings['payment_settings']['cashfree_mode'],
             ]);
 
         } catch (\Exception $e) {
             \Log::error('Cashfree payment session creation failed', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return response()->json(['error' => __('Failed to create payment session: ') . $e->getMessage()], 500);
         }
     }
@@ -134,7 +135,7 @@ class InvoiceCashfreePaymentController extends Controller
             \Log::info('Cashfree invoice payment successful', [
                 'invoice_id' => $invoice->id,
                 'amount' => $validated['amount'],
-                'payment_type' => $validated['payment_type']
+                'payment_type' => $validated['payment_type'],
             ]);
 
             return response()->json(['success' => true]);
@@ -142,8 +143,9 @@ class InvoiceCashfreePaymentController extends Controller
         } catch (\Exception $e) {
             \Log::error('Cashfree payment verification failed', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return response()->json(['error' => __('Payment verification failed: ') . $e->getMessage()], 500);
         }
     }
@@ -174,7 +176,7 @@ class InvoiceCashfreePaymentController extends Controller
                         ]);
 
                         \Log::info('Cashfree invoice payment webhook successful', [
-                            'invoice_id' => $invoice->id
+                            'invoice_id' => $invoice->id,
                         ]);
                     }
                 }
@@ -183,6 +185,7 @@ class InvoiceCashfreePaymentController extends Controller
             return response()->json(['status' => 'success']);
         } catch (\Exception $e) {
             \Log::error('Cashfree webhook error', ['error' => $e->getMessage()]);
+
             return response()->json(['error' => __('Webhook processing failed')], 500);
         }
     }
@@ -196,7 +199,7 @@ class InvoiceCashfreePaymentController extends Controller
         $headers = [
             'x-client-id' => $paymentSettings['cashfree_public_key'],
             'x-client-secret' => $paymentSettings['cashfree_secret_key'],
-            'x-api-version' => '2023-08-01'
+            'x-api-version' => '2023-08-01',
         ];
 
         if ($data) {

@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import { toast } from '@/components/custom-toast';
 import axios from 'axios';
+import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface InvoicePaystackPaymentFormProps {
     invoiceId: number;
@@ -20,7 +20,7 @@ export function InvoicePaystackPaymentForm({
     paystackKey,
     currency = 'NGN',
     onSuccess,
-    onCancel
+    onCancel,
 }: InvoicePaystackPaymentFormProps) {
     const { t } = useTranslation();
     const initialized = useRef(false);
@@ -46,34 +46,35 @@ export function InvoicePaystackPaymentForm({
                 email: 'customer@kakbima.dev', // Should be dynamic if available
                 amount: Math.round(Number(amount) * 100), // Convert to kobo as integer
                 currency: currency.toUpperCase(),
-                callback: function(response: any) {
+                callback: function (response: any) {
                     // Restore modal backdrop
                     if (modalBackdrop) {
                         (modalBackdrop as HTMLElement).style.display = '';
                     }
 
                     // Process payment on server
-                    axios.post(route('invoice.paystack.payment'), {
-                        invoice_id: invoiceId,
-                        amount: amount,
-                        payment_type: paymentType,
-                        payment_id: response.reference,
-                    })
-                    .then(() => {
-                        onSuccess();
-                    })
-                    .catch((error) => {
-                        const errorMsg = error.response?.data?.error || t('Payment processing failed');
-                        toast.error(errorMsg);
-                    });
+                    axios
+                        .post(route('invoice.paystack.payment'), {
+                            invoice_id: invoiceId,
+                            amount: amount,
+                            payment_type: paymentType,
+                            payment_id: response.reference,
+                        })
+                        .then(() => {
+                            onSuccess();
+                        })
+                        .catch((error) => {
+                            const errorMsg = error.response?.data?.error || t('Payment processing failed');
+                            toast.error(errorMsg);
+                        });
                 },
-                onClose: function() {
+                onClose: function () {
                     // Restore modal backdrop
                     if (modalBackdrop) {
                         (modalBackdrop as HTMLElement).style.display = '';
                     }
                     onCancel();
-                }
+                },
             });
 
             handler.openIframe();

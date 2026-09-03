@@ -1,14 +1,14 @@
 import { PageTemplate } from '@/components/page-template';
-import { usePage, useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
 
+import { toast } from '@/components/custom-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import { useTranslation } from 'react-i18next';
-import { toast } from '@/components/custom-toast';
 
 export default function LeadCreate() {
     const { t } = useTranslation();
@@ -100,7 +100,7 @@ export default function LeadCreate() {
             actions={[
                 {
                     label: t('Back'),
-                    icon: <ArrowLeft className="h-4 w-4 mr-2" />,
+                    icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => window.history.back(),
                 },
@@ -108,17 +108,15 @@ export default function LeadCreate() {
             noPadding
         >
             <form onSubmit={handleSubmit} className="space-y-6">
-
                 {/* ROW 1 */}
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-stretch">
-
+                <div className="grid grid-cols-1 items-stretch gap-6 xl:grid-cols-2">
                     {/* Basic Information */}
-                    <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 flex flex-col h-full">
-                        <div className="border-b border-gray-200 px-6 py-4 bg-gray-50 dark:border-gray-700 dark:bg-gray-700">
+                    <div className="flex h-full flex-col rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                        <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
                             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Basic Information')}</h2>
                         </div>
                         <div className="space-y-4 p-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
                                     <Label htmlFor="name" className="text-sm font-medium" required>
                                         {t('Lead Name')}
@@ -213,7 +211,7 @@ export default function LeadCreate() {
                                         value={data.website}
                                         onChange={(e) => handleInputChange('website', e.target.value)}
                                         className={errors.website ? 'border-red-500' : ''}
-                                        placeholder="eg. https://example.com"
+                                        placeholder="eg. https://kakbima.dev"
                                     />
                                     {errors.website && <p className="text-xs text-red-500">{errors.website}</p>}
                                 </div>
@@ -239,8 +237,8 @@ export default function LeadCreate() {
                     </div>
 
                     {/* Lead Classification */}
-                    <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 flex flex-col h-full">
-                        <div className="border-b border-gray-200 px-6 py-4 bg-gray-50 dark:border-gray-700 dark:bg-gray-700">
+                    <div className="flex h-full flex-col rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                        <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
                             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Lead Classification')}</h2>
                         </div>
                         <div className="space-y-4 p-6">
@@ -254,14 +252,19 @@ export default function LeadCreate() {
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {accountIndustries.map((i: any) => (
-                                            <SelectItem key={i.id} value={String(i.id)}>{i.name}</SelectItem>
+                                            <SelectItem key={i.id} value={String(i.id)}>
+                                                {i.name}
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
                                 {errors.account_industry_id && <p className="text-xs text-red-500">{errors.account_industry_id}</p>}
                                 {accountIndustries.length === 0 && (
-                                    <p className="text-xs mt-1">
-                                        {t('Click here to add')} <a href={route('account-industries.index')} className="underline font-medium">{t('Account Industries')}</a>
+                                    <p className="mt-1 text-xs">
+                                        {t('Click here to add')}{' '}
+                                        <a href={route('account-industries.index')} className="font-medium underline">
+                                            {t('Account Industries')}
+                                        </a>
                                     </p>
                                 )}
                             </div>
@@ -276,14 +279,19 @@ export default function LeadCreate() {
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {leadStatuses.map((s: any) => (
-                                            <SelectItem key={s.id} value={String(s.id)}>{s.name}</SelectItem>
+                                            <SelectItem key={s.id} value={String(s.id)}>
+                                                {s.name}
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
                                 {errors.lead_status_id && <p className="text-xs text-red-500">{errors.lead_status_id}</p>}
                                 {leadStatuses.length === 0 && (
-                                    <p className="text-xs mt-1">
-                                        {t('Click here to add')} <a href={route('lead-statuses.index')} className="underline font-medium">{t('Lead Statuses')}</a>
+                                    <p className="mt-1 text-xs">
+                                        {t('Click here to add')}{' '}
+                                        <a href={route('lead-statuses.index')} className="font-medium underline">
+                                            {t('Lead Statuses')}
+                                        </a>
                                     </p>
                                 )}
                             </div>
@@ -298,14 +306,19 @@ export default function LeadCreate() {
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {leadSources.map((s: any) => (
-                                            <SelectItem key={s.id} value={String(s.id)}>{s.name}</SelectItem>
+                                            <SelectItem key={s.id} value={String(s.id)}>
+                                                {s.name}
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
                                 {errors.lead_source_id && <p className="text-xs text-red-500">{errors.lead_source_id}</p>}
                                 {leadSources.length === 0 && (
-                                    <p className="text-xs mt-1">
-                                        {t('Click here to add')} <a href={route('lead-sources.index')} className="underline font-medium">{t('Lead Sources')}</a>
+                                    <p className="mt-1 text-xs">
+                                        {t('Click here to add')}{' '}
+                                        <a href={route('lead-sources.index')} className="font-medium underline">
+                                            {t('Lead Sources')}
+                                        </a>
                                     </p>
                                 )}
                             </div>
@@ -320,14 +333,19 @@ export default function LeadCreate() {
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {campaigns.map((c: any) => (
-                                            <SelectItem key={c.id} value={String(c.id)}>{c.name}</SelectItem>
+                                            <SelectItem key={c.id} value={String(c.id)}>
+                                                {c.name}
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
                                 {errors.campaign_id && <p className="text-xs text-red-500">{errors.campaign_id}</p>}
                                 {campaigns.length === 0 && (
-                                    <p className="text-xs mt-1">
-                                        {t('Click here to add')} <a href={route('campaigns.index')} className="underline font-medium">{t('Campaigns')}</a>
+                                    <p className="mt-1 text-xs">
+                                        {t('Click here to add')}{' '}
+                                        <a href={route('campaigns.index')} className="font-medium underline">
+                                            {t('Campaigns')}
+                                        </a>
                                     </p>
                                 )}
                             </div>
@@ -336,11 +354,10 @@ export default function LeadCreate() {
                 </div>
 
                 {/* ROW 2 */}
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-stretch">
-
+                <div className="grid grid-cols-1 items-stretch gap-6 xl:grid-cols-2">
                     {/* Address & Notes */}
-                    <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 flex flex-col h-full">
-                        <div className="border-b border-gray-200 px-6 py-4 bg-gray-50 dark:border-gray-700 dark:bg-gray-700">
+                    <div className="flex h-full flex-col rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                        <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
                             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Address & Notes')}</h2>
                         </div>
                         <div className="space-y-4 p-6">
@@ -378,7 +395,7 @@ export default function LeadCreate() {
 
                     {/* Assignment */}
                     <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
-                        <div className="border-b border-gray-200 px-6 py-4 bg-gray-50 dark:border-gray-700 dark:bg-gray-700">
+                        <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
                             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Assignment')}</h2>
                         </div>
                         <div className="space-y-4 p-6">
@@ -392,14 +409,19 @@ export default function LeadCreate() {
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {users.map((u: any) => (
-                                            <SelectItem key={u.id} value={String(u.id)}>{u.name} ({u.email})</SelectItem>
+                                            <SelectItem key={u.id} value={String(u.id)}>
+                                                {u.name} ({u.email})
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
                                 {errors.assigned_to && <p className="text-xs text-red-500">{errors.assigned_to}</p>}
                                 {users.length === 0 && (
-                                    <p className="text-xs mt-1">
-                                        {t('Click here to add')} <a href={route('users.index')} className="underline font-medium">{t('Users')}</a>
+                                    <p className="mt-1 text-xs">
+                                        {t('Click here to add')}{' '}
+                                        <a href={route('users.index')} className="font-medium underline">
+                                            {t('Users')}
+                                        </a>
                                     </p>
                                 )}
                             </div>
@@ -422,11 +444,11 @@ export default function LeadCreate() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex justify-end space-x-4">
-                    <Button type="button" variant="outline" onClick={() => window.history.back()}>
+                <div className="mt-6 flex flex-col-reverse justify-end gap-3 sm:flex-row sm:gap-4">
+                    <Button type="button" variant="outline" onClick={() => window.history.back()} className="w-full sm:w-auto">
                         {t('Cancel')}
                     </Button>
-                    <Button type="submit" disabled={processing}>
+                    <Button type="submit" disabled={processing} className="w-full sm:w-auto">
                         {processing ? t('Saving...') : t('Save')}
                     </Button>
                 </div>

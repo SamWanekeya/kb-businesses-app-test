@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class CouponSeeder extends Seeder
@@ -13,9 +12,10 @@ class CouponSeeder extends Seeder
     public function run(): void
     {
         $user = \App\Models\User::first();
-        
+
         if (!$user) {
             $this->command->warn('No users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -75,7 +75,7 @@ class CouponSeeder extends Seeder
                 'code_type' => 'auto',
                 'status' => false,
                 'created_by' => $user->id,
-            ]
+            ],
         ];
 
         // Add more coupons for pagination testing
@@ -149,7 +149,7 @@ class CouponSeeder extends Seeder
                 'code_type' => 'manual',
                 'status' => true,
                 'created_by' => $user->id,
-            ]
+            ],
         ];
 
         $allCoupons = array_merge($coupons, $additionalCoupons);

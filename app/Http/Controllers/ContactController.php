@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contact;
-use App\Models\Account;
 use App\Exports\ContactExport;
+use App\Models\Account;
+use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -81,7 +81,7 @@ class ContactController extends Controller
             $planLimits = [
                 'current_contacts' => $currentContactCount,
                 'maximum_contacts' => $plan->maximum_contacts,
-                'can_create' => $currentContactCount < $plan->maximum_contacts
+                'can_create' => $currentContactCount < $plan->maximum_contacts,
             ];
         }
 
@@ -170,6 +170,7 @@ class ContactController extends Controller
         if ($contact) {
             try {
                 $contact->delete();
+
                 return redirect()->back()->with('success', __('Contact deleted successfully.'));
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete contact.'));
@@ -213,6 +214,7 @@ class ContactController extends Controller
             ->get()
             ->map(function ($call) {
                 $call->type = 'call';
+
                 return $call;
             });
 
@@ -225,6 +227,7 @@ class ContactController extends Controller
             ->get()
             ->map(function ($call) {
                 $call->type = 'call';
+
                 return $call;
             });
 
@@ -232,7 +235,7 @@ class ContactController extends Controller
 
         return Inertia::render('contacts/show', [
             'contact' => $contact,
-            'meetings' => $meetings
+            'meetings' => $meetings,
         ]);
     }
 
@@ -263,6 +266,7 @@ class ContactController extends Controller
         }
 
         $name = 'contact_' . date('Y-m-d i:h:s');
+
         return Excel::download(new ContactExport(), $name . '.xlsx');
     }
 }

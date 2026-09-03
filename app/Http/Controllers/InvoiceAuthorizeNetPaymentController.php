@@ -44,6 +44,7 @@ class InvoiceAuthorizeNetPaymentController extends Controller
             if (!isset($settings['payment_settings']['authorizenet_merchant_id']) ||
                 !isset($settings['payment_settings']['authorizenet_transaction_key'])) {
                 \Log::error('AuthorizeNet payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+
                 return back()->withErrors(['error' => __('AuthorizeNet not configured')]);
             }
 
@@ -67,7 +68,7 @@ class InvoiceAuthorizeNetPaymentController extends Controller
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
-                    'transaction_id' => $result['transaction_id']
+                    'transaction_id' => $result['transaction_id'],
                 ]);
 
                 return back()->with('success', __('Payment successful'));
@@ -79,8 +80,9 @@ class InvoiceAuthorizeNetPaymentController extends Controller
             \Log::error('AuthorizeNet payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
+
             return back()->withErrors(['error' => __('Payment processing failed. Please try again.')]);
         }
     }
@@ -142,7 +144,7 @@ class InvoiceAuthorizeNetPaymentController extends Controller
             return [
                 'success' => false,
                 'error' => __('Transaction processing failed. Please check your card details and try again.'),
-                'transaction_id' => null
+                'transaction_id' => null,
             ];
         }
     }
@@ -182,6 +184,7 @@ class InvoiceAuthorizeNetPaymentController extends Controller
                 if ($tresponse->getErrors() && count($tresponse->getErrors()) > 0) {
                     $errorMessage = $tresponse->getErrors()[0]->getErrorText();
                 }
+
                 return ['success' => false, 'error' => $errorMessage, 'transaction_id' => null];
 
             case '4':

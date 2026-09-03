@@ -8,6 +8,7 @@ use App\Services\WebhookService;
 class WebhookMeetingInvitationListener
 {
     private static array $processedMeeting = [];
+
     /**
      * Create the event listener.
      */

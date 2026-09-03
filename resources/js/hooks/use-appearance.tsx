@@ -1,5 +1,5 @@
+import { getCookie, isDemoMode, setCookie } from '@/utils/cookie-utils';
 import { useCallback, useEffect, useState } from 'react';
-import { setCookie, getCookie, isDemoMode } from '@/utils/cookie-utils';
 
 export type Appearance = 'light' | 'dark' | 'system';
 export type ThemeColor = 'blue' | 'green' | 'purple' | 'orange' | 'red' | 'custom';
@@ -32,8 +32,6 @@ const prefersDark = () => {
 
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
 };
-
-
 
 const applyTheme = (settings: ThemeSettings) => {
     const { appearance, themeColor, customColor } = settings;
@@ -126,7 +124,7 @@ const getThemeSettings = (): ThemeSettings => {
             return {
                 appearance: globalSettings.themeMode || DEFAULT_THEME.appearance,
                 themeColor: globalSettings.themeColor || DEFAULT_THEME.themeColor,
-                customColor: globalSettings.customColor || DEFAULT_THEME.customColor
+                customColor: globalSettings.customColor || DEFAULT_THEME.customColor,
             };
         }
     }
@@ -146,7 +144,7 @@ export function useAppearance() {
     const [themeSettings, setThemeSettings] = useState<ThemeSettings>(DEFAULT_THEME);
 
     const updateAppearance = useCallback((mode: Appearance) => {
-        setThemeSettings(prev => {
+        setThemeSettings((prev) => {
             const newSettings = { ...prev, appearance: mode };
 
             // Only apply theme for preview, don't store yet
@@ -156,7 +154,7 @@ export function useAppearance() {
     }, []);
 
     const updateThemeColor = useCallback((color: ThemeColor) => {
-        setThemeSettings(prev => {
+        setThemeSettings((prev) => {
             const newSettings = { ...prev, themeColor: color };
 
             // Only apply theme for preview, don't store yet
@@ -166,11 +164,11 @@ export function useAppearance() {
     }, []);
 
     const updateCustomColor = useCallback((hexColor: string, setAsActive = false) => {
-        setThemeSettings(prev => {
+        setThemeSettings((prev) => {
             const newSettings = {
                 ...prev,
                 customColor: hexColor,
-                ...(setAsActive && { themeColor: 'custom' })
+                ...(setAsActive && { themeColor: 'custom' }),
             };
 
             // Only apply theme for preview, don't store yet
@@ -198,7 +196,7 @@ export function useAppearance() {
                 savedSettings = {
                     appearance: globalSettings.themeMode || DEFAULT_THEME.appearance,
                     themeColor: globalSettings.themeColor || DEFAULT_THEME.themeColor,
-                    customColor: globalSettings.customColor || DEFAULT_THEME.customColor
+                    customColor: globalSettings.customColor || DEFAULT_THEME.customColor,
                 };
             }
         }
@@ -216,6 +214,6 @@ export function useAppearance() {
         updateAppearance,
         updateThemeColor,
         updateCustomColor,
-        saveThemeSettings
+        saveThemeSettings,
     } as const;
 }

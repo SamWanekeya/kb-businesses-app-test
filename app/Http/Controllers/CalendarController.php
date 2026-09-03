@@ -23,9 +23,10 @@ class CalendarController extends Controller
         try {
             $meetings = \App\Models\Meeting::where('created_by', createdBy())
                 ->get()
-                ->map(function($meeting) {
+                ->map(function ($meeting) {
                     $startDateTime = $meeting->start_date->format('Y-m-d') . ' ' . $meeting->start_time->format('H:i:s');
                     $endDateTime = $meeting->end_date->format('Y-m-d') . ' ' . $meeting->end_time->format('H:i:s');
+
                     return [
                         'id' => 'meeting-' . $meeting->id,
                         'title' => $meeting->title,
@@ -40,7 +41,7 @@ class CalendarController extends Controller
                         'status' => $meeting->status,
                         'parent_name' => $meeting->parent_name ?? ($meeting->parent_type ? ucfirst(str_replace('_', ' ', $meeting->parent_type)) : null),
                         'startDateTime' => $meeting->start_time->format('H:i:s'),
-                        'endDateTime' => $meeting->end_time->format('H:i:s')
+                        'endDateTime' => $meeting->end_time->format('H:i:s'),
                     ];
                 });
             $events = $events->merge($meetings);
@@ -52,9 +53,10 @@ class CalendarController extends Controller
         try {
             $calls = \App\Models\Call::where('created_by', createdBy())
                 ->get()
-                ->map(function($call) {
+                ->map(function ($call) {
                     $startDateTime = $call->start_date->format('Y-m-d') . ' ' . $call->start_time->format('H:i:s');
                     $endDateTime = $call->end_date->format('Y-m-d') . ' ' . $call->end_time->format('H:i:s');
+
                     return [
                         'id' => 'call-' . $call->id,
                         'title' => $call->title,
@@ -68,7 +70,7 @@ class CalendarController extends Controller
                         'status' => $call->status,
                         'parent_name' => $call->parent_name ?? ($call->parent_type ? ucfirst(str_replace('_', ' ', $call->parent_type)) : null),
                         'startDateTime' => $call->start_time->format('H:i:s'),
-                        'endDateTime' => $call->end_time->format('H:i:s')
+                        'endDateTime' => $call->end_time->format('H:i:s'),
                     ];
                 });
             $events = $events->merge($calls);
@@ -82,9 +84,10 @@ class CalendarController extends Controller
                 ->with('project')
                 ->whereNotNull('due_date')
                 ->get()
-                ->map(function($task) {
+                ->map(function ($task) {
                     $taskName = $task->name ?? $task->title ?? 'Task #' . $task->id;
                     $projectName = $task->project ? $task->project->name : 'Unknown Project';
+
                     return [
                         'id' => 'task-' . $task->id,
                         'title' => $taskName,
@@ -96,7 +99,7 @@ class CalendarController extends Controller
                         'project_id' => $task->project_id,
                         'description' => $task->description,
                         'status' => $task->status,
-                        'parent_name' => $projectName
+                        'parent_name' => $projectName,
                     ];
                 });
             $events = $events->merge($tasks);

@@ -4,15 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Coupon;
 use App\Models\Plan;
-use App\Models\User;
 use App\Models\PlanOrder;
-use App\Models\PaymentSetting;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use MercadoPago\SDK;
-use MercadoPago\Preference;
 use MercadoPago\Item;
 use MercadoPago\Payment;
+use MercadoPago\Preference;
+use MercadoPago\SDK;
 
 class MercadoPagoController extends Controller
 {
@@ -26,17 +24,19 @@ class MercadoPagoController extends Controller
         $settings = getPaymentGatewaySettings();
 
         $accessToken = $settings['payment_settings']['mercadopago_access_token'] ?? null;
+
         return [
             'access_token' => $accessToken,
             'mode' => $settings['payment_settings']['mercadopago_mode'] ?? 'sandbox',
-            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'BRL'
+            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'BRL',
         ];
     }
 
     /**
      * Create a MercadoPago checkout preference
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function createPreference(Request $request)
@@ -120,7 +120,7 @@ class MercadoPagoController extends Controller
             $preference->back_urls = [
                 "success" => route('mercadopago.success'),
                 "failure" => route('mercadopago.failure'),
-                "pending" => route('mercadopago.pending')
+                "pending" => route('mercadopago.pending'),
             ];
 
             // Don't set auto_return as it's causing issues
@@ -178,7 +178,7 @@ class MercadoPagoController extends Controller
                     'sandbox_url' => $preference->sandbox_init_point,
                     'redirect_url' => $redirectUrl,
                     'preference_id' => $preference->id,
-                    'mode' => $credentials['mode']
+                    'mode' => $credentials['mode'],
                 ]);
             }
 
@@ -188,6 +188,7 @@ class MercadoPagoController extends Controller
             if ($request->expectsJson()) {
                 return response()->json(['error' => __('Failed to create payment preference:  :message', ['message' => $e->getMessage()])], 500);
             }
+
             return redirect()->back()->with('error', __('Failed to create payment preference: :message', ['message' => $e->getMessage()]));
         }
     }
@@ -226,7 +227,7 @@ class MercadoPagoController extends Controller
                 if (count($parts) > 5 && $parts[4] === 'coupon') {
                     $couponCode = $parts[5];
                 }
-            } else if (!isset($planId)) {
+            } elseif (!isset($planId)) {
                 return redirect()->route('plans.index')->with('error', __('Invalid payment reference'));
             }
 
@@ -263,7 +264,7 @@ class MercadoPagoController extends Controller
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => true,
-                    'message' => __('Payment successful! Your subscription has been activated.')
+                    'message' => __('Payment successful! Your subscription has been activated.'),
                 ]);
             }
 
@@ -272,11 +273,11 @@ class MercadoPagoController extends Controller
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => false,
-                    'error' => __('Failed to process payment: :message',['message' => $e->getMessage()])
+                    'error' => __('Failed to process payment: :message', ['message' => $e->getMessage()]),
                 ], 500);
             }
 
-            return redirect()->route('plans.index')->with('error', __('Failed to process payment: :message',['message' => $e->getMessage()]));
+            return redirect()->route('plans.index')->with('error', __('Failed to process payment: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -288,7 +289,7 @@ class MercadoPagoController extends Controller
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => false,
-                'error' => __('Payment failed. Please try again.')
+                'error' => __('Payment failed. Please try again.'),
             ], 400);
         }
 
@@ -304,7 +305,7 @@ class MercadoPagoController extends Controller
             return response()->json([
                 'success' => true,
                 'status' => 'pending',
-                'message' => __('Your payment is pending. We will notify you once it is confirmed.')
+                'message' => __('Your payment is pending. We will notify you once it is confirmed.'),
             ]);
         }
 
@@ -330,7 +331,8 @@ class MercadoPagoController extends Controller
     /**
      * Process direct card payment
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function processPayment(Request $request)
@@ -352,7 +354,8 @@ class MercadoPagoController extends Controller
             }
 
             // Initialize MercadoPago SDK
-            try {                $accessToken = $credentials['access_token'];
+            try {
+                $accessToken = $credentials['access_token'];
 
                 SDK::setAccessToken($accessToken);
             } catch (\Exception $e) {
@@ -365,7 +368,7 @@ class MercadoPagoController extends Controller
             $payment->description = "Plan: " . $plan->name;
             $payment->installments = 1;
             $payment->payment_method_id = $validated['payment_method_id'];
-            $payment->payer = array("email" => auth()->user()->email);
+            $payment->payer = ["email" => auth()->user()->email];
 
             $payment->save();
 
@@ -381,24 +384,24 @@ class MercadoPagoController extends Controller
 
                 return response()->json([
                     'success' => true,
-                    'message' => __('Payment successful! Your subscription has been activated.')
+                    'message' => __('Payment successful! Your subscription has been activated.'),
                 ]);
-            } else if ($payment->status == 'in_process' || $payment->status == 'pending') {
+            } elseif ($payment->status == 'in_process' || $payment->status == 'pending') {
                 return response()->json([
                     'success' => true,
                     'status' => 'pending',
-                    'message' => __('Your payment is being processed. We will notify you once it is confirmed.')
+                    'message' => __('Your payment is being processed. We will notify you once it is confirmed.'),
                 ]);
             } else {
                 return response()->json([
                     'success' => false,
-                    'error' => __('Payment failed: :status', ['status' => $payment->status_detail])
+                    'error' => __('Payment failed: :status', ['status' => $payment->status_detail]),
                 ], 400);
             }
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'error' => __('Failed to process payment: :message', ['message' => $e->getMessage()])
+                'error' => __('Failed to process payment: :message', ['message' => $e->getMessage()]),
             ], 500);
         }
     }

@@ -1,6 +1,6 @@
 import QRCodeComponent from '@/components/QRCodeComponent';
-import React from 'react';
 import { useBrand } from '@/contexts/BrandContext';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface Template3Props {
@@ -17,12 +17,16 @@ interface Template3Props {
 export default function Template3({ quote, items, taxesData, settings, color, qr_invoice, qrCodeSvg, styles: externalStyles }: Template3Props) {
     const { t } = useTranslation();
     const { logoDark } = useBrand();
-    const fontColor = color === 'ffffff' || color === 'fbdd03' || color === 'c1d82f' || color === '46de98' || color === '40c7d0' || color === 'fac168' ? '#000000' : '#ffffff';
+    const fontColor =
+        color === 'ffffff' || color === 'fbdd03' || color === 'c1d82f' || color === '46de98' || color === '40c7d0' || color === 'fac168'
+            ? '#000000'
+            : '#ffffff';
     const borderColor = color === 'ffffff' ? '#000000' : `#${color}`;
 
     const formatCurrency = (amount: number | string): React.ReactNode => {
         if (typeof amount === 'string' && amount.startsWith('<')) return amount;
-        const val = (window as any).appSettings?.formatCurrency(Number(amount)) || `$${Number(amount)}`; return <span style={{fontFamily:'monospace'}}>{val}</span>;
+        const val = (window as any).appSettings?.formatCurrency(Number(amount)) || `$${Number(amount)}`;
+        return <span style={{ fontFamily: 'monospace' }}>{val}</span>;
     };
 
     const formatValue = (value: any, fallback: string = '') => {
@@ -120,20 +124,11 @@ export default function Template3({ quote, items, taxesData, settings, color, qr
                                 <td style={styles.headerCell}>
                                     <h3 style={{ textTransform: 'uppercase', fontSize: '20px', fontWeight: 'bold' }}>{t('QUOTE')}</h3>
                                     <div className="view-qrcode" style={{ ...styles.qrCode, marginLeft: '0', marginRight: '0' }}>
-                                        {qr_invoice === 'on' && (
-                                            <QRCodeComponent
-                                                text={window.location.href}
-                                                size={114}
-                                            />
-                                        )}
+                                        {qr_invoice === 'on' && <QRCodeComponent text={window.location.href} size={114} />}
                                     </div>
                                 </td>
                                 <td className="text-right" style={{ ...styles.headerCell, textAlign: 'right' }}>
-                                    <img
-                                        src={settings.quoteLogo || logoDark}
-                                        style={{ maxWidth: '150px',maxHeight:'150px' }}
-                                        alt="Logo"
-                                    />
+                                    <img src={settings.quoteLogo || logoDark} style={{ maxWidth: '150px', maxHeight: '150px' }} alt="Logo" />
                                 </td>
                             </tr>
                         </tbody>
@@ -144,7 +139,12 @@ export default function Template3({ quote, items, taxesData, settings, color, qr
                                 <td style={styles.headerCell}>
                                     <strong>{t('From')}:</strong>
                                     <p style={{ margin: '10px 0', lineHeight: '1.5' }}>
-                                        {formatValue(quote.creator?.name) && <>{formatValue(quote.creator.name)}<br /></>}
+                                        {formatValue(quote.creator?.name) && (
+                                            <>
+                                                {formatValue(quote.creator.name)}
+                                                <br />
+                                            </>
+                                        )}
                                         {formatValue(quote.creator?.email) && <>{formatValue(quote.creator.email)}</>}
                                     </p>
                                 </td>
@@ -153,11 +153,15 @@ export default function Template3({ quote, items, taxesData, settings, color, qr
                                         <tbody>
                                             <tr>
                                                 <td className="text-right" style={{ ...styles.noSpace }}></td>
-                                                <td className="text-right" style={{ ...styles.noSpace, textAlign: 'right' }}>{t('Number')}: {formatValue(quote.quote_number)}</td>
+                                                <td className="text-right" style={{ ...styles.noSpace, textAlign: 'right' }}>
+                                                    {t('Number')}: {formatValue(quote.quote_number)}
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td style={styles.noSpace}></td>
-                                                <td className="text-right" style={{ ...styles.noSpace, textAlign: 'right' }}>{t('Valid Until')}: {formatValue(quote.valid_until)}</td>
+                                                <td className="text-right" style={{ ...styles.noSpace, textAlign: 'right' }}>
+                                                    {t('Valid Until')}: {formatValue(quote.valid_until)}
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -174,22 +178,32 @@ export default function Template3({ quote, items, taxesData, settings, color, qr
                                 <td style={{ verticalAlign: 'top' }}>
                                     <strong style={{ marginBottom: '10px', display: 'block' }}>{t('Bill To')}:</strong>
                                     <p style={{ margin: 0, lineHeight: '1.5' }}>
-                                        {quote.billing_contact?.name}<br />
-                                        {quote.billing_contact?.email}<br />
-                                        {quote.billing_contact?.phone}<br />
-                                        {quote.billing_address}<br />
-                                        {quote.billing_postal_code}<br />
+                                        {quote.billing_contact?.name}
+                                        <br />
+                                        {quote.billing_contact?.email}
+                                        <br />
+                                        {quote.billing_contact?.phone}
+                                        <br />
+                                        {quote.billing_address}
+                                        <br />
+                                        {quote.billing_postal_code}
+                                        <br />
                                         {quote.billing_city} {quote.billing_state} {quote.billing_country}
                                     </p>
                                 </td>
                                 <td style={{ verticalAlign: 'top', textAlign: 'right' }}>
                                     <strong style={{ marginBottom: '10px', display: 'block' }}>{t('Ship To')}:</strong>
                                     <p style={{ margin: 0, lineHeight: '1.5' }}>
-                                        {quote.shipping_contact?.name}<br />
-                                        {quote.shipping_contact?.email}<br />
-                                        {quote.shipping_contact?.phone}<br />
-                                        {quote.shipping_address}<br />
-                                        {quote.shipping_postal_code}<br />
+                                        {quote.shipping_contact?.name}
+                                        <br />
+                                        {quote.shipping_contact?.email}
+                                        <br />
+                                        {quote.shipping_contact?.phone}
+                                        <br />
+                                        {quote.shipping_address}
+                                        <br />
+                                        {quote.shipping_postal_code}
+                                        <br />
                                         {quote.shipping_city} {quote.shipping_state} {quote.shipping_country}
                                     </p>
                                 </td>
@@ -205,7 +219,9 @@ export default function Template3({ quote, items, taxesData, settings, color, qr
                                 <th style={styles.th}>{t('Rate')}</th>
                                 <th style={styles.th}>{t('Tax')} (%)</th>
                                 <th style={styles.th}>{t('Discount')}</th>
-                                <th style={styles.th}>{t('Price')} <small style={{ display: 'block', fontSize: '12px' }}>{t('before tax & discount')}</small></th>
+                                <th style={styles.th}>
+                                    {t('Price')} <small style={{ display: 'block', fontSize: '12px' }}>{t('before tax & discount')}</small>
+                                </th>
                             </tr>
                             {items.map((item, index) => (
                                 <tr key={index}>
@@ -215,20 +231,39 @@ export default function Template3({ quote, items, taxesData, settings, color, qr
                                     <td style={styles.td}>
                                         {item.itemTax?.map((tax: any, taxIndex: number) => (
                                             <span key={taxIndex}>
-                                                {tax.name} ({tax.rate})<br />{tax.price}
+                                                {tax.name} ({tax.rate})<br />
+                                                {tax.price}
                                             </span>
                                         ))}
                                     </td>
                                     <td style={styles.td}>{item.discount ? formatCurrency(item.discount) : '-'}</td>
-                                    <td style={styles.td}>{formatCurrency(typeof item.price === 'string' && item.price.startsWith('<') ? item.price : (Number(item.price) * Number(item.quantity)))}</td>
+                                    <td style={styles.td}>
+                                        {formatCurrency(
+                                            typeof item.price === 'string' && item.price.startsWith('<')
+                                                ? item.price
+                                                : Number(item.price) * Number(item.quantity),
+                                        )}
+                                    </td>
                                 </tr>
                             ))}
                             <tr>
                                 <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{t('Total')}</td>
-                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{typeof items[0]?.quantity === 'string' && items[0]?.quantity.startsWith('<') ? formatValue(items[0]?.quantity) : items.reduce((sum, item) => sum + Number(item.quantity), 0)}</td>
-                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{formatCurrency(typeof items[0]?.price === 'string' && items[0]?.price.startsWith('<') ? items[0]?.price : items.reduce((sum, item) => sum + Number(item.price), 0))}</td>
+                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>
+                                    {typeof items[0]?.quantity === 'string' && items[0]?.quantity.startsWith('<')
+                                        ? formatValue(items[0]?.quantity)
+                                        : items.reduce((sum, item) => sum + Number(item.quantity), 0)}
+                                </td>
+                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>
+                                    {formatCurrency(
+                                        typeof items[0]?.price === 'string' && items[0]?.price.startsWith('<')
+                                            ? items[0]?.price
+                                            : items.reduce((sum, item) => sum + Number(item.price), 0),
+                                    )}
+                                </td>
                                 <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{formatCurrency(quote.total_tax || 0)}</td>
-                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{formatCurrency(quote.total_discount || 0)}</td>
+                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>
+                                    {formatCurrency(quote.total_discount || 0)}
+                                </td>
                                 <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{formatCurrency(quote.sub_total || 0)}</td>
                             </tr>
                             <tr>
@@ -238,18 +273,26 @@ export default function Template3({ quote, items, taxesData, settings, color, qr
                                             {quote.total_discount > 0 && (
                                                 <tr>
                                                     <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{t('Discount')}:</td>
-                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>{formatCurrency(quote.total_discount)}</td>
+                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
+                                                        {formatCurrency(quote.total_discount)}
+                                                    </td>
                                                 </tr>
                                             )}
                                             {Object.entries(taxesData || {}).map(([taxName, taxPrice]) => (
                                                 <tr key={taxName}>
                                                     <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{taxName}:</td>
-                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>{formatCurrency(taxPrice as number)}</td>
+                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
+                                                        {formatCurrency(taxPrice as number)}
+                                                    </td>
                                                 </tr>
                                             ))}
                                             <tr>
-                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}><strong>{t('Total')}:</strong></td>
-                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}><strong>{formatCurrency(quote.total_amount || 0)}</strong></td>
+                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>
+                                                    <strong>{t('Total')}:</strong>
+                                                </td>
+                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
+                                                    <strong>{formatCurrency(quote.total_amount || 0)}</strong>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>

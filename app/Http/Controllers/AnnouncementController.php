@@ -9,7 +9,6 @@ use Inertia\Inertia;
 
 class AnnouncementController extends Controller
 {
-
     private function updateStatus()
     {
         if (!IsDemo()) {
@@ -57,7 +56,7 @@ class AnnouncementController extends Controller
 
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'title', 'created_at'];
+        $allowedSorts = ['id', 'title', 'created_at'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -75,10 +74,10 @@ class AnnouncementController extends Controller
 
         $statsQuery = Announcement::where('created_by', createdBy());
         $stats = [
-            'total'    => (clone $statsQuery)->count(),
-            'active'   => (clone $statsQuery)->where('status', 'active')->count(),
+            'total' => (clone $statsQuery)->count(),
+            'active' => (clone $statsQuery)->where('status', 'active')->count(),
             'inactive' => (clone $statsQuery)->where('status', 'inactive')->count(),
-            'expired'  => (clone $statsQuery)->where('status', 'expired')->count(),
+            'expired' => (clone $statsQuery)->where('status', 'expired')->count(),
         ];
 
         return Inertia::render('announcements/index', [
@@ -154,7 +153,7 @@ class AnnouncementController extends Controller
             ->firstOrFail();
 
         $validated = $request->validate([
-            'status' => 'required|in:active,inactive,expired'
+            'status' => 'required|in:active,inactive,expired',
         ]);
 
         $announcement->update(['status' => $validated['status']]);

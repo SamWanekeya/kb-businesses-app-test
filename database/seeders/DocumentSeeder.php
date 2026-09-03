@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\Document;
-use App\Models\User;
 use App\Models\Account;
+use App\Models\Document;
 use App\Models\DocumentFolder;
 use App\Models\DocumentType;
 use App\Models\Opportunity;
+use App\Models\User;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class DocumentSeeder extends Seeder
 {
@@ -20,6 +20,7 @@ class DocumentSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -38,7 +39,7 @@ class DocumentSeeder extends Seeder
             'Compliance Audit Report',
             'Risk Assessment Document',
             'Business Continuity Plan',
-            'Customer Feedback Analysis'
+            'Customer Feedback Analysis',
         ];
 
         $documentDescriptions = [
@@ -56,7 +57,7 @@ class DocumentSeeder extends Seeder
             'Annual compliance audit findings and recommendations',
             'Risk assessment analysis for business operations',
             'Business continuity and disaster recovery procedures',
-            'Customer feedback analysis and improvement recommendations'
+            'Customer feedback analysis and improvement recommendations',
         ];
 
         foreach ($organizationUsers as $organization) {

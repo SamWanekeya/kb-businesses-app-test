@@ -1,22 +1,20 @@
 // components/CrudFormModal.tsx
-import React, { useEffect, useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import MediaPicker from '@/components/MediaPicker';
+import { MultiSelectField } from '@/components/multi-select-field';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Switch } from '@/components/ui/switch';
-import { FormField } from '@/types/crud';
-import { MultiSelectField } from '@/components/multi-select-field';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { cn } from '@/lib/utils';
-import { useTranslation } from 'react-i18next';
-import MediaPicker from '@/components/MediaPicker';
-import { Link } from '@inertiajs/react';
 import { RichTextField } from '@/components/ui/rich-text-field';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
+import { FormField } from '@/types/crud';
+import { Link } from '@inertiajs/react';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface CrudFormModalProps {
     isOpen: boolean;
@@ -44,7 +42,13 @@ interface CrudFormModalProps {
 }
 
 // Standalone date input that opens picker on any click
-function DateInputField({ field, dateValue, handleChange, errors, mode }: {
+function DateInputField({
+    field,
+    dateValue,
+    handleChange,
+    errors,
+    mode,
+}: {
     field: FormField;
     dateValue: string;
     handleChange: (name: string, value: any) => void;
@@ -74,7 +78,7 @@ function DateInputField({ field, dateValue, handleChange, errors, mode }: {
                 value={dateValue}
                 onChange={(e) => handleChange(field.name, e.target.value)}
                 required={!!field.required}
-                className={`border-input flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-primary md:text-sm cursor-pointer disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 ${errors[field.name] ? 'border-red-500' : ''}`}
+                className={`border-input focus-visible:border-primary flex h-9 w-full cursor-pointer rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm ${errors[field.name] ? 'border-red-500' : ''}`}
                 disabled={field.disabled || mode === 'view'}
                 readOnly={field.readOnly}
             />
@@ -83,7 +87,13 @@ function DateInputField({ field, dateValue, handleChange, errors, mode }: {
 }
 
 // Standalone date input that opens picker on any click
-function TimeInputField({ field, timeValue, handleChange, errors, mode }: {
+function TimeInputField({
+    field,
+    timeValue,
+    handleChange,
+    errors,
+    mode,
+}: {
     field: FormField;
     timeValue: string;
     handleChange: (name: string, value: any) => void;
@@ -113,7 +123,7 @@ function TimeInputField({ field, timeValue, handleChange, errors, mode }: {
                 value={timeValue}
                 onChange={(e) => handleChange(field.name, e.target.value)}
                 required={!!field.required}
-                className={`border-input flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-primary md:text-sm cursor-pointer disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 ${errors[field.name] ? 'border-red-500' : ''}`}
+                className={`border-input focus-visible:border-primary flex h-9 w-full cursor-pointer rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm ${errors[field.name] ? 'border-red-500' : ''}`}
                 disabled={field.disabled || mode === 'view'}
                 readOnly={field.readOnly}
             />
@@ -131,7 +141,7 @@ export function CrudFormModal({
     title,
     mode,
     description,
-    isSubmitting = false
+    isSubmitting = false,
 }: CrudFormModalProps) {
     const { t } = useTranslation();
     const [formData, setFormData] = useState<Record<string, any>>({});
@@ -139,9 +149,11 @@ export function CrudFormModal({
     const [relationOptions, setRelationOptions] = useState<Record<string, any[]>>({});
 
     // Conditionally declare handleExport only if exportRoute exists
-    const handleExportAction = formConfig.exportRoute ? () => {
-        window.location.href = route(formConfig.exportRoute!);
-    } : undefined;
+    const handleExportAction = formConfig.exportRoute
+        ? () => {
+              window.location.href = route(formConfig.exportRoute!);
+          }
+        : undefined;
 
     // Calculate total price for price summary
     const calculateTotal = () => {
@@ -157,13 +169,15 @@ export function CrudFormModal({
             const cleanData = { ...initialData };
 
             // Process fields and set default values
-            formConfig.fields.forEach(field => {
+            formConfig.fields.forEach((field) => {
                 if (field.type === 'multi-select') {
                     if (cleanData[field.name] && !Array.isArray(cleanData[field.name])) {
                         // Convert to array if it's not already
                         cleanData[field.name] = Array.isArray(cleanData[field.name])
                             ? cleanData[field.name]
-                            : cleanData[field.name] ? [cleanData[field.name].toString()] : [];
+                            : cleanData[field.name]
+                              ? [cleanData[field.name].toString()]
+                              : [];
                     }
                 }
 
@@ -179,17 +193,17 @@ export function CrudFormModal({
             setErrors({});
 
             // Load relation data for select fields
-            formConfig.fields.forEach(field => {
+            formConfig.fields.forEach((field) => {
                 if (field.relation && field.relation.endpoint) {
                     fetch(field.relation.endpoint)
-                        .then(res => res.json())
-                        .then(data => {
-                            setRelationOptions(prev => ({
+                        .then((res) => res.json())
+                        .then((data) => {
+                            setRelationOptions((prev) => ({
                                 ...prev,
-                                [field.name]: Array.isArray(data) ? data : data.data || []
+                                [field.name]: Array.isArray(data) ? data : data.data || [],
                             }));
                         })
-                        .catch(err => {
+                        .catch((err) => {
                             // Silent error handling
                         });
                 }
@@ -198,14 +212,14 @@ export function CrudFormModal({
             // Load parent records if parent_module is set in edit mode
             if (mode === 'edit' && cleanData.parent_module && cleanData.parent_module !== 'none') {
                 fetch(route('api.parent-module.records', cleanData.parent_module))
-                    .then(res => res.json())
-                    .then(data => {
-                        setRelationOptions(prev => ({
+                    .then((res) => res.json())
+                    .then((data) => {
+                        setRelationOptions((prev) => ({
                             ...prev,
-                            parent_id: data
+                            parent_id: data,
                         }));
                     })
-                    .catch(err => { });
+                    .catch((err) => {});
             }
 
             // Load attendee records for each attendee in edit mode
@@ -213,14 +227,14 @@ export function CrudFormModal({
                 cleanData.attendees.forEach((attendee: any, index: number) => {
                     if (attendee.type) {
                         fetch(route('api.attendee-types.records', attendee.type))
-                            .then(res => res.json())
-                            .then(data => {
-                                setRelationOptions(prev => ({
+                            .then((res) => res.json())
+                            .then((data) => {
+                                setRelationOptions((prev) => ({
                                     ...prev,
-                                    [`attendees_${index}_id`]: data
+                                    [`attendees_${index}_id`]: data,
                                 }));
                             })
-                            .catch(err => { });
+                            .catch((err) => {});
                     }
                 });
             }
@@ -235,7 +249,7 @@ export function CrudFormModal({
             const totalAmount = value.reduce((total: number, product: any) => {
                 const quantity = parseFloat(product.quantity) || 0;
                 const unitPrice = parseFloat(product.unit_price) || 0;
-                return total + (quantity * unitPrice);
+                return total + quantity * unitPrice;
             }, 0);
             newFormData.amount = totalAmount;
         }
@@ -248,18 +262,18 @@ export function CrudFormModal({
             // Load parent records if module is selected
             if (value && value !== 'none') {
                 fetch(route('api.parent-module.records', value))
-                    .then(res => res.json())
-                    .then(data => {
-                        setRelationOptions(prev => ({
+                    .then((res) => res.json())
+                    .then((data) => {
+                        setRelationOptions((prev) => ({
                             ...prev,
-                            parent_id: data
+                            parent_id: data,
                         }));
                     })
-                    .catch(err => { });
+                    .catch((err) => {});
             } else {
-                setRelationOptions(prev => ({
+                setRelationOptions((prev) => ({
                     ...prev,
-                    parent_id: []
+                    parent_id: [],
                 }));
             }
         }
@@ -267,26 +281,26 @@ export function CrudFormModal({
         // Handle opportunity change for quotes
         if (name === 'opportunity_id' && value) {
             fetch(route('api.opportunities.details', value))
-                .then(res => res.json())
-                .then(data => {
+                .then((res) => res.json())
+                .then((data) => {
                     // Auto-populate fields from opportunity
                     const updatedFormData = {
                         ...newFormData,
                         account_id: data.account_id || '',
                         billing_contact_id: data.billing_contact_id || '',
                         shipping_contact_id: data.shipping_contact_id || '',
-                        products: data.products || []
+                        products: data.products || [],
                     };
                     setFormData(updatedFormData);
                 })
-                .catch(err => { });
+                .catch((err) => {});
         }
 
         // Handle quote change for sales orders
         if (name === 'quote_id' && value) {
             fetch(route('api.quotes.details', value))
-                .then(res => res.json())
-                .then(data => {
+                .then((res) => res.json())
+                .then((data) => {
                     // Auto-populate fields from quote
                     const updatedFormData = {
                         ...newFormData,
@@ -304,11 +318,11 @@ export function CrudFormModal({
                         shipping_postal_code: data.shipping_postal_code || '',
                         shipping_country: data.shipping_country || '',
                         shipping_provider_type_id: data.shipping_provider_type_id || '',
-                        products: data.products || []
+                        products: data.products || [],
                     };
                     setFormData(updatedFormData);
                 })
-                .catch(err => { });
+                .catch((err) => {});
         }
 
         // Handle sales order change for purchase orders
@@ -317,8 +331,8 @@ export function CrudFormModal({
             const apiRoute = isInvoiceForm ? 'api.invoices.sales-orders.details' : 'api.sales-orders.details';
 
             fetch(route(apiRoute, value))
-                .then(res => res.json())
-                .then(data => {
+                .then((res) => res.json())
+                .then((data) => {
                     // Auto-populate fields from sales order
                     const updatedFormData = {
                         ...newFormData,
@@ -339,11 +353,11 @@ export function CrudFormModal({
                         shipping_postal_code: data.shipping_postal_code || '',
                         shipping_country: data.shipping_country || '',
                         shipping_provider_type_id: data.shipping_provider_type_id || '',
-                        products: data.products || []
+                        products: data.products || [],
                     };
                     setFormData(updatedFormData);
                 })
-                .catch(err => { });
+                .catch((err) => {});
         }
 
         // Handle purchase order change for receipt orders
@@ -352,18 +366,18 @@ export function CrudFormModal({
             const updatedFormData = { ...newFormData, return_order_id: '' };
 
             fetch(route('api.receipt-orders.purchase-orders.details', value))
-                .then(res => res.json())
-                .then(data => {
+                .then((res) => res.json())
+                .then((data) => {
                     // Auto-populate fields from purchase order
                     const finalFormData = {
                         ...updatedFormData,
                         account_id: data.account_id || '',
                         contact_id: data.contact_id || '',
-                        products: data.products || []
+                        products: data.products || [],
                     };
                     setFormData(finalFormData);
                 })
-                .catch(err => { });
+                .catch((err) => {});
         }
 
         // Handle return order change for receipt orders
@@ -372,25 +386,25 @@ export function CrudFormModal({
             const updatedFormData = { ...newFormData, purchase_order_id: '' };
 
             fetch(route('api.receipt-orders.return-orders.details', value))
-                .then(res => res.json())
-                .then(data => {
+                .then((res) => res.json())
+                .then((data) => {
                     // Auto-populate fields from return order
                     const finalFormData = {
                         ...updatedFormData,
                         account_id: data.account_id || '',
                         contact_id: data.contact_id || '',
-                        products: data.products || []
+                        products: data.products || [],
                     };
                     setFormData(finalFormData);
                 })
-                .catch(err => { });
+                .catch((err) => {});
         }
 
         // Handle quote change for invoices
         if (name === 'quote_id' && value && window.location.pathname.includes('/invoices')) {
             fetch(route('api.invoices.quotes.details', value))
-                .then(res => res.json())
-                .then(data => {
+                .then((res) => res.json())
+                .then((data) => {
                     // Auto-populate fields from quote
                     const updatedFormData = {
                         ...newFormData,
@@ -401,28 +415,28 @@ export function CrudFormModal({
                         billing_state: data.billing_state || '',
                         billing_postal_code: data.billing_postal_code || '',
                         billing_country: data.billing_country || '',
-                        products: data.products || []
+                        products: data.products || [],
                     };
                     setFormData(updatedFormData);
                 })
-                .catch(err => { });
+                .catch((err) => {});
         }
 
         // Handle opportunity change for invoices
         if (name === 'opportunity_id' && value && window.location.pathname.includes('/invoices')) {
             fetch(route('api.invoices.opportunities.details', value))
-                .then(res => res.json())
-                .then(data => {
+                .then((res) => res.json())
+                .then((data) => {
                     // Auto-populate fields from opportunity
                     const updatedFormData = {
                         ...newFormData,
                         account_id: data.account_id || '',
                         contact_id: data.contact_id || '',
-                        products: data.products || []
+                        products: data.products || [],
                     };
                     setFormData(updatedFormData);
                 })
-                .catch(err => { });
+                .catch((err) => {});
         }
 
         // Handle project change for tasks
@@ -432,18 +446,25 @@ export function CrudFormModal({
 
             // Load parent tasks for the selected project
             fetch(route('api.projects.details', value))
-                .then(res => res.json())
-                .then(data => {
-                    setRelationOptions(prev => ({
+                .then((res) => res.json())
+                .then((data) => {
+                    setRelationOptions((prev) => ({
                         ...prev,
-                        parent_id: data.parent_tasks?.map((task: any) => ({ id: task.id, name: task.title })) || []
+                        parent_id: data.parent_tasks?.map((task: any) => ({ id: task.id, name: task.title })) || [],
                     }));
                 })
-                .catch(err => { });
+                .catch((err) => {});
         }
 
         // Only set form data if not handling dependency changes (to avoid overriding)
-        const isDependencyField = (name === 'opportunity_id' || name === 'quote_id' || name === 'sales_order_id' || name === 'purchase_order_id' || name === 'return_order_id' || name === 'project_id') && value;
+        const isDependencyField =
+            (name === 'opportunity_id' ||
+                name === 'quote_id' ||
+                name === 'sales_order_id' ||
+                name === 'purchase_order_id' ||
+                name === 'return_order_id' ||
+                name === 'project_id') &&
+            value;
         if (!isDependencyField) {
             setFormData(newFormData);
         } else if (name === 'project_id') {
@@ -453,7 +474,7 @@ export function CrudFormModal({
 
         // Clear error when field is changed
         if (errors[name]) {
-            setErrors(prev => {
+            setErrors((prev) => {
                 const newErrors = { ...prev };
                 delete newErrors[name];
                 return newErrors;
@@ -461,7 +482,7 @@ export function CrudFormModal({
         }
 
         // Call field's onChange if it exists
-        const field = formConfig.fields.find(f => f.name === name);
+        const field = formConfig.fields.find((f) => f.name === name);
         if (field?.onChange) {
             field.onChange(value);
         }
@@ -474,7 +495,7 @@ export function CrudFormModal({
         const processedData = { ...formData };
 
         // Ensure multi-select fields are properly formatted
-        formConfig.fields.forEach(field => {
+        formConfig.fields.forEach((field) => {
             if (field.type === 'multi-select' && processedData[field.name]) {
                 // Make sure it's an array of strings
                 if (!Array.isArray(processedData[field.name])) {
@@ -487,7 +508,7 @@ export function CrudFormModal({
 
         // Basic validation
         const newErrors: Record<string, string> = {};
-        formConfig.fields.forEach(field => {
+        formConfig.fields.forEach((field) => {
             // For file fields in edit mode, they're never required
             if (field.type === 'file' && mode === 'edit') {
                 return;
@@ -496,7 +517,11 @@ export function CrudFormModal({
             // Check if field is conditionally required based on other field values
             const isConditionallyRequired = field.conditional ? field.conditional(mode, formData) : true;
 
-            if (field.required && isConditionallyRequired && (formData[field.name] === undefined || formData[field.name] === null || formData[field.name] === '')) {
+            if (
+                field.required &&
+                isConditionallyRequired &&
+                (formData[field.name] === undefined || formData[field.name] === null || formData[field.name] === '')
+            ) {
                 newErrors[field.name] = `${field.label} is required`;
             }
 
@@ -542,7 +567,7 @@ export function CrudFormModal({
         const cleanData = { ...formData };
 
         // Process multi-select fields before submission
-        formConfig.fields.forEach(field => {
+        formConfig.fields.forEach((field) => {
             if (field.type === 'multi-select' && cleanData[field.name]) {
                 // Ensure it's an array of strings
                 if (!Array.isArray(cleanData[field.name])) {
@@ -577,16 +602,12 @@ export function CrudFormModal({
                 const selectedValues = Array.isArray(formData[field.name]) ? formData[field.name] : [];
                 const selectedLabels = selectedValues
                     .map((value: string) => {
-                        const option = field.options?.find(opt => opt.value === value);
+                        const option = field.options?.find((opt) => opt.value === value);
                         return option ? option.label : value;
                     })
                     .join(', ');
 
-                return (
-                    <div className="p-2 border rounded-md bg-gray-50">
-                        {selectedLabels || '-'}
-                    </div>
-                );
+                return <div className="rounded-md border bg-gray-50 p-2">{selectedLabels || '-'}</div>;
             }
 
             // For array fields in view mode
@@ -596,7 +617,7 @@ export function CrudFormModal({
                     return arrayValue.reduce((total: number, item: any) => {
                         const quantity = parseFloat(item.quantity) || 0;
                         const unitPrice = parseFloat(item.unit_price) || 0;
-                        return total + (quantity * unitPrice);
+                        return total + quantity * unitPrice;
                     }, 0);
                 };
 
@@ -608,8 +629,11 @@ export function CrudFormModal({
                                     <table className="w-full border-collapse border border-gray-200">
                                         <thead>
                                             <tr className="bg-gray-50">
-                                                {field.fields?.map(subField => (
-                                                    <th key={subField.name} className="border border-gray-200 px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                                                {field.fields?.map((subField) => (
+                                                    <th
+                                                        key={subField.name}
+                                                        className="border border-gray-200 px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase"
+                                                    >
                                                         {subField.label}
                                                     </th>
                                                 ))}
@@ -620,32 +644,28 @@ export function CrudFormModal({
                                                 const itemTotal = (parseFloat(item.quantity) || 0) * (parseFloat(item.unit_price) || 0);
                                                 return (
                                                     <tr key={index}>
-                                                        {field.fields?.map(subField => (
+                                                        {field.fields?.map((subField) => (
                                                             <td key={subField.name} className="border border-gray-200 px-3 py-2 text-sm">
-                                                                {subField.type === 'calculated' && subField.calculate ?
-                                                                    subField.calculate(item) :
-                                                                    subField.type === 'select' && subField.options ?
-                                                                        subField.options.find(opt => opt.value == item[subField.name])?.label || item[subField.name] :
-                                                                        subField.type === 'number' && subField.name === 'unit_price' ?
-                                                                            `$${parseFloat(item[subField.name] || 0).toFixed(2)}` :
-                                                                            item[subField.name] || '-'
-                                                                }
+                                                                {subField.type === 'calculated' && subField.calculate
+                                                                    ? subField.calculate(item)
+                                                                    : subField.type === 'select' && subField.options
+                                                                      ? subField.options.find((opt) => opt.value == item[subField.name])?.label ||
+                                                                        item[subField.name]
+                                                                      : subField.type === 'number' && subField.name === 'unit_price'
+                                                                        ? `$${parseFloat(item[subField.name] || 0).toFixed(2)}`
+                                                                        : item[subField.name] || '-'}
                                                             </td>
                                                         ))}
                                                     </tr>
                                                 );
                                             })}
                                         </tbody>
-                                        {field.renderFooter && (
-                                            <tfoot>
-                                                {field.renderFooter(arrayValue, field)}
-                                            </tfoot>
-                                        )}
+                                        {field.renderFooter && <tfoot>{field.renderFooter(arrayValue, field)}</tfoot>}
                                     </table>
                                 </div>
                             </>
                         ) : (
-                            <div className="p-4 text-center text-gray-500 border border-gray-200 rounded-lg">
+                            <div className="rounded-lg border border-gray-200 p-4 text-center text-gray-500">
                                 No {field.label.toLowerCase()} added
                             </div>
                         )}
@@ -654,15 +674,15 @@ export function CrudFormModal({
             }
 
             if (field.type === 'rich-textbox') {
-                return (<div dangerouslySetInnerHTML={{ __html: formData.content || t('No content') }} />)
+                return <div dangerouslySetInnerHTML={{ __html: formData.content || t('No content') }} />;
             }
 
             // For other field types
             return (
-                <div className="p-2 border rounded-md bg-gray-50">
-                    {field.type === 'select' && field.options ?
-                        field.options.find(opt => opt.value === String(formData[field.name]))?.label || formData[field.name] || '-' :
-                        formData[field.name] || '-'}
+                <div className="rounded-md border bg-gray-50 p-2">
+                    {field.type === 'select' && field.options
+                        ? field.options.find((opt) => opt.value === String(formData[field.name]))?.label || formData[field.name] || '-'
+                        : formData[field.name] || '-'}
                 </div>
             );
         }
@@ -686,32 +706,19 @@ export function CrudFormModal({
                 );
             case 'time':
                 return (
-                    <TimeInputField
-                        field={field}
-                        timeValue={formData[field.name] ?? ''}
-                        handleChange={handleChange}
-                        errors={errors}
-                        mode={mode}
-                    />
+                    <TimeInputField field={field} timeValue={formData[field.name] ?? ''} handleChange={handleChange} errors={errors} mode={mode} />
                 );
             case 'date':
                 // Format date value for input (YYYY-MM-DD format)
-                const dateValue = formData[field.name] ?
-                    (formData[field.name] instanceof Date ?
-                        formData[field.name].toISOString().split('T')[0] :
-                        (typeof formData[field.name] === 'string' && formData[field.name].includes('T') ?
-                            formData[field.name].split('T')[0] :
-                            formData[field.name])) : '';
+                const dateValue = formData[field.name]
+                    ? formData[field.name] instanceof Date
+                        ? formData[field.name].toISOString().split('T')[0]
+                        : typeof formData[field.name] === 'string' && formData[field.name].includes('T')
+                          ? formData[field.name].split('T')[0]
+                          : formData[field.name]
+                    : '';
 
-                return (
-                    <DateInputField
-                        field={field}
-                        dateValue={dateValue}
-                        handleChange={handleChange}
-                        errors={errors}
-                        mode={mode}
-                    />
-                );
+                return <DateInputField field={field} dateValue={dateValue} handleChange={handleChange} errors={errors} mode={mode} />;
 
             case 'number':
                 return (
@@ -738,7 +745,7 @@ export function CrudFormModal({
                             value={formData[field.name] ?? field.defaultValue ?? '#3B82F6'}
                             onChange={(e) => handleChange(field.name, e.target.value)}
                             required={field.required}
-                            className={`w-16 h-10 p-1 cursor-pointer ${errors[field.name] ? 'border-red-500' : ''}`}
+                            className={`h-10 w-16 cursor-pointer p-1 ${errors[field.name] ? 'border-red-500' : ''}`}
                             disabled={mode == 'view' || field.disabled}
                         />
                         <Input
@@ -770,19 +777,22 @@ export function CrudFormModal({
                 const options = field.relation
                     ? relationOptions[field.name] || []
                     : field.name === 'parent_id'
-                        ? relationOptions[field.name]?.map((record: any) => ({ value: record.id.toString(), label: record.name })) || []
-                        : field.options || [];
+                      ? relationOptions[field.name]?.map((record: any) => ({ value: record.id.toString(), label: record.name })) || []
+                      : field.options || [];
 
                 const currentValue = String(formData[field.name] || '');
                 const selectedOption = field.relation
                     ? options.find((opt: any) => String(opt[field.relation!.valueField]) === currentValue)
                     : field.name === 'parent_id' && relationOptions[field.name]
-                        ? relationOptions[field.name].find((opt: any) => String(opt.id) === currentValue)
-                        : options.find((opt) => String(opt.value) === currentValue);
+                      ? relationOptions[field.name].find((opt: any) => String(opt.id) === currentValue)
+                      : options.find((opt) => String(opt.value) === currentValue);
 
                 const displayText = selectedOption
-                    ? (field.relation ? selectedOption[field.relation!.labelField] :
-                        field.name === 'parent_id' ? selectedOption.name : selectedOption.label)
+                    ? field.relation
+                        ? selectedOption[field.relation!.labelField]
+                        : field.name === 'parent_id'
+                          ? selectedOption.name
+                          : selectedOption.label
                     : '';
 
                 return (
@@ -799,33 +809,40 @@ export function CrudFormModal({
                                 </SelectValue>
                             </SelectTrigger>
                             <SelectContent className="z-[60000]" searchable={field.searchable}>
-                                {field.relation ? (
-                                    options.map((option: any) => (
-                                        <SelectItem
-                                            key={option[field.relation!.valueField]}
-                                            value={String(option[field.relation!.valueField])}
-                                        >
-                                            {option[field.relation!.labelField]}
-                                        </SelectItem>
-                                    ))
-                                ) : (
-                                    options.map((option) => (
-                                        <SelectItem key={option.value} value={String(option.value)}>
-                                            {option.label}
-                                        </SelectItem>
-                                    ))
-                                )}
+                                {field.relation
+                                    ? options.map((option: any) => (
+                                          <SelectItem key={option[field.relation!.valueField]} value={String(option[field.relation!.valueField])}>
+                                              {option[field.relation!.labelField]}
+                                          </SelectItem>
+                                      ))
+                                    : options.map((option) => (
+                                          <SelectItem key={option.value} value={String(option.value)}>
+                                              {option.label}
+                                          </SelectItem>
+                                      ))}
                             </SelectContent>
                         </Select>
                         {options.length === 0 && mode !== 'view' && field.emptyNote && (
-                            <p className="text-xs mt-1">
-                                {typeof field.emptyNote === 'function' ? (() => {
-                                    const note = field.emptyNote(formData);
-                                    return note ? (
-                                        <>{note.text || "Click here to add"} <Link href={note.link} className="underline font-medium">{note.linkText}</Link></>
-                                    ) : null;
-                                })() : (
-                                    <>{field.emptyNote.text || "Click here to add"} <Link href={field.emptyNote.link} className="underline font-medium">{field.emptyNote.linkText}</Link></>
+                            <p className="mt-1 text-xs">
+                                {typeof field.emptyNote === 'function' ? (
+                                    (() => {
+                                        const note = field.emptyNote(formData);
+                                        return note ? (
+                                            <>
+                                                {note.text || 'Click here to add'}{' '}
+                                                <Link href={note.link} className="font-medium underline">
+                                                    {note.linkText}
+                                                </Link>
+                                            </>
+                                        ) : null;
+                                    })()
+                                ) : (
+                                    <>
+                                        {field.emptyNote.text || 'Click here to add'}{' '}
+                                        <Link href={field.emptyNote.link} className="font-medium underline">
+                                            {field.emptyNote.linkText}
+                                        </Link>
+                                    </>
                                 )}
                             </p>
                         )}
@@ -882,13 +899,7 @@ export function CrudFormModal({
                 );
 
             case 'multi-select':
-                return (
-                    <MultiSelectField
-                        field={field}
-                        formData={formData}
-                        handleChange={handleChange}
-                    />
-                );
+                return <MultiSelectField field={field} formData={formData} handleChange={handleChange} />;
 
             case 'media-picker':
                 return (
@@ -906,7 +917,7 @@ export function CrudFormModal({
 
                 const addArrayItem = () => {
                     const newItem: any = {};
-                    field.fields?.forEach(subField => {
+                    field.fields?.forEach((subField) => {
                         newItem[subField.name] = subField.defaultValue || (subField.type === 'number' ? 0 : '');
                     });
                     handleChange(field.name, [...arrayValue, newItem]);
@@ -938,20 +949,20 @@ export function CrudFormModal({
                         // Load attendee records for the selected type
                         if (value) {
                             fetch(route('api.attendee-types.records', value))
-                                .then(res => res.json())
-                                .then(data => {
+                                .then((res) => res.json())
+                                .then((data) => {
                                     // Force re-render by updating relation options
-                                    setRelationOptions(prev => ({
+                                    setRelationOptions((prev) => ({
                                         ...prev,
-                                        [`attendees_${index}_id`]: data
+                                        [`attendees_${index}_id`]: data,
                                     }));
                                 })
-                                .catch(err => { });
+                                .catch((err) => {});
                         } else {
                             // Clear options when no type selected
-                            setRelationOptions(prev => ({
+                            setRelationOptions((prev) => ({
                                 ...prev,
-                                [`attendees_${index}_id`]: []
+                                [`attendees_${index}_id`]: [],
                             }));
                         }
                     }
@@ -964,7 +975,7 @@ export function CrudFormModal({
                     return arrayValue.reduce((total: number, item: any) => {
                         const quantity = parseFloat(item.quantity) || 0;
                         const unitPrice = parseFloat(item.unit_price) || 0;
-                        return total + (quantity * unitPrice);
+                        return total + quantity * unitPrice;
                     }, 0);
                 };
 
@@ -974,9 +985,11 @@ export function CrudFormModal({
                             const itemTotal = (parseFloat(item.quantity) || 0) * (parseFloat(item.unit_price) || 0);
 
                             return (
-                                <div key={index} className="border rounded-lg p-4 space-y-3">
-                                    <div className="flex justify-between items-center">
-                                        <span className="text-sm font-medium">{field.label} #{index + 1}</span>
+                                <div key={index} className="space-y-3 rounded-lg border p-4">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-sm font-medium">
+                                            {field.label} #{index + 1}
+                                        </span>
                                         <Button
                                             type="button"
                                             variant="outline"
@@ -987,23 +1000,26 @@ export function CrudFormModal({
                                             Remove
                                         </Button>
                                     </div>
-                                    <div className={`gap-3 ${field.name === 'attendees'
-                                        ? 'flex'
-                                        : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2'
-                                        }`}>
-                                        {field.fields?.map(subField => (
+                                    <div
+                                        className={`gap-3 ${field.name === 'attendees' ? 'flex' : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2'}`}
+                                    >
+                                        {field.fields?.map((subField) => (
                                             <div
                                                 key={subField.name}
                                                 className="space-y-1"
-                                                style={field.name === 'attendees' ? {
-                                                    width: subField.name === 'type' ? '30%' : '70%'
-                                                } : {}}
+                                                style={
+                                                    field.name === 'attendees'
+                                                        ? {
+                                                              width: subField.name === 'type' ? '30%' : '70%',
+                                                          }
+                                                        : {}
+                                                }
                                             >
                                                 <Label className="text-xs" required={subField.required && mode !== 'view'}>
                                                     {subField.label}
                                                 </Label>
                                                 {subField.type === 'calculated' ? (
-                                                    <div className="h-10 px-3 py-2 bg-gray-50 border rounded-md text-sm flex items-center">
+                                                    <div className="flex h-10 items-center rounded-md border bg-gray-50 px-3 py-2 text-sm">
                                                         {subField.calculate ? subField.calculate(item) : '-'}
                                                     </div>
                                                 ) : subField.type === 'select' ? (
@@ -1018,47 +1034,52 @@ export function CrudFormModal({
                                                             </SelectTrigger>
                                                             <SelectContent className="z-[70000]" searchable={subField.searchable}>
                                                                 {/* For attendee id field, use dynamic options based on type */}
-                                                                {field.name === 'attendees' && subField.name === 'id' ? (
-                                                                    relationOptions[`attendees_${index}_id`]?.map((option: any) => (
-                                                                        <SelectItem key={option.id} value={String(option.id)}>
-                                                                            {option.name}
-                                                                        </SelectItem>
-                                                                    ))
-                                                                ) : (
-                                                                    subField.options?.map(option => (
-                                                                        <SelectItem key={option.value} value={String(option.value)}>
-                                                                            {option.label}
-                                                                        </SelectItem>
-                                                                    ))
-                                                                )}
+                                                                {field.name === 'attendees' && subField.name === 'id'
+                                                                    ? relationOptions[`attendees_${index}_id`]?.map((option: any) => (
+                                                                          <SelectItem key={option.id} value={String(option.id)}>
+                                                                              {option.name}
+                                                                          </SelectItem>
+                                                                      ))
+                                                                    : subField.options?.map((option) => (
+                                                                          <SelectItem key={option.value} value={String(option.value)}>
+                                                                              {option.label}
+                                                                          </SelectItem>
+                                                                      ))}
                                                             </SelectContent>
                                                         </Select>
-                                                        {subField.emptyNote && (() => {
-                                                            const note = typeof subField.emptyNote === 'function'
-                                                                ? subField.emptyNote(formData, index)
-                                                                : subField.emptyNote;
+                                                        {subField.emptyNote &&
+                                                            (() => {
+                                                                const note =
+                                                                    typeof subField.emptyNote === 'function'
+                                                                        ? subField.emptyNote(formData, index)
+                                                                        : subField.emptyNote;
 
-                                                            const hasOptions = (field.name === 'attendees' && subField.name === 'id')
-                                                                ? (relationOptions[`attendees_${index}_id`]?.length || 0) > 0
-                                                                : (subField?.options?.length || 0) > 0;
+                                                                const hasOptions =
+                                                                    field.name === 'attendees' && subField.name === 'id'
+                                                                        ? (relationOptions[`attendees_${index}_id`]?.length || 0) > 0
+                                                                        : (subField?.options?.length || 0) > 0;
 
-                                                            return note && !hasOptions ? (
-                                                                <p className="text-xs mt-1">
-                                                                    {note.text || "Click here to add"}{" "}
-                                                                    <Link href={note.link} className="underline font-medium">
-                                                                        {note.linkText}
-                                                                    </Link>
-                                                                </p>
-                                                            ) : null;
-                                                        })()}
+                                                                return note && !hasOptions ? (
+                                                                    <p className="mt-1 text-xs">
+                                                                        {note.text || 'Click here to add'}{' '}
+                                                                        <Link href={note.link} className="font-medium underline">
+                                                                            {note.linkText}
+                                                                        </Link>
+                                                                    </p>
+                                                                ) : null;
+                                                            })()}
                                                     </>
                                                 ) : (
                                                     <Input
                                                         type={subField.type || 'text'}
                                                         value={item[subField.name] ?? ''}
-                                                        onChange={(e) => updateArrayItem(index, subField.name,
-                                                            subField.type === 'number' ? parseFloat(e.target.value) || 0 : e.target.value
-                                                        )}
+                                                        onChange={(e) =>
+                                                            updateArrayItem(
+                                                                index,
+                                                                subField.name,
+                                                                subField.type === 'number' ? parseFloat(e.target.value) || 0 : e.target.value,
+                                                            )
+                                                        }
                                                         placeholder={subField.placeholder}
                                                         className="h-10"
                                                         step={subField.step}
@@ -1074,26 +1095,21 @@ export function CrudFormModal({
                         })}
 
                         {arrayValue.length > 0 && field.renderSummary && (
-                            <div className="bg-gray-50 p-3 rounded-lg">
-                                {field.renderSummary(arrayValue, field)}
-                            </div>
+                            <div className="rounded-lg bg-gray-50 p-3">{field.renderSummary(arrayValue, field)}</div>
                         )}
 
-                        {!field.disabled && <Button
-                            type="button"
-                            variant="outline"
-                            onClick={addArrayItem}
-                            className="w-full"
-                        >
-                            Add {field.label}
-                        </Button>}
+                        {!field.disabled && (
+                            <Button type="button" variant="outline" onClick={addArrayItem} className="w-full">
+                                Add {field.label}
+                            </Button>
+                        )}
                     </div>
                 );
 
             case 'file':
                 const acceptAttr = field.fileValidation?.accept || '';
-                const isImageFile = acceptAttr.includes('image') ||
-                    (field.fileValidation?.mimeTypes?.some(type => type.startsWith('image/')) ?? false);
+                const isImageFile =
+                    acceptAttr.includes('image') || (field.fileValidation?.mimeTypes?.some((type) => type.startsWith('image/')) ?? false);
 
                 return (
                     <>
@@ -1111,17 +1127,21 @@ export function CrudFormModal({
                             disabled={mode == 'view' || field.disabled}
                         />
                         {mode === 'edit' && initialData[field.name] && (
-                            <div className="text-xs text-gray-500 mt-1">
+                            <div className="mt-1 text-xs text-gray-500">
                                 Current file: {initialData.featured_image_original_name || initialData[field.name]}
                             </div>
                         )}
                         {field.fileValidation && (
-                            <div className="text-xs text-gray-500 mt-1">
+                            <div className="mt-1 text-xs text-gray-500">
                                 {field.fileValidation.extensions && (
-                                    <span>{t("Allowed extensions")}: {field.fileValidation.extensions.join(', ')} </span>
+                                    <span>
+                                        {t('Allowed extensions')}: {field.fileValidation.extensions.join(', ')}{' '}
+                                    </span>
                                 )}
                                 {field.fileValidation.maxSize && (
-                                    <span>{t("Max size")}: {(field.fileValidation.maxSize / (1024 * 1024)).toFixed(1)}MB</span>
+                                    <span>
+                                        {t('Max size')}: {(field.fileValidation.maxSize / (1024 * 1024)).toFixed(1)}MB
+                                    </span>
                                 )}
                             </div>
                         )}
@@ -1132,28 +1152,35 @@ export function CrudFormModal({
                                 {formData[field.name] && formData[field.name] instanceof File ? (
                                     // Preview for newly selected file
                                     <div className="mt-2">
-                                        <p className="text-xs text-gray-500 mb-1">{t("Preview")}:</p>
+                                        <p className="mb-1 text-xs text-gray-500">{t('Preview')}:</p>
                                         <img
                                             src={URL.createObjectURL(formData[field.name])}
                                             alt="Preview"
                                             className="h-24 w-auto rounded-md object-cover shadow-sm"
                                         />
                                     </div>
-                                ) : mode === 'edit' && initialData[field.name] && (
-                                    // Show existing image in edit mode
-                                    <div className="mt-2">
-                                        <p className="text-xs text-gray-500 mb-1">{t("Current image")}:</p>
-                                        <img
-                                            src={typeof initialData[field.name] === 'string' && initialData[field.name].startsWith && initialData[field.name].startsWith('http')
-                                                ? initialData[field.name]
-                                                : `/storage/${initialData[field.name]}`}
-                                            alt="Current"
-                                            className="h-24 w-auto rounded-md object-cover shadow-sm"
-                                            onError={(e) => {
-                                                e.currentTarget.src = 'https://placehold.co/200x150?text=Image+Not+Found';
-                                            }}
-                                        />
-                                    </div>
+                                ) : (
+                                    mode === 'edit' &&
+                                    initialData[field.name] && (
+                                        // Show existing image in edit mode
+                                        <div className="mt-2">
+                                            <p className="mb-1 text-xs text-gray-500">{t('Current image')}:</p>
+                                            <img
+                                                src={
+                                                    typeof initialData[field.name] === 'string' &&
+                                                    initialData[field.name].startsWith &&
+                                                    initialData[field.name].startsWith('http')
+                                                        ? initialData[field.name]
+                                                        : `/storage/${initialData[field.name]}`
+                                                }
+                                                alt="Current"
+                                                className="h-24 w-auto rounded-md object-cover shadow-sm"
+                                                onError={(e) => {
+                                                    e.currentTarget.src = 'https://placehold.co/200x150?text=Image+Not+Found';
+                                                }}
+                                            />
+                                        </div>
+                                    )
                                 )}
                             </div>
                         )}
@@ -1180,15 +1207,15 @@ export function CrudFormModal({
     // Map modal size to appropriate width class
     const getModalSizeClass = () => {
         const sizeMap: Record<string, string> = {
-            'sm': 'sm:max-w-sm',
-            'md': 'sm:max-w-md',
-            'lg': 'sm:max-w-lg',
-            'xl': 'sm:max-w-xl',
+            sm: 'sm:max-w-sm',
+            md: 'sm:max-w-md',
+            lg: 'sm:max-w-lg',
+            xl: 'sm:max-w-xl',
             '2xl': 'sm:max-w-2xl',
             '3xl': 'sm:max-w-3xl',
             '4xl': 'sm:max-w-4xl',
             '5xl': 'sm:max-w-5xl',
-            'full': 'sm:max-w-full'
+            full: 'sm:max-w-full',
         };
         return formConfig.modalSize ? sizeMap[formConfig.modalSize] : 'sm:max-w-md';
     };
@@ -1197,7 +1224,7 @@ export function CrudFormModal({
     const groupFieldsByRow = () => {
         const rows: Record<number, FormField[]> = {};
 
-        formConfig.fields.forEach(field => {
+        formConfig.fields.forEach((field) => {
             const rowNumber = field.row || 0;
             if (!rows[rowNumber]) {
                 rows[rowNumber] = [];
@@ -1221,30 +1248,30 @@ export function CrudFormModal({
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className={`${getModalSizeClass()} max-h-[90vh] pl-0 pr-0`} modalId={modalId}>
+            <DialogContent className={`${getModalSizeClass()} flex max-h-[95vh] flex-col gap-0 pr-0 pb-0 pl-0 sm:max-h-[90vh]`} modalId={modalId}>
                 <DialogHeader className="px-6">
                     <DialogTitle>{title}</DialogTitle>
-                    <DialogDescription>{description || " "}</DialogDescription>
+                    <DialogDescription>{description || ' '}</DialogDescription>
                 </DialogHeader>
-                <ScrollArea className="max-h-[70vh]">
+                <div className="min-h-0 flex-1 overflow-y-auto py-4">
                     <form onSubmit={handleSubmit} className="space-y-4 px-6">
                         {/* Price Summary Section */}
                         {formConfig.priceSummary && (
-                            <div className="bg-gray-50 p-4 rounded-lg mb-4">
-                                <div className="flex justify-between items-center mb-2">
-                                    <span className="text-sm text-gray-600">{t("Unit Price")}:</span>
+                            <div className="mb-4 rounded-lg bg-gray-50 p-4">
+                                <div className="mb-2 flex items-center justify-between">
+                                    <span className="text-sm text-gray-600">{t('Unit Price')}:</span>
                                     <span className="font-medium">${formConfig.priceSummary.unitPrice.toFixed(2)}</span>
                                 </div>
-                                <div className="flex justify-between items-center mb-2">
-                                    <span className="text-sm text-gray-600">{t("Quantity")}:</span>
-                                    <span className="font-medium">{formData[formConfig.priceSummary.quantityFieldName || 'quantity'] || formConfig.priceSummary.quantity || 1}</span>
+                                <div className="mb-2 flex items-center justify-between">
+                                    <span className="text-sm text-gray-600">{t('Quantity')}:</span>
+                                    <span className="font-medium">
+                                        {formData[formConfig.priceSummary.quantityFieldName || 'quantity'] || formConfig.priceSummary.quantity || 1}
+                                    </span>
                                 </div>
                                 <div className="border-t pt-2">
-                                    <div className="flex justify-between items-center">
-                                        <span className="font-semibold">{t("Total Price")}:</span>
-                                        <span className="font-bold text-lg text-primary">
-                                            ${calculateTotal().toFixed(2)}
-                                        </span>
+                                    <div className="flex items-center justify-between">
+                                        <span className="font-semibold">{t('Total Price')}:</span>
+                                        <span className="text-primary text-lg font-bold">${calculateTotal().toFixed(2)}</span>
                                     </div>
                                 </div>
                             </div>
@@ -1253,16 +1280,22 @@ export function CrudFormModal({
                             <div style={{ display: 'grid', gridTemplateColumns: `repeat(${columns}, 1fr)`, gap: '1rem' }}>
                                 {formConfig.fields.map((field) => {
                                     if (field.conditional && !field.conditional(mode, formData)) return null;
-                                    const isInline = (field.type === 'checkbox' || field.type === 'switch');
+                                    const isInline = field.type === 'checkbox' || field.type === 'switch';
                                     return (
                                         <div
                                             key={field.name}
                                             className={isInline ? 'flex items-center gap-3' : 'space-y-2'}
                                             style={{ gridColumn: field.colSpan ? `span ${field.colSpan}` : 'span 1', width: '100%' }}
                                         >
-                                            {isInline ? renderField(field) : (
+                                            {isInline ? (
+                                                renderField(field)
+                                            ) : (
                                                 <>
-                                                    <Label htmlFor={field.name} className="text-sm font-medium" required={field.required && !(field.type === 'file' && mode === 'edit') && mode !== 'view'}>
+                                                    <Label
+                                                        htmlFor={field.name}
+                                                        className="text-sm font-medium"
+                                                        required={field.required && !(field.type === 'file' && mode === 'edit') && mode !== 'view'}
+                                                    >
                                                         {field.label}
                                                     </Label>
                                                     {renderField(field)}
@@ -1277,16 +1310,22 @@ export function CrudFormModal({
                             <div className="flex flex-wrap gap-4">
                                 {formConfig.fields.map((field) => {
                                     if (field.conditional && !field.conditional(mode, formData)) return null;
-                                    const isInline = (field.type === 'checkbox' || field.type === 'switch');
+                                    const isInline = field.type === 'checkbox' || field.type === 'switch';
                                     return (
                                         <div
                                             key={field.name}
                                             className={isInline ? 'flex items-center gap-3' : 'space-y-2'}
                                             style={{ width: field.width || '100%', flexGrow: field.width ? 0 : 1 }}
                                         >
-                                            {isInline ? renderField(field) : (
+                                            {isInline ? (
+                                                renderField(field)
+                                            ) : (
                                                 <>
-                                                    <Label htmlFor={field.name} className="text-sm font-medium" required={field.required && !(field.type === 'file' && mode === 'edit') && mode !== 'view'}>
+                                                    <Label
+                                                        htmlFor={field.name}
+                                                        className="text-sm font-medium"
+                                                        required={field.required && !(field.type === 'file' && mode === 'edit') && mode !== 'view'}
+                                                    >
                                                         {field.label}
                                                     </Label>
                                                     {renderField(field)}
@@ -1300,19 +1339,27 @@ export function CrudFormModal({
                         ) : (
                             // Default layout with row grouping
                             groupFieldsByRow().map(([rowNumber, fields]) => (
-                                <div key={rowNumber} className="flex flex-wrap gap-4 mb-4">
+                                <div key={rowNumber} className="mb-4 flex flex-wrap gap-4">
                                     {fields.map((field) => {
                                         if (field.conditional && !field.conditional(mode, formData)) return null;
-                                        const isInline = (field.type === 'checkbox' || field.type === 'switch');
+                                        const isInline = field.type === 'checkbox' || field.type === 'switch';
                                         return (
                                             <div
                                                 key={field.name}
                                                 className={isInline ? 'flex items-center gap-3' : 'space-y-2'}
                                                 style={{ width: field.width || '100%' }}
                                             >
-                                                {isInline ? renderField(field) : (
+                                                {isInline ? (
+                                                    renderField(field)
+                                                ) : (
                                                     <>
-                                                        <Label htmlFor={field.name} className="text-sm font-medium" required={field.required && !(field.type === 'file' && mode === 'edit') && mode !== 'view'}>
+                                                        <Label
+                                                            htmlFor={field.name}
+                                                            className="text-sm font-medium"
+                                                            required={
+                                                                field.required && !(field.type === 'file' && mode === 'edit') && mode !== 'view'
+                                                            }
+                                                        >
                                                             {field.label}
                                                         </Label>
                                                         {renderField(field)}
@@ -1326,14 +1373,14 @@ export function CrudFormModal({
                             ))
                         )}
                     </form>
-                </ScrollArea>
-                <DialogFooter className="sm:justify-end px-6">
-                    <Button type="button" variant="outline" onClick={onClose}>
-                        {t("Cancel")}
+                </div>
+                <DialogFooter className="mt-auto flex flex-col-reverse gap-2 border-t px-6 py-4 sm:flex-row sm:justify-end">
+                    <Button type="button" variant="outline" onClick={onClose} className="w-full sm:w-auto">
+                        {t('Cancel')}
                     </Button>
                     {mode !== 'view' && (
-                        <Button type="button" onClick={handleSubmit} disabled={isSubmitting}>
-                            {t("Save")}
+                        <Button type="button" onClick={handleSubmit} disabled={isSubmitting} className="w-full sm:w-auto">
+                            {t('Save')}
                         </Button>
                     )}
                 </DialogFooter>

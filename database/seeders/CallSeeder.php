@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
+use App\Models\Account;
 use App\Models\Call;
 use App\Models\CallAttendee;
-use App\Models\User;
-use App\Models\Lead;
-use App\Models\Account;
-use App\Models\Contact;
-use App\Models\Opportunity;
 use App\Models\CaseModel;
-use Illuminate\Database\Seeder;
+use App\Models\Contact;
+use App\Models\Lead;
+use App\Models\Opportunity;
+use App\Models\User;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class CallSeeder extends Seeder
 {
@@ -22,6 +22,7 @@ class CallSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -61,7 +62,7 @@ class CallSeeder extends Seeder
                 'Complaint Resolution Call',
                 'Partnership Opportunity Call',
                 'Training Session Call',
-                'Emergency Support Call'
+                'Emergency Support Call',
             ];
 
             $callDescriptions = [
@@ -79,7 +80,7 @@ class CallSeeder extends Seeder
                 'Customer service call to address complaints and work towards satisfactory resolution',
                 'Exploratory call to discuss potential partnership opportunities and mutual benefits',
                 'Training call to educate users on new features, best practices, and system optimization',
-                'Urgent support call to address critical system issues requiring immediate attention'
+                'Urgent support call to address critical system issues requiring immediate attention',
             ];
 
             for ($i = 0; $i < 15; $i++) {

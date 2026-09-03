@@ -19,7 +19,7 @@ class Coupon extends Model
         'code',
         'code_type',
         'status',
-        'created_by'
+        'created_by',
     ];
 
     protected $casts = [
@@ -27,7 +27,7 @@ class Coupon extends Model
         'maximum_spend' => 'decimal:2',
         'discount_amount' => 'decimal:2',
         'expiry_date' => 'date',
-        'status' => 'boolean'
+        'status' => 'boolean',
     ];
 
     protected $appends = ['used_count'];
@@ -44,6 +44,6 @@ class Coupon extends Model
 
     public function getUsedCountAttribute()
     {
-        return $this->history()->where("status","!=","rejected")->count();
+        return $this->history()->where("status", "!=", "rejected")->count();
     }
 }

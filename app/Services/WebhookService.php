@@ -28,8 +28,10 @@ class WebhookService
             $data['method'] = $method;
             $data['reference_url'] = $reference_url;
             $data['url'] = $url;
+
             return $data;
         }
+
         return false;
     }
 

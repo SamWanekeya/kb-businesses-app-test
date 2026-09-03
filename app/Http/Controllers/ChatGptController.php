@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Models\Setting;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use OpenAI;
 
 class ChatGptController extends Controller
@@ -16,7 +16,7 @@ class ChatGptController extends Controller
             'language' => 'string|in:en,es,ar,da,de,fr,he,it,ja,nl,pl,pt,pt-BR,ru,tr,zh',
             'creativity' => 'string|in:low,medium,high',
             'num_results' => 'integer|min:1|max:5',
-            'maximum_length' => 'integer|min:1|max:500'
+            'maximum_length' => 'integer|min:1|max:500',
         ]);
 
         try {
@@ -26,7 +26,7 @@ class ChatGptController extends Controller
             if (!$apiKey) {
                 return response()->json([
                     'success' => false,
-                    'message' => __('Please set proper configuration for Api Key')
+                    'message' => __('Please set proper configuration for Api Key'),
                 ]);
             }
 
@@ -69,12 +69,12 @@ class ChatGptController extends Controller
                 'messages' => [
                     [
                         'role' => 'user',
-                        'template_content' => $request->prompt . ' ' . $langText
-                    ]
+                        'template_content' => $request->prompt . ' ' . $langText,
+                    ],
                 ],
                 'maximum_tokens' => $maxTokens,
                 'temperature' => $temperature,
-                'n' => $maxResults
+                'n' => $maxResults,
             ]);
 
             if (isset($response->choices)) {
@@ -92,19 +92,19 @@ class ChatGptController extends Controller
 
                 return response()->json([
                     'success' => true,
-                    'template_content' => trim($text)
+                    'template_content' => trim($text),
                 ]);
             } else {
                 return response()->json([
                     'success' => false,
-                    'message' => __('Text was not generated, please try again')
+                    'message' => __('Text was not generated, please try again'),
                 ]);
             }
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error: ' . $e->getMessage()
+                'message' => 'Error: ' . $e->getMessage(),
             ]);
         }
     }

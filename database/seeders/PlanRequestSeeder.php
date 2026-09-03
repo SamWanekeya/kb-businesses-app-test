@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Plan;
 use App\Models\PlanRequest;
 use App\Models\User;
-use App\Models\Plan;
-use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class PlanRequestSeeder extends Seeder
 {
@@ -27,6 +27,7 @@ class PlanRequestSeeder extends Seeder
 
         if ($allUsers->isEmpty() || $plans->isEmpty()) {
             $this->command->warn('No users or plans found. Please run UserSeeder and PlanSeeder first.');
+
             return;
         }
 
@@ -43,7 +44,7 @@ class PlanRequestSeeder extends Seeder
             'Please consider upgrading our plan to support our increased business needs.',
             'Our current plan limitations are affecting our productivity. Upgrade needed.',
             'We need access to advanced integrations available in higher tier plans.',
-            'Team expansion requires plan upgrade for additional collaboration features.'
+            'Team expansion requires plan upgrade for additional collaboration features.',
         ];
 
         // Create plan requests for users

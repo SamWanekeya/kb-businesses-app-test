@@ -1,138 +1,133 @@
 <?php
 
 
+use App\Http\Controllers\AamarpayPaymentController;
+use App\Http\Controllers\AccountCommentController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AccountIndustryController;
+use App\Http\Controllers\AccountTypeController;
+use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\AuthorizeNetPaymentController;
+use App\Http\Controllers\BankPaymentController;
+use App\Http\Controllers\BenefitPaymentController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\CallController;
+use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\CampaignTypeController;
+use App\Http\Controllers\CaseController;
+use App\Http\Controllers\CashfreeController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChatGptController;
+use App\Http\Controllers\CinetPayPaymentController;
+use App\Http\Controllers\CoinGatePaymentController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ContactMessageController;
+use App\Http\Controllers\CookieConsentController;
+use App\Http\Controllers\CouponController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DeliveryOrderController;
+use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\DocumentFolderController;
+use App\Http\Controllers\DocumentTypeController;
+use App\Http\Controllers\EasebuzzPaymentController;
+use App\Http\Controllers\EmailTemplateController;
+use App\Http\Controllers\FedaPayPaymentController;
+use App\Http\Controllers\FlutterwavePaymentController;
+use App\Http\Controllers\ImpersonateController;
+use App\Http\Controllers\InvoiceAamarpayPaymentController;
+use App\Http\Controllers\InvoiceAuthorizeNetPaymentController;
+use App\Http\Controllers\InvoiceBankPaymentController;
+use App\Http\Controllers\InvoiceBenefitPaymentController;
+use App\Http\Controllers\InvoiceCinetPayPaymentController;
+use App\Http\Controllers\InvoiceCommentController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\InvoiceEasebuzzPaymentController;
+use App\Http\Controllers\InvoiceFedaPayPaymentController;
+use App\Http\Controllers\InvoiceIyzipayPaymentController;
+use App\Http\Controllers\InvoiceKhaltiPaymentController;
+use App\Http\Controllers\InvoiceMidtransPaymentController;
+use App\Http\Controllers\InvoiceMolliePaymentController;
+use App\Http\Controllers\InvoiceOzowPaymentController;
+use App\Http\Controllers\InvoicePaiementPaymentController;
+use App\Http\Controllers\InvoicePayfastPaymentController;
+use App\Http\Controllers\InvoicePayHerePaymentController;
+use App\Http\Controllers\InvoicePayPalPaymentController;
+use App\Http\Controllers\InvoicePayTRPaymentController;
+use App\Http\Controllers\InvoiceRazorpayPaymentController;
+use App\Http\Controllers\InvoiceReminderController;
+use App\Http\Controllers\InvoiceStripePaymentController;
+use App\Http\Controllers\InvoiceTapPaymentController;
+use App\Http\Controllers\InvoiceToyyibPayPaymentController;
+use App\Http\Controllers\InvoiceXenditPaymentController;
+use App\Http\Controllers\InvoiceYooKassaPaymentController;
+use App\Http\Controllers\IyzipayPaymentController;
+use App\Http\Controllers\KhaltiPaymentController;
+use App\Http\Controllers\LandingPage\CustomPageController;
+use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\LeadCommentController;
+use App\Http\Controllers\LeadController;
+use App\Http\Controllers\LeadSourceController;
+use App\Http\Controllers\LeadStatusController;
+use App\Http\Controllers\MediaController;
+use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\MercadoPagoController;
+use App\Http\Controllers\MidtransPaymentController;
+use App\Http\Controllers\MolliePaymentController;
+use App\Http\Controllers\NepalstePaymentController;
+use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\NoteController;
+use App\Http\Controllers\OpportunityCommentController;
+use App\Http\Controllers\OpportunityController;
+use App\Http\Controllers\OpportunitySourceController;
+use App\Http\Controllers\OpportunityStageController;
+use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\OzowPaymentController;
+use App\Http\Controllers\PaiementPaymentController;
+use App\Http\Controllers\PayfastPaymentController;
+use App\Http\Controllers\PayHerePaymentController;
+use App\Http\Controllers\PayPalPaymentController;
+use App\Http\Controllers\PaystackPaymentController;
+use App\Http\Controllers\PayTabsPaymentController;
+use App\Http\Controllers\PayTRPaymentController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PlanOrderController;
 use App\Http\Controllers\PlanRequestController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\ReferralController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\OrganizationController;
-use App\Http\Controllers\CouponController;
-use App\Http\Controllers\CurrencyController;
-use App\Http\Controllers\ImpersonateController;
-use App\Http\Controllers\TranslationController;
-use App\Http\Controllers\LandingPageController;
-use App\Http\Controllers\ContactMessageController;
-use App\Http\Controllers\NewsletterController;
-use App\Http\Controllers\LandingPage\CustomPageController;
-use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\MediaController;
-use App\Http\Controllers\ZeroPaymentController;
-use App\Http\Controllers\RazorpayController;
-use App\Http\Controllers\MercadoPagoController;
-use App\Http\Controllers\StripePaymentController;
-use App\Http\Controllers\PayPalPaymentController;
-use App\Http\Controllers\BankPaymentController;
-use App\Http\Controllers\PaystackPaymentController;
-use App\Http\Controllers\FlutterwavePaymentController;
-use App\Http\Controllers\PayTabsPaymentController;
-use App\Http\Controllers\SkrillPaymentController;
-use App\Http\Controllers\CoinGatePaymentController;
-use App\Http\Controllers\PayfastPaymentController;
-use App\Http\Controllers\TapPaymentController;
-use App\Http\Controllers\XenditPaymentController;
-use App\Http\Controllers\PayTRPaymentController;
-use App\Http\Controllers\MolliePaymentController;
-use App\Http\Controllers\ToyyibPayPaymentController;
-use App\Http\Controllers\CashfreeController;
-use App\Http\Controllers\IyzipayPaymentController;
-use App\Http\Controllers\BenefitPaymentController;
-use App\Http\Controllers\OzowPaymentController;
-use App\Http\Controllers\EasebuzzPaymentController;
-use App\Http\Controllers\KhaltiPaymentController;
-use App\Http\Controllers\AuthorizeNetPaymentController;
-use App\Http\Controllers\FedaPayPaymentController;
-use App\Http\Controllers\PayHerePaymentController;
-use App\Http\Controllers\CinetPayPaymentController;
-use App\Http\Controllers\PaiementPaymentController;
-use App\Http\Controllers\NepalstePaymentController;
-use App\Http\Controllers\YooKassaPaymentController;
-use App\Http\Controllers\AamarpayPaymentController;
-use App\Http\Controllers\MidtransPaymentController;
-use App\Http\Controllers\PublicFormController;
-use App\Http\Controllers\SalesOrderController;
-use App\Http\Controllers\PurchaseOrderController;
-use App\Http\Controllers\PurchaseOrderCommentController;
-use App\Http\Controllers\QuoteController;
-use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\InvoiceReminderController;
-use App\Http\Controllers\DeliveryOrderController;
-use App\Http\Controllers\ReturnOrderController;
-use App\Http\Controllers\ReceiptOrderController;
-use App\Http\Controllers\AccountController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\LeadController;
-use App\Http\Controllers\OpportunityController;
-use App\Http\Controllers\CampaignController;
-use App\Http\Controllers\CaseController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\BrandController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\TaxController;
-use App\Http\Controllers\AccountTypeController;
-use App\Http\Controllers\AccountIndustryController;
-use App\Http\Controllers\LeadStatusController;
-use App\Http\Controllers\LeadSourceController;
-use App\Http\Controllers\OpportunityStageController;
-use App\Http\Controllers\OpportunitySourceController;
-use App\Http\Controllers\CampaignTypeController;
-use App\Http\Controllers\TargetListController;
-use App\Http\Controllers\ShippingProviderTypeController;
-use App\Http\Controllers\EmailTemplateController;
-use App\Http\Controllers\ChatGptController;
-use App\Http\Controllers\QuoteCommentController;
-use App\Http\Controllers\SalesOrderCommentController;
-use App\Http\Controllers\AccountCommentController;
-use App\Http\Controllers\CalendarController;
-use App\Http\Controllers\CallController;
-use App\Http\Controllers\CookieConsentController;
-use App\Http\Controllers\DocumentController;
-use App\Http\Controllers\DocumentFolderController;
-use App\Http\Controllers\StreamController;
-use App\Http\Controllers\DocumentTypeController;
-use App\Http\Controllers\NoteController;
-use App\Http\Controllers\AnnouncementController;
-use App\Http\Controllers\LeadCommentController;
-use App\Http\Controllers\OpportunityCommentController;
-use App\Http\Controllers\InvoiceStripePaymentController;
-use App\Http\Controllers\InvoicePayPalPaymentController;
-use App\Http\Controllers\InvoiceBankPaymentController;
-use App\Http\Controllers\InvoiceBenefitPaymentController;
-use App\Http\Controllers\InvoiceCommentController;
-use App\Http\Controllers\InvoiceRazorpayPaymentController;
-use App\Http\Controllers\InvoiceSkrillPaymentController;
-use App\Http\Controllers\InvoiceCoingatePaymentController;
-use App\Http\Controllers\InvoicePayfastPaymentController;
-use App\Http\Controllers\InvoiceTapPaymentController;
-use App\Http\Controllers\InvoiceXenditPaymentController;
-use App\Http\Controllers\InvoicePayTRPaymentController;
-use App\Http\Controllers\InvoiceMolliePaymentController;
-use App\Http\Controllers\InvoiceToyyibPayPaymentController;
-use App\Http\Controllers\InvoiceIyzipayPaymentController;
-use App\Http\Controllers\InvoiceAamarpayPaymentController;
-use App\Http\Controllers\InvoiceMidtransPaymentController;
-use App\Http\Controllers\InvoiceYooKassaPaymentController;
-use App\Http\Controllers\InvoicePaiementPaymentController;
-use App\Http\Controllers\InvoiceCinetPayPaymentController;
-use App\Http\Controllers\InvoicePayHerePaymentController;
-use App\Http\Controllers\InvoiceFedaPayPaymentController;
-use App\Http\Controllers\InvoiceAuthorizeNetPaymentController;
-use App\Http\Controllers\InvoiceKhaltiPaymentController;
-use App\Http\Controllers\InvoiceEasebuzzPaymentController;
-use App\Http\Controllers\InvoiceOzowPaymentController;
-use App\Http\Controllers\InvoiceCashfreePaymentController;
-use App\Http\Controllers\SignInHistoryController;
 use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\ProjectTaskController;
+use App\Http\Controllers\PurchaseOrderCommentController;
+use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\QuoteCommentController;
+use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\RazorpayController;
+use App\Http\Controllers\ReceiptOrderController;
+use App\Http\Controllers\ReferralController;
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\ReturnOrderController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SalesOrderCommentController;
+use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\Settings\SystemSettingsController;
+use App\Http\Controllers\ShippingProviderTypeController;
+use App\Http\Controllers\SignInHistoryController;
+use App\Http\Controllers\SkrillPaymentController;
+use App\Http\Controllers\StreamController;
+use App\Http\Controllers\StripePaymentController;
+use App\Http\Controllers\TapPaymentController;
+use App\Http\Controllers\TargetListController;
+use App\Http\Controllers\TaxController;
+use App\Http\Controllers\ToyyibPayPaymentController;
+use App\Http\Controllers\TranslationController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\XenditPaymentController;
+use App\Http\Controllers\YooKassaPaymentController;
+use App\Http\Controllers\ZeroPaymentController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
 
 Route::match(['GET', 'HEAD'], '/', [LandingPageController::class, 'show'])->name('home');
 Route::post('/landing-page/contact', [LandingPageController::class, 'submitContact'])->name('landing-page.contact');
@@ -308,13 +303,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     $planLimits = [
                         'current_storage' => $currentStorageUsage,
                         'maximum_storage' => $storageLimit,
-                        'can_create' => $currentStorageUsage < $storageLimit
+                        'can_create' => $currentStorageUsage < $storageLimit,
                     ];
                 }
             }
 
             return Inertia::render('media-library', [
-                'planLimits' => $planLimits
+                'planLimits' => $planLimits,
             ]);
         })->middleware('permission:manage-media')->name('media-library');
 
@@ -929,11 +924,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('api/google-calendar/status', [\App\Http\Controllers\GoogleCalendarController::class, 'checkStatus'])->name('google-calendar.status');
 
         // Document Folder management
-       Route::middleware('permission:manage-document-folders')->group(function () {
+        Route::middleware('permission:manage-document-folders')->group(function () {
             Route::get('document-folders', [DocumentFolderController::class, 'index'])->middleware('permission:manage-document-folders')->name('document-folders.index');
             Route::get('document-folders/{documentFolder}', [DocumentFolderController::class, 'show'])->middleware('permission:view-document-folders')->name('document-folders.show');
             Route::put('document-folders/{documentFolder}/toggle-status', [DocumentFolderController::class, 'toggleStatus'])->middleware('permission:toggle-status-document-folders')->name('document-folders.toggle-status');
-            });
+        });
 
         // Streams management
         Route::middleware('permission:manage-stream')->group(function () {
@@ -1019,7 +1014,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('document-folders/{documentFolder}', [DocumentFolderController::class, 'update'])->middleware('permission:edit-document-folders')->name('document-folders.update');
             Route::delete('document-folders/{documentFolder}', [DocumentFolderController::class, 'destroy'])->middleware('permission:delete-document-folders')->name('document-folders.destroy');
             Route::get('documents/folder/{folder}', [DocumentFolderController::class, 'show'])->middleware('permission:view-documents')->name('documents.folder');
-            });
+        });
 
         // ChatGPT routes
         Route::post('api/chatgpt/generate', [ChatGptController::class, 'generate'])->name('chatgpt.generate');
@@ -1036,9 +1031,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
         // Sign in History routes
-        Route::middleware('permission:manage-login-history')->group(function () {
-            Route::get('login-history', [SignInHistoryController::class, 'index'])->middleware('permission:show-login-history')->name('login-history.index');
-            Route::delete('login-history/{loginDetail}', [SignInHistoryController::class, 'destroy'])->middleware('permission:delete-login-history')->name('login-history.destroy');
+        Route::middleware('permission:manage-sign-in-history')->group(function () {
+            Route::get('sign-in-history', [SignInHistoryController::class, 'index'])->middleware('permission:show-sign-in-history')->name('sign-in-history.index');
+            Route::delete('sign-in-history/{loginDetail}', [SignInHistoryController::class, 'destroy'])->middleware('permission:delete-sign-in-history')->name('sign-in-history.destroy');
         });
 
         // Landing Page content management (Super Administrator only)

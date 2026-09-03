@@ -11,10 +11,10 @@ class Currency extends Model
         'code',
         'symbol',
         'description',
-        'is_default'
+        'is_default',
     ];
-    
+
     protected $casts = [
-        'is_default' => 'boolean'
+        'is_default' => 'boolean',
     ];
 }

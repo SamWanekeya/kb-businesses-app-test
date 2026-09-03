@@ -2,30 +2,30 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use App\Models\Account;
-use App\Models\Contact;
-use App\Models\Lead;
-use App\Models\Opportunity;
-use App\Models\Quote;
-use App\Models\SalesOrder;
-use App\Models\Invoice;
-use App\Models\Project;
-use App\Models\ProjectTask;
-use App\Models\Product;
-use App\Models\Category;
 use App\Models\Brand;
-use App\Models\Tax;
+use App\Models\Campaign;
+use App\Models\Category;
+use App\Models\Contact;
 use App\Models\DeliveryOrder;
-use App\Models\ReturnOrder;
-use App\Models\ReceiptOrder;
-use App\Models\PurchaseOrder;
 use App\Models\Document;
 use App\Models\DocumentFolder;
 use App\Models\DocumentType;
-use App\Models\Campaign;
-use Illuminate\Database\Seeder;
+use App\Models\Invoice;
+use App\Models\Lead;
+use App\Models\Opportunity;
+use App\Models\Product;
+use App\Models\Project;
+use App\Models\ProjectTask;
+use App\Models\PurchaseOrder;
+use App\Models\Quote;
+use App\Models\ReceiptOrder;
+use App\Models\ReturnOrder;
+use App\Models\SalesOrder;
+use App\Models\Tax;
+use App\Models\User;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class SarahJohnsonDataSeeder extends Seeder
 {
@@ -38,6 +38,7 @@ class SarahJohnsonDataSeeder extends Seeder
 
         if (!$sarah) {
             $this->command->error('Sarah Johnson not found. Please run StaffRoleSeeder first.');
+
             return;
         }
 
@@ -60,7 +61,7 @@ class SarahJohnsonDataSeeder extends Seeder
             ['name' => 'Global Marketing Inc', 'email' => 'info@globalmarketing.com', 'website' => 'https://globalmarketing.com', 'status' => 'active'],
             ['name' => 'DataSync Corp', 'email' => 'sales@datasync.com', 'website' => 'https://datasync.com', 'status' => 'active'],
             ['name' => 'CloudVision Ltd', 'email' => 'hello@cloudvision.com', 'website' => 'https://cloudvision.com', 'status' => 'inactive'],
-            ['name' => 'InnovateTech Group', 'email' => 'contact@innovatetech.com', 'website' => 'https://innovatetech.com', 'status' => 'active']
+            ['name' => 'InnovateTech Group', 'email' => 'contact@innovatetech.com', 'website' => 'https://innovatetech.com', 'status' => 'active'],
         ];
 
         foreach ($organizations as $organization) {
@@ -98,7 +99,7 @@ class SarahJohnsonDataSeeder extends Seeder
             ['name' => 'iPad Air', 'price' => 699.99, 'sku' => 'IPAD-AIR-005', 'stock' => 0, 'status' => 'inactive'],
             ['name' => 'Surface Pro 9', 'price' => 1199.99, 'sku' => 'SURFACE-PRO9-006', 'stock' => 20, 'status' => 'active'],
             ['name' => 'Dell UltraSharp Monitor', 'price' => 399.99, 'sku' => 'DELL-MONITOR-007', 'stock' => 100, 'status' => 'active'],
-            ['name' => 'Microsoft Wireless Mouse', 'price' => 49.99, 'sku' => 'MS-MOUSE-008', 'stock' => 200, 'status' => 'active']
+            ['name' => 'Microsoft Wireless Mouse', 'price' => 49.99, 'sku' => 'MS-MOUSE-008', 'stock' => 200, 'status' => 'active'],
         ];
 
         foreach ($productData as $prod) {
@@ -128,7 +129,7 @@ class SarahJohnsonDataSeeder extends Seeder
             ['name' => 'James Thompson', 'position' => 'Chief Executive Officer', 'email' => 'james.t@innovatetech.com', 'status' => 'active'],
             ['name' => 'Lisa Anderson', 'position' => 'Operations Manager', 'email' => 'lisa.a@techflow.com', 'status' => 'active'],
             ['name' => 'Robert Kim', 'position' => 'IT Director', 'email' => 'robert.k@globalmarketing.com', 'status' => 'active'],
-            ['name' => 'Jennifer Davis', 'position' => 'Senior Business Analyst', 'email' => 'jennifer.d@datasync.com', 'status' => 'active']
+            ['name' => 'Jennifer Davis', 'position' => 'Senior Business Analyst', 'email' => 'jennifer.d@datasync.com', 'status' => 'active'],
         ];
 
         foreach ($contacts as $contact) {
@@ -156,7 +157,7 @@ class SarahJohnsonDataSeeder extends Seeder
             ['name' => 'Daniel Taylor', 'organization' => 'LogiFlow Inc', 'position' => 'Supply Chain Manager', 'email' => 'daniel@logiflow.com', 'status' => 'active', 'value' => 12000],
             ['name' => 'Sophie Clark', 'organization' => 'MediaStream Ltd', 'position' => 'Content Director', 'email' => 'sophie@mediastream.com', 'status' => 'active', 'value' => 28000],
             ['name' => 'Ryan Murphy', 'organization' => 'SecureNet Solutions', 'position' => 'Security Analyst', 'email' => 'ryan@securenet.com', 'status' => 'active', 'value' => 22000],
-            ['name' => 'Jessica White', 'organization' => 'GreenEnergy Corp', 'position' => 'Project Manager', 'email' => 'jessica@greenenergy.com', 'status' => 'active', 'value' => 32000]
+            ['name' => 'Jessica White', 'organization' => 'GreenEnergy Corp', 'position' => 'Project Manager', 'email' => 'jessica@greenenergy.com', 'status' => 'active', 'value' => 32000],
         ];
 
         foreach ($leads as $lead) {
@@ -186,7 +187,7 @@ class SarahJohnsonDataSeeder extends Seeder
             ['name' => 'Marketing Automation Setup - DataSync', 'amount' => 45000, 'status' => 'active'],
             ['name' => 'Data Analytics Platform - CloudVision', 'amount' => 95000, 'status' => 'inactive'],
             ['name' => 'Mobile App Development - InnovateTech', 'amount' => 85000, 'status' => 'active'],
-            ['name' => 'Security Audit & Compliance - TechFlow', 'amount' => 35000, 'status' => 'active']
+            ['name' => 'Security Audit & Compliance - TechFlow', 'amount' => 35000, 'status' => 'active'],
         ];
 
         foreach ($opportunities as $opp) {
@@ -211,7 +212,7 @@ class SarahJohnsonDataSeeder extends Seeder
             ['name' => 'CRM Implementation Quote - TechFlow', 'status' => 'draft'],
             ['name' => 'Cloud Services Quote - GlobalMarketing', 'status' => 'sent'],
             ['name' => 'Analytics Package Quote - DataSync', 'status' => 'accepted'],
-            ['name' => 'Security Services Quote - InnovateTech', 'status' => 'rejected']
+            ['name' => 'Security Services Quote - InnovateTech', 'status' => 'rejected'],
         ];
 
         foreach ($quoteData as $quoteInfo) {
@@ -249,7 +250,7 @@ class SarahJohnsonDataSeeder extends Seeder
         $salesOrderData = [
             ['name' => 'SO-2024-001 TechFlow Solutions', 'status' => 'confirmed'],
             ['name' => 'SO-2024-002 GlobalMarketing Inc', 'status' => 'processing'],
-            ['name' => 'SO-2024-003 DataSync Corp', 'status' => 'shipped']
+            ['name' => 'SO-2024-003 DataSync Corp', 'status' => 'shipped'],
         ];
 
         foreach ($salesOrderData as $orderInfo) {
@@ -289,7 +290,7 @@ class SarahJohnsonDataSeeder extends Seeder
             ['name' => 'INV-2024-002 GlobalMarketing Inc', 'status' => 'partially_paid'],
             ['name' => 'INV-2024-003 DataSync Corp', 'status' => 'sent'],
             ['name' => 'INV-2024-004 CloudVision Ltd', 'status' => 'overdue'],
-            ['name' => 'INV-2024-005 InnovateTech Group', 'status' => 'draft']
+            ['name' => 'INV-2024-005 InnovateTech Group', 'status' => 'draft'],
         ];
 
         foreach ($invoiceData as $invInfo) {
@@ -336,7 +337,7 @@ class SarahJohnsonDataSeeder extends Seeder
                 'status' => 'active',
                 'priority' => 'high',
                 'budget' => 75000,
-                'tasks' => ['Requirements Gathering', 'System Analysis', 'Data Migration', 'Customization', 'User Training', 'Go-Live Support']
+                'tasks' => ['Requirements Gathering', 'System Analysis', 'Data Migration', 'Customization', 'User Training', 'Go-Live Support'],
             ],
             [
                 'name' => 'CloudVision Digital Transformation',
@@ -345,7 +346,7 @@ class SarahJohnsonDataSeeder extends Seeder
                 'status' => 'active',
                 'priority' => 'urgent',
                 'budget' => 120000,
-                'tasks' => ['Current State Assessment', 'Future State Design', 'Migration Planning', 'Implementation', 'Testing & Validation']
+                'tasks' => ['Current State Assessment', 'Future State Design', 'Migration Planning', 'Implementation', 'Testing & Validation'],
             ],
             [
                 'name' => 'DataSync Analytics Implementation',
@@ -354,8 +355,8 @@ class SarahJohnsonDataSeeder extends Seeder
                 'status' => 'completed',
                 'priority' => 'medium',
                 'budget' => 95000,
-                'tasks' => ['Data Source Integration', 'Dashboard Development', 'Report Creation', 'Performance Optimization', 'User Training']
-            ]
+                'tasks' => ['Data Source Integration', 'Dashboard Development', 'Report Creation', 'Performance Optimization', 'User Training'],
+            ],
         ];
 
         foreach ($projects as $proj) {
@@ -403,7 +404,7 @@ class SarahJohnsonDataSeeder extends Seeder
             ['name' => 'DO-2024-005 InnovateTech Delivery', 'status' => 'in_transit'],
             ['name' => 'DO-2024-006 TechFlow Express', 'status' => 'delivered'],
             ['name' => 'DO-2024-007 GlobalMarketing Rush', 'status' => 'pending'],
-            ['name' => 'DO-2024-008 DataSync Priority', 'status' => 'in_transit']
+            ['name' => 'DO-2024-008 DataSync Priority', 'status' => 'in_transit'],
         ];
 
         foreach ($deliveryOrders as $doInfo) {
@@ -429,7 +430,7 @@ class SarahJohnsonDataSeeder extends Seeder
             ['name' => 'RO-2024-005 Customer Change Mind', 'status' => 'cancelled'],
             ['name' => 'RO-2024-006 Quality Issue', 'status' => 'approved'],
             ['name' => 'RO-2024-007 Late Delivery Return', 'status' => 'pending'],
-            ['name' => 'RO-2024-008 Warranty Return', 'status' => 'received']
+            ['name' => 'RO-2024-008 Warranty Return', 'status' => 'received'],
         ];
 
         foreach ($returnOrders as $roInfo) {
@@ -455,7 +456,7 @@ class SarahJohnsonDataSeeder extends Seeder
             ['name' => 'PO-2024-005 Furniture Order', 'status' => 'confirmed'],
             ['name' => 'PO-2024-006 Security Systems', 'status' => 'draft'],
             ['name' => 'PO-2024-007 Cleaning Supplies', 'status' => 'received'],
-            ['name' => 'PO-2024-008 Training Materials', 'status' => 'sent']
+            ['name' => 'PO-2024-008 Training Materials', 'status' => 'sent'],
         ];
 
         foreach ($purchaseOrders as $poInfo) {
@@ -482,7 +483,7 @@ class SarahJohnsonDataSeeder extends Seeder
             ['name' => 'REC-2024-005 Marketing Receipt', 'status' => 'received'],
             ['name' => 'REC-2024-006 Security Receipt', 'status' => 'partial'],
             ['name' => 'REC-2024-007 Cleaning Receipt', 'status' => 'received'],
-            ['name' => 'REC-2024-008 Training Receipt', 'status' => 'pending']
+            ['name' => 'REC-2024-008 Training Receipt', 'status' => 'pending'],
         ];
 
         foreach ($receiptOrders as $recInfo) {
@@ -502,7 +503,7 @@ class SarahJohnsonDataSeeder extends Seeder
         $folders = [
             ['name' => 'Client Contracts', 'description' => 'Legal contracts and agreements'],
             ['name' => 'Project Documentation', 'description' => 'Technical specifications and project docs'],
-            ['name' => 'Financial Records', 'description' => 'Invoices, receipts, and financial documents']
+            ['name' => 'Financial Records', 'description' => 'Invoices, receipts, and financial documents'],
         ];
 
         foreach ($folders as $folderInfo) {
@@ -516,7 +517,7 @@ class SarahJohnsonDataSeeder extends Seeder
             $documents = [
                 ['name' => 'Service Agreement.pdf', 'type' => 'Contract'],
                 ['name' => 'Technical Specification.docx', 'type' => 'Specification'],
-                ['name' => 'Project Timeline.xlsx', 'type' => 'Planning']
+                ['name' => 'Project Timeline.xlsx', 'type' => 'Planning'],
             ];
 
             foreach ($documents as $docInfo) {
@@ -544,7 +545,7 @@ class SarahJohnsonDataSeeder extends Seeder
             ['name' => 'Brand Awareness Drive', 'type' => 'Branding', 'status' => 'active'],
             ['name' => 'Lead Generation Campaign', 'type' => 'Lead Gen', 'status' => 'inactive'],
             ['name' => 'Email Marketing Blast', 'type' => 'Email', 'status' => 'active'],
-            ['name' => 'Social Media Campaign', 'type' => 'Social', 'status' => 'active']
+            ['name' => 'Social Media Campaign', 'type' => 'Social', 'status' => 'active'],
         ];
 
         foreach ($campaigns as $campInfo) {

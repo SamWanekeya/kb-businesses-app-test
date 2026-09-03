@@ -14,6 +14,7 @@ class BrandSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -23,7 +24,7 @@ class BrandSeeder extends Seeder
             ['name' => 'Dell', 'description' => 'Computer technology organization', 'website' => 'https://dell.com'],
             ['name' => 'Microsoft', 'description' => 'Software and cloud computing', 'website' => 'https://microsoft.com'],
             ['name' => 'Sony', 'description' => 'Electronics and entertainment', 'website' => 'https://sony.com'],
-            ['name' => 'HP', 'description' => 'Personal computing solutions', 'website' => 'https://hp.com']
+            ['name' => 'HP', 'description' => 'Personal computing solutions', 'website' => 'https://hp.com'],
         ];
 
         foreach ($organizationUsers as $organization) {

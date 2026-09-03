@@ -141,7 +141,7 @@ class PurchaseOrder extends BaseModel
             'subtotal' => $subtotal,
             'discount_amount' => $totalDiscountAmount,
             'tax_amount' => $taxAmount,
-            'total_amount' => $totalAmount
+            'total_amount' => $totalAmount,
         ]);
 
         return $totalAmount;

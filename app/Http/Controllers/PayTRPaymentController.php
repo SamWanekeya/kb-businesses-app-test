@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
-use App\Models\PaymentSetting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 
 class PayTRPaymentController extends Controller
@@ -18,7 +16,7 @@ class PayTRPaymentController extends Controller
             'merchant_id' => $settings['payment_settings']['paytr_merchant_id'] ?? null,
             'merchant_key' => $settings['payment_settings']['paytr_merchant_key'] ?? null,
             'merchant_salt' => $settings['payment_settings']['paytr_merchant_salt'] ?? null,
-            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'TRY'
+            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'TRY',
         ];
     }
 
@@ -45,7 +43,7 @@ class PayTRPaymentController extends Controller
             $user_basket = json_encode([[
                 $plan->name . ' - ' . ucfirst($validated['billing_cycle']),
                 number_format($pricing['final_price'], 2),
-                1
+                1,
             ]]);
 
             // Create pending order
@@ -56,7 +54,7 @@ class PayTRPaymentController extends Controller
                 'payment_method' => 'paytr',
                 'coupon_code' => $validated['coupon_code'] ?? null,
                 'payment_id' => $merchant_oid,
-                'status' => 'pending'
+                'status' => 'pending',
             ]);
 
             // Generate hash according to PayTR documentation
@@ -91,7 +89,7 @@ class PayTRPaymentController extends Controller
                 'merchant_fail_url' => route('paytr.failure'),
                 'timeout_limit' => 30,
                 'currency' => $credentials['currency'],
-                'test_mode' => 1
+                'test_mode' => 1,
             ];
 
             $response = Http::asForm()->timeout(40)->post('https://www.paytr.com/odeme/api/get-token', $post_data);
@@ -102,7 +100,7 @@ class PayTRPaymentController extends Controller
                     return response()->json([
                         'success' => true,
                         'token' => $result['token'],
-                        'iframe_url' => 'https://www.paytr.com/odeme/guvenli/' . $result['token']
+                        'iframe_url' => 'https://www.paytr.com/odeme/guvenli/' . $result['token'],
                     ]);
                 } else {
                     throw new \Exception($result['reason'] ?? __('Token generation failed'));

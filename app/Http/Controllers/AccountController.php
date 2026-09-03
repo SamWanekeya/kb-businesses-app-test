@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Account;
 use App\Exports\AccountExport;
+use App\Models\Account;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -87,7 +87,7 @@ class AccountController extends Controller
             $planLimits = [
                 'maximum_accounts' => $organization->plan->maximum_accounts,
                 'current_accounts' => $currentAccountsCount,
-                'can_create' => $currentAccountsCount < $organization->plan->maximum_accounts
+                'can_create' => $currentAccountsCount < $organization->plan->maximum_accounts,
             ];
         }
 
@@ -120,9 +120,9 @@ class AccountController extends Controller
             ->get();
 
         return Inertia::render('accounts/create', [
-            'accountTypes'      => $accountTypes,
+            'accountTypes' => $accountTypes,
             'accountIndustries' => $accountIndustries,
-            'users'             => $users,
+            'users' => $users,
         ]);
     }
 
@@ -182,6 +182,7 @@ class AccountController extends Controller
 
         if (!empty($errors)) {
             $message = __('Account created successfully, but ') . implode(', ', $errors);
+
             return redirect()->back()->with('warning', $message);
         }
 
@@ -205,15 +206,16 @@ class AccountController extends Controller
                 ->with(['creator', 'assignedUser'])->get()
                 ->map(function ($call) {
                     $call->type = 'call';
+
                     return $call;
                 });
 
             $meetings = $parentMeetings->merge($parentCalls)->sortByDesc('start_date')->values();
 
             return Inertia::render('accounts/show', [
-                'account'     => $account,
+                'account' => $account,
                 'streamItems' => $account->activities()->orderBy('id', 'desc')->get(),
-                'meetings'    => $meetings,
+                'meetings' => $meetings,
             ]);
         } else {
             return redirect()->route('accounts.index')->with('error', __('Account not found.'));
@@ -240,10 +242,10 @@ class AccountController extends Controller
             ->where('status', 'active')->select('id', 'name', 'email')->get();
 
         return Inertia::render('accounts/edit', [
-            'account'           => $account,
-            'accountTypes'      => $accountTypes,
+            'account' => $account,
+            'accountTypes' => $accountTypes,
             'accountIndustries' => $accountIndustries,
-            'users'             => $users,
+            'users' => $users,
         ]);
     }
 
@@ -254,31 +256,31 @@ class AccountController extends Controller
             ->first();
 
         if ($account) {
-              $validated = $request->validate([
-                    'name' => 'required|string|max:255',
-                    'email' => 'required|email|max:255|unique:accounts,email,' . $accountId . ',id,created_by,' . createdBy(),
-                    'phone' => 'nullable|string|max:255',
-                    'website' => 'nullable|url|max:255',
-                    'account_type_id' => 'required|exists:account_types,id',
-                    'account_industry_id' => 'required|exists:account_industries,id',
-                    'billing_address' => 'required|string',
-                    'billing_city' => 'required|string|max:255',
-                    'billing_state' => 'required|string|max:255',
-                    'billing_postal_code' => 'required|string|max:255',
-                    'billing_country' => 'required|string|max:255',
-                    'shipping_address' => 'nullable|string',
-                    'shipping_city' => 'nullable|string|max:255',
-                    'shipping_state' => 'nullable|string|max:255',
-                    'shipping_postal_code' => 'nullable|string|max:255',
-                    'shipping_country' => 'nullable|string|max:255',
-                    'status' => 'nullable|in:active,inactive',
-                    'assigned_to' => 'required|exists:users,id',
-                ]);
+            $validated = $request->validate([
+                  'name' => 'required|string|max:255',
+                  'email' => 'required|email|max:255|unique:accounts,email,' . $accountId . ',id,created_by,' . createdBy(),
+                  'phone' => 'nullable|string|max:255',
+                  'website' => 'nullable|url|max:255',
+                  'account_type_id' => 'required|exists:account_types,id',
+                  'account_industry_id' => 'required|exists:account_industries,id',
+                  'billing_address' => 'required|string',
+                  'billing_city' => 'required|string|max:255',
+                  'billing_state' => 'required|string|max:255',
+                  'billing_postal_code' => 'required|string|max:255',
+                  'billing_country' => 'required|string|max:255',
+                  'shipping_address' => 'nullable|string',
+                  'shipping_city' => 'nullable|string|max:255',
+                  'shipping_state' => 'nullable|string|max:255',
+                  'shipping_postal_code' => 'nullable|string|max:255',
+                  'shipping_country' => 'nullable|string|max:255',
+                  'status' => 'nullable|in:active,inactive',
+                  'assigned_to' => 'required|exists:users,id',
+              ]);
             try {
                 $account->update($validated);
 
                 return redirect()->route('accounts.index')->with('success', __('Account updated successfully'));
-            }catch (\Exception $e) {
+            } catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update account'));
             }
         } else {
@@ -295,6 +297,7 @@ class AccountController extends Controller
         if ($account) {
             try {
                 $account->delete();
+
                 return redirect()->back()->with('success', __('Account deleted successfully'));
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete account'));
@@ -355,6 +358,7 @@ class AccountController extends Controller
         }
 
         $name = 'account_' . date('Y-m-d i:h:s');
+
         return Excel::download(new AccountExport(), $name . '.xlsx');
     }
 }

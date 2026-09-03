@@ -1,15 +1,13 @@
 // pages/plans/plan-request.tsx
-import { useState, useEffect } from 'react';
-import { PageTemplate } from '@/components/page-template';
-import { usePage, router } from '@inertiajs/react';
-import { Button } from '@/components/ui/button';
 import { CrudTable } from '@/components/CrudTable';
 import { toast } from '@/components/custom-toast';
-import { useTranslation } from 'react-i18next';
+import { PageTemplate } from '@/components/page-template';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { CheckCircle, XCircle } from 'lucide-react';
 import { capitalize, getDisplayUrl } from '@/utils/helper';
+import { router, usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function PlanRequestsPage() {
     const { t } = useTranslation();
@@ -27,8 +25,7 @@ export default function PlanRequestsPage() {
 
     // Count active filters
     const activeFilterCount = () => {
-        return (selectedStatus !== 'all' ? 1 : 0) +
-            (searchTerm !== '' ? 1 : 0);
+        return (selectedStatus !== 'all' ? 1 : 0) + (searchTerm !== '' ? 1 : 0);
     };
 
     const handleSearch = (e: React.FormEvent) => {
@@ -37,26 +34,34 @@ export default function PlanRequestsPage() {
     };
 
     const applyFilters = () => {
-        router.get(route('plan-requests.index'), {
-            page: 1,
-            search: searchTerm || undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
-            ...(pageFilters.per_page && { per_page: pageFilters.per_page }),
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('plan-requests.index'),
+            {
+                page: 1,
+                search: searchTerm || undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+                ...(pageFilters.per_page && { per_page: pageFilters.per_page }),
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleSort = (field: string) => {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
 
-        router.get(route('plan-requests.index'), {
-            sort_field: field,
-            sort_direction: direction,
-            page: 1,
-            search: searchTerm || undefined,
-            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-            per_page: pageFilters.per_page
-        }, { preserveState: true, preserveScroll: true });
+        router.get(
+            route('plan-requests.index'),
+            {
+                sort_field: field,
+                sort_direction: direction,
+                page: 1,
+                search: searchTerm || undefined,
+                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                per_page: pageFilters.per_page,
+            },
+            { preserveState: true, preserveScroll: true },
+        );
     };
 
     const handleAction = (action: string, item: any) => {
@@ -65,64 +70,71 @@ export default function PlanRequestsPage() {
                 toast.loading(t('Approving plan request...'));
             }
 
-            router.post(route('plan-requests.approve', item.id), {}, {
-                onSuccess: (page) => {
-                    if (!globalSettings?.is_demo) {
-                        toast.dismiss();
-                    }
-                    if (page.props.flash.success) {
-                        toast.success(t(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(t(page.props.flash.error));
-                    }
+            router.post(
+                route('plan-requests.approve', item.id),
+                {},
+                {
+                    onSuccess: (page) => {
+                        if (!globalSettings?.is_demo) {
+                            toast.dismiss();
+                        }
+                        if (page.props.flash.success) {
+                            toast.success(t(page.props.flash.success));
+                        } else if (page.props.flash.error) {
+                            toast.error(t(page.props.flash.error));
+                        }
+                    },
+                    onError: (errors) => {
+                        if (!globalSettings?.is_demo) {
+                            toast.dismiss();
+                        }
+                        if (typeof errors === 'string') {
+                            toast.error(t(errors));
+                        } else {
+                            toast.error(t('Failed to approve plan request: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        }
+                    },
                 },
-                onError: (errors) => {
-                    if (!globalSettings?.is_demo) {
-                        toast.dismiss();
-                    }
-                    if (typeof errors === 'string') {
-                        toast.error(t(errors));
-                    } else {
-                        toast.error(t('Failed to approve plan request: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                    }
-                }
-            });
+            );
         } else if (action === 'reject') {
             if (!globalSettings?.is_demo) {
                 toast.loading(t('Rejecting plan request...'));
             }
 
-            router.post(route('plan-requests.reject', item.id), {}, {
-                onSuccess: (page) => {
-                    if (!globalSettings?.is_demo) {
-                        toast.dismiss();
-                    }
-                    if (page.props.flash.success) {
-                        toast.success(t(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(t(page.props.flash.error));
-                    }
+            router.post(
+                route('plan-requests.reject', item.id),
+                {},
+                {
+                    onSuccess: (page) => {
+                        if (!globalSettings?.is_demo) {
+                            toast.dismiss();
+                        }
+                        if (page.props.flash.success) {
+                            toast.success(t(page.props.flash.success));
+                        } else if (page.props.flash.error) {
+                            toast.error(t(page.props.flash.error));
+                        }
+                    },
+                    onError: (errors) => {
+                        if (!globalSettings?.is_demo) {
+                            toast.dismiss();
+                        }
+                        if (typeof errors === 'string') {
+                            toast.error(t(errors));
+                        } else {
+                            toast.error(t('Failed to reject plan request: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        }
+                    },
                 },
-                onError: (errors) => {
-                    if (!globalSettings?.is_demo) {
-                        toast.dismiss();
-                    }
-                    if (typeof errors === 'string') {
-                        toast.error(t(errors));
-                    } else {
-                        toast.error(t('Failed to reject plan request: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                    }
-                }
-            });
+            );
         }
     };
 
     const [pageInitialState, setPageInitialState] = useState(true);
-     useEffect(() => {
+    useEffect(() => {
         if (!pageInitialState) applyFilters();
         setPageInitialState(false);
-    }, [selectedStatus,searchTerm]);
-
+    }, [selectedStatus, searchTerm]);
 
     const handleResetFilters = () => {
         setSearchTerm('');
@@ -133,7 +145,7 @@ export default function PlanRequestsPage() {
     const breadcrumbs = [
         { title: t('Dashboard'), href: route('dashboard') },
         { title: t('Plans'), href: route('plans.index') },
-        { title: t('Plan Requests') }
+        { title: t('Plan Requests') },
     ];
 
     // Define table columns
@@ -160,7 +172,7 @@ export default function PlanRequestsPage() {
                         </div>
                     </div>
                 );
-            }
+            },
         },
         {
             key: 'plan.name',
@@ -169,11 +181,15 @@ export default function PlanRequestsPage() {
                 const planName = row.plan?.name;
                 if (!planName) return '-';
                 return (
-                    <span className={'inline-flex items-center rounded-md px-2 py-1 text-sm font-medium bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20'}>
+                    <span
+                        className={
+                            'inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-sm font-medium text-blue-700 ring-1 ring-blue-600/20 ring-inset'
+                        }
+                    >
                         {capitalize(planName)}
                     </span>
                 );
-            }
+            },
         },
         {
             key: 'plan.duration',
@@ -182,7 +198,7 @@ export default function PlanRequestsPage() {
                 const duration = row.duration;
                 if (!duration) return '-';
                 return duration === 'monthly' ? t('Monthly') : t('Yearly');
-            }
+            },
         },
         {
             key: 'status',
@@ -191,14 +207,16 @@ export default function PlanRequestsPage() {
                 const statusColors: Record<string, string> = {
                     pending: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20',
                     approved: 'bg-green-50 text-green-700 ring-green-600/20',
-                    rejected: 'bg-red-50 text-red-700 ring-red-600/20'
+                    rejected: 'bg-red-50 text-red-700 ring-red-600/20',
                 };
                 return (
-                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset capitalize ${statusColors[value] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}>
+                    <span
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium capitalize ring-1 ring-inset ${statusColors[value] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}
+                    >
                         {t(value)}
                     </span>
                 );
-            }
+            },
         },
         {
             key: 'created_at',
@@ -206,36 +224,38 @@ export default function PlanRequestsPage() {
             sortable: true,
             type: 'date',
             // render: (value) => window.appSettings?.formatDateTime(value, false) || '-'
-        }
+        },
     ];
 
     // Define table actions - only visible to super admin
     const isSuperAdmin = auth?.user?.type === 'super_admin';
-    const actions = isSuperAdmin ? [
-        {
-            label: t('Approve'),
-            icon: 'Check',
-            action: 'approve',
-            className: 'text-green-500',
-            requiredPermission: 'approve-plan-requests',
-            condition: (row) => row.status === 'pending'
-        },
-        {
-            label: t('Reject'),
-            icon: 'X',
-            action: 'reject',
-            className: 'text-red-500',
-            requiredPermission: 'reject-plan-requests',
-            condition: (row) => row.status === 'pending'
-        }
-    ] : [];
+    const actions = isSuperAdmin
+        ? [
+              {
+                  label: t('Approve'),
+                  icon: 'Check',
+                  action: 'approve',
+                  className: 'text-green-500',
+                  requiredPermission: 'approve-plan-requests',
+                  condition: (row) => row.status === 'pending',
+              },
+              {
+                  label: t('Reject'),
+                  icon: 'X',
+                  action: 'reject',
+                  className: 'text-red-500',
+                  requiredPermission: 'reject-plan-requests',
+                  condition: (row) => row.status === 'pending',
+              },
+          ]
+        : [];
 
     // Prepare status options for filter
     const statusOptions = [
         { value: 'all', label: t('All Status') },
         { value: 'pending', label: t('Pending') },
         { value: 'approved', label: t('Approved') },
-        { value: 'rejected', label: t('Rejected') }
+        { value: 'rejected', label: t('Rejected') },
     ];
 
     return (
@@ -248,7 +268,7 @@ export default function PlanRequestsPage() {
             noPadding
         >
             {/* Search and filters section */}
-           <div className="bg-white dark:bg-gray-900 rounded-lg shadow mb-4 border">
+            <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -260,8 +280,8 @@ export default function PlanRequestsPage() {
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
-                            options: statusOptions
-                        }
+                            options: statusOptions,
+                        },
                     ]}
                     hasActiveFilters={hasActiveFilters}
                     activeFilterCount={activeFilterCount}
@@ -270,7 +290,7 @@ export default function PlanRequestsPage() {
             </div>
 
             {/* Content section */}
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+            <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                 <CrudTable
                     columns={columns}
                     actions={actions}
@@ -289,17 +309,21 @@ export default function PlanRequestsPage() {
                     to={planRequests?.to || 0}
                     total={planRequests?.total || 0}
                     links={planRequests?.links}
-                    entityName={t("plan requests")}
+                    entityName={t('plan requests')}
                     onPageChange={(url) => router.get(url)}
-                    currentPerPage={pageFilters.per_page?.toString() || "10"}
+                    currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
-                        router.get(route('plan-requests.index'), {
-                            page: 1,
-                            per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
-                            search: searchTerm || undefined,
-                            status: selectedStatus !== 'all' ? selectedStatus : undefined,
-                            ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
-                        }, { preserveState: true, preserveScroll: true });
+                        router.get(
+                            route('plan-requests.index'),
+                            {
+                                page: 1,
+                                per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
+                                search: searchTerm || undefined,
+                                status: selectedStatus !== 'all' ? selectedStatus : undefined,
+                                ...(pageFilters.sort_field && { sort_field: pageFilters.sort_field, sort_direction: pageFilters.sort_direction }),
+                            },
+                            { preserveState: true, preserveScroll: true },
+                        );
                     }}
                 />
             </div>

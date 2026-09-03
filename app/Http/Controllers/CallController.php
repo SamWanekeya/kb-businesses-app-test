@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Call;
-use App\Models\Lead;
-use App\Models\Contact;
 use App\Models\CallAttendee;
 use App\Services\GoogleCalendarService;
 use Illuminate\Http\Request;
@@ -39,7 +37,7 @@ class CallController extends Controller
 
         $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'desc');
-        $allowedSorts=['id', 'title', 'start_date', 'created_at'];
+        $allowedSorts = ['id', 'title', 'start_date', 'created_at'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
             $sortDirection = 'desc';
@@ -174,6 +172,7 @@ class CallController extends Controller
 
                 if ($callConflict || $meetingConflict) {
                     $attendeeName = $this->getAttendeeName($attendee['type'], $attendee['id']);
+
                     return redirect()->back()->withErrors(['attendees' => __(':name is already scheduled for another call or meeting during this time.', ['name' => $attendeeName])])->withInput();
                 }
             }
@@ -222,7 +221,7 @@ class CallController extends Controller
                         'activity_type' => 'Call Created',
                         'title' => auth()->user()->name . ' created a call: ' . $call->title,
                         'description' => 'Call scheduled for ' . date('M j, Y', strtotime($call->start_date)) . ' at ' . date('g:i A', strtotime($call->start_time)),
-                        'created_by' => createdBy()
+                        'created_by' => createdBy(),
                     ]);
                     break;
                 case 'lead':
@@ -232,7 +231,7 @@ class CallController extends Controller
                         'activity_type' => 'Call Created',
                         'title' => auth()->user()->name . ' created a call: ' . $call->title,
                         'description' => 'Call scheduled for ' . date('M j, Y', strtotime($call->start_date)) . ' at ' . date('g:i A', strtotime($call->start_time)),
-                        'created_by' => createdBy()
+                        'created_by' => createdBy(),
                     ]);
                     break;
                 case 'opportunity':
@@ -242,7 +241,7 @@ class CallController extends Controller
                         'activity_type' => 'Call Created',
                         'title' => auth()->user()->name . ' created a call: ' . $call->title,
                         'description' => 'Call scheduled for ' . date('M j, Y', strtotime($call->start_date)) . ' at ' . date('g:i A', strtotime($call->start_time)),
-                        'created_by' => createdBy()
+                        'created_by' => createdBy(),
                     ]);
                     break;
             }
@@ -261,7 +260,7 @@ class CallController extends Controller
                                 'activity_type' => 'Call Attendee',
                                 'title' => auth()->user()->name . ' added ' . $contact->name . ' to call: ' . $call->title,
                                 'description' => 'Contact added as attendee to call scheduled for ' . date('M j, Y', strtotime($call->start_date)),
-                                'created_by' => createdBy()
+                                'created_by' => createdBy(),
                             ]);
                         }
                         break;
@@ -274,7 +273,7 @@ class CallController extends Controller
                                 'activity_type' => 'Call Attendee',
                                 'title' => auth()->user()->name . ' added ' . $lead->name . ' to call: ' . $call->title,
                                 'description' => 'Lead added as attendee to call scheduled for ' . date('M j, Y', strtotime($call->start_date)),
-                                'created_by' => createdBy()
+                                'created_by' => createdBy(),
                             ]);
                         }
                         break;
@@ -344,6 +343,7 @@ class CallController extends Controller
 
                 if ($callConflict || $meetingConflict) {
                     $attendeeName = $this->getAttendeeName($attendee['type'], $attendee['id']);
+
                     return redirect()->back()->withErrors(['attendees' => __(':name is already scheduled for another call or meeting during this time.', ['name' => $attendeeName])])->withInput();
                 }
             }
@@ -393,6 +393,7 @@ class CallController extends Controller
         }
 
         $call->delete();
+
         return redirect()->back()->with('success', __('Call deleted successfully'));
     }
 
@@ -403,7 +404,7 @@ class CallController extends Controller
             ->firstOrFail();
 
         $validated = $request->validate([
-            'status' => 'required|in:planned,held,not_held'
+            'status' => 'required|in:planned,held,not_held',
         ]);
 
         $call->update(['status' => $validated['status']]);
@@ -544,12 +545,15 @@ class CallController extends Controller
         switch ($type) {
             case 'user':
                 $user = \App\Models\User::find($id);
+
                 return $user ? $user->name : 'Unknown';
             case 'contact':
                 $contact = \App\Models\Contact::find($id);
+
                 return $contact ? $contact->name : 'Unknown';
             case 'lead':
                 $lead = \App\Models\Lead::find($id);
+
                 return $lead ? $lead->name : 'Unknown';
             default:
                 return 'Unknown';

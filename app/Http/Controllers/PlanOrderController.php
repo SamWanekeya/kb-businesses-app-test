@@ -79,7 +79,7 @@ class PlanOrderController extends BaseController
             'planOrders' => $planOrders,
             'filters' => $request->only(['search', 'status', 'sort_field', 'sort_direction', 'per_page', 'date_from', 'date_to', 'page']),
             'currency' => $currency,
-            'currencySymbol' => $currencySymbol
+            'currencySymbol' => $currencySymbol,
         ]);
     }
 
@@ -100,7 +100,7 @@ class PlanOrderController extends BaseController
     {
         try {
             $request->validate([
-                'notes' => 'nullable|string|max:500'
+                'notes' => 'nullable|string|max:500',
             ]);
 
             $planOrder->reject(Auth::id(), $request->notes);

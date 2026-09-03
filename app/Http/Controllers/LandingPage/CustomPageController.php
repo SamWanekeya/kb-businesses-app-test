@@ -63,7 +63,7 @@ class CustomPageController extends Controller
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
             'is_active' => 'boolean',
-            'sort_order' => 'nullable|integer|min:0'
+            'sort_order' => 'nullable|integer|min:0',
         ]);
 
         LandingPageCustomPage::create($validated);
@@ -74,7 +74,7 @@ class CustomPageController extends Controller
     public function edit(LandingPageCustomPage $customPage)
     {
         return Inertia::render('landing-page/custom-pages/edit', [
-            'page' => $customPage
+            'page' => $customPage,
         ]);
     }
 
@@ -86,7 +86,7 @@ class CustomPageController extends Controller
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
             'is_active' => 'boolean',
-            'sort_order' => 'nullable|integer|min:0'
+            'sort_order' => 'nullable|integer|min:0',
         ]);
 
         $customPage->update($validated);
@@ -97,6 +97,7 @@ class CustomPageController extends Controller
     public function destroy(LandingPageCustomPage $customPage)
     {
         $customPage->delete();
+
         return back()->with('success', __('Custom page deleted successfully!'));
     }
 
@@ -119,7 +120,7 @@ class CustomPageController extends Controller
         return Inertia::render('landing-page/custom-page', [
             'page' => $page,
             'customPages' => LandingPageCustomPage::active()->ordered()->get(),
-            'settings' => $landingPageSettings
+            'settings' => $landingPageSettings,
         ]);
     }
 }

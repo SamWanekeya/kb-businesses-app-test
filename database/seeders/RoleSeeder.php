@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RoleSeeder extends Seeder
 {
@@ -340,9 +340,9 @@ class RoleSeeder extends Seeder
             'edit-announcements',
             'delete-announcements',
             'toggle-status-announcements',
-            'manage-login-history',
-            'show-login-history',
-            'delete-login-history',
+            'manage-sign-in-history',
+            'show-sign-in-history',
+            'delete-sign-in-history',
         ])->get();
 
         $adminRole->syncPermissions($adminPermissions);

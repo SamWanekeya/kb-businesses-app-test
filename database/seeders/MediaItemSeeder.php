@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\MediaItem;
 use App\Models\Business;
+use App\Models\MediaItem;
 use App\Models\User;
-use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class MediaItemSeeder extends Seeder
 {
@@ -20,6 +20,7 @@ class MediaItemSeeder extends Seeder
 
         if ($businesses->isEmpty()) {
             $this->command->warn('No businesses found. Please seed businesses first.');
+
             return;
         }
 
@@ -33,18 +34,18 @@ class MediaItemSeeder extends Seeder
             'restaurant' => [
                 'image' => ['Menu Item', 'Restaurant Interior', 'Chef Special', 'Dining Area', 'Food Presentation', 'Signature Dish', 'Dessert Selection', 'Bar Area'],
                 'video' => ['Chef Interview', 'Cooking Process', 'Customer Testimonial', 'Restaurant Tour'],
-                'document' => ['Menu PDF', 'Catering Options', 'Nutritional Information', 'Allergen Guide']
+                'document' => ['Menu PDF', 'Catering Options', 'Nutritional Information', 'Allergen Guide'],
             ],
             'photography' => [
                 'image' => ['Portrait Sample', 'Wedding Photo', 'Nature Photography', 'Urban Landscape', 'Studio Shot', 'Event Coverage', 'Product Photography'],
                 'video' => ['Photography Reel', 'Behind the Scenes', 'Client Testimonial', 'Photo Editing Process'],
-                'document' => ['Price List', 'Photography Contract', 'Session Information', 'Print Options']
+                'document' => ['Price List', 'Photography Contract', 'Session Information', 'Print Options'],
             ],
             'default' => [
                 'image' => ['Product Image', 'Team Photo', 'Office Space', 'Service Showcase', 'Client Meeting', 'Organization Event', 'Portfolio Item'],
                 'video' => ['Promotional Video', 'Service Demo', 'Client Testimonial', 'Organization Overview'],
-                'document' => ['Price List', 'Service Agreement', 'Organization Brochure', 'Product Specifications']
-            ]
+                'document' => ['Price List', 'Service Agreement', 'Organization Brochure', 'Product Specifications'],
+            ],
         ];
 
         // NFC card media seeding removed

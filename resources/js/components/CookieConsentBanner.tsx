@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
+import { toast } from '@/components/custom-toast';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { X } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-import { usePage } from '@inertiajs/react';
+import { Switch } from '@/components/ui/switch';
 import { useBrand } from '@/contexts/BrandContext';
 import { THEME_COLORS } from '@/hooks/use-appearance';
-import { Switch } from '@/components/ui/switch';
-import { toast } from '@/components/custom-toast';
+import { usePage } from '@inertiajs/react';
+import { X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function CookieConsentBanner() {
     const { t } = useTranslation();
@@ -25,7 +25,7 @@ export default function CookieConsentBanner() {
         strictlyCookieTitle: globalSettings.strictlyCookieTitle || 'Strictly Necessary Cookies',
         strictlyCookieDescription: globalSettings.strictlyCookieDescription || 'These cookies are essential for the website to function properly.',
         contactUsDescription: globalSettings.contactUsDescription || 'If you have any questions about our cookie policy, please contact us.',
-        contactUsUrl: globalSettings.contactUsUrl || '#'
+        contactUsUrl: globalSettings.contactUsUrl || '#',
     };
 
     useEffect(() => {
@@ -66,8 +66,8 @@ export default function CookieConsentBanner() {
             const response = await fetch('https://ipapi.co/json/', {
                 signal: controller.signal,
                 headers: {
-                    'Accept': 'application/json'
-                }
+                    Accept: 'application/json',
+                },
             });
 
             clearTimeout(timeoutId);
@@ -84,7 +84,7 @@ export default function CookieConsentBanner() {
                 country: data.country_name || 'unknown',
                 city: data.city || 'unknown',
                 region: data.region || 'unknown',
-                ...data
+                ...data,
             };
         } catch (error: any) {
             return {
@@ -92,7 +92,7 @@ export default function CookieConsentBanner() {
                 country: 'unknown',
                 city: 'unknown',
                 region: 'unknown',
-                error: error.message || 'Location fetch failed'
+                error: error.message || 'Location fetch failed',
             };
         }
     };
@@ -108,7 +108,7 @@ export default function CookieConsentBanner() {
                 userAgent: navigator.userAgent || 'unknown',
                 language: navigator.language || 'unknown',
                 url: window.location.href,
-                ...locationData
+                ...locationData,
             };
             // Always store in localStorage first (this is the primary requirement)
             localStorage.setItem('cookie-consent', JSON.stringify({ accepted: true, timestamp: Date.now() }));
@@ -124,9 +124,9 @@ export default function CookieConsentBanner() {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': csrfToken,
-                    'Accept': 'application/json'
+                    Accept: 'application/json',
                 },
-                body: JSON.stringify(consentData)
+                body: JSON.stringify(consentData),
             });
 
             if (!response.ok) {
@@ -137,8 +137,7 @@ export default function CookieConsentBanner() {
             if (!result.success) {
                 throw new Error('Server returned error');
             }
-        } catch (error) {
-        }
+        } catch (error) {}
     };
 
     const acceptAll = async () => {
@@ -159,7 +158,7 @@ export default function CookieConsentBanner() {
             const preferences = {
                 necessary: true,
                 analytics: true,
-                marketing: true
+                marketing: true,
             };
 
             await saveCookieConsent('accept_all', preferences);
@@ -178,7 +177,7 @@ export default function CookieConsentBanner() {
         const preferences = {
             necessary: true,
             analytics: false,
-            marketing: false
+            marketing: false,
         };
 
         await saveCookieConsent('necessary_only', preferences);
@@ -191,23 +190,16 @@ export default function CookieConsentBanner() {
     return (
         <>
             {/* Main Cookie Banner */}
-            <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 max-w-md w-full">
-                <Card className="p-4 shadow-lg border">
-                    <div className="flex justify-between items-start mb-3">
-                        <h3 className="font-semibold text-sm">
-                            {settings.cookieTitle || t('Cookie Consent')}
-                        </h3>
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => setIsVisible(false)}
-                            className="h-6 w-6 p-0"
-                        >
+            <div className="fixed bottom-4 left-1/2 z-50 w-full max-w-md -translate-x-1/2 transform">
+                <Card className="border p-4 shadow-lg">
+                    <div className="mb-3 flex items-start justify-between">
+                        <h3 className="text-sm font-semibold">{settings.cookieTitle || t('Cookie Consent')}</h3>
+                        <Button variant="ghost" size="sm" onClick={() => setIsVisible(false)} className="h-6 w-6 p-0">
                             <X className="h-4 w-4" />
                         </Button>
                     </div>
 
-                    <p className="text-sm text-muted-foreground mb-4">
+                    <p className="text-muted-foreground mb-4 text-sm">
                         {settings.cookieDescription || t('We use cookies to enhance your browsing experience and provide personalized content.')}
                     </p>
 
@@ -233,18 +225,13 @@ export default function CookieConsentBanner() {
                                 {isLoading ? t('Saving...') : t('Necessary Only')}
                             </Button>
                         </div>
-                        <Button
-                            onClick={() => setShowModal(true)}
-                            variant="ghost"
-                            size="sm"
-                            className="text-sm underline"
-                        >
+                        <Button onClick={() => setShowModal(true)} variant="ghost" size="sm" className="text-sm underline">
                             {t('Let me choose')}
                         </Button>
                     </div>
 
                     {settings.contactUsUrl && (
-                        <p className="text-xs text-muted-foreground mt-2">
+                        <p className="text-muted-foreground mt-2 text-xs">
                             {settings.contactUsDescription || t('Questions about our cookie policy?')}{' '}
                             <a href={settings.contactUsUrl} className="underline">
                                 {t('Contact us')}
@@ -257,16 +244,11 @@ export default function CookieConsentBanner() {
             {/* Cookie Preferences Modal */}
             {showModal && (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-                    <Card className="w-full max-w-md max-h-[80vh] overflow-y-auto">
+                    <Card className="max-h-[80vh] w-full max-w-md overflow-y-auto">
                         <div className="p-6">
-                            <div className="flex justify-between items-center mb-4">
+                            <div className="mb-4 flex items-center justify-between">
                                 <h3 className="text-lg font-semibold">{settings.cookieTitle || t('Cookie Preferences')}</h3>
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => setShowModal(false)}
-                                    className="h-6 w-6 p-0"
-                                >
+                                <Button variant="ghost" size="sm" onClick={() => setShowModal(false)} className="h-6 w-6 p-0">
                                     <X className="h-4 w-4" />
                                 </Button>
                             </div>
@@ -275,18 +257,17 @@ export default function CookieConsentBanner() {
                                 {/* Strictly Necessary Cookies */}
                                 <div className="flex items-center justify-between">
                                     <div className="flex-1">
-                                        <h4 className="font-medium text-sm">{settings.strictlyCookieTitle || t('Strictly Necessary Cookies')}</h4>
-                                        <p className="text-xs text-muted-foreground mt-1">
-                                            {settings.strictlyCookieDescription || t('These cookies are essential for the website to function properly.')}
+                                        <h4 className="text-sm font-medium">{settings.strictlyCookieTitle || t('Strictly Necessary Cookies')}</h4>
+                                        <p className="text-muted-foreground mt-1 text-xs">
+                                            {settings.strictlyCookieDescription ||
+                                                t('These cookies are essential for the website to function properly.')}
                                         </p>
                                     </div>
                                     <Switch checked={true} disabled={true} />
                                 </div>
-
-
                             </div>
 
-                            <div className="flex gap-2 mt-6">
+                            <div className="mt-6 flex gap-2">
                                 <Button
                                     onClick={async () => {
                                         await acceptNecessary();

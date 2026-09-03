@@ -17,6 +17,7 @@ class LeadStatusSeeder extends Seeder
 
         if ($organizationUsers->isEmpty()) {
             $this->command->warn('No organization users found. Please run UserSeeder first.');
+
             return;
         }
 
@@ -26,7 +27,7 @@ class LeadStatusSeeder extends Seeder
             ['name' => 'Qualified', 'color' => '#10b77f', 'description' => 'Qualified leads ready for conversion'],
             ['name' => 'Proposal Sent', 'color' => '#8B5CF6', 'description' => 'Proposal has been sent to the lead'],
             ['name' => 'Converted', 'color' => '#059669', 'description' => 'Lead converted to account/contact'],
-            ['name' => 'Lost', 'color' => '#EF4444', 'description' => 'Lead is lost or not interested']
+            ['name' => 'Lost', 'color' => '#EF4444', 'description' => 'Lead is lost or not interested'],
         ];
 
         foreach ($organizationUsers as $organization) {

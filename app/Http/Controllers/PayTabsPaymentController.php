@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
-use App\Models\User;
 use App\Models\PlanOrder;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Paytabscom\Laravel_paytabs\Facades\paypage;
 
 class PayTabsPaymentController extends Controller
@@ -25,13 +24,13 @@ class PayTabsPaymentController extends Controller
             if (empty($settings['profile_id']) || empty($settings['server_key'])) {
                 return response()->json([
                     'success' => false,
-                    'message' => __('PayTabs configuration incomplete.')
+                    'message' => __('PayTabs configuration incomplete.'),
                 ], 400);
             }
 
             $plan = Plan::findOrFail($validated['plan_id']);
             $user = auth()->user();
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null,$validated['billing_cycle']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
             $cartId = 'PT_' . time() . '_' . $user->id;
 
             createPlanOrder([
@@ -41,7 +40,7 @@ class PayTabsPaymentController extends Controller
                 'payment_method' => 'paytabs',
                 'coupon_code' => $validated['coupon_code'] ?? null,
                 'payment_id' => $cartId,
-                'status' => 'pending'
+                'status' => 'pending',
             ]);
 
             // Force PayTabs configuration
@@ -49,7 +48,7 @@ class PayTabsPaymentController extends Controller
                 'paytabs.profile_id' => $settings['profile_id'],
                 'paytabs.server_key' => $settings['server_key'],
                 'paytabs.region' => $settings['region'],
-                'paytabs.currency' => 'INR'
+                'paytabs.currency' => 'INR',
             ]);
 
             $pay = paypage::sendPaymentCode('all')
@@ -80,19 +79,19 @@ class PayTabsPaymentController extends Controller
 
                 return response()->json([
                     'success' => true,
-                    'redirect_url' => $redirectUrl
+                    'redirect_url' => $redirectUrl,
                 ]);
             }
 
             return response()->json([
                 'success' => false,
-                'message' => __('Payment initialization failed.')
+                'message' => __('Payment initialization failed.'),
             ], 400);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => __('Payment processing failed.')
+                'message' => __('Payment processing failed.'),
             ], 500);
         }
     }
@@ -163,7 +162,7 @@ class PayTabsPaymentController extends Controller
                             'paytabs.profile_id' => $settings['profile_id'],
                             'paytabs.server_key' => $settings['server_key'],
                             'paytabs.region' => $settings['region'],
-                            'paytabs.currency' => 'INR'
+                            'paytabs.currency' => 'INR',
                         ]);
 
                         // PayTabs only redirects to success URL on successful payment

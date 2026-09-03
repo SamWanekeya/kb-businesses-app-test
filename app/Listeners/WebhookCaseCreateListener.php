@@ -8,6 +8,7 @@ use App\Services\WebhookService;
 class WebhookCaseCreateListener
 {
     private static array $processedCase = [];
+
     /**
      * Create the event listener.
      */

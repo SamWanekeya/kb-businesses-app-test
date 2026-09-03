@@ -1,23 +1,23 @@
-import React, { useEffect } from 'react';
 import { Head, usePage } from '@inertiajs/react';
+import React, { useEffect } from 'react';
+import FeaturesSection from './components/FeaturesSection';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
-import FeaturesSection from './components/FeaturesSection';
 import ScreenshotsSection from './components/ScreenshotsSection';
 import WhyChooseUs from './components/WhyChooseUs';
 // import TemplatesSection from './components/TemplatesSection';
+import { useBrand } from '@/contexts/BrandContext';
+import { THEME_COLORS } from '@/hooks/use-appearance';
+import { getCookie, isDemoMode } from '@/utils/cookie-utils';
+import { getDisplayUrl } from '@/utils/helper';
 import AboutUs from './components/AboutUs';
+import ContactSection from './components/ContactSection';
+import FaqSection from './components/FaqSection';
+import Footer from './components/Footer';
+import NewsletterSection from './components/NewsletterSection';
+import PlansSection from './components/PlansSection';
 import TeamSection from './components/TeamSection';
 import TestimonialsSection from './components/TestimonialsSection';
-import PlansSection from './components/PlansSection';
-import FaqSection from './components/FaqSection';
-import NewsletterSection from './components/NewsletterSection';
-import ContactSection from './components/ContactSection';
-import Footer from './components/Footer';
-import { useBrand } from '@/contexts/BrandContext';
-import { THEME_COLORS, useAppearance } from '@/hooks/use-appearance';
-import { isDemoMode, getCookie } from '@/utils/cookie-utils';
-import { getDisplayUrl } from '@/utils/helper';
 
 interface Plan {
     id: number;
@@ -174,7 +174,7 @@ export default function LandingPage() {
 
         observer.observe(document.documentElement, {
             attributes: true,
-            attributeFilter: ['dir']
+            attributeFilter: ['dir'],
         });
 
         return () => observer.disconnect();
@@ -257,7 +257,7 @@ export default function LandingPage() {
 
     // Get section data helper
     const getSectionData = (key: string) => {
-        return settings.config_sections?.sections?.find(section => section.key === key) || {};
+        return settings.config_sections?.sections?.find((section) => section.key === key) || {};
     };
 
     // Get section visibility
@@ -267,48 +267,41 @@ export default function LandingPage() {
 
     // Get section order or use default
     const sectionOrder = settings.config_sections?.section_order || [
-        'header', 'hero', 'features', 'screenshots', 'why_choose_us', 'templates', 'about',
-        'team', 'testimonials', 'plans', 'faq', 'newsletter', 'contact', 'footer'
+        'header',
+        'hero',
+        'features',
+        'screenshots',
+        'why_choose_us',
+        'templates',
+        'about',
+        'team',
+        'testimonials',
+        'plans',
+        'faq',
+        'newsletter',
+        'contact',
+        'footer',
     ];
 
     // Component mapping
     const sectionComponents = {
-        header: () => isSectionVisible('header') && (
-            <Header
-                settings={settings}
-                sectionData={getSectionData('header')}
-                customPages={customPages}
-                brandColor={primaryColor}
-            />
-        ),
-        hero: () => isSectionVisible('hero') && (
-            <HeroSection
-                settings={settings}
-                sectionData={getSectionData('hero')}
-                brandColor={primaryColor}
-            />
-        ),
-        features: () => isSectionVisible('features') && (
-            <FeaturesSection
-                settings={settings}
-                sectionData={getSectionData('features')}
-                brandColor={primaryColor}
-            />
-        ),
-        screenshots: () => isSectionVisible('screenshots') && (
-            <ScreenshotsSection
-                settings={settings}
-                sectionData={getSectionData('screenshots')}
-                brandColor={primaryColor}
-            />
-        ),
-        why_choose_us: () => isSectionVisible('why_choose_us') && (
-            <WhyChooseUs
-                settings={settings}
-                sectionData={getSectionData('why_choose_us')}
-                brandColor={primaryColor}
-            />
-        ),
+        header: () =>
+            isSectionVisible('header') && (
+                <Header settings={settings} sectionData={getSectionData('header')} customPages={customPages} brandColor={primaryColor} />
+            ),
+        hero: () => isSectionVisible('hero') && <HeroSection settings={settings} sectionData={getSectionData('hero')} brandColor={primaryColor} />,
+        features: () =>
+            isSectionVisible('features') && (
+                <FeaturesSection settings={settings} sectionData={getSectionData('features')} brandColor={primaryColor} />
+            ),
+        screenshots: () =>
+            isSectionVisible('screenshots') && (
+                <ScreenshotsSection settings={settings} sectionData={getSectionData('screenshots')} brandColor={primaryColor} />
+            ),
+        why_choose_us: () =>
+            isSectionVisible('why_choose_us') && (
+                <WhyChooseUs settings={settings} sectionData={getSectionData('why_choose_us')} brandColor={primaryColor} />
+            ),
         // templates: () => isSectionVisible('templates') && (
         //   <TemplatesSection
         //     settings={settings}
@@ -316,67 +309,32 @@ export default function LandingPage() {
         //     brandColor={primaryColor}
         //   />
         // ),
-        about: () => isSectionVisible('about') && (
-            <AboutUs
-                settings={settings}
-                sectionData={getSectionData('about')}
-                brandColor={primaryColor}
-            />
-        ),
-        team: () => isSectionVisible('team') && (
-            <TeamSection
-                settings={settings}
-                sectionData={getSectionData('team')}
-                brandColor={primaryColor}
-            />
-        ),
-        testimonials: () => isSectionVisible('testimonials') && (
-            <TestimonialsSection
-                testimonials={testimonials}
-                settings={settings}
-                sectionData={getSectionData('testimonials')}
-                brandColor={primaryColor}
-            />
-        ),
-        plans: () => isSectionVisible('plans') && (
-            <PlansSection
-                plans={plans}
-                settings={settings}
-                sectionData={getSectionData('plans')}
-                brandColor={primaryColor}
-            />
-        ),
-        faq: () => isSectionVisible('faq') && (
-            <FaqSection
-                faqs={faqs}
-                settings={settings}
-                sectionData={getSectionData('faq')}
-                brandColor={primaryColor}
-            />
-        ),
-        newsletter: () => isSectionVisible('newsletter') && (
-            <NewsletterSection
-                flash={flash}
-                settings={settings}
-                sectionData={getSectionData('newsletter')}
-                brandColor={primaryColor}
-            />
-        ),
-        contact: () => isSectionVisible('contact') && (
-            <ContactSection
-                flash={flash}
-                settings={settings}
-                sectionData={getSectionData('contact')}
-                brandColor={primaryColor}
-            />
-        ),
-        footer: () => isSectionVisible('footer') && (
-            <Footer
-                settings={settings}
-                sectionData={getSectionData('footer')}
-                brandColor={primaryColor}
-            />
-        )
+        about: () => isSectionVisible('about') && <AboutUs settings={settings} sectionData={getSectionData('about')} brandColor={primaryColor} />,
+        team: () => isSectionVisible('team') && <TeamSection settings={settings} sectionData={getSectionData('team')} brandColor={primaryColor} />,
+        testimonials: () =>
+            isSectionVisible('testimonials') && (
+                <TestimonialsSection
+                    testimonials={testimonials}
+                    settings={settings}
+                    sectionData={getSectionData('testimonials')}
+                    brandColor={primaryColor}
+                />
+            ),
+        plans: () =>
+            isSectionVisible('plans') && (
+                <PlansSection plans={plans} settings={settings} sectionData={getSectionData('plans')} brandColor={primaryColor} />
+            ),
+        faq: () =>
+            isSectionVisible('faq') && <FaqSection faqs={faqs} settings={settings} sectionData={getSectionData('faq')} brandColor={primaryColor} />,
+        newsletter: () =>
+            isSectionVisible('newsletter') && (
+                <NewsletterSection flash={flash} settings={settings} sectionData={getSectionData('newsletter')} brandColor={primaryColor} />
+            ),
+        contact: () =>
+            isSectionVisible('contact') && (
+                <ContactSection flash={flash} settings={settings} sectionData={getSectionData('contact')} brandColor={primaryColor} />
+            ),
+        footer: () => isSectionVisible('footer') && <Footer settings={settings} sectionData={getSectionData('footer')} brandColor={primaryColor} />,
     };
     const seo = settings.config_sections?.seo;
     // const globalSettings = (usePage().props as any).globalSettings;
@@ -384,22 +342,20 @@ export default function LandingPage() {
     return (
         <>
             <Head title={pageTitle}>
-                {seo?.meta_title && (
-                    <meta name="title" content={seo.meta_title} />
-                )}
-                {seo?.meta_description && (
-                    <meta name="description" content={seo.meta_description} />
-                )}
+                {seo?.meta_title && <meta name="title" content={seo.meta_title} />}
+                {seo?.meta_description && <meta name="description" content={seo.meta_description} />}
             </Head>
             <div
                 className="min-h-screen bg-white"
-                style={{
-                    scrollBehavior: 'smooth',
-                    '--brand-color': primaryColor,
-                    '--primary-color': settings.config_sections?.theme?.primary_color || primaryColor,
-                    '--secondary-color': settings.config_sections?.theme?.secondary_color || '#8b5cf6',
-                    '--accent-color': settings.config_sections?.theme?.accent_color || '#10b77f'
-                } as React.CSSProperties}
+                style={
+                    {
+                        scrollBehavior: 'smooth',
+                        '--brand-color': primaryColor,
+                        '--primary-color': settings.config_sections?.theme?.primary_color || primaryColor,
+                        '--secondary-color': settings.config_sections?.theme?.secondary_color || '#8b5cf6',
+                        '--accent-color': settings.config_sections?.theme?.accent_color || '#10b77f',
+                    } as React.CSSProperties
+                }
             >
                 {sectionOrder.map((sectionKey) => {
                     const Component = sectionComponents[sectionKey as keyof typeof sectionComponents];

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lead;
-use App\Models\LeadComment;
 use App\Models\LeadActivity;
+use App\Models\LeadComment;
 use Illuminate\Http\Request;
 
 class LeadCommentController extends Controller
@@ -100,7 +100,7 @@ class LeadCommentController extends Controller
         ]);
 
         $activity->update([
-            'description' => $validated['comment']
+            'description' => $validated['comment'],
         ]);
 
         return redirect()->back()->with('success', __('Comment updated successfully.'));

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Lead;
-use App\Models\LeadStatus;
-use App\Models\LeadSource;
-use App\Models\User;
 use App\Exports\LeadExport;
 use App\Imports\LeadImport;
+use App\Models\Lead;
+use App\Models\LeadSource;
+use App\Models\LeadStatus;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -134,11 +134,11 @@ class LeadController extends Controller
             ->get();
 
         return Inertia::render('leads/create', [
-            'leadStatuses'          => $leadStatuses,
-            'leadSources'           => $leadSources,
-            'accountIndustries'     => $accountIndustries,
-            'campaigns'             => $campaigns,
-            'users'                 => $users,
+            'leadStatuses' => $leadStatuses,
+            'leadSources' => $leadSources,
+            'accountIndustries' => $accountIndustries,
+            'campaigns' => $campaigns,
+            'users' => $users,
             'prefilledLeadStatusId' => $request->get('lead_status_id', ''),
         ]);
     }
@@ -186,6 +186,7 @@ class LeadController extends Controller
 
         if (!empty($errors)) {
             $message = __('Lead created successfully, but ') . implode(', ', $errors);
+
             return redirect()->back()->with('warning', $message);
         }
 
@@ -199,56 +200,67 @@ class LeadController extends Controller
             ->where('id', $id)
             ->first();
         if ($lead) {
-        $relatedAccounts = [];
-        if ($lead->is_converted) {
-            $relatedAccounts = \App\Models\Account::where('created_by', createdBy())
-                ->where(function ($q) use ($lead) { $q->where('email', $lead->email); })
-                ->with(['accountType', 'accountIndustry'])
-                ->get();
-        }
+            $relatedAccounts = [];
+            if ($lead->is_converted) {
+                $relatedAccounts = \App\Models\Account::where('created_by', createdBy())
+                    ->where(function ($q) use ($lead) {
+                        $q->where('email', $lead->email);
+                    })
+                    ->with(['accountType', 'accountIndustry'])
+                    ->get();
+            }
 
-        $relatedContacts = [];
-        if ($lead->is_converted) {
-            $relatedContacts = \App\Models\Contact::where('created_by', createdBy())
-                ->where(function ($q) use ($lead) { $q->where('email', $lead->email); })
-                ->with(['account'])
-                ->get();
-        }
+            $relatedContacts = [];
+            if ($lead->is_converted) {
+                $relatedContacts = \App\Models\Contact::where('created_by', createdBy())
+                    ->where(function ($q) use ($lead) {
+                        $q->where('email', $lead->email);
+                    })
+                    ->with(['account'])
+                    ->get();
+            }
 
-        $parentMeetings = \App\Models\Meeting::where('created_by', createdBy())
-            ->where('parent_module', 'lead')->where('parent_id', $id)
-            ->with(['creator', 'assignedUser'])->get();
+            $parentMeetings = \App\Models\Meeting::where('created_by', createdBy())
+                ->where('parent_module', 'lead')->where('parent_id', $id)
+                ->with(['creator', 'assignedUser'])->get();
 
-        $attendeeMeetings = \App\Models\Meeting::where('created_by', createdBy())
-            ->whereHas('attendees', function ($q) use ($id) {
-                $q->where('attendee_type', 'lead')->where('attendee_id', $id);
-            })->with(['creator', 'assignedUser'])->get();
+            $attendeeMeetings = \App\Models\Meeting::where('created_by', createdBy())
+                ->whereHas('attendees', function ($q) use ($id) {
+                    $q->where('attendee_type', 'lead')->where('attendee_id', $id);
+                })->with(['creator', 'assignedUser'])->get();
 
-        $parentCalls = \App\Models\Call::where('created_by', createdBy())
-            ->where('parent_module', 'lead')->where('parent_id', $id)
-            ->with(['creator', 'assignedUser'])->get()
-            ->map(function ($call) { $call->type = 'call'; return $call; });
+            $parentCalls = \App\Models\Call::where('created_by', createdBy())
+                ->where('parent_module', 'lead')->where('parent_id', $id)
+                ->with(['creator', 'assignedUser'])->get()
+                ->map(function ($call) {
+                    $call->type = 'call';
 
-        $attendeeCalls = \App\Models\Call::where('created_by', createdBy())
-            ->whereHas('attendees', function ($q) use ($id) {
-                $q->where('attendee_type', 'lead')->where('attendee_id', $id);
-            })->with(['creator', 'assignedUser'])->get()
-            ->map(function ($call) { $call->type = 'call'; return $call; });
+                    return $call;
+                });
 
-        $meetings = $parentMeetings->merge($attendeeMeetings)->merge($parentCalls)->merge($attendeeCalls)->unique('id')->sortByDesc('start_date')->values();
+            $attendeeCalls = \App\Models\Call::where('created_by', createdBy())
+                ->whereHas('attendees', function ($q) use ($id) {
+                    $q->where('attendee_type', 'lead')->where('attendee_id', $id);
+                })->with(['creator', 'assignedUser'])->get()
+                ->map(function ($call) {
+                    $call->type = 'call';
 
-        return Inertia::render('leads/show', [
-            'lead'            => $lead,
-            'streamItems'     => $lead->activities()->with('user:id,name,avatar')->orderBy('created_at', 'asc')->get(),
-            'comments'        => $lead->comments,
-            'relatedAccounts' => $relatedAccounts,
-            'relatedContacts' => $relatedContacts,
-            'meetings'        => $meetings,
-        ]);
-    }
-    else {
+                    return $call;
+                });
+
+            $meetings = $parentMeetings->merge($attendeeMeetings)->merge($parentCalls)->merge($attendeeCalls)->unique('id')->sortByDesc('start_date')->values();
+
+            return Inertia::render('leads/show', [
+                'lead' => $lead,
+                'streamItems' => $lead->activities()->with('user:id,name,avatar')->orderBy('created_at', 'asc')->get(),
+                'comments' => $lead->comments,
+                'relatedAccounts' => $relatedAccounts,
+                'relatedContacts' => $relatedContacts,
+                'meetings' => $meetings,
+            ]);
+        } else {
             return redirect()->route('leads.index')->with('error', __('Lead not found.'));
-    }
+        }
     }
 
     public function edit($id)
@@ -275,12 +287,12 @@ class LeadController extends Controller
             ->where('status', 'active')->select('id', 'name', 'email')->get();
 
         return Inertia::render('leads/edit', [
-            'lead'              => $lead,
-            'leadStatuses'      => $leadStatuses,
-            'leadSources'       => $leadSources,
+            'lead' => $lead,
+            'leadStatuses' => $leadStatuses,
+            'leadSources' => $leadSources,
             'accountIndustries' => $accountIndustries,
-            'campaigns'         => $campaigns,
-            'users'             => $users,
+            'campaigns' => $campaigns,
+            'users' => $users,
         ]);
     }
 
@@ -291,24 +303,24 @@ class LeadController extends Controller
             ->first();
 
         if ($lead) {
-                $validated = $request->validate([
-                    'name' => 'required|string|max:255',
-                    'email' => 'required|email|max:255|unique:leads,email,' . $leadId . ',id,created_by,' . createdBy(),
-                    'phone' => 'nullable|string|max:255',
-                    'organization' => 'nullable|string|max:255',
-                    'account_name' => 'nullable|string|max:255',
-                    'account_industry_id' => 'required|exists:account_industries,id',
-                    'website' => 'nullable|string|max:255',
-                    'position' => 'nullable|string|max:255',
-                    'address' => 'required|string',
-                    'notes' => 'nullable|string',
-                    'value' => 'nullable|numeric|min:0',
-                    'lead_status_id' => 'required|exists:lead_statuses,id',
-                    'lead_source_id' => 'required|exists:lead_sources,id',
-                    'campaign_id' => 'required|exists:campaigns,id',
-                    'status' => 'nullable|in:active,inactive',
-                    'assigned_to' => 'required|exists:users,id',
-                ]);
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255|unique:leads,email,' . $leadId . ',id,created_by,' . createdBy(),
+                'phone' => 'nullable|string|max:255',
+                'organization' => 'nullable|string|max:255',
+                'account_name' => 'nullable|string|max:255',
+                'account_industry_id' => 'required|exists:account_industries,id',
+                'website' => 'nullable|string|max:255',
+                'position' => 'nullable|string|max:255',
+                'address' => 'required|string',
+                'notes' => 'nullable|string',
+                'value' => 'nullable|numeric|min:0',
+                'lead_status_id' => 'required|exists:lead_statuses,id',
+                'lead_source_id' => 'required|exists:lead_sources,id',
+                'campaign_id' => 'required|exists:campaigns,id',
+                'status' => 'nullable|in:active,inactive',
+                'assigned_to' => 'required|exists:users,id',
+            ]);
             try {
 
                 $lead->fill($validated);
@@ -342,6 +354,7 @@ class LeadController extends Controller
         if ($lead) {
             try {
                 $lead->delete();
+
                 return redirect()->back()->with('success', __('Lead deleted successfully.'));
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete lead.'));
@@ -406,7 +419,7 @@ class LeadController extends Controller
             ->firstOrFail();
 
         $lead->update([
-            'lead_status_id' => $validated['lead_status_id']
+            'lead_status_id' => $validated['lead_status_id'],
         ]);
 
         return redirect()->back()->with('success', __('Lead status updated successfully.'));
@@ -452,13 +465,13 @@ class LeadController extends Controller
         foreach ($leadStatuses as $status) {
             $kanbanData[$status->id] = [
                 'status' => $status,
-                'leads' => $leads->where('lead_status_id', $status->id)->values()->toArray()
+                'leads' => $leads->where('lead_status_id', $status->id)->values()->toArray(),
             ];
         }
 
         return response()->json([
             'kanbanData' => $kanbanData,
-            'leadStatuses' => $leadStatuses->toArray()
+            'leadStatuses' => $leadStatuses->toArray(),
         ]);
     }
 
@@ -473,42 +486,42 @@ class LeadController extends Controller
         ]);
 
         $validated = $request->validate([
-            'email'                => 'required|email|max:255|unique:accounts,email,NULL,id,created_by,' . createdBy(),
-            'account_type_id'      => 'required|exists:account_types,id',
-            'account_industry_id'  => 'required|exists:account_industries,id',
-            'website'              => 'nullable|string|max:255',
-            'billing_address'      => 'required|string',
-            'billing_city'         => 'required|string|max:255',
-            'billing_state'        => 'required|string|max:255',
-            'billing_postal_code'  => 'required|string|max:255',
-            'billing_country'      => 'required|string|max:255',
-            'shipping_address'     => 'nullable|string',
-            'shipping_city'        => 'nullable|string|max:255',
-            'shipping_state'       => 'nullable|string|max:255',
+            'email' => 'required|email|max:255|unique:accounts,email,NULL,id,created_by,' . createdBy(),
+            'account_type_id' => 'required|exists:account_types,id',
+            'account_industry_id' => 'required|exists:account_industries,id',
+            'website' => 'nullable|string|max:255',
+            'billing_address' => 'required|string',
+            'billing_city' => 'required|string|max:255',
+            'billing_state' => 'required|string|max:255',
+            'billing_postal_code' => 'required|string|max:255',
+            'billing_country' => 'required|string|max:255',
+            'shipping_address' => 'nullable|string',
+            'shipping_city' => 'nullable|string|max:255',
+            'shipping_state' => 'nullable|string|max:255',
             'shipping_postal_code' => 'nullable|string|max:255',
-            'shipping_country'     => 'nullable|string|max:255',
+            'shipping_country' => 'nullable|string|max:255',
         ]);
 
         $account = \App\Models\Account::create([
-            'name'                 => $lead->organization ?: $lead->name,
-            'email'                => $lead->email,
-            'phone'                => $lead->phone,
-            'website'              => $validated['website'] ?? $lead->website,
-            'account_type_id'      => $validated['account_type_id'],
-            'account_industry_id'  => $validated['account_industry_id'],
-            'billing_address'      => $validated['billing_address'],
-            'billing_city'         => $validated['billing_city'],
-            'billing_state'        => $validated['billing_state'],
-            'billing_postal_code'  => $validated['billing_postal_code'],
-            'billing_country'      => $validated['billing_country'],
-            'shipping_address'     => $validated['shipping_address'] ?? null,
-            'shipping_city'        => $validated['shipping_city'] ?? null,
-            'shipping_state'       => $validated['shipping_state'] ?? null,
+            'name' => $lead->organization ?: $lead->name,
+            'email' => $lead->email,
+            'phone' => $lead->phone,
+            'website' => $validated['website'] ?? $lead->website,
+            'account_type_id' => $validated['account_type_id'],
+            'account_industry_id' => $validated['account_industry_id'],
+            'billing_address' => $validated['billing_address'],
+            'billing_city' => $validated['billing_city'],
+            'billing_state' => $validated['billing_state'],
+            'billing_postal_code' => $validated['billing_postal_code'],
+            'billing_country' => $validated['billing_country'],
+            'shipping_address' => $validated['shipping_address'] ?? null,
+            'shipping_city' => $validated['shipping_city'] ?? null,
+            'shipping_state' => $validated['shipping_state'] ?? null,
             'shipping_postal_code' => $validated['shipping_postal_code'] ?? null,
-            'shipping_country'     => $validated['shipping_country'] ?? null,
-            'assigned_to'          => $lead->assigned_to,
-            'status'               => 'active',
-            'created_by'           => createdBy(),
+            'shipping_country' => $validated['shipping_country'] ?? null,
+            'assigned_to' => $lead->assigned_to,
+            'status' => 'active',
+            'created_by' => createdBy(),
         ]);
 
         $lead->update(['is_converted' => true]);
@@ -529,19 +542,19 @@ class LeadController extends Controller
         $validated = $request->validate([
             'email' => 'required|email|max:255|unique:contacts,email,NULL,id,created_by,' . createdBy(),
             'account_id' => 'required|exists:accounts,id',
-            'position'   => 'nullable|string|max:255',
-            'address'    => 'required|string',
+            'position' => 'nullable|string|max:255',
+            'address' => 'required|string',
         ]);
 
         $contact = \App\Models\Contact::create([
-            'name'       => $lead->name,
-            'email'      => $lead->email,
-            'phone'      => $lead->phone,
-            'position'   => $validated['position'] ?? $lead->position,
-            'address'    => $validated['address'],
+            'name' => $lead->name,
+            'email' => $lead->email,
+            'phone' => $lead->phone,
+            'position' => $validated['position'] ?? $lead->position,
+            'address' => $validated['address'],
             'account_id' => $validated['account_id'],
             'assigned_to' => $lead->assigned_to,
-            'status'     => 'active',
+            'status' => 'active',
             'created_by' => createdBy(),
         ]);
 
@@ -557,8 +570,10 @@ class LeadController extends Controller
         }
 
         $name = 'lead_' . date('Y-m-d i:h:s');
+
         return Excel::download(new LeadExport(), $name . '.xlsx');
     }
+
     public function downloadTemplate()
     {
         if (!auth()->user()->can('import-leads')) {
@@ -588,6 +603,7 @@ class LeadController extends Controller
 
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
+
             return redirect()->back()->with('error', $messages->first());
         }
 
@@ -624,7 +640,7 @@ class LeadController extends Controller
 
             return response()->json([
                 'excelColumns' => $headers,
-                'previewData' => $previewData
+                'previewData' => $previewData,
             ]);
         } catch (\Exception $e) {
             return redirect()->back()->with('error', __('Failed to parse file: :error', ['error' => $e->getMessage()]));
@@ -645,6 +661,7 @@ class LeadController extends Controller
 
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
+
             return redirect()->back()->with('error', $messages->first());
         }
 
@@ -680,7 +697,7 @@ class LeadController extends Controller
 
             $message = __('Import completed: :added leads added, :skipped leads skipped', [
                 'added' => $import->getAddedCount(),
-                'skipped' => $import->getSkippedCount()
+                'skipped' => $import->getSkippedCount(),
             ]);
 
             return redirect()->back()->with('success', $message);
