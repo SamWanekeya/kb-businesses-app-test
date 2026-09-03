@@ -500,7 +500,7 @@ export function InvoicePaymentProcessor({
                         invoiceId={invoice.id}
                         amount={amount}
                         paymentType={paymentType}
-                        bankDetails={invoice.paymentMethods?.bank_detail || 'Bank details not configured'}
+                        bankDetails={invoice.paymentMethods?.bank_details || 'Bank details not configured'}
                         onSuccess={onSuccess}
                         onCancel={handlePaymentCancel}
                     />

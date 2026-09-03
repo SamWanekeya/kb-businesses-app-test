@@ -104,7 +104,7 @@ export function PaymentFormWrapper({
           name: 'Bank Transfer',
           enabled: true,
           config: {
-            details: data.bank_detail
+            details: data.bank_details
           }
         });
       }

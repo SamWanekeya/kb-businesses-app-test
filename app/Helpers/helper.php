@@ -361,7 +361,7 @@ if (! function_exists('getPaymentMethodConfig')) {
             case 'bank':
                 return [
                     'enabled' => isPaymentMethodEnabled('bank', $userId),
-                    'details' => $settings['bank_detail'] ?? null,
+                    'details' => $settings['bank_details'] ?? null,
                 ];
 
             case 'paytabs':

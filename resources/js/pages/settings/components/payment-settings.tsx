@@ -23,112 +23,112 @@ interface PaymentSettings {
   currency_symbol: string;
   is_manual_payment_mode_enabled: boolean;
   is_bank_payment_mode_enabled: boolean;
-  bank_detail: string;
-  is_stripe_payment_mode_enabled: boolean;
-  stripe_key: string;
-  stripe_secret: string;
-  is_paypal_payment_mode_enabled: boolean;
-  paypal_mode: 'sandbox' | 'live';
-  paypal_client_id: string;
-  paypal_secret_key: string;
-  is_razorpay_payment_mode_enabled: boolean;
-  razorpay_key: string;
-  razorpay_secret: string;
-  is_mercadopago_payment_mode_enabled: boolean;
-  mercadopago_mode: 'sandbox' | 'live';
-  mercadopago_access_token: string;
+  bank_details: string;
+  // is_stripe_payment_mode_enabled: boolean;
+  // stripe_key: string;
+  // stripe_secret: string;
+  // is_paypal_payment_mode_enabled: boolean;
+  // paypal_mode: 'sandbox' | 'live';
+  // paypal_client_id: string;
+  // paypal_secret_key: string;
+  // is_razorpay_payment_mode_enabled: boolean;
+  // razorpay_key: string;
+  // razorpay_secret: string;
+  // is_mercadopago_payment_mode_enabled: boolean;
+  // mercadopago_mode: 'sandbox' | 'live';
+  // mercadopago_access_token: string;
   is_paystack_payment_mode_enabled: boolean;
   paystack_public_key: string;
   paystack_secret_key: string;
-  is_flutterwave_payment_mode_enabled: boolean;
-  flutterwave_public_key: string;
-  flutterwave_secret_key: string;
-  is_tap_payment_mode_enabled: boolean;
-  tap_secret_key: string;
-  is_xendit_payment_mode_enabled: boolean;
-  xendit_api_key: string;
-  is_paytr_payment_mode_enabled: boolean;
-  paytr_merchant_id: string;
-  paytr_merchant_key: string;
-  paytr_merchant_salt: string;
-  is_mollie_payment_mode_enabled: boolean;
-  mollie_api_key: string;
-  is_toyyibpay_payment_mode_enabled: boolean;
-  toyyibpay_category_code: string;
-  toyyibpay_secret_key: string;
-  is_benefit_payment_mode_enabled: boolean;
-  benefit_mode: string;
-  benefit_secret_key: string;
-  benefit_public_key: string;
-  is_iyzipay_payment_mode_enabled: boolean;
-  iyzipay_mode: string;
-  iyzipay_secret_key: string;
-  iyzipay_public_key: string;
-  is_aamarpay_payment_mode_enabled: boolean;
-  aamarpay_store_id: string;
-  aamarpay_signature: string;
-  is_midtrans_payment_mode_enabled: boolean;
-  midtrans_mode: string;
-  midtrans_secret_key: string;
-  is_yookassa_payment_mode_enabled: boolean;
-  yookassa_shop_id: string;
-  yookassa_secret_key: string;
-  is_nepalste_payment_mode_enabled: boolean;
-  nepalste_mode: string;
-  nepalste_secret_key: string;
-  nepalste_public_key: string;
-  is_paiement_payment_mode_enabled: boolean;
-  paiement_merchant_id: string;
-  is_cinetpay_payment_mode_enabled: boolean;
-  cinetpay_site_id: string;
-  cinetpay_api_key: string;
-  cinetpay_secret_key: string;
-  is_payhere_payment_mode_enabled: boolean;
-  payhere_mode: string;
-  payhere_merchant_id: string;
-  payhere_merchant_secret: string;
-  payhere_app_id: string;
-  payhere_app_secret: string;
-  is_fedapay_payment_mode_enabled: boolean;
-  fedapay_mode: string;
-  fedapay_secret_key: string;
-  fedapay_public_key: string;
-  is_authorizenet_payment_mode_enabled: boolean;
-  authorizenet_mode: string;
-  authorizenet_merchant_id: string;
-  authorizenet_transaction_key: string;
-  is_khalti_payment_mode_enabled: boolean;
-  khalti_secret_key: string;
-  khalti_public_key: string;
-  is_easebuzz_payment_mode_enabled: boolean;
-  easebuzz_merchant_key: string;
-  easebuzz_salt_key: string;
-  easebuzz_environment: string;
-  is_ozow_payment_mode_enabled: boolean;
-  ozow_mode: string;
-  ozow_site_key: string;
-  ozow_private_key: string;
-  ozow_api_key: string;
-  is_cashfree_payment_mode_enabled: boolean;
-  cashfree_mode: string;
-  cashfree_secret_key: string;
-  cashfree_public_key: string;
-  is_paytabs_payment_mode_enabled: boolean;
-  paytabs_profile_id: string;
-  paytabs_server_key: string;
-  paytabs_region: string;
-  paytabs_mode: 'sandbox' | 'live';
-  is_skrill_payment_mode_enabled: boolean;
-  skrill_merchant_id: string;
-  skrill_secret_word: string;
-  is_coingate_payment_mode_enabled: boolean;
-  coingate_api_token: string;
-  coingate_mode: 'sandbox' | 'live';
-  is_payfast_payment_mode_enabled: boolean;
-  payfast_merchant_id: string;
-  payfast_merchant_key: string;
-  payfast_passphrase: string;
-  payfast_mode: 'sandbox' | 'live';
+  // is_flutterwave_payment_mode_enabled: boolean;
+  // flutterwave_public_key: string;
+  // flutterwave_secret_key: string;
+  // is_tap_payment_mode_enabled: boolean;
+  // tap_secret_key: string;
+  // is_xendit_payment_mode_enabled: boolean;
+  // xendit_api_key: string;
+  // is_paytr_payment_mode_enabled: boolean;
+  // paytr_merchant_id: string;
+  // paytr_merchant_key: string;
+  // paytr_merchant_salt: string;
+  // is_mollie_payment_mode_enabled: boolean;
+  // mollie_api_key: string;
+  // is_toyyibpay_payment_mode_enabled: boolean;
+  // toyyibpay_category_code: string;
+  // toyyibpay_secret_key: string;
+  // is_benefit_payment_mode_enabled: boolean;
+  // benefit_mode: string;
+  // benefit_secret_key: string;
+  // benefit_public_key: string;
+  // is_iyzipay_payment_mode_enabled: boolean;
+  // iyzipay_mode: string;
+  // iyzipay_secret_key: string;
+  // iyzipay_public_key: string;
+  // is_aamarpay_payment_mode_enabled: boolean;
+  // aamarpay_store_id: string;
+  // aamarpay_signature: string;
+  // is_midtrans_payment_mode_enabled: boolean;
+  // midtrans_mode: string;
+  // midtrans_secret_key: string;
+  // is_yookassa_payment_mode_enabled: boolean;
+  // yookassa_shop_id: string;
+  // yookassa_secret_key: string;
+  // is_nepalste_payment_mode_enabled: boolean;
+  // nepalste_mode: string;
+  // nepalste_secret_key: string;
+  // nepalste_public_key: string;
+  // is_paiement_payment_mode_enabled: boolean;
+  // paiement_merchant_id: string;
+  // is_cinetpay_payment_mode_enabled: boolean;
+  // cinetpay_site_id: string;
+  // cinetpay_api_key: string;
+  // cinetpay_secret_key: string;
+  // is_payhere_payment_mode_enabled: boolean;
+  // payhere_mode: string;
+  // payhere_merchant_id: string;
+  // payhere_merchant_secret: string;
+  // payhere_app_id: string;
+  // payhere_app_secret: string;
+  // is_fedapay_payment_mode_enabled: boolean;
+  // fedapay_mode: string;
+  // fedapay_secret_key: string;
+  // fedapay_public_key: string;
+  // is_authorizenet_payment_mode_enabled: boolean;
+  // authorizenet_mode: string;
+  // authorizenet_merchant_id: string;
+  // authorizenet_transaction_key: string;
+  // is_khalti_payment_mode_enabled: boolean;
+  // khalti_secret_key: string;
+  // khalti_public_key: string;
+  // is_easebuzz_payment_mode_enabled: boolean;
+  // easebuzz_merchant_key: string;
+  // easebuzz_salt_key: string;
+  // easebuzz_environment: string;
+  // is_ozow_payment_mode_enabled: boolean;
+  // ozow_mode: string;
+  // ozow_site_key: string;
+  // ozow_private_key: string;
+  // ozow_api_key: string;
+  // is_cashfree_payment_mode_enabled: boolean;
+  // cashfree_mode: string;
+  // cashfree_secret_key: string;
+  // cashfree_public_key: string;
+  // is_paytabs_payment_mode_enabled: boolean;
+  // paytabs_profile_id: string;
+  // paytabs_server_key: string;
+  // paytabs_region: string;
+  // paytabs_mode: 'sandbox' | 'live';
+  // is_skrill_payment_mode_enabled: boolean;
+  // skrill_merchant_id: string;
+  // skrill_secret_word: string;
+  // is_coingate_payment_mode_enabled: boolean;
+  // coingate_api_token: string;
+  // coingate_mode: 'sandbox' | 'live';
+  // is_payfast_payment_mode_enabled: boolean;
+  // payfast_merchant_id: string;
+  // payfast_merchant_key: string;
+  // payfast_passphrase: string;
+  // payfast_mode: 'sandbox' | 'live';
 }
 
 interface PaymentSettingsProps {
@@ -146,150 +146,151 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
     currency_symbol: settings.currency_symbol || '$',
     is_manual_payment_mode_enabled: settings.is_manual_payment_mode_enabled === true || settings.is_manual_payment_mode_enabled === '1',
     is_bank_payment_mode_enabled: settings.is_bank_payment_mode_enabled === true || settings.is_bank_payment_mode_enabled === '1',
-    bank_detail: settings.bank_detail || '',
-    is_stripe_payment_mode_enabled: settings.is_stripe_payment_mode_enabled === true || settings.is_stripe_payment_mode_enabled === '1',
-    stripe_key: settings.stripe_key || '',
-    stripe_secret: settings.stripe_secret || '',
-    is_paypal_payment_mode_enabled: settings.is_paypal_payment_mode_enabled === true || settings.is_paypal_payment_mode_enabled === '1',
-    paypal_mode: settings.paypal_mode || 'sandbox',
-    paypal_client_id: settings.paypal_client_id || '',
-    paypal_secret_key: settings.paypal_secret_key || '',
-    is_razorpay_payment_mode_enabled: settings.is_razorpay_payment_mode_enabled === true || settings.is_razorpay_payment_mode_enabled === '1',
-    razorpay_key: settings.razorpay_key || '',
-    razorpay_secret: settings.razorpay_secret || '',
-    is_mercadopago_payment_mode_enabled: settings.is_mercadopago_payment_mode_enabled === true || settings.is_mercadopago_payment_mode_enabled === '1',
-    mercadopago_mode: settings.mercadopago_mode || 'sandbox',
-    mercadopago_access_token: settings.mercadopago_access_token || '',
+    bank_details: settings.bank_details || '',
+    // is_stripe_payment_mode_enabled: settings.is_stripe_payment_mode_enabled === true || settings.is_stripe_payment_mode_enabled === '1',
+    // stripe_key: settings.stripe_key || '',
+    // stripe_secret: settings.stripe_secret || '',
+    // is_paypal_payment_mode_enabled: settings.is_paypal_payment_mode_enabled === true || settings.is_paypal_payment_mode_enabled === '1',
+    // paypal_mode: settings.paypal_mode || 'sandbox',
+    // paypal_client_id: settings.paypal_client_id || '',
+    // paypal_secret_key: settings.paypal_secret_key || '',
+    // is_razorpay_payment_mode_enabled: settings.is_razorpay_payment_mode_enabled === true || settings.is_razorpay_payment_mode_enabled === '1',
+    // razorpay_key: settings.razorpay_key || '',
+    // razorpay_secret: settings.razorpay_secret || '',
+    // is_mercadopago_payment_mode_enabled: settings.is_mercadopago_payment_mode_enabled === true || settings.is_mercadopago_payment_mode_enabled === '1',
+    // mercadopago_mode: settings.mercadopago_mode || 'sandbox',
+    // mercadopago_access_token: settings.mercadopago_access_token || '',
     is_paystack_payment_mode_enabled: settings.is_paystack_payment_mode_enabled === true || settings.is_paystack_payment_mode_enabled === '1',
     paystack_public_key: settings.paystack_public_key || '',
     paystack_secret_key: settings.paystack_secret_key || '',
-    is_flutterwave_payment_mode_enabled: settings.is_flutterwave_payment_mode_enabled === true || settings.is_flutterwave_payment_mode_enabled === '1',
-    flutterwave_public_key: settings.flutterwave_public_key || '',
-    flutterwave_secret_key: settings.flutterwave_secret_key || '',
-    is_tap_payment_mode_enabled: settings.is_tap_payment_mode_enabled === true || settings.is_tap_payment_mode_enabled === '1',
-    tap_secret_key: settings.tap_secret_key || '',
-    is_xendit_payment_mode_enabled: settings.is_xendit_payment_mode_enabled === true || settings.is_xendit_payment_mode_enabled === '1',
-    xendit_api_key: settings.xendit_api_key || '',
-    is_paytr_payment_mode_enabled: settings.is_paytr_payment_mode_enabled === true || settings.is_paytr_payment_mode_enabled === '1',
-    paytr_merchant_id: settings.paytr_merchant_id || '',
-    paytr_merchant_key: settings.paytr_merchant_key || '',
-    paytr_merchant_salt: settings.paytr_merchant_salt || '',
-    is_mollie_payment_mode_enabled: settings.is_mollie_payment_mode_enabled === true || settings.is_mollie_payment_mode_enabled === '1',
-    mollie_api_key: settings.mollie_api_key || '',
-    is_toyyibpay_payment_mode_enabled: settings.is_toyyibpay_payment_mode_enabled === true || settings.is_toyyibpay_payment_mode_enabled === '1',
-    toyyibpay_category_code: settings.toyyibpay_category_code || '',
-    toyyibpay_secret_key: settings.toyyibpay_secret_key || '',
-    is_benefit_payment_mode_enabled: settings.is_benefit_payment_mode_enabled === true || settings.is_benefit_payment_mode_enabled === '1',
-    benefit_mode: settings.benefit_mode || 'sandbox',
-    benefit_secret_key: settings.benefit_secret_key || '',
-    benefit_public_key: settings.benefit_public_key || '',
-    is_iyzipay_payment_mode_enabled: settings.is_iyzipay_payment_mode_enabled === true || settings.is_iyzipay_payment_mode_enabled === '1',
-    iyzipay_mode: settings.iyzipay_mode || 'sandbox',
-    iyzipay_secret_key: settings.iyzipay_secret_key || '',
-    iyzipay_public_key: settings.iyzipay_public_key || '',
-    is_aamarpay_payment_mode_enabled: settings.is_aamarpay_payment_mode_enabled === true || settings.is_aamarpay_payment_mode_enabled === '1',
-    aamarpay_store_id: settings.aamarpay_store_id || '',
-    aamarpay_signature: settings.aamarpay_signature || '',
-    is_midtrans_payment_mode_enabled: settings.is_midtrans_payment_mode_enabled === true || settings.is_midtrans_payment_mode_enabled === '1',
-    midtrans_mode: settings.midtrans_mode || 'sandbox',
-    midtrans_secret_key: settings.midtrans_secret_key || '',
-    is_yookassa_payment_mode_enabled: settings.is_yookassa_payment_mode_enabled === true || settings.is_yookassa_payment_mode_enabled === '1',
-    yookassa_shop_id: settings.yookassa_shop_id || '',
-    yookassa_secret_key: settings.yookassa_secret_key || '',
-    is_nepalste_payment_mode_enabled: settings.is_nepalste_payment_mode_enabled === true || settings.is_nepalste_payment_mode_enabled === '1',
-    nepalste_mode: settings.nepalste_mode || 'sandbox',
-    nepalste_secret_key: settings.nepalste_secret_key || '',
-    nepalste_public_key: settings.nepalste_public_key || '',
-    is_paiement_payment_mode_enabled: settings.is_paiement_payment_mode_enabled === true || settings.is_paiement_payment_mode_enabled === '1',
-    paiement_merchant_id: settings.paiement_merchant_id || '',
-    is_cinetpay_payment_mode_enabled: settings.is_cinetpay_payment_mode_enabled === true || settings.is_cinetpay_payment_mode_enabled === '1',
-    cinetpay_site_id: settings.cinetpay_site_id || '',
-    cinetpay_api_key: settings.cinetpay_api_key || '',
-    cinetpay_secret_key: settings.cinetpay_secret_key || '',
-    is_payhere_payment_mode_enabled: settings.is_payhere_payment_mode_enabled === true || settings.is_payhere_payment_mode_enabled === '1',
-    payhere_mode: settings.payhere_mode || 'sandbox',
-    payhere_merchant_id: settings.payhere_merchant_id || '',
-    payhere_merchant_secret: settings.payhere_merchant_secret || '',
-    payhere_app_id: settings.payhere_app_id || '',
-    payhere_app_secret: settings.payhere_app_secret || '',
-    is_fedapay_payment_mode_enabled: settings.is_fedapay_payment_mode_enabled === true || settings.is_fedapay_payment_mode_enabled === '1',
-    fedapay_mode: settings.fedapay_mode || 'sandbox',
-    fedapay_secret_key: settings.fedapay_secret_key || '',
-    fedapay_public_key: settings.fedapay_public_key || '',
-    is_authorizenet_payment_mode_enabled: settings.is_authorizenet_payment_mode_enabled === true || settings.is_authorizenet_payment_mode_enabled === '1',
-    authorizenet_mode: settings.authorizenet_mode || 'sandbox',
-    authorizenet_merchant_id: settings.authorizenet_merchant_id || '',
-    authorizenet_transaction_key: settings.authorizenet_transaction_key || '',
-    is_khalti_payment_mode_enabled: settings.is_khalti_payment_mode_enabled === true || settings.is_khalti_payment_mode_enabled === '1',
-    khalti_secret_key: settings.khalti_secret_key || '',
-    khalti_public_key: settings.khalti_public_key || '',
-    is_easebuzz_payment_mode_enabled: settings.is_easebuzz_payment_mode_enabled === true || settings.is_easebuzz_payment_mode_enabled === '1',
-    easebuzz_merchant_key: settings.easebuzz_merchant_key || '',
-    easebuzz_salt_key: settings.easebuzz_salt_key || '',
-    easebuzz_environment: settings.easebuzz_environment || '',
-    is_ozow_payment_mode_enabled: settings.is_ozow_payment_mode_enabled === true || settings.is_ozow_payment_mode_enabled === '1',
-    ozow_mode: settings.ozow_mode || 'sandbox',
-    ozow_site_key: settings.ozow_site_key || '',
-    ozow_private_key: settings.ozow_private_key || '',
-    ozow_api_key: settings.ozow_api_key || '',
-    is_cashfree_payment_mode_enabled: settings.is_cashfree_payment_mode_enabled === true || settings.is_cashfree_payment_mode_enabled === '1',
-    cashfree_mode: settings.cashfree_mode || 'sandbox',
-    cashfree_secret_key: settings.cashfree_secret_key || '',
-    cashfree_public_key: settings.cashfree_public_key || '',
-    is_paytabs_payment_mode_enabled: settings.is_paytabs_payment_mode_enabled === true || settings.is_paytabs_payment_mode_enabled === '1',
-    paytabs_profile_id: settings.paytabs_profile_id || '',
-    paytabs_server_key: settings.paytabs_server_key || '',
-    paytabs_region: settings.paytabs_region || 'ARE',
-    paytabs_mode: settings.paytabs_mode || 'sandbox',
-    is_skrill_payment_mode_enabled: settings.is_skrill_payment_mode_enabled === true || settings.is_skrill_payment_mode_enabled === '1',
-    skrill_merchant_id: settings.skrill_merchant_id || '',
-    skrill_secret_word: settings.skrill_secret_word || '',
-    is_coingate_payment_mode_enabled: settings.is_coingate_payment_mode_enabled === true || settings.is_coingate_payment_mode_enabled === '1',
-    coingate_api_token: settings.coingate_api_token || '',
-    coingate_mode: settings.coingate_mode || 'sandbox',
-    is_payfast_payment_mode_enabled: settings.is_payfast_payment_mode_enabled === true || settings.is_payfast_payment_mode_enabled === '1',
-    payfast_merchant_id: settings.payfast_merchant_id || '',
-    payfast_merchant_key: settings.payfast_merchant_key || '',
-    payfast_passphrase: settings.payfast_passphrase || '',
-    payfast_mode: settings.payfast_mode || 'sandbox',
+    // is_flutterwave_payment_mode_enabled: settings.is_flutterwave_payment_mode_enabled === true || settings.is_flutterwave_payment_mode_enabled === '1',
+    // flutterwave_public_key: settings.flutterwave_public_key || '',
+    // flutterwave_secret_key: settings.flutterwave_secret_key || '',
+    // is_tap_payment_mode_enabled: settings.is_tap_payment_mode_enabled === true || settings.is_tap_payment_mode_enabled === '1',
+    // tap_secret_key: settings.tap_secret_key || '',
+    // is_xendit_payment_mode_enabled: settings.is_xendit_payment_mode_enabled === true || settings.is_xendit_payment_mode_enabled === '1',
+    // xendit_api_key: settings.xendit_api_key || '',
+    // is_paytr_payment_mode_enabled: settings.is_paytr_payment_mode_enabled === true || settings.is_paytr_payment_mode_enabled === '1',
+    // paytr_merchant_id: settings.paytr_merchant_id || '',
+    // paytr_merchant_key: settings.paytr_merchant_key || '',
+    // paytr_merchant_salt: settings.paytr_merchant_salt || '',
+    // is_mollie_payment_mode_enabled: settings.is_mollie_payment_mode_enabled === true || settings.is_mollie_payment_mode_enabled === '1',
+    // mollie_api_key: settings.mollie_api_key || '',
+    // is_toyyibpay_payment_mode_enabled: settings.is_toyyibpay_payment_mode_enabled === true || settings.is_toyyibpay_payment_mode_enabled === '1',
+    // toyyibpay_category_code: settings.toyyibpay_category_code || '',
+    // toyyibpay_secret_key: settings.toyyibpay_secret_key || '',
+    // is_benefit_payment_mode_enabled: settings.is_benefit_payment_mode_enabled === true || settings.is_benefit_payment_mode_enabled === '1',
+    // benefit_mode: settings.benefit_mode || 'sandbox',
+    // benefit_secret_key: settings.benefit_secret_key || '',
+    // benefit_public_key: settings.benefit_public_key || '',
+    // is_iyzipay_payment_mode_enabled: settings.is_iyzipay_payment_mode_enabled === true || settings.is_iyzipay_payment_mode_enabled === '1',
+    // iyzipay_mode: settings.iyzipay_mode || 'sandbox',
+    // iyzipay_secret_key: settings.iyzipay_secret_key || '',
+    // iyzipay_public_key: settings.iyzipay_public_key || '',
+    // is_aamarpay_payment_mode_enabled: settings.is_aamarpay_payment_mode_enabled === true || settings.is_aamarpay_payment_mode_enabled === '1',
+    // aamarpay_store_id: settings.aamarpay_store_id || '',
+    // aamarpay_signature: settings.aamarpay_signature || '',
+    // is_midtrans_payment_mode_enabled: settings.is_midtrans_payment_mode_enabled === true || settings.is_midtrans_payment_mode_enabled === '1',
+    // midtrans_mode: settings.midtrans_mode || 'sandbox',
+    // midtrans_secret_key: settings.midtrans_secret_key || '',
+    // is_yookassa_payment_mode_enabled: settings.is_yookassa_payment_mode_enabled === true || settings.is_yookassa_payment_mode_enabled === '1',
+    // yookassa_shop_id: settings.yookassa_shop_id || '',
+    // yookassa_secret_key: settings.yookassa_secret_key || '',
+    // is_nepalste_payment_mode_enabled: settings.is_nepalste_payment_mode_enabled === true || settings.is_nepalste_payment_mode_enabled === '1',
+    // nepalste_mode: settings.nepalste_mode || 'sandbox',
+    // nepalste_secret_key: settings.nepalste_secret_key || '',
+    // nepalste_public_key: settings.nepalste_public_key || '',
+    // is_paiement_payment_mode_enabled: settings.is_paiement_payment_mode_enabled === true || settings.is_paiement_payment_mode_enabled === '1',
+    // paiement_merchant_id: settings.paiement_merchant_id || '',
+    // is_cinetpay_payment_mode_enabled: settings.is_cinetpay_payment_mode_enabled === true || settings.is_cinetpay_payment_mode_enabled === '1',
+    // cinetpay_site_id: settings.cinetpay_site_id || '',
+    // cinetpay_api_key: settings.cinetpay_api_key || '',
+    // cinetpay_secret_key: settings.cinetpay_secret_key || '',
+    // is_payhere_payment_mode_enabled: settings.is_payhere_payment_mode_enabled === true || settings.is_payhere_payment_mode_enabled === '1',
+    // payhere_mode: settings.payhere_mode || 'sandbox',
+    // payhere_merchant_id: settings.payhere_merchant_id || '',
+    // payhere_merchant_secret: settings.payhere_merchant_secret || '',
+    // payhere_app_id: settings.payhere_app_id || '',
+    // payhere_app_secret: settings.payhere_app_secret || '',
+    // is_fedapay_payment_mode_enabled: settings.is_fedapay_payment_mode_enabled === true || settings.is_fedapay_payment_mode_enabled === '1',
+    // fedapay_mode: settings.fedapay_mode || 'sandbox',
+    // fedapay_secret_key: settings.fedapay_secret_key || '',
+    // fedapay_public_key: settings.fedapay_public_key || '',
+    // is_authorizenet_payment_mode_enabled: settings.is_authorizenet_payment_mode_enabled === true || settings.is_authorizenet_payment_mode_enabled === '1',
+    // authorizenet_mode: settings.authorizenet_mode || 'sandbox',
+    // authorizenet_merchant_id: settings.authorizenet_merchant_id || '',
+    // authorizenet_transaction_key: settings.authorizenet_transaction_key || '',
+    // is_khalti_payment_mode_enabled: settings.is_khalti_payment_mode_enabled === true || settings.is_khalti_payment_mode_enabled === '1',
+    // khalti_secret_key: settings.khalti_secret_key || '',
+    // khalti_public_key: settings.khalti_public_key || '',
+    // is_easebuzz_payment_mode_enabled: settings.is_easebuzz_payment_mode_enabled === true || settings.is_easebuzz_payment_mode_enabled === '1',
+    // easebuzz_merchant_key: settings.easebuzz_merchant_key || '',
+    // easebuzz_salt_key: settings.easebuzz_salt_key || '',
+    // easebuzz_environment: settings.easebuzz_environment || '',
+    // is_ozow_payment_mode_enabled: settings.is_ozow_payment_mode_enabled === true || settings.is_ozow_payment_mode_enabled === '1',
+    // ozow_mode: settings.ozow_mode || 'sandbox',
+    // ozow_site_key: settings.ozow_site_key || '',
+    // ozow_private_key: settings.ozow_private_key || '',
+    // ozow_api_key: settings.ozow_api_key || '',
+    // is_cashfree_payment_mode_enabled: settings.is_cashfree_payment_mode_enabled === true || settings.is_cashfree_payment_mode_enabled === '1',
+    // cashfree_mode: settings.cashfree_mode || 'sandbox',
+    // cashfree_secret_key: settings.cashfree_secret_key || '',
+    // cashfree_public_key: settings.cashfree_public_key || '',
+    // is_paytabs_payment_mode_enabled: settings.is_paytabs_payment_mode_enabled === true || settings.is_paytabs_payment_mode_enabled === '1',
+    // paytabs_profile_id: settings.paytabs_profile_id || '',
+    // paytabs_server_key: settings.paytabs_server_key || '',
+    // paytabs_region: settings.paytabs_region || 'ARE',
+    // paytabs_mode: settings.paytabs_mode || 'sandbox',
+    // is_skrill_payment_mode_enabled: settings.is_skrill_payment_mode_enabled === true || settings.is_skrill_payment_mode_enabled === '1',
+    // skrill_merchant_id: settings.skrill_merchant_id || '',
+    // skrill_secret_word: settings.skrill_secret_word || '',
+    // is_coingate_payment_mode_enabled: settings.is_coingate_payment_mode_enabled === true || settings.is_coingate_payment_mode_enabled === '1',
+    // coingate_api_token: settings.coingate_api_token || '',
+    // coingate_mode: settings.coingate_mode || 'sandbox',
+    // is_payfast_payment_mode_enabled: settings.is_payfast_payment_mode_enabled === true || settings.is_payfast_payment_mode_enabled === '1',
+    // payfast_merchant_id: settings.payfast_merchant_id || '',
+    // payfast_merchant_key: settings.payfast_merchant_key || '',
+    // payfast_passphrase: settings.payfast_passphrase || '',
+    // payfast_mode: settings.payfast_mode || 'sandbox',
   });
 
-
-
-  // Payment methods data for search
-  const paymentMethods = useMemo(() => [
-    { key: 'bank', name: t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.BANK]) },
-    { key: 'stripe', name: t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.STRIPE]) },
-    { key: 'paypal', name: t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYPAL]) },
-    { key: 'razorpay', name: t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.RAZORPAY]) },
-    { key: 'mercadopago', name: t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.MERCADOPAGO]) },
-    { key: 'paystack', name: t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYSTACK]) },
-    { key: 'flutterwave', name: t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.FLUTTERWAVE]) },
-    { key: 'paytabs', name: t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYTABS]) },
-    { key: 'skrill', name: t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.SKRILL]) },
-    { key: 'coingate', name: t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.COINGATE]) },
-    { key: 'payfast', name: t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYFAST]) },
-    { key: 'tap', name: t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.TAP]) },
-    { key: 'xendit', name: t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.XENDIT]) },
-    { key: 'paytr', name: t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYTR]) },
-    { key: 'mollie', name: t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.MOLLIE]) },
-    { key: 'toyyibpay', name: t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.TOYYIBPAY]) },
-    { key: 'benefit', name: t('Benefit') },
-    { key: 'iyzipay', name: t('Iyzipay') },
-    { key: 'aamarpay', name: t('Aamarpay') },
-    { key: 'midtrans', name: t('Midtrans') },
-    { key: 'yookassa', name: t('YooKassa') },
-    // { key: 'nepalste', name: t('Nepalste') },
-    { key: 'paiement', name: t('Paiement Pro') },
-    { key: 'cinetpay', name: t('CinetPay') },
-    { key: 'payhere', name: t('PayHere') },
-    { key: 'fedapay', name: t('FedaPay') },
-    { key: 'authorizenet', name: t('AuthorizeNet') },
-    { key: 'khalti', name: t('Khalti') },
-    { key: 'easebuzz', name: t('Easebuzz') },
-    { key: 'ozow', name: t('Ozow') },
-    { key: 'cashfree', name: t('Cashfree') },
-  ], [t]);
+    // Payment methods data for search
+    const paymentMethods = useMemo(
+        () => [
+            { key: 'bank', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.BANK] },
+            // { key: 'stripe', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.STRIPE] },
+            // { key: 'paypal', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYPAL] },
+            // { key: 'razorpay', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.RAZORPAY] },
+            // { key: 'mercadopago', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.MERCADOPAGO] },
+            { key: 'paystack', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYSTACK] },
+            // { key: 'flutterwave', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.FLUTTERWAVE] },
+            // { key: 'paytabs', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYTABS] },
+            // { key: 'skrill', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.SKRILL] },
+            // { key: 'coingate', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.COINGATE] },
+            // { key: 'payfast', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYFAST] },
+            // { key: 'tap', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.TAP] },
+            // { key: 'xendit', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.XENDIT] },
+            // { key: 'paytr', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYTR] },
+            // { key: 'mollie', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.MOLLIE] },
+            // { key: 'toyyibpay', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.TOYYIBPAY] },
+            // { key: 'benefit', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.BENEFIT] },
+            // { key: 'iyzipay', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.IYZIPAY] },
+            // { key: 'aamarpay', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.AAMARPAY] },
+            // { key: 'midtrans', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.MIDTRANS] },
+            // { key: 'yookassa', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.YOOKASSA] },
+            // { key: 'nepalste', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.NEPALSTE] },
+            // { key: 'paiement', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAIEMENT] },
+            // { key: 'cinetpay', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.CINETPAY] },
+            // { key: 'payhere', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYHERE] },
+            // { key: 'fedapay', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.FEDAPAY] },
+            // { key: 'authorizenet', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.AUTHORIZENET] },
+            // { key: 'khalti', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.KHALTI] },
+            // { key: 'easebuzz', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.EASEBUZZ] },
+            // { key: 'ozow', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.OZOW] },
+            // { key: 'cashfree', name: PAYMENT_METHOD_LABELS[PAYMENT_METHODS.CASHFREE] },
+        ],
+        [],
+    );
 
   // Filter payment methods based on search and status
   const filteredMethods = useMemo(() => {
@@ -473,19 +474,19 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                 onToggle={(checked) => setData('is_bank_payment_mode_enabled', checked)}
               >
                 <div className="space-y-2">
-                  <Label htmlFor="bank_detail">{t("Bank Details")}</Label>
+                  <Label htmlFor="bank_details">{t("Bank Details")}</Label>
                   <Textarea
-                    id="bank_detail"
-                    value={data.bank_detail}
-                    onChange={(e) => setData('bank_detail', e.target.value)}
+                    id="bank_details"
+                    value={data.bank_details}
+                    onChange={(e) => setData('bank_details', e.target.value)}
                     placeholder={t("Bank: Your Bank Name\nAccount Number: 0000 0000\nRouting Number: 000000000")}
                     rows={6}
                   />
                   <p className="text-xs text-muted-foreground">
                     {t("Enter your bank details that customers will use for manual transfers")}
                   </p>
-                  {errors.bank_detail && (
-                    <p className="text-sm text-destructive">{errors.bank_detail}</p>
+                  {errors.bank_details && (
+                    <p className="text-sm text-destructive">{errors.bank_details}</p>
                   )}
                 </div>
               </PaymentMethodCard>

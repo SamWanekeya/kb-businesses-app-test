@@ -719,7 +719,7 @@ class InvoiceController extends Controller
             $methods['bank'] = [
                 'name' => 'Bank Transfer',
                 'enabled' => true,
-                'details' => $settings['payment_settings']['bank_detail'] ?? null,
+                'details' => $settings['payment_settings']['bank_details'] ?? null,
             ];
         }
 

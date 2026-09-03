@@ -137,7 +137,7 @@ class InvoicePaymentService
                     && !empty($settings['paypal_client_id']) && !empty($settings['paypal_client_secret']);
 
             case 'bank':
-                return isset($settings['bank_detail']) && !empty($settings['bank_detail']);
+                return isset($settings['bank_details']) && !empty($settings['bank_details']);
 
             case 'skrill':
                 return isset($settings['skrill_merchant_id']) && !empty($settings['skrill_merchant_id']);

@@ -179,8 +179,8 @@ class SettingsController extends Controller
             }
         }
 
-        if (isset($settings['bank_detail']) && !empty($settings['bank_detail'])) {
-            $settings['bank_detail'] = "Bank: ****\nAccount: ****\nRouting: ****";
+        if (isset($settings['bank_details']) && !empty($settings['bank_details'])) {
+            $settings['bank_details'] = "Bank: ****\nAccount: ****\nRouting: ****";
         }
 
         return $settings;

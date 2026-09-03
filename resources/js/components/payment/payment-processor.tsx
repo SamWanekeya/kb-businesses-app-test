@@ -202,7 +202,7 @@ export function PaymentProcessor({
                     <BankTransferForm
                         {...commonProps}
                         planPrice={finalPrice}
-                        bankDetails={plan.paymentMethods?.bank_detail || ''}
+                        bankDetails={plan.paymentMethods?.bank_details || ''}
                     />
                 );
             case 'razorpay':
