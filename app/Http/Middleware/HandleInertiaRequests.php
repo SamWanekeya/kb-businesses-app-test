@@ -225,7 +225,7 @@ class HandleInertiaRequests extends Middleware
             'userLanguage' => config('app.is_demo')
                 ? $request->cookie('app_language', $request->user()?->lang ?? $globalSettings['defaultLanguage'] ?? 'en')
                 : ($request->user()?->lang ?? $globalSettings['defaultLanguage'] ?? 'en'),
-            'isImpersonating' => session('impersonated_by') ? true : false,
+            'isImpersonating' => session('on_behalf_of_by') ? true : false,
             'ziggy' => fn (): array => [
                 ...(new Ziggy())->toArray(),
                 'location' => $request->url(),

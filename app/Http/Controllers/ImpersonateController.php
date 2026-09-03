@@ -26,7 +26,7 @@ class ImpersonateController extends Controller
         auth()->loginUsingId($userId);
         // Then store original user ID in session
         session()->put('impersonated_user_id', $userId);
-        session()->put('impersonated_by', $originalUserId);
+        session()->put('on_behalf_of_by', $originalUserId);
         session()->save();
 
         return redirect('/dashboard')->with('success', __('Now impersonating :name', ['name' => $user->name]));
@@ -38,10 +38,10 @@ class ImpersonateController extends Controller
             'timestamp' => now(),
         ]);
 
-        $originalUserId = session('impersonated_by');
+        $originalUserId = session('on_behalf_of_by');
         if ($originalUserId) {
             auth()->loginUsingId($originalUserId);
-            session()->forget('impersonated_by');
+            session()->forget('on_behalf_of_by');
             session()->forget('impersonated_user_id');
             session()->save();
         }

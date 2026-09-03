@@ -76,7 +76,7 @@ function PlansSection({ plans, settings, sectionData, brandColor = '#A12582' }: 
         {
             id: 2,
             name: t('Professional'),
-            description: t('Ideal for growing businesses and sales teams'),
+            description: t('Ideal for growing organizations and sales teams'),
             price: 29,
             yearly_price: 290,
             duration: 'month',

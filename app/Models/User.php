@@ -113,7 +113,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
         return $this->type === 'admin';
     }
 
-    // Businesses relationship removed
+    // Organizations relationship removed
 
     /**
      * Get the plan associated with the user.

@@ -89,7 +89,7 @@ export default function TestimonialsSection({ testimonials, settings, sectionDat
                 >
                     <h2 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">{sectionData?.title || t('What Our Clients Say')}</h2>
                     <p className="mx-auto max-w-3xl text-lg leading-relaxed font-medium text-gray-600">
-                        {sectionData?.subtitle || t("Don't just take our word for it — hear from businesses using our Kakbima.")}
+                        {sectionData?.subtitle || t("Don't just take our word for it — hear from organizations using our Kakbima.")}
                     </p>
                 </div>
 
@@ -148,7 +148,7 @@ export default function TestimonialsSection({ testimonials, settings, sectionDat
                     <div className="mt-8 text-center sm:mt-12 lg:mt-16">
                         <div className="rounded-xl border border-gray-200 bg-white p-8">
                             <h3 className="mb-6 text-2xl font-bold text-gray-900">
-                                {sectionData?.trust_title || t('Trusted by Businesses Worldwide')}
+                                {sectionData?.trust_title || t('Trusted by Organizations Worldwide')}
                             </h3>
                             <div className="flex flex-wrap items-center justify-center gap-8">
                                 {sectionData.trust_stats.map((stat, index) => (

@@ -32,12 +32,12 @@ interface Business {
 interface LoginProps {
     status?: string;
     canResetPassword?: boolean;
-    demoBusinesses?: Business[];
+    demoOrganizations?: Business[];
     demoUsers?: { super_admin: string; organization: string; user: string };
     demoPassword?: string;
 }
 
-export default function Login({ status, canResetPassword, demoBusinesses = [], demoUsers, demoPassword = 'password' }: LoginProps) {
+export default function Login({ status, canResetPassword, demoOrganizations = [], demoUsers, demoPassword = 'password' }: LoginProps) {
     const { t } = useTranslation();
     const [recaptchaToken, setRecaptchaToken] = useState<string>('');
     const { themeColor, customColor } = useBrand();
@@ -47,7 +47,7 @@ export default function Login({ status, canResetPassword, demoBusinesses = [], d
     const [showRecaptchaError, setShowRecaptchaError] = useState<boolean>(false);
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
-    // Always show business buttons by default
+    // Always show organization buttons by default
     const [showBusinessButtons, setShowBusinessButtons] = useState<boolean>(true);
 
     const { data, setData, post, processing, errors, reset } = useForm<LoginForm>({

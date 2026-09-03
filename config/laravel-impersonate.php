@@ -5,7 +5,7 @@ return [
     /**
      * The session key used to store the original user id.
      */
-    'session_key' => 'impersonated_by',
+    'session_key' => 'on_behalf_of_by',
 
     /**
      * The session key used to stored the original user guard.

@@ -51,26 +51,27 @@ return [
     */
 
     'channels' => [
-        'larabug' => [
-            'driver' => 'larabug',
+        'deprecations' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/php-deprecation-warnings.log'),
         ],
 
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single', 'larabug'],
+            'channels' => explode(',', (string) env('LOG_STACK', 'single')),
             'ignore_exceptions' => false,
         ],
 
         'single' => [
             'driver' => 'single',
-            'path' => storage_path('logs/laravel.log'),
+            'path' => storage_path('logs/kakbima-single-debug.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'replace_placeholders' => true,
         ],
 
         'daily' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/laravel.log'),
+            'path' => storage_path('logs/kakbima-daily-debug.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => env('LOG_DAILY_DAYS', 14),
             'replace_placeholders' => true,
@@ -79,7 +80,7 @@ return [
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
-            'username' => env('LOG_SLACK_USERNAME', 'Laravel Log'),
+            'username' => env('LOG_SLACK_USERNAME', 'Kakbima Log'),
             'emoji' => env('LOG_SLACK_EMOJI', ':boom:'),
             'level' => env('LOG_LEVEL', 'critical'),
             'replace_placeholders' => true,
@@ -127,7 +128,7 @@ return [
         ],
 
         'emergency' => [
-            'path' => storage_path('logs/laravel.log'),
+            'path' => storage_path('logs/kakbima-emergency.log'),
         ],
 
         'PayTabs' => [
@@ -136,6 +137,22 @@ return [
             'level' => 'info',
         ],
 
+        'larabug' => [
+            'driver' => 'larabug',
+        ],
+
+        'csp' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/kakbima-csp.log'),
+            'level' => 'info',
+        ],
+
+        'payroll_audit' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/payroll-audit.log'),
+            'level' => 'debug',
+            'days' => 365,
+        ],
     ],
 
 ];

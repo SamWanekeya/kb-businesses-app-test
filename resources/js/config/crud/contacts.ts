@@ -16,7 +16,7 @@ export const contactsConfig: CrudConfig = {
     },
     table: {
         columns: [
-            { key: 'business.name', label: t('Business Name'), sortable: false },
+            { key: 'organization.name', label: t('Organization Name'), sortable: false },
             { key: 'name', label: t('Name'), sortable: true },
             { key: 'email', label: t('Email'), sortable: true },
             { key: 'phone', label: t('Phone') },

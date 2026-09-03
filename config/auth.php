@@ -35,9 +35,10 @@ return [
     |
     */
 
+    // Used this to avoid the default 'remember_web_*' cookie name
     'guards' => [
         'web' => [
-            'driver' => 'session',
+            'driver' => 'custom_session',
             'provider' => 'users',
         ],
     ],
@@ -94,7 +95,7 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 60,
+            'expire' => env('AUTH_PASSWORD_RESET_EXPIRES', 60),
             'throttle' => 60,
         ],
     ],
@@ -110,6 +111,38 @@ return [
     |
     */
 
-    'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
+    'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 900), // 15 minutes instead of 3 hours
+
+    /*
+        |--------------------------------------------------------------------------
+        | Email Verification Settings
+        |--------------------------------------------------------------------------
+        |
+        | These options control the behavior of email verification links used by
+        | the application. The expiration time determines how long (in minutes)
+        | an email verification token remains valid after it is issued.
+        |
+        | Shorter expiration times reduce the window for token misuse, while
+        | longer durations may improve usability for users who do not check
+        | their email immediately.
+        |
+        */
+
+    'verification' => [
+
+        /*
+        |--------------------------------------------------------------------------
+        | Verification Link Expiration
+        |--------------------------------------------------------------------------
+        |
+        | The number of minutes that an email verification link should remain
+        | valid. Once expired, the user will be required to request a new
+        | verification email.
+        |
+        */
+
+        'expire' => env('EMAIL_VERIFICATION_EXPIRE', 30),
+
+    ],
 
 ];

@@ -74,7 +74,7 @@ export default function AboutUs({ settings, sectionData, brandColor = '#A12582' 
             icon: 'target',
             title: t('Our Mission'),
             description: t(
-                'To revolutionize sales management by providing businesses with an all-in-one SaaS platform that simplifies, automates, and accelerates growth.',
+                'To revolutionize sales management by providing organizations with an all-in-one SaaS platform that simplifies, automates, and accelerates growth.',
             ),
         },
         {
@@ -97,7 +97,7 @@ export default function AboutUs({ settings, sectionData, brandColor = '#A12582' 
     const defaultStats = [
         { value: '4+ Years', label: t('Industry Experience'), color: 'blue' },
         { value: '10K+', label: t('Happy Users'), color: 'green' },
-        { value: '5K+', label: t('Businesses Powered'), color: 'purple' },
+        { value: '5K+', label: t('Organizations Powered'), color: 'purple' },
     ];
 
     const values = sectionData.values && sectionData.values.length > 0 ? sectionData.values : defaultValues;
@@ -136,7 +136,7 @@ export default function AboutUs({ settings, sectionData, brandColor = '#A12582' 
                     __html: (
                         sectionData.story_content ||
                         t(
-                            'Founded by a group of sales professionals and technology experts, our Kakbima was created to solve the common challenges businesses face in managing leads, orders, invoices, and projects. Today, we power thousands of businesses worldwide with a reliable, scalable, and easy-to-use platform.',
+                            'Founded by a group of sales professionals and technology experts, our Kakbima was created to solve the common challenges organizations face in managing leads, orders, invoices, and projects. Today, we power thousands of organizations worldwide with a reliable, scalable, and easy-to-use platform.',
                         )
                     ).replace(/\n/g, '</p><p className="mb-6">'),
                 }}
@@ -186,7 +186,7 @@ export default function AboutUs({ settings, sectionData, brandColor = '#A12582' 
                                         __html: (
                                             sectionData.story_content ||
                                             t(
-                                                'Founded by a group of sales professionals and technology experts, our Kakbima was created to solve the common challenges businesses face in managing leads, orders, invoices, and projects. Today, we power thousands of businesses worldwide with a reliable, scalable, and easy-to-use platform.',
+                                                'Founded by a group of sales professionals and technology experts, our Kakbima was created to solve the common challenges organizations face in managing leads, orders, invoices, and projects. Today, we power thousands of organizations worldwide with a reliable, scalable, and easy-to-use platform.',
                                             )
                                         ).replace(/\n/g, '</p><p className="mb-6">'),
                                     }}
@@ -290,7 +290,7 @@ export default function AboutUs({ settings, sectionData, brandColor = '#A12582' 
                     <h2 className="mb-4 text-3xl font-bold md:text-4xl dark:text-gray-400">{sectionData.title || t('About Kakbima')}</h2>
                     <p className="mx-auto max-w-3xl text-lg leading-relaxed font-medium dark:text-gray-400">
                         {sectionData.description ||
-                            t('We are dedicated to simplifying and automating the entire sales lifecycle for businesses of all sizes.')}
+                            t('We are dedicated to simplifying and automating the entire sales lifecycle for organizations of all sizes.')}
                     </p>
                 </div>
 

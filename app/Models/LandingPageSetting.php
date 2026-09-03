@@ -53,7 +53,7 @@ class LandingPageSetting extends Model
                         'layout' => 'image-right',
                         'height' => 600,
                         'stats' => [
-                            ['value' => '5K+', 'label' => 'Businesses Powered'],
+                            ['value' => '5K+', 'label' => 'Organizations Powered'],
                             ['value' => '30+', 'label' => 'Modules Included'],
                             ['value' => '99%', 'label' => 'Customer Satisfaction'],
                         ],
@@ -170,7 +170,7 @@ class LandingPageSetting extends Model
                             ],
                         ],
                         'stats' => [
-                            ['value' => '5K+', 'label' => 'Businesses Powered', 'color' => 'blue'],
+                            ['value' => '5K+', 'label' => 'Organizations Powered', 'color' => 'blue'],
                             ['value' => '99%', 'label' => 'Customer Satisfaction', 'color' => 'green'],
                         ],
                     ],
@@ -186,7 +186,7 @@ class LandingPageSetting extends Model
                         'stats' => [
                             ['value' => '4+ Years', 'label' => 'Industry Experience', 'color' => 'blue'],
                             ['value' => '10K+', 'label' => 'Happy Users', 'color' => 'green'],
-                            ['value' => '5K+', 'label' => 'Businesses Powered', 'color' => 'purple'],
+                            ['value' => '5K+', 'label' => 'Organizations Powered', 'color' => 'purple'],
                         ],
                     ],
                     [
@@ -235,10 +235,10 @@ class LandingPageSetting extends Model
                         'key' => 'testimonials',
                         'title' => 'What Our Clients Say',
                         'subtitle' => 'Don\'t just take our word for it — hear from businesses using our Kakbima.',
-                        'trust_title' => 'Trusted by Businesses Worldwide',
+                        'trust_title' => 'Trusted by Organizations Worldwide',
                         'trust_stats' => [
                             ['value' => '4.9/5', 'label' => 'Average Rating', 'color' => 'blue'],
-                            ['value' => '10K+', 'label' => 'Happy Businesses', 'color' => 'green'],
+                            ['value' => '10K+', 'label' => 'Happy Organizations', 'color' => 'green'],
                         ],
                         'testimonials' => [
                             ['name' => 'Alex Thompson', 'role' => 'Sales Director', 'organization' => 'TechCorp Inc.', 'content' => 'This platform has transformed how we manage leads and opportunities. Our conversion rate has doubled since adopting it!', 'rating' => 5],

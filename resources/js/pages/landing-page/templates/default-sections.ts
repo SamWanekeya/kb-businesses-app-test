@@ -20,7 +20,7 @@ export const defaultLandingPageSections = {
             layout: 'image-right',
             height: 600,
             stats: [
-                { value: '10K+', label: 'Businesses Powered' },
+                { value: '10K+', label: 'Organizations Powered' },
                 { value: '50+', label: 'Modules Included' },
                 { value: '99%', label: 'Customer Satisfaction' },
             ],
@@ -133,11 +133,11 @@ export const defaultLandingPageSections = {
                 {
                     icon: 'shield',
                     title: 'Scalable & Secure',
-                    description: 'Built with enterprise-grade security and flexibility to grow with your business.',
+                    description: 'Built with enterprise-grade security and flexibility to grow with your organization.',
                 },
             ],
             stats: [
-                { value: '10K+', label: 'Businesses Powered', color: 'blue' },
+                { value: '10K+', label: 'Organizations Powered', color: 'blue' },
                 { value: '99%', label: 'Customer Satisfaction', color: 'green' },
             ],
         },
@@ -168,17 +168,17 @@ export const defaultLandingPageSections = {
         {
             key: 'about',
             title: 'About Our Kakbima',
-            description: 'We are dedicated to simplifying and automating the entire sales lifecycle for businesses of all sizes.',
+            description: 'We are dedicated to simplifying and automating the entire sales lifecycle for organizations of all sizes.',
             story_title: 'Empowering Sales Teams Since 2020',
             story_content:
-                'Founded by a group of sales professionals and technology experts, our Kakbima was created to solve the common challenges businesses face in managing leads, orders, invoices, and projects. Today, we power thousands of businesses worldwide with a reliable, scalable, and easy-to-use platform.',
+                'Founded by a group of sales professionals and technology experts, our Kakbima was created to solve the common challenges organizations face in managing leads, orders, invoices, and projects. Today, we power thousands of organizations worldwide with a reliable, scalable, and easy-to-use platform.',
             image: '',
             background_color: '#f9fafb',
             layout: 'image-right',
             stats: [
                 { value: '4+ Years', label: 'Industry Experience', color: 'blue' },
                 { value: '10K+', label: 'Happy Users', color: 'green' },
-                { value: '5K+', label: 'Businesses Powered', color: 'purple' },
+                { value: '5K+', label: 'Organizations Powered', color: 'purple' },
             ],
         },
         {
@@ -192,7 +192,7 @@ export const defaultLandingPageSections = {
                 {
                     name: 'Sarah Johnson',
                     role: 'CEO & Founder',
-                    bio: 'Sales strategist and former tech executive with 15+ years of experience in scaling SaaS businesses.',
+                    bio: 'Sales strategist and former tech executive with 15+ years of experience in scaling SaaS organizations.',
                     image: '',
                     linkedin: '#',
                     email: 'sarah@sales.com',
@@ -226,11 +226,11 @@ export const defaultLandingPageSections = {
         {
             key: 'testimonials',
             title: 'What Our Clients Say',
-            subtitle: "Don't just take our word for it — hear from businesses using our Kakbima.",
-            trust_title: 'Trusted by Businesses Worldwide',
+            subtitle: "Don't just take our word for it — hear from organizations using our Kakbima.",
+            trust_title: 'Trusted by Organizations Worldwide',
             trust_stats: [
                 { value: '4.9/5', label: 'Average Rating', color: 'blue' },
-                { value: '10K+', label: 'Happy Businesses', color: 'green' },
+                { value: '10K+', label: 'Happy Organizations', color: 'green' },
             ],
             testimonials: [
                 {
@@ -333,7 +333,7 @@ export const defaultLandingPageSections = {
         },
         {
             key: 'footer',
-            description: 'Empowering businesses to boost sales and grow faster with our all-in-one Kakbima platform.',
+            description: 'Empowering organizations to boost sales and grow faster with our all-in-one Kakbima platform.',
             newsletter_title: 'Stay Ahead',
             newsletter_subtitle: 'Subscribe for sales tips, product updates, and growth insights.',
             links: {

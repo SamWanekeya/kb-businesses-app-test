@@ -1,5 +1,6 @@
 <?php
 
+
 return [
 
     /*
@@ -13,7 +14,20 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Kakbima'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Setup
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the "setup" your application is currently
+    | running in. This may determine how you prefer to configure various
+    | services the application utilizes. Set this in your ".env" file.
+    |
+    */
+
+    'demo' => env('APP_DEMO', 'false'),
 
     /*
     |--------------------------------------------------------------------------
@@ -43,18 +57,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Demo Mode
-    |--------------------------------------------------------------------------
-    |
-    | This value determines if the application is running in demo mode.
-    | When enabled, certain destructive operations will be restricted.
-    |
-    */
-
-    'is_demo' => (bool) env('IS_DEMO', false),
-
-    /*
-    |--------------------------------------------------------------------------
     | Application URL
     |--------------------------------------------------------------------------
     |
@@ -64,7 +66,9 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://accounts.kakbima.com'),
+
+    'asset_url' => env('ASSET_URL'),
 
     /*
     |--------------------------------------------------------------------------
@@ -77,7 +81,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => env('APP_TIMEZONE', 'UTC'),
 
     /*
     |--------------------------------------------------------------------------
@@ -90,7 +94,7 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'en'),
+    'locale' => env('APP_DEFAULT_LANGUAGE', 'en'),
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 
@@ -132,7 +136,7 @@ return [
 
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
-        'store' => env('APP_MAINTENANCE_STORE', 'database'),
+        // 'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
 ];

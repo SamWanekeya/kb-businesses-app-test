@@ -105,9 +105,9 @@ class SettingsController extends Controller
             'settings' => $systemSettings, // For helper functions
             'cacheSize' => getCacheSize(),
             'currencies' => $currencies,
-            'timezones' => config('timezones'),
-            'dateFormats' => config('dateformat'),
-            'timeFormats' => config('timeformat'),
+            'timezones' => config('time-zones'),
+            'dateFormats' => config('date-format'),
+            'timeFormats' => config('time-format'),
             'paymentSettings' => $paymentSettings,
             'currentWorkspace' => $currentWorkspace,
             'webhooks' => $webhooks,

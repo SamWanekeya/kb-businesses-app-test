@@ -14,7 +14,7 @@ interface Plan {
     duration: string;
     description?: string;
     features?: string[];
-    business?: number;
+    organization?: number;
     maximum_users?: number;
     storage_limit?: string;
     is_active?: boolean;

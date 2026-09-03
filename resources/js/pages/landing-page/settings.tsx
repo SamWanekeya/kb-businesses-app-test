@@ -1510,7 +1510,7 @@ export default function LandingPageSettings() {
                                                 id="why_choose_us_subtitle"
                                                 value={getSectionData('why_choose_us').subtitle || ''}
                                                 onChange={(e) => updateSectionData('why_choose_us', { subtitle: e.target.value })}
-                                                placeholder={t("We're not just another digital business card platform...")}
+                                                placeholder={t("We're not just another digital organization card platform...")}
                                                 rows={3}
                                             />
                                         </div>

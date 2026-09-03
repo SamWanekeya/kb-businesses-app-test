@@ -16,10 +16,10 @@ class MediaItemSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $businesses = Business::all();
+        $organizations = Business::all();
 
-        if ($businesses->isEmpty()) {
-            $this->command->warn('No businesses found. Please seed businesses first.');
+        if ($organizations->isEmpty()) {
+            $this->command->warn('No organizations found. Please seed organizations first.');
 
             return;
         }
@@ -50,19 +50,19 @@ class MediaItemSeeder extends Seeder
 
         // NFC card media seeding removed
 
-        // Create media items for each business
-        foreach ($businesses as $business) {
-            // Only create media for businesses with gallery enabled
+        // Create media items for each organization
+        foreach ($organizations as $business) {
+            // Only create media for organizations with gallery enabled
             $configSections = $business->config_sections ?? [];
             if (!isset($configSections['gallery']) || !($configSections['gallery']['enabled'] ?? false)) {
                 continue;
             }
 
-            // Create more media for the main organization user's businesses
+            // Create more media for the main organization user's organizations
             $mediaCount = $business->user && $business->user->email === 'organization@kakbima.dev' ?
                 rand(20, 30) : rand(12, 20);
 
-            // Get appropriate media names for this business type
+            // Get appropriate media names for this organization type
             $businessType = $business->business_type;
             $mediaNames = $mediaNamesByType[$businessType] ?? $mediaNamesByType['default'];
 
@@ -79,7 +79,7 @@ class MediaItemSeeder extends Seeder
 
                 MediaItem::create([
                     'name' => $name,
-                    'description' => ucfirst($mediaType) . ' for business ID ' . $business->id . ': ' . $name,
+                    'description' => ucfirst($mediaType) . ' for organization ID ' . $business->id . ': ' . $name,
                 ]);
             }
         }

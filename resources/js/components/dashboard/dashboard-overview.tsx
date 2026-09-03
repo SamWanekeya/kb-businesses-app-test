@@ -103,7 +103,7 @@ export function DashboardOverview({ userType, stats }: DashboardOverviewProps) {
                 <p className="text-muted-foreground text-base">
                     {userType === 'super_admin'
                         ? t('Comprehensive system management and oversight tools')
-                        : t('Everything you need to manage your digital business presence')}
+                        : t('Everything you need to manage your digital organization presence')}
                 </p>
             </CardHeader>
             <CardContent>
@@ -142,7 +142,7 @@ export function DashboardOverview({ userType, stats }: DashboardOverviewProps) {
                         <span className="text-sm font-medium">
                             {userType === 'super_admin'
                                 ? t('System growing at {{growth}}% monthly', { growth: stats?.monthlyGrowth || 0 })
-                                : t('Your business growing at {{growth}}% monthly', { growth: stats?.monthlyGrowth || 0 })}
+                                : t('Your organization growing at {{growth}}% monthly', { growth: stats?.monthlyGrowth || 0 })}
                         </span>
                     </div>
                 </div>

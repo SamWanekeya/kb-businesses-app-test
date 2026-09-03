@@ -234,7 +234,7 @@ export default function DomainConfig({
                             <Input
                                 value={data.slug || ''}
                                 onChange={(e) => (onSlugChange ? onSlugChange(e.target.value) : onUpdate('slug', e.target.value))}
-                                placeholder="your-business-name"
+                                placeholder="your-organization-name"
                                 className={`h-9 text-sm ${slugStatus && !slugStatus.available ? 'border-red-500' : ''}`}
                             />
                             {slugStatus && (

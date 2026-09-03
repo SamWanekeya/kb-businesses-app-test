@@ -33,13 +33,13 @@ return [
     ],
 
     /*
-     * When urls to files get generated, this class will be called. Use the default
-     * if your files are stored locally above the site root or on s3.
+     * When URLs to files get generated, this class will be called. Use the default
+     * if your files are stored locally above the site root or on S3.
      */
     'url_generator' => Spatie\MediaLibrary\Support\UrlGenerator\DefaultUrlGenerator::class,
 
     /*
-     * Whether to activate versioning when urls to files get generated.
+     * Whether to activate versioning when URLs to files get generated.
      * When activated, this attaches a ?v=xx query string to the URL.
      */
     'version_urls' => false,
@@ -148,7 +148,7 @@ return [
         'performance_optimizer' => null,
 
         /*
-         * This class is responsible for determining the urls of generated responsive images.
+         * This class is responsible for determining the URLs of generated responsive images.
          */
         'url_generator' => null,
     ],

@@ -88,22 +88,22 @@ class PermissionSeeder extends Seeder
             ['name' => 'toggle-status-coupons', 'module' => 'coupons', 'label' => 'Change Status Coupons', 'description' => 'Can change status Coupons'],
 
             // Plan Requests management
-            ['name' => 'manage-plan-requests', 'module' => 'plan_requests', 'label' => 'Manage Plan Requests', 'description' => 'Can manage plan requests'],
-            ['name' => 'view-plan-requests', 'module' => 'plan_requests', 'label' => 'View Plan Requests', 'description' => 'View Plan Requests'],
-            ['name' => 'create-plan-requests', 'module' => 'plan_requests', 'label' => 'Create Plan Requests', 'description' => 'Can create plan requests'],
-            ['name' => 'edit-plan-requests', 'module' => 'plan_requests', 'label' => 'Edit Plan Requests', 'description' => 'Can edit plan requests'],
-            ['name' => 'delete-plan-requests', 'module' => 'plan_requests', 'label' => 'Delete Plan Requests', 'description' => 'Can delete plan requests'],
-            ['name' => 'approve-plan-requests', 'module' => 'plan_requests', 'label' => 'Approve plan requests', 'description' => 'Can approve plan requests'],
-            ['name' => 'reject-plan-requests', 'module' => 'plan_requests', 'label' => 'Reject plan requests', 'description' => 'Can reject plplan requests'],
+            ['name' => 'manage-plan-requests', 'module' => 'plan-requests', 'label' => 'Manage Plan Requests', 'description' => 'Can manage plan requests'],
+            ['name' => 'view-plan-requests', 'module' => 'plan-requests', 'label' => 'View Plan Requests', 'description' => 'View Plan Requests'],
+            ['name' => 'create-plan-requests', 'module' => 'plan-requests', 'label' => 'Create Plan Requests', 'description' => 'Can create plan requests'],
+            ['name' => 'edit-plan-requests', 'module' => 'plan-requests', 'label' => 'Edit Plan Requests', 'description' => 'Can edit plan requests'],
+            ['name' => 'delete-plan-requests', 'module' => 'plan-requests', 'label' => 'Delete Plan Requests', 'description' => 'Can delete plan requests'],
+            ['name' => 'approve-plan-requests', 'module' => 'plan-requests', 'label' => 'Approve plan requests', 'description' => 'Can approve plan requests'],
+            ['name' => 'reject-plan-requests', 'module' => 'plan-requests', 'label' => 'Reject plan requests', 'description' => 'Can reject plan requests'],
 
             // Plan Orders management
-            ['name' => 'manage-plan-orders', 'module' => 'plan_orders', 'label' => 'Manage Plan Orders', 'description' => 'Can manage plan orders'],
-            ['name' => 'view-plan-orders', 'module' => 'plan_orders', 'label' => 'View Plan Orders', 'description' => 'View Plan Orders'],
-            ['name' => 'create-plan-orders', 'module' => 'plan_orders', 'label' => 'Create Plan Orders', 'description' => 'Can create plan orders'],
-            ['name' => 'edit-plan-orders', 'module' => 'plan_orders', 'label' => 'Edit Plan Orders', 'description' => 'Can edit plan orders'],
-            ['name' => 'delete-plan-orders', 'module' => 'plan_orders', 'label' => 'Delete Plan Orders', 'description' => 'Can delete plan orders'],
-            ['name' => 'approve-plan-orders', 'module' => 'plan_orders', 'label' => 'Approve Plan Orders', 'description' => 'Can approve plan orders'],
-            ['name' => 'reject-plan-orders', 'module' => 'plan_orders', 'label' => 'Reject Plan Orders', 'description' => 'Can reject plan orders'],
+            ['name' => 'manage-plan-orders', 'module' => 'plan-orders', 'label' => 'Manage Plan Orders', 'description' => 'Can manage plan orders'],
+            ['name' => 'view-plan-orders', 'module' => 'plan-orders', 'label' => 'View Plan Orders', 'description' => 'View Plan Orders'],
+            ['name' => 'create-plan-orders', 'module' => 'plan-orders', 'label' => 'Create Plan Orders', 'description' => 'Can create plan orders'],
+            ['name' => 'edit-plan-orders', 'module' => 'plan-orders', 'label' => 'Edit Plan Orders', 'description' => 'Can edit plan orders'],
+            ['name' => 'delete-plan-orders', 'module' => 'plan-orders', 'label' => 'Delete Plan Orders', 'description' => 'Can delete plan orders'],
+            ['name' => 'approve-plan-orders', 'module' => 'plan-orders', 'label' => 'Approve Plan Orders', 'description' => 'Can approve plan orders'],
+            ['name' => 'reject-plan-orders', 'module' => 'plan-orders', 'label' => 'Reject Plan Orders', 'description' => 'Can reject plan orders'],
 
 
             // Settings

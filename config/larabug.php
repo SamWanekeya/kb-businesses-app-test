@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Sign in key
+    | Login key
     |--------------------------------------------------------------------------
     |
     | This is your authorization key which you get from your profile.
@@ -56,7 +56,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | How many lines to show near exception line. The more you specify the bigger
-    | the displayed code will be. Max value can be 50, will be defaulted to
+    | the displayed code will be. Maximum value can be 50, will be defaulted to
     | 12 if higher than 50 automatically.
     |
     */

@@ -36,7 +36,7 @@ export default function TeamSection({ settings, sectionData, brandColor = '#A125
         {
             name: 'Sarah Johnson',
             role: t('CEO & Founder'),
-            bio: t('Sales strategist and former tech executive with 15+ years of experience in scaling SaaS businesses.'),
+            bio: t('Sales strategist and former tech executive with 15+ years of experience in scaling SaaS organizations.'),
             image: '',
             linkedin: '#',
             email: 'sarah@sales.com',

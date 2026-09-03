@@ -16,21 +16,13 @@ class RoleSeeder extends Seeder
         // Create super admin role
         $superAdminRole = Role::firstOrCreate(
             ['name' => 'super_admin', 'guard_name' => 'web'],
-            [
-                'label' => 'Super Administrator',
-                'description' => 'Super Administrator has full access to all features',
-                'created_by' => null,
-            ]
+            ['label' => 'Super Administrator', 'description' => 'Super Administrator has full access to all features', 'created_by' => null]
         );
 
         // Create admin role
         $adminRole = Role::firstOrCreate(
             ['name' => 'organization', 'guard_name' => 'web'],
-            [
-                'label' => 'Organization',
-                'description' => 'Organization has access to manage buissness',
-                'created_by' => null,
-            ]
+            ['label' => 'Organization', 'description' => 'Organization has access to manage business', 'created_by' => null]
         );
 
         // Get all permissions

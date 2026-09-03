@@ -66,7 +66,7 @@ export default function WhyChooseUs({ settings, sectionData, brandColor = '#A125
     ];
 
     const defaultStats = [
-        { value: '10K+', label: t('Businesses Powered'), color: 'blue' },
+        { value: '10K+', label: t('Organizations Powered'), color: 'blue' },
         { value: '99%', label: t('Customer Satisfaction'), color: 'green' },
     ];
 
