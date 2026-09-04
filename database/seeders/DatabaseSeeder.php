@@ -24,7 +24,6 @@ class DatabaseSeeder extends Seeder
                 PlanRequestSeeder::class,
                 ReferralSettingSeeder::class,
                 CurrencySeeder::class,
-                LandingPageCustomPageSeeder::class,
                 LeadStatusSeeder::class,
                 LeadSourceSeeder::class,
                 TaskStatusSeeder::class,
@@ -81,7 +80,6 @@ class DatabaseSeeder extends Seeder
                 StaffRoleSeeder::class,
                 EmailTemplateSeeder::class,
                 NotificationTemplateSeeder::class,
-                LandingPageCustomPageSeeder::class,
                 CurrencySeeder::class,
             ]);
         }

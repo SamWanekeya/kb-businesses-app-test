@@ -104,7 +104,7 @@ export function BrandProvider({ children, globalSettings, user }: { children: Re
         const isPublicRoute =
             window.location.pathname.includes('/public/') || window.location.pathname === '/' || window.location.pathname.includes('/auth/');
 
-        // For public routes (landing page, auth pages), always use super_admin settings
+        // For public routes (auth pages), always use super_admin settings
         if (isPublicRoute) {
             return {
                 ...globalSettings,

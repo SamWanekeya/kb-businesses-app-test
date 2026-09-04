@@ -79,7 +79,6 @@ class RoleSeeder extends Seeder
             'manage-language',
             'edit-language',
             'view-language',
-            'view-landing-page',
             'manage-analytics',
             'manage-taxes',
             'view-taxes',

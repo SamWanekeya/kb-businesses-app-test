@@ -64,8 +64,6 @@ use App\Http\Controllers\InvoiceXenditPaymentController;
 use App\Http\Controllers\InvoiceYooKassaPaymentController;
 use App\Http\Controllers\IyzipayPaymentController;
 use App\Http\Controllers\KhaltiPaymentController;
-use App\Http\Controllers\LandingPage\CustomPageController;
-use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\LeadCommentController;
 use App\Http\Controllers\LeadController;
@@ -128,12 +126,6 @@ use App\Http\Controllers\YooKassaPaymentController;
 use App\Http\Controllers\ZeroPaymentController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
-Route::match(['GET', 'HEAD'], '/', [LandingPageController::class, 'show'])->name('home');
-Route::post('/landing-page/contact', [LandingPageController::class, 'submitContact'])->name('landing-page.contact');
-Route::post('/landing-page/subscribe', [LandingPageController::class, 'subscribe'])->name('landing-page.subscribe');
-
-// Public form submission routes
 
 // Cashfree webhook (public route)
 Route::post('cashfree/webhook', [CashfreeController::class, 'webhook'])->name('cashfree.webhook');
@@ -1036,13 +1028,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('sign-in-history/{loginDetail}', [SignInHistoryController::class, 'destroy'])->middleware('permission:delete-sign-in-history')->name('sign-in-history.destroy');
         });
 
-        // Landing Page content management (Super Administrator only)
+        // Super Administrator only
         Route::middleware('App\Http\Middleware\SuperAdminMiddleware')->group(function () {
-            Route::get('landing-page/settings', [LandingPageController::class, 'settings'])->name('landing-page.settings');
-            Route::post('landing-page/settings', [LandingPageController::class, 'updateSettings'])->name('landing-page.settings.update');
-
-            Route::resource('/custom-pages', CustomPageController::class)->names('landing-page.custom-pages');
-
             // Contact Messages routes
             Route::get('contact-messages', [ContactMessageController::class, 'index'])->name('contact-messages.index');
             Route::delete('contact-messages/{contactMessage}', [ContactMessageController::class, 'destroy'])->name('contact-messages.destroy');
@@ -1056,7 +1043,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
 
         Route::middleware(['role:super_admin|super admin'])->group(function () {
-            Route::get('/landing-page', [LandingPageController::class, 'settings'])->name('landing-page');
             // Email Templates routes (no middleware for testing)
             Route::get('email-templates', [EmailTemplateController::class, 'index'])->name('email-templates.index');
             Route::get('email-templates/{emailTemplate}', [EmailTemplateController::class, 'show'])->name('email-templates.show');

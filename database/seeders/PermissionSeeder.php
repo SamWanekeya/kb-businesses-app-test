@@ -163,10 +163,6 @@ class PermissionSeeder extends Seeder
 
             // Webhook management
             // ['name' => 'manage-webhook-settings', 'module' => 'settings', 'label' => 'Manage Webhook Settings', 'description' => 'Can manage webhook settings'],
-            // Landing Page management
-            ['name' => 'manage-landing-page', 'module' => 'landing_page', 'label' => 'Manage Landing Page', 'description' => 'Can manage landing page'],
-            ['name' => 'view-landing-page', 'module' => 'landing_page', 'label' => 'View Landing Page', 'description' => 'View landing page'],
-            ['name' => 'edit-landing-page', 'module' => 'landing_page', 'label' => 'Edit Landing Page', 'description' => 'Edit landing page'],
 
             // Tax management
             ['name' => 'manage-taxes', 'module' => 'taxes', 'label' => 'Manage Taxes', 'description' => 'Can manage taxes'],

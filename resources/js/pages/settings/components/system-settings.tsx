@@ -33,7 +33,6 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
         calendarStartDay: 'sunday',
         defaultTimezone: 'UTC',
         emailVerification: false,
-        landingPageEnabled: true,
         registrationEnabled: true,
         termsConditionsPage: '',
     };
@@ -49,11 +48,6 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
         calendarStartDay: settingsData.calendarStartDay || defaultSettings.calendarStartDay,
         defaultTimezone: settingsData.defaultTimezone || defaultSettings.defaultTimezone,
         emailVerification: settingsData.emailVerification === 'true' || settingsData.emailVerification === true || defaultSettings.emailVerification,
-        landingPageEnabled:
-            settingsData.landingPageEnabled === 'true' ||
-            settingsData.landingPageEnabled === true ||
-            settingsData.landingPageEnabled === '1' ||
-            (settingsData.landingPageEnabled === undefined ? defaultSettings.landingPageEnabled : false),
         registrationEnabled:
             settingsData.registrationEnabled === 'true' ||
             settingsData.registrationEnabled === true ||
@@ -81,11 +75,6 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
                     mergedSettings.emailVerification === 'true' ||
                     mergedSettings.emailVerification === true ||
                     mergedSettings.emailVerification === '1',
-                landingPageEnabled:
-                    mergedSettings.landingPageEnabled === 'true' ||
-                    mergedSettings.landingPageEnabled === true ||
-                    mergedSettings.landingPageEnabled === '1' ||
-                    (mergedSettings.landingPageEnabled === undefined ? defaultSettings.landingPageEnabled : false),
                 registrationEnabled:
                     mergedSettings.registrationEnabled === 'true' ||
                     mergedSettings.registrationEnabled === true ||
@@ -118,7 +107,6 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
             calendarStartDay: systemSettings.calendarStartDay,
             defaultTimezone: systemSettings.defaultTimezone,
             emailVerification: Boolean(systemSettings.emailVerification),
-            landingPageEnabled: Boolean(systemSettings.landingPageEnabled),
             registrationEnabled: Boolean(systemSettings.registrationEnabled),
             termsConditionsPage: systemSettings.termsConditionsPage,
         };
@@ -325,20 +313,6 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
                             <div className="grid gap-2 md:col-span-2">
                                 <div className="flex items-center justify-between">
                                     <div className="space-y-0.5">
-                                        <Label htmlFor="landingPageEnabled">{t('Landing Page')}</Label>
-                                        <p className="text-muted-foreground text-sm">{t('Enable or disable the public landing page')}</p>
-                                    </div>
-                                    <Switch
-                                        id="landingPageEnabled"
-                                        checked={systemSettings.landingPageEnabled}
-                                        onCheckedChange={(checked) => handleSystemSettingsChange('landingPageEnabled', checked)}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="grid gap-2 md:col-span-2">
-                                <div className="flex items-center justify-between">
-                                    <div className="space-y-0.5">
                                         <Label htmlFor="registrationEnabled">{t('User Registration')}</Label>
                                         <p className="text-muted-foreground text-sm">{t('Allow new users to register accounts')}</p>
                                     </div>
@@ -360,7 +334,7 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
                                     placeholder="https://kakbima.dev/terms"
                                 />
                                 <p className="text-muted-foreground text-sm">
-                                    {t('URL for terms and conditions page. If empty, will redirect to landing page.')}
+                                    {t('URL for terms and conditions page. If empty, will redirect to home page.')}
                                 </p>
                             </div>
                         </div>

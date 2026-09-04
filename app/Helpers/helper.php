@@ -138,13 +138,6 @@ if (! function_exists('updateSetting')) {
     }
 }
 
-if (! function_exists('isLandingPageEnabled')) {
-    function isLandingPageEnabled()
-    {
-        return getSetting('landingPageEnabled', true) === true || getSetting('landingPageEnabled', true) === '1';
-    }
-}
-
 if (! function_exists('isRegistrationEnabled')) {
     function isRegistrationEnabled()
     {
@@ -963,7 +956,6 @@ if (! function_exists('defaultSettings')) {
             'calendarStartDay' => 'sunday',
             'defaultTimezone' => 'UTC',
             'emailVerification' => false,
-            'landingPageEnabled' => true,
             'registrationEnabled' => true,
 
             // Brand Settings
@@ -1070,7 +1062,6 @@ if (! function_exists('copySettingsFromSuperAdmin')) {
             'calendarStartDay',
             'defaultTimezone',
             'emailVerification',
-            'landingPageEnabled',
             'registrationEnabled',
             'logoDark',
             'logoLight',

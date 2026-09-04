@@ -15,7 +15,6 @@ class OrganizationSystemSettingsController extends Controller
      * Handles organization-level configuration including:
      * - Language and localization settings
      * - Date/time formats and timezone
-     * - Excludes email verification and landing page settings
      *
      * @param Request $request
      *

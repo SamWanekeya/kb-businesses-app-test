@@ -98,7 +98,6 @@ class DemoModeMiddleware
             'languages.toggle',
             'languages.delete',
             'referral.settings.update',
-            'landing-page.custom-pages.store',
             'invoices.send-reminder',
         ];
 

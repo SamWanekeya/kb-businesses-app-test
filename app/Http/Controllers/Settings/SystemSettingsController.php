@@ -30,7 +30,6 @@ class SystemSettingsController extends Controller
      * - Language and localization settings
      * - Date/time formats and timezone
      * - Email verification requirements
-     * - Landing page enable/disable toggle
      *
      * @param Request $request
      *
@@ -46,7 +45,6 @@ class SystemSettingsController extends Controller
                 'calendarStartDay' => 'required|string',
                 'defaultTimezone' => 'required|string',
                 'emailVerification' => 'boolean',
-                'landingPageEnabled' => 'boolean',
                 'registrationEnabled' => 'boolean',
                 'termsConditionsPage' => 'nullable|url',
             ]);

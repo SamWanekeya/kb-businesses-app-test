@@ -112,29 +112,6 @@ export function AppSidebar() {
             group: t('Management'),
         },
         {
-            title: t('Landing Page'),
-            icon: Palette,
-            group: t('Management'),
-            children: [
-                {
-                    title: t('Landing Page'),
-                    href: route('landing-page'),
-                },
-                {
-                    title: t('Custom Pages'),
-                    href: route('landing-page.custom-pages.index'),
-                },
-                {
-                    title: t('Contact Inquiries'),
-                    href: route('contact-messages.index'),
-                },
-                {
-                    title: t('Newsletters'),
-                    href: route('newsletters.index'),
-                },
-            ],
-        },
-        {
             title: t('Email Templates'),
             href: route('email-templates.index'),
             icon: Mail,

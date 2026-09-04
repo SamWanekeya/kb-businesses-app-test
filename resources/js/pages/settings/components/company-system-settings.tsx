@@ -28,7 +28,7 @@ export default function OrganizationSystemSettings({
     const pageProps = usePage().props as any;
     const [processing, setProcessing] = useState(false);
 
-    // Default settings (excluding emailVerification and landingPageEnabled)
+    // Default settings
     const defaultSettings = {
         defaultLanguage: 'en',
         dateFormat: 'MM/DD/YYYY',
