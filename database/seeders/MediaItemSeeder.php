@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Business;
 use App\Models\MediaItem;
-use App\Models\User;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 

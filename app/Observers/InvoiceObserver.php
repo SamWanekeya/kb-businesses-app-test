@@ -2,8 +2,10 @@
 
 namespace App\Observers;
 
+use App\Models\Contact;
 use App\Models\Invoice;
 use App\Models\InvoiceActivity;
+use App\Models\SalesOrder;
 use App\Models\User;
 
 class InvoiceObserver
@@ -90,7 +92,7 @@ class InvoiceObserver
             case 'invoice_number':
                 return $userName . ' updated invoice number';
             case 'assigned_to':
-                $newUser = $newValue ? \App\Models\User::find($newValue)?->name : 'Unassigned';
+                $newUser = $newValue ? User::find($newValue)?->name : 'Unassigned';
                 if ($newUser === $userName) {
                     return $userName . ' self-assigned this invoice';
                 }
@@ -135,19 +137,19 @@ class InvoiceObserver
             case 'invoice_number':
                 return '<span class="font-bold text-base">' . ($oldValue ?? '') . '</span> into <span class="font-bold text-base">' . ($newValue ?? '') . '</span>';
             case 'assigned_to':
-                $oldUser = $oldValue ? \App\Models\User::find($oldValue)?->name : 'Unassigned';
-                $newUser = $newValue ? \App\Models\User::find($newValue)?->name : 'Unassigned';
+                $oldUser = $oldValue ? User::find($oldValue)?->name : 'Unassigned';
+                $newUser = $newValue ? User::find($newValue)?->name : 'Unassigned';
 
                 return '<span class="font-bold text-base">' . $oldUser . '</span> into <span class="font-bold text-base">' . $newUser . '</span>';
             case 'sales_order_id':
-                $oldSalesOrder = $oldValue ? \App\Models\SalesOrder::find($oldValue)?->sales_order_number : 'None';
-                $newSalesOrder = $newValue ? \App\Models\SalesOrder::find($newValue)?->sales_order_number : 'None';
+                $oldSalesOrder = $oldValue ? SalesOrder::find($oldValue)?->sales_order_number : 'None';
+                $newSalesOrder = $newValue ? SalesOrder::find($newValue)?->sales_order_number : 'None';
 
                 return '<span class="font-bold text-base">' . ($oldSalesOrder ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newSalesOrder ?? 'None') . '</span>';
             case 'billing_contact_id':
             case 'shipping_contact_id':
-                $oldContact = $oldValue ? \App\Models\Contact::find($oldValue)?->name : 'None';
-                $newContact = $newValue ? \App\Models\Contact::find($newValue)?->name : 'None';
+            $oldContact = $oldValue ? Contact::find($oldValue)?->name : 'None';
+            $newContact = $newValue ? Contact::find($newValue)?->name : 'None';
 
                 return '<span class="font-bold text-base">' . ($oldContact ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newContact ?? 'None') . '</span>';
             case 'due_date':

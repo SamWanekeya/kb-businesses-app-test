@@ -17,11 +17,6 @@ class UserNotificationTemplate extends Model
         'is_active' => 'boolean',
     ];
 
-    public function notificationTemplate(): BelongsTo
-    {
-        return $this->belongsTo(NotificationTemplate::class, 'template_id');
-    }
-
     /**
      * Get user notification template settings
      *
@@ -36,5 +31,10 @@ class UserNotificationTemplate extends Model
             ->get()
             ->pluck('is_active', 'notificationTemplate.name')
             ->toArray();
+    }
+
+    public function notificationTemplate(): BelongsTo
+    {
+        return $this->belongsTo(NotificationTemplate::class, 'template_id');
     }
 }

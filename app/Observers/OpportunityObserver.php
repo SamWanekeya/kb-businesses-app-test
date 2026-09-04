@@ -4,6 +4,8 @@ namespace App\Observers;
 
 use App\Models\Opportunity;
 use App\Models\OpportunityActivity;
+use App\Models\OpportunitySource;
+use App\Models\OpportunityStage;
 use App\Models\User;
 
 class OpportunityObserver
@@ -73,13 +75,13 @@ class OpportunityObserver
             // Store opportunity stage colors for historical accuracy
             if ($field === 'opportunity_stage_id') {
                 if ($oldValue) {
-                    $oldOpportunityStage = \App\Models\OpportunityStage::find($oldValue);
+                    $oldOpportunityStage = OpportunityStage::find($oldValue);
                     if ($oldOpportunityStage) {
                         $newValues['old_opportunity_stage_color'] = $oldOpportunityStage->color;
                     }
                 }
                 if ($newValue) {
-                    $newOpportunityStage = \App\Models\OpportunityStage::find($newValue);
+                    $newOpportunityStage = OpportunityStage::find($newValue);
                     if ($newOpportunityStage) {
                         $newValues['opportunity_stage_color'] = $newOpportunityStage->color;
                     }
@@ -116,7 +118,7 @@ class OpportunityObserver
             case 'close_date':
                 return $userName . ' updated close date';
             case 'assigned_to':
-                $newUser = $newValue ? \App\Models\User::find($newValue)?->name : 'Unassigned';
+                $newUser = $newValue ? User::find($newValue)?->name : 'Unassigned';
                 if ($newUser === $userName) {
                     return $userName . ' self-assigned this opportunity';
                 }
@@ -144,15 +146,15 @@ class OpportunityObserver
 
                 return $oldStatus . ' into ' . $newStatus;
             case 'opportunity_stage_id':
-                $oldOpportunityStage = $oldValue ? \App\Models\OpportunityStage::find($oldValue) : null;
-                $newOpportunityStage = $newValue ? \App\Models\OpportunityStage::find($newValue) : null;
+                $oldOpportunityStage = $oldValue ? OpportunityStage::find($oldValue) : null;
+                $newOpportunityStage = $newValue ? OpportunityStage::find($newValue) : null;
                 $oldPart = $oldOpportunityStage ? '<div class="inline-block w-3 h-3 rounded-full mr-1" style="background-color: ' . ($oldOpportunityStage->color ?? '#6b7280') . ';"></div><span class="font-bold">' . $oldOpportunityStage->name . '</span>' : 'None';
                 $newPart = $newOpportunityStage ? '<div class="inline-block w-3 h-3 rounded-full mr-1" style="background-color: ' . ($newOpportunityStage->color ?? '#6b7280') . ';"></div><span class="font-bold">' . $newOpportunityStage->name . '</span>' : 'None';
 
                 return $oldPart . ' into ' . $newPart;
             case 'opportunity_source_id':
-                $oldSource = $oldValue ? \App\Models\OpportunitySource::find($oldValue)?->name : 'None';
-                $newSource = $newValue ? \App\Models\OpportunitySource::find($newValue)?->name : 'None';
+                $oldSource = $oldValue ? OpportunitySource::find($oldValue)?->name : 'None';
+                $newSource = $newValue ? OpportunitySource::find($newValue)?->name : 'None';
 
                 return '<span class="font-bold text-base">' . ($oldSource ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newSource ?? 'None') . '</span>';
             case 'name':
@@ -163,8 +165,8 @@ class OpportunityObserver
 
                 return '<span class="font-bold text-base">' . $oldAmount . '</span> into <span class="font-bold text-base">' . $newAmount . '</span>';
             case 'assigned_to':
-                $oldUser = $oldValue ? \App\Models\User::find($oldValue)?->name : 'Unassigned';
-                $newUser = $newValue ? \App\Models\User::find($newValue)?->name : 'Unassigned';
+                $oldUser = $oldValue ? User::find($oldValue)?->name : 'Unassigned';
+                $newUser = $newValue ? User::find($newValue)?->name : 'Unassigned';
 
                 return '<span class="font-bold text-base">' . $oldUser . '</span> into <span class="font-bold text-base">' . $newUser . '</span>';
             default:

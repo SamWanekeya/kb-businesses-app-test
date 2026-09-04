@@ -2,7 +2,10 @@
 
 namespace App\Imports;
 
+use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Product;
+use App\Models\Tax;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -44,7 +47,7 @@ class ProductImport implements ToModel, WithHeadingRow
 
         // Category
         if (!empty($row['category'])) {
-            $category = \App\Models\Category::where('name', $row['category'])
+            $category = Category::where('name', $row['category'])
                 ->where('created_by', createdBy())
                 ->first();
             if ($category) {
@@ -54,7 +57,7 @@ class ProductImport implements ToModel, WithHeadingRow
 
         // Brand
         if (!empty($row['brand'])) {
-            $brand = \App\Models\Brand::where('name', $row['brand'])
+            $brand = Brand::where('name', $row['brand'])
                 ->where('created_by', createdBy())
                 ->first();
             if ($brand) {
@@ -65,9 +68,9 @@ class ProductImport implements ToModel, WithHeadingRow
         // Tax
         $taxValue = trim($row['tax'] ?? '');
         $tax = !empty($taxValue)
-            ? \App\Models\Tax::where('name', $taxValue)->where('created_by', createdBy())->first()
+            ? Tax::where('name', $taxValue)->where('created_by', createdBy())->first()
             : null;
-        $productData['tax_id'] = $tax?->id ?? \App\Models\Tax::where('created_by', createdBy())->value('id');
+        $productData['tax_id'] = $tax?->id ?? Tax::where('created_by', createdBy())->value('id');
 
         $this->addedCount++;
 

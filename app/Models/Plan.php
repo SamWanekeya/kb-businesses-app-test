@@ -51,7 +51,7 @@ class Plan extends Model
      */
     public function isDefault()
     {
-        return (bool) $this->is_default;
+        return (bool)$this->is_default;
     }
 
     /**

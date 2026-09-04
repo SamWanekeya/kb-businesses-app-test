@@ -3,6 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\MeetingInvitation;
+use App\Models\Contact;
+use App\Models\Lead;
 use App\Models\User;
 use App\Services\TwilioService;
 use Exception;
@@ -14,7 +16,8 @@ class TwilioMettingCreateListener
      */
     public function __construct(
         private TwilioService $twilioService
-    ) {
+    )
+    {
         //
     }
 
@@ -57,10 +60,10 @@ class TwilioMettingCreateListener
 
                         switch ($attendee->attendee_type) {
                             case 'contact':
-                                $attendeeRecord = \App\Models\Contact::find($attendee->attendee_id);
+                                $attendeeRecord = Contact::find($attendee->attendee_id);
                                 break;
                             case 'lead':
-                                $attendeeRecord = \App\Models\Lead::find($attendee->attendee_id);
+                                $attendeeRecord = Lead::find($attendee->attendee_id);
                                 break;
                         }
 

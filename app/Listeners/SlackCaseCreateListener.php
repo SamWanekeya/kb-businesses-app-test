@@ -11,7 +11,8 @@ class SlackCaseCreateListener
 {
     public function __construct(
         private SlackService $slackService
-    ) {
+    )
+    {
         //
     }
 

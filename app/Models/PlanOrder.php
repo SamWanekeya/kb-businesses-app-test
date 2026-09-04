@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\ReferralController;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -86,7 +87,7 @@ class PlanOrder extends Model
         ]);
 
         // Create referral record if user was referred, passing billing cycle information
-        \App\Http\Controllers\ReferralController::createReferralRecord($this->user->fresh(), $this->billing_cycle);
+        ReferralController::createReferralRecord($this->user->fresh(), $this->billing_cycle);
     }
 
     public function reject($processedBy = null, $notes = null)

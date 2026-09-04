@@ -37,13 +37,13 @@ class Coupon extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function history()
-    {
-        return $this->hasMany(PlanOrder::class);
-    }
-
     public function getUsedCountAttribute()
     {
         return $this->history()->where("status", "!=", "rejected")->count();
+    }
+
+    public function history()
+    {
+        return $this->hasMany(PlanOrder::class);
     }
 }

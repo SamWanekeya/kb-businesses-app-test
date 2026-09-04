@@ -11,7 +11,8 @@ class SlackLeadCreateListener
 {
     public function __construct(
         private SlackService $slackService,
-    ) {
+    )
+    {
         //
     }
 

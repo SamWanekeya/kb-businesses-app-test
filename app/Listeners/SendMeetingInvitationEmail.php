@@ -3,6 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\MeetingInvitation;
+use App\Models\Contact;
+use App\Models\Lead;
 use App\Models\User;
 use App\Services\EmailTemplateService;
 use Exception;
@@ -14,7 +16,8 @@ class SendMeetingInvitationEmail
      */
     public function __construct(
         private EmailTemplateService $emailService,
-    ) {
+    )
+    {
         //
     }
 
@@ -55,13 +58,13 @@ class SendMeetingInvitationEmail
 
                         switch ($attendee->attendee_type) {
                             case 'user':
-                                $attendeeRecord = \App\Models\User::find($attendee->attendee_id);
+                                $attendeeRecord = User::find($attendee->attendee_id);
                                 break;
                             case 'contact':
-                                $attendeeRecord = \App\Models\Contact::find($attendee->attendee_id);
+                                $attendeeRecord = Contact::find($attendee->attendee_id);
                                 break;
                             case 'lead':
-                                $attendeeRecord = \App\Models\Lead::find($attendee->attendee_id);
+                                $attendeeRecord = Lead::find($attendee->attendee_id);
                                 break;
                         }
 

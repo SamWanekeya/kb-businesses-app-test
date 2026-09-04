@@ -1,12 +1,18 @@
 <?php
 
+use App\Http\Controllers\ReferralController;
 use App\Models\Coupon;
+use App\Models\EmailTemplate;
+use App\Models\NotificationTemplate;
+use App\Models\NotificationTemplateLang;
 use App\Models\PaymentSetting;
 use App\Models\Plan;
 use App\Models\PlanOrder;
 use App\Models\Role;
 use App\Models\Setting;
 use App\Models\User;
+use App\Models\UserEmailTemplate;
+use App\Models\UserNotificationTemplate;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -24,7 +30,7 @@ if (!function_exists('getCacheSize')) {
         $framework_path = storage_path('framework');
 
         if (is_dir($framework_path)) {
-            foreach (\File::allFiles($framework_path) as $file) {
+            foreach (File::allFiles($framework_path) as $file) {
                 $file_size += $file->getSize();
             }
         }
@@ -33,7 +39,7 @@ if (!function_exists('getCacheSize')) {
     }
 }
 
-if (! function_exists('settings')) {
+if (!function_exists('settings')) {
     function settings($user_id = null)
     {
         // Skip database queries during installation
@@ -77,7 +83,7 @@ if (! function_exists('settings')) {
     }
 }
 
-if (! function_exists('formatDateTime')) {
+if (!function_exists('formatDateTime')) {
     function formatDateTime($date, $includeTime = true)
     {
         if (!$date) {
@@ -96,7 +102,7 @@ if (! function_exists('formatDateTime')) {
     }
 }
 
-if (! function_exists('getSetting')) {
+if (!function_exists('getSetting')) {
     function getSetting($key, $default = null, $user_id = null)
     {
         $settings = settings($user_id);
@@ -111,7 +117,7 @@ if (! function_exists('getSetting')) {
     }
 }
 
-if (! function_exists('updateSetting')) {
+if (!function_exists('updateSetting')) {
     function updateSetting($key, $value, $user_id = null)
     {
         if (is_null($user_id)) {
@@ -138,7 +144,7 @@ if (! function_exists('updateSetting')) {
     }
 }
 
-if (! function_exists('defaultRoleAndSetting')) {
+if (!function_exists('defaultRoleAndSetting')) {
     function defaultRoleAndSetting($user)
     {
         $organizationRole = Role::where('name', 'organization')->first();
@@ -164,7 +170,7 @@ if (! function_exists('defaultRoleAndSetting')) {
     }
 }
 
-if (! function_exists('createDefaultEmailTemplateSettings')) {
+if (!function_exists('createDefaultEmailTemplateSettings')) {
     /**
      * Create default email template settings for a user
      *
@@ -174,10 +180,10 @@ if (! function_exists('createDefaultEmailTemplateSettings')) {
      */
     function createDefaultEmailTemplateSettings($userId)
     {
-        $templates = \App\Models\EmailTemplate::all();
+        $templates = EmailTemplate::all();
 
         foreach ($templates as $template) {
-            \App\Models\UserEmailTemplate::updateOrCreate(
+            UserEmailTemplate::updateOrCreate(
                 ['user_id' => $userId, 'template_id' => $template->id],
                 ['is_active' => false] // Disable all templates by default
             );
@@ -185,7 +191,7 @@ if (! function_exists('createDefaultEmailTemplateSettings')) {
     }
 }
 
-if (! function_exists('isNotificationTemplateEnabled')) {
+if (!function_exists('isNotificationTemplateEnabled')) {
     /**
      * Check if a notification template is enabled for a user
      *
@@ -200,14 +206,14 @@ if (! function_exists('isNotificationTemplateEnabled')) {
             $userId = createdBy();
         }
 
-        $template = \App\Models\NotificationTemplate::where('name', $templateName)
+        $template = NotificationTemplate::where('name', $templateName)
             ->where('type', $templateType)
             ->first();
         if (!$template) {
             return false;
         }
 
-        $userTemplate = \App\Models\UserNotificationTemplate::where('user_id', $userId)
+        $userTemplate = UserNotificationTemplate::where('user_id', $userId)
             ->where('template_id', $template->id)
             ->first();
 
@@ -215,7 +221,7 @@ if (! function_exists('isNotificationTemplateEnabled')) {
     }
 }
 
-if (! function_exists('createDefaultNotificationTemplateSettings')) {
+if (!function_exists('createDefaultNotificationTemplateSettings')) {
     /**
      * Create default notification template settings for a user
      *
@@ -225,10 +231,10 @@ if (! function_exists('createDefaultNotificationTemplateSettings')) {
      */
     function createDefaultNotificationTemplateSettings($userId)
     {
-        $templates = \App\Models\NotificationTemplate::all();
+        $templates = NotificationTemplate::all();
 
         foreach ($templates as $template) {
-            \App\Models\UserNotificationTemplate::updateOrCreate(
+            UserNotificationTemplate::updateOrCreate(
                 ['user_id' => $userId, 'template_id' => $template->id],
                 ['is_active' => false] // Disable all templates by default
             );
@@ -236,7 +242,7 @@ if (! function_exists('createDefaultNotificationTemplateSettings')) {
     }
 }
 
-if (! function_exists('getPaymentSettings')) {
+if (!function_exists('getPaymentSettings')) {
     /**
      * Get payment settings for a user
      *
@@ -254,7 +260,7 @@ if (! function_exists('getPaymentSettings')) {
     }
 }
 
-if (! function_exists('updatePaymentSetting')) {
+if (!function_exists('updatePaymentSetting')) {
     /**
      * Update or create a payment setting
      *
@@ -262,7 +268,7 @@ if (! function_exists('updatePaymentSetting')) {
      * @param mixed $value
      * @param int|null $userId
      *
-     * @return \App\Models\PaymentSetting
+     * @return PaymentSetting
      */
     function updatePaymentSetting($key, $value, $userId = null)
     {
@@ -274,7 +280,7 @@ if (! function_exists('updatePaymentSetting')) {
     }
 }
 
-if (! function_exists('isPaymentMethodEnabled')) {
+if (!function_exists('isPaymentMethodEnabled')) {
     /**
      * Check if a payment method is enabled
      *
@@ -292,7 +298,7 @@ if (! function_exists('isPaymentMethodEnabled')) {
     }
 }
 
-if (! function_exists('getPaymentMethodConfig')) {
+if (!function_exists('getPaymentMethodConfig')) {
     /**
      * Get configuration for a specific payment method
      *
@@ -511,7 +517,7 @@ if (! function_exists('getPaymentMethodConfig')) {
     }
 }
 
-if (! function_exists('getEnabledPaymentMethods')) {
+if (!function_exists('getEnabledPaymentMethods')) {
     /**
      * Get all enabled payment methods
      *
@@ -534,7 +540,7 @@ if (! function_exists('getEnabledPaymentMethods')) {
     }
 }
 
-if (! function_exists('validatePaymentMethodConfig')) {
+if (!function_exists('validatePaymentMethodConfig')) {
     /**
      * Validate payment method configuration
      *
@@ -799,7 +805,7 @@ if (! function_exists('validatePaymentMethodConfig')) {
     }
 }
 
-if (! function_exists('calculatePlanPricing')) {
+if (!function_exists('calculatePlanPricing')) {
     function calculatePlanPricing($plan, $couponCode = null, $billingCycle = 'monthly')
     {
         $originalPrice = $plan->getPriceForCycle($billingCycle);
@@ -832,7 +838,7 @@ if (! function_exists('calculatePlanPricing')) {
     }
 }
 
-if (! function_exists('createPlanOrder')) {
+if (!function_exists('createPlanOrder')) {
     function createPlanOrder($data)
     {
         $plan = Plan::findOrFail($data['plan_id']);
@@ -844,7 +850,7 @@ if (! function_exists('createPlanOrder')) {
             'plan_id' => $plan->id,
             'coupon_id' => $pricing['coupon_id'],
             // 'billing_cycle' => $data['billing_cycle'],
-             'billing_cycle' => $billingCycle,
+            'billing_cycle' => $billingCycle,
             'payment_method' => $data['payment_method'],
             'coupon_code' => $data['coupon_code'] ?? null,
             'original_price' => $pricing['original_price'],
@@ -859,7 +865,7 @@ if (! function_exists('createPlanOrder')) {
     }
 }
 
-if (! function_exists('assignPlanToUser')) {
+if (!function_exists('assignPlanToUser')) {
     function assignPlanToUser($user, $plan, $billingCycle)
     {
         $expiresAt = $billingCycle === 'yearly' ? now()->addYear() : now()->addMonth();
@@ -880,27 +886,27 @@ if (! function_exists('assignPlanToUser')) {
     }
 }
 
-if (! function_exists('processPaymentSuccess')) {
+if (!function_exists('processPaymentSuccess')) {
     function processPaymentSuccess($data)
     {
         $plan = Plan::findOrFail($data['plan_id']);
         $user = User::findOrFail($data['user_id']);
 
         // $planOrder = createPlanOrder(array_merge($data, ['status' => 'approved']));
-        $planOrder = createPlanOrder(array_merge($data, ['processed_at' => now(),'status' => 'approved']));
+        $planOrder = createPlanOrder(array_merge($data, ['processed_at' => now(), 'status' => 'approved']));
         assignPlanToUser($user, $plan, $data['billing_cycle']);
 
         // Verify the plan was assigned
         $user->refresh();
 
         // Create referral record if user was referred
-        \App\Http\Controllers\ReferralController::createReferralRecord($user);
+        ReferralController::createReferralRecord($user);
 
         return $planOrder;
     }
 }
 
-if (! function_exists('getPaymentGatewaySettings')) {
+if (!function_exists('getPaymentGatewaySettings')) {
     function getPaymentGatewaySettings()
     {
         $superAdminId = User::where('type', 'super_admin')->first()?->id;
@@ -913,7 +919,7 @@ if (! function_exists('getPaymentGatewaySettings')) {
     }
 }
 
-if (! function_exists('validatePaymentRequest')) {
+if (!function_exists('validatePaymentRequest')) {
     function validatePaymentRequest($request, $additionalRules = [])
     {
         $baseRules = [
@@ -926,14 +932,14 @@ if (! function_exists('validatePaymentRequest')) {
     }
 }
 
-if (! function_exists('handlePaymentError')) {
+if (!function_exists('handlePaymentError')) {
     function handlePaymentError($e, $method = 'payment')
     {
         return back()->withErrors(['error' => __('Payment processing failed: :message', ['message' => $e->getMessage()])]);
     }
 }
 
-if (! function_exists('defaultSettings')) {
+if (!function_exists('defaultSettings')) {
     /**
      * Get default settings for System, Brand, Storage, and Currency configurations
      *
@@ -1001,7 +1007,7 @@ if (! function_exists('defaultSettings')) {
     }
 }
 
-if (! function_exists('createDefaultSettings')) {
+if (!function_exists('createDefaultSettings')) {
     /**
      * Create default settings for a user
      *
@@ -1028,7 +1034,7 @@ if (! function_exists('createDefaultSettings')) {
     }
 }
 
-if (! function_exists('copySettingsFromSuperAdmin')) {
+if (!function_exists('copySettingsFromSuperAdmin')) {
     /**
      * Copy system and brand settings from super_admin to organization user
      *
@@ -1116,7 +1122,7 @@ if (! function_exists('copySettingsFromSuperAdmin')) {
     }
 }
 
-if (! function_exists('getOrganizationName')) {
+if (!function_exists('getOrganizationName')) {
     function getOrganizationName()
     {
         $organization = User::find(createdBy());
@@ -1128,7 +1134,7 @@ if (! function_exists('getOrganizationName')) {
     }
 }
 
-if (! function_exists('getOrganizationLogo')) {
+if (!function_exists('getOrganizationLogo')) {
     function getOrganizationLogo()
     {
         $organization = getSetting('logoDark', 'logo/logo-dark.png', createdBy());
@@ -1140,7 +1146,7 @@ if (! function_exists('getOrganizationLogo')) {
     }
 }
 
-if (! function_exists('createdBy')) {
+if (!function_exists('createdBy')) {
     function createdBy()
     {
         if (Auth::user()->type == 'super_admin') {
@@ -1148,12 +1154,12 @@ if (! function_exists('createdBy')) {
         } elseif (Auth::user()->type == 'organization') {
             return Auth::user()->id;
         } else {
-            return  Auth::user()->created_by;
+            return Auth::user()->created_by;
         }
     }
 }
 
-if (! function_exists('IsDemo')) {
+if (!function_exists('IsDemo')) {
     function IsDemo()
     {
         if (config('app.is_demo')) {
@@ -1164,7 +1170,7 @@ if (! function_exists('IsDemo')) {
     }
 }
 
-if (! function_exists('createDefaultNotificationTemplates')) {
+if (!function_exists('createDefaultNotificationTemplates')) {
     /**
      * Create default notification templates for a new organization
      *
@@ -1177,11 +1183,11 @@ if (! function_exists('createDefaultNotificationTemplates')) {
         $languages = json_decode(file_get_contents(resource_path('lang/language.json')), true);
         $langCodes = collect($languages)->pluck('code')->toArray();
 
-        $templates = \App\Models\NotificationTemplate::get();
+        $templates = NotificationTemplate::get();
 
         foreach ($templates as $template) {
             foreach ($langCodes as $langCode) {
-                $existingContent = \App\Models\NotificationTemplateLang::where('parent_id', $template->id)
+                $existingContent = NotificationTemplateLang::where('parent_id', $template->id)
                     ->where('lang', $langCode)
                     ->where('created_by', $organizationId)
                     ->first();
@@ -1190,13 +1196,13 @@ if (! function_exists('createDefaultNotificationTemplates')) {
                     continue;
                 }
 
-                $globalContent = \App\Models\NotificationTemplateLang::where('parent_id', $template->id)
+                $globalContent = NotificationTemplateLang::where('parent_id', $template->id)
                     ->where('lang', $langCode)
                     ->where('created_by', 1)
                     ->first();
 
                 if ($globalContent) {
-                    \App\Models\NotificationTemplateLang::create([
+                    NotificationTemplateLang::create([
                         'parent_id' => $template->id,
                         'lang' => $langCode,
                         'title' => $globalContent->title,
@@ -1209,7 +1215,7 @@ if (! function_exists('createDefaultNotificationTemplates')) {
     }
 }
 
-if (! function_exists('isEmailTemplateEnabled')) {
+if (!function_exists('isEmailTemplateEnabled')) {
     /**
      * Check if an email template is enabled for a user
      *
@@ -1224,12 +1230,12 @@ if (! function_exists('isEmailTemplateEnabled')) {
             $userId = createdBy();
         }
 
-        $template = \App\Models\EmailTemplate::where('name', $templateName)->first();
+        $template = EmailTemplate::where('name', $templateName)->first();
         if (!$template) {
             return false;
         }
 
-        $userTemplate = \App\Models\UserEmailTemplate::where('user_id', $userId)
+        $userTemplate = UserEmailTemplate::where('user_id', $userId)
             ->where('template_id', $template->id)
             ->first();
 
@@ -1237,7 +1243,7 @@ if (! function_exists('isEmailTemplateEnabled')) {
     }
 }
 
-if (! function_exists('getTwilioConfig')) {
+if (!function_exists('getTwilioConfig')) {
     function getTwilioConfig()
     {
         return [
@@ -1300,15 +1306,15 @@ if (!function_exists('getDemoCalendarData')) {
 
         // Fixed templates (no randomness)
         $demoEvents = [
-            ['type' => 'meeting', 'title' => 'Team Standup',        'duration' => 30],
+            ['type' => 'meeting', 'title' => 'Team Standup', 'duration' => 30],
             ['type' => 'meeting', 'title' => 'Client Presentation', 'duration' => 60],
-            ['type' => 'meeting', 'title' => 'Product Review',      'duration' => 45],
-            ['type' => 'call',    'title' => 'Sales Call',          'duration' => 30],
-            ['type' => 'call',    'title' => 'Follow-up Call',      'duration' => 20],
-            ['type' => 'call',    'title' => 'Support Call',        'duration' => 25],
-            ['type' => 'task',    'title' => 'Prepare Report',      'duration' => 0],
-            ['type' => 'task',    'title' => 'Review Documents',    'duration' => 0],
-            ['type' => 'task',    'title' => 'Update Website',      'duration' => 0],
+            ['type' => 'meeting', 'title' => 'Product Review', 'duration' => 45],
+            ['type' => 'call', 'title' => 'Sales Call', 'duration' => 30],
+            ['type' => 'call', 'title' => 'Follow-up Call', 'duration' => 20],
+            ['type' => 'call', 'title' => 'Support Call', 'duration' => 25],
+            ['type' => 'task', 'title' => 'Prepare Report', 'duration' => 0],
+            ['type' => 'task', 'title' => 'Review Documents', 'duration' => 0],
+            ['type' => 'task', 'title' => 'Update Website', 'duration' => 0],
         ];
 
         // Predefined static values
@@ -1416,7 +1422,7 @@ if (!function_exists('getSuperAdminSettings')) {
     }
 }
 
-if (! function_exists('upload_file')) {
+if (!function_exists('upload_file')) {
     function upload_file($request, $key_name, $name, $path, $custom_validation = [])
     {
         try {
@@ -1437,8 +1443,8 @@ if (! function_exists('upload_file')) {
                             'filesystems.disks.wasabi.visibility' => 'public',
                         ]
                     );
-                    $maximum_size = ! empty($storage_settings['storage_maximum_upload_size']) ? $storage_settings['storage_maximum_upload_size'] : '2048';
-                    $mimes = ! empty($storage_settings['storage_file_types']) ? $storage_settings['storage_file_types'] : 'jpeg,jpg,png,svg,zip,txt,gif,docx';
+                    $maximum_size = !empty($storage_settings['storage_maximum_upload_size']) ? $storage_settings['storage_maximum_upload_size'] : '2048';
+                    $mimes = !empty($storage_settings['storage_file_types']) ? $storage_settings['storage_file_types'] : 'jpeg,jpg,png,svg,zip,txt,gif,docx';
                 } elseif ($storage_settings['storage_type'] == 'aws_s3') {
                     config(
                         [
@@ -1453,18 +1459,18 @@ if (! function_exists('upload_file')) {
                             'filesystems.disks.s3.visibility' => 'public',
                         ]
                     );
-                    $maximum_size = ! empty($storage_settings['storage_maximum_upload_size']) ? $storage_settings['storage_maximum_upload_size'] : '2048';
-                    $mimes = ! empty($storage_settings['storage_file_types']) ? $storage_settings['storage_file_types'] : 'jpeg,jpg,png,svg,zip,txt,gif,docx';
+                    $maximum_size = !empty($storage_settings['storage_maximum_upload_size']) ? $storage_settings['storage_maximum_upload_size'] : '2048';
+                    $mimes = !empty($storage_settings['storage_file_types']) ? $storage_settings['storage_file_types'] : 'jpeg,jpg,png,svg,zip,txt,gif,docx';
                 } else {
-                    $maximum_size = ! empty($storage_settings['storage_maximum_upload_size']) ? $storage_settings['storage_maximum_upload_size'] : '2048';
-                    $mimes = ! empty($storage_settings['storage_file_types']) ? $storage_settings['storage_file_types'] : 'jpeg,jpg,png,svg,zip,txt,gif,docx';
+                    $maximum_size = !empty($storage_settings['storage_maximum_upload_size']) ? $storage_settings['storage_maximum_upload_size'] : '2048';
+                    $mimes = !empty($storage_settings['storage_file_types']) ? $storage_settings['storage_file_types'] : 'jpeg,jpg,png,svg,zip,txt,gif,docx';
                 }
                 $file = $request->$key_name;
 
                 $extension = strtolower($file->getClientOriginalExtension());
                 $allowed_extensions = explode(',', $mimes);
 
-                if (empty($extension) || ! in_array($extension, $allowed_extensions)) {
+                if (empty($extension) || !in_array($extension, $allowed_extensions)) {
                     return [
                         'status' => false,
                         'msg' => 'The ' . $key_name . ' must be a file of type: ' . implode(', ', $allowed_extensions) . '.',
@@ -1517,7 +1523,7 @@ if (! function_exists('upload_file')) {
 
                 return $res;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $res = [
                 'status' => false,
                 'msg' => $e->getMessage(),
@@ -1610,7 +1616,7 @@ if (!function_exists('check_file')) {
 
             // Unknown storage type
             return false;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Log error for debugging
             Log::error('check_file error: ' . $e->getMessage(), [
                 'path' => $path,
@@ -1694,7 +1700,7 @@ if (!function_exists('get_file')) {
 
             // Handle local storage (default)
             return url('storage/media/' . ltrim($path, '/'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Log error for debugging
             Log::error('get_file error: ' . $e->getMessage(), [
                 'path' => $path,
@@ -1794,7 +1800,7 @@ if (!function_exists('delete_file')) {
 
             // Unknown storage type
             return false;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Log error for debugging
             Log::error('delete_file error: ' . $e->getMessage(), [
                 'path' => $path,

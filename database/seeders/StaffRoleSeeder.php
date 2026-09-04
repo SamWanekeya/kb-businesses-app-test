@@ -12,27 +12,6 @@ use Spatie\Permission\Models\Role;
 class StaffRoleSeeder extends Seeder
 {
     /**
-     * Ensure manage permissions are included when CRUD permissions exist
-     */
-    private function ensureManagePermissions(array $permissions): array
-    {
-        $processedPermissions = $permissions;
-        $managePermissions = [];
-        foreach ($permissions as $permission) {
-            // Extract module from permission (e.g., 'create-products' -> 'products', 'toggle-status-meetings' -> 'meetings')
-            if (preg_match('/^(create|edit|view|delete|toggle-status|reset-password|convert)-(.+)$/', $permission, $matches)) {
-                $module = $matches[2];
-                $managePermission = 'manage-' . $module;
-                if (!in_array($managePermission, $processedPermissions)) {
-                    $managePermissions[] = $managePermission;
-                }
-            }
-        }
-
-        return array_merge($processedPermissions, $managePermissions);
-    }
-
-    /**
      * Run the database seeds.
      */
     public function run(): void
@@ -985,5 +964,26 @@ class StaffRoleSeeder extends Seeder
 
         $totalUsers = User::where('type', 'staff')->count();
         $this->command->info("Created staff roles and {$totalUsers} users successfully!");
+    }
+
+    /**
+     * Ensure manage permissions are included when CRUD permissions exist
+     */
+    private function ensureManagePermissions(array $permissions): array
+    {
+        $processedPermissions = $permissions;
+        $managePermissions = [];
+        foreach ($permissions as $permission) {
+            // Extract module from permission (e.g., 'create-products' -> 'products', 'toggle-status-meetings' -> 'meetings')
+            if (preg_match('/^(create|edit|view|delete|toggle-status|reset-password|convert)-(.+)$/', $permission, $matches)) {
+                $module = $matches[2];
+                $managePermission = 'manage-' . $module;
+                if (!in_array($managePermission, $processedPermissions)) {
+                    $managePermissions[] = $managePermission;
+                }
+            }
+        }
+
+        return array_merge($processedPermissions, $managePermissions);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\AutoApplyPermissionCheck;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class BaseModel extends Model
@@ -12,9 +13,9 @@ class BaseModel extends Model
     /**
      * Scope a query to apply permission-based filtering
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param Builder $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeWithPermissionCheck($query)
     {

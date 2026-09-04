@@ -21,7 +21,7 @@ class PayoutRequestSeeder extends Seeder
         foreach ($organizations as $organization) {
             // Calculate available balance for realistic payout amounts
             $totalEarned = random_int(1000, 10000);
-            // $totalEarned = max(0, \App\Models\Referral::where('organization_id', $organization->id)->sum('amount'));
+            // $totalEarned = max(0, Referral::where('organization_id', $organization->id)->sum('amount'));
             $existingPayouts = random_int(0, $totalEarned);
             // $existingPayouts = max(0, PayoutRequest::where('organization_id', $organization->id)->sum('amount'));
             $availableBalance = max(0, $totalEarned - $existingPayouts);

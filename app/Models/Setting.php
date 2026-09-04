@@ -14,16 +14,16 @@ class Setting extends BaseModel
         'value',
     ];
 
+    public static function getUserSettings($userId)
+    {
+        return self::where('user_id', $userId)->pluck('value', 'key')->toArray();
+    }
+
     /**
      * Get the user that owns the setting.
      */
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public static function getUserSettings($userId)
-    {
-        return self::where('user_id', $userId)->pluck('value', 'key')->toArray();
     }
 }

@@ -14,7 +14,8 @@ class WebhookAssignLeadListener
      */
     public function __construct(
         private WebhookService $webhookService
-    ) {
+    )
+    {
         //
     }
 

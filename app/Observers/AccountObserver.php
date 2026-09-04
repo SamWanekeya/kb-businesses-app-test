@@ -4,6 +4,8 @@ namespace App\Observers;
 
 use App\Models\Account;
 use App\Models\AccountActivity;
+use App\Models\AccountIndustry;
+use App\Models\AccountType;
 use App\Models\User;
 
 class AccountObserver
@@ -73,13 +75,13 @@ class AccountObserver
             // Store account type colors for historical accuracy
             if ($field === 'account_type_id') {
                 if ($oldValue) {
-                    $oldAccountType = \App\Models\AccountType::find($oldValue);
+                    $oldAccountType = AccountType::find($oldValue);
                     if ($oldAccountType) {
                         $newValues['old_account_type_color'] = $oldAccountType->color;
                     }
                 }
                 if ($newValue) {
-                    $newAccountType = \App\Models\AccountType::find($newValue);
+                    $newAccountType = AccountType::find($newValue);
                     if ($newAccountType) {
                         $newValues['account_type_color'] = $newAccountType->color;
                     }
@@ -89,13 +91,13 @@ class AccountObserver
             // Store account industry colors for historical accuracy
             if ($field === 'account_industry_id') {
                 if ($oldValue) {
-                    $oldAccountIndustry = \App\Models\AccountIndustry::find($oldValue);
+                    $oldAccountIndustry = AccountIndustry::find($oldValue);
                     if ($oldAccountIndustry) {
                         $newValues['old_account_industry_color'] = $oldAccountIndustry->color;
                     }
                 }
                 if ($newValue) {
-                    $newAccountIndustry = \App\Models\AccountIndustry::find($newValue);
+                    $newAccountIndustry = AccountIndustry::find($newValue);
                     if ($newAccountIndustry) {
                         $newValues['account_industry_color'] = $newAccountIndustry->color;
                     }
@@ -128,7 +130,7 @@ class AccountObserver
             case 'name':
                 return $userName . ' updated name';
             case 'assigned_to':
-                $newUser = $newValue ? \App\Models\User::find($newValue)?->name : 'Unassigned';
+                $newUser = $newValue ? User::find($newValue)?->name : 'Unassigned';
                 if ($newUser === $userName) {
                     return $userName . ' self-assigned this account';
                 }
@@ -156,15 +158,15 @@ class AccountObserver
 
                 return $oldStatus . ' into ' . $newStatus;
             case 'account_type_id':
-                $oldAccountType = $oldValue ? \App\Models\AccountType::find($oldValue) : null;
-                $newAccountType = $newValue ? \App\Models\AccountType::find($newValue) : null;
+                $oldAccountType = $oldValue ? AccountType::find($oldValue) : null;
+                $newAccountType = $newValue ? AccountType::find($newValue) : null;
                 $oldPart = $oldAccountType ? '<span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset" style="background-color: rgba(' . hexdec(substr($oldAccountType->color ?? '#6b7280', 1, 2)) . ', ' . hexdec(substr($oldAccountType->color ?? '#6b7280', 3, 2)) . ', ' . hexdec(substr($oldAccountType->color ?? '#6b7280', 5, 2)) . ', 0.125); color: ' . ($oldAccountType->color ?? '#6b7280') . '; border-color: rgba(' . hexdec(substr($oldAccountType->color ?? '#6b7280', 1, 2)) . ', ' . hexdec(substr($oldAccountType->color ?? '#6b7280', 3, 2)) . ', ' . hexdec(substr($oldAccountType->color ?? '#6b7280', 5, 2)) . ', 0.25);">' . $oldAccountType->name . '</span>' : 'None';
                 $newPart = $newAccountType ? '<span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset" style="background-color: rgba(' . hexdec(substr($newAccountType->color ?? '#6b7280', 1, 2)) . ', ' . hexdec(substr($newAccountType->color ?? '#6b7280', 3, 2)) . ', ' . hexdec(substr($newAccountType->color ?? '#6b7280', 5, 2)) . ', 0.125); color: ' . ($newAccountType->color ?? '#6b7280') . '; border-color: rgba(' . hexdec(substr($newAccountType->color ?? '#6b7280', 1, 2)) . ', ' . hexdec(substr($newAccountType->color ?? '#6b7280', 3, 2)) . ', ' . hexdec(substr($newAccountType->color ?? '#6b7280', 5, 2)) . ', 0.25);">' . $newAccountType->name . '</span>' : 'None';
 
                 return $oldPart . ' into ' . $newPart;
             case 'account_industry_id':
-                $oldAccountIndustry = $oldValue ? \App\Models\AccountIndustry::find($oldValue) : null;
-                $newAccountIndustry = $newValue ? \App\Models\AccountIndustry::find($newValue) : null;
+                $oldAccountIndustry = $oldValue ? AccountIndustry::find($oldValue) : null;
+                $newAccountIndustry = $newValue ? AccountIndustry::find($newValue) : null;
                 $oldPart = $oldAccountIndustry ? '<span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset" style="background-color: rgba(' . hexdec(substr($oldAccountIndustry->color ?? '#6b7280', 1, 2)) . ', ' . hexdec(substr($oldAccountIndustry->color ?? '#6b7280', 3, 2)) . ', ' . hexdec(substr($oldAccountIndustry->color ?? '#6b7280', 5, 2)) . ', 0.125); color: ' . ($oldAccountIndustry->color ?? '#6b7280') . '; border-color: rgba(' . hexdec(substr($oldAccountIndustry->color ?? '#6b7280', 1, 2)) . ', ' . hexdec(substr($oldAccountIndustry->color ?? '#6b7280', 3, 2)) . ', ' . hexdec(substr($oldAccountIndustry->color ?? '#6b7280', 5, 2)) . ', 0.25);">' . $oldAccountIndustry->name . '</span>' : 'None';
                 $newPart = $newAccountIndustry ? '<span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset" style="background-color: rgba(' . hexdec(substr($newAccountIndustry->color ?? '#6b7280', 1, 2)) . ', ' . hexdec(substr($newAccountIndustry->color ?? '#6b7280', 3, 2)) . ', ' . hexdec(substr($newAccountIndustry->color ?? '#6b7280', 5, 2)) . ', 0.125); color: ' . ($newAccountIndustry->color ?? '#6b7280') . '; border-color: rgba(' . hexdec(substr($newAccountIndustry->color ?? '#6b7280', 1, 2)) . ', ' . hexdec(substr($newAccountIndustry->color ?? '#6b7280', 3, 2)) . ', ' . hexdec(substr($newAccountIndustry->color ?? '#6b7280', 5, 2)) . ', 0.25);">' . $newAccountIndustry->name . '</span>' : 'None';
 
@@ -172,8 +174,8 @@ class AccountObserver
             case 'name':
                 return '<span class="font-bold text-base">' . ($oldValue ?? '') . '</span> into <span class="font-bold text-base">' . ($newValue ?? '') . '</span>';
             case 'assigned_to':
-                $oldUser = $oldValue ? \App\Models\User::find($oldValue)?->name : 'Unassigned';
-                $newUser = $newValue ? \App\Models\User::find($newValue)?->name : 'Unassigned';
+                $oldUser = $oldValue ? User::find($oldValue)?->name : 'Unassigned';
+                $newUser = $newValue ? User::find($newValue)?->name : 'Unassigned';
 
                 return '<span class="font-bold text-base">' . $oldUser . '</span> into <span class="font-bold text-base">' . $newUser . '</span>';
             default:

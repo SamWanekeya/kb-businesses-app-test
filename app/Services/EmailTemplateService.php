@@ -69,6 +69,32 @@ class EmailTemplateService
         return str_replace(array_keys($variables), array_values($variables), $content);
     }
 
+    private function configureBusinessSMTP(?Business $business = null)
+    {
+        // Get email settings from settings table
+        $emailDriver = getSetting('email_driver', 'smtp');
+        $emailHost = getSetting('email_host');
+        $emailUsername = getSetting('email_username');
+        $emailPassword = getSetting('email_password');
+        $emailPort = getSetting('email_port', 587);
+        $emailEncryption = getSetting('email_encryption', 'tls');
+
+        // Check if email settings are configured
+        if (!$emailHost || !$emailUsername || !$emailPassword) {
+            throw new Exception("Email settings not configured. Please configure email settings in system settings.");
+        }
+
+        // Configure mail settings
+        Config::set([
+            'mail.default' => $emailDriver,
+            'mail.mailers.smtp.host' => $emailHost,
+            'mail.mailers.smtp.port' => $emailPort,
+            'mail.mailers.smtp.username' => $emailUsername,
+            'mail.mailers.smtp.password' => $emailPassword,
+            'mail.mailers.smtp.encryption' => $emailEncryption,
+        ]);
+    }
+
     public function sendTemplateEmailWithLanguage(string $templateName, array $variables, string $toEmail, string $toName = null, string $language = 'en')
     {
         try {
@@ -133,31 +159,5 @@ class EmailTemplateService
             // \Log::error('Email sending failed: ' . $e->getMessage());
             throw $e;
         }
-    }
-
-    private function configureBusinessSMTP(?Business $business = null)
-    {
-        // Get email settings from settings table
-        $emailDriver = getSetting('email_driver', 'smtp');
-        $emailHost = getSetting('email_host');
-        $emailUsername = getSetting('email_username');
-        $emailPassword = getSetting('email_password');
-        $emailPort = getSetting('email_port', 587);
-        $emailEncryption = getSetting('email_encryption', 'tls');
-
-        // Check if email settings are configured
-        if (!$emailHost || !$emailUsername || !$emailPassword) {
-            throw new Exception("Email settings not configured. Please configure email settings in system settings.");
-        }
-
-        // Configure mail settings
-        Config::set([
-            'mail.default' => $emailDriver,
-            'mail.mailers.smtp.host' => $emailHost,
-            'mail.mailers.smtp.port' => $emailPort,
-            'mail.mailers.smtp.username' => $emailUsername,
-            'mail.mailers.smtp.password' => $emailPassword,
-            'mail.mailers.smtp.encryption' => $emailEncryption,
-        ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\AutoApplyPermissionCheck;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\Permission\Models\Role as SpatieRole;
 
 class BaseSpatieRole extends SpatieRole
@@ -12,9 +13,9 @@ class BaseSpatieRole extends SpatieRole
     /**
      * Scope a query to apply permission-based filtering
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param Builder $query
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeWithPermissionCheck($query)
     {

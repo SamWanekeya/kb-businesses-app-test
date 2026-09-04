@@ -14,7 +14,8 @@ class WebhookQuoteCreateListener
      */
     public function __construct(
         private WebhookService $webhookService
-    ) {
+    )
+    {
         //
     }
 

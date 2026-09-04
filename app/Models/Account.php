@@ -59,7 +59,7 @@ class Account extends BaseModel
 
     public function cases(): HasMany
     {
-        return $this->hasMany(\App\Models\CaseModel::class);
+        return $this->hasMany(CaseModel::class);
     }
 
     public function quotes(): HasMany

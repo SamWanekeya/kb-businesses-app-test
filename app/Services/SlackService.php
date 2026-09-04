@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\NotificationTemplate;
 use Exception;
 use Illuminate\Support\Facades\Http;
+use Log;
 
 class SlackService
 {
@@ -41,19 +42,19 @@ class SlackService
 
             return $this->sendMessage($message);
         } catch (Exception $e) {
-            \Log::error('Slack message sending failed: ' . $e->getMessage());
+            Log::error('Slack message sending failed: ' . $e->getMessage());
             throw $e;
         }
-    }
-
-    private function replaceVariables(string $content, array $variables): string
-    {
-        return str_replace(array_keys($variables), array_values($variables), $content);
     }
 
     private function isSlackNotificationEnabled(string $templateName): bool
     {
         return isNotificationTemplateEnabled($templateName, 'slack', createdBy());
+    }
+
+    private function replaceVariables(string $content, array $variables): string
+    {
+        return str_replace(array_keys($variables), array_values($variables), $content);
     }
 
     private function sendMessage(string $message): bool

@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
+use App\Models\PaymentSetting;
 use Illuminate\Support\Facades\Log;
+use InvalidArgumentException;
 
 class InvoicePaymentService
 {
@@ -18,7 +20,7 @@ class InvoicePaymentService
         // Validate payment amount and type
         $validation = $invoice->validatePaymentAmount($paymentData['amount'], $paymentData['payment_type']);
         if (!$validation['valid']) {
-            throw new \InvalidArgumentException($validation['message']);
+            throw new InvalidArgumentException($validation['message']);
         }
 
         // Create payment record
@@ -126,7 +128,7 @@ class InvoicePaymentService
      */
     public function validatePaymentMethodConfig($paymentMethod, $organizationId)
     {
-        $settings = \App\Models\PaymentSetting::getUserSettings($organizationId);
+        $settings = PaymentSetting::getUserSettings($organizationId);
         switch ($paymentMethod) {
             case 'stripe':
                 return isset($settings['stripe_secret']) && isset($settings['stripe_key'])

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Faker\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -45,7 +46,7 @@ class ReturnOrder extends Model
             if (empty($returnOrder->return_number)) {
                 $returnOrder->return_number = 'RET-' . str_pad(static::max('id') + 1, 6, '0', STR_PAD_LEFT);
             }
-            $faker = \Faker\Factory::create();
+            $faker = Factory::create();
             if (empty($returnOrder->tracking_number)) {
                 $returnOrder->tracking_number = strtoupper($faker->unique()->bothify('RET########'));
             }
@@ -85,8 +86,8 @@ class ReturnOrder extends Model
     public function products()
     {
         return $this->belongsToMany(Product::class, 'return_order_product')
-                    ->withPivot('quantity', 'unit_price', 'total_price')
-                    ->withTimestamps();
+            ->withPivot('quantity', 'unit_price', 'total_price')
+            ->withTimestamps();
     }
 
     public function calculateTotals()

@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Coupon;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class CouponSeeder extends Seeder
@@ -11,7 +13,7 @@ class CouponSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = \App\Models\User::first();
+        $user = User::first();
 
         if (!$user) {
             $this->command->warn('No users found. Please run UserSeeder first.');
@@ -155,8 +157,8 @@ class CouponSeeder extends Seeder
         $allCoupons = array_merge($coupons, $additionalCoupons);
 
         foreach ($allCoupons as $couponData) {
-            if (!\App\Models\Coupon::where('code', $couponData['code'])->exists()) {
-                \App\Models\Coupon::create($couponData);
+            if (!Coupon::where('code', $couponData['code'])->exists()) {
+                Coupon::create($couponData);
             }
         }
 

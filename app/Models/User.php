@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Services\MailConfigService;
+use Database\Factories\UserFactory;
+use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
@@ -12,7 +14,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends BaseAuthenticatable implements MustVerifyEmail
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use HasRoles;
     use HasFactory;
     use Notifiable;
@@ -62,246 +64,6 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
         'remember_token',
         'google2fa_secret',
     ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'plan_expiry_date' => 'date',
-            'trial_expiry_date' => 'date',
-            'is_plan_active' => 'integer',
-            'is_active' => 'integer',
-            'is_sign_in_enabled' => 'integer',
-            'google2fa_enabled' => 'integer',
-            'storage_limit' => 'float',
-        ];
-    }
-
-    /**
-     * Get the creator ID based on user type
-     */
-    public function creatorId()
-    {
-        if ($this->type == 'super_admin') {
-            return $this->id;
-        } elseif ($this->type == 'organization') {
-            return $this->id;
-        } else {
-            return $this->created_by;
-        }
-    }
-
-    /**
-     * Check if user is super admin
-     */
-    public function isSuperAdministrator()
-    {
-        return $this->type === 'super_admin';
-    }
-
-    /**
-     * Check if user is admin
-     */
-    public function isAdmin()
-    {
-        return $this->type === 'admin';
-    }
-
-    // Organizations relationship removed
-
-    /**
-     * Get the plan associated with the user.
-     */
-    public function plan()
-    {
-        return $this->belongsTo(Plan::class);
-    }
-
-    /**
-     * Check if user is on free plan
-     */
-    public function isOnFreePlan()
-    {
-        return $this->plan && $this->plan->is_default;
-    }
-
-    /**
-     * Get current plan or default plan
-     */
-    public function getCurrentPlan()
-    {
-        if ($this->plan) {
-            return $this->plan;
-        }
-
-        return Plan::getDefaultPlan();
-    }
-
-    /**
-     * Check if user has an active plan subscription
-     */
-    public function hasActivePlan()
-    {
-        if (!$this->isTrialExpired()) {
-            return true;
-        }
-
-        return $this->plan_id &&
-            $this->is_plan_active &&
-            ($this->plan_expiry_date !== null && $this->plan_expiry_date > now());
-    }
-
-    /**
-     * Check if user's plan has expired
-     */
-    public function isPlanExpired()
-    {
-        return $this->plan_expiry_date && $this->plan_expiry_date < now();
-    }
-
-    /**
-     * Check if user's trial has expired
-     */
-    public function isTrialExpired()
-    {
-        return $this->is_trial && $this->trial_expiry_date && $this->trial_expiry_date < now();
-    }
-
-    /**
-     * Check if user needs to subscribe to a plan
-     */
-    public function needsPlanSubscription()
-    {
-        if ($this->isSuperAdministrator()) {
-            return false;
-        }
-
-        if ($this->type !== 'organization') {
-            return false;
-        }
-
-        // Check if user has no plan
-        if (!$this->plan_id) {
-            return true;
-        }
-
-        // Check if trial is expired
-        if ($this->isTrialExpired()) {
-            return true;
-        }
-
-        // Check if plan is expired (but not on trial)
-        if (!$this->is_trial && $this->isPlanExpired()) {
-            return true;
-        }
-
-        // Check if plan is active
-        if (!$this->hasActivePlan()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function planOrders()
-    {
-        return $this->hasMany(PlanOrder::class);
-    }
-
-    /**
-     * Check if user can be impersonated
-     */
-    public function canBeImpersonated()
-    {
-        return $this->type === 'organization';
-    }
-
-    /**
-     * Check if user can impersonate others
-     */
-    public function canImpersonate()
-    {
-        return $this->isSuperAdministrator();
-    }
-
-    /**
-     * Get referrals made by this organization
-     */
-    public function referrals()
-    {
-        return $this->hasMany(Referral::class, 'user_id');
-    }
-
-    /**
-     * Get payout requests made by this organization
-     */
-    public function payoutRequests()
-    {
-        return $this->hasMany(PayoutRequest::class, 'organization_id');
-    }
-
-    /**
-     * Get the user who created this user
-     */
-    public function creator()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    /**
-     * Get user email template settings
-     */
-    public function userEmailTemplates()
-    {
-        return $this->hasMany(UserEmailTemplate::class);
-    }
-
-    /**
-     * Get user notification template settings
-     */
-    public function userNotificationTemplates()
-    {
-        return $this->hasMany(UserNotificationTemplate::class);
-    }
-
-    /**
-     * Get referral balance for organization
-     */
-    public function getReferralBalance()
-    {
-        $totalEarned = $this->referrals()->sum('amount');
-        $totalRequested = $this->payoutRequests()->whereIn('status', ['pending', 'approved'])->sum('amount');
-
-        return $totalEarned - $totalRequested;
-    }
-
-    /**
-     * Send the email verification notification with dynamic config.
-     */
-    public function sendEmailVerificationNotification()
-    {
-        try {
-            MailConfigService::setDynamicConfig();
-            parent::sendEmailVerificationNotification();
-
-            return ['success' => true, 'message' => 'Verification email sent successfully'];
-        } catch (\Exception $e) {
-            Log::error('Email verification failed', [
-                'user_id' => $this->id,
-                'email' => $this->email,
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
-
-            return ['success' => false, 'message' => 'Failed to send verification email: ' . $e->getMessage()];
-        }
-    }
 
     /**
      * Boot method to handle model events
@@ -358,6 +120,226 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
                 ]
             );
         });
+    }
+
+    /**
+     * Get the creator ID based on user type
+     */
+    public function creatorId()
+    {
+        if ($this->type == 'super_admin') {
+            return $this->id;
+        } elseif ($this->type == 'organization') {
+            return $this->id;
+        } else {
+            return $this->created_by;
+        }
+    }
+
+    /**
+     * Check if user is admin
+     */
+    public function isAdmin()
+    {
+        return $this->type === 'admin';
+    }
+
+    /**
+     * Get the plan associated with the user.
+     */
+    public function plan()
+    {
+        return $this->belongsTo(Plan::class);
+    }
+
+    // Organizations relationship removed
+
+    /**
+     * Check if user is on free plan
+     */
+    public function isOnFreePlan()
+    {
+        return $this->plan && $this->plan->is_default;
+    }
+
+    /**
+     * Get current plan or default plan
+     */
+    public function getCurrentPlan()
+    {
+        if ($this->plan) {
+            return $this->plan;
+        }
+
+        return Plan::getDefaultPlan();
+    }
+
+    /**
+     * Check if user needs to subscribe to a plan
+     */
+    public function needsPlanSubscription()
+    {
+        if ($this->isSuperAdministrator()) {
+            return false;
+        }
+
+        if ($this->type !== 'organization') {
+            return false;
+        }
+
+        // Check if user has no plan
+        if (!$this->plan_id) {
+            return true;
+        }
+
+        // Check if trial is expired
+        if ($this->isTrialExpired()) {
+            return true;
+        }
+
+        // Check if plan is expired (but not on trial)
+        if (!$this->is_trial && $this->isPlanExpired()) {
+            return true;
+        }
+
+        // Check if plan is active
+        if (!$this->hasActivePlan()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if user is super admin
+     */
+    public function isSuperAdministrator()
+    {
+        return $this->type === 'super_admin';
+    }
+
+    /**
+     * Check if user's trial has expired
+     */
+    public function isTrialExpired()
+    {
+        return $this->is_trial && $this->trial_expiry_date && $this->trial_expiry_date < now();
+    }
+
+    /**
+     * Check if user's plan has expired
+     */
+    public function isPlanExpired()
+    {
+        return $this->plan_expiry_date && $this->plan_expiry_date < now();
+    }
+
+    /**
+     * Check if user has an active plan subscription
+     */
+    public function hasActivePlan()
+    {
+        if (!$this->isTrialExpired()) {
+            return true;
+        }
+
+        return $this->plan_id &&
+            $this->is_plan_active &&
+            ($this->plan_expiry_date !== null && $this->plan_expiry_date > now());
+    }
+
+    public function planOrders()
+    {
+        return $this->hasMany(PlanOrder::class);
+    }
+
+    /**
+     * Check if user can be impersonated
+     */
+    public function canBeImpersonated()
+    {
+        return $this->type === 'organization';
+    }
+
+    /**
+     * Check if user can impersonate others
+     */
+    public function canImpersonate()
+    {
+        return $this->isSuperAdministrator();
+    }
+
+    /**
+     * Get the user who created this user
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /**
+     * Get user email template settings
+     */
+    public function userEmailTemplates()
+    {
+        return $this->hasMany(UserEmailTemplate::class);
+    }
+
+    /**
+     * Get user notification template settings
+     */
+    public function userNotificationTemplates()
+    {
+        return $this->hasMany(UserNotificationTemplate::class);
+    }
+
+    /**
+     * Get referral balance for organization
+     */
+    public function getReferralBalance()
+    {
+        $totalEarned = $this->referrals()->sum('amount');
+        $totalRequested = $this->payoutRequests()->whereIn('status', ['pending', 'approved'])->sum('amount');
+
+        return $totalEarned - $totalRequested;
+    }
+
+    /**
+     * Get referrals made by this organization
+     */
+    public function referrals()
+    {
+        return $this->hasMany(Referral::class, 'user_id');
+    }
+
+    /**
+     * Get payout requests made by this organization
+     */
+    public function payoutRequests()
+    {
+        return $this->hasMany(PayoutRequest::class, 'organization_id');
+    }
+
+    /**
+     * Send the email verification notification with dynamic config.
+     */
+    public function sendEmailVerificationNotification()
+    {
+        try {
+            MailConfigService::setDynamicConfig();
+            parent::sendEmailVerificationNotification();
+
+            return ['success' => true, 'message' => 'Verification email sent successfully'];
+        } catch (Exception $e) {
+            Log::error('Email verification failed', [
+                'user_id' => $this->id,
+                'email' => $this->email,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return ['success' => false, 'message' => 'Failed to send verification email: ' . $e->getMessage()];
+        }
     }
 
     public function organizationDefaultData($organization)
@@ -511,5 +493,25 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
     public function getAvatarAttribute($value)
     {
         return check_file($value) ? get_file($value) : get_file('avatars/avatar.png');
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'plan_expiry_date' => 'date',
+            'trial_expiry_date' => 'date',
+            'is_plan_active' => 'integer',
+            'is_active' => 'integer',
+            'is_sign_in_enabled' => 'integer',
+            'google2fa_enabled' => 'integer',
+            'storage_limit' => 'float',
+        ];
     }
 }

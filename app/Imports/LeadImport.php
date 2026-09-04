@@ -3,7 +3,11 @@
 namespace App\Imports;
 
 use App\Events\LeadAssigned;
+use App\Models\AccountIndustry;
+use App\Models\Campaign;
 use App\Models\Lead;
+use App\Models\LeadSource;
+use App\Models\LeadStatus;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -53,29 +57,29 @@ class LeadImport implements ToModel, WithHeadingRow, WithEvents
         // Lead Status
         $leadStatusValue = trim($row['lead_status'] ?? '');
         $leadStatus = !empty($leadStatusValue)
-            ? \App\Models\LeadStatus::where('name', $leadStatusValue)->where('created_by', createdBy())->first()
+            ? LeadStatus::where('name', $leadStatusValue)->where('created_by', createdBy())->first()
             : null;
-        $leadData['lead_status_id'] = $leadStatus?->id ?? \App\Models\LeadStatus::where('created_by', createdBy())->value('id');
+        $leadData['lead_status_id'] = $leadStatus?->id ?? LeadStatus::where('created_by', createdBy())->value('id');
 
         // Lead Source
         $leadSourceValue = trim($row['lead_source'] ?? '');
         $leadSource = !empty($leadSourceValue)
-            ? \App\Models\LeadSource::where('name', $leadSourceValue)->where('created_by', createdBy())->first()
+            ? LeadSource::where('name', $leadSourceValue)->where('created_by', createdBy())->first()
             : null;
-        $leadData['lead_source_id'] = $leadSource?->id ?? \App\Models\LeadSource::where('created_by', createdBy())->value('id');
+        $leadData['lead_source_id'] = $leadSource?->id ?? LeadSource::where('created_by', createdBy())->value('id');
 
         // Account Industry
         $accountIndustryValue = trim($row['account_industry'] ?? '');
         $accountIndustry = !empty($accountIndustryValue)
-            ? \App\Models\AccountIndustry::where('name', $accountIndustryValue)->where('created_by', createdBy())->first()
+            ? AccountIndustry::where('name', $accountIndustryValue)->where('created_by', createdBy())->first()
             : null;
-        $leadData['account_industry_id'] = $accountIndustry?->id ?? \App\Models\AccountIndustry::where('created_by', createdBy())->value('id');
+        $leadData['account_industry_id'] = $accountIndustry?->id ?? AccountIndustry::where('created_by', createdBy())->value('id');
 
         // Campaign
         $campaignValue = trim($row['campaign'] ?? '');
         if (!empty($campaignValue)) {
-            $campaign = \App\Models\Campaign::where('name', $campaignValue)->where('created_by', createdBy())->first();
-            $leadData['campaign_id'] = $campaign?->id ?? \App\Models\Campaign::where('created_by', createdBy())->value('id');
+            $campaign = Campaign::where('name', $campaignValue)->where('created_by', createdBy())->first();
+            $leadData['campaign_id'] = $campaign?->id ?? Campaign::where('created_by', createdBy())->value('id');
         } else {
             $leadData['campaign_id'] = null;
         }
@@ -92,13 +96,13 @@ class LeadImport implements ToModel, WithHeadingRow, WithEvents
             AfterImport::class => function (AfterImport $event) {
                 // Fire LeadAssigned event for all imported leads
                 Lead::where('created_by', createdBy())
-                ->whereIn('email', $this->leads)
-                ->orderBy('id', 'desc')
-                ->take($this->addedCount)
-                ->get()
-                ->each(function ($lead) {
-                    event(new LeadAssigned($lead));
-                });
+                    ->whereIn('email', $this->leads)
+                    ->orderBy('id', 'desc')
+                    ->take($this->addedCount)
+                    ->get()
+                    ->each(function ($lead) {
+                        event(new LeadAssigned($lead));
+                    });
             },
         ];
     }

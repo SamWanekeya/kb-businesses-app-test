@@ -17,11 +17,6 @@ class UserEmailTemplate extends Model
         'is_active' => 'boolean',
     ];
 
-    public function emailTemplate(): BelongsTo
-    {
-        return $this->belongsTo(EmailTemplate::class, 'template_id');
-    }
-
     /**
      * Get user email template settings
      *
@@ -36,5 +31,10 @@ class UserEmailTemplate extends Model
             ->get()
             ->pluck('is_active', 'emailTemplate.name')
             ->toArray();
+    }
+
+    public function emailTemplate(): BelongsTo
+    {
+        return $this->belongsTo(EmailTemplate::class, 'template_id');
     }
 }

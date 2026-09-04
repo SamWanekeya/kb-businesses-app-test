@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Services\StorageConfigService;
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Log;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -39,7 +41,7 @@ class MediaItem extends Model implements HasMedia
                     $extension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
                     if (!in_array($extension, $allowedExtensions)) {
-                        \Log::warning('File extension not allowed', ['extension' => $extension, 'allowed' => $allowedExtensions]);
+                        Log::warning('File extension not allowed', ['extension' => $extension, 'allowed' => $allowedExtensions]);
 
                         return false;
                     }
@@ -47,14 +49,14 @@ class MediaItem extends Model implements HasMedia
                     // Check file size
                     $fileSize = $file->size ?? filesize($file->getPathname());
                     if ($fileSize > $maxSizeBytes) {
-                        \Log::warning('File size too large', ['size' => $fileSize, 'max' => $maxSizeBytes]);
+                        Log::warning('File size too large', ['size' => $fileSize, 'max' => $maxSizeBytes]);
 
                         return false;
                     }
 
                     return true;
-                } catch (\Exception $e) {
-                    \Log::error('Error checking file acceptance', ['error' => $e->getMessage()]);
+                } catch (Exception $e) {
+                    Log::error('Error checking file acceptance', ['error' => $e->getMessage()]);
 
                     return false;
                 }

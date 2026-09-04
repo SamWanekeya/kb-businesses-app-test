@@ -107,7 +107,7 @@ class Document extends BaseModel implements HasMedia
     public function getAttachmentUrlAttribute()
     {
         if ($this->attachment) {
-            $media = \Spatie\MediaLibrary\MediaCollections\Models\Media::find($this->attachment);
+            $media = Media::find($this->attachment);
 
             return $media && $media->exists() ? $media->getUrl() : null;
         }
@@ -119,7 +119,7 @@ class Document extends BaseModel implements HasMedia
     public function getAttachmentNameAttribute()
     {
         if ($this->attachment) {
-            $media = \Spatie\MediaLibrary\MediaCollections\Models\Media::find($this->attachment);
+            $media = Media::find($this->attachment);
 
             return $media && $media->exists() ? $media->name : null;
         }
@@ -131,7 +131,7 @@ class Document extends BaseModel implements HasMedia
     public function getAttachmentSizeAttribute()
     {
         if ($this->attachment) {
-            $media = \Spatie\MediaLibrary\MediaCollections\Models\Media::find($this->attachment);
+            $media = Media::find($this->attachment);
 
             return $media && $media->exists() ? $media->size : null;
         }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Log;
 
 class Invoice extends BaseModel
 {
@@ -71,6 +72,24 @@ class Invoice extends BaseModel
         });
     }
 
+    public static function restoreInventory($invoice)
+    {
+        foreach ($invoice->products as $product) {
+            $quantity = $product->pivot->quantity;
+            $product->increment('stock_quantity', $quantity);
+        }
+    }
+
+    public static function updateInventory($invoice)
+    {
+        Log::info("Updating inventory for Invoice ID: " . $invoice->id);
+        foreach ($invoice->products as $product) {
+            $quantity = $product->pivot->quantity;
+            $product->decrement('stock_quantity', $quantity);
+            Log::info("Product ID: " . $product->id . " Stock Quantity: " . $product->stock_quantity);
+        }
+    }
+
     public function salesOrder(): BelongsTo
     {
         return $this->belongsTo(SalesOrder::class);
@@ -103,7 +122,7 @@ class Invoice extends BaseModel
 
     public function getInvoiceTemplate()
     {
-        return (int) getSetting('invoiceTemplate', 1, $this->created_by);
+        return (int)getSetting('invoiceTemplate', 1, $this->created_by);
     }
 
     public function assignedUser(): BelongsTo
@@ -116,11 +135,6 @@ class Invoice extends BaseModel
         return $this->belongsToMany(Product::class, 'invoice_products')
             ->withPivot('quantity', 'unit_price', 'total_price', 'discount_type', 'discount_value', 'discount_amount')
             ->withTimestamps();
-    }
-
-    public function payments(): HasMany
-    {
-        return $this->hasMany(InvoicePayment::class);
     }
 
     public function activities(): HasMany
@@ -169,28 +183,6 @@ class Invoice extends BaseModel
         return $totalAmount;
     }
 
-    public function getTotalPaidAmount()
-    {
-        return $this->payments()->where('status', 'completed')->sum('amount');
-    }
-
-    public function getRemainingAmount()
-    {
-        return max(0, $this->total_amount - $this->getTotalPaidAmount());
-    }
-
-    public function isFullyPaid()
-    {
-        return $this->getTotalPaidAmount() >= $this->total_amount;
-    }
-
-    public function isPartiallyPaid()
-    {
-        $totalPaid = $this->getTotalPaidAmount();
-
-        return $totalPaid > 0 && $totalPaid < $this->total_amount;
-    }
-
     public function validatePaymentAmount($amount, $paymentType)
     {
         $remainingAmount = $this->getRemainingAmount();
@@ -214,6 +206,21 @@ class Invoice extends BaseModel
         return ['valid' => true, 'message' => 'Payment amount is valid'];
     }
 
+    public function getRemainingAmount()
+    {
+        return max(0, $this->total_amount - $this->getTotalPaidAmount());
+    }
+
+    public function getTotalPaidAmount()
+    {
+        return $this->payments()->where('status', 'completed')->sum('amount');
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(InvoicePayment::class);
+    }
+
     public function updatePaymentStatus()
     {
         if ($this->isFullyPaid()) {
@@ -223,21 +230,15 @@ class Invoice extends BaseModel
         }
     }
 
-    public static function updateInventory($invoice)
+    public function isFullyPaid()
     {
-        \Log::info("Updating inventory for Invoice ID: " . $invoice->id);
-        foreach ($invoice->products as $product) {
-            $quantity = $product->pivot->quantity;
-            $product->decrement('stock_quantity', $quantity);
-            \Log::info("Product ID: " . $product->id . " Stock Quantity: " . $product->stock_quantity);
-        }
+        return $this->getTotalPaidAmount() >= $this->total_amount;
     }
 
-    public static function restoreInventory($invoice)
+    public function isPartiallyPaid()
     {
-        foreach ($invoice->products as $product) {
-            $quantity = $product->pivot->quantity;
-            $product->increment('stock_quantity', $quantity);
-        }
+        $totalPaid = $this->getTotalPaidAmount();
+
+        return $totalPaid > 0 && $totalPaid < $this->total_amount;
     }
 }

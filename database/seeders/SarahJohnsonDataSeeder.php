@@ -3,8 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\Account;
+use App\Models\AccountIndustry;
+use App\Models\AccountType;
 use App\Models\Brand;
 use App\Models\Campaign;
+use App\Models\CampaignType;
 use App\Models\Category;
 use App\Models\Contact;
 use App\Models\DeliveryOrder;
@@ -13,7 +16,11 @@ use App\Models\DocumentFolder;
 use App\Models\DocumentType;
 use App\Models\Invoice;
 use App\Models\Lead;
+use App\Models\LeadSource;
+use App\Models\LeadStatus;
 use App\Models\Opportunity;
+use App\Models\OpportunitySource;
+use App\Models\OpportunityStage;
 use App\Models\Product;
 use App\Models\Project;
 use App\Models\ProjectTask;
@@ -22,6 +29,7 @@ use App\Models\Quote;
 use App\Models\ReceiptOrder;
 use App\Models\ReturnOrder;
 use App\Models\SalesOrder;
+use App\Models\TaskStatus;
 use App\Models\Tax;
 use App\Models\User;
 use Faker\Factory as Faker;
@@ -45,15 +53,15 @@ class SarahJohnsonDataSeeder extends Seeder
         $organizationId = $sarah->created_by;
 
         // Get lookup data
-        $accountTypes = \App\Models\AccountType::where('created_by', $organizationId)->get();
-        $accountIndustries = \App\Models\AccountIndustry::where('created_by', $organizationId)->get();
+        $accountTypes = AccountType::where('created_by', $organizationId)->get();
+        $accountIndustries = AccountIndustry::where('created_by', $organizationId)->get();
         $categories = Category::where('created_by', $organizationId)->get();
         $brands = Brand::where('created_by', $organizationId)->get();
         $taxes = Tax::where('created_by', $organizationId)->get();
-        $opportunityStages = \App\Models\OpportunityStage::where('created_by', $organizationId)->get();
-        $opportunitySources = \App\Models\OpportunitySource::where('created_by', $organizationId)->get();
-        $leadStatuses = \App\Models\LeadStatus::where('created_by', $organizationId)->get();
-        $leadSources = \App\Models\LeadSource::where('created_by', $organizationId)->get();
+        $opportunityStages = OpportunityStage::where('created_by', $organizationId)->get();
+        $opportunitySources = OpportunitySource::where('created_by', $organizationId)->get();
+        $leadStatuses = LeadStatus::where('created_by', $organizationId)->get();
+        $leadSources = LeadSource::where('created_by', $organizationId)->get();
 
         // Create realistic Accounts
         $organizations = [
@@ -376,7 +384,7 @@ class SarahJohnsonDataSeeder extends Seeder
 
             // Create tasks for each project
             foreach ($proj['tasks'] as $taskName) {
-                $taskStatuses = \App\Models\TaskStatus::where('created_by', $organizationId)->get();
+                $taskStatuses = TaskStatus::where('created_by', $organizationId)->get();
 
                 ProjectTask::create([
                     'project_id' => $project->id,
@@ -549,7 +557,7 @@ class SarahJohnsonDataSeeder extends Seeder
         ];
 
         foreach ($campaigns as $campInfo) {
-            $campaignType = \App\Models\CampaignType::where('created_by', $organizationId)->inRandomOrder()->first();
+            $campaignType = CampaignType::where('created_by', $organizationId)->inRandomOrder()->first();
 
             Campaign::create([
                 'name' => $campInfo['name'],

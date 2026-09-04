@@ -2,11 +2,30 @@
 
 namespace App\Services;
 
+use Exception;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 
 class DynamicStorageService
 {
+    /**
+     * Get the active storage disk instance
+     */
+    public static function getActiveDiskInstance()
+    {
+        $diskName = StorageConfigService::getActiveDisk();
+
+        // Ensure disk is configured
+        self::configureDynamicDisks();
+
+        try {
+            return Storage::disk($diskName);
+        } catch (Exception $e) {
+            // Fallback to public disk
+            return Storage::disk('public');
+        }
+    }
+
     /**
      * Configure dynamic storage disks based on database settings
      */
@@ -40,24 +59,6 @@ class DynamicStorageService
     }
 
     /**
-     * Get the active storage disk instance
-     */
-    public static function getActiveDiskInstance()
-    {
-        $diskName = StorageConfigService::getActiveDisk();
-
-        // Ensure disk is configured
-        self::configureDynamicDisks();
-
-        try {
-            return Storage::disk($diskName);
-        } catch (\Exception $e) {
-            // Fallback to public disk
-            return Storage::disk('public');
-        }
-    }
-
-    /**
      * Test storage connection
      */
     public static function testConnection(string $diskName): bool
@@ -75,7 +76,7 @@ class DynamicStorageService
             $disk->delete($testPath);
 
             return $retrieved === $testContent;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }

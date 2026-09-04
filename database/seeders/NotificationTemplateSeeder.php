@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\NotificationTemplate;
 use App\Models\NotificationTemplateLang;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class NotificationTemplateSeeder extends Seeder
@@ -437,7 +438,7 @@ class NotificationTemplateSeeder extends Seeder
         ];
 
         // Get all organizations
-        $organizations = \App\Models\User::where('type', 'organization')->get();
+        $organizations = User::where('type', 'organization')->get();
         function addNotificationTemplates($templates, $organizations, $langCodes, $notificationType)
         {
             foreach ($templates as $templateData) {

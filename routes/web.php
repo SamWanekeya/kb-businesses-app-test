@@ -6,6 +6,7 @@ use App\Http\Controllers\AccountCommentController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AccountIndustryController;
 use App\Http\Controllers\AccountTypeController;
+use App\Http\Controllers\AnnouncementCategoryController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AuthorizeNetPaymentController;
 use App\Http\Controllers\BankPaymentController;
@@ -35,18 +36,23 @@ use App\Http\Controllers\EasebuzzPaymentController;
 use App\Http\Controllers\EmailTemplateController;
 use App\Http\Controllers\FedaPayPaymentController;
 use App\Http\Controllers\FlutterwavePaymentController;
+use App\Http\Controllers\GoogleCalendarController;
 use App\Http\Controllers\ImpersonateController;
 use App\Http\Controllers\InvoiceAamarpayPaymentController;
 use App\Http\Controllers\InvoiceAuthorizeNetPaymentController;
 use App\Http\Controllers\InvoiceBankPaymentController;
 use App\Http\Controllers\InvoiceBenefitPaymentController;
+use App\Http\Controllers\InvoiceCashfreePaymentController;
 use App\Http\Controllers\InvoiceCinetPayPaymentController;
+use App\Http\Controllers\InvoiceCoingatePaymentController;
 use App\Http\Controllers\InvoiceCommentController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\InvoiceEasebuzzPaymentController;
 use App\Http\Controllers\InvoiceFedaPayPaymentController;
+use App\Http\Controllers\InvoiceFlutterwavePaymentController;
 use App\Http\Controllers\InvoiceIyzipayPaymentController;
 use App\Http\Controllers\InvoiceKhaltiPaymentController;
+use App\Http\Controllers\InvoiceMercadoPagoPaymentController;
 use App\Http\Controllers\InvoiceMidtransPaymentController;
 use App\Http\Controllers\InvoiceMolliePaymentController;
 use App\Http\Controllers\InvoiceOzowPaymentController;
@@ -54,9 +60,12 @@ use App\Http\Controllers\InvoicePaiementPaymentController;
 use App\Http\Controllers\InvoicePayfastPaymentController;
 use App\Http\Controllers\InvoicePayHerePaymentController;
 use App\Http\Controllers\InvoicePayPalPaymentController;
+use App\Http\Controllers\InvoicePaystackPaymentController;
+use App\Http\Controllers\InvoicePayTabsPaymentController;
 use App\Http\Controllers\InvoicePayTRPaymentController;
 use App\Http\Controllers\InvoiceRazorpayPaymentController;
 use App\Http\Controllers\InvoiceReminderController;
+use App\Http\Controllers\InvoiceSkrillPaymentController;
 use App\Http\Controllers\InvoiceStripePaymentController;
 use App\Http\Controllers\InvoiceTapPaymentController;
 use App\Http\Controllers\InvoiceToyyibPayPaymentController;
@@ -77,6 +86,7 @@ use App\Http\Controllers\MolliePaymentController;
 use App\Http\Controllers\NepalstePaymentController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\NotificationTemplateController;
 use App\Http\Controllers\OpportunityCommentController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\OpportunitySourceController;
@@ -117,6 +127,7 @@ use App\Http\Controllers\StreamController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\TapPaymentController;
 use App\Http\Controllers\TargetListController;
+use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\ToyyibPayPaymentController;
 use App\Http\Controllers\TranslationController;
@@ -124,8 +135,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\XenditPaymentController;
 use App\Http\Controllers\YooKassaPaymentController;
 use App\Http\Controllers\ZeroPaymentController;
+use App\Http\Middleware\VerifyCsrfToken;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 // Cashfree webhook (public route)
 Route::post('cashfree/webhook', [CashfreeController::class, 'webhook'])->name('cashfree.webhook');
@@ -166,7 +180,7 @@ Route::post('payments/iyzipay/callback', [IyzipayPaymentController::class, 'call
 Route::match(['GET', 'POST'], 'payments/iyzipay/success', [IyzipayPaymentController::class, 'success'])->name('iyzipay.success');
 
 // Invoice Iyzipay payment routes (public routes)
-Route::match(['GET', 'POST'], 'invoices/payment/iyzipay/callback', [InvoiceIyzipayPaymentController::class, 'callback'])->name('invoice.iyzipay.callback')->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
+Route::match(['GET', 'POST'], 'invoices/payment/iyzipay/callback', [InvoiceIyzipayPaymentController::class, 'callback'])->name('invoice.iyzipay.callback')->withoutMiddleware(VerifyCsrfToken::class);
 
 // PayFast payment routes (public routes)
 Route::get('payments/payfast/success', [PayfastPaymentController::class, 'success'])->name('payfast.success');
@@ -289,8 +303,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 $plan = $user->getCurrentPlan();
 
                 if ($plan && $plan->storage_limit > 0) {
-                    $organizationUsers = \App\Models\User::where('created_by', $user->id)->pluck('id')->push($user->id);
-                    $currentStorageUsage = \Spatie\MediaLibrary\MediaCollections\Models\Media::whereIn('user_id', $organizationUsers)->sum('size');
+                    $organizationUsers = User::where('created_by', $user->id)->pluck('id')->push($user->id);
+                    $currentStorageUsage = Media::whereIn('user_id', $organizationUsers)->sum('size');
                     $storageLimit = $plan->storage_limit * 1024 * 1024 * 1024;
                     $planLimits = [
                         'current_storage' => $currentStorageUsage,
@@ -306,7 +320,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         })->middleware('permission:manage-media')->name('media-library');
 
 
-
         // Media Library API routes
         Route::get('api/media', [MediaController::class, 'index'])->middleware('permission:manage-media')->name('api.media.index');
         Route::post('api/media/batch', [MediaController::class, 'batchStore'])->middleware('permission:create-media')->name('api.media.batch');
@@ -318,9 +331,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Notification Templates routes
         Route::middleware('permission:manage-notification-templates')->group(function () {
-            Route::get('notification-templates', [\App\Http\Controllers\NotificationTemplateController::class, 'index'])->name('notification-templates.index');
-            Route::get('notification-templates/{notificationTemplate}', [\App\Http\Controllers\NotificationTemplateController::class, 'show'])->name('notification-templates.show');
-            Route::put('notification-templates/{notificationTemplate}/content', [\App\Http\Controllers\NotificationTemplateController::class, 'updateContent'])->name('notification-templates.update-content');
+            Route::get('notification-templates', [NotificationTemplateController::class, 'index'])->name('notification-templates.index');
+            Route::get('notification-templates/{notificationTemplate}', [NotificationTemplateController::class, 'show'])->name('notification-templates.show');
+            Route::put('notification-templates/{notificationTemplate}/content', [NotificationTemplateController::class, 'updateContent'])->name('notification-templates.update-content');
         });
 
         // Permissions routes with granular permissions
@@ -876,11 +889,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Task Status routes
         Route::middleware('permission:manage-task-statuses')->group(function () {
-            Route::get('task-statuses', [\App\Http\Controllers\TaskStatusController::class, 'index'])->middleware('permission:manage-task-statuses')->name('task-statuses.index');
-            Route::post('task-statuses', [\App\Http\Controllers\TaskStatusController::class, 'store'])->middleware('permission:create-task-statuses')->name('task-statuses.store');
-            Route::put('task-statuses/{taskStatus}', [\App\Http\Controllers\TaskStatusController::class, 'update'])->middleware('permission:edit-task-statuses')->name('task-statuses.update');
-            Route::delete('task-statuses/{taskStatus}', [\App\Http\Controllers\TaskStatusController::class, 'destroy'])->middleware('permission:delete-task-statuses')->name('task-statuses.destroy');
-            Route::put('task-statuses/{taskStatus}/toggle-status', [\App\Http\Controllers\TaskStatusController::class, 'toggleStatus'])->middleware('permission:toggle-status-task-statuses')->name('task-statuses.toggle-status');
+            Route::get('task-statuses', [TaskStatusController::class, 'index'])->middleware('permission:manage-task-statuses')->name('task-statuses.index');
+            Route::post('task-statuses', [TaskStatusController::class, 'store'])->middleware('permission:create-task-statuses')->name('task-statuses.store');
+            Route::put('task-statuses/{taskStatus}', [TaskStatusController::class, 'update'])->middleware('permission:edit-task-statuses')->name('task-statuses.update');
+            Route::delete('task-statuses/{taskStatus}', [TaskStatusController::class, 'destroy'])->middleware('permission:delete-task-statuses')->name('task-statuses.destroy');
+            Route::put('task-statuses/{taskStatus}/toggle-status', [TaskStatusController::class, 'toggleStatus'])->middleware('permission:toggle-status-task-statuses')->name('task-statuses.toggle-status');
         });
 
         // Meeting routes
@@ -911,9 +924,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('calendar', [CalendarController::class, 'index'])->name('calendar.index');
 
         // Google Calendar API routes
-        Route::get('api/google-calendar/events', [\App\Http\Controllers\GoogleCalendarController::class, 'getEvents'])->name('google-calendar.events');
-        Route::post('api/google-calendar/sync', [\App\Http\Controllers\GoogleCalendarController::class, 'syncEvents'])->name('google-calendar.sync');
-        Route::get('api/google-calendar/status', [\App\Http\Controllers\GoogleCalendarController::class, 'checkStatus'])->name('google-calendar.status');
+        Route::get('api/google-calendar/events', [GoogleCalendarController::class, 'getEvents'])->name('google-calendar.events');
+        Route::post('api/google-calendar/sync', [GoogleCalendarController::class, 'syncEvents'])->name('google-calendar.sync');
+        Route::get('api/google-calendar/status', [GoogleCalendarController::class, 'checkStatus'])->name('google-calendar.status');
 
         // Document Folder management
         Route::middleware('permission:manage-document-folders')->group(function () {
@@ -965,11 +978,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Announcement Categories routes
         Route::middleware('permission:manage-announcement-categories')->group(function () {
-            Route::get('announcement-categories', [\App\Http\Controllers\AnnouncementCategoryController::class, 'index'])->middleware('permission:manage-announcement-categories')->name('announcement-categories.index');
-            Route::post('announcement-categories', [\App\Http\Controllers\AnnouncementCategoryController::class, 'store'])->middleware('permission:create-announcement-categories')->name('announcement-categories.store');
-            Route::put('announcement-categories/{category}', [\App\Http\Controllers\AnnouncementCategoryController::class, 'update'])->middleware('permission:edit-announcement-categories')->name('announcement-categories.update');
-            Route::delete('announcement-categories/{category}', [\App\Http\Controllers\AnnouncementCategoryController::class, 'destroy'])->middleware('permission:delete-announcement-categories')->name('announcement-categories.destroy');
-            Route::put('announcement-categories/{category}/toggle-status', [\App\Http\Controllers\AnnouncementCategoryController::class, 'toggleStatus'])->middleware('permission:toggle-status-announcement-categories')->name('announcement-categories.toggle-status');
+            Route::get('announcement-categories', [AnnouncementCategoryController::class, 'index'])->middleware('permission:manage-announcement-categories')->name('announcement-categories.index');
+            Route::post('announcement-categories', [AnnouncementCategoryController::class, 'store'])->middleware('permission:create-announcement-categories')->name('announcement-categories.store');
+            Route::put('announcement-categories/{category}', [AnnouncementCategoryController::class, 'update'])->middleware('permission:edit-announcement-categories')->name('announcement-categories.update');
+            Route::delete('announcement-categories/{category}', [AnnouncementCategoryController::class, 'destroy'])->middleware('permission:delete-announcement-categories')->name('announcement-categories.destroy');
+            Route::put('announcement-categories/{category}/toggle-status', [AnnouncementCategoryController::class, 'toggleStatus'])->middleware('permission:toggle-status-announcement-categories')->name('announcement-categories.toggle-status');
         });
 
         // Announcements routes
@@ -1072,19 +1085,19 @@ Route::post('invoices/payment/stripe/confirm', [InvoiceStripePaymentController::
 Route::post('invoices/payment/paypal', [InvoicePayPalPaymentController::class, 'processPayment'])->name('invoice.paypal.payment');
 Route::post('invoices/payment/razorpay/create-order', [InvoiceRazorpayPaymentController::class, 'createOrder'])->name('invoice.razorpay.create-order');
 Route::post('invoices/payment/razorpay', [InvoiceRazorpayPaymentController::class, 'processPayment'])->name('invoice.razorpay.payment');
-Route::post('invoices/payment/mercadopago/create-preference', [\App\Http\Controllers\InvoiceMercadoPagoPaymentController::class, 'createPreference'])->name('invoice.mercadopago.create-preference');
-Route::get('invoices/payment/mercadopago/success', [\App\Http\Controllers\InvoiceMercadoPagoPaymentController::class, 'success'])->name('invoice.mercadopago.success');
-Route::get('invoices/payment/mercadopago/failure', [\App\Http\Controllers\InvoiceMercadoPagoPaymentController::class, 'failure'])->name('invoice.mercadopago.failure');
-Route::get('invoices/payment/mercadopago/pending', [\App\Http\Controllers\InvoiceMercadoPagoPaymentController::class, 'pending'])->name('invoice.mercadopago.pending');
-Route::post('invoices/payment/paystack', [\App\Http\Controllers\InvoicePaystackPaymentController::class, 'processPayment'])->name('invoice.paystack.payment');
-Route::post('invoices/payment/flutterwave', [\App\Http\Controllers\InvoiceFlutterwavePaymentController::class, 'processPayment'])->name('invoice.flutterwave.payment');
-Route::post('invoices/payment/paytabs', [\App\Http\Controllers\InvoicePayTabsPaymentController::class, 'processPayment'])->name('invoice.paytabs.payment');
-Route::get('invoices/payment/paytabs/success', [\App\Http\Controllers\InvoicePayTabsPaymentController::class, 'success'])->name('invoice.paytabs.success');
-Route::match(['GET', 'POST'], 'invoices/payment/paytabs/callback', [\App\Http\Controllers\InvoicePayTabsPaymentController::class, 'callback'])->name('invoice.paytabs.callback');
-Route::post('invoices/payment/skrill', [\App\Http\Controllers\InvoiceSkrillPaymentController::class, 'processPayment'])->name('invoice.skrill.payment');
-Route::post('invoices/payment/skrill/callback', [\App\Http\Controllers\InvoiceSkrillPaymentController::class, 'callback'])->name('invoice.skrill.callback');
-Route::post('invoices/payment/coingate', [\App\Http\Controllers\InvoiceCoingatePaymentController::class, 'processPayment'])->name('invoice.coingate.payment');
-Route::match(['GET', 'POST'], 'invoices/payment/coingate/callback', [\App\Http\Controllers\InvoiceCoingatePaymentController::class, 'callback'])->name('invoice.coingate.callback');
+Route::post('invoices/payment/mercadopago/create-preference', [InvoiceMercadoPagoPaymentController::class, 'createPreference'])->name('invoice.mercadopago.create-preference');
+Route::get('invoices/payment/mercadopago/success', [InvoiceMercadoPagoPaymentController::class, 'success'])->name('invoice.mercadopago.success');
+Route::get('invoices/payment/mercadopago/failure', [InvoiceMercadoPagoPaymentController::class, 'failure'])->name('invoice.mercadopago.failure');
+Route::get('invoices/payment/mercadopago/pending', [InvoiceMercadoPagoPaymentController::class, 'pending'])->name('invoice.mercadopago.pending');
+Route::post('invoices/payment/paystack', [InvoicePaystackPaymentController::class, 'processPayment'])->name('invoice.paystack.payment');
+Route::post('invoices/payment/flutterwave', [InvoiceFlutterwavePaymentController::class, 'processPayment'])->name('invoice.flutterwave.payment');
+Route::post('invoices/payment/paytabs', [InvoicePayTabsPaymentController::class, 'processPayment'])->name('invoice.paytabs.payment');
+Route::get('invoices/payment/paytabs/success', [InvoicePayTabsPaymentController::class, 'success'])->name('invoice.paytabs.success');
+Route::match(['GET', 'POST'], 'invoices/payment/paytabs/callback', [InvoicePayTabsPaymentController::class, 'callback'])->name('invoice.paytabs.callback');
+Route::post('invoices/payment/skrill', [InvoiceSkrillPaymentController::class, 'processPayment'])->name('invoice.skrill.payment');
+Route::post('invoices/payment/skrill/callback', [InvoiceSkrillPaymentController::class, 'callback'])->name('invoice.skrill.callback');
+Route::post('invoices/payment/coingate', [InvoiceCoingatePaymentController::class, 'processPayment'])->name('invoice.coingate.payment');
+Route::match(['GET', 'POST'], 'invoices/payment/coingate/callback', [InvoiceCoingatePaymentController::class, 'callback'])->name('invoice.coingate.callback');
 Route::post('invoices/payment/bank', [InvoiceBankPaymentController::class, 'processPayment'])->name('invoice.bank.payment');
 Route::post('invoices/payment/benefit', [InvoiceBenefitPaymentController::class, 'processPayment'])->name('invoice.benefit.payment');
 Route::get('invoices/payment/benefit/success', [InvoiceBenefitPaymentController::class, 'success'])->name('invoice.benefit.success');
@@ -1139,9 +1152,9 @@ Route::post('invoices/payment/easebuzz/callback', [InvoiceEasebuzzPaymentControl
 Route::post('invoices/payment/ozow/create-payment', [InvoiceOzowPaymentController::class, 'createPayment'])->name('invoice.ozow.create-payment');
 Route::get('invoices/payment/ozow/success', [InvoiceOzowPaymentController::class, 'success'])->name('invoice.ozow.success');
 Route::post('invoices/payment/ozow/callback', [InvoiceOzowPaymentController::class, 'callback'])->name('invoice.ozow.callback');
-Route::post('invoices/payment/cashfree/create-session', [\App\Http\Controllers\InvoiceCashfreePaymentController::class, 'createPaymentSession'])->name('invoice.cashfree.create-session');
-Route::post('invoices/payment/cashfree/verify-payment', [\App\Http\Controllers\InvoiceCashfreePaymentController::class, 'verifyPayment'])->name('invoice.cashfree.verify-payment');
-Route::post('invoices/payment/cashfree/webhook', [\App\Http\Controllers\InvoiceCashfreePaymentController::class, 'webhook'])->name('invoice.cashfree.webhook')->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
+Route::post('invoices/payment/cashfree/create-session', [InvoiceCashfreePaymentController::class, 'createPaymentSession'])->name('invoice.cashfree.create-session');
+Route::post('invoices/payment/cashfree/verify-payment', [InvoiceCashfreePaymentController::class, 'verifyPayment'])->name('invoice.cashfree.verify-payment');
+Route::post('invoices/payment/cashfree/webhook', [InvoiceCashfreePaymentController::class, 'webhook'])->name('invoice.cashfree.webhook')->withoutMiddleware(VerifyCsrfToken::class);
 
 // Invoice payment management routes (authenticated)
 Route::middleware(['auth', 'verified'])->group(function () {

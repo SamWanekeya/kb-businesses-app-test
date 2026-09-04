@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\AccountIndustry;
+use App\Models\Campaign;
 use App\Models\Lead;
 use App\Models\LeadSource;
 use App\Models\LeadStatus;
@@ -32,8 +34,8 @@ class LeadSeeder extends Seeder
         foreach ($organizationUsers as $organization) {
             $leadStatuses = LeadStatus::where('created_by', $organization->id)->get();
             $leadSources = LeadSource::where('created_by', $organization->id)->get();
-            $campaigns = \App\Models\Campaign::where('created_by', $organization->id)->get();
-            $accountIndustries = \App\Models\AccountIndustry::where('created_by', $organization->id)->get();
+            $campaigns = Campaign::where('created_by', $organization->id)->get();
+            $accountIndustries = AccountIndustry::where('created_by', $organization->id)->get();
             $staffUsers = User::where('created_by', $organization->id)->get();
 
             if ($leadStatuses->isEmpty() || $leadSources->isEmpty()) {

@@ -2,8 +2,13 @@
 
 namespace App\Observers;
 
+use App\Models\Account;
+use App\Models\AccountIndustry;
+use App\Models\Campaign;
 use App\Models\Lead;
 use App\Models\LeadActivity;
+use App\Models\LeadSource;
+use App\Models\LeadStatus;
 use App\Models\User;
 
 class LeadObserver
@@ -76,13 +81,13 @@ class LeadObserver
             // Store lead status colors for historical accuracy
             if ($field === 'lead_status_id') {
                 if ($oldValue) {
-                    $oldLeadStatus = \App\Models\LeadStatus::find($oldValue);
+                    $oldLeadStatus = LeadStatus::find($oldValue);
                     if ($oldLeadStatus) {
                         $newValues['old_lead_status_color'] = $oldLeadStatus->color;
                     }
                 }
                 if ($newValue) {
-                    $newLeadStatus = \App\Models\LeadStatus::find($newValue);
+                    $newLeadStatus = LeadStatus::find($newValue);
                     if ($newLeadStatus) {
                         $newValues['lead_status_color'] = $newLeadStatus->color;
                     }
@@ -121,7 +126,7 @@ class LeadObserver
             case 'name':
                 return $userName . ' updated name';
             case 'assigned_to':
-                $newUser = $newValue ? \App\Models\User::find($newValue)?->name : 'Unassigned';
+                $newUser = $newValue ? User::find($newValue)?->name : 'Unassigned';
                 if ($newUser === $userName) {
                     return $userName . ' self-assigned this lead';
                 }
@@ -151,8 +156,8 @@ class LeadObserver
 
                 return $oldStatus . ' into ' . $newStatus;
             case 'lead_status_id':
-                $oldLeadStatus = $oldValue ? \App\Models\LeadStatus::find($oldValue) : null;
-                $newLeadStatus = $newValue ? \App\Models\LeadStatus::find($newValue) : null;
+                $oldLeadStatus = $oldValue ? LeadStatus::find($oldValue) : null;
+                $newLeadStatus = $newValue ? LeadStatus::find($newValue) : null;
                 $oldPart = $oldLeadStatus ? '<div class="inline-block w-3 h-3 rounded-full mr-1" style="background-color: ' . ($oldLeadStatus->color ?? '#6b7280') . ';"></div><span class="font-bold">' . $oldLeadStatus->name . '</span>' : 'None';
                 $newPart = $newLeadStatus ? '<div class="inline-block w-3 h-3 rounded-full mr-1" style="background-color: ' . ($newLeadStatus->color ?? '#6b7280') . ';"></div><span class="font-bold">' . $newLeadStatus->name . '</span>' : 'None';
 
@@ -160,8 +165,8 @@ class LeadObserver
             case 'name':
                 return '<span class="font-bold text-base">' . ($oldValue ?? '') . '</span> into <span class="font-bold text-base">' . ($newValue ?? '') . '</span>';
             case 'assigned_to':
-                $oldUser = $oldValue ? \App\Models\User::find($oldValue)?->name : 'Unassigned';
-                $newUser = $newValue ? \App\Models\User::find($newValue)?->name : 'Unassigned';
+                $oldUser = $oldValue ? User::find($oldValue)?->name : 'Unassigned';
+                $newUser = $newValue ? User::find($newValue)?->name : 'Unassigned';
 
                 return '<span class="font-bold text-base">' . $oldUser . '</span> into <span class="font-bold text-base">' . $newUser . '</span>';
             case 'is_converted':
@@ -170,23 +175,23 @@ class LeadObserver
 
                 return '<span class="font-bold text-base">' . $oldConverted . '</span> into <span class="font-bold text-base">' . $newConverted . '</span>';
             case 'account_industry_id':
-                $oldIndustry = $oldValue ? \App\Models\AccountIndustry::find($oldValue)?->name : 'None';
-                $newIndustry = $newValue ? \App\Models\AccountIndustry::find($newValue)?->name : 'None';
+                $oldIndustry = $oldValue ? AccountIndustry::find($oldValue)?->name : 'None';
+                $newIndustry = $newValue ? AccountIndustry::find($newValue)?->name : 'None';
 
                 return '<span class="font-bold text-base">' . ($oldIndustry ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newIndustry ?? 'None') . '</span>';
             case 'campaign_id':
-                $oldCampaign = $oldValue ? \App\Models\Campaign::find($oldValue)?->name : 'None';
-                $newCampaign = $newValue ? \App\Models\Campaign::find($newValue)?->name : 'None';
+                $oldCampaign = $oldValue ? Campaign::find($oldValue)?->name : 'None';
+                $newCampaign = $newValue ? Campaign::find($newValue)?->name : 'None';
 
                 return '<span class="font-bold text-base">' . ($oldCampaign ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newCampaign ?? 'None') . '</span>';
             case 'lead_source_id':
-                $oldSource = $oldValue ? \App\Models\LeadSource::find($oldValue)?->name : 'None';
-                $newSource = $newValue ? \App\Models\LeadSource::find($newValue)?->name : 'None';
+                $oldSource = $oldValue ? LeadSource::find($oldValue)?->name : 'None';
+                $newSource = $newValue ? LeadSource::find($newValue)?->name : 'None';
 
                 return '<span class="font-bold text-base">' . ($oldSource ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newSource ?? 'None') . '</span>';
             case 'account_id':
-                $oldAccount = $oldValue ? \App\Models\Account::find($oldValue)?->name : 'None';
-                $newAccount = $newValue ? \App\Models\Account::find($newValue)?->name : 'None';
+                $oldAccount = $oldValue ? Account::find($oldValue)?->name : 'None';
+                $newAccount = $newValue ? Account::find($newValue)?->name : 'None';
 
                 return '<span class="font-bold text-base">' . ($oldAccount ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newAccount ?? 'None') . '</span>';
             default:

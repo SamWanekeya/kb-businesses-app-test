@@ -24,11 +24,6 @@ class InvoicePayment extends Model
         'processed_at' => 'datetime',
     ];
 
-    public function invoice(): BelongsTo
-    {
-        return $this->belongsTo(Invoice::class);
-    }
-
     public static function storePayment(array $data)
     {
         $invoice = Invoice::findOrFail($data['invoice_id']);
@@ -45,5 +40,10 @@ class InvoicePayment extends Model
         ]);
 
         $invoice->updatePaymentStatus();
+    }
+
+    public function invoice(): BelongsTo
+    {
+        return $this->belongsTo(Invoice::class);
     }
 }

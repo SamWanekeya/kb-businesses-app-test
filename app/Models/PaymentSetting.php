@@ -13,6 +13,23 @@ class PaymentSetting extends Model
         'user_id' => 'integer',
     ];
 
+    public static function updateOrCreateSetting($userId, $key, $value)
+    {
+        return self::updateOrCreate(
+            ['user_id' => $userId, 'key' => $key],
+            ['value' => $value]
+        );
+    }
+
+    public static function getUserSettings($userId)
+    {
+        if (!$userId) {
+            return [];
+        }
+
+        return self::where('user_id', $userId)->pluck('value', 'key')->toArray();
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -65,22 +82,5 @@ class PaymentSetting extends Model
         }
 
         return $value;
-    }
-
-    public static function updateOrCreateSetting($userId, $key, $value)
-    {
-        return self::updateOrCreate(
-            ['user_id' => $userId, 'key' => $key],
-            ['value' => $value]
-        );
-    }
-
-    public static function getUserSettings($userId)
-    {
-        if (!$userId) {
-            return [];
-        }
-
-        return self::where('user_id', $userId)->pluck('value', 'key')->toArray();
     }
 }

@@ -100,13 +100,6 @@ class Quote extends BaseModel
         return $this->belongsTo(ShippingProviderType::class);
     }
 
-    public function products(): BelongsToMany
-    {
-        return $this->belongsToMany(Product::class, 'quote_products')
-            ->withPivot('quantity', 'unit_price', 'total_price', 'discount_type', 'discount_value', 'discount_amount')
-            ->withTimestamps();
-    }
-
     public function activities(): HasMany
     {
         return $this->hasMany(QuoteActivity::class)->with('user')->orderBy('created_at', 'desc');
@@ -120,6 +113,13 @@ class Quote extends BaseModel
     public function getProductCountAttribute()
     {
         return $this->products()->sum('quote_products.quantity');
+    }
+
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'quote_products')
+            ->withPivot('quantity', 'unit_price', 'total_price', 'discount_type', 'discount_value', 'discount_amount')
+            ->withTimestamps();
     }
 
     public function calculateTotals()

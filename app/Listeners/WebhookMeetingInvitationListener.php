@@ -14,7 +14,8 @@ class WebhookMeetingInvitationListener
      */
     public function __construct(
         private WebhookService $webhookService
-    ) {
+    )
+    {
         //
     }
 

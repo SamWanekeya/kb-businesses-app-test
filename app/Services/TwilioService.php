@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\NotificationTemplate;
 use Exception;
+use Log;
 use Twilio\Rest\Client;
 
 class TwilioService
@@ -47,19 +48,19 @@ class TwilioService
             // Send SMS
             return $this->sendSMS($toPhone, $message);
         } catch (Exception $e) {
-            \Log::error('Twilio SMS sending failed: ' . $e->getMessage());
+            Log::error('Twilio SMS sending failed: ' . $e->getMessage());
             throw $e;
         }
-    }
-
-    private function replaceVariables(string $content, array $variables): string
-    {
-        return str_replace(array_keys($variables), array_values($variables), $content);
     }
 
     private function isTwilioNotificationEnabled(string $templateName): bool
     {
         return isNotificationTemplateEnabled($templateName, 'twilio', createdBy());
+    }
+
+    private function replaceVariables(string $content, array $variables): string
+    {
+        return str_replace(array_keys($variables), array_values($variables), $content);
     }
 
     private function sendSMS(string $toPhone, string $message): bool

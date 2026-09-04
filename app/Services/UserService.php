@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\User;
+use Exception;
+use Log;
 use Spatie\Permission\Models\Role;
 
 class UserService
@@ -25,8 +27,8 @@ class UserService
             }
 
             return false;
-        } catch (\Exception $e) {
-            \Log::error('Failed to assign default role: ' . $e->getMessage());
+        } catch (Exception $e) {
+            Log::error('Failed to assign default role: ' . $e->getMessage());
 
             return false;
         }
@@ -54,8 +56,8 @@ class UserService
             }
 
             return false;
-        } catch (\Exception $e) {
-            \Log::error('Failed to assign organization role: ' . $e->getMessage());
+        } catch (Exception $e) {
+            Log::error('Failed to assign organization role: ' . $e->getMessage());
 
             return false;
         }

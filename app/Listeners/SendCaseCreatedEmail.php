@@ -14,7 +14,8 @@ class SendCaseCreatedEmail
      */
     public function __construct(
         private EmailTemplateService $emailService,
-    ) {
+    )
+    {
         //
     }
 

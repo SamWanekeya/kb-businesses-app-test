@@ -97,28 +97,11 @@ class Product extends BaseModel implements HasMedia
             ->nonQueued();
     }
 
-    public function getMainImageUrlAttribute()
-    {
-        if ($this->main_image_id) {
-            $media = \Spatie\MediaLibrary\MediaCollections\Models\Media::find($this->main_image_id);
-
-            return $media && $media->exists() ? $media->getUrl() : $this->getDefaultImageUrl();
-        }
-        $media = $this->getFirstMedia('main');
-
-        return $media && $media->exists() ? $media->getUrl() : $this->getDefaultImageUrl();
-    }
-
-    public function getDefaultImageUrl()
-    {
-        return $this->image ?: get_file('product/default.svg');
-    }
-
     public function getAdditionalImageUrlsAttribute()
     {
         if ($this->additional_image_ids) {
             return collect($this->additional_image_ids)->map(function ($mediaId) {
-                $media = \Spatie\MediaLibrary\MediaCollections\Models\Media::find($mediaId);
+                $media = Media::find($mediaId);
 
                 return $media ? [
                     'id' => $media->id,
@@ -172,5 +155,22 @@ class Product extends BaseModel implements HasMedia
         $array['display_image_url'] = $this->getMainImageUrlAttribute();
 
         return $array;
+    }
+
+    public function getMainImageUrlAttribute()
+    {
+        if ($this->main_image_id) {
+            $media = Media::find($this->main_image_id);
+
+            return $media && $media->exists() ? $media->getUrl() : $this->getDefaultImageUrl();
+        }
+        $media = $this->getFirstMedia('main');
+
+        return $media && $media->exists() ? $media->getUrl() : $this->getDefaultImageUrl();
+    }
+
+    public function getDefaultImageUrl()
+    {
+        return $this->image ?: get_file('product/default.svg');
     }
 }

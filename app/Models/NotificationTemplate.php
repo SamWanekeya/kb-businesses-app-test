@@ -16,23 +16,6 @@ class NotificationTemplate extends Model
         'type' => 'string',
     ];
 
-    public function notificationTemplateLangs(): HasMany
-    {
-        return $this->hasMany(NotificationTemplateLang::class, 'parent_id');
-    }
-
-    public function userNotificationTemplates(): HasMany
-    {
-        return $this->hasMany(UserNotificationTemplate::class, 'template_id');
-    }
-
-    public function getContentForOrganization($organizationId = null)
-    {
-        $organizationId = $organizationId ?? createdBy();
-
-        return $this->notificationTemplateLangs()->where('created_by', $organizationId);
-    }
-
     /**
      * Get templates by type
      */
@@ -47,5 +30,22 @@ class NotificationTemplate extends Model
     public static function getAvailableTypes()
     {
         return self::distinct()->pluck('type')->toArray();
+    }
+
+    public function userNotificationTemplates(): HasMany
+    {
+        return $this->hasMany(UserNotificationTemplate::class, 'template_id');
+    }
+
+    public function getContentForOrganization($organizationId = null)
+    {
+        $organizationId = $organizationId ?? createdBy();
+
+        return $this->notificationTemplateLangs()->where('created_by', $organizationId);
+    }
+
+    public function notificationTemplateLangs(): HasMany
+    {
+        return $this->hasMany(NotificationTemplateLang::class, 'parent_id');
     }
 }

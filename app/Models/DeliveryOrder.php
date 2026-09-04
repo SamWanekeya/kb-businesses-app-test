@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Faker\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -43,11 +44,6 @@ class DeliveryOrder extends BaseModel
 
     protected $appends = ['formatted_status'];
 
-    public function getFormattedStatusAttribute()
-    {
-        return ucfirst(str_replace('_', ' ', $this->status));
-    }
-
     protected static function boot()
     {
         parent::boot();
@@ -57,11 +53,16 @@ class DeliveryOrder extends BaseModel
                 $deliveryOrder->delivery_number = 'DO-' . str_pad(static::max('id') + 1, 6, '0', STR_PAD_LEFT);
             }
 
-            $faker = \Faker\Factory::create();
+            $faker = Factory::create();
             if (empty($deliveryOrder->tracking_number)) {
                 $deliveryOrder->tracking_number = strtoupper($faker->unique()->bothify('??########'));
             }
         });
+    }
+
+    public function getFormattedStatusAttribute()
+    {
+        return ucfirst(str_replace('_', ' ', $this->status));
     }
 
     public function salesOrder(): BelongsTo
@@ -94,16 +95,16 @@ class DeliveryOrder extends BaseModel
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    public function getProductCountAttribute()
+    {
+        return $this->products()->sum('delivery_order_products.quantity');
+    }
+
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'delivery_order_products')
             ->withPivot('quantity', 'unit_weight', 'total_weight')
             ->withTimestamps();
-    }
-
-    public function getProductCountAttribute()
-    {
-        return $this->products()->sum('delivery_order_products.quantity');
     }
 
     public function calculateTotalWeight()

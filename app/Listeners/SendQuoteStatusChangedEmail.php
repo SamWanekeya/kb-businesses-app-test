@@ -15,8 +15,9 @@ class SendQuoteStatusChangedEmail
      */
     public function __construct(
         private EmailTemplateService $emailService,
-        private WebhookService $webhookService
-    ) {
+        private WebhookService       $webhookService
+    )
+    {
         //
     }
 

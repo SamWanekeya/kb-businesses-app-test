@@ -2,8 +2,12 @@
 
 namespace App\Observers;
 
+use App\Models\Account;
+use App\Models\Contact;
+use App\Models\Quote;
 use App\Models\SalesOrder;
 use App\Models\SalesOrderActivity;
+use App\Models\ShippingProviderType;
 use App\Models\User;
 
 class SalesOrderObserver
@@ -90,7 +94,7 @@ class SalesOrderObserver
             case 'name':
                 return $userName . ' updated name';
             case 'assigned_to':
-                $newUser = $newValue ? \App\Models\User::find($newValue)?->name : 'Unassigned';
+                $newUser = $newValue ? User::find($newValue)?->name : 'Unassigned';
                 if ($newUser === $userName) {
                     return $userName . ' self-assigned this sales order';
                 }
@@ -135,30 +139,30 @@ class SalesOrderObserver
             case 'name':
                 return '<span class="font-bold text-base">' . ($oldValue ?? '') . '</span> into <span class="font-bold text-base">' . ($newValue ?? '') . '</span>';
             case 'assigned_to':
-                $oldUser = $oldValue ? \App\Models\User::find($oldValue)?->name : 'Unassigned';
-                $newUser = $newValue ? \App\Models\User::find($newValue)?->name : 'Unassigned';
+                $oldUser = $oldValue ? User::find($oldValue)?->name : 'Unassigned';
+                $newUser = $newValue ? User::find($newValue)?->name : 'Unassigned';
 
                 return '<span class="font-bold text-base">' . $oldUser . '</span> into <span class="font-bold text-base">' . $newUser . '</span>';
             case 'account_id':
-                $oldAccount = $oldValue ? \App\Models\Account::find($oldValue)?->name : 'None';
-                $newAccount = $newValue ? \App\Models\Account::find($newValue)?->name : 'None';
+                $oldAccount = $oldValue ? Account::find($oldValue)?->name : 'None';
+                $newAccount = $newValue ? Account::find($newValue)?->name : 'None';
 
                 return '<span class="font-bold text-base">' . ($oldAccount ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newAccount ?? 'None') . '</span>';
             case 'quote_id':
-                $oldQuote = $oldValue ? \App\Models\Quote::find($oldValue)?->name : 'None';
-                $newQuote = $newValue ? \App\Models\Quote::find($newValue)?->name : 'None';
+                $oldQuote = $oldValue ? Quote::find($oldValue)?->name : 'None';
+                $newQuote = $newValue ? Quote::find($newValue)?->name : 'None';
 
                 return '<span class="font-bold text-base">' . ($oldQuote ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newQuote ?? 'None') . '</span>';
             case 'contact_id':
             case 'billing_contact_id':
             case 'shipping_contact_id':
-                $oldContact = $oldValue ? \App\Models\Contact::find($oldValue)?->name : 'None';
-                $newContact = $newValue ? \App\Models\Contact::find($newValue)?->name : 'None';
+            $oldContact = $oldValue ? Contact::find($oldValue)?->name : 'None';
+            $newContact = $newValue ? Contact::find($newValue)?->name : 'None';
 
                 return '<span class="font-bold text-base">' . ($oldContact ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newContact ?? 'None') . '</span>';
             case 'shipping_provider_type_id':
-                $oldProvider = $oldValue ? \App\Models\ShippingProviderType::find($oldValue)?->name : 'None';
-                $newProvider = $newValue ? \App\Models\ShippingProviderType::find($newValue)?->name : 'None';
+                $oldProvider = $oldValue ? ShippingProviderType::find($oldValue)?->name : 'None';
+                $newProvider = $newValue ? ShippingProviderType::find($newValue)?->name : 'None';
 
                 return '<span class="font-bold text-base">' . ($oldProvider ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newProvider ?? 'None') . '</span>';
             case 'order_date':

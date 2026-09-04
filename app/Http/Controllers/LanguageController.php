@@ -199,7 +199,7 @@ class LanguageController extends Controller
             }
 
             // Update all users using this language to English
-            // \App\Models\User::where('lang', $languageCode)->update(['lang' => 'en']);
+            // User::where('lang', $languageCode)->update(['lang' => 'en']);
 
             return response()->json(['success' => true, 'message' => __('The language has been deleted.')]);
         } catch (Exception $e) {
@@ -228,7 +228,7 @@ class LanguageController extends Controller
 
             // // If disabling language, update all users using this language to English
             // if (isset($language['enabled']) && $language['enabled'] === false) {
-            //     \App\Models\User::where('lang', $languageCode)->update(['lang' => 'en']);
+            //     User::where('lang', $languageCode)->update(['lang' => 'en']);
             // }
 
             return response()->json(['success' => true, 'message' => __('The language status updated successfully.')]);
