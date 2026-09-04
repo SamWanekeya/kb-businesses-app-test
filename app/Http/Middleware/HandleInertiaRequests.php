@@ -6,6 +6,7 @@ use App\Models\Currency;
 use App\Models\PlanOrder;
 use App\Models\Setting;
 use App\Models\User;
+use Exception;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -104,7 +105,7 @@ class HandleInertiaRequests extends Middleware
                         'maximum_file_size_mb' => 2,
                     ];
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Fallback to default settings if service fails
                 $storageSettings = [
                     'allowed_file_types' => 'jpg,png,webp,gif',
@@ -133,7 +134,7 @@ class HandleInertiaRequests extends Middleware
                         'superAdminCurrencySymbolPosition' => $superAdminSettings['currencySymbolPosition'] ?? 'before',
                     ];
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Fallback to default super admin currency settings
                 $superAdminCurrencySettings = [
                     'superAdminCurrencySymbol' => '$',
@@ -161,7 +162,7 @@ class HandleInertiaRequests extends Middleware
                         ->first();
                     $superAdminEnableLogging = $enableLoggingSetting ? $enableLoggingSetting->value : false;
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $superAdminEnableLogging = false;
             }
 
@@ -174,7 +175,7 @@ class HandleInertiaRequests extends Middleware
                         ->first();
                     $superAdminRegistrationEnabled = $registrationEnabledSetting ? (($registrationEnabledSetting->value == "1") ? true : false) : true;
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $superAdminRegistrationEnabled = false;
             }
 

@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
 
@@ -40,14 +43,14 @@ class InvoiceStripePaymentController extends Controller
             $currency = $settings['general_settings']['defaultCurrency'] ?? 'usd';
 
             if (!isset($settings['payment_settings']['stripe_secret']) || !isset($settings['payment_settings']['stripe_key'])) {
-                \Log::error('Stripe payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+                Log::error('Stripe payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return back()->withErrors(['error' => __('Stripe not configured')]);
             }
 
             $stripeSecret = $settings['payment_settings']['stripe_secret'];
             if (!str_starts_with($stripeSecret, 'sk_')) {
-                \Log::error('Stripe payment failed: Invalid secret key format', ['invoice_id' => $invoice->id]);
+                Log::error('Stripe payment failed: Invalid secret key format', ['invoice_id' => $invoice->id]);
 
                 return back()->withErrors(['error' => __('Invalid Stripe secret key format')]);
             }
@@ -82,7 +85,7 @@ class InvoiceStripePaymentController extends Controller
                     'payment_id' => $paymentIntent->id,
                 ]);
 
-                \Log::info('Stripe payment successful', [
+                Log::info('Stripe payment successful', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
@@ -92,14 +95,14 @@ class InvoiceStripePaymentController extends Controller
                 return back()->with('success', __('Payment successful'));
             }
 
-            \Log::warning('Stripe payment failed', [
+            Log::warning('Stripe payment failed', [
                 'invoice_id' => $invoice->id,
                 'payment_intent_status' => $paymentIntent->status,
             ]);
 
             return back()->withErrors(['error' => __('Payment failed')]);
-        } catch (\Exception $e) {
-            \Log::error('Stripe payment error', [
+        } catch (Exception $e) {
+            Log::error('Stripe payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -124,7 +127,7 @@ class InvoiceStripePaymentController extends Controller
     {
         return [
             'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }
 

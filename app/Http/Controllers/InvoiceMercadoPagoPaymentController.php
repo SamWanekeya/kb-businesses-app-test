@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 use MercadoPago\Item;
 use MercadoPago\Preference;
 use MercadoPago\SDK;
@@ -62,7 +65,7 @@ class InvoiceMercadoPagoPaymentController extends Controller
             $result = $preference->save();
 
             if (!$result || !$preference->id) {
-                throw new \Exception(__('Failed to create MercadoPago preference'));
+                throw new Exception(__('Failed to create MercadoPago preference'));
             }
 
             $redirectUrl = $mode === 'sandbox' ? $preference->sandbox_init_point : $preference->init_point;
@@ -73,8 +76,8 @@ class InvoiceMercadoPagoPaymentController extends Controller
                 'mode' => $mode,
             ]);
 
-        } catch (\Exception $e) {
-            \Log::error('MercadoPago preference creation failed', [
+        } catch (Exception $e) {
+            Log::error('MercadoPago preference creation failed', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
             ]);
@@ -129,7 +132,7 @@ class InvoiceMercadoPagoPaymentController extends Controller
                     'payment_id' => $paymentId,
                 ]);
 
-                \Log::info('MercadoPago payment successful', [
+                Log::info('MercadoPago payment successful', [
                     'invoice_id' => $invoiceId,
                     'amount' => $amount,
                     'payment_type' => $paymentType,
@@ -143,8 +146,8 @@ class InvoiceMercadoPagoPaymentController extends Controller
                 return redirect()->route('invoices.public', $invoice)->with('error', __('Payment failed'));
             }
 
-        } catch (\Exception $e) {
-            \Log::error('MercadoPago payment processing failed', [
+        } catch (Exception $e) {
+            Log::error('MercadoPago payment processing failed', [
                 'error' => $e->getMessage(),
                 'status' => $status,
             ]);
@@ -168,7 +171,7 @@ class InvoiceMercadoPagoPaymentController extends Controller
     {
         return [
             'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }
 }

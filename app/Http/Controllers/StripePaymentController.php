@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
+use Exception;
 use Illuminate\Http\Request;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
@@ -67,7 +68,7 @@ class StripePaymentController extends Controller
             }
 
             return back()->withErrors(['error' => __('Payment failed')]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return handlePaymentError($e, 'stripe');
         }
     }

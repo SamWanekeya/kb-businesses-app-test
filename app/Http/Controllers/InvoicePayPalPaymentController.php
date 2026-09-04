@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 
 class InvoicePayPalPaymentController extends Controller
 {
@@ -42,7 +44,7 @@ class InvoicePayPalPaymentController extends Controller
                 'payment_id' => $validated['payment_id'],
             ]);
 
-            \Log::info('PayPal payment successful', [
+            Log::info('PayPal payment successful', [
                 'invoice_id' => $invoice->id,
                 'amount' => $validated['amount'],
                 'payment_type' => $validated['payment_type'],
@@ -51,8 +53,8 @@ class InvoicePayPalPaymentController extends Controller
 
             return back()->with('success', __('Payment successful'));
 
-        } catch (\Exception $e) {
-            \Log::error('PayPal payment error', [
+        } catch (Exception $e) {
+            Log::error('PayPal payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),

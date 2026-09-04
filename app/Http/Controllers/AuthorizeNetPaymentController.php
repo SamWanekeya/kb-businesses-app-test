@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
+use Exception;
 use Illuminate\Http\Request;
+use net\authorize\api\constants\ANetEnvironment;
 use net\authorize\api\contract\v1 as AnetAPI;
 use net\authorize\api\controller as AnetController;
 
@@ -47,7 +49,7 @@ class AuthorizeNetPaymentController extends Controller
                 'supported_currencies' => self::SUPPORTED_CURRENCIES,
             ]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Payment form creation failed')], 500);
         }
     }
@@ -94,7 +96,7 @@ class AuthorizeNetPaymentController extends Controller
 
             return back()->withErrors(['error' => $result['error']]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withErrors(['error' => __('Payment processing failed. Please try again.')]);
         }
     }
@@ -172,14 +174,14 @@ class AuthorizeNetPaymentController extends Controller
             $controller = new AnetController\CreateTransactionController($request);
 
             $environment = ($settings['payment_settings']['authorizenet_mode'] === 'sandbox')
-                ? \net\authorize\api\constants\ANetEnvironment::SANDBOX
-                : \net\authorize\api\constants\ANetEnvironment::PRODUCTION;
+                ? ANetEnvironment::SANDBOX
+                : ANetEnvironment::PRODUCTION;
 
             $response = $controller->executeWithApiResponse($environment);
 
             return $this->handleAuthorizeNetResponse($response);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return [
                 'success' => false,
                 'error' => __('Transaction processing failed. Please check your card details and try again.'),
@@ -326,8 +328,8 @@ class AuthorizeNetPaymentController extends Controller
             $controller = new AnetController\AuthenticateTestController($request);
 
             $environment = ($settings['payment_settings']['authorizenet_mode'] === 'sandbox')
-                ? \net\authorize\api\constants\ANetEnvironment::SANDBOX
-                : \net\authorize\api\constants\ANetEnvironment::PRODUCTION;
+                ? ANetEnvironment::SANDBOX
+                : ANetEnvironment::PRODUCTION;
 
             $response = $controller->executeWithApiResponse($environment);
 
@@ -349,7 +351,7 @@ class AuthorizeNetPaymentController extends Controller
                 ]);
             }
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => __('Connection test failed: ') . $e->getMessage(),

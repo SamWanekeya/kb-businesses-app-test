@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TaskAssigned;
 use App\Exports\ProjectTaskExport;
 use App\Models\Project;
 use App\Models\ProjectTask;
 use App\Models\TaskStatus;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -161,7 +163,7 @@ class ProjectTaskController extends Controller
 
         $task = ProjectTask::create($validated);
         if (isEmailTemplateEnabled('Task Assigned', createdBy()) && $task && $task->assigned_to && !IsDemo()) {
-            event(new \App\Events\TaskAssigned($task));
+            event(new TaskAssigned($task));
         }
 
         return redirect()->back()->with('success', __('Task created successfully.'));
@@ -210,7 +212,7 @@ class ProjectTaskController extends Controller
                 $task->update($validated);
 
                 return redirect()->back()->with('success', __('Task updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update task.'));
             }
         } else {
@@ -235,7 +237,7 @@ class ProjectTaskController extends Controller
                 $task->delete();
 
                 return redirect()->back()->with('success', __('Task deleted successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete task.'));
             }
         } else {
@@ -268,7 +270,7 @@ class ProjectTaskController extends Controller
                 $task->update(['task_status_id' => $validated['task_status_id']]);
 
                 return redirect()->back()->with('success', __('Task status updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update task status.'));
             }
         } else {
@@ -425,7 +427,7 @@ class ProjectTaskController extends Controller
                 $search = strtolower($request->search);
                 $tasks = $tasks->filter(function ($task) use ($search) {
                     return str_contains(strtolower($task['title']), $search) ||
-                           str_contains(strtolower($task['description']), $search);
+                        str_contains(strtolower($task['description']), $search);
                 });
             }
 

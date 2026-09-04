@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Plan;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class AamarpayPaymentController extends Controller
@@ -38,7 +39,7 @@ class AamarpayPaymentController extends Controller
 
             return back()->withErrors(['error' => __('Payment failed or cancelled')]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return handlePaymentError($e, 'aamarpay');
         }
     }
@@ -121,7 +122,7 @@ class AamarpayPaymentController extends Controller
 
             return response()->json(['error' => __('Payment creation failed')], 500);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
     }
@@ -169,7 +170,7 @@ class AamarpayPaymentController extends Controller
 
             return redirect()->route('plans.index')->with('error', __('Payment failed or cancelled'));
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('plans.index')->with('error', __('Payment processing failed'));
         }
     }
@@ -204,7 +205,7 @@ class AamarpayPaymentController extends Controller
 
             return response()->json(['status' => 'success']);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Callback processing failed')], 500);
         }
     }

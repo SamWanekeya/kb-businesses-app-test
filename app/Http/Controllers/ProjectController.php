@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Exports\ProjectExport;
 use App\Models\Account;
+use App\Models\Call;
+use App\Models\Meeting;
 use App\Models\Project;
+use App\Models\ProjectTask;
+use App\Models\TaskStatus;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -60,12 +65,12 @@ class ProjectController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 12)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 12)));
         $projects = $query->paginate($perPage)->withQueryString();
 
         // Eager-load task counts per project
         $projectIds = $projects->pluck('id');
-        $taskData = \App\Models\ProjectTask::whereIn('project_id', $projectIds)
+        $taskData = ProjectTask::whereIn('project_id', $projectIds)
             ->where('created_by', createdBy())
             ->selectRaw('project_id, count(*) as total, SUM(CASE WHEN progress = 100 THEN 1 ELSE 0 END) as done_count')
             ->groupBy('project_id')
@@ -75,11 +80,11 @@ class ProjectController extends Controller
         // Attach task stats to each project
         $projects->getCollection()->transform(function ($project) use ($taskData) {
             $row = $taskData[$project->id] ?? null;
-            $total = $row ? (int) $row->total : 0;
-            $done = $row ? (int) $row->done_count : 0;
+            $total = $row ? (int)$row->total : 0;
+            $done = $row ? (int)$row->done_count : 0;
             $project->task_total = $total;
             $project->task_done = $done;
-            $project->task_progress = $total > 0 ? (int) round(($done / $total) * 100) : 0;
+            $project->task_progress = $total > 0 ? (int)round(($done / $total) * 100) : 0;
 
             return $project;
         });
@@ -88,7 +93,7 @@ class ProjectController extends Controller
         $allAccounts = (clone $accountQuery)->get(['id', 'name']);
         $accounts = (clone $accountQuery)->where('status', 'active')->get(['id', 'name']);
 
-        $userQuery = \App\Models\User::where('created_by', createdBy());
+        $userQuery = User::where('created_by', createdBy());
         $allUsers = (clone $userQuery)->select('id', 'name', 'email', 'avatar')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email', 'avatar')->get();
 
@@ -153,7 +158,7 @@ class ProjectController extends Controller
             ->findOrFail($id);
 
         // Get task statistics
-        $taskStats = \App\Models\ProjectTask::with('taskStatus')
+        $taskStats = ProjectTask::with('taskStatus')
             ->where('project_id', $id)
             ->where('created_by', createdBy())
             ->get()
@@ -167,14 +172,14 @@ class ProjectController extends Controller
         $completedTasks = $taskStats['Done'] ?? 0;
         $progressPercentage = $totalTasks > 0 ? round(($completedTasks / $totalTasks) * 100, 1) : 0;
 
-        $parentMeetings = \App\Models\Meeting::with(['assignedUser'])
+        $parentMeetings = Meeting::with(['assignedUser'])
             ->where('parent_module', 'project')
             ->where('parent_id', $id)
             ->where('created_by', createdBy())
             ->get();
 
         // Get related calls
-        $parentCalls = \App\Models\Call::with(['assignedUser'])
+        $parentCalls = Call::with(['assignedUser'])
             ->where('parent_module', 'project')
             ->where('parent_id', $id)
             ->where('created_by', createdBy())
@@ -188,7 +193,7 @@ class ProjectController extends Controller
         $meetings = $parentMeetings->merge($parentCalls)->sortByDesc('start_date')->values();
 
         // Get all task statuses for dynamic display
-        $taskStatuses = \App\Models\TaskStatus::where('created_by', createdBy())
+        $taskStatuses = TaskStatus::where('created_by', createdBy())
             ->where('status', 'active')
             ->orderBy('id')
             ->get(['id', 'name', 'color']);
@@ -244,6 +249,48 @@ class ProjectController extends Controller
         return redirect()->back()->with('success', __('Project created successfully.'));
     }
 
+    public function destroy($projectId)
+    {
+        $project = Project::where('id', $projectId)
+            ->where('created_by', createdBy())
+            ->first();
+
+        if ($project) {
+            try {
+                $project->delete();
+
+                return redirect()->back()->with('success', __('Project deleted successfully.'));
+            } catch (Exception $e) {
+                return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete project.'));
+            }
+        } else {
+            return redirect()->back()->with('error', __('Project not found.'));
+        }
+    }
+
+    public function toggleStatus(Request $request, $projectId)
+    {
+        $project = Project::where('id', $projectId)
+            ->where('created_by', createdBy())
+            ->first();
+
+        if ($project) {
+            try {
+                $validated = $request->validate([
+                    'status' => 'required|in:active,inactive,completed,on_hold',
+                ]);
+
+                $project->update(['status' => $validated['status']]);
+
+                return redirect()->back()->with('success', __('Project status updated successfully.'));
+            } catch (Exception $e) {
+                return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update project status.'));
+            }
+        } else {
+            return redirect()->back()->with('error', __('Project not found.'));
+        }
+    }
+
     public function update(Request $request, $projectId)
     {
         $project = Project::where('id', $projectId)
@@ -272,50 +319,8 @@ class ProjectController extends Controller
                 $project->update($validated);
 
                 return redirect()->back()->with('success', __('Project updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update project.'));
-            }
-        } else {
-            return redirect()->back()->with('error', __('Project not found.'));
-        }
-    }
-
-    public function destroy($projectId)
-    {
-        $project = Project::where('id', $projectId)
-            ->where('created_by', createdBy())
-            ->first();
-
-        if ($project) {
-            try {
-                $project->delete();
-
-                return redirect()->back()->with('success', __('Project deleted successfully.'));
-            } catch (\Exception $e) {
-                return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete project.'));
-            }
-        } else {
-            return redirect()->back()->with('error', __('Project not found.'));
-        }
-    }
-
-    public function toggleStatus(Request $request, $projectId)
-    {
-        $project = Project::where('id', $projectId)
-            ->where('created_by', createdBy())
-            ->first();
-
-        if ($project) {
-            try {
-                $validated = $request->validate([
-                    'status' => 'required|in:active,inactive,completed,on_hold',
-                ]);
-
-                $project->update(['status' => $validated['status']]);
-
-                return redirect()->back()->with('success', __('Project status updated successfully.'));
-            } catch (\Exception $e) {
-                return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update project status.'));
             }
         } else {
             return redirect()->back()->with('error', __('Project not found.'));

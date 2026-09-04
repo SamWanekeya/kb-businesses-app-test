@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Plan;
 use App\Models\PlanOrder;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Paytabscom\Laravel_paytabs\Facades\paypage;
 
@@ -88,7 +89,7 @@ class PayTabsPaymentController extends Controller
                 'message' => __('Payment initialization failed.'),
             ], 400);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => __('Payment processing failed.'),
@@ -135,7 +136,7 @@ class PayTabsPaymentController extends Controller
 
             return response('OK', 200);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response(__('Callback processing failed'), 500);
         }
     }
@@ -144,10 +145,10 @@ class PayTabsPaymentController extends Controller
     {
         // Try different parameter names PayTabs might use
         $cartId = $request->input('cart_id')
-               ?? $request->input('cartId')
-               ?? $request->input('merchant_reference')
-               ?? $request->input('reference')
-               ?? $request->input('order_id');
+            ?? $request->input('cartId')
+            ?? $request->input('merchant_reference')
+            ?? $request->input('reference')
+            ?? $request->input('order_id');
         if ($cartId) {
             $planOrder = PlanOrder::where('payment_id', $cartId)->first();
 
@@ -176,7 +177,7 @@ class PayTabsPaymentController extends Controller
                         }
 
                         return redirect()->route('plans.index')->with('success', __('Payment completed successfully!'));
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                         return redirect()->route('plans.index')->with('error', __('Payment verification failed.'));
                     }
                 }

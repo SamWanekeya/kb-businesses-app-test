@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ReceiptOrderCreated;
 use App\Exports\ReceiptOrderExport;
 use App\Models\Account;
 use App\Models\Contact;
@@ -10,6 +11,7 @@ use App\Models\PurchaseOrder;
 use App\Models\ReceiptOrder;
 use App\Models\ReturnOrder;
 use App\Models\Tax;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -57,10 +59,10 @@ class ReceiptOrderController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $receiptOrders = $query->paginate($perPage)->withQueryString();
 
-        $userQuery = \App\Models\User::where('created_by', createdBy());
+        $userQuery = User::where('created_by', createdBy());
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
 
@@ -83,25 +85,9 @@ class ReceiptOrderController extends Controller
         ]);
     }
 
-    public function create()
+    private function getFilteredProducts()
     {
-        $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
-        $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
-        $purchaseOrders = PurchaseOrder::where('created_by', createdBy())->select('id', 'name')->get();
-        $returnOrders = ReturnOrder::where('created_by', createdBy())->select('id', 'name')->get();
-        $products = $this->getFilteredProducts();
-        $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
-        $users = \App\Models\User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
-
-        return Inertia::render('receipt-orders/create', [
-            'accounts' => $accounts,
-            'contacts' => $contacts,
-            'purchaseOrders' => $purchaseOrders,
-            'returnOrders' => $returnOrders,
-            'products' => $products,
-            'taxes' => $taxes,
-            'users' => $users,
-        ]);
+        return Product::where('created_by', createdBy())->with('tax')->select('id', 'name', 'price', 'tax_id')->get();
     }
 
     public function store(Request $request)
@@ -161,7 +147,7 @@ class ReceiptOrderController extends Controller
 
         // Fire ReceiptOrderCreated event for sending email
         if ($receiptOrder && !IsDemo()) {
-            event(new \App\Events\ReceiptOrderCreated($receiptOrder));
+            event(new ReceiptOrderCreated($receiptOrder));
         }
 
         // Check for errors
@@ -174,6 +160,44 @@ class ReceiptOrderController extends Controller
         }
 
         return redirect()->route('receipt-orders.index')->with('success', __('Receipt order created successfully.'));
+    }
+
+    public function create()
+    {
+        $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
+        $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
+        $purchaseOrders = PurchaseOrder::where('created_by', createdBy())->select('id', 'name')->get();
+        $returnOrders = ReturnOrder::where('created_by', createdBy())->select('id', 'name')->get();
+        $products = $this->getFilteredProducts();
+        $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
+        $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+
+        return Inertia::render('receipt-orders/create', [
+            'accounts' => $accounts,
+            'contacts' => $contacts,
+            'purchaseOrders' => $purchaseOrders,
+            'returnOrders' => $returnOrders,
+            'products' => $products,
+            'taxes' => $taxes,
+            'users' => $users,
+        ]);
+    }
+
+    private function calculateDiscountAmount($lineTotal, $discountType, $discountValue)
+    {
+        if (!$discountType || !$discountValue) {
+            return 0;
+        }
+
+        if ($discountType === 'percentage') {
+            return ($lineTotal * $discountValue) / 100;
+        }
+
+        if ($discountType === 'fixed') {
+            return min($discountValue, $lineTotal);
+        }
+
+        return 0;
     }
 
     public function show($receiptOrderId)
@@ -221,7 +245,7 @@ class ReceiptOrderController extends Controller
             $returnOrders = ReturnOrder::where('created_by', createdBy())->select('id', 'name')->get();
             $products = $this->getFilteredProducts();
             $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
-            $users = \App\Models\User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+            $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
             return Inertia::render('receipt-orders/edit', [
                 'receiptOrder' => $receiptOrder,
@@ -236,6 +260,41 @@ class ReceiptOrderController extends Controller
         } else {
             return redirect()->route('receipt-orders.index')->with('error', __('Receipt order not found.'));
         }
+    }
+
+    public function destroy($receiptOrderId)
+    {
+        $receiptOrder = ReceiptOrder::where('id', $receiptOrderId)
+            ->where('created_by', createdBy())
+            ->first();
+
+        if (!$receiptOrder) {
+            return redirect()->back()->with('error', __('Receipt order not found.'));
+        }
+
+        $receiptOrder->products()->detach();
+        $receiptOrder->delete();
+
+        return redirect()->back()->with('success', __('Receipt order deleted successfully.'));
+    }
+
+    public function toggleStatus(Request $request, $receiptOrderId)
+    {
+        $receiptOrder = ReceiptOrder::where('id', $receiptOrderId)
+            ->where('created_by', createdBy())
+            ->first();
+
+        if (!$receiptOrder) {
+            return redirect()->back()->with('error', __('Receipt order not found.'));
+        }
+
+        $validated = $request->validate([
+            'status' => 'required|in:pending,received,partial,completed,cancelled',
+        ]);
+
+        $receiptOrder->update(['status' => $validated['status']]);
+
+        return redirect()->back()->with('success', __('Receipt order status updated successfully.'));
     }
 
     public function update(Request $request, $receiptOrderId)
@@ -301,41 +360,6 @@ class ReceiptOrderController extends Controller
         $receiptOrder->calculateTotals();
 
         return redirect()->route('receipt-orders.index')->with('success', __('Receipt order updated successfully.'));
-    }
-
-    public function destroy($receiptOrderId)
-    {
-        $receiptOrder = ReceiptOrder::where('id', $receiptOrderId)
-            ->where('created_by', createdBy())
-            ->first();
-
-        if (!$receiptOrder) {
-            return redirect()->back()->with('error', __('Receipt order not found.'));
-        }
-
-        $receiptOrder->products()->detach();
-        $receiptOrder->delete();
-
-        return redirect()->back()->with('success', __('Receipt order deleted successfully.'));
-    }
-
-    public function toggleStatus(Request $request, $receiptOrderId)
-    {
-        $receiptOrder = ReceiptOrder::where('id', $receiptOrderId)
-            ->where('created_by', createdBy())
-            ->first();
-
-        if (!$receiptOrder) {
-            return redirect()->back()->with('error', __('Receipt order not found.'));
-        }
-
-        $validated = $request->validate([
-            'status' => 'required|in:pending,received,partial,completed,cancelled',
-        ]);
-
-        $receiptOrder->update(['status' => $validated['status']]);
-
-        return redirect()->back()->with('success', __('Receipt order status updated successfully.'));
     }
 
     public function assignUser(Request $request, $receiptOrderId)
@@ -407,28 +431,6 @@ class ReceiptOrderController extends Controller
                 ];
             }),
         ]);
-    }
-
-    private function calculateDiscountAmount($lineTotal, $discountType, $discountValue)
-    {
-        if (!$discountType || !$discountValue) {
-            return 0;
-        }
-
-        if ($discountType === 'percentage') {
-            return ($lineTotal * $discountValue) / 100;
-        }
-
-        if ($discountType === 'fixed') {
-            return min($discountValue, $lineTotal);
-        }
-
-        return 0;
-    }
-
-    private function getFilteredProducts()
-    {
-        return Product::where('created_by', createdBy())->with('tax')->select('id', 'name', 'price', 'tax_id')->get();
     }
 
     public function fileExport()

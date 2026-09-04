@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Currency;
 use App\Models\PayoutRequest;
+use App\Models\PlanOrder;
 use App\Models\Referral;
 use App\Models\ReferralSetting;
 use App\Models\User;
@@ -128,8 +129,8 @@ class ReferralController extends Controller
             ->where('status', 'pending')
             ->sum('amount');
         $availableBalance = $totalEarned - PayoutRequest::where('organization_id', $user->id)
-            ->whereIn('status', ['pending', 'approved'])
-            ->sum('amount');
+                ->whereIn('status', ['pending', 'approved'])
+                ->sum('amount');
 
         $payoutRequests = PayoutRequest::where('organization_id', $user->id)
             ->orderBy('created_at', 'desc')
@@ -344,7 +345,7 @@ class ReferralController extends Controller
         }
 
         // Get the actual paid amount from the most recent plan order
-        $planOrder = \App\Models\PlanOrder::where('user_id', $user->id)
+        $planOrder = PlanOrder::where('user_id', $user->id)
             ->where('plan_id', $user->plan_id)
             ->where('status', 'approved')
             ->orderBy('created_at', 'desc')

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserCreated;
 use App\Models\LeadStatus;
 use App\Models\OpportunityStage;
 use App\Models\Plan;
@@ -10,7 +11,6 @@ use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 
 class OrganizationController extends Controller
@@ -145,7 +145,7 @@ class OrganizationController extends Controller
 
         // Trigger email notification
         if (!IsDemo()) {
-            event(new \App\Events\UserCreated($organization, $validated['password'] ?? ''));
+            event(new UserCreated($organization, $validated['password'] ?? ''));
         }
 
         // Check for email errors

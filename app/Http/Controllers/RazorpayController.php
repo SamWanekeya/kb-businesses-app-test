@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Razorpay\Api\Api;
 
@@ -27,9 +29,9 @@ class RazorpayController extends Controller
     /**
      * Create a Razorpay order
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createOrder(Request $request)
     {
@@ -45,7 +47,7 @@ class RazorpayController extends Controller
             $credentials = $this->getRazorpayCredentials();
 
             if (!$credentials['key'] || !$credentials['secret']) {
-                throw new \Exception(__('Razorpay API credentials not found'));
+                throw new Exception(__('Razorpay API credentials not found'));
             }
 
             $api = new Api($credentials['key'], $credentials['secret']);
@@ -66,7 +68,7 @@ class RazorpayController extends Controller
                 'order_id' => $razorpayOrder->id,
                 'amount' => (int)$amountInSmallestUnit,
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Failed to create payment order: ') . $e->getMessage()], 500);
         }
     }
@@ -74,9 +76,9 @@ class RazorpayController extends Controller
     /**
      * Verify Razorpay payment
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function verifyPayment(Request $request)
     {
@@ -90,7 +92,7 @@ class RazorpayController extends Controller
             $credentials = $this->getRazorpayCredentials();
 
             if (!$credentials['key'] || !$credentials['secret']) {
-                throw new \Exception(__('Razorpay API credentials not found'));
+                throw new Exception(__('Razorpay API credentials not found'));
             }
 
             $api = new Api($credentials['key'], $credentials['secret']);
@@ -110,7 +112,7 @@ class RazorpayController extends Controller
             ]);
 
             return response()->json(['success' => true]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Payment verification failed: ') . $e->getMessage()], 500);
         }
     }

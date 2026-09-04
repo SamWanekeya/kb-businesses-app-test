@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\InvoiceReminderSent;
 use App\Models\Invoice;
+use App\Models\InvoiceReminder;
+use Exception;
 use Illuminate\Http\Request;
 
 class InvoiceReminderController extends Controller
@@ -44,7 +47,7 @@ class InvoiceReminderController extends Controller
 
         try {
             if (!IsDemo()) {
-                event(new \App\Events\InvoiceReminderSent($invoice, $recipient, $recipientName));
+                event(new InvoiceReminderSent($invoice, $recipient, $recipientName));
             }
 
             $emailError = session()->pull('email_error');
@@ -53,7 +56,7 @@ class InvoiceReminderController extends Controller
                 return redirect()->back()->with('error', __('Email send failed: ') . $emailError);
             }
 
-            \App\Models\InvoiceReminder::create([
+            InvoiceReminder::create([
                 'invoice_id' => $invoice->id,
                 'sent_by' => auth()->id(),
                 'created_by' => createdBy(),
@@ -61,7 +64,7 @@ class InvoiceReminderController extends Controller
             ]);
 
             return redirect()->back()->with('success', __('Payment reminder sent successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to send payment reminder.'));
         }
     }

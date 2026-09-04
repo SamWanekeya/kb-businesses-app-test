@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\SignInHistory;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,10 +22,10 @@ class AuthenticatedSessionController extends Controller
     public function create(Request $request): Response
     {
         return Inertia::render('auth/sign-in', [
-             'canResetPassword' => Route::has('password.request'),
-             'status' => $request->session()->get('status'),
-             'settings' => settings(),
-         ]);
+            'canResetPassword' => Route::has('password.request'),
+            'status' => $request->session()->get('status'),
+            'settings' => settings(),
+        ]);
     }
 
     /**
@@ -45,19 +46,6 @@ class AuthenticatedSessionController extends Controller
         }
 
         return redirect()->intended(route('dashboard', absolute: false));
-    }
-
-    /**
-     * Destroy an authenticated session.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        Auth::guard('web')->logout();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect('/');
     }
 
     private function logsignInHistory(Request $request): void
@@ -104,10 +92,23 @@ class AuthenticatedSessionController extends Controller
                     'query' => $data['query'] ?? $ipAddress,
                 ];
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Ignore API errors
         }
 
         return ['query' => $ipAddress];
+    }
+
+    /**
+     * Destroy an authenticated session.
+     */
+    public function destroy(Request $request): RedirectResponse
+    {
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 }

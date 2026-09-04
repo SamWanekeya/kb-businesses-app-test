@@ -32,7 +32,7 @@ class AccountTypeController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $accountTypes = $query->paginate($perPage)->withQueryString();
 
         return Inertia::render('account-types/index', [

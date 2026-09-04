@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
@@ -39,7 +40,7 @@ class ShareGlobalSettings
         if (!File::exists(public_path('storage'))) {
             try {
                 Artisan::call('storage:link');
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Silently fail if unable to create link
             }
         }

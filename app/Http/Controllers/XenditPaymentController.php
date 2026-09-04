@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Plan;
 use App\Models\PlanOrder;
+use App\Models\User;
+use Exception;
+use Http;
 use Illuminate\Http\Request;
 
 class XenditPaymentController extends Controller
@@ -43,7 +46,7 @@ class XenditPaymentController extends Controller
                 'failure_redirect_url' => route('plans.index'),
             ];
 
-            $response = \Http::withHeaders([
+            $response = Http::withHeaders([
                 'Authorization' => 'Basic ' . base64_encode($settings['payment_settings']['xendit_api_key'] . ':'),
                 'Content-Type' => 'application/json',
             ])->post('https://api.xendit.co/v2/invoices', $invoiceData);
@@ -61,7 +64,7 @@ class XenditPaymentController extends Controller
 
             return response()->json(['error' => $response->body()], 500);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
     }
@@ -76,7 +79,7 @@ class XenditPaymentController extends Controller
 
             if ($planId && $userId) {
                 $plan = Plan::find($planId);
-                $user = \App\Models\User::find($userId);
+                $user = User::find($userId);
 
                 if ($plan && $user) {
                     processPaymentSuccess([
@@ -98,7 +101,7 @@ class XenditPaymentController extends Controller
 
             return redirect()->route('plans.index')->with('error', __('Payment verification failed'));
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('plans.index')->with('error', __('Payment processing failed'));
         }
     }
@@ -145,7 +148,7 @@ class XenditPaymentController extends Controller
                 'failure_redirect_url' => route('plans.index'),
             ];
 
-            $response = \Http::withHeaders([
+            $response = Http::withHeaders([
                 'Authorization' => 'Basic ' . base64_encode($settings['secret_key'] . ':'),
                 'Content-Type' => 'application/json',
             ])->post('https://api.xendit.co/v2/invoices', $invoiceData);
@@ -167,7 +170,7 @@ class XenditPaymentController extends Controller
             ]);
 
             return redirect()->route('plans.index')->with('success', __('Xendit payment completed'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return handlePaymentError($e, 'xendit');
         }
     }

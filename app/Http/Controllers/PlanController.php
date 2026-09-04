@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Currency;
 use App\Models\Plan;
+use App\Models\PlanOrder;
+use App\Models\PlanRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -100,162 +102,6 @@ class PlanController extends Controller
         ]);
     }
 
-    /**
-     * Toggle plan status
-     */
-    public function toggleStatus(Plan $plan)
-    {
-        $plan->is_plan_enabled = $plan->is_plan_enabled === 'on' ? 'off' : 'on';
-        $plan->save();
-
-        $status = $plan->is_plan_enabled === 'on' ? 'activated' : 'deactivated';
-
-        return back()->with('success', __('Plan :status successfully', ['status' => $status]));
-    }
-
-    /**
-     * Show the form for creating a new plan
-     */
-    public function create()
-    {
-        $hasDefaultPlan = Plan::where('is_default', true)->exists();
-
-        return Inertia::render('plans/create', [
-            'hasDefaultPlan' => $hasDefaultPlan,
-        ]);
-    }
-
-    /**
-     * Store a newly created plan
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:100|unique:plans',
-            'price' => 'required|numeric|min:0',
-            'yearly_price' => 'nullable|numeric|min:0',
-            'duration' => 'required|string|in:monthly,quarterly,yearly',
-            'description' => 'nullable|string',
-            'maximum_users' => 'required|integer|min:0',
-            'maximum_projects' => 'required|integer|min:0',
-            'maximum_contacts' => 'required|integer|min:0',
-            'maximum_accounts' => 'required|integer|min:0',
-            'storage_limit' => 'required|numeric|min:0',
-            'enable_branding' => 'nullable|in:on,off',
-            'enable_kakbima_intelligence' => 'nullable|in:on,off',
-            'module' => 'nullable|array',
-            'is_trial' => 'nullable|in:on,off',
-            'trial_days' => 'nullable|integer|min:0',
-            'is_plan_enabled' => 'nullable|in:on,off',
-            'is_default' => 'nullable|boolean',
-        ]);
-
-        // Set default values for nullable fields
-        $validated['enable_branding'] = $validated['enable_branding'] ?? 'on';
-        $validated['enable_kakbima_intelligence'] = $validated['enable_kakbima_intelligence'] ?? 'off';
-        $validated['is_trial'] = $validated['is_trial'] ?? null;
-        $validated['is_plan_enabled'] = $validated['is_plan_enabled'] ?? 'on';
-        $validated['is_default'] = $validated['is_default'] ?? false;
-
-        // If yearly_price is not provided, calculate it as 80% of monthly price * 12
-        if (!isset($validated['yearly_price']) || $validated['yearly_price'] === null) {
-            $validated['yearly_price'] = $validated['price'] * 12 * 0.8;
-        }
-
-        // If this plan is set as default, remove default status from other plans
-        if ($validated['is_default']) {
-            Plan::where('is_default', true)->update(['is_default' => false]);
-        }
-
-        // Create the plan
-        Plan::create($validated);
-
-        return redirect()->route('plans.index')->with('success', __('Plan created successfully.'));
-    }
-
-    /**
-     * Show the form for editing a plan
-     */
-    public function edit(Plan $plan)
-    {
-        $otherDefaultPlanExists = Plan::where('is_default', true)
-            ->where('id', '!=', $plan->id)
-            ->exists();
-
-        return Inertia::render('plans/edit', [
-            'plan' => $plan,
-            'otherDefaultPlanExists' => $otherDefaultPlanExists,
-        ]);
-    }
-
-    /**
-     * Update a plan
-     */
-    public function update(Request $request, Plan $plan)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:100|unique:plans,name,' . $plan->id,
-            'price' => 'required|numeric|min:0',
-            'yearly_price' => 'nullable|numeric|min:0',
-            'duration' => 'required|string|in:monthly,quarterly,yearly',
-            'description' => 'nullable|string',
-            'maximum_users' => 'required|integer|min:0',
-            'maximum_projects' => 'required|integer|min:0',
-            'maximum_contacts' => 'required|integer|min:0',
-            'maximum_accounts' => 'required|integer|min:0',
-            'storage_limit' => 'required|numeric|min:0',
-            'enable_branding' => 'nullable|in:on,off',
-            'enable_kakbima_intelligence' => 'nullable|in:on,off',
-            'module' => 'nullable|array',
-            'is_trial' => 'nullable|in:on,off',
-            'trial_days' => 'nullable|integer|min:0',
-            'is_plan_enabled' => 'nullable|in:on,off',
-            'is_default' => 'nullable|boolean',
-        ]);
-
-        // Set default values for nullable fields
-        $validated['enable_branding'] = $validated['enable_branding'] ?? 'on';
-        $validated['enable_kakbima_intelligence'] = $validated['enable_kakbima_intelligence'] ?? 'off';
-        $validated['is_trial'] = $validated['is_trial'] ?? null;
-        $validated['is_plan_enabled'] = $validated['is_plan_enabled'] ?? 'on';
-        $validated['is_default'] = $validated['is_default'] ?? false;
-
-        // If yearly_price is not provided, calculate it as 80% of monthly price * 12
-        if (!isset($validated['yearly_price']) || $validated['yearly_price'] === null) {
-            $validated['yearly_price'] = $validated['price'] * 12 * 0.8;
-        }
-
-        // If this plan is set as default, remove default status from other plans
-        if ($validated['is_default'] && !$plan->is_default) {
-            Plan::where('is_default', true)->update(['is_default' => false]);
-        }
-
-        // Update the plan
-        $plan->update($validated);
-
-        return redirect()->route('plans.index')->with('success', __('Plan updated successfully.'));
-    }
-
-    /**
-     * Delete a plan
-     */
-    public function destroy(Plan $plan)
-    {
-        // Don't allow deleting the default plan
-        if ($plan->is_default) {
-            return back()->with('error', __('Cannot delete the default plan.'));
-        }
-
-        // Don't allow deleting plans assigned to users
-        if ($plan->users()->count() > 0) {
-            return back()->with('error', __('The organization has subscribed to this plan, so it cannot be deleted.'));
-        }
-
-        $plan->delete();
-
-        return redirect()->route('plans.index')->with('success', __('Plan deleted successfully.'));
-    }
-
     private function organizationPlansView(Request $request)
     {
         $user = auth()->user();
@@ -285,7 +131,6 @@ class PlanController extends Controller
         if ($user->is_trial) {
             $currentBillingCycle = 'monthly';
         }
-
 
 
         $plans = $dbPlans->map(function ($plan) use ($billingCycle, $user, $currentBillingCycle) {
@@ -346,6 +191,162 @@ class PlanController extends Controller
         ]);
     }
 
+    /**
+     * Toggle plan status
+     */
+    public function toggleStatus(Plan $plan)
+    {
+        $plan->is_plan_enabled = $plan->is_plan_enabled === 'on' ? 'off' : 'on';
+        $plan->save();
+
+        $status = $plan->is_plan_enabled === 'on' ? 'activated' : 'deactivated';
+
+        return back()->with('success', __('Plan :status successfully', ['status' => $status]));
+    }
+
+    /**
+     * Store a newly created plan
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:100|unique:plans',
+            'price' => 'required|numeric|min:0',
+            'yearly_price' => 'nullable|numeric|min:0',
+            'duration' => 'required|string|in:monthly,quarterly,yearly',
+            'description' => 'nullable|string',
+            'maximum_users' => 'required|integer|min:0',
+            'maximum_projects' => 'required|integer|min:0',
+            'maximum_contacts' => 'required|integer|min:0',
+            'maximum_accounts' => 'required|integer|min:0',
+            'storage_limit' => 'required|numeric|min:0',
+            'enable_branding' => 'nullable|in:on,off',
+            'enable_kakbima_intelligence' => 'nullable|in:on,off',
+            'module' => 'nullable|array',
+            'is_trial' => 'nullable|in:on,off',
+            'trial_days' => 'nullable|integer|min:0',
+            'is_plan_enabled' => 'nullable|in:on,off',
+            'is_default' => 'nullable|boolean',
+        ]);
+
+        // Set default values for nullable fields
+        $validated['enable_branding'] = $validated['enable_branding'] ?? 'on';
+        $validated['enable_kakbima_intelligence'] = $validated['enable_kakbima_intelligence'] ?? 'off';
+        $validated['is_trial'] = $validated['is_trial'] ?? null;
+        $validated['is_plan_enabled'] = $validated['is_plan_enabled'] ?? 'on';
+        $validated['is_default'] = $validated['is_default'] ?? false;
+
+        // If yearly_price is not provided, calculate it as 80% of monthly price * 12
+        if (!isset($validated['yearly_price']) || $validated['yearly_price'] === null) {
+            $validated['yearly_price'] = $validated['price'] * 12 * 0.8;
+        }
+
+        // If this plan is set as default, remove default status from other plans
+        if ($validated['is_default']) {
+            Plan::where('is_default', true)->update(['is_default' => false]);
+        }
+
+        // Create the plan
+        Plan::create($validated);
+
+        return redirect()->route('plans.index')->with('success', __('Plan created successfully.'));
+    }
+
+    /**
+     * Update a plan
+     */
+    public function update(Request $request, Plan $plan)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:100|unique:plans,name,' . $plan->id,
+            'price' => 'required|numeric|min:0',
+            'yearly_price' => 'nullable|numeric|min:0',
+            'duration' => 'required|string|in:monthly,quarterly,yearly',
+            'description' => 'nullable|string',
+            'maximum_users' => 'required|integer|min:0',
+            'maximum_projects' => 'required|integer|min:0',
+            'maximum_contacts' => 'required|integer|min:0',
+            'maximum_accounts' => 'required|integer|min:0',
+            'storage_limit' => 'required|numeric|min:0',
+            'enable_branding' => 'nullable|in:on,off',
+            'enable_kakbima_intelligence' => 'nullable|in:on,off',
+            'module' => 'nullable|array',
+            'is_trial' => 'nullable|in:on,off',
+            'trial_days' => 'nullable|integer|min:0',
+            'is_plan_enabled' => 'nullable|in:on,off',
+            'is_default' => 'nullable|boolean',
+        ]);
+
+        // Set default values for nullable fields
+        $validated['enable_branding'] = $validated['enable_branding'] ?? 'on';
+        $validated['enable_kakbima_intelligence'] = $validated['enable_kakbima_intelligence'] ?? 'off';
+        $validated['is_trial'] = $validated['is_trial'] ?? null;
+        $validated['is_plan_enabled'] = $validated['is_plan_enabled'] ?? 'on';
+        $validated['is_default'] = $validated['is_default'] ?? false;
+
+        // If yearly_price is not provided, calculate it as 80% of monthly price * 12
+        if (!isset($validated['yearly_price']) || $validated['yearly_price'] === null) {
+            $validated['yearly_price'] = $validated['price'] * 12 * 0.8;
+        }
+
+        // If this plan is set as default, remove default status from other plans
+        if ($validated['is_default'] && !$plan->is_default) {
+            Plan::where('is_default', true)->update(['is_default' => false]);
+        }
+
+        // Update the plan
+        $plan->update($validated);
+
+        return redirect()->route('plans.index')->with('success', __('Plan updated successfully.'));
+    }
+
+    /**
+     * Show the form for creating a new plan
+     */
+    public function create()
+    {
+        $hasDefaultPlan = Plan::where('is_default', true)->exists();
+
+        return Inertia::render('plans/create', [
+            'hasDefaultPlan' => $hasDefaultPlan,
+        ]);
+    }
+
+    /**
+     * Show the form for editing a plan
+     */
+    public function edit(Plan $plan)
+    {
+        $otherDefaultPlanExists = Plan::where('is_default', true)
+            ->where('id', '!=', $plan->id)
+            ->exists();
+
+        return Inertia::render('plans/edit', [
+            'plan' => $plan,
+            'otherDefaultPlanExists' => $otherDefaultPlanExists,
+        ]);
+    }
+
+    /**
+     * Delete a plan
+     */
+    public function destroy(Plan $plan)
+    {
+        // Don't allow deleting the default plan
+        if ($plan->is_default) {
+            return back()->with('error', __('Cannot delete the default plan.'));
+        }
+
+        // Don't allow deleting plans assigned to users
+        if ($plan->users()->count() > 0) {
+            return back()->with('error', __('The organization has subscribed to this plan, so it cannot be deleted.'));
+        }
+
+        $plan->delete();
+
+        return redirect()->route('plans.index')->with('success', __('Plan deleted successfully.'));
+    }
+
     public function requestPlan(Request $request)
     {
         $request->validate([
@@ -356,7 +357,7 @@ class PlanController extends Controller
         $user = auth()->user();
 
         // Check if user already has a pending request
-        $existingRequest = \App\Models\PlanRequest::where('user_id', $user->id)
+        $existingRequest = PlanRequest::where('user_id', $user->id)
             ->where('status', 'pending')
             ->first();
 
@@ -366,7 +367,7 @@ class PlanController extends Controller
 
         $plan = Plan::findOrFail($request->plan_id);
 
-        \App\Models\PlanRequest::create([
+        PlanRequest::create([
             'user_id' => $user->id,
             'plan_id' => $plan->id,
             'duration' => $request['billing_cycle'],
@@ -382,7 +383,7 @@ class PlanController extends Controller
             'request_id' => 'required|exists:plan_requests,id',
         ]);
 
-        $planRequest = \App\Models\PlanRequest::findOrFail($request->request_id);
+        $planRequest = PlanRequest::findOrFail($request->request_id);
 
         $planRequest->delete();
 
@@ -423,7 +424,7 @@ class PlanController extends Controller
         $plan = Plan::findOrFail($request->plan_id);
         $price = $request->billing_cycle === 'yearly' ? $plan->yearly_price : $plan->price;
 
-        \App\Models\PlanOrder::create([
+        PlanOrder::create([
             'user_id' => $user->id,
             'plan_id' => $plan->id,
             'original_price' => $price,

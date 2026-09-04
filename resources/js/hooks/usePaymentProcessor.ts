@@ -11,6 +11,7 @@ interface PaymentData {
     amount?: number;
     paymentType?: string;
     paymentMethod?: string;
+
     [key: string]: any;
 }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Plan;
 use App\Models\PlanOrder;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class PayfastPaymentController extends Controller
@@ -82,7 +83,7 @@ class PayfastPaymentController extends Controller
                 'action' => $endpoint,
             ]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['success' => false, 'error' => __('Payment failed')]);
         }
     }
@@ -162,7 +163,7 @@ class PayfastPaymentController extends Controller
             }
 
             return response('OK', 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response('ERROR', 500);
         }
     }

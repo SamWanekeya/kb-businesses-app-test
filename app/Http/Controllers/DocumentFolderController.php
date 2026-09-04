@@ -8,6 +8,7 @@ use App\Models\DocumentFolder;
 use App\Models\DocumentType;
 use App\Models\Opportunity;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -55,7 +56,7 @@ class DocumentFolderController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $documentFolders = $query->paginate($perPage)->withQueryString();
 
         // Get data for dropdowns with parent folder name
@@ -79,16 +80,6 @@ class DocumentFolderController extends Controller
             'documentFolders' => $documentFolders,
             'parentFolders' => $parentFolders,
             'filters' => $request->all(['search', 'parent_folder_id', 'sort_field', 'sort_direction', 'per_page', 'page']),
-        ]);
-    }
-
-    public function create()
-    {
-        $parentFolders = DocumentFolder::where('created_by', createdBy())
-            ->get(['id', 'name']);
-
-        return Inertia::render('document-folders/create', [
-            'parentFolders' => $parentFolders,
         ]);
     }
 
@@ -127,6 +118,16 @@ class DocumentFolderController extends Controller
         DocumentFolder::create($validated);
 
         return redirect()->back()->with('success', __('Document folder created successfully.'));
+    }
+
+    public function create()
+    {
+        $parentFolders = DocumentFolder::where('created_by', createdBy())
+            ->get(['id', 'name']);
+
+        return Inertia::render('document-folders/create', [
+            'parentFolders' => $parentFolders,
+        ]);
     }
 
     public function show($id)
@@ -212,7 +213,7 @@ class DocumentFolderController extends Controller
                 $documentFolder->update($validated);
 
                 return redirect()->back()->with('success', __('Document folder updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update document folder.'));
             }
         } else {
@@ -235,7 +236,7 @@ class DocumentFolderController extends Controller
                 }
 
                 return redirect()->route('documents.index')->with('success', __('Document folder deleted successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete document folder.'));
             }
         } else {
@@ -255,7 +256,7 @@ class DocumentFolderController extends Controller
                 $documentFolder->save();
 
                 return redirect()->back()->with('success', __('Document folder status updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update document folder status.'));
             }
         } else {

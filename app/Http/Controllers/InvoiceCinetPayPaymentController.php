@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -46,7 +48,7 @@ class InvoiceCinetPayPaymentController extends Controller
                 'apikey' => $settings['payment_settings']['cinetpay_api_key'],
                 'site_id' => $settings['payment_settings']['cinetpay_site_id'],
                 'transaction_id' => $transactionId,
-                'amount' => (int) ($validated['amount']),
+                'amount' => (int)($validated['amount']),
                 'currency' => 'XOF',
                 'description' => 'Invoice Payment - ' . $invoice->invoice_number . ' - ' . ucfirst($validated['payment_type']) . ' payment',
                 'notify_url' => route('invoice.cinetpay.callback'),
@@ -89,7 +91,7 @@ class InvoiceCinetPayPaymentController extends Controller
                 'error' => $response['message'] ?? __('Payment creation failed'),
             ], 400);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             \Log::error('CinetPay payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
@@ -98,6 +100,25 @@ class InvoiceCinetPayPaymentController extends Controller
 
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
+    }
+
+    private function validateInvoicePaymentRequest($request, $additionalRules = [])
+    {
+        $baseRules = [
+            'invoice_id' => 'required|exists:invoices,id',
+            'amount' => 'required|numeric|min:0.01',
+            'payment_type' => 'required|in:full,partial',
+        ];
+
+        return $request->validate(array_merge($baseRules, $additionalRules));
+    }
+
+    private function getInvoicePaymentSettings($organizationId)
+    {
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
     }
 
     private function callCinetPayAPI($data)
@@ -166,7 +187,7 @@ class InvoiceCinetPayPaymentController extends Controller
             }
 
             return redirect()->route('invoices.public', $invoiceId)->with('error', __('Payment verification failed'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             \Log::error('CinetPay success callback error', [
                 'error' => $e->getMessage(),
             ]);
@@ -209,31 +230,12 @@ class InvoiceCinetPayPaymentController extends Controller
 
             return response()->json(['status' => 'success']);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             \Log::error('CinetPay callback error', [
                 'error' => $e->getMessage(),
             ]);
 
             return response()->json(['error' => __('Callback processing failed')], 500);
         }
-    }
-
-    private function validateInvoicePaymentRequest($request, $additionalRules = [])
-    {
-        $baseRules = [
-            'invoice_id' => 'required|exists:invoices,id',
-            'amount' => 'required|numeric|min:0.01',
-            'payment_type' => 'required|in:full,partial',
-        ];
-
-        return $request->validate(array_merge($baseRules, $additionalRules));
-    }
-
-    private function getInvoicePaymentSettings($organizationId)
-    {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
-        ];
     }
 }

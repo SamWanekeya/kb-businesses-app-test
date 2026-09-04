@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
+use App\Models\PlanOrder;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -112,22 +114,22 @@ class ToyyibPayPaymentController extends Controller
             curl_close($curl);
 
             if ($curlError) {
-                throw new \Exception('cURL Error: ' . $curlError);
+                throw new Exception('cURL Error: ' . $curlError);
             }
 
             if ($httpCode !== 200) {
-                throw new \Exception('HTTP Error: ' . $httpCode);
+                throw new Exception('HTTP Error: ' . $httpCode);
             }
 
             // Handle response
             if (str_contains($result, 'KEY-DID-NOT-EXIST-OR-USER-IS-NOT-ACTIVE')) {
-                throw new \Exception(__('Invalid ToyyibPay credentials or inactive account'));
+                throw new Exception(__('Invalid ToyyibPay credentials or inactive account'));
             }
 
             $responseData = json_decode($result, true);
 
             if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new \Exception(__('Invalid JSON response from ToyyibPay'));
+                throw new Exception(__('Invalid JSON response from ToyyibPay'));
             }
 
             if (isset($responseData[0]['BillCode'])) {
@@ -137,10 +139,10 @@ class ToyyibPayPaymentController extends Controller
                 return redirect()->away($redirectUrl);
             } else {
                 $errorMsg = $responseData[0]['msg'] ?? __('Failed to create payment bill');
-                throw new \Exception($errorMsg);
+                throw new Exception($errorMsg);
             }
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return handlePaymentError($e, 'ToyyibPay');
         }
     }
@@ -154,7 +156,7 @@ class ToyyibPayPaymentController extends Controller
             $transaction_id = $request->input('transaction_id');
 
             if ($status_id == '1') { // Payment successful
-                $planOrder = \App\Models\PlanOrder::where('payment_id', $order_id)->first();
+                $planOrder = PlanOrder::where('payment_id', $order_id)->first();
 
                 if ($planOrder && $planOrder->status === 'pending') {
                     processPaymentSuccess([
@@ -169,7 +171,7 @@ class ToyyibPayPaymentController extends Controller
             }
 
             return response('OK', 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response('ERROR', 500);
         }
     }

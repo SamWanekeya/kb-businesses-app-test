@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
-use App\Models\Currency;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -31,7 +31,7 @@ class CurrencySettingController extends Controller
             }
 
             return redirect()->back()->with('success', __('Currency settings updated successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to update currency settings: :error', ['error' => $e->getMessage()]));
         }
     }

@@ -3,23 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
+use App\Models\PlanOrder;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class PayTRPaymentController extends Controller
 {
-    private function getPayTRCredentials()
-    {
-        $settings = getPaymentGatewaySettings();
-
-        return [
-            'merchant_id' => $settings['payment_settings']['paytr_merchant_id'] ?? null,
-            'merchant_key' => $settings['payment_settings']['paytr_merchant_key'] ?? null,
-            'merchant_salt' => $settings['payment_settings']['paytr_merchant_salt'] ?? null,
-            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'TRY',
-        ];
-    }
-
     public function createPaymentToken(Request $request)
     {
         $validated = validatePaymentRequest($request, [
@@ -35,7 +25,7 @@ class PayTRPaymentController extends Controller
             $credentials = $this->getPayTRCredentials();
 
             if (!$credentials['merchant_id'] || !$credentials['merchant_key'] || !$credentials['merchant_salt']) {
-                throw new \Exception(__('PayTR credentials not configured'));
+                throw new Exception(__('PayTR credentials not configured'));
             }
 
             $merchant_oid = 'plan_' . $plan->id . '_' . time() . '_' . uniqid();
@@ -59,16 +49,16 @@ class PayTRPaymentController extends Controller
 
             // Generate hash according to PayTR documentation
             $hashStr = $credentials['merchant_id'] .
-                      $request->ip_address() .
-                      $merchant_oid .
-                      $validated['user_email'] .
-                      $payment_amount .
-                      $user_basket .
-                      '1' . // no_installment
-                      '0' . // maximum_installment
-                      $credentials['currency'] .
-                      '1' . // test_mode
-                      $credentials['merchant_salt'];
+                $request->ip_address() .
+                $merchant_oid .
+                $validated['user_email'] .
+                $payment_amount .
+                $user_basket .
+                '1' . // no_installment
+                '0' . // maximum_installment
+                $credentials['currency'] .
+                '1' . // test_mode
+                $credentials['merchant_salt'];
 
             $paytr_token = base64_encode(hash_hmac('sha256', $hashStr, $credentials['merchant_key'], true));
 
@@ -103,14 +93,26 @@ class PayTRPaymentController extends Controller
                         'iframe_url' => 'https://www.paytr.com/odeme/guvenli/' . $result['token'],
                     ]);
                 } else {
-                    throw new \Exception($result['reason'] ?? __('Token generation failed'));
+                    throw new Exception($result['reason'] ?? __('Token generation failed'));
                 }
             } else {
-                throw new \Exception(__('PayTR API connection failed'));
+                throw new Exception(__('PayTR API connection failed'));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    private function getPayTRCredentials()
+    {
+        $settings = getPaymentGatewaySettings();
+
+        return [
+            'merchant_id' => $settings['payment_settings']['paytr_merchant_id'] ?? null,
+            'merchant_key' => $settings['payment_settings']['paytr_merchant_key'] ?? null,
+            'merchant_salt' => $settings['payment_settings']['paytr_merchant_salt'] ?? null,
+            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'TRY',
+        ];
     }
 
     public function success(Request $request)
@@ -138,7 +140,7 @@ class PayTRPaymentController extends Controller
             $calculatedHash = base64_encode(hash_hmac('sha256', $hashStr, $credentials['merchant_key'], true));
 
             if ($hash === $calculatedHash && $status === 'success') {
-                $planOrder = \App\Models\PlanOrder::where('payment_id', $merchant_oid)->first();
+                $planOrder = PlanOrder::where('payment_id', $merchant_oid)->first();
 
                 if ($planOrder && $planOrder->status === 'pending') {
                     processPaymentSuccess([
@@ -153,7 +155,7 @@ class PayTRPaymentController extends Controller
             }
 
             return response('OK', 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response('ERROR', 500);
         }
     }

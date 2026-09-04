@@ -2,15 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\LeadAssigned;
+use App\Events\LeadStatusChanged;
 use App\Exports\LeadExport;
 use App\Imports\LeadImport;
+use App\Models\Account;
+use App\Models\AccountIndustry;
+use App\Models\AccountType;
+use App\Models\Call;
+use App\Models\Campaign;
+use App\Models\Contact;
 use App\Models\Lead;
+use App\Models\LeadActivity;
 use App\Models\LeadSource;
 use App\Models\LeadStatus;
+use App\Models\Meeting;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use Validator;
 
 class LeadController extends Controller
 {
@@ -29,7 +42,6 @@ class LeadController extends Controller
                     ->orWhere('organization', 'like', '%' . $request->search . '%');
             });
         }
-
 
 
         // Handle filters
@@ -69,7 +81,7 @@ class LeadController extends Controller
             $leads = collect(['data' => $query->get()]);
         } else {
             $defaultPerPage = $request->view === 'grid' ? 12 : 10;
-            $perPage = max(1, min(200, (int) $request->get('per_page', $defaultPerPage)));
+            $perPage = max(1, min(200, (int)$request->get('per_page', $defaultPerPage)));
             $leads = $query->paginate($perPage)->withQueryString();
         }
 
@@ -81,15 +93,15 @@ class LeadController extends Controller
         $allLeadSources = (clone $leadSourceQuery)->get(['id', 'name']);
         $leadSources = (clone $leadSourceQuery)->where('status', 'active')->get(['id', 'name']);
 
-        $accounts = \App\Models\Account::where('created_by', createdBy())->where('status', 'active')->get(['id', 'name']);
+        $accounts = Account::where('created_by', createdBy())->where('status', 'active')->get(['id', 'name']);
 
-        $campaigns = \App\Models\Campaign::where('created_by', createdBy())->where('status', 'active')->get(['id', 'name']);
+        $campaigns = Campaign::where('created_by', createdBy())->where('status', 'active')->get(['id', 'name']);
 
-        $accountIndustries = \App\Models\AccountIndustry::where('created_by', createdBy())->where('status', 'active')->get(['id', 'name']);
+        $accountIndustries = AccountIndustry::where('created_by', createdBy())->where('status', 'active')->get(['id', 'name']);
 
-        $accountTypes = \App\Models\AccountType::where('created_by', createdBy())->where('status', 'active')->get(['id', 'name']);
+        $accountTypes = AccountType::where('created_by', createdBy())->where('status', 'active')->get(['id', 'name']);
 
-        $userQuery = \App\Models\User::where('created_by', createdBy());
+        $userQuery = User::where('created_by', createdBy());
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
 
@@ -107,39 +119,6 @@ class LeadController extends Controller
             'allUsers' => $allUsers,
             'samplePath' => file_exists(storage_path('uploads/sample/sample-lead.xlsx')) ? route('lead.download.template') : null,
             'filters' => $request->all(['view', 'search', 'lead_status_id', 'lead_source_id', 'status', 'is_converted', 'assigned_to', 'sort_field', 'sort_direction', 'per_page', 'page']),
-        ]);
-    }
-
-    public function create(Request $request)
-    {
-        $leadStatuses = LeadStatus::where('created_by', createdBy())
-            ->where('status', 'active')
-            ->get(['id', 'name', 'color']);
-
-        $leadSources = LeadSource::where('created_by', createdBy())
-            ->where('status', 'active')
-            ->get(['id', 'name']);
-
-        $accountIndustries = \App\Models\AccountIndustry::where('created_by', createdBy())
-            ->where('status', 'active')
-            ->get(['id', 'name']);
-
-        $campaigns = \App\Models\Campaign::where('created_by', createdBy())
-            ->where('status', 'active')
-            ->get(['id', 'name']);
-
-        $users = User::where('created_by', createdBy())
-            ->where('status', 'active')
-            ->select('id', 'name', 'email')
-            ->get();
-
-        return Inertia::render('leads/create', [
-            'leadStatuses' => $leadStatuses,
-            'leadSources' => $leadSources,
-            'accountIndustries' => $accountIndustries,
-            'campaigns' => $campaigns,
-            'users' => $users,
-            'prefilledLeadStatusId' => $request->get('lead_status_id', ''),
         ]);
     }
 
@@ -169,7 +148,7 @@ class LeadController extends Controller
 
         $lead = Lead::create($validated);
         if ($lead && !IsDemo()) {
-            event(new \App\Events\LeadAssigned($lead));
+            event(new LeadAssigned($lead));
         }
 
         // Check for errors and combine them
@@ -193,6 +172,39 @@ class LeadController extends Controller
         return redirect()->route('leads.index')->with('success', __('Lead created successfully.'));
     }
 
+    public function create(Request $request)
+    {
+        $leadStatuses = LeadStatus::where('created_by', createdBy())
+            ->where('status', 'active')
+            ->get(['id', 'name', 'color']);
+
+        $leadSources = LeadSource::where('created_by', createdBy())
+            ->where('status', 'active')
+            ->get(['id', 'name']);
+
+        $accountIndustries = AccountIndustry::where('created_by', createdBy())
+            ->where('status', 'active')
+            ->get(['id', 'name']);
+
+        $campaigns = Campaign::where('created_by', createdBy())
+            ->where('status', 'active')
+            ->get(['id', 'name']);
+
+        $users = User::where('created_by', createdBy())
+            ->where('status', 'active')
+            ->select('id', 'name', 'email')
+            ->get();
+
+        return Inertia::render('leads/create', [
+            'leadStatuses' => $leadStatuses,
+            'leadSources' => $leadSources,
+            'accountIndustries' => $accountIndustries,
+            'campaigns' => $campaigns,
+            'users' => $users,
+            'prefilledLeadStatusId' => $request->get('lead_status_id', ''),
+        ]);
+    }
+
     public function show($id)
     {
         $lead = Lead::with(['leadStatus', 'leadSource', 'assignedUser', 'creator', 'campaign.campaignType', 'accountIndustry', 'activities.user', 'comments.user'])
@@ -202,7 +214,7 @@ class LeadController extends Controller
         if ($lead) {
             $relatedAccounts = [];
             if ($lead->is_converted) {
-                $relatedAccounts = \App\Models\Account::where('created_by', createdBy())
+                $relatedAccounts = Account::where('created_by', createdBy())
                     ->where(function ($q) use ($lead) {
                         $q->where('email', $lead->email);
                     })
@@ -212,7 +224,7 @@ class LeadController extends Controller
 
             $relatedContacts = [];
             if ($lead->is_converted) {
-                $relatedContacts = \App\Models\Contact::where('created_by', createdBy())
+                $relatedContacts = Contact::where('created_by', createdBy())
                     ->where(function ($q) use ($lead) {
                         $q->where('email', $lead->email);
                     })
@@ -220,16 +232,16 @@ class LeadController extends Controller
                     ->get();
             }
 
-            $parentMeetings = \App\Models\Meeting::where('created_by', createdBy())
+            $parentMeetings = Meeting::where('created_by', createdBy())
                 ->where('parent_module', 'lead')->where('parent_id', $id)
                 ->with(['creator', 'assignedUser'])->get();
 
-            $attendeeMeetings = \App\Models\Meeting::where('created_by', createdBy())
+            $attendeeMeetings = Meeting::where('created_by', createdBy())
                 ->whereHas('attendees', function ($q) use ($id) {
                     $q->where('attendee_type', 'lead')->where('attendee_id', $id);
                 })->with(['creator', 'assignedUser'])->get();
 
-            $parentCalls = \App\Models\Call::where('created_by', createdBy())
+            $parentCalls = Call::where('created_by', createdBy())
                 ->where('parent_module', 'lead')->where('parent_id', $id)
                 ->with(['creator', 'assignedUser'])->get()
                 ->map(function ($call) {
@@ -238,7 +250,7 @@ class LeadController extends Controller
                     return $call;
                 });
 
-            $attendeeCalls = \App\Models\Call::where('created_by', createdBy())
+            $attendeeCalls = Call::where('created_by', createdBy())
                 ->whereHas('attendees', function ($q) use ($id) {
                     $q->where('attendee_type', 'lead')->where('attendee_id', $id);
                 })->with(['creator', 'assignedUser'])->get()
@@ -277,10 +289,10 @@ class LeadController extends Controller
         $leadSources = LeadSource::where('created_by', createdBy())
             ->where('status', 'active')->get(['id', 'name']);
 
-        $accountIndustries = \App\Models\AccountIndustry::where('created_by', createdBy())
+        $accountIndustries = AccountIndustry::where('created_by', createdBy())
             ->where('status', 'active')->get(['id', 'name']);
 
-        $campaigns = \App\Models\Campaign::where('created_by', createdBy())
+        $campaigns = Campaign::where('created_by', createdBy())
             ->where('status', 'active')->get(['id', 'name']);
 
         $users = User::where('created_by', createdBy())
@@ -294,6 +306,86 @@ class LeadController extends Controller
             'campaigns' => $campaigns,
             'users' => $users,
         ]);
+    }
+
+    public function destroy($leadId)
+    {
+        $lead = Lead::where('id', $leadId)
+            ->where('created_by', createdBy())
+            ->first();
+
+        if ($lead) {
+            try {
+                $lead->delete();
+
+                return redirect()->back()->with('success', __('Lead deleted successfully.'));
+            } catch (Exception $e) {
+                return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete lead.'));
+            }
+        } else {
+            return redirect()->back()->with('error', __('Lead not found.'));
+        }
+    }
+
+    public function toggleStatus($leadId)
+    {
+        $lead = Lead::where('id', $leadId)
+            ->where('created_by', createdBy())
+            ->first();
+
+        if ($lead) {
+            try {
+                $lead->status = $lead->status === 'active' ? 'inactive' : 'active';
+                $lead->save();
+
+                return redirect()->back()->with('success', __('Lead status updated successfully.'));
+            } catch (Exception $e) {
+                return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update lead status.'));
+            }
+        } else {
+            return redirect()->back()->with('error', __('Lead not found.'));
+        }
+    }
+
+    public function deleteActivities($id)
+    {
+        $lead = Lead::where('id', $id)
+            ->where('created_by', createdBy())
+            ->firstOrFail();
+
+        LeadActivity::where('lead_id', $lead->id)->delete();
+
+        return redirect()->back()->with('success', __('All activities deleted successfully.'));
+    }
+
+    public function deleteActivity($leadId, $activityId)
+    {
+        $lead = Lead::where('id', $leadId)
+            ->where('created_by', createdBy())
+            ->firstOrFail();
+
+        LeadActivity::where('id', $activityId)
+            ->where('lead_id', $lead->id)
+            ->delete();
+
+        return redirect()->back()->with('success', __('Activity deleted successfully.'));
+    }
+
+    public function updateStatus(Request $request, $leadId)
+    {
+        $validated = $request->validate([
+            'lead_status_id' => 'required|exists:lead_statuses,id',
+        ]);
+
+        $lead = Lead::where('id', $leadId)
+            ->where('created_by', createdBy())
+            ->firstOrFail();
+
+        $lead->update([
+            'lead_status_id' => $validated['lead_status_id'],
+        ]);
+
+        return redirect()->back()->with('success', __('Lead status updated successfully.'));
     }
 
     public function update(Request $request, $leadId)
@@ -328,101 +420,21 @@ class LeadController extends Controller
                 if (isEmailTemplateEnabled('Lead Moved', createdBy()) && $lead->isDirty('lead_status_id')) {
                     $old = $lead->getOriginal('lead_status_id');
                     $new = $lead->lead_status_id;
-                    $oldStatusName = \App\Models\LeadStatus::find($old)?->name ?? 'N/A';
-                    $newStatusName = \App\Models\LeadStatus::find($new)?->name ?? 'N/A';
+                    $oldStatusName = LeadStatus::find($old)?->name ?? 'N/A';
+                    $newStatusName = LeadStatus::find($new)?->name ?? 'N/A';
                     if (!IsDemo()) {
-                        event(new \App\Events\LeadStatusChanged($lead, $oldStatusName, $newStatusName));
+                        event(new LeadStatusChanged($lead, $oldStatusName, $newStatusName));
                     }
                 }
                 $lead->update($validated);
 
                 return redirect()->route('leads.index')->with('success', __('Lead updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update lead.'));
             }
         } else {
             return redirect()->back()->with('error', __('Lead not found.'));
         }
-    }
-
-    public function destroy($leadId)
-    {
-        $lead = Lead::where('id', $leadId)
-            ->where('created_by', createdBy())
-            ->first();
-
-        if ($lead) {
-            try {
-                $lead->delete();
-
-                return redirect()->back()->with('success', __('Lead deleted successfully.'));
-            } catch (\Exception $e) {
-                return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete lead.'));
-            }
-        } else {
-            return redirect()->back()->with('error', __('Lead not found.'));
-        }
-    }
-
-    public function toggleStatus($leadId)
-    {
-        $lead = Lead::where('id', $leadId)
-            ->where('created_by', createdBy())
-            ->first();
-
-        if ($lead) {
-            try {
-                $lead->status = $lead->status === 'active' ? 'inactive' : 'active';
-                $lead->save();
-
-                return redirect()->back()->with('success', __('Lead status updated successfully.'));
-            } catch (\Exception $e) {
-                return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update lead status.'));
-            }
-        } else {
-            return redirect()->back()->with('error', __('Lead not found.'));
-        }
-    }
-
-    public function deleteActivities($id)
-    {
-        $lead = Lead::where('id', $id)
-            ->where('created_by', createdBy())
-            ->firstOrFail();
-
-        \App\Models\LeadActivity::where('lead_id', $lead->id)->delete();
-
-        return redirect()->back()->with('success', __('All activities deleted successfully.'));
-    }
-
-    public function deleteActivity($leadId, $activityId)
-    {
-        $lead = Lead::where('id', $leadId)
-            ->where('created_by', createdBy())
-            ->firstOrFail();
-
-        \App\Models\LeadActivity::where('id', $activityId)
-            ->where('lead_id', $lead->id)
-            ->delete();
-
-        return redirect()->back()->with('success', __('Activity deleted successfully.'));
-    }
-
-    public function updateStatus(Request $request, $leadId)
-    {
-        $validated = $request->validate([
-            'lead_status_id' => 'required|exists:lead_statuses,id',
-        ]);
-
-        $lead = Lead::where('id', $leadId)
-            ->where('created_by', createdBy())
-            ->firstOrFail();
-
-        $lead->update([
-            'lead_status_id' => $validated['lead_status_id'],
-        ]);
-
-        return redirect()->back()->with('success', __('Lead status updated successfully.'));
     }
 
     public function kanban(Request $request)
@@ -502,7 +514,7 @@ class LeadController extends Controller
             'shipping_country' => 'nullable|string|max:255',
         ]);
 
-        $account = \App\Models\Account::create([
+        $account = Account::create([
             'name' => $lead->organization ?: $lead->name,
             'email' => $lead->email,
             'phone' => $lead->phone,
@@ -546,7 +558,7 @@ class LeadController extends Controller
             'address' => 'required|string',
         ]);
 
-        $contact = \App\Models\Contact::create([
+        $contact = Contact::create([
             'name' => $lead->name,
             'email' => $lead->email,
             'phone' => $lead->phone,
@@ -599,7 +611,7 @@ class LeadController extends Controller
             'file' => 'required|mimes:csv,txt,xlsx',
         ];
 
-        $validator = \Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
@@ -611,7 +623,7 @@ class LeadController extends Controller
             $file = $request->file('file');
 
             // Read headers and preview data
-            $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file->getRealPath());
+            $spreadsheet = IOFactory::load($file->getRealPath());
             $worksheet = $spreadsheet->getActiveSheet();
             $highestColumn = $worksheet->getHighestColumn();
             $highestRow = $worksheet->getHighestRow();
@@ -642,7 +654,7 @@ class LeadController extends Controller
                 'excelColumns' => $headers,
                 'previewData' => $previewData,
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to parse file: :error', ['error' => $e->getMessage()]));
         }
     }
@@ -657,7 +669,7 @@ class LeadController extends Controller
             'data' => 'required|array',
         ];
 
-        $validator = \Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
@@ -701,7 +713,7 @@ class LeadController extends Controller
             ]);
 
             return redirect()->back()->with('success', $message);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to import: :error', ['error' => $e->getMessage()]));
         }
     }

@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 
 class InvoiceMidtransPaymentController extends Controller
 {
@@ -92,10 +95,10 @@ class InvoiceMidtransPaymentController extends Controller
                 ]);
             }
 
-            throw new \Exception(__('Failed to create Midtrans snap token'));
+            throw new Exception(__('Failed to create Midtrans snap token'));
 
-        } catch (\Exception $e) {
-            \Log::error('Midtrans invoice payment creation error', [
+        } catch (Exception $e) {
+            Log::error('Midtrans invoice payment creation error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
             ]);
@@ -104,66 +107,12 @@ class InvoiceMidtransPaymentController extends Controller
         }
     }
 
-    public function success(Request $request)
+    private function getInvoicePaymentSettings($organizationId)
     {
-        try {
-            $invoiceId = $request->input('invoice_id');
-            $amount = $request->input('amount');
-            $paymentType = $request->input('payment_type');
-            $orderId = $request->input('order_id');
-            $transactionStatus = $request->input('transaction_status');
-
-            if ($invoiceId && in_array($transactionStatus, ['capture', 'settlement'])) {
-                $invoice = Invoice::find($invoiceId);
-
-                if ($invoice) {
-                    InvoicePayment::storePayment([
-                        'invoice_id' => $invoice->id,
-                        'amount' => $amount,
-                        'payment_type' => $paymentType,
-                        'payment_method' => 'midtrans',
-                        'payment_id' => $orderId,
-                    ]);
-
-                    \Log::info('Midtrans invoice payment successful', [
-                        'invoice_id' => $invoice->id,
-                        'amount' => $amount,
-                        'payment_id' => $orderId,
-                    ]);
-
-                    return redirect()->route('invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
-                }
-            }
-
-            return redirect()->route('invoices.public', encrypt($invoiceId ?? 0))->withErrors(['error' => __('Payment failed or cancelled')]);
-
-        } catch (\Exception $e) {
-            \Log::error('Midtrans invoice payment success error', [
-                'error' => $e->getMessage(),
-            ]);
-
-            return redirect()->route('invoices.public', encrypt($request->input('invoice_id') ?? 0))->withErrors(['error' => __('Payment processing failed')]);
-        }
-    }
-
-    public function callback(Request $request)
-    {
-        try {
-            $orderId = $request->input('order_id');
-            $transactionStatus = $request->input('transaction_status');
-
-            if ($orderId && in_array($transactionStatus, ['capture', 'settlement'])) {
-                \Log::info('Midtrans invoice callback received', [
-                    'order_id' => $orderId,
-                    'status' => $transactionStatus,
-                ]);
-            }
-
-            return response()->json(['status' => 'success']);
-
-        } catch (\Exception $e) {
-            return response()->json(['error' => __('Callback processing failed')], 500);
-        }
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
     }
 
     private function createSnapToken($paymentData, $settings)
@@ -198,16 +147,70 @@ class InvoiceMidtransPaymentController extends Controller
 
             return $result['token'] ?? false;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }
 
-    private function getInvoicePaymentSettings($organizationId)
+    public function success(Request $request)
     {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
-        ];
+        try {
+            $invoiceId = $request->input('invoice_id');
+            $amount = $request->input('amount');
+            $paymentType = $request->input('payment_type');
+            $orderId = $request->input('order_id');
+            $transactionStatus = $request->input('transaction_status');
+
+            if ($invoiceId && in_array($transactionStatus, ['capture', 'settlement'])) {
+                $invoice = Invoice::find($invoiceId);
+
+                if ($invoice) {
+                    InvoicePayment::storePayment([
+                        'invoice_id' => $invoice->id,
+                        'amount' => $amount,
+                        'payment_type' => $paymentType,
+                        'payment_method' => 'midtrans',
+                        'payment_id' => $orderId,
+                    ]);
+
+                    Log::info('Midtrans invoice payment successful', [
+                        'invoice_id' => $invoice->id,
+                        'amount' => $amount,
+                        'payment_id' => $orderId,
+                    ]);
+
+                    return redirect()->route('invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
+                }
+            }
+
+            return redirect()->route('invoices.public', encrypt($invoiceId ?? 0))->withErrors(['error' => __('Payment failed or cancelled')]);
+
+        } catch (Exception $e) {
+            Log::error('Midtrans invoice payment success error', [
+                'error' => $e->getMessage(),
+            ]);
+
+            return redirect()->route('invoices.public', encrypt($request->input('invoice_id') ?? 0))->withErrors(['error' => __('Payment processing failed')]);
+        }
+    }
+
+    public function callback(Request $request)
+    {
+        try {
+            $orderId = $request->input('order_id');
+            $transactionStatus = $request->input('transaction_status');
+
+            if ($orderId && in_array($transactionStatus, ['capture', 'settlement'])) {
+                Log::info('Midtrans invoice callback received', [
+                    'order_id' => $orderId,
+                    'status' => $transactionStatus,
+                ]);
+            }
+
+            return response()->json(['status' => 'success']);
+
+        } catch (Exception $e) {
+            return response()->json(['error' => __('Callback processing failed')], 500);
+        }
     }
 }

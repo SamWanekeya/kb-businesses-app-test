@@ -166,10 +166,10 @@ export default function ShowReceiptOrder() {
                                             </TableHeader>
                                             <TableBody>
                                                 {receiptOrder.products.map((product: any, index: number) => {
-                                                    const qty = product.pivot?.quantity || 0;
+                                                    const quantity = product.pivot?.quantity || 0;
                                                     const unitPrice = product.pivot?.unit_price || 0;
                                                     const discountAmt = Number(product.pivot?.discount_amount) || 0;
-                                                    const lineTotal = Number(product.pivot?.total_price) || qty * unitPrice;
+                                                    const lineTotal = Number(product.pivot?.total_price) || quantity * unitPrice;
                                                     const afterDisc = lineTotal - discountAmt;
                                                     const taxAmount = product.tax ? (afterDisc * Number(product.tax.rate)) / 100 : 0;
                                                     return (
@@ -211,7 +211,7 @@ export default function ShowReceiptOrder() {
                                                                 </div>
                                                             </TableCell>
                                                             <TableCell className="py-3 text-center">
-                                                                <p className="text-foreground text-sm font-semibold">{qty}</p>
+                                                                <p className="text-foreground text-sm font-semibold">{quantity}</p>
                                                             </TableCell>
                                                             <TableCell className="py-3 text-center">
                                                                 <p className="text-foreground font-mono text-sm font-semibold">

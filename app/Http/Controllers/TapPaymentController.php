@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Plan;
 use App\Models\User;
+use App\Package\Payment;
+use Exception;
 use Illuminate\Http\Request;
 
 class TapPaymentController extends Controller
@@ -28,7 +30,7 @@ class TapPaymentController extends Controller
             require_once app_path('Libraries/Tap/Tap.php');
             require_once app_path('Libraries/Tap/Reference.php');
             require_once app_path('Libraries/Tap/Payment.php');
-            $tap = new \App\Package\Payment([
+            $tap = new Payment([
                 'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key'],
             ]);
 
@@ -54,7 +56,7 @@ class TapPaymentController extends Controller
 
             return $tap->charge($chargeData, true);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
     }
@@ -84,7 +86,7 @@ class TapPaymentController extends Controller
                     require_once app_path('Libraries/Tap/Tap.php');
                     require_once app_path('Libraries/Tap/Reference.php');
                     require_once app_path('Libraries/Tap/Payment.php');
-                    $tap = new \App\Package\Payment([
+                    $tap = new Payment([
                         'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key'],
                     ]);
 
@@ -115,7 +117,7 @@ class TapPaymentController extends Controller
 
             return redirect()->route('plans.index')->with('error', __('Payment verification failed'));
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('plans.index')->with('error', __('Payment processing failed'));
         }
     }
@@ -128,7 +130,7 @@ class TapPaymentController extends Controller
 
             return response('OK', 200);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response('Error', 500);
         }
     }

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 
 class NepalstePaymentController extends Controller
 {
@@ -37,7 +40,7 @@ class NepalstePaymentController extends Controller
 
             return back()->withErrors(['error' => __('Payment failed or cancelled')]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withErrors(['error' => __('Payment processing failed')]);
         }
     }
@@ -88,10 +91,95 @@ class NepalstePaymentController extends Controller
 
             return response()->json(['error' => __('Payment initiation failed')], 500);
 
-        } catch (\Exception $e) {
-            \Log::error('Nepalste payment creation error: ' . $e->getMessage());
+        } catch (Exception $e) {
+            Log::error('Nepalste payment creation error: ' . $e->getMessage());
 
             return response()->json(['error' => __('Payment creation failed')], 500);
+        }
+    }
+
+    private function getAccessToken($settings)
+    {
+        try {
+            $baseUrl = $settings['nepalste_mode'] === 'live'
+                ? 'https://nepalste.com.np/pay/api/v1'
+                : 'https://nepalste.com.np/pay/sandbox/api/v1';
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $baseUrl . '/access-token');
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+                'consumer_key' => $settings['nepalste_public_key'],
+                'consumer_secret' => $settings['nepalste_secret_key'],
+            ]));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Content-Type: application/json',
+            ]);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            Log::info('Nepalste Access Token Response', [
+                'response' => $response,
+                'http_code' => $httpCode,
+            ]);
+
+            if ($httpCode === 200) {
+                $decoded = json_decode($response, true);
+
+                return $decoded['token'] ?? null;
+            }
+
+            return null;
+
+        } catch (Exception $e) {
+            Log::error('Nepalste access token error: ' . $e->getMessage());
+
+            return null;
+        }
+    }
+
+    private function initiateNepalstePayment($url, $data, $token)
+    {
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $token,
+            ]);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            Log::info('Nepalste Payment Response', [
+                'response' => $response,
+                'http_code' => $httpCode,
+                'url' => $url,
+                'data' => $data,
+            ]);
+
+            if ($httpCode === 200) {
+                $decoded = json_decode($response, true);
+                if ($decoded && isset($decoded['payment_url'])) {
+                    return $decoded;
+                }
+            }
+
+            return false;
+
+        } catch (Exception $e) {
+            Log::error('Nepalste payment request error: ' . $e->getMessage());
+
+            return false;
         }
     }
 
@@ -126,8 +214,8 @@ class NepalstePaymentController extends Controller
 
             return redirect()->route('plans.index')->with('error', 'Payment verification failed');
 
-        } catch (\Exception $e) {
-            \Log::error('Nepalste success error: ' . $e->getMessage());
+        } catch (Exception $e) {
+            Log::error('Nepalste success error: ' . $e->getMessage());
 
             return redirect()->route('plans.index')->with('error', 'Payment processing failed');
         }
@@ -147,7 +235,7 @@ class NepalstePaymentController extends Controller
                     $userId = $parts[2];
 
                     $plan = Plan::find($planId);
-                    $user = \App\Models\User::find($userId);
+                    $user = User::find($userId);
 
                     if ($plan && $user) {
                         $user->plan_id = $plan->id;
@@ -167,95 +255,10 @@ class NepalstePaymentController extends Controller
 
             return response()->json(['status' => 'success']);
 
-        } catch (\Exception $e) {
-            \Log::error('Nepalste callback error: ' . $e->getMessage());
+        } catch (Exception $e) {
+            Log::error('Nepalste callback error: ' . $e->getMessage());
 
             return response()->json(['error' => 'Callback processing failed'], 500);
-        }
-    }
-
-    private function getAccessToken($settings)
-    {
-        try {
-            $baseUrl = $settings['nepalste_mode'] === 'live'
-                ? 'https://nepalste.com.np/pay/api/v1'
-                : 'https://nepalste.com.np/pay/sandbox/api/v1';
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $baseUrl . '/access-token');
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
-                'consumer_key' => $settings['nepalste_public_key'],
-                'consumer_secret' => $settings['nepalste_secret_key'],
-            ]));
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'Content-Type: application/json',
-            ]);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-            $response = curl_exec($ch);
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
-
-            \Log::info('Nepalste Access Token Response', [
-                'response' => $response,
-                'http_code' => $httpCode,
-            ]);
-
-            if ($httpCode === 200) {
-                $decoded = json_decode($response, true);
-
-                return $decoded['token'] ?? null;
-            }
-
-            return null;
-
-        } catch (\Exception $e) {
-            \Log::error('Nepalste access token error: ' . $e->getMessage());
-
-            return null;
-        }
-    }
-
-    private function initiateNepalstePayment($url, $data, $token)
-    {
-        try {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'Content-Type: application/json',
-                'Authorization: Bearer ' . $token,
-            ]);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-            $response = curl_exec($ch);
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
-
-            \Log::info('Nepalste Payment Response', [
-                'response' => $response,
-                'http_code' => $httpCode,
-                'url' => $url,
-                'data' => $data,
-            ]);
-
-            if ($httpCode === 200) {
-                $decoded = json_decode($response, true);
-                if ($decoded && isset($decoded['payment_url'])) {
-                    return $decoded;
-                }
-            }
-
-            return false;
-
-        } catch (\Exception $e) {
-            \Log::error('Nepalste payment request error: ' . $e->getMessage());
-
-            return false;
         }
     }
 }

@@ -9,6 +9,7 @@ use App\Models\Setting;
 use App\Models\Webhook;
 use App\Models\Workspace;
 use Inertia\Inertia;
+use Inertia\Response;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class SettingsController extends Controller
@@ -16,7 +17,7 @@ class SettingsController extends Controller
     /**
      * Display the main settings page.
      *
-     * @return \Inertia\Response
+     * @return Response
      */
     public function index()
     {

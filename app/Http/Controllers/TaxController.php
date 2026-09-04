@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tax;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -38,7 +39,7 @@ class TaxController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $taxes = $query->paginate($perPage)->withQueryString();
 
         return Inertia::render('taxes/index', [
@@ -86,7 +87,7 @@ class TaxController extends Controller
                 $tax->update($validated);
 
                 return redirect()->back()->with('success', __('Tax updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update tax.'));
             }
         } else {
@@ -105,7 +106,7 @@ class TaxController extends Controller
                 $tax->delete();
 
                 return redirect()->back()->with('success', __('Tax deleted successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete tax.'));
             }
         } else {
@@ -125,7 +126,7 @@ class TaxController extends Controller
                 $tax->save();
 
                 return redirect()->back()->with('success', __('Tax status updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update tax status.'));
             }
         } else {

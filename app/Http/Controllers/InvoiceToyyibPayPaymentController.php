@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 
 class InvoiceToyyibPayPaymentController extends Controller
 {
@@ -85,27 +88,27 @@ class InvoiceToyyibPayPaymentController extends Controller
             curl_close($curl);
 
             if ($curlError) {
-                throw new \Exception('cURL Error: ' . $curlError);
+                throw new Exception('cURL Error: ' . $curlError);
             }
 
             if ($httpCode !== 200) {
-                throw new \Exception('HTTP Error: ' . $httpCode);
+                throw new Exception('HTTP Error: ' . $httpCode);
             }
 
             if (str_contains($result, 'KEY-DID-NOT-EXIST-OR-USER-IS-NOT-ACTIVE')) {
-                throw new \Exception(__('Invalid ToyyibPay credentials or inactive account'));
+                throw new Exception(__('Invalid ToyyibPay credentials or inactive account'));
             }
 
             $responseData = json_decode($result, true);
 
             if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new \Exception(__('Invalid JSON response from ToyyibPay'));
+                throw new Exception(__('Invalid JSON response from ToyyibPay'));
             }
 
             if (isset($responseData[0]['BillCode'])) {
                 $redirectUrl = 'https://toyyibpay.com/' . $responseData[0]['BillCode'];
 
-                \Log::info('ToyyibPay invoice payment created', [
+                Log::info('ToyyibPay invoice payment created', [
                     'invoice_id' => $invoice->id,
                     'payment_id' => $paymentId,
                     'bill_code' => $responseData[0]['BillCode'],
@@ -117,11 +120,11 @@ class InvoiceToyyibPayPaymentController extends Controller
                 ]);
             } else {
                 $errorMsg = $responseData[0]['msg'] ?? __('Failed to create payment bill');
-                throw new \Exception($errorMsg);
+                throw new Exception($errorMsg);
             }
 
-        } catch (\Exception $e) {
-            \Log::error('ToyyibPay invoice payment error', [
+        } catch (Exception $e) {
+            Log::error('ToyyibPay invoice payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
             ]);
@@ -157,7 +160,7 @@ class InvoiceToyyibPayPaymentController extends Controller
                         'payment_id' => $paymentId,
                     ]);
 
-                    \Log::info('ToyyibPay invoice payment successful', [
+                    Log::info('ToyyibPay invoice payment successful', [
                         'invoice_id' => $invoiceId,
                         'amount' => $amount,
                         'payment_type' => $paymentType,
@@ -170,8 +173,8 @@ class InvoiceToyyibPayPaymentController extends Controller
                 return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('error', __('Payment was not completed. Please try again.'));
             }
 
-        } catch (\Exception $e) {
-            \Log::error('ToyyibPay invoice success callback error', [
+        } catch (Exception $e) {
+            Log::error('ToyyibPay invoice success callback error', [
                 'error' => $e->getMessage(),
                 'request' => $request->all(),
             ]);
@@ -209,7 +212,7 @@ class InvoiceToyyibPayPaymentController extends Controller
                                 'payment_id' => $orderId,
                             ]);
 
-                            \Log::info('ToyyibPay invoice payment successful via webhook', [
+                            Log::info('ToyyibPay invoice payment successful via webhook', [
                                 'invoice_id' => $invoice->id,
                                 'payment_id' => $orderId,
                                 'transaction_id' => $transactionId,
@@ -220,8 +223,8 @@ class InvoiceToyyibPayPaymentController extends Controller
             }
 
             return response('OK', 200);
-        } catch (\Exception $e) {
-            \Log::error('ToyyibPay invoice callback error', [
+        } catch (Exception $e) {
+            Log::error('ToyyibPay invoice callback error', [
                 'error' => $e->getMessage(),
                 'request' => $request->all(),
             ]);
@@ -245,7 +248,7 @@ class InvoiceToyyibPayPaymentController extends Controller
     {
         return [
             'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }
 }

@@ -3,77 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
-use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class CashfreeController extends Controller
 {
-    /**
-     * Get Cashfree API credentials and configuration
-     *
-     * @return array
-     */
-    private function getCashfreeCredentials()
-    {
-        $settings = getPaymentGatewaySettings();
-
-        // Handle both string and numeric mode values
-        $modeValue = $settings['payment_settings']['cashfree_mode'] ?? 'sandbox';
-
-        // Convert to consistent string format
-        if ($modeValue === 0 || $modeValue === '0' || $modeValue === 'sandbox') {
-            $mode = 'sandbox';
-        } else {
-            $mode = 'production';
-        }
-
-        $baseUrl = $mode === 'production'
-            ? 'https://api.cashfree.com/pg'
-            : 'https://sandbox.cashfree.com/pg';
-
-        return [
-            'app_id' => $settings['payment_settings']['cashfree_public_key'] ?? null,
-            'secret_key' => $settings['payment_settings']['cashfree_secret_key'] ?? null,
-            'mode' => $mode,
-            'base_url' => $baseUrl,
-            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'INR',
-        ];
-    }
-
-    /**
-     * Make Cashfree API call
-     */
-    private function makeCashfreeApiCall($method, $endpoint, $data = null)
-    {
-        $credentials = $this->getCashfreeCredentials();
-
-        if (!$credentials['app_id'] || !$credentials['secret_key']) {
-            throw new \Exception('Cashfree API credentials not found');
-        }
-
-        $headers = [
-            'x-client-id' => $credentials['app_id'],
-            'x-client-secret' => $credentials['secret_key'],
-            'x-api-version' => '2023-08-01',
-        ];
-
-        if ($data) {
-            $headers['Content-Type'] = 'application/json';
-        }
-
-        $url = $credentials['base_url'] . $endpoint;
-
-        $response = Http::withHeaders($headers)->$method($url, $data);
-
-        if (!$response->successful()) {
-            throw new \Exception('API Error: ' . $response->body());
-        }
-
-        return $response->json();
-    }
-
     /**
      * Create a Cashfree payment session
      */
@@ -89,12 +25,12 @@ class CashfreeController extends Controller
             $credentials = $this->getCashfreeCredentials();
 
             if (!$credentials['app_id'] || !$credentials['secret_key']) {
-                throw new \Exception(__('Cashfree API credentials not found'));
+                throw new Exception(__('Cashfree API credentials not found'));
             }
 
             $amount = (float)$pricing['final_price'];
             if ($amount < 1) {
-                throw new \Exception(__('Order amount must be at least 1 INR'));
+                throw new Exception(__('Order amount must be at least 1 INR'));
             }
 
             $orderId = 'plan_' . $plan->id . '_' . time() . '_' . uniqid();
@@ -140,7 +76,7 @@ class CashfreeController extends Controller
                 'currency' => 'INR',
                 'mode' => $credentials['mode'],
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Cashfree payment session creation failed', [
                 'error' => $e->getMessage(),
                 'mode' => $credentials['mode'] ?? 'unknown',
@@ -151,6 +87,70 @@ class CashfreeController extends Controller
                 'error' => 'Failed to create payment session: ' . $e->getMessage(),
             ], 500);
         }
+    }
+
+    /**
+     * Get Cashfree API credentials and configuration
+     *
+     * @return array
+     */
+    private function getCashfreeCredentials()
+    {
+        $settings = getPaymentGatewaySettings();
+
+        // Handle both string and numeric mode values
+        $modeValue = $settings['payment_settings']['cashfree_mode'] ?? 'sandbox';
+
+        // Convert to consistent string format
+        if ($modeValue === 0 || $modeValue === '0' || $modeValue === 'sandbox') {
+            $mode = 'sandbox';
+        } else {
+            $mode = 'production';
+        }
+
+        $baseUrl = $mode === 'production'
+            ? 'https://api.cashfree.com/pg'
+            : 'https://sandbox.cashfree.com/pg';
+
+        return [
+            'app_id' => $settings['payment_settings']['cashfree_public_key'] ?? null,
+            'secret_key' => $settings['payment_settings']['cashfree_secret_key'] ?? null,
+            'mode' => $mode,
+            'base_url' => $baseUrl,
+            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'INR',
+        ];
+    }
+
+    /**
+     * Make Cashfree API call
+     */
+    private function makeCashfreeApiCall($method, $endpoint, $data = null)
+    {
+        $credentials = $this->getCashfreeCredentials();
+
+        if (!$credentials['app_id'] || !$credentials['secret_key']) {
+            throw new Exception('Cashfree API credentials not found');
+        }
+
+        $headers = [
+            'x-client-id' => $credentials['app_id'],
+            'x-client-secret' => $credentials['secret_key'],
+            'x-api-version' => '2023-08-01',
+        ];
+
+        if ($data) {
+            $headers['Content-Type'] = 'application/json';
+        }
+
+        $url = $credentials['base_url'] . $endpoint;
+
+        $response = Http::withHeaders($headers)->$method($url, $data);
+
+        if (!$response->successful()) {
+            throw new Exception('API Error: ' . $response->body());
+        }
+
+        return $response->json();
     }
 
     /**
@@ -167,14 +167,14 @@ class CashfreeController extends Controller
             $credentials = $this->getCashfreeCredentials();
 
             if (!$credentials['app_id'] || !$credentials['secret_key']) {
-                throw new \Exception(__('Cashfree API credentials not found'));
+                throw new Exception(__('Cashfree API credentials not found'));
             }
 
             // Fetch order status
             $orderData = $this->makeCashfreeApiCall('get', '/orders/' . $validated['order_id']);
 
             if ($orderData['order_status'] !== 'PAID') {
-                throw new \Exception(__('Payment not completed successfully'));
+                throw new Exception(__('Payment not completed successfully'));
             }
 
             // Get payment details
@@ -189,7 +189,7 @@ class CashfreeController extends Controller
             }
 
             if (!$successfulPayment) {
-                throw new \Exception(__('No successful payment found for this order'));
+                throw new Exception(__('No successful payment found for this order'));
             }
 
             $paymentData = [
@@ -204,7 +204,7 @@ class CashfreeController extends Controller
             $planOrder = processPaymentSuccess($paymentData);
 
             return response()->json(['success' => true]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Cashfree payment verification failed', [
                 'error' => $e->getMessage(),
                 'order_id' => $validated['order_id'] ?? 'unknown',
@@ -253,7 +253,7 @@ class CashfreeController extends Controller
             }
 
             return response()->json(['status' => 'success']);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Webhook processing failed')], 500);
         }
     }

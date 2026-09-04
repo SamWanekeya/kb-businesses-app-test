@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
+use Exception;
 use Illuminate\Http\Request;
 
 class BankPaymentController extends Controller
@@ -39,7 +40,7 @@ class BankPaymentController extends Controller
             ]);
 
             return back()->with('success', __('Payment request submitted. Your plan will be activated after payment verification.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return handlePaymentError($e, 'bank');
         }
     }

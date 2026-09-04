@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
+use Exception;
 use Illuminate\Http\Request;
 
 class PayPalPaymentController extends Controller
@@ -28,7 +29,7 @@ class PayPalPaymentController extends Controller
 
             return back()->with('success', __('Payment successful and plan activated'));
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return handlePaymentError($e, 'paypal');
         }
     }

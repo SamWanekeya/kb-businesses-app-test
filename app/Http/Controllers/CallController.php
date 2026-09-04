@@ -2,10 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
+use App\Models\AccountActivity;
 use App\Models\Call;
 use App\Models\CallAttendee;
+use App\Models\CaseModel;
+use App\Models\Contact;
+use App\Models\Lead;
+use App\Models\LeadActivity;
+use App\Models\MeetingAttendee;
+use App\Models\Opportunity;
+use App\Models\OpportunityActivity;
+use App\Models\Project;
+use App\Models\User;
 use App\Services\GoogleCalendarService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Validator;
 use Inertia\Inertia;
 
 class CallController extends Controller
@@ -46,14 +60,14 @@ class CallController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $calls = $query->paginate($perPage)->withQueryString();
 
-        $userQuery = \App\Models\User::where('created_by', createdBy());
+        $userQuery = User::where('created_by', createdBy());
         $allUsers = (clone $userQuery)->select('id', 'name', 'email', 'avatar')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
-        $allContacts = \App\Models\Contact::where('created_by', createdBy())->select('id', 'name')->get();
-        $allLeads = \App\Models\Lead::where('created_by', createdBy())->select('id', 'name')->get();
+        $allContacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
+        $allLeads = Lead::where('created_by', createdBy())->select('id', 'name')->get();
 
         return Inertia::render('calls/index', [
             'calls' => $calls,
@@ -79,13 +93,13 @@ class CallController extends Controller
         foreach ($call->attendees as $attendee) {
             switch ($attendee->attendee_type) {
                 case 'user':
-                    $attendee->attendee = \App\Models\User::find($attendee->attendee_id);
+                    $attendee->attendee = User::find($attendee->attendee_id);
                     break;
                 case 'contact':
-                    $attendee->attendee = \App\Models\Contact::find($attendee->attendee_id);
+                    $attendee->attendee = Contact::find($attendee->attendee_id);
                     break;
                 case 'lead':
-                    $attendee->attendee = \App\Models\Lead::find($attendee->attendee_id);
+                    $attendee->attendee = Lead::find($attendee->attendee_id);
                     break;
             }
         }
@@ -93,22 +107,22 @@ class CallController extends Controller
         if ($call->parent_module && $call->parent_id) {
             switch ($call->parent_module) {
                 case 'lead':
-                    $call->parent_record = \App\Models\Lead::find($call->parent_id);
+                    $call->parent_record = Lead::find($call->parent_id);
                     break;
                 case 'account':
-                    $call->parent_record = \App\Models\Account::find($call->parent_id);
+                    $call->parent_record = Account::find($call->parent_id);
                     break;
                 case 'contact':
-                    $call->parent_record = \App\Models\Contact::find($call->parent_id);
+                    $call->parent_record = Contact::find($call->parent_id);
                     break;
                 case 'opportunity':
-                    $call->parent_record = \App\Models\Opportunity::find($call->parent_id);
+                    $call->parent_record = Opportunity::find($call->parent_id);
                     break;
                 case 'case':
-                    $call->parent_record = \App\Models\CaseModel::find($call->parent_id);
+                    $call->parent_record = CaseModel::find($call->parent_id);
                     break;
                 case 'project':
-                    $call->parent_record = \App\Models\Project::find($call->parent_id);
+                    $call->parent_record = Project::find($call->parent_id);
                     break;
             }
         }
@@ -138,10 +152,10 @@ class CallController extends Controller
         ]);
 
         // Validate end datetime is after start datetime
-        $startDate = \Carbon\Carbon::parse($validated['start_date'])->format('Y-m-d');
-        $endDate = \Carbon\Carbon::parse($validated['end_date'])->format('Y-m-d');
-        $startDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $startDate . ' ' . $validated['start_time']);
-        $endDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $endDate . ' ' . $validated['end_time']);
+        $startDate = Carbon::parse($validated['start_date'])->format('Y-m-d');
+        $endDate = Carbon::parse($validated['end_date'])->format('Y-m-d');
+        $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $startDate . ' ' . $validated['start_time']);
+        $endDateTime = Carbon::createFromFormat('Y-m-d H:i', $endDate . ' ' . $validated['end_time']);
 
         if ($endDateTime->lte($startDateTime)) {
             return redirect()->back()->withErrors(['end_time' => __('End date and time must be after start date and time.')])->withInput();
@@ -160,7 +174,7 @@ class CallController extends Controller
                             });
                     })->first();
 
-                $meetingConflict = \App\Models\MeetingAttendee::where('attendee_type', $attendee['type'])
+                $meetingConflict = MeetingAttendee::where('attendee_type', $attendee['type'])
                     ->where('attendee_id', $attendee['id'])
                     ->whereHas('meeting', function ($q) use ($startDateTime, $endDateTime) {
                         $q->where('created_by', createdBy())
@@ -215,7 +229,7 @@ class CallController extends Controller
         if ($call->parent_module && $call->parent_id) {
             switch ($call->parent_module) {
                 case 'account':
-                    \App\Models\AccountActivity::create([
+                    AccountActivity::create([
                         'account_id' => $call->parent_id,
                         'user_id' => auth()->id(),
                         'activity_type' => 'Call Created',
@@ -225,7 +239,7 @@ class CallController extends Controller
                     ]);
                     break;
                 case 'lead':
-                    \App\Models\LeadActivity::create([
+                    LeadActivity::create([
                         'lead_id' => $call->parent_id,
                         'user_id' => auth()->id(),
                         'activity_type' => 'Call Created',
@@ -235,7 +249,7 @@ class CallController extends Controller
                     ]);
                     break;
                 case 'opportunity':
-                    \App\Models\OpportunityActivity::create([
+                    OpportunityActivity::create([
                         'opportunity_id' => $call->parent_id,
                         'user_id' => auth()->id(),
                         'activity_type' => 'Call Created',
@@ -252,9 +266,9 @@ class CallController extends Controller
             foreach ($validated['attendees'] as $attendee) {
                 switch ($attendee['type']) {
                     case 'contact':
-                        $contact = \App\Models\Contact::find($attendee['id']);
+                        $contact = Contact::find($attendee['id']);
                         if ($contact && $contact->account_id) {
-                            \App\Models\AccountActivity::create([
+                            AccountActivity::create([
                                 'account_id' => $contact->account_id,
                                 'user_id' => auth()->id(),
                                 'activity_type' => 'Call Attendee',
@@ -265,9 +279,9 @@ class CallController extends Controller
                         }
                         break;
                     case 'lead':
-                        $lead = \App\Models\Lead::find($attendee['id']);
+                        $lead = Lead::find($attendee['id']);
                         if ($lead) {
-                            \App\Models\LeadActivity::create([
+                            LeadActivity::create([
                                 'lead_id' => $lead->id,
                                 'user_id' => auth()->id(),
                                 'activity_type' => 'Call Attendee',
@@ -282,6 +296,63 @@ class CallController extends Controller
         }
 
         return redirect()->back()->with('success', __('Call created successfully.'));
+    }
+
+    private function getAttendeeName($type, $id)
+    {
+        switch ($type) {
+            case 'user':
+                $user = User::find($id);
+
+                return $user ? $user->name : 'Unknown';
+            case 'contact':
+                $contact = Contact::find($id);
+
+                return $contact ? $contact->name : 'Unknown';
+            case 'lead':
+                $lead = Lead::find($id);
+
+                return $lead ? $lead->name : 'Unknown';
+            default:
+                return 'Unknown';
+        }
+    }
+
+    /**
+     * Validate that parent record exists
+     */
+    private function validateParentRecord($module, $id)
+    {
+        $exists = false;
+
+        switch ($module) {
+            case 'lead':
+                $exists = Lead::where('id', $id)->where('created_by', createdBy())->exists();
+                break;
+            case 'account':
+                $exists = Account::where('id', $id)->where('created_by', createdBy())->exists();
+                break;
+            case 'contact':
+                $exists = Contact::where('id', $id)->where('created_by', createdBy())->exists();
+                break;
+            case 'opportunity':
+                $exists = Opportunity::where('id', $id)->where('created_by', createdBy())->exists();
+                break;
+            case 'case':
+                $exists = CaseModel::where('id', $id)->where('created_by', createdBy())->exists();
+                break;
+            case 'project':
+                $exists = Project::where('id', $id)->where('created_by', createdBy())->exists();
+                break;
+        }
+
+        if (!$exists) {
+            throw new ValidationException(
+                Validator::make([], [])
+                    ->errors()
+                    ->add('parent_id', 'The selected parent record does not exist.')
+            );
+        }
     }
 
     public function update(Request $request, $callId)
@@ -308,10 +379,10 @@ class CallController extends Controller
         ]);
 
         // Validate end datetime is after start datetime
-        $startDate = \Carbon\Carbon::parse($validated['start_date'])->format('Y-m-d');
-        $endDate = \Carbon\Carbon::parse($validated['end_date'])->format('Y-m-d');
-        $startDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $startDate . ' ' . $validated['start_time']);
-        $endDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $endDate . ' ' . $validated['end_time']);
+        $startDate = Carbon::parse($validated['start_date'])->format('Y-m-d');
+        $endDate = Carbon::parse($validated['end_date'])->format('Y-m-d');
+        $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $startDate . ' ' . $validated['start_time']);
+        $endDateTime = Carbon::createFromFormat('Y-m-d H:i', $endDate . ' ' . $validated['end_time']);
 
         if ($endDateTime->lte($startDateTime)) {
             return redirect()->back()->withErrors(['end_time' => __('End date and time must be after start date and time.')])->withInput();
@@ -331,7 +402,7 @@ class CallController extends Controller
                             });
                     })->first();
 
-                $meetingConflict = \App\Models\MeetingAttendee::where('attendee_type', $attendee['type'])
+                $meetingConflict = MeetingAttendee::where('attendee_type', $attendee['type'])
                     ->where('attendee_id', $attendee['id'])
                     ->whereHas('meeting', function ($q) use ($startDateTime, $endDateTime) {
                         $q->where('created_by', createdBy())
@@ -418,37 +489,37 @@ class CallController extends Controller
 
         switch ($module) {
             case 'lead':
-                $records = \App\Models\Lead::where('created_by', createdBy())
+                $records = Lead::where('created_by', createdBy())
                     ->where('status', 'active')
                     ->select('id', 'name')
                     ->get();
                 break;
             case 'account':
-                $records = \App\Models\Account::where('created_by', createdBy())
+                $records = Account::where('created_by', createdBy())
                     ->where('status', 'active')
                     ->select('id', 'name')
                     ->get();
                 break;
             case 'contact':
-                $records = \App\Models\Contact::where('created_by', createdBy())
+                $records = Contact::where('created_by', createdBy())
                     ->where('status', 'active')
                     ->select('id', 'name')
                     ->get();
                 break;
             case 'opportunity':
-                $records = \App\Models\Opportunity::where('created_by', createdBy())
+                $records = Opportunity::where('created_by', createdBy())
                     ->where('status', 'active')
                     ->select('id', 'name')
                     ->get();
                 break;
             case 'case':
-                $records = \App\Models\CaseModel::where('created_by', createdBy())
+                $records = CaseModel::where('created_by', createdBy())
                     ->whereNotIn('status', ['closed'])
                     ->select('id', 'subject as name')
                     ->get();
                 break;
             case 'project':
-                $records = \App\Models\Project::where('created_by', createdBy())
+                $records = Project::where('created_by', createdBy())
                     ->where('status', 'active')
                     ->select('id', 'name')
                     ->get();
@@ -464,7 +535,7 @@ class CallController extends Controller
 
         switch ($type) {
             case 'user':
-                $records = \App\Models\User::where('created_by', createdBy())
+                $records = User::where('created_by', createdBy())
                     ->select('id', 'name', 'email')
                     ->get()
                     ->map(function ($user) {
@@ -475,7 +546,7 @@ class CallController extends Controller
                     });
                 break;
             case 'contact':
-                $records = \App\Models\Contact::where('created_by', createdBy())
+                $records = Contact::where('created_by', createdBy())
                     ->where('status', 'active')
                     ->select('id', 'name', 'email')
                     ->get()
@@ -487,7 +558,7 @@ class CallController extends Controller
                     });
                 break;
             case 'lead':
-                $records = \App\Models\Lead::where('created_by', createdBy())
+                $records = Lead::where('created_by', createdBy())
                     ->where('status', 'active')
                     ->select('id', 'name', 'email')
                     ->get()
@@ -501,62 +572,5 @@ class CallController extends Controller
         }
 
         return response()->json($records);
-    }
-
-    /**
-     * Validate that parent record exists
-     */
-    private function validateParentRecord($module, $id)
-    {
-        $exists = false;
-
-        switch ($module) {
-            case 'lead':
-                $exists = \App\Models\Lead::where('id', $id)->where('created_by', createdBy())->exists();
-                break;
-            case 'account':
-                $exists = \App\Models\Account::where('id', $id)->where('created_by', createdBy())->exists();
-                break;
-            case 'contact':
-                $exists = \App\Models\Contact::where('id', $id)->where('created_by', createdBy())->exists();
-                break;
-            case 'opportunity':
-                $exists = \App\Models\Opportunity::where('id', $id)->where('created_by', createdBy())->exists();
-                break;
-            case 'case':
-                $exists = \App\Models\CaseModel::where('id', $id)->where('created_by', createdBy())->exists();
-                break;
-            case 'project':
-                $exists = \App\Models\Project::where('id', $id)->where('created_by', createdBy())->exists();
-                break;
-        }
-
-        if (!$exists) {
-            throw new \Illuminate\Validation\ValidationException(
-                \Illuminate\Validation\Validator::make([], [])
-                    ->errors()
-                    ->add('parent_id', 'The selected parent record does not exist.')
-            );
-        }
-    }
-
-    private function getAttendeeName($type, $id)
-    {
-        switch ($type) {
-            case 'user':
-                $user = \App\Models\User::find($id);
-
-                return $user ? $user->name : 'Unknown';
-            case 'contact':
-                $contact = \App\Models\Contact::find($id);
-
-                return $contact ? $contact->name : 'Unknown';
-            case 'lead':
-                $lead = \App\Models\Lead::find($id);
-
-                return $lead ? $lead->name : 'Unknown';
-            default:
-                return 'Unknown';
-        }
     }
 }

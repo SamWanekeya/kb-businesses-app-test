@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderActivity;
+use App\Models\PurchaseOrderComment;
 use Illuminate\Http\Request;
 
 class PurchaseOrderCommentController extends Controller
@@ -22,7 +23,7 @@ class PurchaseOrderCommentController extends Controller
             'comment' => 'required|string|max:1000',
         ]);
 
-        $comment = \App\Models\PurchaseOrderComment::create([
+        $comment = PurchaseOrderComment::create([
             'purchase_order_id' => $purchaseOrder->id,
             'user_id' => auth()->id(),
             'comment' => $validated['comment'],

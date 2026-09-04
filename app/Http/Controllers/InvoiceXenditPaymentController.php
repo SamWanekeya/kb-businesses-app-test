@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
+use Exception;
+use Http;
 use Illuminate\Http\Request;
+use Log;
 
 class InvoiceXenditPaymentController extends Controller
 {
@@ -43,7 +47,7 @@ class InvoiceXenditPaymentController extends Controller
                 'failure_redirect_url' => route('invoices.public', encrypt($invoice->id)),
             ];
 
-            $response = \Http::withHeaders([
+            $response = Http::withHeaders([
                 'Authorization' => 'Basic ' . base64_encode($settings['payment_settings']['xendit_api_key'] . ':'),
                 'Content-Type' => 'application/json',
             ])->post('https://api.xendit.co/v2/invoices', $invoiceData);
@@ -61,9 +65,28 @@ class InvoiceXenditPaymentController extends Controller
 
             return response()->json(['error' => $response->body()], 500);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
+    }
+
+    private function validateInvoicePaymentRequest($request, $additionalRules = [])
+    {
+        $baseRules = [
+            'invoice_id' => 'required|exists:invoices,id',
+            'amount' => 'required|numeric|min:0.01',
+            'payment_type' => 'required|in:full,partial',
+        ];
+
+        return $request->validate(array_merge($baseRules, $additionalRules));
+    }
+
+    private function getInvoicePaymentSettings($organizationId)
+    {
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
     }
 
     public function processPayment(Request $request)
@@ -100,7 +123,7 @@ class InvoiceXenditPaymentController extends Controller
                 'failure_redirect_url' => route('invoices.public', encrypt($invoice->id)),
             ];
 
-            $response = \Http::withHeaders([
+            $response = Http::withHeaders([
                 'Authorization' => 'Basic ' . base64_encode($settings['payment_settings']['xendit_api_key'] . ':'),
                 'Content-Type' => 'application/json',
             ])->post('https://api.xendit.co/v2/invoices', $invoiceData);
@@ -118,7 +141,7 @@ class InvoiceXenditPaymentController extends Controller
 
             return response()->json(['error' => $response->body()], 500);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
     }
@@ -145,7 +168,7 @@ class InvoiceXenditPaymentController extends Controller
                 'payment_id' => $externalId,
             ]);
 
-            \Log::info('Xendit invoice payment successful', [
+            Log::info('Xendit invoice payment successful', [
                 'invoice_id' => $invoiceId,
                 'amount' => $amount,
                 'payment_type' => $paymentType,
@@ -155,8 +178,8 @@ class InvoiceXenditPaymentController extends Controller
             return redirect()->route('invoices.public', encrypt($invoiceId))
                 ->with('success', __('Payment completed successfully!'));
 
-        } catch (\Exception $e) {
-            \Log::error('Xendit invoice success error', [
+        } catch (Exception $e) {
+            Log::error('Xendit invoice success error', [
                 'error' => $e->getMessage(),
                 'request' => $request->all(),
             ]);
@@ -175,7 +198,7 @@ class InvoiceXenditPaymentController extends Controller
             $externalId = $request->input('external_id');
             $status = $request->input('status');
 
-            \Log::info('Xendit invoice callback received', [
+            Log::info('Xendit invoice callback received', [
                 'external_id' => $externalId,
                 'status' => $status,
                 'all_data' => $request->all(),
@@ -205,7 +228,7 @@ class InvoiceXenditPaymentController extends Controller
                                 'payment_id' => $externalId,
                             ]);
 
-                            \Log::info('Xendit invoice payment successful via callback', [
+                            Log::info('Xendit invoice payment successful via callback', [
                                 'invoice_id' => $invoice->id,
                                 'external_id' => $externalId,
                                 'amount' => $amount,
@@ -217,32 +240,13 @@ class InvoiceXenditPaymentController extends Controller
 
             return response('OK', 200);
 
-        } catch (\Exception $e) {
-            \Log::error('Xendit invoice callback error', [
+        } catch (Exception $e) {
+            Log::error('Xendit invoice callback error', [
                 'error' => $e->getMessage(),
                 'data' => $request->all(),
             ]);
 
             return response('Error', 500);
         }
-    }
-
-    private function validateInvoicePaymentRequest($request, $additionalRules = [])
-    {
-        $baseRules = [
-            'invoice_id' => 'required|exists:invoices,id',
-            'amount' => 'required|numeric|min:0.01',
-            'payment_type' => 'required|in:full,partial',
-        ];
-
-        return $request->validate(array_merge($baseRules, $additionalRules));
-    }
-
-    private function getInvoicePaymentSettings($organizationId)
-    {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
-        ];
     }
 }

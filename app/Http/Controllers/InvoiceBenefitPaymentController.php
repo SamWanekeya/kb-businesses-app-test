@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
 use App\Models\User;
+use Exception;
+use Http;
 use Illuminate\Http\Request;
+use Log;
 
 class InvoiceBenefitPaymentController extends Controller
 {
@@ -66,7 +70,7 @@ class InvoiceBenefitPaymentController extends Controller
                 ])],
             ];
 
-            $response = \Http::withHeaders([
+            $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $settings['payment_settings']['benefit_secret_key'],
                 'accept' => 'application/json',
                 'content-type' => 'application/json',
@@ -83,15 +87,15 @@ class InvoiceBenefitPaymentController extends Controller
                 }
             }
 
-            \Log::error('Benefit payment initialization failed', [
+            Log::error('Benefit payment initialization failed', [
                 'invoice_id' => $invoice->id,
                 'response' => $response->body(),
             ]);
 
             return response()->json(['success' => false, 'message' => __('Payment initialization failed')], 500);
 
-        } catch (\Exception $e) {
-            \Log::error('Benefit invoice payment error', [
+        } catch (Exception $e) {
+            Log::error('Benefit invoice payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -99,6 +103,25 @@ class InvoiceBenefitPaymentController extends Controller
 
             return response()->json(['success' => false, 'message' => __('Payment processing failed')], 500);
         }
+    }
+
+    private function validateInvoicePaymentRequest($request, $additionalRules = [])
+    {
+        $baseRules = [
+            'invoice_id' => 'required|exists:invoices,id',
+            'amount' => 'required|numeric|min:0.01',
+            'payment_type' => 'required|in:full,partial',
+        ];
+
+        return $request->validate(array_merge($baseRules, $additionalRules));
+    }
+
+    private function getInvoicePaymentSettings($organizationId)
+    {
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
     }
 
     public function success(Request $request)
@@ -124,7 +147,7 @@ class InvoiceBenefitPaymentController extends Controller
                 'payment_id' => $tapId ?? $orderId,
             ]);
 
-            \Log::info('Benefit invoice payment successful', [
+            Log::info('Benefit invoice payment successful', [
                 'invoice_id' => $invoiceId,
                 'amount' => $amount,
                 'payment_type' => $paymentType,
@@ -133,8 +156,8 @@ class InvoiceBenefitPaymentController extends Controller
 
             return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('success', __('Payment completed successfully!'));
 
-        } catch (\Exception $e) {
-            \Log::error('Benefit success callback error', [
+        } catch (Exception $e) {
+            Log::error('Benefit success callback error', [
                 'error' => $e->getMessage(),
                 'request' => $request->all(),
             ]);
@@ -148,38 +171,19 @@ class InvoiceBenefitPaymentController extends Controller
         try {
             $payload = $request->all();
 
-            \Log::info('Benefit invoice callback received', [
+            Log::info('Benefit invoice callback received', [
                 'payload' => $payload,
             ]);
 
             return response('OK', 200);
 
-        } catch (\Exception $e) {
-            \Log::error('Benefit invoice callback error', [
+        } catch (Exception $e) {
+            Log::error('Benefit invoice callback error', [
                 'error' => $e->getMessage(),
                 'request' => $request->all(),
             ]);
 
             return response(__('Callback processing failed'), 500);
         }
-    }
-
-    private function validateInvoicePaymentRequest($request, $additionalRules = [])
-    {
-        $baseRules = [
-            'invoice_id' => 'required|exists:invoices,id',
-            'amount' => 'required|numeric|min:0.01',
-            'payment_type' => 'required|in:full,partial',
-        ];
-
-        return $request->validate(array_merge($baseRules, $additionalRules));
-    }
-
-    private function getInvoicePaymentSettings($organizationId)
-    {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
-        ];
     }
 }

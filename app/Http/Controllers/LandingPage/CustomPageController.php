@@ -4,6 +4,7 @@ namespace App\Http\Controllers\LandingPage;
 
 use App\Http\Controllers\Controller;
 use App\Models\LandingPageCustomPage;
+use App\Models\LandingPageSetting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -50,11 +51,6 @@ class CustomPageController extends Controller
         ]);
     }
 
-    public function create()
-    {
-        return Inertia::render('landing-page/custom-pages/create');
-    }
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -69,6 +65,11 @@ class CustomPageController extends Controller
         LandingPageCustomPage::create($validated);
 
         return back()->with('success', __('Custom page created successfully!'));
+    }
+
+    public function create()
+    {
+        return Inertia::render('landing-page/custom-pages/create');
     }
 
     public function edit(LandingPageCustomPage $customPage)
@@ -104,7 +105,7 @@ class CustomPageController extends Controller
     public function show($slug)
     {
         $page = LandingPageCustomPage::where('slug', $slug)->where('is_active', true)->firstOrFail();
-        $landingSettings = \App\Models\LandingPageSetting::getSettings();
+        $landingSettings = LandingPageSetting::getSettings();
 
         $superAdminId = User::where('type', 'super_admin')->first()->id;
 

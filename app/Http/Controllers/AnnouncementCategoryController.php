@@ -31,7 +31,7 @@ class AnnouncementCategoryController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $categories = $query->paginate($perPage);
 
         return Inertia::render('announcement-categories/index', [
@@ -55,21 +55,6 @@ class AnnouncementCategoryController extends Controller
         return redirect()->back()->with('success', __('Announcement category created successfully.'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $category = AnnouncementCategory::findOrFail($id);
-
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:announcement_categories,name,' . $id . ',id,created_by,' . createdBy(),
-            'description' => 'nullable|string',
-            'status' => 'required|in:active,inactive',
-        ]);
-
-        $category->update($validated);
-
-        return redirect()->back()->with('success', __('Announcement category updated successfully.'));
-    }
-
     public function destroy($id)
     {
         $category = AnnouncementCategory::findOrFail($id);
@@ -84,5 +69,20 @@ class AnnouncementCategoryController extends Controller
         $category->update(['status' => $category->status === 'active' ? 'inactive' : 'active']);
 
         return redirect()->back()->with('success', __('Announcement category status updated successfully.'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $category = AnnouncementCategory::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:announcement_categories,name,' . $id . ',id,created_by,' . createdBy(),
+            'description' => 'nullable|string',
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        $category->update($validated);
+
+        return redirect()->back()->with('success', __('Announcement category updated successfully.'));
     }
 }

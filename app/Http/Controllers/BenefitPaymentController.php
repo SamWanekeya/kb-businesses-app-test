@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Plan;
 use App\Models\PlanOrder;
 use App\Models\User;
+use Exception;
+use Http;
 use Illuminate\Http\Request;
 
 class BenefitPaymentController extends Controller
@@ -47,9 +49,16 @@ class BenefitPaymentController extends Controller
 
             return back()->withErrors(['error' => __('Payment verification failed')]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return handlePaymentError($e, 'benefit');
         }
+    }
+
+    private function verifyBenefitPayment($paymentId, $transactionId, $settings)
+    {
+        // This is a simplified verification - in production, use Benefit API
+        // For now, we'll assume the payment is valid if we have the required parameters
+        return !empty($paymentId) && !empty($transactionId);
     }
 
     public function createPaymentSession(Request $request)
@@ -97,7 +106,7 @@ class BenefitPaymentController extends Controller
             ];
 
             $responseData = json_encode($userData);
-            $response = \Http::withHeaders([
+            $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $settings['payment_settings']['benefit_secret_key'],
                 'accept' => 'application/json',
                 'content-type' => 'application/json',
@@ -116,7 +125,7 @@ class BenefitPaymentController extends Controller
 
             return response()->json(['error' => $response->body()], 500);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Payment session creation failed')], 500);
         }
     }
@@ -164,9 +173,21 @@ class BenefitPaymentController extends Controller
 
             return redirect()->route('plans.index')->withErrors(['error' => __('Payment failed or cancelled')]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('plans.index')->withErrors(['error' => __('Payment processing failed')]);
         }
+    }
+
+    private function retrieveBenefitPayment($paymentId, $settings)
+    {
+        // This is a simplified retrieval - in production, use Benefit API
+        // For now, return a mock successful response
+        return [
+            'status' => 'completed',
+            'payment_id' => $paymentId,
+            'amount' => '10.000',
+            'currency' => 'BHD',
+        ];
     }
 
     public function success(Request $request)
@@ -203,7 +224,7 @@ class BenefitPaymentController extends Controller
 
             return redirect()->route('plans.index')->with('error', __('Payment verification failed'));
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('plans.index')->with('error', __('Payment processing failed'));
         }
     }
@@ -253,16 +274,16 @@ class BenefitPaymentController extends Controller
 
             return response()->json(['status' => 'success']);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Webhook processing failed')], 500);
         }
     }
 
-    private function verifyBenefitPayment($paymentId, $transactionId, $settings)
+    private function verifyBenefitWebhook($payload, $signature, $settings)
     {
-        // This is a simplified verification - in production, use Benefit API
-        // For now, we'll assume the payment is valid if we have the required parameters
-        return !empty($paymentId) && !empty($transactionId);
+        // This is a simplified webhook verification - in production, verify the signature
+        // using Benefit's webhook secret and HMAC
+        return true;
     }
 
     private function createBenefitSession($paymentData, $settings)
@@ -277,24 +298,5 @@ class BenefitPaymentController extends Controller
             'session_id' => 'benefit_session_' . time(),
             'payment_url' => $baseUrl . '/payment/checkout?session=' . time(),
         ];
-    }
-
-    private function retrieveBenefitPayment($paymentId, $settings)
-    {
-        // This is a simplified retrieval - in production, use Benefit API
-        // For now, return a mock successful response
-        return [
-            'status' => 'completed',
-            'payment_id' => $paymentId,
-            'amount' => '10.000',
-            'currency' => 'BHD',
-        ];
-    }
-
-    private function verifyBenefitWebhook($payload, $signature, $settings)
-    {
-        // This is a simplified webhook verification - in production, verify the signature
-        // using Benefit's webhook secret and HMAC
-        return true;
     }
 }

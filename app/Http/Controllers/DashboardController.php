@@ -2,13 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
+use App\Models\Announcement;
 use App\Models\Coupon;
+use App\Models\Invoice;
+use App\Models\Lead;
+use App\Models\Opportunity;
 use App\Models\Plan;
 use App\Models\PlanOrder;
 use App\Models\PlanRequest;
+use App\Models\Project;
+use App\Models\SalesOrder;
 use App\Models\User;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class DashboardController extends Controller
 {
@@ -26,7 +38,7 @@ class DashboardController extends Controller
             if ($user->hasPermissionTo('manage-dashboard')) {
                 return $this->renderDashboard();
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Permission doesn't exist, continue to dashboard for authenticated users
             return $this->renderDashboard();
         }
@@ -55,7 +67,7 @@ class DashboardController extends Controller
                 if ($user->hasPermissionTo($routeData['permission'])) {
                     return redirect()->route($routeData['route']);
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Permission doesn't exist, continue to next route
                 continue;
             }
@@ -80,8 +92,8 @@ class DashboardController extends Controller
 
     private function renderSuperAdminDashboard()
     {
-        $revenueYear = (int) request('revenueYear', now()->year);
-        $organizationsYear = (int) request('organizationsYear', now()->year);
+        $revenueYear = (int)request('revenueYear', now()->year);
+        $organizationsYear = (int)request('organizationsYear', now()->year);
 
         $totalOrganizations = User::where('type', 'organization')->count();
         $totalActivePlanOrganizations = User::where('type', 'organization')->where('is_plan_active', '1')->count();
@@ -98,7 +110,7 @@ class DashboardController extends Controller
                 $monthlyRevenue[] = [
                     'month' => date('F Y', mktime(0, 0, 0, $i, 1, $revenueYear)),
                     'short' => date('M', mktime(0, 0, 0, $i, 1, $revenueYear)),
-                    'revenue' => (float) $demoRevenue[$i - 1],
+                    'revenue' => (float)$demoRevenue[$i - 1],
                 ];
             }
         } else {
@@ -111,7 +123,7 @@ class DashboardController extends Controller
                 $monthlyRevenue[] = [
                     'month' => date('F Y', mktime(0, 0, 0, $i, 1, $revenueYear)),
                     'short' => date('M', mktime(0, 0, 0, $i, 1, $revenueYear)),
-                    'revenue' => (float) $revenue,
+                    'revenue' => (float)$revenue,
                 ];
             }
         }
@@ -142,7 +154,7 @@ class DashboardController extends Controller
         }
 
         $firstOrganizationYear = User::where('type', 'organization')->min('created_at')
-            ? (int) date('Y', strtotime(User::where('type', 'organization')->min('created_at')))
+            ? (int)date('Y', strtotime(User::where('type', 'organization')->min('created_at')))
             : now()->year;
         $availableOrganizationYears = range(now()->year, $firstOrganizationYear);
 
@@ -227,46 +239,46 @@ class DashboardController extends Controller
 
         try {
             if (class_exists('\App\Models\Lead')) {
-                $totalLeads = \App\Models\Lead::where('created_by', $organizationId)->count();
+                $totalLeads = Lead::where('created_by', $organizationId)->count();
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         try {
             if (class_exists('\App\Models\Opportunity')) {
-                $totalOpportunities = \App\Models\Opportunity::where('created_by', $organizationId)->count();
+                $totalOpportunities = Opportunity::where('created_by', $organizationId)->count();
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         try {
             if (class_exists('\App\Models\SalesOrder')) {
-                $totalSales = \App\Models\SalesOrder::where('created_by', $organizationId)->count();
+                $totalSales = SalesOrder::where('created_by', $organizationId)->count();
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         try {
             if (class_exists('\App\Models\Account')) {
-                $totalCustomers = \App\Models\Account::where('created_by', $organizationId)->count();
+                $totalCustomers = Account::where('created_by', $organizationId)->count();
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         try {
             if (class_exists('\App\Models\Project')) {
-                $totalProjects = \App\Models\Project::where('created_by', $organizationId)->count();
+                $totalProjects = Project::where('created_by', $organizationId)->count();
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         try {
             if (class_exists('\App\Models\Invoice')) {
-                $organizationRevenue = \App\Models\Invoice::where('created_by', $organizationId)
+                $organizationRevenue = Invoice::where('created_by', $organizationId)
                     ->where('status', 'paid')
                     ->sum('total_amount') ?? 0;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         $currentMonthLeads = 0;
@@ -274,14 +286,14 @@ class DashboardController extends Controller
 
         try {
             if (class_exists('\App\Models\Lead')) {
-                $currentMonthLeads = \App\Models\Lead::where('created_by', $organizationId)
+                $currentMonthLeads = Lead::where('created_by', $organizationId)
                     ->whereMonth('created_at', now()->month)
                     ->count();
-                $previousMonthLeads = \App\Models\Lead::where('created_by', $organizationId)
+                $previousMonthLeads = Lead::where('created_by', $organizationId)
                     ->whereMonth('created_at', now()->subMonth()->month)
                     ->count();
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
         $monthlyGrowth = IsDemo() ? 50 : ($previousMonthLeads > 0
             ? round((($currentMonthLeads - $previousMonthLeads) / $previousMonthLeads) * 100, 1)
@@ -290,11 +302,11 @@ class DashboardController extends Controller
         $totalConvertedLeads = 0;
         try {
             if (class_exists('\App\Models\Lead')) {
-                $totalConvertedLeads = \App\Models\Lead::where('created_by', $organizationId)
+                $totalConvertedLeads = Lead::where('created_by', $organizationId)
                     ->where('is_converted', 1)
                     ->count();
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         $conversionRate = $totalLeads > 0 ? round(($totalConvertedLeads / $totalLeads) * 100, 1) : 0;
@@ -326,10 +338,10 @@ class DashboardController extends Controller
                 ];
             }
         } else {
-            $chartYear = (int) request('chart_year', now()->year);
-            $leadYear = (int) request('lead_year', now()->year);
+            $chartYear = (int)request('chart_year', now()->year);
+            $leadYear = (int)request('lead_year', now()->year);
             for ($m = 1; $m <= 12; $m++) {
-                $date = \Carbon\Carbon::create($chartYear, $m, 1);
+                $date = Carbon::create($chartYear, $m, 1);
                 $monthlySales = 0;
                 $monthlyLeads = 0;
                 $monthlyConversions = 0;
@@ -337,39 +349,39 @@ class DashboardController extends Controller
 
                 try {
                     if (class_exists('\App\Models\SalesOrder')) {
-                        $monthlySales = \App\Models\SalesOrder::where('created_by', $organizationId)
+                        $monthlySales = SalesOrder::where('created_by', $organizationId)
                             ->whereMonth('created_at', $m)
                             ->whereYear('created_at', $chartYear)
                             ->count();
                     }
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                 }
 
                 try {
                     if (class_exists('\App\Models\Lead')) {
-                        $monthlyLeads = \App\Models\Lead::where('created_by', $organizationId)
+                        $monthlyLeads = Lead::where('created_by', $organizationId)
                             ->whereMonth('created_at', $m)
                             ->whereYear('created_at', $leadYear)
                             ->count();
 
-                        $monthlyConversions = \App\Models\Lead::where('created_by', $organizationId)
+                        $monthlyConversions = Lead::where('created_by', $organizationId)
                             ->where('is_converted', 1)
                             ->whereMonth('updated_at', $m)
                             ->whereYear('updated_at', $leadYear)
                             ->count();
                     }
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                 }
 
                 try {
                     if (class_exists('\App\Models\Invoice')) {
-                        $monthlyRevenue = \App\Models\Invoice::where('created_by', $organizationId)
+                        $monthlyRevenue = Invoice::where('created_by', $organizationId)
                             ->whereIn('status', ['paid', 'partial_paid'])
                             ->whereMonth('created_at', $m)
                             ->whereYear('created_at', $chartYear)
                             ->sum('total_amount') ?? 0;
                     }
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                 }
 
                 $salesTrendsData[] = ['month' => $date->format('F'), 'short' => $date->format('M'), 'sales' => $monthlySales];
@@ -379,20 +391,20 @@ class DashboardController extends Controller
                     'leads' => $monthlyLeads,
                     'conversions' => $monthlyConversions,
                 ];
-                $revenueChartData[] = ['month' => $date->format('F'), 'short' => $date->format('M'), 'revenue' => (float) $monthlyRevenue];
+                $revenueChartData[] = ['month' => $date->format('F'), 'short' => $date->format('M'), 'revenue' => (float)$monthlyRevenue];
             }
         }
 
         $customerTypes = collect();
         try {
             if (class_exists('\App\Models\Account')) {
-                $customerTypes = \App\Models\Account::where('created_by', $organizationId)
+                $customerTypes = Account::where('created_by', $organizationId)
                     ->select('account_type_id', DB::raw('COUNT(*) as count'))
                     ->with('accountType:id,name')
                     ->groupBy('account_type_id')
                     ->get();
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         $customerDistribution = [];
@@ -426,50 +438,50 @@ class DashboardController extends Controller
 
         try {
             if (class_exists('\App\Models\Lead')) {
-                $recentLeads = \App\Models\Lead::where('created_by', $organizationId)
+                $recentLeads = Lead::where('created_by', $organizationId)
                     ->latest()
                     ->take(5)
                     ->get(['id', 'name', 'email', 'status', 'created_at']);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         try {
             if (class_exists('\App\Models\SalesOrder')) {
-                $recentSales = \App\Models\SalesOrder::where('created_by', $organizationId)
+                $recentSales = SalesOrder::where('created_by', $organizationId)
                     ->with('account:id,name')
                     ->latest()
                     ->take(5)
                     ->get(['id', 'account_id', 'total_amount', 'status', 'created_at']);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         try {
             if (class_exists('\App\Models\Project')) {
-                $recentProjects = \App\Models\Project::where('created_by', $organizationId)
+                $recentProjects = Project::where('created_by', $organizationId)
                     ->whereIn('status', ['active', 'in_progress', 'in progress'])
                     ->latest()
                     ->get(['id', 'name', 'status', 'created_at']);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         try {
             if (class_exists('\App\Models\Account')) {
-                $recentCustomers = \App\Models\Account::where('created_by', $organizationId)
+                $recentCustomers = Account::where('created_by', $organizationId)
                     ->with('accountType:id,name')
                     ->latest()
                     ->take(5)
                     ->get(['id', 'name', 'email', 'account_type_id', 'created_at']);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         $recentAnnouncements = collect();
         try {
             if (class_exists('\App\Models\Announcement')) {
-                $recentAnnouncements = \App\Models\Announcement::where('created_by', $organizationId)
+                $recentAnnouncements = Announcement::where('created_by', $organizationId)
                     ->where('status', 'active')
                     ->with('category:id,name')
                     ->orderBy('is_featured', 'desc')
@@ -477,7 +489,7 @@ class DashboardController extends Controller
                     ->take(5)
                     ->get(['id', 'title', 'announcement_category_id', 'is_featured', 'created_at']);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         // Storage usage calculation with plan limits
@@ -496,8 +508,8 @@ class DashboardController extends Controller
         } else {
             try {
                 $organizationUsers = User::where('created_by', $organizationId)->pluck('id')->push($organizationId);
-                $storageUsed = \Spatie\MediaLibrary\MediaCollections\Models\Media::whereIn('user_id', $organizationUsers)->sum('size');
-            } catch (\Exception $e) {
+                $storageUsed = Media::whereIn('user_id', $organizationUsers)->sum('size');
+            } catch (Exception $e) {
             }
         }
 
@@ -588,7 +600,7 @@ class DashboardController extends Controller
     {
         $size = 0;
         if (is_dir($directory)) {
-            foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory)) as $file) {
+            foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory)) as $file) {
                 $size += $file->getSize();
             }
         }

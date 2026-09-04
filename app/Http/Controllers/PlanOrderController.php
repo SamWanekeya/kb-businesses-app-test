@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Currency;
 use App\Models\PlanOrder;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -90,7 +91,7 @@ class PlanOrderController extends BaseController
 
             return redirect()->route('plan-orders.index')
                 ->with('success', __('Plan order approved successfully!'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('plan-orders.index')
                 ->with('error', __('Failed to approve plan order: ') . $e->getMessage());
         }
@@ -107,7 +108,7 @@ class PlanOrderController extends BaseController
 
             return redirect()->route('plan-orders.index')
                 ->with('success', __('Plan order rejected successfully!'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('plan-orders.index')
                 ->with('error', __('Failed to reject plan order: ') . $e->getMessage());
         }

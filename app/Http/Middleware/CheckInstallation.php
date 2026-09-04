@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 
@@ -15,11 +16,11 @@ class CheckInstallation
     {
         // Skip check for installer routes, API routes, and static assets
         if ($request->is('install/*') ||
-        $request->is('update/*') ||
-        $request->is('css/*') ||
-        $request->is('js/*') ||
-        $request->is('images/*') ||
-        $request->is('installer/*')) {
+            $request->is('update/*') ||
+            $request->is('css/*') ||
+            $request->is('js/*') ||
+            $request->is('images/*') ||
+            $request->is('installer/*')) {
             return $next($request);
         }
 
@@ -59,7 +60,7 @@ class CheckInstallation
             $output = Artisan::output();
 
             return strpos($output, 'Pending') !== false;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }

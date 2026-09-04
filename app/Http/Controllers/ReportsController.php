@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Call;
 use App\Models\Contact;
 use App\Models\Lead;
+use App\Models\Meeting;
 use App\Models\Product;
 use App\Models\Project;
 use App\Models\SalesOrder;
@@ -70,7 +72,6 @@ class ReportsController extends Controller
             ->whereBetween('leads.created_at', [$dateFrom, $dateTo])
             ->groupBy('lead_sources.name')
             ->get();
-
 
 
         $recentLeads = Lead::with(['leadStatus', 'assignedUser'])
@@ -154,18 +155,18 @@ class ReportsController extends Controller
             ->limit(5)
             ->get();
 
-        $topProducts = \Illuminate\Support\Facades\DB::table('sales_order_products')
+        $topProducts = DB::table('sales_order_products')
             ->join('products', 'sales_order_products.product_id', '=', 'products.id')
             ->join('sales_orders', 'sales_order_products.sales_order_id', '=', 'sales_orders.id')
             ->where('sales_orders.created_by', $organizationId)
             ->whereBetween('sales_orders.created_at', [$dateFrom, $dateTo])
-            ->select('products.id as product_id', 'products.name', \Illuminate\Support\Facades\DB::raw('SUM(sales_order_products.total_price) as total_revenue'), \Illuminate\Support\Facades\DB::raw('SUM(sales_order_products.quantity) as total_quantity'))
+            ->select('products.id as product_id', 'products.name', DB::raw('SUM(sales_order_products.total_price) as total_revenue'), DB::raw('SUM(sales_order_products.quantity) as total_quantity'))
             ->groupBy('products.id', 'products.name')
             ->orderByDesc('total_revenue')
             ->limit(5)
             ->get()
             ->map(function ($item) {
-                $product = \App\Models\Product::find($item->product_id);
+                $product = Product::find($item->product_id);
                 $item->image = $product ? $product->main_image_url : null;
 
                 return $item;
@@ -211,12 +212,12 @@ class ReportsController extends Controller
             ->orderBy('revenue', 'desc')
             ->get()
             ->map(function ($item) {
-                $product = \App\Models\Product::find($item->product_id);
+                $product = Product::find($item->product_id);
 
                 return [
                     'name' => $item->name,
-                    'quantity' => (int) $item->quantity,
-                    'revenue' => (float) $item->revenue,
+                    'quantity' => (int)$item->quantity,
+                    'revenue' => (float)$item->revenue,
                     'image' => $product ? $product->main_image_url : null,
                 ];
             });
@@ -235,12 +236,12 @@ class ReportsController extends Controller
             ->limit(5)
             ->get()
             ->map(function ($item) {
-                $product = \App\Models\Product::find($item->product_id);
+                $product = Product::find($item->product_id);
 
                 return [
                     'name' => $item->name,
-                    'quantity' => (int) $item->quantity,
-                    'revenue' => (float) $item->revenue,
+                    'quantity' => (int)$item->quantity,
+                    'revenue' => (float)$item->revenue,
                     'image' => $product ? $product->main_image_url : null,
                 ];
             });
@@ -312,8 +313,8 @@ class ReportsController extends Controller
                 return [
                     'name' => $item->name,
                     'email' => $item->email,
-                    'total_spent' => (float) $item->total_spent,
-                    'order_count' => (int) $item->order_count,
+                    'total_spent' => (float)$item->total_spent,
+                    'order_count' => (int)$item->order_count,
                 ];
             });
 
@@ -326,7 +327,7 @@ class ReportsController extends Controller
             ->orderBy('total', 'desc')
             ->get();
 
-        $recentMeetings = \App\Models\Meeting::where('parent_module', 'contact')
+        $recentMeetings = Meeting::where('parent_module', 'contact')
             ->where('created_by', $organizationId)
             ->orderBy('created_at', 'desc')
             ->limit(5)
@@ -334,13 +335,13 @@ class ReportsController extends Controller
                 $item->type = 'meeting';
                 $item->icon = 'users';
                 $item->date_formatted = $item->created_at->diffForHumans();
-                $contact = \App\Models\Contact::find($item->parent_id);
+                $contact = Contact::find($item->parent_id);
                 $item->contact_name = $contact ? $contact->name : 'Unknown';
 
                 return $item;
             });
 
-        $recentCalls = \App\Models\Call::where('parent_module', 'contact')
+        $recentCalls = Call::where('parent_module', 'contact')
             ->where('created_by', $organizationId)
             ->orderBy('created_at', 'desc')
             ->limit(5)
@@ -348,7 +349,7 @@ class ReportsController extends Controller
                 $item->type = 'call';
                 $item->icon = 'phone';
                 $item->date_formatted = $item->created_at->diffForHumans();
-                $contact = \App\Models\Contact::find($item->parent_id);
+                $contact = Contact::find($item->parent_id);
                 $item->contact_name = $contact ? $contact->name : 'Unknown';
 
                 return $item;
@@ -415,7 +416,7 @@ class ReportsController extends Controller
         $overdueProjects = Project::with('assignedUser')
             ->where('created_by', $organizationId)
             ->where('status', '!=', 'completed')
-            ->where('end_date', '<', \Carbon\Carbon::now()->format('Y-m-d'))
+            ->where('end_date', '<', Carbon::now()->format('Y-m-d'))
             ->get();
 
         return Inertia::render('reports/project-reports', [

@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
 use CoinGate\Client;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 
 class InvoiceCoingatePaymentController extends Controller
 {
@@ -34,13 +37,13 @@ class InvoiceCoingatePaymentController extends Controller
             $currency = $settings['general_settings']['defaultCurrency'] ?? 'USD';
 
             if (!isset($settings['payment_settings']['coingate_api_token']) || empty($settings['payment_settings']['coingate_api_token'])) {
-                \Log::error('Coingate payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+                Log::error('Coingate payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return back()->withErrors(['error' => __('Coingate not configured')]);
             }
 
             // Generate unique order ID (like plan payment)
-            $orderId = "invoice_{$invoice->id}_".time();
+            $orderId = "invoice_{$invoice->id}_" . time();
 
             // Use official CoinGate package
             $client = new Client(
@@ -70,7 +73,7 @@ class InvoiceCoingatePaymentController extends Controller
                     'payment_type' => $validated['payment_type'],
                 ])]);
 
-                \Log::info('Coingate payment initiated', [
+                Log::info('Coingate payment initiated', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
@@ -79,7 +82,7 @@ class InvoiceCoingatePaymentController extends Controller
 
                 return redirect($orderResponse->payment_url);
             } else {
-                \Log::error('Coingate order creation failed', [
+                Log::error('Coingate order creation failed', [
                     'invoice_id' => $invoice->id,
                     'response' => $orderResponse,
                 ]);
@@ -87,67 +90,14 @@ class InvoiceCoingatePaymentController extends Controller
                 return back()->withErrors(['error' => __('Payment initialization failed')]);
             }
 
-        } catch (\Exception $e) {
-            \Log::error('Coingate payment error', [
+        } catch (Exception $e) {
+            Log::error('Coingate payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
 
             return $this->handleInvoicePaymentError($e, 'coingate');
-        }
-    }
-
-    public function callback(Request $request)
-    {
-        try {
-            $coingateData = session('coingate_data');
-
-            if (!$coingateData) {
-                \Log::error('Coingate callback: Data not found in session');
-
-                return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment session expired'));
-            }
-
-            $orderId = is_object($coingateData) ? $coingateData->order_id : $coingateData['order_id'];
-
-            if (!$orderId) {
-                \Log::error('Coingate callback: Order ID not found', [
-                    'session_data' => $coingateData,
-                ]);
-
-                return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Order ID not found'));
-            }
-
-            // Only create payment entry on successful callback (no pending status)
-            InvoicePayment::storePayment([
-                'invoice_id' => $coingateData['invoice_id'],
-                'amount' => $coingateData['amount'],
-                'payment_type' => $coingateData['payment_type'],
-                'payment_method' => 'coingate',
-                'payment_id' => $orderId,
-            ]);
-
-            // Clear session
-            session()->forget('coingate_data');
-
-            \Log::info('Coingate payment completed', [
-                'invoice_id' => $coingateData['invoice_id'],
-                'payment_id' => $orderId,
-                'amount' => $coingateData['amount'],
-            ]);
-
-            return redirect()->route('invoices.public', encrypt($coingateData['invoice_id']))
-                ->with('success', __('Payment successful'));
-
-        } catch (\Exception $e) {
-            \Log::error('Coingate callback error', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-                'request_data' => $request->all(),
-            ]);
-
-            return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment processing failed'));
         }
     }
 
@@ -166,12 +116,65 @@ class InvoiceCoingatePaymentController extends Controller
     {
         return [
             'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }
 
     private function handleInvoicePaymentError($e, $method = 'coingate')
     {
         return back()->withErrors(['error' => __('Payment processing failed: :message', ['message' => $e->getMessage()])]);
+    }
+
+    public function callback(Request $request)
+    {
+        try {
+            $coingateData = session('coingate_data');
+
+            if (!$coingateData) {
+                Log::error('Coingate callback: Data not found in session');
+
+                return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment session expired'));
+            }
+
+            $orderId = is_object($coingateData) ? $coingateData->order_id : $coingateData['order_id'];
+
+            if (!$orderId) {
+                Log::error('Coingate callback: Order ID not found', [
+                    'session_data' => $coingateData,
+                ]);
+
+                return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Order ID not found'));
+            }
+
+            // Only create payment entry on successful callback (no pending status)
+            InvoicePayment::storePayment([
+                'invoice_id' => $coingateData['invoice_id'],
+                'amount' => $coingateData['amount'],
+                'payment_type' => $coingateData['payment_type'],
+                'payment_method' => 'coingate',
+                'payment_id' => $orderId,
+            ]);
+
+            // Clear session
+            session()->forget('coingate_data');
+
+            Log::info('Coingate payment completed', [
+                'invoice_id' => $coingateData['invoice_id'],
+                'payment_id' => $orderId,
+                'amount' => $coingateData['amount'],
+            ]);
+
+            return redirect()->route('invoices.public', encrypt($coingateData['invoice_id']))
+                ->with('success', __('Payment successful'));
+
+        } catch (Exception $e) {
+            Log::error('Coingate callback error', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'request_data' => $request->all(),
+            ]);
+
+            return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment processing failed'));
+        }
     }
 }

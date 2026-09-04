@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Plan;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Iyzipay\Model\Address;
 use Iyzipay\Model\BasketItem;
@@ -20,18 +21,6 @@ use Iyzipay\Request\RetrieveCheckoutFormRequest;
 
 class IyzipayPaymentController extends Controller
 {
-    private function getIyzipayOptions($settings)
-    {
-        $options = new Options();
-        $options->setApiKey($settings['iyzipay_public_key']);
-        $options->setSecretKey($settings['iyzipay_secret_key']);
-        $options->setBaseUrl($settings['iyzipay_mode'] === 'live'
-            ? 'https://api.iyzipay.com'
-            : 'https://sandbox-api.iyzipay.com');
-
-        return $options;
-    }
-
     public function processPayment(Request $request)
     {
         $validated = validatePaymentRequest($request, [
@@ -65,9 +54,37 @@ class IyzipayPaymentController extends Controller
 
             return back()->withErrors(['error' => __('Payment failed or cancelled')]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return handlePaymentError($e, 'iyzipay');
         }
+    }
+
+    private function retrieveIyzipayPayment($token, $settings)
+    {
+        try {
+            $options = $this->getIyzipayOptions($settings);
+
+            $request = new RetrieveCheckoutFormRequest();
+            $request->setToken($token);
+
+            $checkoutForm = CheckoutForm::retrieve($request, $options);
+
+            return $checkoutForm;
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+
+    private function getIyzipayOptions($settings)
+    {
+        $options = new Options();
+        $options->setApiKey($settings['iyzipay_public_key']);
+        $options->setSecretKey($settings['iyzipay_secret_key']);
+        $options->setBaseUrl($settings['iyzipay_mode'] === 'live'
+            ? 'https://api.iyzipay.com'
+            : 'https://sandbox-api.iyzipay.com');
+
+        return $options;
     }
 
     public function createPaymentForm(Request $request)
@@ -163,7 +180,7 @@ class IyzipayPaymentController extends Controller
                 return response()->json(['error' => $checkoutFormInitialize->getErrorMessage()], 400);
             }
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Payment form creation failed')], 500);
         }
     }
@@ -209,7 +226,7 @@ class IyzipayPaymentController extends Controller
 
             return redirect()->route('plans.index')->withErrors(['error' => __('Payment failed or cancelled')]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('plans.index')->withErrors(['error' => __('Payment processing failed')]);
         }
     }
@@ -261,24 +278,8 @@ class IyzipayPaymentController extends Controller
 
             return redirect()->route('plans.index')->withErrors(['error' => __('Payment failed or cancelled')]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('plans.index')->withErrors(['error' => __('Payment processing failed')]);
-        }
-    }
-
-    private function retrieveIyzipayPayment($token, $settings)
-    {
-        try {
-            $options = $this->getIyzipayOptions($settings);
-
-            $request = new RetrieveCheckoutFormRequest();
-            $request->setToken($token);
-
-            $checkoutForm = CheckoutForm::retrieve($request, $options);
-
-            return $checkoutForm;
-        } catch (\Exception $e) {
-            return null;
         }
     }
 }

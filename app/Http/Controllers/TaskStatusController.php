@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProjectTask;
 use App\Models\TaskStatus;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -32,7 +34,7 @@ class TaskStatusController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $taskStatuses = $query->paginate($perPage)->withQueryString();
 
         return Inertia::render('task-statuses/index', [
@@ -82,7 +84,7 @@ class TaskStatusController extends Controller
         }
 
         // Check if any tasks are using this status
-        $taskCount = \App\Models\ProjectTask::where('task_status_id', $taskStatus->id)->count();
+        $taskCount = ProjectTask::where('task_status_id', $taskStatus->id)->count();
 
         if ($taskCount > 0) {
             return redirect()->back()->with('error', __('Cannot delete task status. ' . $taskCount . ' task(s) are using this status.'));
@@ -105,7 +107,7 @@ class TaskStatusController extends Controller
                 $taskStatus->save();
 
                 return redirect()->back()->with('success', __('Task-Status status updated successfully'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update Task-Status status'));
             }
         } else {

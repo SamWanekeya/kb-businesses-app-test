@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 use Paytabscom\Laravel_paytabs\Facades\paypage;
 
 class InvoicePayTabsPaymentController extends Controller
@@ -76,8 +79,8 @@ class InvoicePayTabsPaymentController extends Controller
 
             return response()->json(['success' => false, 'message' => __('Payment initialization failed.')], 400);
 
-        } catch (\Exception $e) {
-            \Log::info('PayTabs payment error', [
+        } catch (Exception $e) {
+            Log::info('PayTabs payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -85,6 +88,25 @@ class InvoicePayTabsPaymentController extends Controller
 
             return response()->json(['success' => false, 'message' => __('Payment processing failed.')], 500);
         }
+    }
+
+    private function validateInvoicePaymentRequest($request, $additionalRules = [])
+    {
+        $baseRules = [
+            'invoice_id' => 'required|exists:invoices,id',
+            'amount' => 'required|numeric|min:0.01',
+            'payment_type' => 'required|in:full,partial',
+        ];
+
+        return $request->validate(array_merge($baseRules, $additionalRules));
+    }
+
+    private function getInvoicePaymentSettings($organizationId)
+    {
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
     }
 
     public function success(Request $request)
@@ -109,7 +131,7 @@ class InvoicePayTabsPaymentController extends Controller
                 'payment_id' => $cartId,
             ]);
 
-            \Log::info('PayTabs payment successful', [
+            Log::info('PayTabs payment successful', [
                 'invoice_id' => $invoiceId,
                 'amount' => $amount,
                 'payment_type' => $paymentType,
@@ -118,8 +140,8 @@ class InvoicePayTabsPaymentController extends Controller
 
             return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('success', __('Payment completed successfully!'));
 
-        } catch (\Exception $e) {
-            \Log::info('PayTabs success callback error', [
+        } catch (Exception $e) {
+            Log::info('PayTabs success callback error', [
                 'error' => $e->getMessage(),
                 'request' => $request->all(),
             ]);
@@ -135,7 +157,7 @@ class InvoicePayTabsPaymentController extends Controller
             $respStatus = $request->input('respStatus') ?? $request->input('resp_status');
             $tranRef = $request->input('tranRef') ?? $request->input('tran_ref');
 
-            \Log::info('PayTabs callback received', [
+            Log::info('PayTabs callback received', [
                 'cart_id' => $cartId,
                 'resp_status' => $respStatus,
                 'tran_ref' => $tranRef,
@@ -144,32 +166,13 @@ class InvoicePayTabsPaymentController extends Controller
 
             return response('OK', 200);
 
-        } catch (\Exception $e) {
-            \Log::info('PayTabs callback error', [
+        } catch (Exception $e) {
+            Log::info('PayTabs callback error', [
                 'error' => $e->getMessage(),
                 'request' => $request->all(),
             ]);
 
             return response(__('Callback processing failed'), 500);
         }
-    }
-
-    private function validateInvoicePaymentRequest($request, $additionalRules = [])
-    {
-        $baseRules = [
-            'invoice_id' => 'required|exists:invoices,id',
-            'amount' => 'required|numeric|min:0.01',
-            'payment_type' => 'required|in:full,partial',
-        ];
-
-        return $request->validate(array_merge($baseRules, $additionalRules));
-    }
-
-    private function getInvoicePaymentSettings($organizationId)
-    {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
-        ];
     }
 }

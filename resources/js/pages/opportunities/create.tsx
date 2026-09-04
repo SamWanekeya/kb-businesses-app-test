@@ -396,7 +396,7 @@ export default function OpportunityCreate() {
                                                     {t('Product')} <span className="text-red-500">*</span>
                                                 </th>
                                                 <th className="w-16 px-3 py-2 text-left">
-                                                    {t('Qty')} <span className="text-red-500">*</span>
+                                                    {t('Quantity')} <span className="text-red-500">*</span>
                                                 </th>
                                                 <th className="w-20 px-3 py-2 text-left">
                                                     {t('Unit Price')} <span className="text-red-500">*</span>
@@ -567,7 +567,7 @@ export default function OpportunityCreate() {
                                                     <div className="grid grid-cols-2 gap-3">
                                                         <div>
                                                             <label className="text-muted-foreground mb-1 block text-xs font-medium">
-                                                                {t('Qty')} *
+                                                                {t('Quantity')} *
                                                             </label>
                                                             <Input
                                                                 type="number"

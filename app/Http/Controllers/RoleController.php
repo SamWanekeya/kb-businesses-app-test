@@ -44,7 +44,7 @@ class RoleController extends BaseController
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $roles = $query->paginate($perPage)->withQueryString();
 
         $permissions = $this->getFilteredPermissions();
@@ -94,44 +94,6 @@ class RoleController extends BaseController
     }
 
     /**
-     * Validate permissions against user's allowed modules
-     */
-    private function validatePermissions(array $permissionNames)
-    {
-        $user = Auth::user();
-        $userType = $user->type ?? 'organization';
-
-        // Superadmin can assign any permission
-        if ($userType === 'super_admin' || $userType === 'super admin') {
-            return $permissionNames;
-        }
-
-        // Get allowed modules for current user role
-        $allowedModules = config('role-permissions.' . $userType, config('role-permissions.organization'));
-
-        // Build query to get valid permissions
-        $query = Permission::whereIn('module', $allowedModules)
-            ->whereIn('name', $permissionNames);
-
-        // For organization users, restrict settings and notification template permissions
-        if ($userType === 'organization') {
-            $query->where(function ($q) {
-                $q->where('module', '!=', 'settings')
-                    ->where('module', '!=', 'notification-templates')
-                    ->orWhereIn('name', [
-                        'manage-email-settings',
-                        'manage-system-settings',
-                        'manage-brand-settings',
-                    ]);
-            });
-        }
-
-        $validPermissions = $query->pluck('name')->toArray();
-
-        return $validPermissions;
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -171,6 +133,44 @@ class RoleController extends BaseController
         }
 
         return redirect()->back()->with('error', __('Unable to create Role with permissions. Please try again!'));
+    }
+
+    /**
+     * Validate permissions against user's allowed modules
+     */
+    private function validatePermissions(array $permissionNames)
+    {
+        $user = Auth::user();
+        $userType = $user->type ?? 'organization';
+
+        // Superadmin can assign any permission
+        if ($userType === 'super_admin' || $userType === 'super admin') {
+            return $permissionNames;
+        }
+
+        // Get allowed modules for current user role
+        $allowedModules = config('role-permissions.' . $userType, config('role-permissions.organization'));
+
+        // Build query to get valid permissions
+        $query = Permission::whereIn('module', $allowedModules)
+            ->whereIn('name', $permissionNames);
+
+        // For organization users, restrict settings and notification template permissions
+        if ($userType === 'organization') {
+            $query->where(function ($q) {
+                $q->where('module', '!=', 'settings')
+                    ->where('module', '!=', 'notification-templates')
+                    ->orWhereIn('name', [
+                        'manage-email-settings',
+                        'manage-system-settings',
+                        'manage-brand-settings',
+                    ]);
+            });
+        }
+
+        $validPermissions = $query->pluck('name')->toArray();
+
+        return $validPermissions;
     }
 
     /**

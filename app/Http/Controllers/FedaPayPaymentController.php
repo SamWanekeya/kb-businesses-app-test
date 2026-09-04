@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
+use Exception;
 use FedaPay\FedaPay;
 use FedaPay\Transaction;
 use Illuminate\Http\Request;
@@ -42,9 +43,15 @@ class FedaPayPaymentController extends Controller
 
             return back()->withErrors(['error' => __('Payment failed or cancelled')]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withErrors(['error' => __('Payment processing failed')]);
         }
+    }
+
+    private function configureFedaPay($settings)
+    {
+        FedaPay::setApiKey($settings['fedapay_secret_key']);
+        FedaPay::setEnvironment($settings['fedapay_mode'] === 'live' ? 'live' : 'sandbox');
     }
 
     public function createPayment(Request $request)
@@ -66,7 +73,7 @@ class FedaPayPaymentController extends Controller
 
             $transaction = Transaction::create([
                 'description' => 'Plan: ' . $plan->name,
-                'amount' => (int) ($pricing['final_price']), // Amount in cents
+                'amount' => (int)($pricing['final_price']), // Amount in cents
                 'currency' => ['iso' => 'XOF'],
                 'callback_url' => route('fedapay.callback'),
                 'customer' => [
@@ -90,7 +97,7 @@ class FedaPayPaymentController extends Controller
                 'token' => $token->token,
             ]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
     }
@@ -121,14 +128,8 @@ class FedaPayPaymentController extends Controller
 
             return redirect()->route('plans.index')->with('error', __('Payment was not completed'));
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Callback processing failed')], 500);
         }
-    }
-
-    private function configureFedaPay($settings)
-    {
-        FedaPay::setApiKey($settings['fedapay_secret_key']);
-        FedaPay::setEnvironment($settings['fedapay_mode'] === 'live' ? 'live' : 'sandbox');
     }
 }

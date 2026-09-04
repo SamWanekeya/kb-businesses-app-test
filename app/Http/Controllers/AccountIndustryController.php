@@ -32,7 +32,7 @@ class AccountIndustryController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $accountIndustries = $query->paginate($perPage);
 
         return Inertia::render('account-industries/index', [
@@ -58,20 +58,6 @@ class AccountIndustryController extends Controller
         return redirect()->back()->with('success', __('Account industry created successfully'));
     }
 
-    public function update(Request $request, AccountIndustry $accountIndustry)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255|unique:account_industries,name,' . $accountIndustry->id . ',id,created_by,' . createdBy(),
-            'description' => 'nullable|string',
-            'color' => 'nullable|string|max:7',
-            'status' => 'required|in:active,inactive',
-        ]);
-
-        $accountIndustry->update($request->all());
-
-        return redirect()->back()->with('success', __('Account industry updated successfully'));
-    }
-
     public function destroy(AccountIndustry $accountIndustry)
     {
         if ($accountIndustry->accounts()->count() > 0) {
@@ -90,5 +76,19 @@ class AccountIndustryController extends Controller
         ]);
 
         return redirect()->back()->with('success', __('Account industry status updated successfully'));
+    }
+
+    public function update(Request $request, AccountIndustry $accountIndustry)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:account_industries,name,' . $accountIndustry->id . ',id,created_by,' . createdBy(),
+            'description' => 'nullable|string',
+            'color' => 'nullable|string|max:7',
+            'status' => 'required|in:active,inactive',
+        ]);
+
+        $accountIndustry->update($request->all());
+
+        return redirect()->back()->with('success', __('Account industry updated successfully'));
     }
 }

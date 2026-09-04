@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 
 class InvoiceSkrillPaymentController extends Controller
 {
@@ -37,7 +40,7 @@ class InvoiceSkrillPaymentController extends Controller
             $currency = $settings['general_settings']['defaultCurrency'] ?? 'USD';
 
             if (!isset($settings['payment_settings']['skrill_merchant_id'])) {
-                \Log::error('Skrill payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+                Log::error('Skrill payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return back()->withErrors(['error' => __('Skrill not configured')]);
             }
@@ -74,7 +77,7 @@ class InvoiceSkrillPaymentController extends Controller
             $form .= '<p>If you are not redirected automatically, <a href="#" onclick="document.getElementById(\'skrill-form\').submit();">click here</a>.</p>';
             $form .= '</div>';
 
-            \Log::info('Skrill payment initiated', [
+            Log::info('Skrill payment initiated', [
                 'invoice_id' => $invoice->id,
                 'amount' => $validated['amount'],
                 'payment_type' => $validated['payment_type'],
@@ -82,90 +85,14 @@ class InvoiceSkrillPaymentController extends Controller
             ]);
 
             return response($form);
-        } catch (\Exception $e) {
-            \Log::error('Skrill payment error', [
+        } catch (Exception $e) {
+            Log::error('Skrill payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
 
             return $this->handleInvoicePaymentError($e, 'skrill');
-        }
-    }
-
-    public function callback(Request $request)
-    {
-        try {
-            $transactionId = $request->input('transaction_id');
-            $status = $request->input('status');
-            $amount = $request->input('amount');
-            $currency = $request->input('currency');
-            $payFromEmail = $request->input('pay_from_email');
-
-            \Log::info('Skrill callback received', [
-                'transaction_id' => $transactionId,
-                'status' => $status,
-                'amount' => $amount,
-                'currency' => $currency,
-                'pay_from_email' => $payFromEmail,
-            ]);
-
-            if (!$transactionId) {
-                \Log::error('Skrill callback: Missing transaction ID');
-
-                return response('Missing transaction ID', 400);
-            }
-
-            $payment = InvoicePayment::where('payment_id', $transactionId)
-                ->where('payment_method', 'skrill')
-                ->first();
-
-            if (!$payment) {
-                \Log::error('Skrill callback: Payment not found', ['transaction_id' => $transactionId]);
-
-                return response('Payment not found', 404);
-            }
-
-            if ($status == '2') { // Payment processed successfully
-                InvoicePayment::storePayment([
-                    'invoice_id' => $payment->invoice_id,
-                    'amount' => $payment->amount,
-                    'payment_type' => $payment->payment_type,
-                    'payment_method' => 'skrill',
-                    'payment_id' => $payment->payment_id,
-                ]);
-
-                \Log::info('Skrill payment completed', [
-                    'invoice_id' => $payment->invoice_id,
-                    'payment_id' => $payment->payment_id,
-                    'amount' => $payment->amount,
-                ]);
-            } elseif ($status == '0') { // Payment pending
-                \Log::info('Skrill payment pending', [
-                    'invoice_id' => $payment->invoice_id,
-                    'transaction_id' => $transactionId,
-                ]);
-            } else { // Payment failed or cancelled
-                $payment->update([
-                    'status' => 'failed',
-                    'notes' => $payment->notes . ' | Skrill payment failed (Status: ' . $status . ')',
-                ]);
-
-                \Log::warning('Skrill payment failed', [
-                    'invoice_id' => $payment->invoice_id,
-                    'transaction_id' => $transactionId,
-                    'status' => $status,
-                ]);
-            }
-
-            return response('OK', 200);
-        } catch (\Exception $e) {
-            \Log::error('Skrill callback error', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
-
-            return response('Internal Server Error', 500);
         }
     }
 
@@ -184,12 +111,88 @@ class InvoiceSkrillPaymentController extends Controller
     {
         return [
             'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }
 
     private function handleInvoicePaymentError($e, $method = 'skrill')
     {
         return back()->withErrors(['error' => __('Payment processing failed: :message', ['message' => $e->getMessage()])]);
+    }
+
+    public function callback(Request $request)
+    {
+        try {
+            $transactionId = $request->input('transaction_id');
+            $status = $request->input('status');
+            $amount = $request->input('amount');
+            $currency = $request->input('currency');
+            $payFromEmail = $request->input('pay_from_email');
+
+            Log::info('Skrill callback received', [
+                'transaction_id' => $transactionId,
+                'status' => $status,
+                'amount' => $amount,
+                'currency' => $currency,
+                'pay_from_email' => $payFromEmail,
+            ]);
+
+            if (!$transactionId) {
+                Log::error('Skrill callback: Missing transaction ID');
+
+                return response('Missing transaction ID', 400);
+            }
+
+            $payment = InvoicePayment::where('payment_id', $transactionId)
+                ->where('payment_method', 'skrill')
+                ->first();
+
+            if (!$payment) {
+                Log::error('Skrill callback: Payment not found', ['transaction_id' => $transactionId]);
+
+                return response('Payment not found', 404);
+            }
+
+            if ($status == '2') { // Payment processed successfully
+                InvoicePayment::storePayment([
+                    'invoice_id' => $payment->invoice_id,
+                    'amount' => $payment->amount,
+                    'payment_type' => $payment->payment_type,
+                    'payment_method' => 'skrill',
+                    'payment_id' => $payment->payment_id,
+                ]);
+
+                Log::info('Skrill payment completed', [
+                    'invoice_id' => $payment->invoice_id,
+                    'payment_id' => $payment->payment_id,
+                    'amount' => $payment->amount,
+                ]);
+            } elseif ($status == '0') { // Payment pending
+                Log::info('Skrill payment pending', [
+                    'invoice_id' => $payment->invoice_id,
+                    'transaction_id' => $transactionId,
+                ]);
+            } else { // Payment failed or cancelled
+                $payment->update([
+                    'status' => 'failed',
+                    'notes' => $payment->notes . ' | Skrill payment failed (Status: ' . $status . ')',
+                ]);
+
+                Log::warning('Skrill payment failed', [
+                    'invoice_id' => $payment->invoice_id,
+                    'transaction_id' => $transactionId,
+                    'status' => $status,
+                ]);
+            }
+
+            return response('OK', 200);
+        } catch (Exception $e) {
+            Log::error('Skrill callback error', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return response('Internal Server Error', 500);
+        }
     }
 }

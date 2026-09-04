@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 use Razorpay\Api\Api;
 
 class InvoiceRazorpayPaymentController extends Controller
@@ -53,14 +56,33 @@ class InvoiceRazorpayPaymentController extends Controller
                 'order_id' => $razorpayOrder->id,
                 'amount' => (int)$amountInSmallestUnit,
             ]);
-        } catch (\Exception $e) {
-            \Log::error('Razorpay order creation failed', [
+        } catch (Exception $e) {
+            Log::error('Razorpay order creation failed', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
             ]);
 
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    private function validateInvoicePaymentRequest($request, $additionalRules = [])
+    {
+        $baseRules = [
+            'invoice_id' => 'required|exists:invoices,id',
+            'amount' => 'required|numeric|min:0.01',
+            'payment_type' => 'required|in:full,partial',
+        ];
+
+        return $request->validate(array_merge($baseRules, $additionalRules));
+    }
+
+    private function getInvoicePaymentSettings($organizationId)
+    {
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
     }
 
     public function processPayment(Request $request)
@@ -90,7 +112,7 @@ class InvoiceRazorpayPaymentController extends Controller
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['razorpay_key']) || !isset($settings['payment_settings']['razorpay_secret'])) {
-                \Log::error('Razorpay payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+                Log::error('Razorpay payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return back()->withErrors(['error' => __('Razorpay not configured')]);
             }
@@ -113,7 +135,7 @@ class InvoiceRazorpayPaymentController extends Controller
                 'payment_id' => $validated['razorpay_payment_id'],
             ]);
 
-            \Log::info('Razorpay payment successful', [
+            Log::info('Razorpay payment successful', [
                 'invoice_id' => $invoice->id,
                 'amount' => $validated['amount'],
                 'payment_type' => $validated['payment_type'],
@@ -122,8 +144,8 @@ class InvoiceRazorpayPaymentController extends Controller
 
             return back()->with('success', __('Payment successful'));
 
-        } catch (\Exception $e) {
-            \Log::error('Razorpay payment error', [
+        } catch (Exception $e) {
+            Log::error('Razorpay payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -131,25 +153,6 @@ class InvoiceRazorpayPaymentController extends Controller
 
             return $this->handleInvoicePaymentError($e, 'razorpay');
         }
-    }
-
-    private function validateInvoicePaymentRequest($request, $additionalRules = [])
-    {
-        $baseRules = [
-            'invoice_id' => 'required|exists:invoices,id',
-            'amount' => 'required|numeric|min:0.01',
-            'payment_type' => 'required|in:full,partial',
-        ];
-
-        return $request->validate(array_merge($baseRules, $additionalRules));
-    }
-
-    private function getInvoicePaymentSettings($organizationId)
-    {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
-        ];
     }
 
     private function handleInvoicePaymentError($e, $method = 'razorpay')

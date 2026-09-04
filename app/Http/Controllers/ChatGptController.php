@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Setting;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use OpenAI;
@@ -30,9 +31,9 @@ class ChatGptController extends Controller
                 ]);
             }
 
-            $temperature = (float) $request->input('creativity', 0.7);
+            $temperature = (float)$request->input('creativity', 0.7);
             if (is_string($request->input('creativity'))) {
-                $temperature = match($request->input('creativity')) {
+                $temperature = match ($request->input('creativity')) {
                     'low' => 0.3,
                     'high' => 0.9,
                     default => 0.7
@@ -40,7 +41,7 @@ class ChatGptController extends Controller
             }
 
             $language = $request->input('language', 'en');
-            $langText = $language !== 'en' ? "Provide response in " . match($language) {
+            $langText = $language !== 'en' ? "Provide response in " . match ($language) {
                 'es' => 'Spanish',
                 'ar' => 'Arabic',
                 'da' => 'Danish',
@@ -59,8 +60,8 @@ class ChatGptController extends Controller
                 default => 'English'
             } . " language.\n\n " : "";
 
-            $maxTokens = (int) $request->input('maximum_length', 150);
-            $maxResults = (int) $request->input('num_results', 1);
+            $maxTokens = (int)$request->input('maximum_length', 150);
+            $maxResults = (int)$request->input('num_results', 1);
 
             $client = OpenAI::client($apiKey);
 
@@ -101,7 +102,7 @@ class ChatGptController extends Controller
                 ]);
             }
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Error: ' . $e->getMessage(),

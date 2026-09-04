@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Inertia\Inertia;
@@ -107,7 +108,7 @@ class LanguageController extends Controller
             }
 
             return redirect()->back()->with('success', __('Language updated successfully'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             if ($request->expectsJson()) {
                 return response()->json(['error' => __('Failed to update language file: ') . $e->getMessage()], 500);
             }
@@ -173,7 +174,7 @@ class LanguageController extends Controller
             }
 
             return response()->json(['success' => true, 'message' => __('The language has been created successfully.')]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => 'Failed to create language: ' . $e->getMessage()], 500);
         }
     }
@@ -201,7 +202,7 @@ class LanguageController extends Controller
             // \App\Models\User::where('lang', $languageCode)->update(['lang' => 'en']);
 
             return response()->json(['success' => true, 'message' => __('The language has been deleted.')]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Failed to delete language: :error', ['error' => $e->getMessage()])], 500);
         }
     }
@@ -231,7 +232,7 @@ class LanguageController extends Controller
             // }
 
             return response()->json(['success' => true, 'message' => __('The language status updated successfully.')]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Failed to update language status: :error', ['error' => $e->getMessage()])], 500);
         }
     }

@@ -62,13 +62,25 @@ const formatRelativeTime = (dateString: string) => {
     const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
 
     if (diffInMinutes < 1) return t('Just now');
-    if (diffInMinutes < 60) return t('{{count}} {{unit}} ago', { count: diffInMinutes, unit: diffInMinutes === 1 ? t('minute') : t('minutes') });
+    if (diffInMinutes < 60)
+        return t('{{count}} {{unit}} ago', {
+            count: diffInMinutes,
+            unit: diffInMinutes === 1 ? t('minute') : t('minutes'),
+        });
 
     const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) return t('{{count}} {{unit}} ago', { count: diffInHours, unit: diffInHours === 1 ? t('hour') : t('hours') });
+    if (diffInHours < 24)
+        return t('{{count}} {{unit}} ago', {
+            count: diffInHours,
+            unit: diffInHours === 1 ? t('hour') : t('hours'),
+        });
 
     const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays < 7) return t('{{count}} {{unit}} ago', { count: diffInDays, unit: diffInDays === 1 ? t('day') : t('days') });
+    if (diffInDays < 7)
+        return t('{{count}} {{unit}} ago', {
+            count: diffInDays,
+            unit: diffInDays === 1 ? t('day') : t('days'),
+        });
 
     return window?.appSettings?.formatDateTime(date, false);
 };

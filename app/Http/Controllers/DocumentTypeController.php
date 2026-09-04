@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\DocumentType;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -41,7 +40,7 @@ class DocumentTypeController extends Controller
         // Apply authorization filter
         $query->where('created_by', createdBy());
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $documentTypes = $query->paginate($perPage)->withQueryString();
 
         return Inertia::render('document-types/index', [

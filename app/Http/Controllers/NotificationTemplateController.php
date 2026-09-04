@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\NotificationTemplate;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -39,7 +40,7 @@ class NotificationTemplateController extends Controller
         }
 
         // Pagination
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $templates = $query->paginate($perPage)->withQueryString();
 
         return Inertia::render('notification-templates/index', [
@@ -144,7 +145,7 @@ class NotificationTemplateController extends Controller
                 );
 
             return redirect()->back()->with('success', __('Notification content updated successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to update notification content: :error', ['error' => $e->getMessage()]));
         }
     }

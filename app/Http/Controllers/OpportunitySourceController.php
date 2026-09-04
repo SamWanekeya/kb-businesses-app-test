@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\OpportunitySource;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -38,7 +39,7 @@ class OpportunitySourceController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $opportunitySources = $query->paginate($perPage)->withQueryString();
 
         return Inertia::render('opportunity-sources/index', [
@@ -80,7 +81,7 @@ class OpportunitySourceController extends Controller
                 $opportunitySource->update($validated);
 
                 return redirect()->back()->with('success', __('Opportunity source updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update opportunity source.'));
             }
         } else {
@@ -99,7 +100,7 @@ class OpportunitySourceController extends Controller
                 $opportunitySource->delete();
 
                 return redirect()->back()->with('success', __('Opportunity source deleted successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete opportunity source.'));
             }
         } else {
@@ -119,7 +120,7 @@ class OpportunitySourceController extends Controller
                 $opportunitySource->save();
 
                 return redirect()->back()->with('success', __('Opportunity source status updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update opportunity source status.'));
             }
         } else {

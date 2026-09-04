@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 
 class InvoiceFlutterwavePaymentController extends Controller
 {
@@ -35,7 +38,7 @@ class InvoiceFlutterwavePaymentController extends Controller
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['flutterwave_secret_key'])) {
-                \Log::error('Flutterwave payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+                Log::error('Flutterwave payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return back()->withErrors(['error' => __('Flutterwave not configured')]);
             }
@@ -56,7 +59,7 @@ class InvoiceFlutterwavePaymentController extends Controller
             curl_close($curl);
 
             if ($httpCode !== 200) {
-                \Log::error('Flutterwave API error', [
+                Log::error('Flutterwave API error', [
                     'invoice_id' => $invoice->id,
                     'http_code' => $httpCode,
                     'response' => $response,
@@ -68,7 +71,7 @@ class InvoiceFlutterwavePaymentController extends Controller
             $result = json_decode($response, true);
 
             if (!$result) {
-                \Log::error('Flutterwave invalid response', ['invoice_id' => $invoice->id]);
+                Log::error('Flutterwave invalid response', ['invoice_id' => $invoice->id]);
 
                 return back()->withErrors(['error' => __('Payment verification failed - Invalid response')]);
             }
@@ -77,7 +80,7 @@ class InvoiceFlutterwavePaymentController extends Controller
                 // Verify amount matches
                 $paidAmount = $result['data']['amount'];
                 if (abs($paidAmount - $validated['amount']) > 0.01) {
-                    \Log::error('Flutterwave amount mismatch', [
+                    Log::error('Flutterwave amount mismatch', [
                         'invoice_id' => $invoice->id,
                         'expected' => $validated['amount'],
                         'received' => $paidAmount,
@@ -94,7 +97,7 @@ class InvoiceFlutterwavePaymentController extends Controller
                     'payment_id' => $validated['payment_id'],
                 ]);
 
-                \Log::info('Flutterwave payment successful', [
+                Log::info('Flutterwave payment successful', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
@@ -104,7 +107,7 @@ class InvoiceFlutterwavePaymentController extends Controller
                 return back()->with('success', __('Payment successful'));
             }
 
-            \Log::warning('Flutterwave payment verification failed', [
+            Log::warning('Flutterwave payment verification failed', [
                 'invoice_id' => $invoice->id,
                 'payment_id' => $validated['payment_id'],
                 'result' => $result,
@@ -112,8 +115,8 @@ class InvoiceFlutterwavePaymentController extends Controller
 
             return back()->withErrors(['error' => __('Payment verification failed')]);
 
-        } catch (\Exception $e) {
-            \Log::error('Flutterwave payment error', [
+        } catch (Exception $e) {
+            Log::error('Flutterwave payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -138,7 +141,7 @@ class InvoiceFlutterwavePaymentController extends Controller
     {
         return [
             'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }
 

@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Models\PaymentSetting;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class PaymentSettingController extends Controller
@@ -20,7 +23,7 @@ class PaymentSettingController extends Controller
 
     public function getPaymentMethods()
     {
-        $superAdminId = \App\Models\User::where('type', 'super_admin')->first()?->id;
+        $superAdminId = User::where('type', 'super_admin')->first()?->id;
 
         if (!$superAdminId) {
             return response()->json([]);
@@ -36,6 +39,51 @@ class PaymentSettingController extends Controller
         $safeSettings['defaultCurrency'] = $settings['defaultCurrency'] ?? 'usd';
 
         return response()->json($safeSettings);
+    }
+
+    private function filterSensitiveData(array $settings): array
+    {
+        $safeSettings = [];
+
+        $enabledKeys = [
+            'is_manual_payment_mode_enabled', 'is_bank_payment_mode_enabled', 'is_paystack_payment_mode_enabled',
+        ];
+        $modeKeys = [];
+        $frontendKeys = ['paystack_public_key', 'bank_details'];
+        //        $enabledKeys = [
+        //            'is_manual_payment_mode_enabled', 'is_bank_payment_mode_enabled', 'is_stripe_payment_mode_enabled', 'is_paypal_payment_mode_enabled',
+        //            'is_razorpay_payment_mode_enabled', 'is_mercadopago_payment_mode_enabled', 'is_paystack_payment_mode_enabled', 'is_flutterwave_payment_mode_enabled',
+        //            'is_paytabs_payment_mode_enabled', 'is_skrill_payment_mode_enabled', 'is_coingate_payment_mode_enabled', 'is_payfast_payment_mode_enabled',
+        //            'is_tap_payment_mode_enabled', 'is_xendit_payment_mode_enabled', 'is_paytr_payment_mode_enabled', 'is_mollie_payment_mode_enabled',
+        //            'is_toyyibpay_payment_mode_enabled', 'is_benefit_payment_mode_enabled', 'is_iyzipay_payment_mode_enabled', 'is_aamarpay_payment_mode_enabled', 'is_midtrans_payment_mode_enabled', 'is_yookassa_payment_mode_enabled',
+        //            'is_nepalste_payment_mode_enabled', 'is_paiement_payment_mode_enabled', 'is_cinetpay_payment_mode_enabled', 'is_payhere_payment_mode_enabled',
+        //            'is_fedapay_payment_mode_enabled', 'is_authorizenet_payment_mode_enabled', 'is_khalti_payment_mode_enabled', 'is_easebuzz_payment_mode_enabled',
+        //            'is_ozow_payment_mode_enabled', 'is_cashfree_payment_mode_enabled'
+        //        ];
+
+        //        $modeKeys = [
+        //            'paypal_mode', 'mercadopago_mode', 'paytabs_mode', 'coingate_mode', 'payfast_mode',
+        //            'benefit_mode', 'iyzipay_mode', 'midtrans_mode', 'nepalste_mode', 'payhere_mode',
+        //            'fedapay_mode', 'authorizenet_mode', 'ozow_mode', 'cashfree_mode'
+        //        ];
+
+        //        $frontendKeys = [
+        //            'stripe_key', 'razorpay_key', 'paystack_public_key', 'flutterwave_public_key',
+        //            'khalti_public_key', 'cashfree_public_key', 'iyzipay_public_key', 'benefit_public_key',
+        //            'fedapay_public_key', 'nepalste_public_key', 'paypal_client_id', 'toyyibpay_category_code',
+        //            'aamarpay_store_id', 'authorizenet_merchant_id', 'cinetpay_site_id', 'easebuzz_merchant_key',
+        //            'ozow_site_key', 'paiement_merchant_id', 'payhere_merchant_id', 'paytr_merchant_id',
+        //            'skrill_merchant_id', 'yookassa_shop_id', 'bank_details','tap_secret_key', 'xendit_api_key',
+        //            'midtrans_secret_key'
+        //        ];
+
+        foreach (array_merge($enabledKeys, $modeKeys, $frontendKeys) as $key) {
+            if (isset($settings[$key])) {
+                $safeSettings[$key] = $settings[$key];
+            }
+        }
+
+        return $safeSettings;
     }
 
     public function store(Request $request)
@@ -125,9 +173,9 @@ class PaymentSettingController extends Controller
             $this->savePaymentSettings($settings);
 
             return back()->with('success', __('Payment settings saved successfully.'));
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             return back()->withErrors($e->errors());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withErrors(['error' => __('Failed to save payment settings: :message', ['message' => $e->getMessage()])]);
         }
     }
@@ -265,50 +313,5 @@ class PaymentSettingController extends Controller
         $enabledMethods = getEnabledPaymentMethods();
 
         return response()->json($enabledMethods);
-    }
-
-    private function filterSensitiveData(array $settings): array
-    {
-        $safeSettings = [];
-
-        $enabledKeys = [
-            'is_manual_payment_mode_enabled', 'is_bank_payment_mode_enabled', 'is_paystack_payment_mode_enabled',
-            ];
-        $modeKeys = [];
-        $frontendKeys = ['paystack_public_key', 'bank_details'];
-        //        $enabledKeys = [
-        //            'is_manual_payment_mode_enabled', 'is_bank_payment_mode_enabled', 'is_stripe_payment_mode_enabled', 'is_paypal_payment_mode_enabled',
-        //            'is_razorpay_payment_mode_enabled', 'is_mercadopago_payment_mode_enabled', 'is_paystack_payment_mode_enabled', 'is_flutterwave_payment_mode_enabled',
-        //            'is_paytabs_payment_mode_enabled', 'is_skrill_payment_mode_enabled', 'is_coingate_payment_mode_enabled', 'is_payfast_payment_mode_enabled',
-        //            'is_tap_payment_mode_enabled', 'is_xendit_payment_mode_enabled', 'is_paytr_payment_mode_enabled', 'is_mollie_payment_mode_enabled',
-        //            'is_toyyibpay_payment_mode_enabled', 'is_benefit_payment_mode_enabled', 'is_iyzipay_payment_mode_enabled', 'is_aamarpay_payment_mode_enabled', 'is_midtrans_payment_mode_enabled', 'is_yookassa_payment_mode_enabled',
-        //            'is_nepalste_payment_mode_enabled', 'is_paiement_payment_mode_enabled', 'is_cinetpay_payment_mode_enabled', 'is_payhere_payment_mode_enabled',
-        //            'is_fedapay_payment_mode_enabled', 'is_authorizenet_payment_mode_enabled', 'is_khalti_payment_mode_enabled', 'is_easebuzz_payment_mode_enabled',
-        //            'is_ozow_payment_mode_enabled', 'is_cashfree_payment_mode_enabled'
-        //        ];
-
-        //        $modeKeys = [
-        //            'paypal_mode', 'mercadopago_mode', 'paytabs_mode', 'coingate_mode', 'payfast_mode',
-        //            'benefit_mode', 'iyzipay_mode', 'midtrans_mode', 'nepalste_mode', 'payhere_mode',
-        //            'fedapay_mode', 'authorizenet_mode', 'ozow_mode', 'cashfree_mode'
-        //        ];
-
-        //        $frontendKeys = [
-        //            'stripe_key', 'razorpay_key', 'paystack_public_key', 'flutterwave_public_key',
-        //            'khalti_public_key', 'cashfree_public_key', 'iyzipay_public_key', 'benefit_public_key',
-        //            'fedapay_public_key', 'nepalste_public_key', 'paypal_client_id', 'toyyibpay_category_code',
-        //            'aamarpay_store_id', 'authorizenet_merchant_id', 'cinetpay_site_id', 'easebuzz_merchant_key',
-        //            'ozow_site_key', 'paiement_merchant_id', 'payhere_merchant_id', 'paytr_merchant_id',
-        //            'skrill_merchant_id', 'yookassa_shop_id', 'bank_details','tap_secret_key', 'xendit_api_key',
-        //            'midtrans_secret_key'
-        //        ];
-
-        foreach (array_merge($enabledKeys, $modeKeys, $frontendKeys) as $key) {
-            if (isset($settings[$key])) {
-                $safeSettings[$key] = $settings[$key];
-            }
-        }
-
-        return $safeSettings;
     }
 }

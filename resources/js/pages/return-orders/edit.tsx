@@ -25,8 +25,8 @@ interface ReturnItem {
     product_id: string;
     product_name: string;
     product_sku?: string;
-    return_qty: number;
-    maximum_qty: number;
+    return_quantity: number;
+    maximum_quantity: number;
     unit_price: number;
     tax?: { name: string; rate: number } | null;
     reason: string;
@@ -78,8 +78,8 @@ export default function ReturnOrderEdit() {
                 product_id: String(p.id ?? p.product_id),
                 product_name: prod?.name ?? p.name ?? `Product #${p.id ?? p.product_id}`,
                 product_sku: prod?.sku ?? p.sku ?? '',
-                return_qty: p.pivot?.quantity ?? p.quantity ?? 1,
-                maximum_qty: p.pivot?.quantity ?? p.quantity ?? 999,
+                return_quantity: p.pivot?.quantity ?? p.quantity ?? 1,
+                maximum_quantity: p.pivot?.quantity ?? p.quantity ?? 999,
                 unit_price: p.pivot?.unit_price ?? p.unit_price ?? 0,
                 tax: prod?.tax ?? null,
                 reason: p.pivot?.reason ?? p.reason ?? '',
@@ -183,8 +183,8 @@ export default function ReturnOrderEdit() {
                 product_id: item.product_id,
                 product_name: item.product_name,
                 product_sku: item.product_sku,
-                return_qty: 1,
-                maximum_qty: item.quantity,
+                return_quantity: 1,
+                maximum_quantity: item.quantity,
                 unit_price: item.unit_price,
                 tax: item.tax,
                 reason: '',
@@ -196,11 +196,11 @@ export default function ReturnOrderEdit() {
         setReturnItems((prev) => prev.filter((r) => r.product_id !== product_id));
     };
 
-    const setReturnQty = (product_id: string, qty: number) => {
+    const setReturnQuantity = (product_id: string, quantity: number) => {
         setReturnItems((prev) =>
             prev.map((r) => {
                 if (r.product_id !== product_id) return r;
-                return { ...r, return_qty: Math.max(1, Math.min(qty, r.maximum_qty)) };
+                return { ...r, return_quantity: Math.max(1, Math.min(quantity, r.maximum_quantity)) };
             }),
         );
     };
@@ -210,7 +210,7 @@ export default function ReturnOrderEdit() {
     };
 
     const calcReturnLine = (item: ReturnItem) => {
-        const net = item.return_qty * item.unit_price;
+        const net = item.return_quantity * item.unit_price;
         const tax = item.tax ? (net * item.tax.rate) / 100 : 0;
         return { net, tax };
     };
@@ -258,7 +258,7 @@ export default function ReturnOrderEdit() {
                 ...form,
                 products: returnItems.map((r) => ({
                     product_id: r.product_id,
-                    quantity: r.return_qty,
+                    quantity: r.return_quantity,
                     unit_price: r.unit_price,
                     reason: r.reason,
                 })),
@@ -533,7 +533,7 @@ export default function ReturnOrderEdit() {
                                 <table className="w-full text-sm">
                                     <thead>
                                         <tr className="border-b border-gray-200 dark:border-gray-700">
-                                            {['Product', 'Available Qty', 'Unit Price', 'Tax', 'Total', 'Action'].map((h) => (
+                                            {['Product', 'Available Quantity', 'Unit Price', 'Tax', 'Total', 'Action'].map((h) => (
                                                 <th
                                                     key={h}
                                                     className="pe-6 pb-3 text-start text-sm font-medium whitespace-nowrap text-gray-500 dark:text-gray-400"
@@ -546,9 +546,9 @@ export default function ReturnOrderEdit() {
                                     <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                                         {salesOrderItems.map((item) => {
                                             const returnItem = returnItems.find((r) => r.product_id === item.product_id);
-                                            const usedQty = returnItem ? returnItem.return_qty : 0;
-                                            const availableQty = item.quantity - usedQty;
-                                            const displayItem = { ...item, quantity: availableQty };
+                                            const usedQuantity = returnItem ? returnItem.return_quantity : 0;
+                                            const availableQuantity = item.quantity - usedQuantity;
+                                            const displayItem = { ...item, quantity: availableQuantity };
                                             const c = calcAvailLine(displayItem);
                                             const isAdded = !!returnItem;
                                             return (
@@ -557,7 +557,9 @@ export default function ReturnOrderEdit() {
                                                         <div className="font-medium text-gray-900 dark:text-gray-100">{item.product_name}</div>
                                                     </td>
                                                     <td className="py-4 pe-6 text-gray-700 dark:text-gray-300">
-                                                        <span className={availableQty === 0 ? 'font-medium text-red-500' : ''}>{availableQty}</span>
+                                                        <span className={availableQuantity === 0 ? 'font-medium text-red-500' : ''}>
+                                                            {availableQuantity}
+                                                        </span>
                                                         <span className="ml-1 text-xs text-gray-400">/ {item.quantity}</span>
                                                     </td>
                                                     <td className="py-4 pe-6 font-mono text-gray-700 dark:text-gray-300">{fmt(item.unit_price)}</td>
@@ -578,7 +580,7 @@ export default function ReturnOrderEdit() {
                                                             <Button type="button" disabled size="sm">
                                                                 {t('Added')}
                                                             </Button>
-                                                        ) : availableQty === 0 ? (
+                                                        ) : availableQuantity === 0 ? (
                                                             <Button type="button" disabled size="sm" variant="outline">
                                                                 {t('Fully Returned')}
                                                             </Button>
@@ -643,7 +645,7 @@ export default function ReturnOrderEdit() {
                                 <table className="w-full text-sm">
                                     <thead>
                                         <tr className="border-b border-gray-200 dark:border-gray-700">
-                                            {['Product', 'Return Qty', 'Unit Price', 'Tax', 'Total', 'Action'].map((h) => (
+                                            {['Product', 'Return Quantity', 'Unit Price', 'Tax', 'Total', 'Action'].map((h) => (
                                                 <th
                                                     key={h}
                                                     className="pe-6 pb-3 text-start text-sm font-medium whitespace-nowrap text-gray-500 dark:text-gray-400"
@@ -656,7 +658,7 @@ export default function ReturnOrderEdit() {
                                     <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                                         {returnItems.map((item) => {
                                             const c = calcReturnLine(item);
-                                            const qtyError = item.return_qty > item.maximum_qty;
+                                            const quantityError = item.return_quantity > item.maximum_quantity;
                                             return (
                                                 <tr key={item.product_id} className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
                                                     <td className="py-4 pe-6">
@@ -666,14 +668,14 @@ export default function ReturnOrderEdit() {
                                                         <Input
                                                             type="number"
                                                             min="1"
-                                                            max={item.maximum_qty}
-                                                            value={item.return_qty}
-                                                            onChange={(e) => setReturnQty(item.product_id, parseInt(e.target.value) || 1)}
-                                                            className={`w-20 ${qtyError ? 'border-red-500' : ''}`}
+                                                            max={item.maximum_quantity}
+                                                            value={item.return_quantity}
+                                                            onChange={(e) => setReturnQuantity(item.product_id, parseInt(e.target.value) || 1)}
+                                                            className={`w-20 ${quantityError ? 'border-red-500' : ''}`}
                                                         />
-                                                        {qtyError && (
+                                                        {quantityError && (
                                                             <p className="mt-1 text-xs text-red-500">
-                                                                {t('Max')} {item.maximum_qty}
+                                                                {t('Max')} {item.maximum_quantity}
                                                             </p>
                                                         )}
                                                     </td>

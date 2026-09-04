@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
+use App\Package\Payment;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 
 class InvoiceTapPaymentController extends Controller
 {
@@ -41,7 +45,7 @@ class InvoiceTapPaymentController extends Controller
             require_once app_path('Libraries/Tap/Tap.php');
             require_once app_path('Libraries/Tap/Reference.php');
             require_once app_path('Libraries/Tap/Payment.php');
-            $tap = new \App\Package\Payment([
+            $tap = new Payment([
                 'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key'],
             ]);
 
@@ -67,8 +71,8 @@ class InvoiceTapPaymentController extends Controller
 
             return $tap->charge($chargeData, true);
 
-        } catch (\Exception $e) {
-            \Log::error('Tap invoice payment error', [
+        } catch (Exception $e) {
+            Log::error('Tap invoice payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -76,6 +80,25 @@ class InvoiceTapPaymentController extends Controller
 
             return response()->json(['success' => false, 'error' => __('Payment creation failed')]);
         }
+    }
+
+    private function validateInvoicePaymentRequest($request, $additionalRules = [])
+    {
+        $baseRules = [
+            'invoice_id' => 'required|exists:invoices,id',
+            'amount' => 'required|numeric|min:0.01',
+            'payment_type' => 'required|in:full,partial',
+        ];
+
+        return $request->validate(array_merge($baseRules, $additionalRules));
+    }
+
+    private function getInvoicePaymentSettings($organizationId)
+    {
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
     }
 
     public function success(Request $request)
@@ -103,7 +126,7 @@ class InvoiceTapPaymentController extends Controller
             require_once app_path('Libraries/Tap/Tap.php');
             require_once app_path('Libraries/Tap/Reference.php');
             require_once app_path('Libraries/Tap/Payment.php');
-            $tap = new \App\Package\Payment([
+            $tap = new Payment([
                 'organization_tap_secret_key' => $settings['payment_settings']['tap_secret_key'],
             ]);
 
@@ -119,7 +142,7 @@ class InvoiceTapPaymentController extends Controller
                     'payment_id' => $chargeId,
                 ]);
 
-                \Log::info('Tap invoice payment successful', [
+                Log::info('Tap invoice payment successful', [
                     'invoice_id' => $invoiceId,
                     'amount' => $amount,
                     'payment_type' => $paymentType,
@@ -132,8 +155,8 @@ class InvoiceTapPaymentController extends Controller
                 return redirect()->route('invoices.public', encrypt($invoiceId))->with('error', __('Payment failed'));
             }
 
-        } catch (\Exception $e) {
-            \Log::error('Tap invoice success error', [
+        } catch (Exception $e) {
+            Log::error('Tap invoice success error', [
                 'error' => $e->getMessage(),
                 'request' => $request->all(),
             ]);
@@ -152,7 +175,7 @@ class InvoiceTapPaymentController extends Controller
             $chargeId = $request->input('tap_id');
             $status = $request->input('status');
 
-            \Log::info('Tap invoice callback received', [
+            Log::info('Tap invoice callback received', [
                 'charge_id' => $chargeId,
                 'status' => $status,
                 'all_data' => $request->all(),
@@ -160,32 +183,13 @@ class InvoiceTapPaymentController extends Controller
 
             return response('OK', 200);
 
-        } catch (\Exception $e) {
-            \Log::error('Tap invoice callback error', [
+        } catch (Exception $e) {
+            Log::error('Tap invoice callback error', [
                 'error' => $e->getMessage(),
                 'data' => $request->all(),
             ]);
 
             return response('Error', 500);
         }
-    }
-
-    private function validateInvoicePaymentRequest($request, $additionalRules = [])
-    {
-        $baseRules = [
-            'invoice_id' => 'required|exists:invoices,id',
-            'amount' => 'required|numeric|min:0.01',
-            'payment_type' => 'required|in:full,partial',
-        ];
-
-        return $request->validate(array_merge($baseRules, $additionalRules));
-    }
-
-    private function getInvoicePaymentSettings($organizationId)
-    {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
-        ];
     }
 }

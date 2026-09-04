@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CampaignType;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -35,7 +36,7 @@ class CampaignTypeController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $campaignTypes = $query->paginate($perPage)->withQueryString();
 
         return Inertia::render('campaign-types/index', [
@@ -79,7 +80,7 @@ class CampaignTypeController extends Controller
                 $campaignType->update($validated);
 
                 return redirect()->back()->with('success', __('Campaign type updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update campaign type.'));
             }
         } else {
@@ -98,7 +99,7 @@ class CampaignTypeController extends Controller
                 $campaignType->delete();
 
                 return redirect()->back()->with('success', __('Campaign type deleted successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete campaign type.'));
             }
         } else {
@@ -118,7 +119,7 @@ class CampaignTypeController extends Controller
                 $campaignType->save();
 
                 return redirect()->back()->with('success', __('Campaign type status updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update campaign type status.'));
             }
         } else {

@@ -8,8 +8,11 @@ use App\Models\DocumentFolder;
 use App\Models\DocumentType;
 use App\Models\Opportunity;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Log;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class DocumentController extends Controller
 {
@@ -52,7 +55,7 @@ class DocumentController extends Controller
      */
     public function create()
     {
-        $users = \App\Models\User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+        $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
         $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
 
@@ -135,7 +138,7 @@ class DocumentController extends Controller
      */
     public function edit(Document $document)
     {
-        $users = \App\Models\User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+        $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
         $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
 
@@ -201,8 +204,8 @@ class DocumentController extends Controller
                         $document->addMediaFromUrl($request->attachment)
                             ->toMediaCollection('attachments');
                     }
-                } catch (\Exception $e) {
-                    \Log::error('Document attachment upload failed: ' . $e->getMessage());
+                } catch (Exception $e) {
+                    Log::error('Document attachment upload failed: ' . $e->getMessage());
                 }
             }
         }
@@ -248,7 +251,7 @@ class DocumentController extends Controller
             return redirect()->route('documents.index')->with('error', __('Document not found.'));
         }
         if ($document->attachment) {
-            $media = \Spatie\MediaLibrary\MediaCollections\Models\Media::find($document->attachment);
+            $media = Media::find($document->attachment);
             if (!$media) {
                 abort(404, __('File not found'));
             }

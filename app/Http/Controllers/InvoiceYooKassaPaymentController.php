@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 use YooKassa\Client;
 
 class InvoiceYooKassaPaymentController extends Controller
@@ -33,7 +36,7 @@ class InvoiceYooKassaPaymentController extends Controller
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['yookassa_shop_id']) || !isset($settings['payment_settings']['yookassa_secret_key'])) {
-                \Log::error('YooKassa payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+                Log::error('YooKassa payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return response()->json(['error' => __('YooKassa not configured')], 400);
             }
@@ -74,19 +77,19 @@ class InvoiceYooKassaPaymentController extends Controller
                     'payment_id' => $payment['id'],
                 ]);
             } else {
-                \Log::error('YooKassa payment creation failed', ['invoice_id' => $invoice->id]);
+                Log::error('YooKassa payment creation failed', ['invoice_id' => $invoice->id]);
 
                 return response()->json(['error' => __('Payment creation failed')], 500);
             }
 
-        } catch (\Exception $e) {
-            \Log::error('YooKassa payment error', [
+        } catch (Exception $e) {
+            Log::error('YooKassa payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
 
-            return response()->json(['error' => __('Payment creation failed'),'message' => $e->getMessage()], 500);
+            return response()->json(['error' => __('Payment creation failed'), 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -111,7 +114,7 @@ class InvoiceYooKassaPaymentController extends Controller
                         'payment_id' => $orderId,
                     ]);
 
-                    \Log::info('YooKassa invoice payment successful', [
+                    Log::info('YooKassa invoice payment successful', [
                         'invoice_id' => $invoice->id,
                         'amount' => $amount,
                         'payment_type' => $paymentType,
@@ -123,8 +126,8 @@ class InvoiceYooKassaPaymentController extends Controller
             }
 
             return redirect()->route('invoices.public', $invoiceId)->with('error', __('Payment verification failed'));
-        } catch (\Exception $e) {
-            \Log::error('YooKassa success callback error', [
+        } catch (Exception $e) {
+            Log::error('YooKassa success callback error', [
                 'error' => $e->getMessage(),
             ]);
 
@@ -155,7 +158,7 @@ class InvoiceYooKassaPaymentController extends Controller
                         'payment_id' => $paymentId,
                     ]);
 
-                    \Log::info('YooKassa invoice payment callback successful', [
+                    Log::info('YooKassa invoice payment callback successful', [
                         'invoice_id' => $invoice->id,
                         'amount' => $amount,
                         'payment_id' => $paymentId,
@@ -164,8 +167,8 @@ class InvoiceYooKassaPaymentController extends Controller
             }
 
             return response()->json(['status' => 'success']);
-        } catch (\Exception $e) {
-            \Log::error('YooKassa callback error', [
+        } catch (Exception $e) {
+            Log::error('YooKassa callback error', [
                 'error' => $e->getMessage(),
             ]);
 
@@ -188,7 +191,7 @@ class InvoiceYooKassaPaymentController extends Controller
     {
         return [
             'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }
 }

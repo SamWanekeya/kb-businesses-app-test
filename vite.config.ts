@@ -31,7 +31,7 @@ function stripUseClientDirective(): Plugin {
             if (code.includes('use client')) {
                 return code.replace(/["']use client["'];?\s*/g, '');
             }
-        },
+        }
     };
 }
 
@@ -78,19 +78,19 @@ export default defineConfig(({ mode }) => {
                 /**
                  * Use custom build directory name used instead of Laravel's default `build`.
                  */
-                buildDirectory: 'static',
+                buildDirectory: 'static'
             }),
 
             react({
                 /**
                  * Use modern JSX runtime (no need to import React manually)
                  */
-                jsxRuntime: 'automatic',
+                jsxRuntime: 'automatic'
             }),
 
             stripUseClientDirective(),
 
-            tailwindcss(),
+            tailwindcss()
         ],
 
         /**
@@ -114,8 +114,8 @@ export default defineConfig(({ mode }) => {
                  * - This couples frontend to Laravel routing
                  * - Consider isolating usage if scaling architecture later
                  */
-                'ziggy-js': resolve(import.meta.dirname, 'vendor/tightenco/ziggy'),
-            },
+                'ziggy-js': resolve(import.meta.dirname, 'vendor/tightenco/ziggy')
+            }
         },
 
         /**
@@ -131,8 +131,8 @@ export default defineConfig(({ mode }) => {
             modules: {
                 generateScopedName: isProduction
                     ? '[hash:base64:6]'
-                    : '[name]__[local]__[hash:base64:6]',
-            },
+                    : '[name]__[local]__[hash:base64:6]'
+            }
         },
 
         /**
@@ -214,9 +214,9 @@ export default defineConfig(({ mode }) => {
                          * Fallback vendor chunk
                          */
                         return 'vendor';
-                    },
-                },
-            },
+                    }
+                }
+            }
         },
 
         /**
@@ -242,7 +242,7 @@ export default defineConfig(({ mode }) => {
          * - Keeps SSR/client output consistent
          */
         ssr: {
-            noExternal: ['react', 'react-dom'],
+            noExternal: ['react', 'react-dom']
         },
 
         /**
@@ -257,7 +257,7 @@ export default defineConfig(({ mode }) => {
          * Add entries here only if you observe slow cold starts.
          */
         optimizeDeps: {
-            include: ['@inertiajs/react'],
-        },
+            include: ['@inertiajs/react']
+        }
     };
 });

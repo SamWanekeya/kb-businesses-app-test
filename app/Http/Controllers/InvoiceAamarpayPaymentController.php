@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 
 class InvoiceAamarpayPaymentController extends Controller
 {
@@ -94,14 +97,22 @@ class InvoiceAamarpayPaymentController extends Controller
 
             return response()->json(['error' => __('Payment creation failed')], 500);
 
-        } catch (\Exception $e) {
-            \Log::error('Aamarpay invoice payment creation error', [
+        } catch (Exception $e) {
+            Log::error('Aamarpay invoice payment creation error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
             ]);
 
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
+    }
+
+    private function getInvoicePaymentSettings($organizationId)
+    {
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
     }
 
     private function redirectToMerchant($url)
@@ -133,7 +144,7 @@ class InvoiceAamarpayPaymentController extends Controller
                         'payment_id' => $orderId,
                     ]);
 
-                    \Log::info('Aamarpay invoice payment successful', [
+                    Log::info('Aamarpay invoice payment successful', [
                         'invoice_id' => $invoice->id,
                         'amount' => $amount,
                         'payment_id' => $orderId,
@@ -145,8 +156,8 @@ class InvoiceAamarpayPaymentController extends Controller
 
             return redirect()->route('invoices.public', encrypt($invoiceId ?? 0))->withErrors(['error' => __('Payment failed or cancelled')]);
 
-        } catch (\Exception $e) {
-            \Log::error('Aamarpay invoice payment success error', [
+        } catch (Exception $e) {
+            Log::error('Aamarpay invoice payment success error', [
                 'error' => $e->getMessage(),
             ]);
 
@@ -161,7 +172,7 @@ class InvoiceAamarpayPaymentController extends Controller
             $status = $request->input('pay_status');
 
             if ($transactionId && $status === 'Successful') {
-                \Log::info('Aamarpay invoice callback received', [
+                Log::info('Aamarpay invoice callback received', [
                     'transaction_id' => $transactionId,
                     'status' => $status,
                 ]);
@@ -169,16 +180,8 @@ class InvoiceAamarpayPaymentController extends Controller
 
             return response()->json(['status' => 'success']);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Callback processing failed')], 500);
         }
-    }
-
-    private function getInvoicePaymentSettings($organizationId)
-    {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
-        ];
     }
 }

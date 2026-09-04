@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserCreated;
 use App\Http\Requests\UserRequest;
+use App\Models\Meeting;
 use App\Models\Role;
+use App\Models\SignInHistory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -62,7 +65,7 @@ class UserController extends BaseController
 
         // Handle pagination
         $defaultPerPage = $request->view === 'grid' ? 12 : 10;
-        $perPage = max(1, min(200, (int) $request->get('per_page', $defaultPerPage)));
+        $perPage = max(1, min(200, (int)$request->get('per_page', $defaultPerPage)));
         $users = $userQuery->paginate($perPage)->withQueryString();
 
         # Roles listing - Get roles based on user type
@@ -110,8 +113,7 @@ class UserController extends BaseController
             if ($currentUserCount >= $maxUsers) {
                 return redirect()->back()->with('error', __('User limit exceeded. Your plan allows maximum :max users. Please upgrade your plan.', ['max' => $maxUsers]));
             }
-        }
-        // Check plan limits for staff users (created by organization users)
+        } // Check plan limits for staff users (created by organization users)
         elseif ($authUser->type !== 'super_admin' && $authUser->created_by) {
             $organizationUser = User::find($authUser->created_by);
             if ($organizationUser && $organizationUser->type === 'organization' && $organizationUser->plan) {
@@ -148,7 +150,7 @@ class UserController extends BaseController
 
             // Trigger email notification
             if (isEmailTemplateEnabled('User Created', createdBy()) && !IsDemo()) {
-                event(new \App\Events\UserCreated($user, $request->password));
+                event(new UserCreated($user, $request->password));
             }
 
             // Check for email errors
@@ -228,7 +230,7 @@ class UserController extends BaseController
     public function show(User $user)
     {
         // Get meetings where user is an attendee
-        $meetings = \App\Models\Meeting::where('created_by', createdBy())
+        $meetings = Meeting::where('created_by', createdBy())
             ->whereHas('attendees', function ($q) use ($user) {
                 $q->where('attendee_type', 'user')
                     ->where('attendee_id', $user->id);
@@ -263,7 +265,7 @@ class UserController extends BaseController
 
         if ($authUser->type === 'super_admin') {
             // For super_admin: show super_admin logs and organization type logs created by super_admin
-            $ipAddressHistoriesQuery = \App\Models\SignInHistory::whereHas('user', function ($q) {
+            $ipAddressHistoriesQuery = SignInHistory::whereHas('user', function ($q) {
                 $q->where('type', 'super_admin')
                     ->orWhere(function ($subQ) {
                         $subQ->where('type', 'organization');
@@ -273,7 +275,7 @@ class UserController extends BaseController
                 ->orderBy('created_at', 'desc');
         } else {
             // For other users: show logs created by current user
-            $ipAddressHistoriesQuery = \App\Models\SignInHistory::where('created_by', createdBy())
+            $ipAddressHistoriesQuery = SignInHistory::where('created_by', createdBy())
                 ->with('user')
                 ->orderBy('created_at', 'desc');
         }

@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 
 class InvoiceKhaltiPaymentController extends Controller
 {
@@ -32,7 +35,7 @@ class InvoiceKhaltiPaymentController extends Controller
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['khalti_public_key'])) {
-                \Log::error('Khalti payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+                Log::error('Khalti payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return response()->json(['error' => __('Khalti not configured')], 400);
             }
@@ -46,8 +49,8 @@ class InvoiceKhaltiPaymentController extends Controller
                 'product_url' => route('invoices.public', $invoice->id),
             ]);
 
-        } catch (\Exception $e) {
-            \Log::error('Khalti payment error', [
+        } catch (Exception $e) {
+            Log::error('Khalti payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -55,6 +58,25 @@ class InvoiceKhaltiPaymentController extends Controller
 
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
+    }
+
+    private function validateInvoicePaymentRequest($request, $additionalRules = [])
+    {
+        $baseRules = [
+            'invoice_id' => 'required|exists:invoices,id',
+            'amount' => 'required|numeric|min:0.01',
+            'payment_type' => 'required|in:full,partial',
+        ];
+
+        return $request->validate(array_merge($baseRules, $additionalRules));
+    }
+
+    private function getInvoicePaymentSettings($organizationId)
+    {
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
     }
 
     public function processPayment(Request $request)
@@ -82,7 +104,7 @@ class InvoiceKhaltiPaymentController extends Controller
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['khalti_secret_key'])) {
-                \Log::error('Khalti payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+                Log::error('Khalti payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return back()->withErrors(['error' => __('Khalti not configured')]);
             }
@@ -99,7 +121,7 @@ class InvoiceKhaltiPaymentController extends Controller
                     'payment_id' => $validated['token'],
                 ]);
 
-                \Log::info('Khalti invoice payment successful', [
+                Log::info('Khalti invoice payment successful', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
@@ -111,8 +133,8 @@ class InvoiceKhaltiPaymentController extends Controller
 
             return back()->withErrors(['error' => __('Payment verification failed')]);
 
-        } catch (\Exception $e) {
-            \Log::error('Khalti payment processing error', [
+        } catch (Exception $e) {
+            Log::error('Khalti payment processing error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -151,27 +173,8 @@ class InvoiceKhaltiPaymentController extends Controller
 
             return isset($result['state']['name']) && $result['state']['name'] === 'Completed';
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
-    }
-
-    private function validateInvoicePaymentRequest($request, $additionalRules = [])
-    {
-        $baseRules = [
-            'invoice_id' => 'required|exists:invoices,id',
-            'amount' => 'required|numeric|min:0.01',
-            'payment_type' => 'required|in:full,partial',
-        ];
-
-        return $request->validate(array_merge($baseRules, $additionalRules));
-    }
-
-    private function getInvoicePaymentSettings($organizationId)
-    {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
-        ];
     }
 }

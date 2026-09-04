@@ -8,9 +8,11 @@ use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Product;
 use App\Models\PurchaseOrder;
+use App\Models\PurchaseOrderActivity;
 use App\Models\SalesOrder;
 use App\Models\ShippingProviderType;
 use App\Models\Tax;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -62,10 +64,10 @@ class PurchaseOrderController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $purchaseOrders = $query->paginate($perPage)->withQueryString();
 
-        $userQuery = \App\Models\User::where('created_by', createdBy());
+        $userQuery = User::where('created_by', createdBy());
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
 
@@ -88,25 +90,9 @@ class PurchaseOrderController extends Controller
         ]);
     }
 
-    public function create()
+    private function getFilteredProducts()
     {
-        $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
-        $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
-        $salesOrders = SalesOrder::where('created_by', createdBy())->select('id', 'name')->get();
-        $products = $this->getFilteredProducts();
-        $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
-        $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
-        $users = \App\Models\User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
-
-        return Inertia::render('purchase-orders/create', [
-            'accounts' => $accounts,
-            'contacts' => $contacts,
-            'salesOrders' => $salesOrders,
-            'products' => $products,
-            'shippingProviderTypes' => $shippingProviderTypes,
-            'taxes' => $taxes,
-            'users' => $users,
-        ]);
+        return Product::where('created_by', createdBy())->with('tax')->select('id', 'name', 'price', 'tax_id')->get();
     }
 
     public function store(Request $request)
@@ -177,7 +163,7 @@ class PurchaseOrderController extends Controller
 
         // Fire PurchaseOrderCreated event for sending email
         if ($purchaseOrder && !IsDemo()) {
-            event(new \App\Events\PurchaseOrderCreated($purchaseOrder));
+            event(new PurchaseOrderCreated($purchaseOrder));
         }
 
         // Check for errors
@@ -190,6 +176,44 @@ class PurchaseOrderController extends Controller
         }
 
         return redirect()->route('purchase-orders.index')->with('success', __('Purchase order created successfully.'));
+    }
+
+    public function create()
+    {
+        $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
+        $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
+        $salesOrders = SalesOrder::where('created_by', createdBy())->select('id', 'name')->get();
+        $products = $this->getFilteredProducts();
+        $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
+        $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
+        $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+
+        return Inertia::render('purchase-orders/create', [
+            'accounts' => $accounts,
+            'contacts' => $contacts,
+            'salesOrders' => $salesOrders,
+            'products' => $products,
+            'shippingProviderTypes' => $shippingProviderTypes,
+            'taxes' => $taxes,
+            'users' => $users,
+        ]);
+    }
+
+    private function calculateDiscountAmount($lineTotal, $discountType, $discountValue)
+    {
+        if (!$discountType || !$discountValue) {
+            return 0;
+        }
+
+        if ($discountType === 'percentage') {
+            return ($lineTotal * $discountValue) / 100;
+        }
+
+        if ($discountType === 'fixed') {
+            return min($discountValue, $lineTotal);
+        }
+
+        return 0;
     }
 
     public function show($purchaseOrderId)
@@ -245,7 +269,7 @@ class PurchaseOrderController extends Controller
             $products = $this->getFilteredProducts();
             $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
             $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
-            $users = \App\Models\User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+            $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
             return Inertia::render('purchase-orders/edit', [
                 'purchaseOrder' => $purchaseOrder,
@@ -260,6 +284,41 @@ class PurchaseOrderController extends Controller
         } else {
             return redirect()->route('purchase-orders.index')->with('error', __('Purchase order not found.'));
         }
+    }
+
+    public function destroy($purchaseOrderId)
+    {
+        $purchaseOrder = PurchaseOrder::where('id', $purchaseOrderId)
+            ->where('created_by', createdBy())
+            ->first();
+
+        if (!$purchaseOrder) {
+            return redirect()->back()->with('error', __('Purchase order not found.'));
+        }
+
+        $purchaseOrder->products()->detach();
+        $purchaseOrder->delete();
+
+        return redirect()->back()->with('success', __('Purchase order deleted successfully.'));
+    }
+
+    public function toggleStatus(Request $request, $purchaseOrderId)
+    {
+        $purchaseOrder = PurchaseOrder::where('id', $purchaseOrderId)
+            ->where('created_by', createdBy())
+            ->first();
+
+        if (!$purchaseOrder) {
+            return redirect()->back()->with('error', __('Purchase order not found.'));
+        }
+
+        $validated = $request->validate([
+            'status' => 'required|in:draft,sent,confirmed,received,cancelled',
+        ]);
+
+        $purchaseOrder->update(['status' => $validated['status']]);
+
+        return redirect()->back()->with('success', __('Purchase order status updated successfully.'));
     }
 
     public function update(Request $request, $purchaseOrderId)
@@ -336,41 +395,6 @@ class PurchaseOrderController extends Controller
         $purchaseOrder->calculateTotals();
 
         return redirect()->route('purchase-orders.index')->with('success', __('Purchase order updated successfully.'));
-    }
-
-    public function destroy($purchaseOrderId)
-    {
-        $purchaseOrder = PurchaseOrder::where('id', $purchaseOrderId)
-            ->where('created_by', createdBy())
-            ->first();
-
-        if (!$purchaseOrder) {
-            return redirect()->back()->with('error', __('Purchase order not found.'));
-        }
-
-        $purchaseOrder->products()->detach();
-        $purchaseOrder->delete();
-
-        return redirect()->back()->with('success', __('Purchase order deleted successfully.'));
-    }
-
-    public function toggleStatus(Request $request, $purchaseOrderId)
-    {
-        $purchaseOrder = PurchaseOrder::where('id', $purchaseOrderId)
-            ->where('created_by', createdBy())
-            ->first();
-
-        if (!$purchaseOrder) {
-            return redirect()->back()->with('error', __('Purchase order not found.'));
-        }
-
-        $validated = $request->validate([
-            'status' => 'required|in:draft,sent,confirmed,received,cancelled',
-        ]);
-
-        $purchaseOrder->update(['status' => $validated['status']]);
-
-        return redirect()->back()->with('success', __('Purchase order status updated successfully.'));
     }
 
     public function addSalesOrder(Request $request, $purchaseOrderId)
@@ -468,23 +492,6 @@ class PurchaseOrderController extends Controller
         return redirect()->back()->with('success', __('User assigned to purchase order successfully.'));
     }
 
-    private function calculateDiscountAmount($lineTotal, $discountType, $discountValue)
-    {
-        if (!$discountType || !$discountValue) {
-            return 0;
-        }
-
-        if ($discountType === 'percentage') {
-            return ($lineTotal * $discountValue) / 100;
-        }
-
-        if ($discountType === 'fixed') {
-            return min($discountValue, $lineTotal);
-        }
-
-        return 0;
-    }
-
     public function deleteActivities($purchaseOrderId)
     {
         $purchaseOrder = PurchaseOrder::where('id', $purchaseOrderId)
@@ -495,7 +502,7 @@ class PurchaseOrderController extends Controller
             return redirect()->back()->with('error', __('Purchase Order not found.'));
         }
 
-        \App\Models\PurchaseOrderActivity::where('purchase_order_id', $purchaseOrder->id)->delete();
+        PurchaseOrderActivity::where('purchase_order_id', $purchaseOrder->id)->delete();
 
         return redirect()->back()->with('success', __('All activities deleted successfully.'));
     }
@@ -510,7 +517,7 @@ class PurchaseOrderController extends Controller
             return redirect()->back()->with('error', __('Purchase Order not found.'));
         }
 
-        $activity = \App\Models\PurchaseOrderActivity::where('id', $activityId)
+        $activity = PurchaseOrderActivity::where('id', $activityId)
             ->where('purchase_order_id', $purchaseOrder->id)
             ->first();
 
@@ -559,11 +566,6 @@ class PurchaseOrderController extends Controller
                 ];
             }),
         ]);
-    }
-
-    private function getFilteredProducts()
-    {
-        return Product::where('created_by', createdBy())->with('tax')->select('id', 'name', 'price', 'tax_id')->get();
     }
 
     public function fileExport()

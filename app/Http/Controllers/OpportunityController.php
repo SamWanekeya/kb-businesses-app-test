@@ -2,13 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OpportunityCreated;
+use App\Events\OpportunityStageChanged;
 use App\Exports\OpportunityExport;
 use App\Models\Account;
+use App\Models\Call;
 use App\Models\Contact;
+use App\Models\Meeting;
 use App\Models\Opportunity;
+use App\Models\OpportunityActivity;
 use App\Models\OpportunitySource;
 use App\Models\OpportunityStage;
 use App\Models\Product;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -66,7 +73,7 @@ class OpportunityController extends Controller
             $opportunities = collect(['data' => $query->get()]);
         } else {
             $defaultPerPage = $request->view === 'grid' ? 12 : 10;
-            $perPage = max(1, min(200, (int) $request->get('per_page', $defaultPerPage)));
+            $perPage = max(1, min(200, (int)$request->get('per_page', $defaultPerPage)));
             $opportunities = $query->paginate($perPage)->withQueryString();
         }
         // Get data for dropdowns - filter by assigned_to for non-organization users
@@ -86,7 +93,7 @@ class OpportunityController extends Controller
         $allOpportunitySources = (clone $opportunitySourceQuery)->get(['id', 'name']);
         $opportunitySources = (clone $opportunitySourceQuery)->where('status', 'active')->get(['id', 'name']);
 
-        $userQuery = \App\Models\User::where('created_by', createdBy());
+        $userQuery = User::where('created_by', createdBy());
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
 
@@ -123,7 +130,7 @@ class OpportunityController extends Controller
         $opportunitySources = OpportunitySource::where('created_by', createdBy())
             ->where('status', 'active')->get(['id', 'name']);
 
-        $users = \App\Models\User::where('created_by', createdBy())
+        $users = User::where('created_by', createdBy())
             ->where('status', 'active')->select('id', 'name', 'email')->get();
 
         return Inertia::render('opportunities/create', [
@@ -181,7 +188,7 @@ class OpportunityController extends Controller
         }
 
         if ($opportunity && !IsDemo()) {
-            event(new \App\Events\OpportunityCreated($opportunity));
+            event(new OpportunityCreated($opportunity));
         }
 
         // Check for errors and combine them
@@ -216,11 +223,11 @@ class OpportunityController extends Controller
             return redirect()->route('opportunities.index')->with('error', __('Opportunity not found.'));
         }
 
-        $parentMeetings = \App\Models\Meeting::where('created_by', createdBy())
+        $parentMeetings = Meeting::where('created_by', createdBy())
             ->where('parent_module', 'opportunity')->where('parent_id', $opportunityId)
             ->with(['creator', 'assignedUser'])->get();
 
-        $parentCalls = \App\Models\Call::where('created_by', createdBy())
+        $parentCalls = Call::where('created_by', createdBy())
             ->where('parent_module', 'opportunity')->where('parent_id', $opportunityId)
             ->with(['creator', 'assignedUser'])->get()
             ->map(function ($call) {
@@ -264,7 +271,7 @@ class OpportunityController extends Controller
         $opportunitySources = OpportunitySource::where('created_by', createdBy())
             ->where('status', 'active')->get(['id', 'name']);
 
-        $users = \App\Models\User::where('created_by', createdBy())
+        $users = User::where('created_by', createdBy())
             ->where('status', 'active')->select('id', 'name', 'email')->get();
 
         return Inertia::render('opportunities/edit', [
@@ -318,9 +325,9 @@ class OpportunityController extends Controller
                     $old = $opportunity->getOriginal('opportunity_stage_id');
                     $new = $opportunity->opportunity_stage_id;
 
-                    $oldStageName = \App\Models\OpportunityStage::find($old)?->name ?? 'N/A';
-                    $newStageName = \App\Models\OpportunityStage::find($new)?->name ?? 'N/A';
-                    event(new \App\Events\OpportunityStageChanged($opportunity, $oldStageName, $newStageName));
+                    $oldStageName = OpportunityStage::find($old)?->name ?? 'N/A';
+                    $newStageName = OpportunityStage::find($new)?->name ?? 'N/A';
+                    event(new OpportunityStageChanged($opportunity, $oldStageName, $newStageName));
                 }
 
                 $opportunity->update($validated);
@@ -347,7 +354,7 @@ class OpportunityController extends Controller
                 }
 
                 return redirect()->route('opportunities.index')->with('success', __('Opportunity updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update opportunity.'));
             }
         } else {
@@ -367,7 +374,7 @@ class OpportunityController extends Controller
                 $opportunity->delete();
 
                 return redirect()->back()->with('success', __('Opportunity deleted successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete opportunity.'));
             }
         } else {
@@ -381,7 +388,7 @@ class OpportunityController extends Controller
             ->where('created_by', createdBy())
             ->firstOrFail();
 
-        \App\Models\OpportunityActivity::where('opportunity_id', $opportunity->id)->delete();
+        OpportunityActivity::where('opportunity_id', $opportunity->id)->delete();
 
         return redirect()->back()->with('success', __('All activities deleted successfully.'));
     }
@@ -392,7 +399,7 @@ class OpportunityController extends Controller
             ->where('created_by', createdBy())
             ->firstOrFail();
 
-        \App\Models\OpportunityActivity::where('id', $activityId)
+        OpportunityActivity::where('id', $activityId)
             ->where('opportunity_id', $opportunity->id)
             ->delete();
 
@@ -411,7 +418,7 @@ class OpportunityController extends Controller
                 $opportunity->save();
 
                 return redirect()->back()->with('success', __('Opportunity status updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update opportunity status.'));
             }
         } else {
@@ -435,9 +442,9 @@ class OpportunityController extends Controller
             $old = $opportunity->getOriginal('opportunity_stage_id');
             $new = $opportunity->opportunity_stage_id;
 
-            $oldStageName = \App\Models\OpportunityStage::find($old)?->name ?? 'N/A';
-            $newStageName = \App\Models\OpportunityStage::find($new)?->name ?? 'N/A';
-            event(new \App\Events\OpportunityStageChanged($opportunity, $oldStageName, $newStageName));
+            $oldStageName = OpportunityStage::find($old)?->name ?? 'N/A';
+            $newStageName = OpportunityStage::find($new)?->name ?? 'N/A';
+            event(new OpportunityStageChanged($opportunity, $oldStageName, $newStageName));
         }
         $opportunity->update([
             'opportunity_stage_id' => $validated['opportunity_stage_id'],

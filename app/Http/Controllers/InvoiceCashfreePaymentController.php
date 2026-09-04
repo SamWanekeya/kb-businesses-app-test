@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Log;
 
 class InvoiceCashfreePaymentController extends Controller
 {
@@ -33,7 +36,7 @@ class InvoiceCashfreePaymentController extends Controller
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['cashfree_public_key']) || !isset($settings['payment_settings']['cashfree_secret_key'])) {
-                \Log::error('Cashfree payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+                Log::error('Cashfree payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return response()->json(['error' => __('Cashfree not configured')], 400);
             }
@@ -83,14 +86,59 @@ class InvoiceCashfreePaymentController extends Controller
                 'mode' => $settings['payment_settings']['cashfree_mode'],
             ]);
 
-        } catch (\Exception $e) {
-            \Log::error('Cashfree payment session creation failed', [
+        } catch (Exception $e) {
+            Log::error('Cashfree payment session creation failed', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
             ]);
 
             return response()->json(['error' => __('Failed to create payment session: ') . $e->getMessage()], 500);
         }
+    }
+
+    private function validateInvoicePaymentRequest($request, $additionalRules = [])
+    {
+        $baseRules = [
+            'invoice_id' => 'required|exists:invoices,id',
+            'amount' => 'required|numeric|min:0.01',
+            'payment_type' => 'required|in:full,partial',
+        ];
+
+        return $request->validate(array_merge($baseRules, $additionalRules));
+    }
+
+    private function getInvoicePaymentSettings($organizationId)
+    {
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
+    }
+
+    private function makeCashfreeApiCall($method, $endpoint, $data, $paymentSettings)
+    {
+        $modeValue = $paymentSettings['cashfree_mode'] ?? 'sandbox';
+        $mode = ($modeValue === 0 || $modeValue === '0' || $modeValue === 'sandbox') ? 'sandbox' : 'production';
+        $baseUrl = $mode === 'production' ? 'https://api.cashfree.com/pg' : 'https://sandbox.cashfree.com/pg';
+
+        $headers = [
+            'x-client-id' => $paymentSettings['cashfree_public_key'],
+            'x-client-secret' => $paymentSettings['cashfree_secret_key'],
+            'x-api-version' => '2023-08-01',
+        ];
+
+        if ($data) {
+            $headers['Content-Type'] = 'application/json';
+        }
+
+        $url = $baseUrl . $endpoint;
+        $response = Http::withHeaders($headers)->$method($url, $data);
+
+        if (!$response->successful()) {
+            throw new Exception('API Error: ' . $response->body());
+        }
+
+        return $response->json();
     }
 
     public function verifyPayment(Request $request)
@@ -132,7 +180,7 @@ class InvoiceCashfreePaymentController extends Controller
                 'payment_id' => $successfulPayment['cf_payment_id'],
             ]);
 
-            \Log::info('Cashfree invoice payment successful', [
+            Log::info('Cashfree invoice payment successful', [
                 'invoice_id' => $invoice->id,
                 'amount' => $validated['amount'],
                 'payment_type' => $validated['payment_type'],
@@ -140,8 +188,8 @@ class InvoiceCashfreePaymentController extends Controller
 
             return response()->json(['success' => true]);
 
-        } catch (\Exception $e) {
-            \Log::error('Cashfree payment verification failed', [
+        } catch (Exception $e) {
+            Log::error('Cashfree payment verification failed', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
             ]);
@@ -175,7 +223,7 @@ class InvoiceCashfreePaymentController extends Controller
                             'payment_id' => $paymentData['cf_payment_id'],
                         ]);
 
-                        \Log::info('Cashfree invoice payment webhook successful', [
+                        Log::info('Cashfree invoice payment webhook successful', [
                             'invoice_id' => $invoice->id,
                         ]);
                     }
@@ -183,55 +231,10 @@ class InvoiceCashfreePaymentController extends Controller
             }
 
             return response()->json(['status' => 'success']);
-        } catch (\Exception $e) {
-            \Log::error('Cashfree webhook error', ['error' => $e->getMessage()]);
+        } catch (Exception $e) {
+            Log::error('Cashfree webhook error', ['error' => $e->getMessage()]);
 
             return response()->json(['error' => __('Webhook processing failed')], 500);
         }
-    }
-
-    private function makeCashfreeApiCall($method, $endpoint, $data, $paymentSettings)
-    {
-        $modeValue = $paymentSettings['cashfree_mode'] ?? 'sandbox';
-        $mode = ($modeValue === 0 || $modeValue === '0' || $modeValue === 'sandbox') ? 'sandbox' : 'production';
-        $baseUrl = $mode === 'production' ? 'https://api.cashfree.com/pg' : 'https://sandbox.cashfree.com/pg';
-
-        $headers = [
-            'x-client-id' => $paymentSettings['cashfree_public_key'],
-            'x-client-secret' => $paymentSettings['cashfree_secret_key'],
-            'x-api-version' => '2023-08-01',
-        ];
-
-        if ($data) {
-            $headers['Content-Type'] = 'application/json';
-        }
-
-        $url = $baseUrl . $endpoint;
-        $response = Http::withHeaders($headers)->$method($url, $data);
-
-        if (!$response->successful()) {
-            throw new \Exception('API Error: ' . $response->body());
-        }
-
-        return $response->json();
-    }
-
-    private function validateInvoicePaymentRequest($request, $additionalRules = [])
-    {
-        $baseRules = [
-            'invoice_id' => 'required|exists:invoices,id',
-            'amount' => 'required|numeric|min:0.01',
-            'payment_type' => 'required|in:full,partial',
-        ];
-
-        return $request->validate(array_merge($baseRules, $additionalRules));
-    }
-
-    private function getInvoicePaymentSettings($organizationId)
-    {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
-        ];
     }
 }

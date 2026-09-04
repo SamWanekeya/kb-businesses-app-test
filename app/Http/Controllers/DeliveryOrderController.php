@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\DeliveryOrderCreated;
 use App\Exports\DeliveryOrderExport;
 use App\Models\Account;
 use App\Models\Contact;
@@ -9,6 +10,7 @@ use App\Models\DeliveryOrder;
 use App\Models\Product;
 use App\Models\SalesOrder;
 use App\Models\ShippingProviderType;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -60,10 +62,10 @@ class DeliveryOrderController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $deliveryOrders = $query->paginate($perPage)->withQueryString();
 
-        $userQuery = \App\Models\User::where('created_by', createdBy());
+        $userQuery = User::where('created_by', createdBy());
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
 
         $accountQuery = Account::where('created_by', createdBy());
@@ -75,25 +77,6 @@ class DeliveryOrderController extends Controller
             'salesOrders' => SalesOrder::where('created_by', createdBy())->select('id', 'name', 'order_number')->get(),
             'allUsers' => $allUsers,
             'filters' => $request->only(['search', 'status', 'account_id', 'sales_order_id', 'assigned_to', 'sort_field', 'sort_direction', 'per_page', 'page']),
-        ]);
-    }
-
-    public function create()
-    {
-        $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
-        $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
-        $salesOrders = SalesOrder::where('created_by', createdBy())->select('id', 'name', 'order_number')->get();
-        $products = $this->getFilteredProducts();
-        $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
-        $users = \App\Models\User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
-
-        return Inertia::render('delivery-orders/create', [
-            'accounts' => $accounts,
-            'contacts' => $contacts,
-            'salesOrders' => $salesOrders,
-            'products' => $products,
-            'shippingProviderTypes' => $shippingProviderTypes,
-            'users' => $users,
         ]);
     }
 
@@ -156,7 +139,7 @@ class DeliveryOrderController extends Controller
 
         // Fire DeliveryOrderCreated event for sending email
         if ($deliveryOrder && !IsDemo()) {
-            event(new \App\Events\DeliveryOrderCreated($deliveryOrder));
+            event(new DeliveryOrderCreated($deliveryOrder));
         }
 
         // Check for email error
@@ -169,6 +152,30 @@ class DeliveryOrderController extends Controller
         }
 
         return redirect()->route('delivery-orders.index')->with('success', __('Delivery order created successfully.'));
+    }
+
+    public function create()
+    {
+        $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
+        $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
+        $salesOrders = SalesOrder::where('created_by', createdBy())->select('id', 'name', 'order_number')->get();
+        $products = $this->getFilteredProducts();
+        $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
+        $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+
+        return Inertia::render('delivery-orders/create', [
+            'accounts' => $accounts,
+            'contacts' => $contacts,
+            'salesOrders' => $salesOrders,
+            'products' => $products,
+            'shippingProviderTypes' => $shippingProviderTypes,
+            'users' => $users,
+        ]);
+    }
+
+    private function getFilteredProducts()
+    {
+        return Product::where('created_by', createdBy())->select('id', 'name')->get();
     }
 
     public function show($deliveryOrderId)
@@ -216,7 +223,7 @@ class DeliveryOrderController extends Controller
             $salesOrders = SalesOrder::where('created_by', createdBy())->select('id', 'name', 'order_number')->get();
             $products = $this->getFilteredProducts();
             $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
-            $users = \App\Models\User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+            $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
             return Inertia::render('delivery-orders/edit', [
                 'deliveryOrder' => $deliveryOrder,
@@ -230,6 +237,41 @@ class DeliveryOrderController extends Controller
         } else {
             return redirect()->route('delivery-orders.index')->with('error', __('Delivery order not found.'));
         }
+    }
+
+    public function destroy($deliveryOrderId)
+    {
+        $deliveryOrder = DeliveryOrder::where('id', $deliveryOrderId)
+            ->where('created_by', createdBy())
+            ->first();
+
+        if (!$deliveryOrder) {
+            return redirect()->back()->with('error', __('Delivery order not found.'));
+        }
+
+        $deliveryOrder->products()->detach();
+        $deliveryOrder->delete();
+
+        return redirect()->back()->with('success', __('Delivery order deleted successfully.'));
+    }
+
+    public function toggleStatus(Request $request, $deliveryOrderId)
+    {
+        $deliveryOrder = DeliveryOrder::where('id', $deliveryOrderId)
+            ->where('created_by', createdBy())
+            ->first();
+
+        if (!$deliveryOrder) {
+            return redirect()->back()->with('error', __('Delivery order not found.'));
+        }
+
+        $validated = $request->validate([
+            'status' => 'required|in:pending,in_transit,delivered,cancelled',
+        ]);
+
+        $deliveryOrder->update(['status' => $validated['status']]);
+
+        return redirect()->back()->with('success', __('Delivery order status updated successfully.'));
     }
 
     public function update(Request $request, $deliveryOrderId)
@@ -299,41 +341,6 @@ class DeliveryOrderController extends Controller
         return redirect()->route('delivery-orders.index')->with('success', __('Delivery order updated successfully.'));
     }
 
-    public function destroy($deliveryOrderId)
-    {
-        $deliveryOrder = DeliveryOrder::where('id', $deliveryOrderId)
-            ->where('created_by', createdBy())
-            ->first();
-
-        if (!$deliveryOrder) {
-            return redirect()->back()->with('error', __('Delivery order not found.'));
-        }
-
-        $deliveryOrder->products()->detach();
-        $deliveryOrder->delete();
-
-        return redirect()->back()->with('success', __('Delivery order deleted successfully.'));
-    }
-
-    public function toggleStatus(Request $request, $deliveryOrderId)
-    {
-        $deliveryOrder = DeliveryOrder::where('id', $deliveryOrderId)
-            ->where('created_by', createdBy())
-            ->first();
-
-        if (!$deliveryOrder) {
-            return redirect()->back()->with('error', __('Delivery order not found.'));
-        }
-
-        $validated = $request->validate([
-            'status' => 'required|in:pending,in_transit,delivered,cancelled',
-        ]);
-
-        $deliveryOrder->update(['status' => $validated['status']]);
-
-        return redirect()->back()->with('success', __('Delivery order status updated successfully.'));
-    }
-
     public function assignUser(Request $request, $deliveryOrderId)
     {
         $deliveryOrder = DeliveryOrder::where('id', $deliveryOrderId)
@@ -391,10 +398,5 @@ class DeliveryOrderController extends Controller
                 ];
             }),
         ]);
-    }
-
-    private function getFilteredProducts()
-    {
-        return Product::where('created_by', createdBy())->select('id', 'name')->get();
     }
 }

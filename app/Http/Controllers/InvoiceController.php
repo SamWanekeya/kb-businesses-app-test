@@ -2,15 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\InvoiceCreated;
 use App\Exports\InvoiceExport;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Invoice;
+use App\Models\InvoiceActivity;
+use App\Models\InvoicePayment;
+use App\Models\InvoiceReminder;
 use App\Models\Opportunity;
 use App\Models\PlanOrder;
 use App\Models\Product;
 use App\Models\Quote;
 use App\Models\SalesOrder;
+use App\Models\User;
+use App\Services\InvoicePaymentService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -68,10 +75,10 @@ class InvoiceController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $invoices = $query->paginate($perPage)->withQueryString();
 
-        $userQuery = \App\Models\User::where('created_by', createdBy());
+        $userQuery = User::where('created_by', createdBy());
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
 
@@ -97,194 +104,6 @@ class InvoiceController extends Controller
                 return [$invoice->id => encrypt($invoice->id)];
             }),
         ]);
-    }
-
-    public function create()
-    {
-        $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
-        $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
-        $salesOrders = SalesOrder::where('created_by', createdBy())->select('id', 'name', 'order_number')->get();
-        $quotes = Quote::where('created_by', createdBy())->select('id', 'name', 'quote_number')->get();
-        $opportunities = Opportunity::where('created_by', createdBy())->select('id', 'name')->get();
-        $products = $this->getFilteredProducts();
-        $users = \App\Models\User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
-
-        return Inertia::render('invoices/create', [
-            'accounts' => $accounts,
-            'contacts' => $contacts,
-            'salesOrders' => $salesOrders,
-            'quotes' => $quotes,
-            'opportunities' => $opportunities,
-            'products' => $products,
-            'users' => $users,
-        ]);
-    }
-
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'sales_order_id' => 'required|exists:sales_orders,id',
-            'quote_id' => 'required|exists:quotes,id',
-            'opportunity_id' => 'required|exists:opportunities,id',
-            'account_id' => 'required|exists:accounts,id',
-            'contact_id' => 'required|exists:contacts,id',
-            'invoice_date' => 'required|date',
-            'due_date' => 'required|date|after:invoice_date',
-            'status' => 'nullable|in:draft,sent,pending,paid,partially_paid,overdue,cancelled',
-            'billing_address' => 'required|string',
-            'billing_city' => 'required|string|max:255',
-            'billing_state' => 'required|string|max:255',
-            'billing_postal_code' => 'required|string|max:255',
-            'billing_country' => 'required|string|max:255',
-            'notes' => 'nullable|string',
-            'terms' => 'nullable|string',
-            'payment_method' => 'nullable|in:stripe,paypal,skrill,razorpay,mercadopago,paystack,flutterwave,paytabs,coingate,bank_transfer',
-            'assigned_to' => 'required|exists:users,id',
-            'products' => 'required|array|min:1',
-            'products.*.product_id' => 'required|exists:products,id',
-            'products.*.quantity' => 'required|integer|min:1',
-            'products.*.unit_price' => 'required|numeric|min:0',
-            'products.*.discount_type' => 'nullable|in:percentage,fixed,none',
-            'products.*.discount_value' => 'nullable|numeric|min:0',
-        ]);
-
-        $validated['created_by'] = createdBy();
-        $validated['status'] = $validated['status'] ?? 'draft';
-
-        $products = $validated['products'] ?? [];
-
-        // Check inventory if status is not cancelled
-        if ($validated['status'] !== 'cancelled') {
-            foreach ($products as $product) {
-                $productModel = Product::find($product['product_id']);
-                if ($productModel && $productModel->stock_quantity < $product['quantity']) {
-                    return redirect()->back()->withErrors(['error' => __("Insufficient stock for product: :name. Available: :stock, Required: :required", [
-                        'name' => $productModel->name,
-                        'stock' => $productModel->stock_quantity,
-                        'required' => $product['quantity'],
-                    ])]);
-                }
-            }
-        }
-
-        unset($validated['products']);
-
-        $invoice = Invoice::create($validated);
-
-        if (!empty($products)) {
-            $syncData = [];
-            foreach ($products as $product) {
-                $productId = $product['product_id'];
-                $lineTotal = $product['quantity'] * $product['unit_price'];
-                $discountAmount = $this->calculateDiscountAmount($lineTotal, $product['discount_type'] ?? null, $product['discount_value'] ?? 0);
-
-                $syncData[$productId] = [
-                    'quantity' => $product['quantity'],
-                    'unit_price' => $product['unit_price'],
-                    'total_price' => $lineTotal,
-                    'discount_type' => $product['discount_type'] ?? null,
-                    'discount_value' => $product['discount_value'] ?? 0,
-                    'discount_amount' => $discountAmount,
-                ];
-            }
-            $invoice->products()->sync($syncData);
-            Invoice::updateInventory($invoice);
-        }
-
-
-        $invoice->calculateTotals();
-
-        // Fire InvoiceCreated event for sending email
-        if ($invoice && !IsDemo()) {
-            event(new \App\Events\InvoiceCreated($invoice));
-        }
-
-        // Check for email error
-        $emailError = session()->pull('email_error');
-
-        if ($emailError) {
-            $message = __('Invoice created successfully, but ') . __('Email send failed: ') . $emailError;
-
-            return redirect()->route('invoices.index')->with('warning', $message);
-        }
-
-        return redirect()->route('invoices.index')->with('success', __('Invoice created successfully.'));
-    }
-
-    public function show($invoiceId)
-    {
-        $invoice = Invoice::where('id', $invoiceId)
-            ->where('created_by', createdBy())
-            ->with([
-                'salesOrder',
-                'quote',
-                'opportunity',
-                'account',
-                'contact',
-                'creator',
-                'assignedUser',
-                'products.tax',
-                'payments',
-                'activities.user',
-                'reminders.sentBy',
-            ])
-            ->first();
-
-        if (!$invoice) {
-            return redirect()->route('invoices.index')->with('error', __('Invoice not found.'));
-        }
-
-        // Get pending payments for approval
-        $pendingPayments = $invoice->payments()->where('status', 'pending')->get();
-
-        return Inertia::render('invoices/show', [
-            'invoice' => $invoice,
-            'streamItems' => $invoice->activities,
-            'pendingPayments' => $pendingPayments,
-            'availableSalesOrders' => SalesOrder::where('created_by', createdBy())->select('id', 'name', 'order_number')->get(),
-            'publicUrlBase' => config('app.url'),
-        ]);
-    }
-
-    public function edit($id)
-    {
-        $invoice = Invoice::with([
-            'salesOrder',
-            'quote',
-            'opportunity',
-            'account',
-            'contact',
-            'creator',
-            'assignedUser',
-            'products.tax',
-        ])
-            ->where('created_by', createdBy())
-            ->where('id', $id)
-            ->first();
-        if ($invoice) {
-            $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
-            $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
-            $salesOrders = SalesOrder::where('created_by', createdBy())->select('id', 'name', 'order_number')->get();
-            $quotes = Quote::where('created_by', createdBy())->select('id', 'name', 'quote_number')->get();
-            $opportunities = Opportunity::where('created_by', createdBy())->select('id', 'name')->get();
-            $products = $this->getFilteredProducts();
-            $users = \App\Models\User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
-
-            return Inertia::render('invoices/edit', [
-                'invoice' => $invoice,
-                'accounts' => $accounts,
-                'contacts' => $contacts,
-                'salesOrders' => $salesOrders,
-                'quotes' => $quotes,
-                'opportunities' => $opportunities,
-                'products' => $products,
-                'users' => $users,
-            ]);
-        } else {
-            return redirect()->route('invoices.index')->with('error', __('Invoice not found.'));
-        }
     }
 
     public function update(Request $request, $invoiceId)
@@ -390,10 +209,220 @@ class InvoiceController extends Controller
             DB::commit();
 
             return redirect()->route('invoices.index')->with('success', __('Invoice updated successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
 
             return redirect()->back()->with('error', __('Something went wrong. Please try again later.'));
+        }
+    }
+
+    private function calculateDiscountAmount($lineTotal, $discountType, $discountValue)
+    {
+        if (!$discountType || !$discountValue) {
+            return 0;
+        }
+
+        if ($discountType === 'percentage') {
+            return ($lineTotal * $discountValue) / 100;
+        }
+
+        if ($discountType === 'fixed') {
+            return min($discountValue, $lineTotal);
+        }
+
+        return 0;
+    }
+
+    private function getFilteredProducts()
+    {
+        return Product::where('created_by', createdBy())->with('tax')->select('id', 'name', 'price', 'tax_id')->get();
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'sales_order_id' => 'required|exists:sales_orders,id',
+            'quote_id' => 'required|exists:quotes,id',
+            'opportunity_id' => 'required|exists:opportunities,id',
+            'account_id' => 'required|exists:accounts,id',
+            'contact_id' => 'required|exists:contacts,id',
+            'invoice_date' => 'required|date',
+            'due_date' => 'required|date|after:invoice_date',
+            'status' => 'nullable|in:draft,sent,pending,paid,partially_paid,overdue,cancelled',
+            'billing_address' => 'required|string',
+            'billing_city' => 'required|string|max:255',
+            'billing_state' => 'required|string|max:255',
+            'billing_postal_code' => 'required|string|max:255',
+            'billing_country' => 'required|string|max:255',
+            'notes' => 'nullable|string',
+            'terms' => 'nullable|string',
+            'payment_method' => 'nullable|in:stripe,paypal,skrill,razorpay,mercadopago,paystack,flutterwave,paytabs,coingate,bank_transfer',
+            'assigned_to' => 'required|exists:users,id',
+            'products' => 'required|array|min:1',
+            'products.*.product_id' => 'required|exists:products,id',
+            'products.*.quantity' => 'required|integer|min:1',
+            'products.*.unit_price' => 'required|numeric|min:0',
+            'products.*.discount_type' => 'nullable|in:percentage,fixed,none',
+            'products.*.discount_value' => 'nullable|numeric|min:0',
+        ]);
+
+        $validated['created_by'] = createdBy();
+        $validated['status'] = $validated['status'] ?? 'draft';
+
+        $products = $validated['products'] ?? [];
+
+        // Check inventory if status is not cancelled
+        if ($validated['status'] !== 'cancelled') {
+            foreach ($products as $product) {
+                $productModel = Product::find($product['product_id']);
+                if ($productModel && $productModel->stock_quantity < $product['quantity']) {
+                    return redirect()->back()->withErrors(['error' => __("Insufficient stock for product: :name. Available: :stock, Required: :required", [
+                        'name' => $productModel->name,
+                        'stock' => $productModel->stock_quantity,
+                        'required' => $product['quantity'],
+                    ])]);
+                }
+            }
+        }
+
+        unset($validated['products']);
+
+        $invoice = Invoice::create($validated);
+
+        if (!empty($products)) {
+            $syncData = [];
+            foreach ($products as $product) {
+                $productId = $product['product_id'];
+                $lineTotal = $product['quantity'] * $product['unit_price'];
+                $discountAmount = $this->calculateDiscountAmount($lineTotal, $product['discount_type'] ?? null, $product['discount_value'] ?? 0);
+
+                $syncData[$productId] = [
+                    'quantity' => $product['quantity'],
+                    'unit_price' => $product['unit_price'],
+                    'total_price' => $lineTotal,
+                    'discount_type' => $product['discount_type'] ?? null,
+                    'discount_value' => $product['discount_value'] ?? 0,
+                    'discount_amount' => $discountAmount,
+                ];
+            }
+            $invoice->products()->sync($syncData);
+            Invoice::updateInventory($invoice);
+        }
+
+
+        $invoice->calculateTotals();
+
+        // Fire InvoiceCreated event for sending email
+        if ($invoice && !IsDemo()) {
+            event(new InvoiceCreated($invoice));
+        }
+
+        // Check for email error
+        $emailError = session()->pull('email_error');
+
+        if ($emailError) {
+            $message = __('Invoice created successfully, but ') . __('Email send failed: ') . $emailError;
+
+            return redirect()->route('invoices.index')->with('warning', $message);
+        }
+
+        return redirect()->route('invoices.index')->with('success', __('Invoice created successfully.'));
+    }
+
+    public function create()
+    {
+        $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
+        $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
+        $salesOrders = SalesOrder::where('created_by', createdBy())->select('id', 'name', 'order_number')->get();
+        $quotes = Quote::where('created_by', createdBy())->select('id', 'name', 'quote_number')->get();
+        $opportunities = Opportunity::where('created_by', createdBy())->select('id', 'name')->get();
+        $products = $this->getFilteredProducts();
+        $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+
+        return Inertia::render('invoices/create', [
+            'accounts' => $accounts,
+            'contacts' => $contacts,
+            'salesOrders' => $salesOrders,
+            'quotes' => $quotes,
+            'opportunities' => $opportunities,
+            'products' => $products,
+            'users' => $users,
+        ]);
+    }
+
+    public function show($invoiceId)
+    {
+        $invoice = Invoice::where('id', $invoiceId)
+            ->where('created_by', createdBy())
+            ->with([
+                'salesOrder',
+                'quote',
+                'opportunity',
+                'account',
+                'contact',
+                'creator',
+                'assignedUser',
+                'products.tax',
+                'payments',
+                'activities.user',
+                'reminders.sentBy',
+            ])
+            ->first();
+
+        if (!$invoice) {
+            return redirect()->route('invoices.index')->with('error', __('Invoice not found.'));
+        }
+
+        // Get pending payments for approval
+        $pendingPayments = $invoice->payments()->where('status', 'pending')->get();
+
+        return Inertia::render('invoices/show', [
+            'invoice' => $invoice,
+            'streamItems' => $invoice->activities,
+            'pendingPayments' => $pendingPayments,
+            'availableSalesOrders' => SalesOrder::where('created_by', createdBy())->select('id', 'name', 'order_number')->get(),
+            'publicUrlBase' => config('app.url'),
+        ]);
+    }
+
+    public function edit($id)
+    {
+        $invoice = Invoice::with([
+            'salesOrder',
+            'quote',
+            'opportunity',
+            'account',
+            'contact',
+            'creator',
+            'assignedUser',
+            'products.tax',
+        ])
+            ->where('created_by', createdBy())
+            ->where('id', $id)
+            ->first();
+        if ($invoice) {
+            $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
+            $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
+            $salesOrders = SalesOrder::where('created_by', createdBy())->select('id', 'name', 'order_number')->get();
+            $quotes = Quote::where('created_by', createdBy())->select('id', 'name', 'quote_number')->get();
+            $opportunities = Opportunity::where('created_by', createdBy())->select('id', 'name')->get();
+            $products = $this->getFilteredProducts();
+            $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+
+            return Inertia::render('invoices/edit', [
+                'invoice' => $invoice,
+                'accounts' => $accounts,
+                'contacts' => $contacts,
+                'salesOrders' => $salesOrders,
+                'quotes' => $quotes,
+                'opportunities' => $opportunities,
+                'products' => $products,
+                'users' => $users,
+            ]);
+        } else {
+            return redirect()->route('invoices.index')->with('error', __('Invoice not found.'));
         }
     }
 
@@ -425,7 +454,7 @@ class InvoiceController extends Controller
             return response()->json(['error' => __('Invoice not found')], 404);
         }
 
-        $reminders = \App\Models\InvoiceReminder::where('invoice_id', $invoice->id)
+        $reminders = InvoiceReminder::where('invoice_id', $invoice->id)
             ->with('sentBy')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -481,7 +510,7 @@ class InvoiceController extends Controller
             return redirect()->back()->with('error', __('Invoice not found.'));
         }
 
-        \App\Models\InvoiceActivity::where('invoice_id', $invoice->id)->delete();
+        InvoiceActivity::where('invoice_id', $invoice->id)->delete();
 
         return redirect()->back()->with('success', __('All activities deleted successfully.'));
     }
@@ -496,7 +525,7 @@ class InvoiceController extends Controller
             return redirect()->back()->with('error', __('Invoice not found.'));
         }
 
-        $activity = \App\Models\InvoiceActivity::where('id', $activityId)
+        $activity = InvoiceActivity::where('id', $activityId)
             ->where('invoice_id', $invoice->id)
             ->first();
 
@@ -541,23 +570,6 @@ class InvoiceController extends Controller
 
         return redirect()->route('invoices.public', $invoiceId)
             ->with('error', __('Payment was cancelled.'));
-    }
-
-    private function calculateDiscountAmount($lineTotal, $discountType, $discountValue)
-    {
-        if (!$discountType || !$discountValue) {
-            return 0;
-        }
-
-        if ($discountType === 'percentage') {
-            return ($lineTotal * $discountValue) / 100;
-        }
-
-        if ($discountType === 'fixed') {
-            return min($discountValue, $lineTotal);
-        }
-
-        return 0;
     }
 
     public function publicView($invoiceId)
@@ -613,7 +625,7 @@ class InvoiceController extends Controller
                 'themeColor' => $themeColor,
                 'customColor' => $customColor,
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             abort(404, __('Invalid invoice link'));
         }
     }
@@ -635,7 +647,7 @@ class InvoiceController extends Controller
         }
 
         // Validate payment method configuration
-        $paymentService = new \App\Services\InvoicePaymentService();
+        $paymentService = new InvoicePaymentService();
         if (!$paymentService->validatePaymentMethodConfig($validated['payment_method'], $invoice->created_by)) {
             return back()->withErrors(['error' => __(ucfirst($validated['payment_method']) . ' payment method is not configured.')]);
         }
@@ -683,7 +695,7 @@ class InvoiceController extends Controller
         // Get currency from settings or default
         $currency = getSetting('defaultCurrency', 'USD', $invoice->created_by);
 
-        return \Inertia\Inertia::render('invoices/payment', [
+        return Inertia::render('invoices/payment', [
             'invoice' => $invoice,
             'paymentMethod' => $method,
             'amount' => $amount,
@@ -691,36 +703,6 @@ class InvoiceController extends Controller
             'paymentSettings' => $paymentSettings,
             'currency' => $currency,
         ]);
-    }
-
-    private function getEnabledPaymentMethods()
-    {
-        $settings = getPaymentGatewaySettings();
-        $methods = [];
-
-        if (isPaymentMethodEnabled('stripe')) {
-            $methods['stripe'] = [
-                'name' => 'Stripe',
-                'enabled' => true,
-            ];
-        }
-
-        if (isPaymentMethodEnabled('paypal')) {
-            $methods['paypal'] = [
-                'name' => 'PayPal',
-                'enabled' => true,
-            ];
-        }
-
-        if (isPaymentMethodEnabled('bank')) {
-            $methods['bank'] = [
-                'name' => 'Bank Transfer',
-                'enabled' => true,
-                'details' => $settings['payment_settings']['bank_details'] ?? null,
-            ];
-        }
-
-        return $methods;
     }
 
     public function fileExport()
@@ -832,7 +814,7 @@ class InvoiceController extends Controller
             return response()->json(['error' => __('Invoice not found')], 404);
         }
 
-        $paymentService = new \App\Services\InvoicePaymentService();
+        $paymentService = new InvoicePaymentService();
         $summary = $paymentService->getPaymentSummary($invoiceId);
 
         return response()->json($summary);
@@ -845,7 +827,7 @@ class InvoiceController extends Controller
         ]);
 
         try {
-            $payment = \App\Models\InvoicePayment::where('payment_id', $paymentId)
+            $payment = InvoicePayment::where('payment_id', $paymentId)
                 ->where('status', 'pending')
                 ->firstOrFail();
 
@@ -855,11 +837,11 @@ class InvoiceController extends Controller
                 return back()->withErrors(['error' => __('Unauthorized to approve this payment.')]);
             }
 
-            $paymentService = new \App\Services\InvoicePaymentService();
+            $paymentService = new InvoicePaymentService();
             $paymentService->approvePayment($paymentId, $validated['notes'] ?? null);
 
             return back()->with('success', __('Payment approved successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withErrors(['error' => __('Failed to approve payment.')]);
         }
     }
@@ -871,7 +853,7 @@ class InvoiceController extends Controller
         ]);
 
         try {
-            $payment = \App\Models\InvoicePayment::where('payment_id', $paymentId)
+            $payment = InvoicePayment::where('payment_id', $paymentId)
                 ->where('status', 'pending')
                 ->firstOrFail();
 
@@ -881,18 +863,13 @@ class InvoiceController extends Controller
                 return back()->withErrors(['error' => __('Unauthorized to reject this payment.')]);
             }
 
-            $paymentService = new \App\Services\InvoicePaymentService();
+            $paymentService = new InvoicePaymentService();
             $paymentService->rejectPayment($paymentId, $validated['reason'] ?? null);
 
             return back()->with('success', __('Payment rejected successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withErrors(['error' => __('Failed to reject payment.')]);
         }
-    }
-
-    private function getFilteredProducts()
-    {
-        return Product::where('created_by', createdBy())->with('tax')->select('id', 'name', 'price', 'tax_id')->get();
     }
 
     /**
@@ -904,7 +881,7 @@ class InvoiceController extends Controller
         $settings = settings($userId);
 
         // Sample invoice data for preview
-        $invoice = (object) [
+        $invoice = (object)[
             'invoice_number' => 'INV-2024-001',
             'invoice_date' => now()->format('Y-m-d'),
             'due_date' => now()->addDays(30)->format('Y-m-d'),
@@ -912,7 +889,7 @@ class InvoiceController extends Controller
             'subtotal' => 1000,
             'tax_amount' => 100,
             'total_amount' => 1100,
-            'account' => (object) [
+            'account' => (object)[
                 'name' => 'Sample Client',
                 'email' => 'client@kakbima.dev',
                 'phone' => '(555) 123-4567',
@@ -922,15 +899,15 @@ class InvoiceController extends Controller
             'billing_state' => 'State',
             'billing_postal_code' => '67890',
             'products' => [
-                (object) [
+                (object)[
                     'name' => 'Web Development',
-                    'pivot' => (object) ['quantity' => 10, 'unit_price' => 75, 'total_price' => 750],
-                    'tax' => (object) ['name' => 'VAT', 'rate' => 10],
+                    'pivot' => (object)['quantity' => 10, 'unit_price' => 75, 'total_price' => 750],
+                    'tax' => (object)['name' => 'VAT', 'rate' => 10],
                 ],
-                (object) [
+                (object)[
                     'name' => 'Design Services',
-                    'pivot' => (object) ['quantity' => 5, 'unit_price' => 50, 'total_price' => 250],
-                    'tax' => (object) ['name' => 'VAT', 'rate' => 10],
+                    'pivot' => (object)['quantity' => 5, 'unit_price' => 50, 'total_price' => 250],
+                    'tax' => (object)['name' => 'VAT', 'rate' => 10],
                 ],
             ],
             'notes' => 'Thank you for your business!',
@@ -941,10 +918,40 @@ class InvoiceController extends Controller
 
         return Inertia::render('Invoices-template/TemplatePreview', [
             'invoice' => $invoice,
-            'templateId' => (int) $templateId,
+            'templateId' => (int)$templateId,
             'templateColor' => $templateColor,
             'settings' => $settings,
             'isPreview' => $isPreview,
         ]);
+    }
+
+    private function getEnabledPaymentMethods()
+    {
+        $settings = getPaymentGatewaySettings();
+        $methods = [];
+
+        if (isPaymentMethodEnabled('stripe')) {
+            $methods['stripe'] = [
+                'name' => 'Stripe',
+                'enabled' => true,
+            ];
+        }
+
+        if (isPaymentMethodEnabled('paypal')) {
+            $methods['paypal'] = [
+                'name' => 'PayPal',
+                'enabled' => true,
+            ];
+        }
+
+        if (isPaymentMethodEnabled('bank')) {
+            $methods['bank'] = [
+                'name' => 'Bank Transfer',
+                'enabled' => true,
+                'details' => $settings['payment_settings']['bank_details'] ?? null,
+            ];
+        }
+
+        return $methods;
     }
 }

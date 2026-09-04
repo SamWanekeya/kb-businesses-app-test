@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
+use Exception;
 use Illuminate\Http\Request;
+use InvalidArgumentException;
 
 class InvoiceBankPaymentController extends Controller
 {
@@ -40,7 +42,7 @@ class InvoiceBankPaymentController extends Controller
 
             return back()->with('success', __('Payment request submitted. Your invoice will be updated after payment verification.'));
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->handleInvoicePaymentError($e, 'bank');
         }
     }
@@ -68,7 +70,7 @@ class InvoiceBankPaymentController extends Controller
         // Validate payment amount and type
         $validation = $invoice->validatePaymentAmount($data['amount'], $data['payment_type']);
         if (!$validation['valid']) {
-            throw new \InvalidArgumentException($validation['message']);
+            throw new InvalidArgumentException($validation['message']);
         }
 
         return InvoicePayment::create([

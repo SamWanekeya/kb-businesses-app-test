@@ -2,8 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AccountCreate;
 use App\Exports\AccountExport;
 use App\Models\Account;
+use App\Models\AccountActivity;
+use App\Models\AccountIndustry;
+use App\Models\AccountType;
+use App\Models\Call;
+use App\Models\Meeting;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -63,25 +71,25 @@ class AccountController extends Controller
         }
 
         $defaultPerPage = $request->view === 'grid' ? 12 : 10;
-        $perPage = max(1, min(200, (int) $request->get('per_page', $defaultPerPage)));
+        $perPage = max(1, min(200, (int)$request->get('per_page', $defaultPerPage)));
         $accounts = $query->paginate($perPage)->withQueryString();
 
         // Get users for assignment dropdown
-        $userQuery = \App\Models\User::where('created_by', createdBy());
+        $userQuery = User::where('created_by', createdBy());
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
 
-        $accountTypeQuery = \App\Models\AccountType::where('created_by', createdBy());
+        $accountTypeQuery = AccountType::where('created_by', createdBy());
         $allAccountTypes = (clone $accountTypeQuery)->get(['id', 'name']);
         $accountTypes = (clone $accountTypeQuery)->where('status', 'active')->get(['id', 'name']);
 
-        $accountIndustryQuery = \App\Models\AccountIndustry::where('created_by', createdBy());
+        $accountIndustryQuery = AccountIndustry::where('created_by', createdBy());
         $allAccountIndustries = (clone $accountIndustryQuery)->get(['id', 'name']);
         $accountIndustries = (clone $accountIndustryQuery)->where('status', 'active')->get(['id', 'name']);
 
         // Get plan limits for organization users
         $planLimits = null;
-        $organization = \App\Models\User::find(createdBy());
+        $organization = User::find(createdBy());
         if ($organization && $organization->plan) {
             $currentAccountsCount = Account::where('created_by', createdBy())->count();
             $planLimits = [
@@ -104,33 +112,11 @@ class AccountController extends Controller
         ]);
     }
 
-    public function create()
-    {
-        $accountTypes = \App\Models\AccountType::where('created_by', createdBy())
-            ->where('status', 'active')
-            ->get(['id', 'name']);
-
-        $accountIndustries = \App\Models\AccountIndustry::where('created_by', createdBy())
-            ->where('status', 'active')
-            ->get(['id', 'name']);
-
-        $users = \App\Models\User::where('created_by', createdBy())
-            ->where('status', 'active')
-            ->select('id', 'name', 'email')
-            ->get();
-
-        return Inertia::render('accounts/create', [
-            'accountTypes' => $accountTypes,
-            'accountIndustries' => $accountIndustries,
-            'users' => $users,
-        ]);
-    }
-
     public function store(Request $request)
     {
         // Check plan limits for organization users
         if (auth()->user()->type === 'organization') {
-            $organization = \App\Models\User::find(createdBy());
+            $organization = User::find(createdBy());
             if ($organization && $organization->plan) {
                 $currentAccountsCount = Account::where('created_by', createdBy())->count();
                 if ($currentAccountsCount >= $organization->plan->maximum_accounts) {
@@ -165,7 +151,7 @@ class AccountController extends Controller
 
         $account = Account::create($validated);
         if ($account && !IsDemo()) {
-            event(new \App\Events\AccountCreate($account));
+            event(new AccountCreate($account));
         }
 
         // Check for errors and combine them
@@ -189,6 +175,28 @@ class AccountController extends Controller
         return redirect()->route('accounts.index')->with('success', __('Account created successfully.'));
     }
 
+    public function create()
+    {
+        $accountTypes = AccountType::where('created_by', createdBy())
+            ->where('status', 'active')
+            ->get(['id', 'name']);
+
+        $accountIndustries = AccountIndustry::where('created_by', createdBy())
+            ->where('status', 'active')
+            ->get(['id', 'name']);
+
+        $users = User::where('created_by', createdBy())
+            ->where('status', 'active')
+            ->select('id', 'name', 'email')
+            ->get();
+
+        return Inertia::render('accounts/create', [
+            'accountTypes' => $accountTypes,
+            'accountIndustries' => $accountIndustries,
+            'users' => $users,
+        ]);
+    }
+
     public function show($id)
     {
         $account = Account::with(['assignedUser', 'creator', 'accountType', 'accountIndustry', 'activities.user', 'comments.user', 'contacts', 'quotes'])
@@ -197,11 +205,11 @@ class AccountController extends Controller
             ->first();
         if ($account) {
 
-            $parentMeetings = \App\Models\Meeting::where('created_by', createdBy())
+            $parentMeetings = Meeting::where('created_by', createdBy())
                 ->where('parent_module', 'account')->where('parent_id', $id)
                 ->with(['creator', 'assignedUser'])->get();
 
-            $parentCalls = \App\Models\Call::where('created_by', createdBy())
+            $parentCalls = Call::where('created_by', createdBy())
                 ->where('parent_module', 'account')->where('parent_id', $id)
                 ->with(['creator', 'assignedUser'])->get()
                 ->map(function ($call) {
@@ -232,13 +240,13 @@ class AccountController extends Controller
             return redirect()->route('accounts.index')->with('error', __('Account not found.'));
         }
 
-        $accountTypes = \App\Models\AccountType::where('created_by', createdBy())
+        $accountTypes = AccountType::where('created_by', createdBy())
             ->where('status', 'active')->get(['id', 'name']);
 
-        $accountIndustries = \App\Models\AccountIndustry::where('created_by', createdBy())
+        $accountIndustries = AccountIndustry::where('created_by', createdBy())
             ->where('status', 'active')->get(['id', 'name']);
 
-        $users = \App\Models\User::where('created_by', createdBy())
+        $users = User::where('created_by', createdBy())
             ->where('status', 'active')->select('id', 'name', 'email')->get();
 
         return Inertia::render('accounts/edit', [
@@ -257,30 +265,30 @@ class AccountController extends Controller
 
         if ($account) {
             $validated = $request->validate([
-                  'name' => 'required|string|max:255',
-                  'email' => 'required|email|max:255|unique:accounts,email,' . $accountId . ',id,created_by,' . createdBy(),
-                  'phone' => 'nullable|string|max:255',
-                  'website' => 'nullable|url|max:255',
-                  'account_type_id' => 'required|exists:account_types,id',
-                  'account_industry_id' => 'required|exists:account_industries,id',
-                  'billing_address' => 'required|string',
-                  'billing_city' => 'required|string|max:255',
-                  'billing_state' => 'required|string|max:255',
-                  'billing_postal_code' => 'required|string|max:255',
-                  'billing_country' => 'required|string|max:255',
-                  'shipping_address' => 'nullable|string',
-                  'shipping_city' => 'nullable|string|max:255',
-                  'shipping_state' => 'nullable|string|max:255',
-                  'shipping_postal_code' => 'nullable|string|max:255',
-                  'shipping_country' => 'nullable|string|max:255',
-                  'status' => 'nullable|in:active,inactive',
-                  'assigned_to' => 'required|exists:users,id',
-              ]);
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255|unique:accounts,email,' . $accountId . ',id,created_by,' . createdBy(),
+                'phone' => 'nullable|string|max:255',
+                'website' => 'nullable|url|max:255',
+                'account_type_id' => 'required|exists:account_types,id',
+                'account_industry_id' => 'required|exists:account_industries,id',
+                'billing_address' => 'required|string',
+                'billing_city' => 'required|string|max:255',
+                'billing_state' => 'required|string|max:255',
+                'billing_postal_code' => 'required|string|max:255',
+                'billing_country' => 'required|string|max:255',
+                'shipping_address' => 'nullable|string',
+                'shipping_city' => 'nullable|string|max:255',
+                'shipping_state' => 'nullable|string|max:255',
+                'shipping_postal_code' => 'nullable|string|max:255',
+                'shipping_country' => 'nullable|string|max:255',
+                'status' => 'nullable|in:active,inactive',
+                'assigned_to' => 'required|exists:users,id',
+            ]);
             try {
                 $account->update($validated);
 
                 return redirect()->route('accounts.index')->with('success', __('Account updated successfully'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update account'));
             }
         } else {
@@ -299,7 +307,7 @@ class AccountController extends Controller
                 $account->delete();
 
                 return redirect()->back()->with('success', __('Account deleted successfully'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete account'));
             }
         } else {
@@ -319,7 +327,7 @@ class AccountController extends Controller
                 $account->save();
 
                 return redirect()->back()->with('success', __('Account status updated successfully'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update account status'));
             }
         } else {
@@ -333,7 +341,7 @@ class AccountController extends Controller
             ->where('created_by', createdBy())
             ->firstOrFail();
 
-        \App\Models\AccountActivity::where('account_id', $account->id)->delete();
+        AccountActivity::where('account_id', $account->id)->delete();
 
         return redirect()->back()->with('success', __('All activities deleted successfully'));
     }
@@ -344,7 +352,7 @@ class AccountController extends Controller
             ->where('created_by', createdBy())
             ->firstOrFail();
 
-        \App\Models\AccountActivity::where('id', $activityId)
+        AccountActivity::where('id', $activityId)
             ->where('account_id', $account->id)
             ->delete();
 

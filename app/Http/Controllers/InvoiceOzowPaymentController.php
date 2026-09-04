@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 
 class InvoiceOzowPaymentController extends Controller
 {
@@ -30,7 +33,7 @@ class InvoiceOzowPaymentController extends Controller
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['ozow_site_key']) || !isset($settings['payment_settings']['ozow_private_key']) || !isset($settings['payment_settings']['ozow_api_key'])) {
-                \Log::error('Ozow payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+                Log::error('Ozow payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return response()->json(['error' => __('Ozow not configured')], 400);
             }
@@ -99,13 +102,13 @@ class InvoiceOzowPaymentController extends Controller
                     'transaction_id' => $transactionReference,
                 ]);
             } else {
-                \Log::error('Ozow payment creation failed', ['invoice_id' => $invoice->id, 'response' => $response]);
+                Log::error('Ozow payment creation failed', ['invoice_id' => $invoice->id, 'response' => $response]);
 
                 return response()->json(['error' => __('Payment creation failed')], 500);
             }
 
-        } catch (\Exception $e) {
-            \Log::error('Ozow payment error', [
+        } catch (Exception $e) {
+            Log::error('Ozow payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -113,6 +116,25 @@ class InvoiceOzowPaymentController extends Controller
 
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
+    }
+
+    private function validateInvoicePaymentRequest($request, $additionalRules = [])
+    {
+        $baseRules = [
+            'invoice_id' => 'required|exists:invoices,id',
+            'amount' => 'required|numeric|min:0.01',
+            'payment_type' => 'required|in:full,partial',
+        ];
+
+        return $request->validate(array_merge($baseRules, $additionalRules));
+    }
+
+    private function getInvoicePaymentSettings($organizationId)
+    {
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
     }
 
     public function success(Request $request)
@@ -135,7 +157,7 @@ class InvoiceOzowPaymentController extends Controller
                 'payment_id' => $request->input('TransactionReference', 'OZOW-' . time()),
             ]);
 
-            \Log::info('Ozow invoice payment successful', [
+            Log::info('Ozow invoice payment successful', [
                 'invoice_id' => $invoice->id,
                 'amount' => $amount,
                 'payment_type' => $paymentType,
@@ -143,8 +165,8 @@ class InvoiceOzowPaymentController extends Controller
 
             return redirect()->route('invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
 
-        } catch (\Exception $e) {
-            \Log::error('Ozow success callback error', [
+        } catch (Exception $e) {
+            Log::error('Ozow success callback error', [
                 'error' => $e->getMessage(),
             ]);
 
@@ -176,7 +198,7 @@ class InvoiceOzowPaymentController extends Controller
                             'payment_id' => $transactionId,
                         ]);
 
-                        \Log::info('Ozow invoice payment callback successful', [
+                        Log::info('Ozow invoice payment callback successful', [
                             'invoice_id' => $invoice->id,
                             'transaction_id' => $transactionId,
                         ]);
@@ -186,31 +208,12 @@ class InvoiceOzowPaymentController extends Controller
 
             return response()->json(['status' => 'success']);
 
-        } catch (\Exception $e) {
-            \Log::error('Ozow callback error', [
+        } catch (Exception $e) {
+            Log::error('Ozow callback error', [
                 'error' => $e->getMessage(),
             ]);
 
             return response()->json(['error' => __('Callback processing failed')], 500);
         }
-    }
-
-    private function validateInvoicePaymentRequest($request, $additionalRules = [])
-    {
-        $baseRules = [
-            'invoice_id' => 'required|exists:invoices,id',
-            'amount' => 'required|numeric|min:0.01',
-            'payment_type' => 'required|in:full,partial',
-        ];
-
-        return $request->validate(array_merge($baseRules, $additionalRules));
-    }
-
-    private function getInvoicePaymentSettings($organizationId)
-    {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
-        ];
     }
 }

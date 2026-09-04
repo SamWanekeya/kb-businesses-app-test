@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Mail\TestMail;
-use App\Models\Setting;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -15,7 +16,7 @@ class EmailSettingController extends Controller
     /**
      * Get email settings for the authenticated user.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getEmailSettings()
     {
@@ -42,7 +43,7 @@ class EmailSettingController extends Controller
     /**
      * Update email settings for the authenticated user.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      */
     public function updateEmailSettings(Request $request)
     {
@@ -80,7 +81,7 @@ class EmailSettingController extends Controller
     /**
      * Send a test email.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      */
     public function sendTestEmail(Request $request)
     {
@@ -126,7 +127,7 @@ class EmailSettingController extends Controller
             Mail::to($request->email)->send(new TestMail());
 
             return redirect()->back()->with('success', __('Test email sent successfully to :email', ["email" => $request->email]));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to send test email: :message', ["message" => $e->getMessage()]));
         }
     }

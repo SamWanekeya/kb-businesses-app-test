@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EmailTemplate;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -285,7 +286,7 @@ class EmailTemplateController extends Controller
             ]);
 
             return redirect()->back()->with('success', __('Template settings updated successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to update template settings: :error', ['error' => $e->getMessage()]));
         }
     }
@@ -308,7 +309,7 @@ class EmailTemplateController extends Controller
             );
 
             return redirect()->back()->with('success', __('Email content updated successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to update email content: :error', ['error' => $e->getMessage()]));
         }
     }

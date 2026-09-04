@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TargetList;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -35,7 +36,7 @@ class TargetListController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $targetLists = $query->paginate($perPage);
 
         return Inertia::render('target-lists/index', [
@@ -77,7 +78,7 @@ class TargetListController extends Controller
                 $targetList->update($validated);
 
                 return redirect()->back()->with('success', __('Target list updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update target list.'));
             }
         } else {
@@ -96,7 +97,7 @@ class TargetListController extends Controller
                 $targetList->delete();
 
                 return redirect()->back()->with('success', __('Target list deleted successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete target list.'));
             }
         } else {
@@ -116,7 +117,7 @@ class TargetListController extends Controller
                 $targetList->save();
 
                 return redirect()->back()->with('success', __('Target list status updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update target list status.'));
             }
         } else {

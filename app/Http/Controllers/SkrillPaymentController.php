@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Plan;
 use App\Models\PlanOrder;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class SkrillPaymentController extends Controller
@@ -56,7 +57,7 @@ class SkrillPaymentController extends Controller
             $form .= '</form><script>document.getElementById("skrill-form").submit();</script>';
 
             return response($form);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return handlePaymentError($e, 'skrill');
         }
     }

@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Campaign;
+use App\Models\CampaignType;
+use App\Models\Lead;
+use App\Models\TargetList;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -56,18 +61,18 @@ class CampaignController extends Controller
         }
 
         $defaultPerPage = $request->view === 'grid' ? 12 : 10;
-        $perPage = max(1, min(200, (int) $request->get('per_page', $defaultPerPage)));
+        $perPage = max(1, min(200, (int)$request->get('per_page', $defaultPerPage)));
         $campaigns = $query->paginate($perPage)->withQueryString();
 
-        $userQuery = \App\Models\User::where('created_by', createdBy());
+        $userQuery = User::where('created_by', createdBy());
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
 
-        $campaignTypeQuery = \App\Models\CampaignType::where('created_by', createdBy());
+        $campaignTypeQuery = CampaignType::where('created_by', createdBy());
         $allCampaignTypes = (clone $campaignTypeQuery)->select('id', 'name')->get();
         $campaignTypes = (clone $campaignTypeQuery)->where('status', 'active')->select('id', 'name')->get();
 
-        $targetListQuery = \App\Models\TargetList::where('created_by', createdBy());
+        $targetListQuery = TargetList::where('created_by', createdBy());
         $allTargetLists = (clone $targetListQuery)->select('id', 'name')->get();
         $targetLists = (clone $targetListQuery)->where('status', 'active')->select('id', 'name')->get();
 
@@ -80,19 +85,6 @@ class CampaignController extends Controller
             'targetLists' => $targetLists,
             'allTargetLists' => $allTargetLists,
             'filters' => $request->only(['search', 'campaign_type_id', 'target_list_id', 'status', 'assigned_to', 'sort_field', 'sort_direction', 'per_page', 'view', 'page']),
-        ]);
-    }
-
-    public function create()
-    {
-        $users = \App\Models\User::where('created_by', createdBy())->where('status', 'active')->select('id', 'name', 'email')->get();
-        $campaignTypes = \App\Models\CampaignType::where('created_by', createdBy())->where('status', 'active')->select('id', 'name')->get();
-        $targetLists = \App\Models\TargetList::where('created_by', createdBy())->where('status', 'active')->select('id', 'name')->get();
-
-        return Inertia::render('campaigns/create', [
-            'users' => $users,
-            'campaignTypes' => $campaignTypes,
-            'targetLists' => $targetLists,
         ]);
     }
 
@@ -136,6 +128,19 @@ class CampaignController extends Controller
         return redirect()->route('campaigns.index')->with('success', __('Campaign created successfully.'));
     }
 
+    public function create()
+    {
+        $users = User::where('created_by', createdBy())->where('status', 'active')->select('id', 'name', 'email')->get();
+        $campaignTypes = CampaignType::where('created_by', createdBy())->where('status', 'active')->select('id', 'name')->get();
+        $targetLists = TargetList::where('created_by', createdBy())->where('status', 'active')->select('id', 'name')->get();
+
+        return Inertia::render('campaigns/create', [
+            'users' => $users,
+            'campaignTypes' => $campaignTypes,
+            'targetLists' => $targetLists,
+        ]);
+    }
+
     public function show($campaignId)
     {
         $campaign = Campaign::where('id', $campaignId)
@@ -147,7 +152,7 @@ class CampaignController extends Controller
             return redirect()->route('campaigns.index')->with('error', __('Campaign not found.'));
         }
 
-        $campaignLeads = \App\Models\Lead::where('campaign_id', $campaignId)
+        $campaignLeads = Lead::where('campaign_id', $campaignId)
             ->where('created_by', createdBy())
             ->with(['leadStatus', 'assignedUser'])
             ->get();
@@ -167,9 +172,9 @@ class CampaignController extends Controller
             ->first();
 
         if ($campaign) {
-            $users = \App\Models\User::where('created_by', createdBy())->where('status', 'active')->select('id', 'name', 'email')->get();
-            $campaignTypes = \App\Models\CampaignType::where('created_by', createdBy())->where('status', 'active')->select('id', 'name')->get();
-            $targetLists = \App\Models\TargetList::where('created_by', createdBy())->where('status', 'active')->select('id', 'name')->get();
+            $users = User::where('created_by', createdBy())->where('status', 'active')->select('id', 'name', 'email')->get();
+            $campaignTypes = CampaignType::where('created_by', createdBy())->where('status', 'active')->select('id', 'name')->get();
+            $targetLists = TargetList::where('created_by', createdBy())->where('status', 'active')->select('id', 'name')->get();
 
             return Inertia::render('campaigns/edit', [
                 'campaign' => $campaign,
@@ -223,7 +228,7 @@ class CampaignController extends Controller
                 $campaign->update($validated);
 
                 return redirect()->route('campaigns.index')->with('success', __('Campaign updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update campaign.'));
             }
         } else {
@@ -242,7 +247,7 @@ class CampaignController extends Controller
                 $campaign->delete();
 
                 return redirect()->back()->with('success', __('Campaign deleted successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete campaign.'));
             }
         } else {
@@ -262,7 +267,7 @@ class CampaignController extends Controller
                 $campaign->save();
 
                 return redirect()->back()->with('success', __('Campaign status updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update campaign status.'));
             }
         } else {

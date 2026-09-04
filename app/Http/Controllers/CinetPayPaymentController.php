@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Plan;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -39,7 +40,7 @@ class CinetPayPaymentController extends Controller
 
             return back()->withErrors(['error' => __('Payment failed or cancelled')]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return handlePaymentError($e, 'cinetpay');
         }
     }
@@ -66,7 +67,7 @@ class CinetPayPaymentController extends Controller
                 'site_id' => $settings['payment_settings']['cinetpay_site_id'],
                 'transaction_id' => $transactionId,
                 // 'amount' => 100,
-                'amount' => (int) ($pricing['final_price']),
+                'amount' => (int)($pricing['final_price']),
                 'currency' => 'XOF',
                 'description' => 'Plan subscription: ' . $plan->name,
                 'notify_url' => route('cinetpay.callback'),
@@ -105,7 +106,7 @@ class CinetPayPaymentController extends Controller
                 'error' => $response['message'] ?? __('Payment creation failed'),
             ], 400);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('CinetPay payment creation error: ' . $e->getMessage());
 
             return response()->json(['error' => __('Payment creation failed')], 500);
@@ -184,7 +185,7 @@ class CinetPayPaymentController extends Controller
 
             return response()->json(['status' => 'success']);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Callback processing failed')], 500);
         }
     }

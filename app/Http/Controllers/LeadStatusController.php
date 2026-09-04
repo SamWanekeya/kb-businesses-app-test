@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LeadStatus;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -38,7 +39,7 @@ class LeadStatusController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $leadStatuses = $query->paginate($perPage)->withQueryString();
 
         return Inertia::render('lead-statuses/index', [
@@ -82,7 +83,7 @@ class LeadStatusController extends Controller
                 $leadStatus->update($validated);
 
                 return redirect()->back()->with('success', __('Lead status updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update lead status.'));
             }
         } else {
@@ -101,7 +102,7 @@ class LeadStatusController extends Controller
                 $leadStatus->delete();
 
                 return redirect()->back()->with('success', __('Lead status deleted successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete lead status.'));
             }
         } else {
@@ -121,7 +122,7 @@ class LeadStatusController extends Controller
                 $leadStatus->save();
 
                 return redirect()->back()->with('success', __('Lead status status updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update lead status status.'));
             }
         } else {

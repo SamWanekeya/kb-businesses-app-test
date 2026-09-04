@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 
 class InvoicePayfastPaymentController extends Controller
 {
@@ -51,7 +54,7 @@ class InvoicePayfastPaymentController extends Controller
             $data = [
                 'merchant_id' => $settings['payment_settings']['payfast_merchant_id'],
                 'merchant_key' => $settings['payment_settings']['payfast_merchant_key'],
-                'return_url' => route('invoice.payfast.success') . '?invoice_id=' . $invoice->id . '&amount=' . $validated['amount'] . '&payment_type=' . $validated['payment_type'].'&m_payment_id='.$paymentId,
+                'return_url' => route('invoice.payfast.success') . '?invoice_id=' . $invoice->id . '&amount=' . $validated['amount'] . '&payment_type=' . $validated['payment_type'] . '&m_payment_id=' . $paymentId,
                 'cancel_url' => route('invoices.public', encrypt($invoice->id)),
                 'notify_url' => route('invoice.payfast.callback'),
                 'name_first' => $validated['customer_details']['firstName'],
@@ -81,8 +84,8 @@ class InvoicePayfastPaymentController extends Controller
                 'action' => $endpoint,
             ]);
 
-        } catch (\Exception $e) {
-            \Log::error('PayFast invoice payment error', [
+        } catch (Exception $e) {
+            Log::error('PayFast invoice payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -90,6 +93,42 @@ class InvoicePayfastPaymentController extends Controller
 
             return response()->json(['success' => false, 'error' => __('Payment failed')]);
         }
+    }
+
+    private function validateInvoicePaymentRequest($request, $additionalRules = [])
+    {
+        $baseRules = [
+            'invoice_id' => 'required|exists:invoices,id',
+            'amount' => 'required|numeric|min:0.01',
+            'payment_type' => 'required|in:full,partial',
+        ];
+
+        return $request->validate(array_merge($baseRules, $additionalRules));
+    }
+
+    private function getInvoicePaymentSettings($organizationId)
+    {
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
+    }
+
+    private function generateSignature($data, $passPhrase = null)
+    {
+        $pfOutput = '';
+        foreach ($data as $key => $val) {
+            if ($val !== '') {
+                $pfOutput .= $key . '=' . urlencode(trim($val)) . '&';
+            }
+        }
+
+        $getString = substr($pfOutput, 0, -1);
+        if ($passPhrase !== null) {
+            $getString .= '&passphrase=' . urlencode(trim($passPhrase));
+        }
+
+        return md5($getString);
     }
 
     public function callback(Request $request)
@@ -130,7 +169,7 @@ class InvoicePayfastPaymentController extends Controller
                             'payment_id' => $paymentId,
                         ]);
 
-                        \Log::info('PayFast invoice payment successful', [
+                        Log::info('PayFast invoice payment successful', [
                             'invoice_id' => $invoice->id,
                             'payment_id' => $paymentId,
                             'amount' => $amount,
@@ -140,14 +179,24 @@ class InvoicePayfastPaymentController extends Controller
             }
 
             return response('OK', 200);
-        } catch (\Exception $e) {
-            \Log::error('PayFast invoice callback error', [
+        } catch (Exception $e) {
+            Log::error('PayFast invoice callback error', [
                 'error' => $e->getMessage(),
                 'data' => $request->all(),
             ]);
 
             return response('ERROR', 500);
         }
+    }
+
+    private function verifyPayfastSignature($pfData, $passphrase = '')
+    {
+        $signature = $pfData['signature'] ?? '';
+        unset($pfData['signature']);
+
+        $expectedSignature = $this->generateSignature($pfData, $passphrase);
+
+        return hash_equals($expectedSignature, $signature);
     }
 
     public function success(Request $request)
@@ -175,56 +224,10 @@ class InvoicePayfastPaymentController extends Controller
             return redirect()->route('invoices.public', encrypt($invoiceId))
                 ->with('success', __('Payment completed successfully!'));
 
-        } catch (\Exception $e) {
-            \Log::error('PayFast success error', ['error' => $e->getMessage()]);
+        } catch (Exception $e) {
+            Log::error('PayFast success error', ['error' => $e->getMessage()]);
 
             return redirect()->back()->with('error', __('Payment verification failed'));
         }
-    }
-
-    private function validateInvoicePaymentRequest($request, $additionalRules = [])
-    {
-        $baseRules = [
-            'invoice_id' => 'required|exists:invoices,id',
-            'amount' => 'required|numeric|min:0.01',
-            'payment_type' => 'required|in:full,partial',
-        ];
-
-        return $request->validate(array_merge($baseRules, $additionalRules));
-    }
-
-    private function getInvoicePaymentSettings($organizationId)
-    {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
-        ];
-    }
-
-    private function generateSignature($data, $passPhrase = null)
-    {
-        $pfOutput = '';
-        foreach ($data as $key => $val) {
-            if ($val !== '') {
-                $pfOutput .= $key . '=' . urlencode(trim($val)) . '&';
-            }
-        }
-
-        $getString = substr($pfOutput, 0, -1);
-        if ($passPhrase !== null) {
-            $getString .= '&passphrase=' . urlencode(trim($passPhrase));
-        }
-
-        return md5($getString);
-    }
-
-    private function verifyPayfastSignature($pfData, $passphrase = '')
-    {
-        $signature = $pfData['signature'] ?? '';
-        unset($pfData['signature']);
-
-        $expectedSignature = $this->generateSignature($pfData, $passphrase);
-
-        return hash_equals($expectedSignature, $signature);
     }
 }

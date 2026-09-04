@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 
 class InvoicePaiementPaymentController extends Controller
 {
@@ -34,7 +37,7 @@ class InvoicePaiementPaymentController extends Controller
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['paiement_merchant_id'])) {
-                \Log::error('Paiement Pro payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+                Log::error('Paiement Pro payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return response()->json(['error' => __('Paiement Pro not configured')], 400);
             }
@@ -88,12 +91,12 @@ class InvoicePaiementPaymentController extends Controller
                 ]);
             }
 
-            \Log::error('Paiement Pro payment creation failed', ['invoice_id' => $invoice->id, 'http_code' => $httpCode]);
+            Log::error('Paiement Pro payment creation failed', ['invoice_id' => $invoice->id, 'http_code' => $httpCode]);
 
             return response()->json(['error' => __('Payment initialization failed')], 500);
 
-        } catch (\Exception $e) {
-            \Log::error('Paiement Pro payment error', [
+        } catch (Exception $e) {
+            Log::error('Paiement Pro payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -101,6 +104,25 @@ class InvoicePaiementPaymentController extends Controller
 
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
+    }
+
+    private function validateInvoicePaymentRequest($request, $additionalRules = [])
+    {
+        $baseRules = [
+            'invoice_id' => 'required|exists:invoices,id',
+            'amount' => 'required|numeric|min:0.01',
+            'payment_type' => 'required|in:full,partial',
+        ];
+
+        return $request->validate(array_merge($baseRules, $additionalRules));
+    }
+
+    private function getInvoicePaymentSettings($organizationId)
+    {
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
     }
 
     public function success(Request $request)
@@ -123,7 +145,7 @@ class InvoicePaiementPaymentController extends Controller
                         'payment_id' => $transactionId ?? 'PAIEMENT-' . time(),
                     ]);
 
-                    \Log::info('Paiement Pro invoice payment successful', [
+                    Log::info('Paiement Pro invoice payment successful', [
                         'invoice_id' => $invoice->id,
                         'amount' => $amount,
                         'payment_type' => $paymentType,
@@ -134,8 +156,8 @@ class InvoicePaiementPaymentController extends Controller
             }
 
             return redirect()->route('invoices.public', $invoiceId)->with('error', __('Payment verification failed'));
-        } catch (\Exception $e) {
-            \Log::error('Paiement Pro success callback error', [
+        } catch (Exception $e) {
+            Log::error('Paiement Pro success callback error', [
                 'error' => $e->getMessage(),
             ]);
 
@@ -167,7 +189,7 @@ class InvoicePaiementPaymentController extends Controller
                             'payment_id' => $request->input('transaction_id') ?? $transactionId,
                         ]);
 
-                        \Log::info('Paiement Pro invoice payment callback successful', [
+                        Log::info('Paiement Pro invoice payment callback successful', [
                             'invoice_id' => $invoice->id,
                             'transaction_id' => $transactionId,
                         ]);
@@ -177,31 +199,12 @@ class InvoicePaiementPaymentController extends Controller
 
             return response()->json(['status' => 'success']);
 
-        } catch (\Exception $e) {
-            \Log::error('Paiement Pro callback error', [
+        } catch (Exception $e) {
+            Log::error('Paiement Pro callback error', [
                 'error' => $e->getMessage(),
             ]);
 
             return response()->json(['error' => __('Callback processing failed')], 500);
         }
-    }
-
-    private function validateInvoicePaymentRequest($request, $additionalRules = [])
-    {
-        $baseRules = [
-            'invoice_id' => 'required|exists:invoices,id',
-            'amount' => 'required|numeric|min:0.01',
-            'payment_type' => 'required|in:full,partial',
-        ];
-
-        return $request->validate(array_merge($baseRules, $additionalRules));
-    }
-
-    private function getInvoicePaymentSettings($organizationId)
-    {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
-        ];
     }
 }

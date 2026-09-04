@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Plan;
 use App\Models\User;
+use Easebuzz;
+use Exception;
 use Illuminate\Http\Request;
 
 class EasebuzzPaymentController extends Controller
@@ -38,7 +40,7 @@ class EasebuzzPaymentController extends Controller
 
             return back()->withErrors(['error' => __('Payment failed or cancelled')]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return handlePaymentError($e, 'easebuzz');
         }
     }
@@ -64,7 +66,7 @@ class EasebuzzPaymentController extends Controller
             $environment = $settings['payment_settings']['easebuzz_environment'] === 'prod' ? 'prod' : 'test';
 
             // Initialize Easebuzz
-            $easebuzz = new \Easebuzz(
+            $easebuzz = new Easebuzz(
                 $settings['payment_settings']['easebuzz_merchant_key'],
                 $settings['payment_settings']['easebuzz_salt_key'],
                 $environment
@@ -105,7 +107,7 @@ class EasebuzzPaymentController extends Controller
 
             return response()->json(['error' => 'Payment initialization failed'], 400);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
     }
@@ -119,7 +121,7 @@ class EasebuzzPaymentController extends Controller
             $settings = getPaymentGatewaySettings();
             $environment = $settings['payment_settings']['easebuzz_environment'] === 'prod' ? 'prod' : 'test';
 
-            $easebuzz = new \Easebuzz(
+            $easebuzz = new Easebuzz(
                 $settings['payment_settings']['easebuzz_merchant_key'],
                 $settings['payment_settings']['easebuzz_salt_key'],
                 $environment
@@ -161,7 +163,7 @@ class EasebuzzPaymentController extends Controller
 
             return redirect()->route('plans.index')->with('error', __('Payment verification failed'));
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('plans.index')->with('error', __('Payment processing failed'));
         }
     }
@@ -180,7 +182,7 @@ class EasebuzzPaymentController extends Controller
                     $userId = $parts[2];
 
                     $plan = Plan::find($planId);
-                    $user = \App\Models\User::find($userId);
+                    $user = User::find($userId);
 
                     if ($plan && $user) {
                         processPaymentSuccess([
@@ -196,7 +198,7 @@ class EasebuzzPaymentController extends Controller
 
             return response()->json(['status' => 'success']);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Callback processing failed')], 500);
         }
     }

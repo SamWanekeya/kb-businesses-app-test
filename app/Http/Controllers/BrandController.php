@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Brand;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -39,7 +40,7 @@ class BrandController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $brands = $query->paginate($perPage)->withQueryString();
 
         return Inertia::render('brands/index', [
@@ -83,7 +84,7 @@ class BrandController extends Controller
                 $brand->update($validated);
 
                 return redirect()->back()->with('success', __('Brand updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update brand.'));
             }
         } else {
@@ -102,7 +103,7 @@ class BrandController extends Controller
                 $brand->delete();
 
                 return redirect()->back()->with('success', __('Brand deleted successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete brand.'));
             }
         } else {
@@ -122,7 +123,7 @@ class BrandController extends Controller
                 $brand->save();
 
                 return redirect()->back()->with('success', __('Brand status updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update brand status.'));
             }
         } else {

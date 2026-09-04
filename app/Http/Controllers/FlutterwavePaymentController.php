@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
+use Exception;
 use Illuminate\Http\Request;
 
 class FlutterwavePaymentController extends Controller
@@ -74,7 +75,7 @@ class FlutterwavePaymentController extends Controller
 
             return back()->withErrors(['error' => __('Payment verification failed')]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return handlePaymentError($e, 'flutterwave');
         }
     }

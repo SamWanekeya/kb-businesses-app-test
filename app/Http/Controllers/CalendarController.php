@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Call;
+use App\Models\Meeting;
+use App\Models\ProjectTask;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -21,7 +25,7 @@ class CalendarController extends Controller
 
         // Get meetings
         try {
-            $meetings = \App\Models\Meeting::where('created_by', createdBy())
+            $meetings = Meeting::where('created_by', createdBy())
                 ->get()
                 ->map(function ($meeting) {
                     $startDateTime = $meeting->start_date->format('Y-m-d') . ' ' . $meeting->start_time->format('H:i:s');
@@ -45,13 +49,13 @@ class CalendarController extends Controller
                     ];
                 });
             $events = $events->merge($meetings);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Skip if Meeting model doesn't exist
         }
 
         // Get calls
         try {
-            $calls = \App\Models\Call::where('created_by', createdBy())
+            $calls = Call::where('created_by', createdBy())
                 ->get()
                 ->map(function ($call) {
                     $startDateTime = $call->start_date->format('Y-m-d') . ' ' . $call->start_time->format('H:i:s');
@@ -74,13 +78,13 @@ class CalendarController extends Controller
                     ];
                 });
             $events = $events->merge($calls);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Skip if Call model doesn't exist
         }
 
         // Get project tasks
         try {
-            $tasks = \App\Models\ProjectTask::where('created_by', createdBy())
+            $tasks = ProjectTask::where('created_by', createdBy())
                 ->with('project')
                 ->whereNotNull('due_date')
                 ->get()
@@ -103,7 +107,7 @@ class CalendarController extends Controller
                     ];
                 });
             $events = $events->merge($tasks);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Skip if ProjectTask model doesn't exist
         }
 

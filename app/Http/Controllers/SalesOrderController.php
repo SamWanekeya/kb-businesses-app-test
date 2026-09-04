@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SalesOrderCreated;
 use App\Exports\SalesOrderExport;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Product;
 use App\Models\Quote;
 use App\Models\SalesOrder;
+use App\Models\SalesOrderActivity;
 use App\Models\ShippingProviderType;
 use App\Models\Tax;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -26,8 +30,8 @@ class SalesOrderController extends Controller
         if ($request->has('search') && !empty($request->search)) {
             $query->where(function ($q) use ($request) {
                 $q->where('order_number', 'like', '%' . $request->search . '%')
-                  ->orWhere('name', 'like', '%' . $request->search . '%')
-                  ->orWhereHas('account', fn ($q) => $q->where('name', 'like', '%' . $request->search . '%'));
+                    ->orWhere('name', 'like', '%' . $request->search . '%')
+                    ->orWhereHas('account', fn ($q) => $q->where('name', 'like', '%' . $request->search . '%'));
             });
         }
 
@@ -58,10 +62,10 @@ class SalesOrderController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $salesOrders = $query->paginate($perPage)->withQueryString();
 
-        $userQuery = \App\Models\User::where('created_by', createdBy());
+        $userQuery = User::where('created_by', createdBy());
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
 
@@ -96,7 +100,7 @@ class SalesOrderController extends Controller
         $products = $this->getFilteredProducts();
         $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
         $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
-        $users = \App\Models\User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+        $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
         return Inertia::render('sales-orders/create', [
             'accounts' => $accounts,
@@ -172,7 +176,7 @@ class SalesOrderController extends Controller
 
         // Fire SalesOrderCreated event for sending email
         if ($salesOrder && !IsDemo()) {
-            event(new \App\Events\SalesOrderCreated($salesOrder));
+            event(new SalesOrderCreated($salesOrder));
         }
 
         // Check for errors
@@ -228,8 +232,8 @@ class SalesOrderController extends Controller
             'assignedUser',
             'products.tax',
         ])
-        ->where('created_by', createdBy())
-        ->where('id', $id)
+            ->where('created_by', createdBy())
+            ->where('id', $id)
             ->first();
 
         if ($salesOrder) {
@@ -239,7 +243,7 @@ class SalesOrderController extends Controller
             $products = $this->getFilteredProducts();
             $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
             $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
-            $users = \App\Models\User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+            $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
             return Inertia::render('sales-orders/edit', [
                 'salesOrder' => $salesOrder,
@@ -413,7 +417,7 @@ class SalesOrderController extends Controller
             return redirect()->back()->with('error', __('Sales Order not found.'));
         }
 
-        \App\Models\SalesOrderActivity::where('sales_order_id', $salesOrder->id)->delete();
+        SalesOrderActivity::where('sales_order_id', $salesOrder->id)->delete();
 
         return redirect()->back()->with('success', __('All activities deleted successfully.'));
     }
@@ -428,7 +432,7 @@ class SalesOrderController extends Controller
             return redirect()->back()->with('error', __('Sales Order not found.'));
         }
 
-        $activity = \App\Models\SalesOrderActivity::where('id', $activityId)
+        $activity = SalesOrderActivity::where('id', $activityId)
             ->where('sales_order_id', $salesOrder->id)
             ->first();
 
@@ -532,7 +536,7 @@ class SalesOrderController extends Controller
                 'themeColor' => $themeColor,
                 'customColor' => $customColor,
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             abort(404, __('Invalid sales order link'));
         }
     }

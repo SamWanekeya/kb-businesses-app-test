@@ -5,21 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 use Mollie\Api\MollieApiClient;
 
 class InvoiceMolliePaymentController extends Controller
 {
-    private function getMollieCredentials($organizationId)
-    {
-        $settings = $this->getInvoicePaymentSettings($organizationId);
-
-        return [
-            'api_key' => $settings['payment_settings']['mollie_api_key'] ?? null,
-            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'EUR',
-        ];
-    }
-
     public function processPayment(Request $request)
     {
         $validated = $this->validateInvoicePaymentRequest($request);
@@ -64,7 +57,7 @@ class InvoiceMolliePaymentController extends Controller
 
             $payment = $mollie->payments->create($paymentData);
 
-            \Log::info('Mollie payment created', [
+            Log::info('Mollie payment created', [
                 'invoice_id' => $invoice->id,
                 'mollie_payment_id' => $payment->id,
                 'temp_id' => $tempPaymentId,
@@ -76,14 +69,43 @@ class InvoiceMolliePaymentController extends Controller
                 'checkout_url' => $payment->getCheckoutUrl(),
             ]);
 
-        } catch (\Exception $e) {
-            \Log::error('Mollie invoice payment error', [
+        } catch (Exception $e) {
+            Log::error('Mollie invoice payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
             ]);
 
             return response()->json(['success' => false, 'message' => __('Payment processing failed.')], 500);
         }
+    }
+
+    private function validateInvoicePaymentRequest($request, $additionalRules = [])
+    {
+        $baseRules = [
+            'invoice_id' => 'required|exists:invoices,id',
+            'amount' => 'required|numeric|min:0.01',
+            'payment_type' => 'required|in:full,partial',
+        ];
+
+        return $request->validate(array_merge($baseRules, $additionalRules));
+    }
+
+    private function getMollieCredentials($organizationId)
+    {
+        $settings = $this->getInvoicePaymentSettings($organizationId);
+
+        return [
+            'api_key' => $settings['payment_settings']['mollie_api_key'] ?? null,
+            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'EUR',
+        ];
+    }
+
+    private function getInvoicePaymentSettings($organizationId)
+    {
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
     }
 
     public function success(Request $request)
@@ -94,7 +116,7 @@ class InvoiceMolliePaymentController extends Controller
             $paymentType = $request->input('payment_type');
             $tempId = $request->input('temp_id');
 
-            \Log::info('Mollie invoice success callback', [
+            Log::info('Mollie invoice success callback', [
                 'invoice_id' => $invoiceId,
                 'amount' => $amount,
                 'payment_type' => $paymentType,
@@ -103,7 +125,7 @@ class InvoiceMolliePaymentController extends Controller
             ]);
 
             if (!$invoiceId || !$amount || !$paymentType) {
-                \Log::error('Mollie invoice success: Missing parameters');
+                Log::error('Mollie invoice success: Missing parameters');
 
                 return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Invalid payment parameters'));
             }
@@ -131,7 +153,7 @@ class InvoiceMolliePaymentController extends Controller
             }
 
             if (!$molliePayment) {
-                \Log::warning('Mollie payment not found, waiting for webhook', ['temp_id' => $tempId]);
+                Log::warning('Mollie payment not found, waiting for webhook', ['temp_id' => $tempId]);
 
                 return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('info', __('Payment is being processed. Your invoice will be updated shortly.'));
             }
@@ -148,7 +170,7 @@ class InvoiceMolliePaymentController extends Controller
                         'payment_id' => $molliePayment->id,
                     ]);
 
-                    \Log::info('Mollie invoice payment successful', [
+                    Log::info('Mollie invoice payment successful', [
                         'invoice_id' => $invoiceId,
                         'amount' => $amount,
                         'payment_id' => $molliePayment->id,
@@ -162,8 +184,8 @@ class InvoiceMolliePaymentController extends Controller
                 return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('error', __('Payment failed. Please try again.'));
             }
 
-        } catch (\Exception $e) {
-            \Log::error('Mollie invoice success callback error', [
+        } catch (Exception $e) {
+            Log::error('Mollie invoice success callback error', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
                 'request' => $request->all(),
@@ -192,7 +214,7 @@ class InvoiceMolliePaymentController extends Controller
             $apiKey = $settings['mollie_api_key'] ?? null;
 
             if (!$apiKey) {
-                \Log::error('Mollie invoice callback: No API key found');
+                Log::error('Mollie invoice callback: No API key found');
 
                 return response('ERROR', 500);
             }
@@ -217,7 +239,7 @@ class InvoiceMolliePaymentController extends Controller
                         'payment_id' => $paymentId,
                     ]);
 
-                    \Log::info('Mollie invoice payment successful via webhook', [
+                    Log::info('Mollie invoice payment successful via webhook', [
                         'invoice_id' => $invoiceId,
                         'amount' => $amount,
                         'payment_type' => $paymentType,
@@ -227,32 +249,13 @@ class InvoiceMolliePaymentController extends Controller
             }
 
             return response('OK', 200);
-        } catch (\Exception $e) {
-            \Log::error('Mollie invoice callback error', [
+        } catch (Exception $e) {
+            Log::error('Mollie invoice callback error', [
                 'error' => $e->getMessage(),
                 'request' => $request->all(),
             ]);
 
             return response('ERROR', 500);
         }
-    }
-
-    private function validateInvoicePaymentRequest($request, $additionalRules = [])
-    {
-        $baseRules = [
-            'invoice_id' => 'required|exists:invoices,id',
-            'amount' => 'required|numeric|min:0.01',
-            'payment_type' => 'required|in:full,partial',
-        ];
-
-        return $request->validate(array_merge($baseRules, $additionalRules));
-    }
-
-    private function getInvoicePaymentSettings($organizationId)
-    {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
-        ];
     }
 }

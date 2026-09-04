@@ -3,8 +3,11 @@
 namespace App\Http\Requests;
 
 use App\Models\Permission;
+use App\Models\Role;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class RoleRequest extends FormRequest
 {
@@ -19,7 +22,7 @@ class RoleRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -36,6 +39,56 @@ class RoleRequest extends FormRequest
                 $this->validatePermissionAccess($value, $fail);
             }],
         ];
+    }
+
+    /**
+     * Validate that system roles cannot be created/modified
+     */
+    private function validateSystemRole($label, $fail)
+    {
+        $user = Auth::user();
+        $userType = $user->type ?? 'organization';
+
+        // Superadmin can create/edit any role
+        if ($userType === 'super_admin' || $userType === 'super admin') {
+            return;
+        }
+
+        $systemRoles = ['super_admin', 'super admin', 'organization'];
+        $slug = Str::slug($label);
+
+        if (in_array(strtolower($label), array_map('strtolower', $systemRoles)) ||
+            in_array($slug, $systemRoles)) {
+            $fail('This role name is reserved for system use. Please choose a different name.');
+        }
+    }
+
+    /**
+     * Validate that role name is unique
+     */
+    private function validateUniqueRoleName($label, $roleId, $fail)
+    {
+        $slug = Str::slug($label);
+
+        // If updating, check if the name is the same as current role
+        if ($roleId) {
+            $currentRole = Role::find($roleId);
+            if ($currentRole && $currentRole->name === $slug) {
+                // Name hasn't changed, no need to check for duplicates
+                return;
+            }
+        }
+
+        $query = Role::where('name', $slug)->where('created_by', createdBy());
+
+        // If updating, exclude current role from check
+        if ($roleId) {
+            $query->where('id', '!=', $roleId);
+        }
+
+        if ($query->exists()) {
+            $fail('A role with this name already exists. Please choose a different name.');
+        }
     }
 
     /**
@@ -59,56 +112,6 @@ class RoleRequest extends FormRequest
 
         if ($permission && !in_array($permission->module, $allowedModules)) {
             $fail('You are not authorized to assign this permission.');
-        }
-    }
-
-    /**
-     * Validate that system roles cannot be created/modified
-     */
-    private function validateSystemRole($label, $fail)
-    {
-        $user = Auth::user();
-        $userType = $user->type ?? 'organization';
-
-        // Superadmin can create/edit any role
-        if ($userType === 'super_admin' || $userType === 'super admin') {
-            return;
-        }
-
-        $systemRoles = ['super_admin', 'super admin', 'organization'];
-        $slug = \Illuminate\Support\Str::slug($label);
-
-        if (in_array(strtolower($label), array_map('strtolower', $systemRoles)) ||
-            in_array($slug, $systemRoles)) {
-            $fail('This role name is reserved for system use. Please choose a different name.');
-        }
-    }
-
-    /**
-     * Validate that role name is unique
-     */
-    private function validateUniqueRoleName($label, $roleId, $fail)
-    {
-        $slug = \Illuminate\Support\Str::slug($label);
-
-        // If updating, check if the name is the same as current role
-        if ($roleId) {
-            $currentRole = \App\Models\Role::find($roleId);
-            if ($currentRole && $currentRole->name === $slug) {
-                // Name hasn't changed, no need to check for duplicates
-                return;
-            }
-        }
-
-        $query = \App\Models\Role::where('name', $slug)->where('created_by', createdBy());
-
-        // If updating, exclude current role from check
-        if ($roleId) {
-            $query->where('id', '!=', $roleId);
-        }
-
-        if ($query->exists()) {
-            $fail('A role with this name already exists. Please choose a different name.');
         }
     }
 }

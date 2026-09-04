@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Exports\ContactExport;
 use App\Models\Account;
+use App\Models\Call;
 use App\Models\Contact;
+use App\Models\Meeting;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -60,14 +63,14 @@ class ContactController extends Controller
         }
 
         $defaultPerPage = $request->view === 'grid' ? 12 : 10;
-        $perPage = max(1, min(200, (int) $request->get('per_page', $defaultPerPage)));
+        $perPage = max(1, min(200, (int)$request->get('per_page', $defaultPerPage)));
         $contacts = $query->paginate($perPage)->withQueryString();
 
         $accountQuery = Account::where('created_by', createdBy());
         $allAccounts = (clone $accountQuery)->get(['id', 'name']);
         $accounts = (clone $accountQuery)->where('status', 'active')->get(['id', 'name']);
 
-        $userQuery = \App\Models\User::where('created_by', createdBy());
+        $userQuery = User::where('created_by', createdBy());
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
 
@@ -153,7 +156,7 @@ class ContactController extends Controller
                 $contact->update($validated);
 
                 return redirect()->back()->with('success', __('Contact updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update contact.'));
             }
         } else {
@@ -172,7 +175,7 @@ class ContactController extends Controller
                 $contact->delete();
 
                 return redirect()->back()->with('success', __('Contact deleted successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete contact.'));
             }
         } else {
@@ -192,13 +195,13 @@ class ContactController extends Controller
         }
 
         // Get related meetings (both as parent and as attendee)
-        $parentMeetings = \App\Models\Meeting::where('created_by', createdBy())
+        $parentMeetings = Meeting::where('created_by', createdBy())
             ->where('parent_module', 'contact')
             ->where('parent_id', $contactId)
             ->with(['creator', 'assignedUser'])
             ->get();
 
-        $attendeeMeetings = \App\Models\Meeting::where('created_by', createdBy())
+        $attendeeMeetings = Meeting::where('created_by', createdBy())
             ->whereHas('attendees', function ($q) use ($contactId) {
                 $q->where('attendee_type', 'contact')
                     ->where('attendee_id', $contactId);
@@ -207,7 +210,7 @@ class ContactController extends Controller
             ->get();
 
         // Get related calls (both as parent and as attendee)
-        $parentCalls = \App\Models\Call::where('created_by', createdBy())
+        $parentCalls = Call::where('created_by', createdBy())
             ->where('parent_module', 'contact')
             ->where('parent_id', $contactId)
             ->with(['creator', 'assignedUser'])
@@ -218,7 +221,7 @@ class ContactController extends Controller
                 return $call;
             });
 
-        $attendeeCalls = \App\Models\Call::where('created_by', createdBy())
+        $attendeeCalls = Call::where('created_by', createdBy())
             ->whereHas('attendees', function ($q) use ($contactId) {
                 $q->where('attendee_type', 'contact')
                     ->where('attendee_id', $contactId);
@@ -251,7 +254,7 @@ class ContactController extends Controller
                 $contact->save();
 
                 return redirect()->back()->with('success', __('Contact status updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update contact status.'));
             }
         } else {

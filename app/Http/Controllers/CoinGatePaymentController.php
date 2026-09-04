@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Libraries\Coingate\Coingate;
 use App\Models\Plan;
 use App\Models\PlanOrder;
 use CoinGate\Client;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -86,7 +86,7 @@ class CoinGatePaymentController extends Controller
                 return redirect()->route('plans.index')->with('error', __('Payment initialization failed'));
             }
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('plans.index')->with('error', __('Payment failed: ') . $e->getMessage());
         }
     }
@@ -121,7 +121,7 @@ class CoinGatePaymentController extends Controller
 
             return redirect()->route('plans.index')->with('success', __('Plan activated successfully!'));
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('CoinGate callback error: ' . $e->getMessage());
 
             return redirect()->route('plans.index')->with('error', __('Payment processing failed'));

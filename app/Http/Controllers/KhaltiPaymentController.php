@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
+use Exception;
 use Illuminate\Http\Request;
 
 class KhaltiPaymentController extends Controller
@@ -40,34 +41,8 @@ class KhaltiPaymentController extends Controller
 
             return back()->withErrors(['error' => __('Payment verification failed')]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return handlePaymentError($e, 'khalti');
-        }
-    }
-
-    public function createPayment(Request $request)
-    {
-        $validated = validatePaymentRequest($request);
-
-        try {
-            $plan = Plan::findOrFail($validated['plan_id']);
-            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
-            $settings = getPaymentGatewaySettings();
-            if (!isset($settings['payment_settings']['khalti_public_key'])) {
-                return response()->json(['error' => __('Khalti not configured')], 400);
-            }
-
-            return response()->json([
-                'success' => true,
-                'public_key' => $settings['payment_settings']['khalti_public_key'],
-                'amount' => (int)($pricing['final_price'] * 100), // Khalti uses paisa as integer
-                'product_identity' => 'plan_' . $plan->id,
-                'product_name' => $plan->name,
-                'product_url' => route('plans.index'),
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json(['error' => __('Payment creation failed')], 500);
         }
     }
 
@@ -100,8 +75,34 @@ class KhaltiPaymentController extends Controller
 
             return isset($result['state']['name']) && $result['state']['name'] === 'Completed';
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
+        }
+    }
+
+    public function createPayment(Request $request)
+    {
+        $validated = validatePaymentRequest($request);
+
+        try {
+            $plan = Plan::findOrFail($validated['plan_id']);
+            $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
+            $settings = getPaymentGatewaySettings();
+            if (!isset($settings['payment_settings']['khalti_public_key'])) {
+                return response()->json(['error' => __('Khalti not configured')], 400);
+            }
+
+            return response()->json([
+                'success' => true,
+                'public_key' => $settings['payment_settings']['khalti_public_key'],
+                'amount' => (int)($pricing['final_price'] * 100), // Khalti uses paisa as integer
+                'product_identity' => 'plan_' . $plan->id,
+                'product_name' => $plan->name,
+                'product_url' => route('plans.index'),
+            ]);
+
+        } catch (Exception $e) {
+            return response()->json(['error' => __('Payment creation failed')], 500);
         }
     }
 }

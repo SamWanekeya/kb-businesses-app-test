@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Coupon;
 use App\Models\Plan;
 use App\Models\PlanOrder;
-use App\Models\User;
+use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use MercadoPago\Item;
+use MercadoPago\Payer;
 use MercadoPago\Payment;
 use MercadoPago\Preference;
 use MercadoPago\SDK;
@@ -35,9 +38,9 @@ class MercadoPagoController extends Controller
     /**
      * Create a MercadoPago checkout preference
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     * @return JsonResponse|RedirectResponse
      */
     public function createPreference(Request $request)
     {
@@ -82,7 +85,7 @@ class MercadoPagoController extends Controller
             // Get MercadoPago credentials
             $credentials = $this->getMercadoPagoCredentials();
             if (!$credentials['access_token']) {
-                throw new \Exception(__('MercadoPago API credentials not found'));
+                throw new Exception(__('MercadoPago API credentials not found'));
             }
 
             // Initialize MercadoPago SDK
@@ -91,7 +94,7 @@ class MercadoPagoController extends Controller
 
                 // For MercadoPago, access tokens for API v1 should start with APP_USR- or TEST-
                 if (empty($accessToken)) {
-                    throw new \Exception(__('MercadoPago access token is empty'));
+                    throw new Exception(__('MercadoPago access token is empty'));
                 }
 
                 // Set the access token
@@ -99,8 +102,8 @@ class MercadoPagoController extends Controller
 
                 // Set SDK configurations
                 SDK::setIntegratorId("dev_vcardgo");
-            } catch (\Exception $e) {
-                throw new \Exception(__('Failed to initialize MercadoPago SDK: :message', ['message' => $e->getMessage()]));
+            } catch (Exception $e) {
+                throw new Exception(__('Failed to initialize MercadoPago SDK: :message', ['message' => $e->getMessage()]));
             }
 
             // Create preference
@@ -141,7 +144,7 @@ class MercadoPagoController extends Controller
 
             // Set payer information if available
             if (auth()->check()) {
-                $payer = new \MercadoPago\Payer();
+                $payer = new Payer();
                 $payer->name = auth()->user()->name;
                 $payer->email = auth()->user()->email;
                 $preference->payer = $payer;
@@ -152,22 +155,22 @@ class MercadoPagoController extends Controller
                 $result = $preference->save();
 
                 if (!$result) {
-                    throw new \Exception(__('Failed to save MercadoPago preference'));
+                    throw new Exception(__('Failed to save MercadoPago preference'));
                 }
-            } catch (\Exception $e) {
-                throw new \Exception(message: __('Failed to save MercadoPago preference:  :message', ['message' => $e->getMessage()]));
+            } catch (Exception $e) {
+                throw new Exception(message: __('Failed to save MercadoPago preference:  :message', ['message' => $e->getMessage()]));
             }
 
             // Check if preference was created successfully
             if (!$preference->id) {
-                throw new \Exception(__('MercadoPago preference was not created properly'));
+                throw new Exception(__('MercadoPago preference was not created properly'));
             }
 
             // Determine redirect URL based on mode
             $redirectUrl = $credentials['mode'] === 'sandbox' ? $preference->sandbox_init_point : $preference->init_point;
 
             if (!$redirectUrl) {
-                throw new \Exception(__('MercadoPago redirect URL is not available'));
+                throw new Exception(__('MercadoPago redirect URL is not available'));
             }
 
             // Return response based on request type
@@ -184,7 +187,7 @@ class MercadoPagoController extends Controller
 
             // For form submissions, redirect directly
             return redirect($redirectUrl);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             if ($request->expectsJson()) {
                 return response()->json(['error' => __('Failed to create payment preference:  :message', ['message' => $e->getMessage()])], 500);
             }
@@ -269,7 +272,7 @@ class MercadoPagoController extends Controller
             }
 
             return redirect()->route('plans.index')->with('success', __('Payment successful! Your subscription has been activated.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => false,
@@ -323,7 +326,7 @@ class MercadoPagoController extends Controller
             // Acknowledge receipt of the webhook
             return response()->json(['status' => 'success']);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
     }
@@ -331,9 +334,9 @@ class MercadoPagoController extends Controller
     /**
      * Process direct card payment
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function processPayment(Request $request)
     {
@@ -350,7 +353,7 @@ class MercadoPagoController extends Controller
             $credentials = $this->getMercadoPagoCredentials();
 
             if (!$credentials['access_token']) {
-                throw new \Exception(__('MercadoPago API credentials not found'));
+                throw new Exception(__('MercadoPago API credentials not found'));
             }
 
             // Initialize MercadoPago SDK
@@ -358,8 +361,8 @@ class MercadoPagoController extends Controller
                 $accessToken = $credentials['access_token'];
 
                 SDK::setAccessToken($accessToken);
-            } catch (\Exception $e) {
-                throw new \Exception(__('Failed to initialize MercadoPago SDK: :message', ['message' => $e->getMessage()]));
+            } catch (Exception $e) {
+                throw new Exception(__('Failed to initialize MercadoPago SDK: :message', ['message' => $e->getMessage()]));
             }
 
             $payment = new Payment();
@@ -398,7 +401,7 @@ class MercadoPagoController extends Controller
                     'error' => __('Payment failed: :status', ['status' => $payment->status_detail]),
                 ], 400);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'success' => false,
                 'error' => __('Failed to process payment: :message', ['message' => $e->getMessage()]),

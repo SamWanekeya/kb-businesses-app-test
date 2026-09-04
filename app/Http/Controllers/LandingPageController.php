@@ -7,6 +7,7 @@ use App\Models\LandingPageCustomPage;
 use App\Models\LandingPageSetting;
 use App\Models\Newsletter;
 use App\Models\Plan;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -111,7 +112,7 @@ class LandingPageController extends Controller
             } else {
                 return back()->with('error', __('This email is already subscribed to our newsletter.'));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->with('error', __('Something went wrong. Please try again later.'));
         }
     }

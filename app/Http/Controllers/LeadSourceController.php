@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LeadSource;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -38,7 +39,7 @@ class LeadSourceController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $leadSources = $query->paginate($perPage);
 
         return Inertia::render('lead-sources/index', [
@@ -80,7 +81,7 @@ class LeadSourceController extends Controller
                 $leadSource->update($validated);
 
                 return redirect()->back()->with('success', __('Lead source updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update lead source.'));
             }
         } else {
@@ -99,7 +100,7 @@ class LeadSourceController extends Controller
                 $leadSource->delete();
 
                 return redirect()->back()->with('success', __('Lead source deleted successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete lead source.'));
             }
         } else {
@@ -119,7 +120,7 @@ class LeadSourceController extends Controller
                 $leadSource->save();
 
                 return redirect()->back()->with('success', __('Lead source status updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update lead source status.'));
             }
         } else {

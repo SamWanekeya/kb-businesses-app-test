@@ -8,9 +8,13 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Tax;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use Validator;
 
 class ProductController extends Controller
 {
@@ -65,7 +69,7 @@ class ProductController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $products = $query->paginate($perPage)->withQueryString();
 
         $categoryQuery = Category::where('created_by', createdBy());
@@ -78,7 +82,7 @@ class ProductController extends Controller
 
         $taxes = Tax::where('created_by', createdBy())->where('status', 'active')->get(['id', 'name', 'rate']);
 
-        $userQuery = \App\Models\User::where('created_by', createdBy());
+        $userQuery = User::where('created_by', createdBy());
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
 
@@ -93,33 +97,6 @@ class ProductController extends Controller
             'allUsers' => $allUsers,
             'samplePath' => file_exists(storage_path('uploads/sample/sample-product.xlsx')) ? route('product.download.template') : null,
             'filters' => $request->all(['search', 'category', 'brand', 'status', 'assigned_to', 'sort_field', 'sort_direction', 'per_page', 'view', 'page']),
-        ]);
-    }
-
-    public function create()
-    {
-        $categories = Category::where('created_by', createdBy())
-            ->where('status', 'active')
-            ->get(['id', 'name']);
-
-        $brands = Brand::where('created_by', createdBy())
-            ->where('status', 'active')
-            ->get(['id', 'name']);
-
-        $taxes = Tax::where('created_by', createdBy())
-            ->where('status', 'active')
-            ->get(['id', 'name', 'type', 'rate']);
-
-        $users = \App\Models\User::where('created_by', createdBy())
-            ->select('id', 'name', 'email')
-            ->get();
-
-        return Inertia::render('products/create', [
-            'categories' => $categories,
-            'brands' => $brands,
-            'taxes' => $taxes,
-            'users' => $users,
-            'existingSkus' => \App\Models\Product::where('created_by', createdBy())->pluck('sku'),
         ]);
     }
 
@@ -150,9 +127,36 @@ class ProductController extends Controller
             $product = Product::create($validated);
 
             return redirect()->route('products.index')->with('success', __('Product created successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to create product: :error', ['error' => $e->getMessage()]));
         }
+    }
+
+    public function create()
+    {
+        $categories = Category::where('created_by', createdBy())
+            ->where('status', 'active')
+            ->get(['id', 'name']);
+
+        $brands = Brand::where('created_by', createdBy())
+            ->where('status', 'active')
+            ->get(['id', 'name']);
+
+        $taxes = Tax::where('created_by', createdBy())
+            ->where('status', 'active')
+            ->get(['id', 'name', 'type', 'rate']);
+
+        $users = User::where('created_by', createdBy())
+            ->select('id', 'name', 'email')
+            ->get();
+
+        return Inertia::render('products/create', [
+            'categories' => $categories,
+            'brands' => $brands,
+            'taxes' => $taxes,
+            'users' => $users,
+            'existingSkus' => Product::where('created_by', createdBy())->pluck('sku'),
+        ]);
     }
 
     public function show($id)
@@ -190,7 +194,7 @@ class ProductController extends Controller
             $taxes = Tax::where('created_by', createdBy())
                 ->where('status', 'active')->get(['id', 'name', 'type', 'rate']);
 
-            $users = \App\Models\User::where('created_by', createdBy())
+            $users = User::where('created_by', createdBy())
                 ->select('id', 'name', 'email')->get();
 
             return Inertia::render('products/edit', [
@@ -204,7 +208,7 @@ class ProductController extends Controller
                 'users' => $users,
                 'mainImage' => $product->main_image_url,
                 'additionalImages' => $product->additional_image_urls,
-                'existingSkus' => \App\Models\Product::where('created_by', createdBy())->where('id', '!=', $id)->pluck('sku'),
+                'existingSkus' => Product::where('created_by', createdBy())->where('id', '!=', $id)->pluck('sku'),
             ]);
         } else {
             return redirect()->route('products.index')->with('error', __('Product not found.'));
@@ -239,7 +243,7 @@ class ProductController extends Controller
                 $product->update($validated);
 
                 return redirect()->route('products.index')->with('success', __('Product updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update product.'));
             }
         } else {
@@ -258,7 +262,7 @@ class ProductController extends Controller
                 $product->delete();
 
                 return redirect()->back()->with('success', __('Product deleted successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to delete product.'));
             }
         } else {
@@ -278,7 +282,7 @@ class ProductController extends Controller
                 $product->save();
 
                 return redirect()->back()->with('success', __('Product status updated successfully.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage() ?: __('Failed to update product status.'));
             }
         } else {
@@ -322,7 +326,7 @@ class ProductController extends Controller
             'file' => 'required|mimes:csv,txt,xlsx',
         ];
 
-        $validator = \Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
@@ -334,7 +338,7 @@ class ProductController extends Controller
             $file = $request->file('file');
 
             // Read headers and preview data
-            $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file->getRealPath());
+            $spreadsheet = IOFactory::load($file->getRealPath());
             $worksheet = $spreadsheet->getActiveSheet();
             $highestColumn = $worksheet->getHighestColumn();
             $highestRow = $worksheet->getHighestRow();
@@ -366,7 +370,7 @@ class ProductController extends Controller
                 'excelColumns' => $headers,
                 'previewData' => $previewData,
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to parse file: :error', ['error' => $e->getMessage()]));
         }
     }
@@ -381,7 +385,7 @@ class ProductController extends Controller
             'data' => 'required|array',
         ];
 
-        $validator = \Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
@@ -425,7 +429,7 @@ class ProductController extends Controller
             ]);
 
             return redirect()->back()->with('success', $message);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to import: :error', ['error' => $e->getMessage()]));
         }
     }

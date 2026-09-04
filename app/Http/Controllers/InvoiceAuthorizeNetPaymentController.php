@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
+use net\authorize\api\constants\ANetEnvironment;
 use net\authorize\api\contract\v1 as AnetAPI;
 use net\authorize\api\controller as AnetController;
 
@@ -43,7 +47,7 @@ class InvoiceAuthorizeNetPaymentController extends Controller
 
             if (!isset($settings['payment_settings']['authorizenet_merchant_id']) ||
                 !isset($settings['payment_settings']['authorizenet_transaction_key'])) {
-                \Log::error('AuthorizeNet payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+                Log::error('AuthorizeNet payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return back()->withErrors(['error' => __('AuthorizeNet not configured')]);
             }
@@ -64,7 +68,7 @@ class InvoiceAuthorizeNetPaymentController extends Controller
                     'payment_id' => $result['transaction_id'],
                 ]);
 
-                \Log::info('AuthorizeNet invoice payment successful', [
+                Log::info('AuthorizeNet invoice payment successful', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
@@ -76,8 +80,8 @@ class InvoiceAuthorizeNetPaymentController extends Controller
 
             return back()->withErrors(['error' => $result['error']]);
 
-        } catch (\Exception $e) {
-            \Log::error('AuthorizeNet payment error', [
+        } catch (Exception $e) {
+            Log::error('AuthorizeNet payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -133,14 +137,14 @@ class InvoiceAuthorizeNetPaymentController extends Controller
             $controller = new AnetController\CreateTransactionController($request);
 
             $environment = ($settings['payment_settings']['authorizenet_mode'] === 'sandbox')
-                ? \net\authorize\api\constants\ANetEnvironment::SANDBOX
-                : \net\authorize\api\constants\ANetEnvironment::PRODUCTION;
+                ? ANetEnvironment::SANDBOX
+                : ANetEnvironment::PRODUCTION;
 
             $response = $controller->executeWithApiResponse($environment);
 
             return $this->handleAuthorizeNetResponse($response);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return [
                 'success' => false,
                 'error' => __('Transaction processing failed. Please check your card details and try again.'),
@@ -210,7 +214,7 @@ class InvoiceAuthorizeNetPaymentController extends Controller
     {
         return [
             'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
         ];
     }
 }

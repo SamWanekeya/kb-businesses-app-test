@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class MidtransPaymentController extends Controller
@@ -37,7 +39,7 @@ class MidtransPaymentController extends Controller
 
             return back()->withErrors(['error' => __('Payment failed or cancelled')]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return handlePaymentError($e, 'midtrans');
         }
     }
@@ -98,45 +100,10 @@ class MidtransPaymentController extends Controller
                 ]);
             }
 
-            throw new \Exception(__('Failed to create Midtrans snap token'));
+            throw new Exception(__('Failed to create Midtrans snap token'));
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Payment creation failed')], 500);
-        }
-    }
-
-    public function callback(Request $request)
-    {
-        try {
-            $orderId = $request->input('order_id');
-            $transactionStatus = $request->input('transaction_status');
-
-            if ($orderId && in_array($transactionStatus, ['capture', 'settlement'])) {
-                $parts = explode('_', $orderId);
-
-                if (count($parts) >= 3) {
-                    $planId = $parts[1];
-                    $userId = $parts[2];
-
-                    $plan = Plan::find($planId);
-                    $user = \App\Models\User::find($userId);
-
-                    if ($plan && $user) {
-                        processPaymentSuccess([
-                            'user_id' => $user->id,
-                            'plan_id' => $plan->id,
-                            'billing_cycle' => 'monthly',
-                            'payment_method' => 'midtrans',
-                            'payment_id' => $request->input('transaction_id'),
-                        ]);
-                    }
-                }
-            }
-
-            return response()->json(['status' => 'success']);
-
-        } catch (\Exception $e) {
-            return response()->json(['error' => __('Callback processing failed')], 500);
         }
     }
 
@@ -166,23 +133,58 @@ class MidtransPaymentController extends Controller
             curl_close($ch);
 
             if ($curlError) {
-                throw new \Exception(__('cURL Error: ') . $curlError);
+                throw new Exception(__('cURL Error: ') . $curlError);
             }
 
             if ($httpCode !== 201) {
-                throw new \Exception(__('HTTP Error: ') . $httpCode . ' - ' . $response);
+                throw new Exception(__('HTTP Error: ') . $httpCode . ' - ' . $response);
             }
 
             $result = json_decode($response, true);
 
             if (!isset($result['token'])) {
-                throw new \Exception(__('No token in response: ') . $response);
+                throw new Exception(__('No token in response: ') . $response);
             }
 
             return $result['token'];
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
+        }
+    }
+
+    public function callback(Request $request)
+    {
+        try {
+            $orderId = $request->input('order_id');
+            $transactionStatus = $request->input('transaction_status');
+
+            if ($orderId && in_array($transactionStatus, ['capture', 'settlement'])) {
+                $parts = explode('_', $orderId);
+
+                if (count($parts) >= 3) {
+                    $planId = $parts[1];
+                    $userId = $parts[2];
+
+                    $plan = Plan::find($planId);
+                    $user = User::find($userId);
+
+                    if ($plan && $user) {
+                        processPaymentSuccess([
+                            'user_id' => $user->id,
+                            'plan_id' => $plan->id,
+                            'billing_cycle' => 'monthly',
+                            'payment_method' => 'midtrans',
+                            'payment_id' => $request->input('transaction_id'),
+                        ]);
+                    }
+                }
+            }
+
+            return response()->json(['status' => 'success']);
+
+        } catch (Exception $e) {
+            return response()->json(['error' => __('Callback processing failed')], 500);
         }
     }
 }

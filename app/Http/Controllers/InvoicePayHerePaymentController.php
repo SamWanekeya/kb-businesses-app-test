@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 
 class InvoicePayHerePaymentController extends Controller
 {
@@ -34,7 +37,7 @@ class InvoicePayHerePaymentController extends Controller
             $settings = $this->getInvoicePaymentSettings($organizationId);
 
             if (!isset($settings['payment_settings']['payhere_merchant_id'])) {
-                \Log::error('PayHere payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
+                Log::error('PayHere payment failed: Configuration missing', ['invoice_id' => $invoice->id]);
 
                 return response()->json(['error' => __('PayHere not configured')], 400);
             }
@@ -86,8 +89,8 @@ class InvoicePayHerePaymentController extends Controller
                 'order_id' => $orderId,
             ]);
 
-        } catch (\Exception $e) {
-            \Log::error('PayHere payment error', [
+        } catch (Exception $e) {
+            Log::error('PayHere payment error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -95,6 +98,25 @@ class InvoicePayHerePaymentController extends Controller
 
             return response()->json(['error' => __('Payment creation failed')], 500);
         }
+    }
+
+    private function validateInvoicePaymentRequest($request, $additionalRules = [])
+    {
+        $baseRules = [
+            'invoice_id' => 'required|exists:invoices,id',
+            'amount' => 'required|numeric|min:0.01',
+            'payment_type' => 'required|in:full,partial',
+        ];
+
+        return $request->validate(array_merge($baseRules, $additionalRules));
+    }
+
+    private function getInvoicePaymentSettings($organizationId)
+    {
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
     }
 
     public function success(Request $request)
@@ -117,7 +139,7 @@ class InvoicePayHerePaymentController extends Controller
                         'payment_id' => $orderId ?? 'PAYHERE-' . time(),
                     ]);
 
-                    \Log::info('PayHere invoice payment successful', [
+                    Log::info('PayHere invoice payment successful', [
                         'invoice_id' => $invoice->id,
                         'amount' => $amount,
                         'payment_type' => $paymentType,
@@ -128,8 +150,8 @@ class InvoicePayHerePaymentController extends Controller
             }
 
             return redirect()->route('invoices.public', $invoiceId)->with('error', __('Payment verification failed'));
-        } catch (\Exception $e) {
-            \Log::error('PayHere success callback error', [
+        } catch (Exception $e) {
+            Log::error('PayHere success callback error', [
                 'error' => $e->getMessage(),
             ]);
 
@@ -161,7 +183,7 @@ class InvoicePayHerePaymentController extends Controller
                             'payment_id' => $request->input('payment_id') ?? $orderId,
                         ]);
 
-                        \Log::info('PayHere invoice payment callback successful', [
+                        Log::info('PayHere invoice payment callback successful', [
                             'invoice_id' => $invoice->id,
                             'order_id' => $orderId,
                         ]);
@@ -171,31 +193,12 @@ class InvoicePayHerePaymentController extends Controller
 
             return response()->json(['status' => 'success']);
 
-        } catch (\Exception $e) {
-            \Log::error('PayHere callback error', [
+        } catch (Exception $e) {
+            Log::error('PayHere callback error', [
                 'error' => $e->getMessage(),
             ]);
 
             return response()->json(['error' => __('Callback processing failed')], 500);
         }
-    }
-
-    private function validateInvoicePaymentRequest($request, $additionalRules = [])
-    {
-        $baseRules = [
-            'invoice_id' => 'required|exists:invoices,id',
-            'amount' => 'required|numeric|min:0.01',
-            'payment_type' => 'required|in:full,partial',
-        ];
-
-        return $request->validate(array_merge($baseRules, $additionalRules));
-    }
-
-    private function getInvoicePaymentSettings($organizationId)
-    {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
-        ];
     }
 }

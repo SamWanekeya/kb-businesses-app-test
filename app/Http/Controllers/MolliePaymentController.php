@@ -4,21 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Plan;
 use App\Models\PlanOrder;
+use Exception;
 use Illuminate\Http\Request;
 use Mollie\Api\MollieApiClient;
 
 class MolliePaymentController extends Controller
 {
-    private function getMollieCredentials()
-    {
-        $settings = getPaymentGatewaySettings();
-
-        return [
-            'api_key' => $settings['payment_settings']['mollie_api_key'] ?? null,
-            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'EUR',
-        ];
-    }
-
     public function processPayment(Request $request)
     {
         $validated = $request->validate([
@@ -85,9 +76,19 @@ class MolliePaymentController extends Controller
 
             return redirect($payment->getCheckoutUrl());
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withErrors(['error' => __('Payment failed. Please try again.')]);
         }
+    }
+
+    private function getMollieCredentials()
+    {
+        $settings = getPaymentGatewaySettings();
+
+        return [
+            'api_key' => $settings['payment_settings']['mollie_api_key'] ?? null,
+            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'EUR',
+        ];
     }
 
     public function createPayment(Request $request)
@@ -103,7 +104,7 @@ class MolliePaymentController extends Controller
             $credentials = $this->getMollieCredentials();
 
             if (!$credentials['api_key']) {
-                throw new \Exception(__('Mollie API key not configured'));
+                throw new Exception(__('Mollie API key not configured'));
             }
 
             $paymentId = 'mollie_' . $plan->id . '_' . time() . '_' . uniqid();
@@ -149,7 +150,7 @@ class MolliePaymentController extends Controller
                 'checkout_url' => $payment->getCheckoutUrl(),
             ]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -174,7 +175,7 @@ class MolliePaymentController extends Controller
                 'is_canceled' => $payment->isCanceled(),
             ]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -214,7 +215,7 @@ class MolliePaymentController extends Controller
                         } else {
                             return redirect()->route('plans.index')->with('error', __('Payment was not successful. Please try again.'));
                         }
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                         return redirect()->route('plans.index')->with('info', __('Payment is being processed. Your plan will be activated shortly.'));
                     }
                 }
@@ -222,7 +223,7 @@ class MolliePaymentController extends Controller
 
             return redirect()->route('plans.index')->with('info', __('Payment is being processed. Your plan will be activated shortly.'));
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('plans.index')->with('error', __('Payment verification failed. Please contact support.'));
         }
     }
@@ -248,7 +249,7 @@ class MolliePaymentController extends Controller
             }
 
             return response('OK', 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response('ERROR', 500);
         }
     }

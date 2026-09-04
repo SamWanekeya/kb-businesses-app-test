@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
 use App\Models\PaymentSetting;
+use App\Models\Setting;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Iyzipay\Model\Address;
 use Iyzipay\Model\BasketItem;
@@ -19,21 +21,10 @@ use Iyzipay\Model\PaymentGroup;
 use Iyzipay\Options;
 use Iyzipay\Request\CreateCheckoutFormInitializeRequest;
 use Iyzipay\Request\RetrieveCheckoutFormRequest;
+use Log;
 
 class InvoiceIyzipayPaymentController extends Controller
 {
-    private function getIyzipayOptions($settings)
-    {
-        $options = new Options();
-        $options->setApiKey($settings['iyzipay_public_key']);
-        $options->setSecretKey($settings['iyzipay_secret_key']);
-        $options->setBaseUrl($settings['iyzipay_mode'] === 'live'
-            ? 'https://api.iyzipay.com'
-            : 'https://sandbox-api.iyzipay.com');
-
-        return $options;
-    }
-
     public function createPaymentForm(Request $request)
     {
         $validated = $request->validate([
@@ -139,8 +130,8 @@ class InvoiceIyzipayPaymentController extends Controller
                 return response()->json(['error' => $checkoutFormInitialize->getErrorMessage()], 400);
             }
 
-        } catch (\Exception $e) {
-            \Log::error('Iyzipay invoice payment form creation error', [
+        } catch (Exception $e) {
+            Log::error('Iyzipay invoice payment form creation error', [
                 'invoice_id' => $validated['invoice_id'] ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -148,6 +139,26 @@ class InvoiceIyzipayPaymentController extends Controller
 
             return response()->json(['error' => __('Payment form creation failed')], 500);
         }
+    }
+
+    private function getInvoicePaymentSettings($organizationId)
+    {
+        return [
+            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
+            'general_settings' => Setting::getUserSettings($organizationId),
+        ];
+    }
+
+    private function getIyzipayOptions($settings)
+    {
+        $options = new Options();
+        $options->setApiKey($settings['iyzipay_public_key']);
+        $options->setSecretKey($settings['iyzipay_secret_key']);
+        $options->setBaseUrl($settings['iyzipay_mode'] === 'live'
+            ? 'https://api.iyzipay.com'
+            : 'https://sandbox-api.iyzipay.com');
+
+        return $options;
     }
 
     public function callback(Request $request)
@@ -178,7 +189,7 @@ class InvoiceIyzipayPaymentController extends Controller
                     'payment_id' => $paymentResult->getPaymentId(),
                 ]);
 
-                \Log::info('Iyzipay invoice payment successful', [
+                Log::info('Iyzipay invoice payment successful', [
                     'invoice_id' => $invoice->id,
                     'amount' => $amount,
                     'payment_type' => $paymentType,
@@ -190,8 +201,8 @@ class InvoiceIyzipayPaymentController extends Controller
 
             return redirect()->route('invoices.public', encrypt($invoice->id))->withErrors(['error' => __('Payment failed or cancelled')]);
 
-        } catch (\Exception $e) {
-            \Log::error('Iyzipay invoice payment callback error', [
+        } catch (Exception $e) {
+            Log::error('Iyzipay invoice payment callback error', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
@@ -211,16 +222,8 @@ class InvoiceIyzipayPaymentController extends Controller
             $checkoutForm = CheckoutForm::retrieve($request, $options);
 
             return $checkoutForm;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
-    }
-
-    private function getInvoicePaymentSettings($organizationId)
-    {
-        return [
-            'payment_settings' => PaymentSetting::getUserSettings($organizationId),
-            'general_settings' => \App\Models\Setting::getUserSettings($organizationId),
-        ];
     }
 }

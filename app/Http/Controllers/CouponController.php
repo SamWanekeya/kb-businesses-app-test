@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CouponRequest;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -23,7 +24,7 @@ class CouponController extends BaseController
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('code', 'like', "%{$search}%");
+                    ->orWhere('code', 'like', "%{$search}%");
             });
         }
 
@@ -94,7 +95,7 @@ class CouponController extends BaseController
         $total = $usageHistory->count();
         $items = $usageHistory->forPage($page, $perPage)->values();
 
-        $paginatedUsage = new \Illuminate\Pagination\LengthAwarePaginator(
+        $paginatedUsage = new LengthAwarePaginator(
             $items,
             $total,
             $perPage,
@@ -126,26 +127,6 @@ class CouponController extends BaseController
         $coupon = Coupon::create($data);
 
         return redirect()->route('coupons.index')->with('success', __('Coupon created successfully!'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(CouponRequest $request, Coupon $coupon)
-    {
-
-        $data = $request->all();
-
-        // Generate new code if switching to auto-generate
-        if ($request->code_type === 'auto' && $coupon->code_type !== 'auto') {
-            do {
-                $data['code'] = strtoupper(Str::random(8));
-            } while (Coupon::where('code', $data['code'])->where('id', '!=', $coupon->id)->exists());
-        }
-
-        $coupon->update($data);
-
-        return redirect()->route('coupons.index')->with('success', __('Coupon updated successfully!'));
     }
 
     /**
@@ -217,6 +198,26 @@ class CouponController extends BaseController
         return redirect()->back()->with([
             'success' => __('Coupon status updated successfully!'),
         ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(CouponRequest $request, Coupon $coupon)
+    {
+
+        $data = $request->all();
+
+        // Generate new code if switching to auto-generate
+        if ($request->code_type === 'auto' && $coupon->code_type !== 'auto') {
+            do {
+                $data['code'] = strtoupper(Str::random(8));
+            } while (Coupon::where('code', $data['code'])->where('id', '!=', $coupon->id)->exists());
+        }
+
+        $coupon->update($data);
+
+        return redirect()->route('coupons.index')->with('success', __('Coupon updated successfully!'));
     }
 
     /**

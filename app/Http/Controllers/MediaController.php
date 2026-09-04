@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\MediaItem;
 use App\Models\User;
 use App\Services\StorageConfigService;
+use Exception;
 use Illuminate\Http\Request;
+use Log;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Storage;
+use Validator;
 
 class MediaController extends Controller
 {
@@ -25,8 +29,7 @@ class MediaController extends Controller
             // SuperAdmin can see all media
             if ($user->hasRole('super_admin')) {
                 // No user_id filter for super_admin
-            }
-            // Users with manage-any-media can see all media
+            } // Users with manage-any-media can see all media
             elseif ($user->hasPermissionTo('manage-any-media')) {
                 // Filter for manage-any-media
                 $organizationUsersIds = User::where('created_by', createdBy())->orWhere('id', createdBy())->pluck('id');
@@ -45,7 +48,7 @@ class MediaController extends Controller
 
                     try {
                         $thumbUrl = $this->getFullUrl($media->getUrl('thumb'));
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                         // If thumb conversion fails, use original
                     }
 
@@ -60,7 +63,7 @@ class MediaController extends Controller
                         'user_id' => $media->user_id,
                         'created_at' => $media->created_at,
                     ];
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     // Skip media files with unavailable storage disks
                     return null;
                 }
@@ -79,54 +82,6 @@ class MediaController extends Controller
         $baseUrl = request()->getSchemeAndHttpHost();
 
         return $baseUrl . $url;
-    }
-
-    private function getUserFriendlyError(\Exception $e, $fileName, $maxSizeMB = null): string
-    {
-        $message = $e->getMessage();
-        $extension = strtoupper(pathinfo($fileName, PATHINFO_EXTENSION));
-
-        \Log::error('Media upload error', [
-            'file' => $fileName,
-            'error' => $message,
-            'trace' => $e->getTraceAsString(),
-        ]);
-
-        // Handle media library collection errors
-        if (str_contains($message, 'was not accepted into the collection')) {
-            if (str_contains($message, 'mime:')) {
-                return __("File type not allowed: :extension. Please check your storage settings.", ['extension' => $extension]);
-            }
-
-            return __("File format not supported: :extension. Please check your storage settings.", ['extension' => $extension]);
-        }
-
-        // Handle storage disk errors
-        if (str_contains($message, 'storage') || str_contains($message, 'disk') || str_contains($message, 'No such file or directory')) {
-            return __("Storage error: :extension. Please check storage configuration.", ['extension' => $extension]);
-        }
-
-        // Handle file size errors
-        if (str_contains($message, 'size') || str_contains($message, 'large') || str_contains($message, 'exceeds')) {
-            if ($maxSizeMB) {
-                return __("Max :max MB is allowed.", ['max' => $maxSizeMB]);
-            }
-
-            return __("File too large: :extension", ['extension' => $extension]);
-        }
-
-        // Handle permission errors
-        if (str_contains($message, 'permission') || str_contains($message, 'denied') || str_contains($message, 'not writable')) {
-            return __("Permission denied: :extension. Check directory permissions.", ['extension' => $extension]);
-        }
-
-        // Handle image processing errors
-        if (str_contains($message, 'image') || str_contains($message, 'conversion') || str_contains($message, 'gd') || str_contains($message, 'imagick')) {
-            return __("Image processing error: :extension. File may be corrupted.", ['extension' => $extension]);
-        }
-
-        // Generic fallback with more detail
-        return __("Upload failed: :extension. Error: :error", ['extension' => $extension, 'error' => substr($message, 0, 100)]);
     }
 
     public function batchStore(Request $request)
@@ -154,7 +109,7 @@ class MediaController extends Controller
         $validationRules = StorageConfigService::getFileValidationRules();
 
         // Custom validation with user-friendly messages
-        $validator = \Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'files' => 'required|array',
             'files.*' => array_merge(['file'], $validationRules),
         ], [
@@ -198,7 +153,7 @@ class MediaController extends Controller
                 // Force thumbnail generationAdd commentMore actions
                 try {
                     $media->getUrl('thumb');
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     // Thumbnail generation failed, but continue
                 }
 
@@ -207,7 +162,7 @@ class MediaController extends Controller
 
                 try {
                     $thumbUrl = $this->getFullUrl($media->getUrl('thumb'));
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     // If thumb conversion fails, use original
                 }
 
@@ -222,7 +177,7 @@ class MediaController extends Controller
                     'user_id' => $media->user_id,
                     'created_at' => $media->created_at,
                 ];
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 if (isset($mediaItem)) {
                     $mediaItem->delete();
                 }
@@ -252,63 +207,26 @@ class MediaController extends Controller
         }
     }
 
-    public function download($id)
+    private function validateStorageConfig()
     {
-        $user = auth()->user();
-        $query = Media::where('id', $id);
-
-        // SuperAdmin and users with manage-any-media can download any media
-        if ($user->type !== 'super_admin' && !$user->hasPermissionTo('manage-any-media')) {
-            $query->where('user_id', $user->id);
-        }
-
-        $media = $query->firstOrFail();
-
         try {
-            $filePath = $media->getPath();
+            $disk = StorageConfigService::getActiveDisk();
+            $storage = Storage::disk($disk);
 
-            if (!file_exists($filePath)) {
-                abort(404, __('File not found'));
-            }
+            // Test if we can write to the storage
+            $testFile = 'test_' . time() . '.txt';
+            $storage->put($testFile, 'test');
+            $storage->delete($testFile);
 
-            return response()->download($filePath, $media->file_name);
-        } catch (\Exception $e) {
-            abort(404, __('File storage unavailable'));
+            return null; // No error
+        } catch (Exception $e) {
+            Log::error('Storage validation failed', ['error' => $e->getMessage()]);
+
+            return response()->json([
+                'message' => __('Storage configuration error'),
+                'errors' => [__('Unable to access storage. Please check storage settings.')],
+            ], 500);
         }
-    }
-
-    public function destroy($id)
-    {
-        $user = auth()->user();
-        $query = Media::where('id', $id);
-
-        // SuperAdmin and users with manage-any-media can delete any media
-        if ($user->type !== 'super_admin' && !$user->hasPermissionTo('manage-any-media')) {
-            $query->where('user_id', $user->id);
-        }
-
-        $media = $query->firstOrFail();
-        $mediaItem = $media->model;
-
-        $fileSize = $media->size;
-
-        try {
-            $media->delete();
-        } catch (\Exception $e) {
-            // If storage disk is unavailable, force delete from database
-            $media->forceDelete();
-        }
-
-        // Update user storage usage
-        $organization = User::find(createdBy());
-        $this->updateStorageUsage($organization, -$fileSize);
-
-        // Delete the MediaItem if it has no more media files
-        if ($mediaItem && $mediaItem->getMedia()->count() === 0) {
-            $mediaItem->delete();
-        }
-
-        return response()->json(['message' => __('Media deleted successfully')]);
     }
 
     private function checkStorageLimit($files)
@@ -383,25 +301,110 @@ class MediaController extends Controller
         $user->increment('storage_limit', $size);
     }
 
-    private function validateStorageConfig()
+    private function getUserFriendlyError(Exception $e, $fileName, $maxSizeMB = null): string
     {
-        try {
-            $disk = StorageConfigService::getActiveDisk();
-            $storage = \Storage::disk($disk);
+        $message = $e->getMessage();
+        $extension = strtoupper(pathinfo($fileName, PATHINFO_EXTENSION));
 
-            // Test if we can write to the storage
-            $testFile = 'test_' . time() . '.txt';
-            $storage->put($testFile, 'test');
-            $storage->delete($testFile);
+        Log::error('Media upload error', [
+            'file' => $fileName,
+            'error' => $message,
+            'trace' => $e->getTraceAsString(),
+        ]);
 
-            return null; // No error
-        } catch (\Exception $e) {
-            \Log::error('Storage validation failed', ['error' => $e->getMessage()]);
+        // Handle media library collection errors
+        if (str_contains($message, 'was not accepted into the collection')) {
+            if (str_contains($message, 'mime:')) {
+                return __("File type not allowed: :extension. Please check your storage settings.", ['extension' => $extension]);
+            }
 
-            return response()->json([
-                'message' => __('Storage configuration error'),
-                'errors' => [__('Unable to access storage. Please check storage settings.')],
-            ], 500);
+            return __("File format not supported: :extension. Please check your storage settings.", ['extension' => $extension]);
         }
+
+        // Handle storage disk errors
+        if (str_contains($message, 'storage') || str_contains($message, 'disk') || str_contains($message, 'No such file or directory')) {
+            return __("Storage error: :extension. Please check storage configuration.", ['extension' => $extension]);
+        }
+
+        // Handle file size errors
+        if (str_contains($message, 'size') || str_contains($message, 'large') || str_contains($message, 'exceeds')) {
+            if ($maxSizeMB) {
+                return __("Max :max MB is allowed.", ['max' => $maxSizeMB]);
+            }
+
+            return __("File too large: :extension", ['extension' => $extension]);
+        }
+
+        // Handle permission errors
+        if (str_contains($message, 'permission') || str_contains($message, 'denied') || str_contains($message, 'not writable')) {
+            return __("Permission denied: :extension. Check directory permissions.", ['extension' => $extension]);
+        }
+
+        // Handle image processing errors
+        if (str_contains($message, 'image') || str_contains($message, 'conversion') || str_contains($message, 'gd') || str_contains($message, 'imagick')) {
+            return __("Image processing error: :extension. File may be corrupted.", ['extension' => $extension]);
+        }
+
+        // Generic fallback with more detail
+        return __("Upload failed: :extension. Error: :error", ['extension' => $extension, 'error' => substr($message, 0, 100)]);
+    }
+
+    public function download($id)
+    {
+        $user = auth()->user();
+        $query = Media::where('id', $id);
+
+        // SuperAdmin and users with manage-any-media can download any media
+        if ($user->type !== 'super_admin' && !$user->hasPermissionTo('manage-any-media')) {
+            $query->where('user_id', $user->id);
+        }
+
+        $media = $query->firstOrFail();
+
+        try {
+            $filePath = $media->getPath();
+
+            if (!file_exists($filePath)) {
+                abort(404, __('File not found'));
+            }
+
+            return response()->download($filePath, $media->file_name);
+        } catch (Exception $e) {
+            abort(404, __('File storage unavailable'));
+        }
+    }
+
+    public function destroy($id)
+    {
+        $user = auth()->user();
+        $query = Media::where('id', $id);
+
+        // SuperAdmin and users with manage-any-media can delete any media
+        if ($user->type !== 'super_admin' && !$user->hasPermissionTo('manage-any-media')) {
+            $query->where('user_id', $user->id);
+        }
+
+        $media = $query->firstOrFail();
+        $mediaItem = $media->model;
+
+        $fileSize = $media->size;
+
+        try {
+            $media->delete();
+        } catch (Exception $e) {
+            // If storage disk is unavailable, force delete from database
+            $media->forceDelete();
+        }
+
+        // Update user storage usage
+        $organization = User::find(createdBy());
+        $this->updateStorageUsage($organization, -$fileSize);
+
+        // Delete the MediaItem if it has no more media files
+        if ($mediaItem && $mediaItem->getMedia()->count() === 0) {
+            $mediaItem->delete();
+        }
+
+        return response()->json(['message' => __('Media deleted successfully')]);
     }
 }

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
+use App\Models\PlanOrder;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use YooKassa\Client;
 
@@ -62,8 +65,8 @@ class YooKassaPaymentController extends Controller
                 return response()->json(['error' => __('Payment creation failed')], 500);
             }
 
-        } catch (\Exception $e) {
-            return response()->json(['error' => __('Payment creation failed'),'error ' => $e->getMessage()], 500);
+        } catch (Exception $e) {
+            return response()->json(['error' => __('Payment creation failed'), 'error ' => $e->getMessage()], 500);
         }
     }
 
@@ -84,11 +87,11 @@ class YooKassaPaymentController extends Controller
                     $user = auth()->user();
                 } else {
                     // Try to find user from recent plan orders
-                    $recentOrder = \App\Models\PlanOrder::where('payment_id', 'like', '%' . substr($orderId, -8))
+                    $recentOrder = PlanOrder::where('payment_id', 'like', '%' . substr($orderId, -8))
                         ->where('created_at', '>=', now()->subHours(1))
                         ->first();
                     if ($recentOrder) {
-                        $user = \App\Models\User::find($recentOrder->user_id);
+                        $user = User::find($recentOrder->user_id);
                     }
                 }
 
@@ -113,7 +116,7 @@ class YooKassaPaymentController extends Controller
             }
 
             return redirect()->route('plans.index')->with('error', __('Payment verification failed'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('plans.index')->with('error', __('Payment processing failed'));
         }
     }
@@ -130,7 +133,7 @@ class YooKassaPaymentController extends Controller
                 $userId = $metadata['user_id'];
 
                 $plan = Plan::find($planId);
-                $user = \App\Models\User::find($userId);
+                $user = User::find($userId);
 
                 if ($plan && $user) {
                     // Assign plan to user
@@ -150,7 +153,7 @@ class YooKassaPaymentController extends Controller
             }
 
             return response()->json(['status' => 'success']);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => __('Callback processing failed')], 500);
         }
     }

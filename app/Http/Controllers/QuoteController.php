@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\QuoteCreated;
+use App\Events\QuoteStatusChanged;
 use App\Exports\QuoteExport;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Opportunity;
 use App\Models\Product;
 use App\Models\Quote;
+use App\Models\QuoteActivity;
 use App\Models\ShippingProviderType;
 use App\Models\Tax;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -58,10 +64,10 @@ class QuoteController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $quotes = $query->paginate($perPage)->withQueryString();
 
-        $userQuery = \App\Models\User::where('created_by', createdBy());
+        $userQuery = User::where('created_by', createdBy());
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
 
@@ -93,25 +99,9 @@ class QuoteController extends Controller
         ]);
     }
 
-    public function create()
+    private function getFilteredProducts()
     {
-        $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
-        $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
-        $opportunities = Opportunity::where('created_by', createdBy())->select('id', 'name')->get();
-        $products = $this->getFilteredProducts();
-        $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
-        $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
-        $users = \App\Models\User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
-
-        return Inertia::render('quotes/create', [
-            'accounts' => $accounts,
-            'contacts' => $contacts,
-            'opportunities' => $opportunities,
-            'products' => $products,
-            'shippingProviderTypes' => $shippingProviderTypes,
-            'taxes' => $taxes,
-            'users' => $users,
-        ]);
+        return Product::where('created_by', createdBy())->with('tax')->select('id', 'name', 'price', 'tax_id')->get();
     }
 
     public function store(Request $request)
@@ -184,7 +174,7 @@ class QuoteController extends Controller
 
         // Fire QuoteCreated event for sending email and notification
         if ($quote && !IsDemo()) {
-            event(new \App\Events\QuoteCreated($quote));
+            event(new QuoteCreated($quote));
         }
 
         // Check for errors and combine them
@@ -206,6 +196,44 @@ class QuoteController extends Controller
         }
 
         return redirect()->route('quotes.index')->with('success', __('Quote created successfully.'));
+    }
+
+    public function create()
+    {
+        $accounts = Account::where('created_by', createdBy())->select('id', 'name')->get();
+        $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
+        $opportunities = Opportunity::where('created_by', createdBy())->select('id', 'name')->get();
+        $products = $this->getFilteredProducts();
+        $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
+        $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
+        $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+
+        return Inertia::render('quotes/create', [
+            'accounts' => $accounts,
+            'contacts' => $contacts,
+            'opportunities' => $opportunities,
+            'products' => $products,
+            'shippingProviderTypes' => $shippingProviderTypes,
+            'taxes' => $taxes,
+            'users' => $users,
+        ]);
+    }
+
+    private function calculateDiscountAmount($lineTotal, $discountType, $discountValue)
+    {
+        if (!$discountType || !$discountValue) {
+            return 0;
+        }
+
+        if ($discountType === 'percentage') {
+            return ($lineTotal * $discountValue) / 100;
+        }
+
+        if ($discountType === 'fixed') {
+            return min($discountValue, $lineTotal);
+        }
+
+        return 0;
     }
 
     public function show($quoteId)
@@ -260,7 +288,7 @@ class QuoteController extends Controller
             $products = $this->getFilteredProducts();
             $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
             $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
-            $users = \App\Models\User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+            $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
             return Inertia::render('quotes/edit', [
                 'quote' => $quote,
@@ -275,6 +303,49 @@ class QuoteController extends Controller
         } else {
             return redirect()->route('quotes.index')->with('error', __('Quote not found.'));
         }
+    }
+
+    public function destroy($quoteId)
+    {
+        $quote = Quote::where('id', $quoteId)
+            ->where('created_by', createdBy())
+            ->first();
+
+        if (!$quote) {
+            return redirect()->back()->with('error', __('Quote not found.'));
+        }
+
+        $quote->products()->detach();
+        $quote->delete();
+
+        return redirect()->back()->with('success', __('Quote deleted successfully.'));
+    }
+
+    public function toggleStatus(Request $request, $quoteId)
+    {
+        $quote = Quote::where('id', $quoteId)
+            ->where('created_by', createdBy())
+            ->first();
+
+        if (!$quote) {
+            return redirect()->back()->with('error', __('Quote not found.'));
+        }
+
+        $validated = $request->validate([
+            'status' => 'required|in:draft,sent,accepted,rejected,expired',
+        ]);
+
+        $oldStatus = $quote->status;
+        $newStatus = $validated['status'];
+
+        $quote->update(['status' => $newStatus]);
+
+        // Fire QuoteStatusChanged event if email notification is enabled
+        if (isEmailTemplateEnabled('Quote Status Changed', createdBy()) && !IsDemo()) {
+            event(new QuoteStatusChanged($quote, $oldStatus, $newStatus));
+        }
+
+        return redirect()->back()->with('success', __('Quote status updated successfully.'));
     }
 
     public function update(Request $request, $quoteId)
@@ -325,7 +396,7 @@ class QuoteController extends Controller
             $oldStatus = $quote->getOriginal('status');
             $newStatus = $quote->status;
 
-            event(new \App\Events\QuoteStatusChanged($quote, $oldStatus, $newStatus));
+            event(new QuoteStatusChanged($quote, $oldStatus, $newStatus));
         }
         $quote->update($validated);
 
@@ -361,49 +432,6 @@ class QuoteController extends Controller
         $quote->calculateTotals();
 
         return redirect()->route('quotes.index')->with('success', __('Quote updated successfully.'));
-    }
-
-    public function destroy($quoteId)
-    {
-        $quote = Quote::where('id', $quoteId)
-            ->where('created_by', createdBy())
-            ->first();
-
-        if (!$quote) {
-            return redirect()->back()->with('error', __('Quote not found.'));
-        }
-
-        $quote->products()->detach();
-        $quote->delete();
-
-        return redirect()->back()->with('success', __('Quote deleted successfully.'));
-    }
-
-    public function toggleStatus(Request $request, $quoteId)
-    {
-        $quote = Quote::where('id', $quoteId)
-            ->where('created_by', createdBy())
-            ->first();
-
-        if (!$quote) {
-            return redirect()->back()->with('error', __('Quote not found.'));
-        }
-
-        $validated = $request->validate([
-            'status' => 'required|in:draft,sent,accepted,rejected,expired',
-        ]);
-
-        $oldStatus = $quote->status;
-        $newStatus = $validated['status'];
-
-        $quote->update(['status' => $newStatus]);
-
-        // Fire QuoteStatusChanged event if email notification is enabled
-        if (isEmailTemplateEnabled('Quote Status Changed', createdBy()) && !IsDemo()) {
-            event(new \App\Events\QuoteStatusChanged($quote, $oldStatus, $newStatus));
-        }
-
-        return redirect()->back()->with('success', __('Quote status updated successfully.'));
     }
 
     public function assignUser(Request $request, $quoteId)
@@ -499,7 +527,7 @@ class QuoteController extends Controller
             return redirect()->back()->with('error', __('Quote not found.'));
         }
 
-        \App\Models\QuoteActivity::where('quote_id', $quote->id)->delete();
+        QuoteActivity::where('quote_id', $quote->id)->delete();
 
         return redirect()->back()->with('success', __('All activities deleted successfully.'));
     }
@@ -514,7 +542,7 @@ class QuoteController extends Controller
             return redirect()->back()->with('error', __('Quote not found.'));
         }
 
-        $activity = \App\Models\QuoteActivity::where('id', $activityId)
+        $activity = QuoteActivity::where('id', $activityId)
             ->where('quote_id', $quote->id)
             ->first();
 
@@ -565,28 +593,6 @@ class QuoteController extends Controller
         return Excel::download(new QuoteExport(), $name . '.xlsx');
     }
 
-    private function calculateDiscountAmount($lineTotal, $discountType, $discountValue)
-    {
-        if (!$discountType || !$discountValue) {
-            return 0;
-        }
-
-        if ($discountType === 'percentage') {
-            return ($lineTotal * $discountValue) / 100;
-        }
-
-        if ($discountType === 'fixed') {
-            return min($discountValue, $lineTotal);
-        }
-
-        return 0;
-    }
-
-    private function getFilteredProducts()
-    {
-        return Product::where('created_by', createdBy())->with('tax')->select('id', 'name', 'price', 'tax_id')->get();
-    }
-
     public function publicView($quoteId)
     {
         try {
@@ -631,8 +637,8 @@ class QuoteController extends Controller
                 'themeColor' => $themeColor,
                 'customColor' => $customColor,
             ]);
-        } catch (\Exception $e) {
-            \Log::error('Failed to decrypt quote ID', ['encrypted' => $quoteId, 'error' => $e->getMessage()]);
+        } catch (Exception $e) {
+            Log::error('Failed to decrypt quote ID', ['encrypted' => $quoteId, 'error' => $e->getMessage()]);
             abort(404, __('Invalid quote link'));
         }
     }

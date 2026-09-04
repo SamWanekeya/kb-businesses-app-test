@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class OrganizationSystemSettingsController extends Controller
@@ -15,9 +17,9 @@ class OrganizationSystemSettingsController extends Controller
      * - Date/time formats and timezone
      * - Excludes email verification and landing page settings
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request)
     {
@@ -34,7 +36,7 @@ class OrganizationSystemSettingsController extends Controller
             }
 
             return redirect()->back()->with('success', __('System settings updated successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to update system settings: :error', ['error' => $e->getMessage()]));
         }
     }

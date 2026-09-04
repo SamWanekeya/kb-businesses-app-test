@@ -65,7 +65,7 @@ class AnnouncementController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $announcements = $query->paginate($perPage)->withQueryString();
 
         $categoryQuery = AnnouncementCategory::where('created_by', createdBy());

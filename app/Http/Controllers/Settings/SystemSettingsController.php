@@ -3,9 +3,23 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
-use App\Models\Setting;
+use App\Models\EmailTemplate;
+use App\Models\NotificationTemplate;
+use App\Models\UserEmailTemplate;
+use App\Models\UserNotificationTemplate;
 use App\Services\StorageConfigService;
+use Artisan;
+use Cache;
+use Exception;
+use Google_Client;
+use Google_Service_Calendar;
+use Google_Service_Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Storage;
+use Twilio\Rest\Client;
 
 class SystemSettingsController extends Controller
 {
@@ -18,9 +32,9 @@ class SystemSettingsController extends Controller
      * - Email verification requirements
      * - Landing page enable/disable toggle
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request)
     {
@@ -42,7 +56,7 @@ class SystemSettingsController extends Controller
             }
 
             return redirect()->back()->with('success', __('System settings updated successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to update system settings: :error', ['error' => $e->getMessage()]));
         }
     }
@@ -50,9 +64,9 @@ class SystemSettingsController extends Controller
     /**
      * Update the brand settings.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function updateBrand(Request $request)
     {
@@ -81,7 +95,7 @@ class SystemSettingsController extends Controller
             }
 
             return redirect()->back()->with('success', __('Brand settings updated successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to update brand settings: :error', ['error' => $e->getMessage()]));
         }
     }
@@ -89,9 +103,9 @@ class SystemSettingsController extends Controller
     /**
      * Update the recaptcha settings.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function updateRecaptcha(Request $request)
     {
@@ -108,7 +122,7 @@ class SystemSettingsController extends Controller
             }
 
             return redirect()->back()->with('success', __('ReCaptcha settings updated successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to update ReCaptcha settings: :error', ['error' => $e->getMessage()]));
         }
     }
@@ -116,9 +130,9 @@ class SystemSettingsController extends Controller
     /**
      * Update the chatgpt settings.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function updateChatgpt(Request $request)
     {
@@ -133,7 +147,7 @@ class SystemSettingsController extends Controller
             }
 
             return redirect()->back()->with('success', __('Chat GPT settings updated successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to update Chat GPT settings: :error', ['error' => $e->getMessage()]));
         }
     }
@@ -141,9 +155,9 @@ class SystemSettingsController extends Controller
     /**
      * Update the cookie settings.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function updateCookie(Request $request)
     {
@@ -164,7 +178,7 @@ class SystemSettingsController extends Controller
             }
 
             return redirect()->back()->with('success', __('Cookie settings updated successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to update cookie settings: :error', ['error' => $e->getMessage()]));
         }
     }
@@ -172,9 +186,9 @@ class SystemSettingsController extends Controller
     /**
      * Update the SEO settings.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function updateSeo(Request $request)
     {
@@ -214,7 +228,7 @@ class SystemSettingsController extends Controller
             }
 
             return redirect()->back()->with('success', __('SEO settings updated successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to update SEO settings: :error', ['error' => $e->getMessage()]));
         }
     }
@@ -222,9 +236,9 @@ class SystemSettingsController extends Controller
     /**
      * Update the Google Calendar settings.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function updateGoogleCalendar(Request $request)
     {
@@ -252,8 +266,8 @@ class SystemSettingsController extends Controller
                 $credentialsChanged = true;
 
                 $existingPath = getSetting('googleCalendarJsonPath', null, $userId);
-                if ($existingPath && \Storage::disk('public')->exists($existingPath)) {
-                    \Storage::disk('public')->delete($existingPath);
+                if ($existingPath && Storage::disk('public')->exists($existingPath)) {
+                    Storage::disk('public')->delete($existingPath);
                 }
 
                 $file = $request->file('googleCalendarJson');
@@ -270,7 +284,7 @@ class SystemSettingsController extends Controller
             }
 
             return redirect()->back()->with('success', __('Google Calendar settings updated successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to update Google Calendar settings: :error', ['error' => $e->getMessage()]));
         }
     }
@@ -296,51 +310,51 @@ class SystemSettingsController extends Controller
             $jsonPath = storage_path('app/public/' . $settings['googleCalendarJsonPath']);
 
             if (!file_exists($jsonPath)) {
-                throw new \Exception('Service account JSON file not found.');
+                throw new Exception('Service account JSON file not found.');
             }
 
             $jsonContent = file_get_contents($jsonPath);
             $credentials = json_decode($jsonContent, true);
 
             if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new \Exception('Invalid JSON file format.');
+                throw new Exception('Invalid JSON file format.');
             }
 
             if (!isset($credentials['type']) || $credentials['type'] !== 'service_account') {
-                throw new \Exception('Invalid service account credentials.');
+                throw new Exception('Invalid service account credentials.');
             }
 
             if (!class_exists('\Google_Client')) {
-                throw new \Exception('Google Client library is not installed. Please run: composer require google/apiclient');
+                throw new Exception('Google Client library is not installed. Please run: composer require google/apiclient');
             }
 
-            $client = new \Google_Client();
+            $client = new Google_Client();
             $client->setAuthConfig($jsonPath);
-            $client->addScope(\Google_Service_Calendar::CALENDAR_READONLY);
+            $client->addScope(Google_Service_Calendar::CALENDAR_READONLY);
 
-            $service = new \Google_Service_Calendar($client);
+            $service = new Google_Service_Calendar($client);
 
             try {
                 $calendar = $service->calendars->get($settings['googleCalendarId']);
 
                 if (!$calendar) {
-                    throw new \Exception('Unable to access the specified calendar.');
+                    throw new Exception('Unable to access the specified calendar.');
                 }
 
                 updateSetting('is_googlecalendar_sync', '1', $userId);
 
                 return redirect()->back()->with('success', __('Google Calendar connected successfully! Calendar: :name', ['name' => $calendar->getSummary()]));
-            } catch (\Google_Service_Exception $calendarException) {
+            } catch (Google_Service_Exception $calendarException) {
                 $errorCode = $calendarException->getCode();
                 if ($errorCode === 404) {
-                    throw new \Exception('Calendar not found. Please check your Google Calendar ID.');
+                    throw new Exception('Calendar not found. Please check your Google Calendar ID.');
                 } elseif ($errorCode === 403) {
-                    throw new \Exception('Access denied. Please ensure the service account has access to this calendar.');
+                    throw new Exception('Access denied. Please ensure the service account has access to this calendar.');
                 } else {
-                    throw new \Exception('Calendar access error: ' . $calendarException->getMessage());
+                    throw new Exception('Calendar access error: ' . $calendarException->getMessage());
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             updateSetting('is_googlecalendar_sync', '0', createdBy());
 
             return redirect()->back()->withErrors(['error' => __('Failed to sync Google Calendar: :error', ['error' => $e->getMessage()])]);
@@ -350,9 +364,9 @@ class SystemSettingsController extends Controller
     /**
      * Update the storage settings.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function updateStorage(Request $request)
     {
@@ -408,22 +422,41 @@ class SystemSettingsController extends Controller
             StorageConfigService::clearCache();
 
             // Also clear general cache to refresh global settings
-            \Cache::forget('settings_' . $userId);
+            Cache::forget('settings_' . $userId);
 
             return redirect()->back()->with('success', __('Storage settings updated successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to update storage settings: :error', ['error' => $e->getMessage()]));
+        }
+    }
+
+    /**
+     * Clear application cache.
+     *
+     * @return RedirectResponse
+     */
+    public function clearCache()
+    {
+        try {
+            Artisan::call('cache:clear');
+            Artisan::call('route:clear');
+            Artisan::call('view:clear');
+            Artisan::call('optimize:clear');
+
+            return redirect()->back()->with('success', __('Cache cleared successfully.'));
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', __('Failed to clear cache: :error', ['error' => $e->getMessage()]));
         }
     }
 
     /**
      * Get storage settings for API.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getStorageSettings()
     {
-        $settings = \App\Services\StorageConfigService::getStorageConfig();
+        $settings = StorageConfigService::getStorageConfig();
 
         return response()->json([
             'allowed_file_types' => $settings['allowed_file_types'] ?? 'jpg,png,webp,gif',
@@ -434,16 +467,16 @@ class SystemSettingsController extends Controller
     /**
      * Get email notification settings.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getEmailNotifications()
     {
         $userId = createdBy();
-        $templates = \App\Models\EmailTemplate::select('id', 'name')->get();
+        $templates = EmailTemplate::select('id', 'name')->get();
         $settings = [];
 
         foreach ($templates as $template) {
-            $userTemplate = \App\Models\UserEmailTemplate::where('user_id', $userId)
+            $userTemplate = UserEmailTemplate::where('user_id', $userId)
                 ->where('template_id', $template->id)
                 ->first();
 
@@ -456,11 +489,11 @@ class SystemSettingsController extends Controller
     /**
      * Get available email notifications.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getAvailableEmailNotifications()
     {
-        $templates = \App\Models\EmailTemplate::select('id', 'name')->get();
+        $templates = EmailTemplate::select('id', 'name')->get();
         $notifications = [];
 
         foreach ($templates as $template) {
@@ -476,15 +509,15 @@ class SystemSettingsController extends Controller
     /**
      * Update email notification settings.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function updateEmailNotifications(Request $request)
     {
         try {
             $userId = createdBy();
-            $availableTemplates = \App\Models\EmailTemplate::pluck('name', 'id')->toArray();
+            $availableTemplates = EmailTemplate::pluck('name', 'id')->toArray();
 
             $rules = [];
             foreach ($availableTemplates as $templateId => $templateName) {
@@ -495,7 +528,7 @@ class SystemSettingsController extends Controller
 
             foreach ($availableTemplates as $templateId => $templateName) {
                 if (isset($validated[$templateName])) {
-                    \App\Models\UserEmailTemplate::updateOrCreate(
+                    UserEmailTemplate::updateOrCreate(
                         ['user_id' => $userId, 'template_id' => $templateId],
                         ['is_active' => $validated[$templateName]]
                     );
@@ -503,7 +536,7 @@ class SystemSettingsController extends Controller
             }
 
             return redirect()->back()->with('success', __('Email notification settings updated successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to update email notification settings: :error', ['error' => $e->getMessage()]));
         }
     }
@@ -511,16 +544,16 @@ class SystemSettingsController extends Controller
     /**
      * Get Twilio notification settings.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getTwilioNotifications()
     {
         $userId = createdBy();
-        $templates = \App\Models\NotificationTemplate::where('type', 'twilio')->select('id', 'name')->get();
+        $templates = NotificationTemplate::where('type', 'twilio')->select('id', 'name')->get();
         $settings = [];
 
         foreach ($templates as $template) {
-            $userTemplate = \App\Models\UserNotificationTemplate::where('user_id', $userId)
+            $userTemplate = UserNotificationTemplate::where('user_id', $userId)
                 ->where('template_id', $template->id)
                 ->first();
 
@@ -533,11 +566,11 @@ class SystemSettingsController extends Controller
     /**
      * Get available Twilio notifications.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getAvailableTwilioNotifications()
     {
-        $templates = \App\Models\NotificationTemplate::where('type', 'twilio')->select('id', 'name')->get();
+        $templates = NotificationTemplate::where('type', 'twilio')->select('id', 'name')->get();
         $notifications = [];
 
         foreach ($templates as $template) {
@@ -551,31 +584,17 @@ class SystemSettingsController extends Controller
     }
 
     /**
-     * Get Twilio configuration settings.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getTwilioConfig()
-    {
-        return response()->json([
-            'twilio_sid' => getSetting('twilio_sid', ''),
-            'twilio_token' => getSetting('twilio_token', ''),
-            'twilio_from' => getSetting('twilio_from', ''),
-        ]);
-    }
-
-    /**
      * Update Twilio notification settings.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function updateTwilioNotifications(Request $request)
     {
         try {
             $userId = createdBy();
-            $availableTemplates = \App\Models\NotificationTemplate::where('type', 'twilio')->pluck('name', 'id')->toArray();
+            $availableTemplates = NotificationTemplate::where('type', 'twilio')->pluck('name', 'id')->toArray();
 
             $rules = [
                 'twilio_sid' => 'nullable|string',
@@ -597,7 +616,7 @@ class SystemSettingsController extends Controller
             // Update notification settings
             foreach ($availableTemplates as $templateId => $templateName) {
                 if (isset($validated[$templateName])) {
-                    \App\Models\UserNotificationTemplate::updateOrCreate(
+                    UserNotificationTemplate::updateOrCreate(
                         ['user_id' => $userId, 'template_id' => $templateId],
                         ['is_active' => $validated[$templateName]]
                     );
@@ -605,7 +624,7 @@ class SystemSettingsController extends Controller
             }
 
             return redirect()->back()->with('success', __('Twilio settings updated successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to update Twilio settings: :error', ['error' => $e->getMessage()]));
         }
     }
@@ -613,9 +632,9 @@ class SystemSettingsController extends Controller
     /**
      * Send test SMS.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function sendTestSMS(Request $request)
     {
@@ -633,7 +652,7 @@ class SystemSettingsController extends Controller
                 return redirect()->back()->with('error', __('Twilio credentials are not configured. Please configure Twilio settings first.'));
             }
 
-            $twilio = new \Twilio\Rest\Client($sid, $token);
+            $twilio = new Client($sid, $token);
             $message = __('This is a test SMS from :app_name. Your Twilio configuration is working correctly!', ['app_name' => config('app.name')]);
             $twilio->messages->create($validated['phone'], [
                 'from' => $from,
@@ -641,24 +660,38 @@ class SystemSettingsController extends Controller
             ]);
 
             return redirect()->back()->with('success', __('Test SMS sent successfully to :phone', ['phone' => $validated['phone']]));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to send test SMS: :error', ['error' => $e->getMessage()]));
         }
     }
 
     /**
+     * Get Twilio configuration settings.
+     *
+     * @return JsonResponse
+     */
+    public function getTwilioConfig()
+    {
+        return response()->json([
+            'twilio_sid' => getSetting('twilio_sid', ''),
+            'twilio_token' => getSetting('twilio_token', ''),
+            'twilio_from' => getSetting('twilio_from', ''),
+        ]);
+    }
+
+    /**
      * Get Slack notification settings.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getSlackNotifications()
     {
         $userId = createdBy();
-        $templates = \App\Models\NotificationTemplate::where('type', 'slack')->select('id', 'name')->get();
+        $templates = NotificationTemplate::where('type', 'slack')->select('id', 'name')->get();
         $settings = [];
 
         foreach ($templates as $template) {
-            $userTemplate = \App\Models\UserNotificationTemplate::where('user_id', $userId)
+            $userTemplate = UserNotificationTemplate::where('user_id', $userId)
                 ->where('template_id', $template->id)
                 ->first();
 
@@ -671,11 +704,11 @@ class SystemSettingsController extends Controller
     /**
      * Get available Slack notifications.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getAvailableSlackNotifications()
     {
-        $templates = \App\Models\NotificationTemplate::where('type', 'slack')->select('id', 'name')->get();
+        $templates = NotificationTemplate::where('type', 'slack')->select('id', 'name')->get();
         $notifications = [];
 
         foreach ($templates as $template) {
@@ -691,7 +724,7 @@ class SystemSettingsController extends Controller
     /**
      * Get Slack configuration settings.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getSlackConfig()
     {
@@ -703,15 +736,15 @@ class SystemSettingsController extends Controller
     /**
      * Update Slack notification settings.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function updateSlackNotifications(Request $request)
     {
         try {
             $userId = createdBy();
-            $availableTemplates = \App\Models\NotificationTemplate::where('type', 'slack')->pluck('name', 'id')->toArray();
+            $availableTemplates = NotificationTemplate::where('type', 'slack')->pluck('name', 'id')->toArray();
 
             $rules = [
                 'slack_webhook_url' => 'nullable|string|url',
@@ -729,7 +762,7 @@ class SystemSettingsController extends Controller
             // Update notification settings
             foreach ($availableTemplates as $templateId => $templateName) {
                 if (isset($validated[$templateName])) {
-                    \App\Models\UserNotificationTemplate::updateOrCreate(
+                    UserNotificationTemplate::updateOrCreate(
                         ['user_id' => $userId, 'template_id' => $templateId],
                         ['is_active' => $validated[$templateName]]
                     );
@@ -737,7 +770,7 @@ class SystemSettingsController extends Controller
             }
 
             return redirect()->back()->with('success', __('Slack settings updated successfully.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to update Slack settings: :error', ['error' => $e->getMessage()]));
         }
     }
@@ -745,9 +778,9 @@ class SystemSettingsController extends Controller
     /**
      * Send test Slack message.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function sendTestSlack(Request $request)
     {
@@ -760,43 +793,24 @@ class SystemSettingsController extends Controller
 
             $message = __('This is a test message from :app_name. Your Slack configuration is working correctly!', ['app_name' => config('app.name')]);
 
-            $response = \Illuminate\Support\Facades\Http::post($webhookUrl, [
+            $response = Http::post($webhookUrl, [
                 'text' => $message,
             ]);
 
             if (!$response->successful()) {
-                throw new \Exception('Failed to send Slack message: ' . $response->body());
+                throw new Exception('Failed to send Slack message: ' . $response->body());
             }
 
             return redirect()->back()->with('success', __('Test message sent successfully'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to send test message: :error', ['error' => $e->getMessage()]));
-        }
-    }
-
-    /**
-     * Clear application cache.
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function clearCache()
-    {
-        try {
-            \Artisan::call('cache:clear');
-            \Artisan::call('route:clear');
-            \Artisan::call('view:clear');
-            \Artisan::call('optimize:clear');
-
-            return redirect()->back()->with('success', __('Cache cleared successfully.'));
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', __('Failed to clear cache: :error', ['error' => $e->getMessage()]));
         }
     }
 
     /**
      * Update invoice template setting
      */
-    public function updateInvoiceTemplate(\Illuminate\Http\Request $request)
+    public function updateInvoiceTemplate(Request $request)
     {
         if (!auth()->user()->hasRole('organization') || !auth()->user()->can('manage-invoices-settings')) {
             return response()->json(['error' => __('Permission denied')], 403);

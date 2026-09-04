@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ReturnOrderCreated;
 use App\Exports\ReturnOrderExport;
 use App\Models\Account;
 use App\Models\Contact;
@@ -9,6 +10,8 @@ use App\Models\Product;
 use App\Models\ReturnOrder;
 use App\Models\SalesOrder;
 use App\Models\ShippingProviderType;
+use App\Models\User;
+use DB;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -24,8 +27,8 @@ class ReturnOrderController extends Controller
         if ($request->has('search') && !empty($request->search)) {
             $query->where(function ($q) use ($request) {
                 $q->where('return_number', 'like', '%' . $request->search . '%')
-                  ->orWhere('name', 'like', '%' . $request->search . '%')
-                  ->orWhereHas('account', fn ($q) => $q->where('name', 'like', '%' . $request->search . '%'));
+                    ->orWhere('name', 'like', '%' . $request->search . '%')
+                    ->orWhereHas('account', fn ($q) => $q->where('name', 'like', '%' . $request->search . '%'));
             });
         }
 
@@ -52,10 +55,10 @@ class ReturnOrderController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $returnOrders = $query->paginate($perPage)->withQueryString();
 
-        $userQuery = \App\Models\User::where('created_by', createdBy());
+        $userQuery = User::where('created_by', createdBy());
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
 
@@ -79,7 +82,7 @@ class ReturnOrderController extends Controller
         $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
         $products = $this->getFilteredProducts();
         $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
-        $users = \App\Models\User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+        $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
         return Inertia::render('return-orders/create', [
             'salesOrders' => $salesOrders,
@@ -143,7 +146,7 @@ class ReturnOrderController extends Controller
         $returnOrder->calculateTotals();
 
         if ($returnOrder && !IsDemo()) {
-            event(new \App\Events\ReturnOrderCreated($returnOrder));
+            event(new ReturnOrderCreated($returnOrder));
         }
 
         $emailError = session()->pull('email_error');
@@ -184,9 +187,9 @@ class ReturnOrderController extends Controller
             'assignedUser',
             'products.tax',
         ])
-        ->where('created_by', createdBy())
-        ->where('id', $id)
-        ->first();
+            ->where('created_by', createdBy())
+            ->where('id', $id)
+            ->first();
 
         if ($returnOrder) {
             $salesOrders = SalesOrder::where('created_by', createdBy())->select('id', 'name', 'order_number')->get();
@@ -194,7 +197,7 @@ class ReturnOrderController extends Controller
             $contacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
             $products = $this->getFilteredProducts();
             $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
-            $users = \App\Models\User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
+            $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
             return Inertia::render('return-orders/edit', [
                 'returnOrder' => $returnOrder,
@@ -302,29 +305,29 @@ class ReturnOrderController extends Controller
         // excluding the current return order being edited (if any)
         $excludeReturnOrderId = $request->query('exclude_return_order_id');
 
-        $returnedQtys = \DB::table('return_order_product')
+        $returnedQuantities = DB::table('return_order_product')
             ->join('return_orders', 'return_orders.id', '=', 'return_order_product.return_order_id')
             ->where('return_orders.sales_order_id', $salesOrderId)
             ->where('return_orders.created_by', createdBy())
             ->when($excludeReturnOrderId, fn ($q) => $q->where('return_orders.id', '!=', $excludeReturnOrderId))
-            ->select('return_order_product.product_id', \DB::raw('SUM(return_order_product.quantity) as returned_qty'))
+            ->select('return_order_product.product_id', DB::raw('SUM(return_order_product.quantity) as returned_quantity'))
             ->groupBy('return_order_product.product_id')
-            ->pluck('returned_qty', 'product_id');
+            ->pluck('returned_quantity', 'product_id');
 
         return response()->json([
             'account_id' => $salesOrder->account_id,
             'contact_id' => $salesOrder->billing_contact_id ?? $salesOrder->contact_id,
             'shipping_provider_type_id' => $salesOrder->shipping_provider_type_id,
-            'products' => $salesOrder->products->map(function ($product) use ($returnedQtys) {
-                $orderedQty = $product->pivot->quantity ?? 1;
-                $returnedQty = (int) ($returnedQtys[$product->id] ?? 0);
-                $availableQty = max(0, $orderedQty - $returnedQty);
+            'products' => $salesOrder->products->map(function ($product) use ($returnedQuantities) {
+                $orderedQuantity = $product->pivot->quantity ?? 1;
+                $returnedQuantity = (int)($returnedQuantities[$product->id] ?? 0);
+                $availableQuantity = max(0, $orderedQuantity - $returnedQuantity);
 
                 return [
                     'product_id' => $product->id,
-                    'quantity' => $availableQty,
-                    'ordered_qty' => $orderedQty,
-                    'returned_qty' => $returnedQty,
+                    'quantity' => $availableQuantity,
+                    'ordered_quantity' => $orderedQuantity,
+                    'returned_quantity' => $returnedQuantity,
                     'unit_price' => $product->pivot->unit_price ?? $product->price ?? 0,
                     'discount_type' => $product->pivot->discount_type ?? 'none',
                     'discount_value' => $product->pivot->discount_value ?? 0,

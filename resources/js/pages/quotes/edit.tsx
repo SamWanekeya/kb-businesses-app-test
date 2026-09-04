@@ -437,7 +437,7 @@ export default function QuoteEdit() {
                                             {t('Product')} <span className="text-red-500">*</span>
                                         </th>
                                         <th className="w-24 px-4 py-3 text-left">
-                                            {t('Qty')} <span className="text-red-500">*</span>
+                                            {t('Quantity')} <span className="text-red-500">*</span>
                                         </th>
                                         <th className="w-32 px-4 py-3 text-left">
                                             {t('Unit Price')} <span className="text-red-500">*</span>
@@ -493,7 +493,7 @@ export default function QuoteEdit() {
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-24 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Qty')} <span className="text-red-500">*</span>
+                                                        {t('Quantity')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
                                                         type="number"

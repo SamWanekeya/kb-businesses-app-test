@@ -43,7 +43,7 @@ class NoteController extends Controller
         }
 
         $viewType = $request->view ?? 'grid';
-        $perPage = max(1, min(100, (int) $request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
         $allNotes = $viewType === 'kanban' ? $query->get() : $query->paginate((int)$perPage)->withQueryString();
 
         $isKanban = $viewType === 'kanban';

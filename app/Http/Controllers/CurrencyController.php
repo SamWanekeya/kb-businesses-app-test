@@ -20,8 +20,8 @@ class CurrencyController extends Controller
             $searchTerm = $request->search;
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('name', 'like', "%{$searchTerm}%")
-                  ->orWhere('code', 'like', "%{$searchTerm}%")
-                  ->orWhere('symbol', 'like', "%{$searchTerm}%");
+                    ->orWhere('code', 'like', "%{$searchTerm}%")
+                    ->orWhere('symbol', 'like', "%{$searchTerm}%");
             });
         }
 
@@ -90,8 +90,8 @@ class CurrencyController extends Controller
         // If this is set as default, unset all other defaults
         if ($request->input('is_default')) {
             Currency::where('id', '!=', $currency->id)
-                  ->where('is_default', true)
-                  ->update(['is_default' => false]);
+                ->where('is_default', true)
+                ->update(['is_default' => false]);
         }
 
         $currency->update($validated);
