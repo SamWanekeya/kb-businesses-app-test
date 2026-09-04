@@ -41,7 +41,7 @@ class UserObserver
         if ($user->type === 'super_admin') {
             createDefaultSettings($user->id);
         } elseif ($user->type === 'organization') {
-            copySettingsFromSuperAdmin($user->id);
+            copySettingsFromSuperAdministrator($user->id);
         }
         if ($user->type == 'organization') {
             if ($user->plan_id) {

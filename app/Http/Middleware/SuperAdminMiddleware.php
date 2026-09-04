@@ -9,7 +9,7 @@ class SuperAdminMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!auth()->user() || !auth()->user()->isSuperAdmin()) {
+        if (!auth()->user() || !auth()->user()->isSuperAdministrator()) {
             return redirect()->back()->with('error', 'Unauthorized access');
         }
 

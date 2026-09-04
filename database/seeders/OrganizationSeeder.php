@@ -68,7 +68,7 @@ class OrganizationSeeder extends Seeder
 
             // Create default settings
             if (!Setting::where('user_id', $user->id)->exists()) {
-                copySettingsFromSuperAdmin($user->id);
+                copySettingsFromSuperAdministrator($user->id);
             }
         }
 

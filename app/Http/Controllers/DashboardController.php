@@ -97,7 +97,7 @@ class DashboardController extends Controller
 
         $totalOrganizations = User::where('type', 'organization')->count();
         $totalActivePlanOrganizations = User::where('type', 'organization')->where('is_plan_active', '1')->count();
-        $totalUsers = User::where('type', '!=', 'super_admin')->where('type', '!=', 'super admin')->count();
+        $totalUsers = User::where('type', '!=', 'super_admin')->count();
         $totalRevenue = PlanOrder::where('status', 'approved')->sum('final_price') ?? 0;
         $activePlans = Plan::where('is_plan_enabled', 'on')->count();
         $pendingRequests = PlanRequest::where('status', 'pending')->count();

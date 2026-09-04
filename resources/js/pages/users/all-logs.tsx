@@ -37,7 +37,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters = {} 
 
     const breadcrumbs = [
         { title: t('Dashboard'), href: route('dashboard') },
-        auth?.user?.type === 'super_admin' || auth?.user?.type === 'super admin'
+        auth?.user?.type === 'super_admin'
             ? { title: t('Organizations'), href: route('organizations.index') }
             : { title: t('User'), href: route('users.index') },
         { title: t('User Logs') },

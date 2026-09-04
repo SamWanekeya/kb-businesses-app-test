@@ -153,7 +153,7 @@ if (! function_exists('defaultRoleAndSetting')) {
             createDefaultEmailTemplateSettings($user->id);
             createDefaultNotificationTemplateSettings($user->id);
         } elseif ($user->type === 'organization') {
-            copySettingsFromSuperAdmin($user->id);
+            copySettingsFromSuperAdministrator($user->id);
             createDefaultNotificationTemplates($user->id);
             createDefaultEmailTemplateSettings($user->id);
             createDefaultNotificationTemplateSettings($user->id);
@@ -1036,7 +1036,7 @@ if (! function_exists('copySettingsFromSuperAdmin')) {
      *
      * @return void
      */
-    function copySettingsFromSuperAdmin($organizationUserId)
+    function copySettingsFromSuperAdministrator($organizationUserId)
     {
         $superAdmin = User::where('type', 'super_admin')->first();
         if (!$superAdmin) {

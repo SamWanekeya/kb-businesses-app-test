@@ -58,7 +58,7 @@ class UserSeeder extends Seeder
 
         // Create default settings for organization user if not exists
         if (!Setting::where('user_id', $organization->id)->exists()) {
-            copySettingsFromSuperAdmin($organization->id);
+            copySettingsFromSuperAdministrator($organization->id);
         }
 
         // Assign default plan to all organization users with null plan_id

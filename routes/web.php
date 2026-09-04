@@ -1042,7 +1042,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('impersonate/{userId}', [ImpersonateController::class, 'start'])->name('impersonate.start');
         });
 
-        Route::middleware(['role:super_admin|super admin'])->group(function () {
+        Route::middleware(['role:super_admin'])->group(function () {
             // Email Templates routes (no middleware for testing)
             Route::get('email-templates', [EmailTemplateController::class, 'index'])->name('email-templates.index');
             Route::get('email-templates/{emailTemplate}', [EmailTemplateController::class, 'show'])->name('email-templates.show');

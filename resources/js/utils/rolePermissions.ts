@@ -27,7 +27,7 @@ export const getModulesFromNavigation = (userRole: string): string[] => {
         'settings',
     ];
 
-    return userRole === 'super_admin' || userRole === 'super admin' ? superAdminModules : organizationModules;
+    return userRole === 'super_admin' ? superAdminModules : organizationModules;
 };
 
 export const filterPermissionsByRole = (permissions: Record<string, any[]>, userRole: string): Record<string, any[]> => {

@@ -29,9 +29,9 @@ class UserController extends BaseController
 
         $userQuery = User::withPermissionCheck()->with(['roles', 'creator']);
         # Admin
-        if ($authUserRole === 'super admin') {
+        if ($authUserRole === 'super_admin') {
             $userQuery->whereDoesntHave('roles', function ($q) {
-                $q->where('name', 'super admin');
+                $q->where('name', 'super_admin');
             });
         }
 

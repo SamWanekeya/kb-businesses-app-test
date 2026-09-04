@@ -65,7 +65,7 @@ class RoleController extends BaseController
         $userType = $user->type ?? 'organization';
 
         // Superadmin can see all permissions
-        if ($userType === 'super_admin' || $userType === 'super admin') {
+        if ($userType === 'super_admin') {
             return Permission::all()->groupBy('module');
         }
 
@@ -144,7 +144,7 @@ class RoleController extends BaseController
         $userType = $user->type ?? 'organization';
 
         // Superadmin can assign any permission
-        if ($userType === 'super_admin' || $userType === 'super admin') {
+        if ($userType === 'super_admin') {
             return $permissionNames;
         }
 

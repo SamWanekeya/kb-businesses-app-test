@@ -19,7 +19,7 @@ class ReferralController extends Controller
         $user = Auth::user();
         $settings = ReferralSetting::current();
 
-        if ($user->isSuperAdmin()) {
+        if ($user->isSuperAdministrator()) {
             return $this->superAdminView($settings);
         } else {
             return $this->organizationView($user, $settings);
@@ -287,7 +287,7 @@ class ReferralController extends Controller
             $currencyData = Currency::where('code', $currency)->first();
             $currencySymbol = $currencyData ? $currencyData->symbol : '$';
         }
-        if ($user->isSuperAdmin()) {
+        if ($user->isSuperAdministrator()) {
             // Super admin can see all referred users
             $referredUsers = User::whereNotNull('referral_code_used')
                 ->with(['plan', 'referrals', 'planOrders' => function ($query) {
@@ -310,7 +310,7 @@ class ReferralController extends Controller
 
         return Inertia::render('referral/referred-users', [
             'referredUsers' => $referredUsers,
-            'userType' => $user->isSuperAdmin() ? 'super_admin' : 'organization',
+            'userType' => $user->isSuperAdministrator() ? 'super_admin' : 'organization',
             'currency' => $currency,
             'currencySymbol' => $currencySymbol,
         ]);

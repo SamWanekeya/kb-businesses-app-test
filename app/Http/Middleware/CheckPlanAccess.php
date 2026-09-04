@@ -19,7 +19,7 @@ class CheckPlanAccess
         }
 
         // Super admin has full access
-        if ($user->isSuperAdmin()) {
+        if ($user->isSuperAdministrator()) {
             return $next($request);
         }
 

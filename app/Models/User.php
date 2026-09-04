@@ -88,7 +88,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
      */
     public function creatorId()
     {
-        if ($this->type == 'super_admin' || $this->type == 'super admin' || $this->type == 'admin') {
+        if ($this->type == 'super_admin') {
             return $this->id;
         } elseif ($this->type == 'organization') {
             return $this->id;
@@ -100,9 +100,9 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
     /**
      * Check if user is super admin
      */
-    public function isSuperAdmin()
+    public function isSuperAdministrator()
     {
-        return $this->type === 'super_admin' || $this->type === 'super admin';
+        return $this->type === 'super_admin';
     }
 
     /**
@@ -178,7 +178,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
      */
     public function needsPlanSubscription()
     {
-        if ($this->isSuperAdmin()) {
+        if ($this->isSuperAdministrator()) {
             return false;
         }
 
@@ -227,7 +227,7 @@ class User extends BaseAuthenticatable implements MustVerifyEmail
      */
     public function canImpersonate()
     {
-        return $this->isSuperAdmin();
+        return $this->isSuperAdministrator();
     }
 
     /**
