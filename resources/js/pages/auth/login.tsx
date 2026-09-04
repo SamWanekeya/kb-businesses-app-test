@@ -12,7 +12,6 @@ import { Label } from '@/components/ui/label';
 import { useBrand } from '@/contexts/BrandContext';
 import { THEME_COLORS } from '@/hooks/use-appearance';
 import AuthLayout from '@/layouts/auth-layout';
-import { isRegistrationEnabled } from '@/utils/helper';
 import { useTranslation } from 'react-i18next';
 
 type LoginForm = {
@@ -245,7 +244,6 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
                 >
                     {t('Sign in')}
                 </AuthButton>
-                {isRegistrationEnabled() && (
                     <div className="text-center">
                         <p className="text-sm text-gray-500">
                             {t("Don't have an account?")}{' '}
@@ -254,7 +252,6 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
                             </TextLink>
                         </p>
                     </div>
-                )}
 
                 {isDemo && (
                     <>

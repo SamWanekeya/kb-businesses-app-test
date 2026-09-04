@@ -166,19 +166,6 @@ class HandleInertiaRequests extends Middleware
                 $superAdminEnableLogging = false;
             }
 
-            $superAdminRegistrationEnabled = false;
-            try {
-                $superAdmin = User::where('type', 'super_admin')->first();
-                if ($superAdmin) {
-                    $registrationEnabledSetting = Setting::where('user_id', $superAdmin->id)
-                        ->where('key', 'registrationEnabled')
-                        ->first();
-                    $superAdminRegistrationEnabled = $registrationEnabledSetting ? (($registrationEnabledSetting->value == "1") ? true : false) : true;
-                }
-            } catch (Exception $e) {
-                $superAdminRegistrationEnabled = false;
-            }
-
             // Merge currency settings with other settings
             $globalSettings = array_merge($settings, $currencySettings, $superAdminCurrencySettings);
             $globalSettings['base_url'] = config('app.url');
@@ -186,7 +173,6 @@ class HandleInertiaRequests extends Middleware
             $globalSettings['is_demo'] = config('app.is_demo', false);
             $globalSettings['availableLanguages'] = $availableLanguages;
             $globalSettings['enableLogging'] = $superAdminEnableLogging;
-            $globalSettings['registrationEnabled'] = $superAdminRegistrationEnabled;
             $globalSettings['themeMode'] = getSetting('themeMode', $settings['themeMode'] ?? 'light', auth()?->id());
 
             //     // Add cookie consent setting

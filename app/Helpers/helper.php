@@ -138,13 +138,6 @@ if (! function_exists('updateSetting')) {
     }
 }
 
-if (! function_exists('isRegistrationEnabled')) {
-    function isRegistrationEnabled()
-    {
-        return getSetting('registrationEnabled', true) === true || getSetting('registrationEnabled', true) === '1';
-    }
-}
-
 if (! function_exists('defaultRoleAndSetting')) {
     function defaultRoleAndSetting($user)
     {
@@ -955,8 +948,6 @@ if (! function_exists('defaultSettings')) {
             'timeFormat' => 'H:i',
             'calendarStartDay' => 'sunday',
             'defaultTimezone' => 'UTC',
-            'emailVerification' => false,
-            'registrationEnabled' => true,
 
             // Brand Settings
             'logoDark' => 'logo/logo-dark.png',
@@ -1061,8 +1052,6 @@ if (! function_exists('copySettingsFromSuperAdmin')) {
             'timeFormat',
             'calendarStartDay',
             'defaultTimezone',
-            'emailVerification',
-            'registrationEnabled',
             'logoDark',
             'logoLight',
             'favicon',

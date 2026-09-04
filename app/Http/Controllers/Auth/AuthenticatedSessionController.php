@@ -39,12 +39,6 @@ class AuthenticatedSessionController extends Controller
 
         $this->logsignInHistory($request);
 
-        // Check if email verification is enabled and user is not verified
-        $emailVerificationEnabled = getSetting('emailVerification', false);
-        if ($emailVerificationEnabled && !$request->user()->hasVerifiedEmail()) {
-            return redirect()->route('verification.notice');
-        }
-
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

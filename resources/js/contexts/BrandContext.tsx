@@ -160,7 +160,7 @@ export function BrandProvider({ children, globalSettings, user }: { children: Re
         //   document.documentElement.dir = dir;
         //   document.documentElement.setAttribute('dir', dir);
         // }
-        // Apply theme settings immediately for landing page (both demo and non-demo modes)
+        // Apply theme settings immediately for home page (both demo and non-demo modes)
         if (updatedSettings) {
             // Apply theme color globally
             const color =

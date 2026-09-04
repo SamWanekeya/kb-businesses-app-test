@@ -29,10 +29,6 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        if (!isRegistrationEnabled()) {
-            return to_route('login');
-        }
-
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
@@ -81,14 +77,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        // Check if email verification is enabled
-        $emailVerificationEnabled = getSetting('emailVerification', false);
-        if ($emailVerificationEnabled) {
-            event(new Registered($user));
-
-            return redirect()->route('verification.notice');
-        }
-
         // Redirect to plans page with selected plan
         $planId = $request->plan_id;
         if ($planId) {
@@ -103,10 +91,6 @@ class RegisteredUserController extends Controller
      */
     public function create(Request $request)
     {
-
-        if (!isRegistrationEnabled()) {
-            return to_route('login');
-        }
 
         $referralCode = $request->get('ref');
         $encryptedPlanId = $request->get('plan');

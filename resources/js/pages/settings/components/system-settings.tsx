@@ -32,8 +32,6 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
         timeFormat: '12h',
         calendarStartDay: 'sunday',
         defaultTimezone: 'UTC',
-        emailVerification: false,
-        registrationEnabled: true,
         termsConditionsPage: '',
     };
 
@@ -47,12 +45,6 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
         timeFormat: settingsData.timeFormat || defaultSettings.timeFormat,
         calendarStartDay: settingsData.calendarStartDay || defaultSettings.calendarStartDay,
         defaultTimezone: settingsData.defaultTimezone || defaultSettings.defaultTimezone,
-        emailVerification: settingsData.emailVerification === 'true' || settingsData.emailVerification === true || defaultSettings.emailVerification,
-        registrationEnabled:
-            settingsData.registrationEnabled === 'true' ||
-            settingsData.registrationEnabled === true ||
-            settingsData.registrationEnabled === '1' ||
-            (settingsData.registrationEnabled === undefined ? defaultSettings.registrationEnabled : false),
         termsConditionsPage: settingsData.termsConditionsPage || '',
     }));
 
@@ -71,14 +63,6 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
             setSystemSettings((prevSettings) => ({
                 ...prevSettings,
                 ...mergedSettings,
-                emailVerification:
-                    mergedSettings.emailVerification === 'true' ||
-                    mergedSettings.emailVerification === true ||
-                    mergedSettings.emailVerification === '1',
-                registrationEnabled:
-                    mergedSettings.registrationEnabled === 'true' ||
-                    mergedSettings.registrationEnabled === true ||
-                    mergedSettings.registrationEnabled === '1',
                 termsConditionsPage: systemSettings.termsConditionsPage,
             }));
         }
@@ -106,9 +90,6 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
             timeFormat: systemSettings.timeFormat,
             calendarStartDay: systemSettings.calendarStartDay,
             defaultTimezone: systemSettings.defaultTimezone,
-            emailVerification: Boolean(systemSettings.emailVerification),
-            registrationEnabled: Boolean(systemSettings.registrationEnabled),
-            termsConditionsPage: systemSettings.termsConditionsPage,
         };
 
         // Submit to backend using Inertia
@@ -294,48 +275,6 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
                                         )}
                                     </SelectContent>
                                 </Select>
-                            </div>
-
-                            <div className="grid gap-2 md:col-span-2">
-                                <div className="flex items-center justify-between">
-                                    <div className="space-y-0.5">
-                                        <Label htmlFor="emailVerification">{t('Email Verification')}</Label>
-                                        <p className="text-muted-foreground text-sm">{t('Require users to verify their email addresses')}</p>
-                                    </div>
-                                    <Switch
-                                        id="emailVerification"
-                                        checked={systemSettings.emailVerification}
-                                        onCheckedChange={(checked) => handleSystemSettingsChange('emailVerification', checked)}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="grid gap-2 md:col-span-2">
-                                <div className="flex items-center justify-between">
-                                    <div className="space-y-0.5">
-                                        <Label htmlFor="registrationEnabled">{t('User Registration')}</Label>
-                                        <p className="text-muted-foreground text-sm">{t('Allow new users to register accounts')}</p>
-                                    </div>
-                                    <Switch
-                                        id="registrationEnabled"
-                                        checked={systemSettings.registrationEnabled}
-                                        onCheckedChange={(checked) => handleSystemSettingsChange('registrationEnabled', checked)}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="grid gap-2 md:col-span-2">
-                                <Label htmlFor="termsConditionsPage">{t('Terms & Conditions Page')}</Label>
-                                <Input
-                                    id="termsConditionsPage"
-                                    type="url"
-                                    value={systemSettings.termsConditionsPage}
-                                    onChange={(e) => handleSystemSettingsChange('termsConditionsPage', e.target.value)}
-                                    placeholder="https://kakbima.dev/terms"
-                                />
-                                <p className="text-muted-foreground text-sm">
-                                    {t('URL for terms and conditions page. If empty, will redirect to home page.')}
-                                </p>
                             </div>
                         </div>
                     </form>

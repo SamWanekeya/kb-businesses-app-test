@@ -44,9 +44,6 @@ class SystemSettingsController extends Controller
                 'timeFormat' => 'required|string',
                 'calendarStartDay' => 'required|string',
                 'defaultTimezone' => 'required|string',
-                'emailVerification' => 'boolean',
-                'registrationEnabled' => 'boolean',
-                'termsConditionsPage' => 'nullable|url',
             ]);
 
             foreach ($validated as $key => $value) {

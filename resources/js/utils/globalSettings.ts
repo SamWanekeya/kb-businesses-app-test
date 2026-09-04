@@ -9,7 +9,6 @@ declare global {
             timeFormat: string;
             timezone: string;
             language: string;
-            emailVerification: boolean;
             formatDateTime: (date: string | Date, includeTime?: boolean) => string | null;
             formatTime: (time: string) => string;
             formatCurrency: (amount: number | string, options?: { showSymbol?: boolean; showCode?: boolean }) => string;
@@ -53,7 +52,6 @@ export function initializeGlobalSettings(settings: Record<string, any>) {
         timeFormat: settings.timeFormat ?? 'HH:mm',
         timezone: settings.defaultTimezone ?? 'UTC',
         language: settings.defaultLanguage ?? 'en',
-        emailVerification: settings.emailVerification === true || settings.emailVerification === 'true',
         currencySettings,
         formatCurrency: (amount: number | string, options = { showSymbol: true, showCode: false }) => {
             try {

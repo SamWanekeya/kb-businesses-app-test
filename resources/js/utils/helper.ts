@@ -41,21 +41,6 @@ const getDisplayUrl = (path: string, pageProps?: any): string => {
     }
 };
 
-const isRegistrationEnabled = () => {
-    const globalSettings = getGlobalSettings();
-    return globalSettings?.registrationEnabled;
-};
-
-const getTermsAndConditionsUrl = () => {
-    const globalSettings = getGlobalSettings();
-    return globalSettings?.termsConditionsPage;
-};
-
-const isDisabledEditRole = (role: string) => {
-    const roles = ['sales-manager'];
-    return roles.includes(role);
-};
-
 const formatRelativeTime = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -96,4 +81,4 @@ const capitalize = (str: string) => {
         .join(' '); // Join back with spaces
 };
 
-export { capitalize, formatRelativeTime, getDisplayUrl, getTermsAndConditionsUrl, isDisabledEditRole, isRegistrationEnabled };
+export { capitalize, formatRelativeTime, getDisplayUrl };
