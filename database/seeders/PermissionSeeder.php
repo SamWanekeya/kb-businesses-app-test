@@ -221,36 +221,36 @@ class PermissionSeeder extends Seeder
             ['name' => 'export-accounts', 'module' => 'accounts', 'label' => 'Export Accounts', 'description' => 'Can export accounts'],
 
             // Account Type management
-            ['name' => 'manage-account-types', 'module' => 'account_types', 'label' => 'Manage Account Types', 'description' => 'Can manage account types'],
-            ['name' => 'view-account-types', 'module' => 'account_types', 'label' => 'View Account Types', 'description' => 'View Account Types'],
-            ['name' => 'create-account-types', 'module' => 'account_types', 'label' => 'Create Account Types', 'description' => 'Can create account types'],
-            ['name' => 'edit-account-types', 'module' => 'account_types', 'label' => 'Edit Account Types', 'description' => 'Can edit account types'],
-            ['name' => 'delete-account-types', 'module' => 'account_types', 'label' => 'Delete Account Types', 'description' => 'Can delete account types'],
-            ['name' => 'toggle-status-account-types', 'module' => 'account_types', 'label' => 'Toggle Status Account Types', 'description' => 'Can toggle status account types'],
+            ['name' => 'manage-account-types', 'module' => 'account-types', 'label' => 'Manage Account Types', 'description' => 'Can manage account types'],
+            ['name' => 'view-account-types', 'module' => 'account-types', 'label' => 'View Account Types', 'description' => 'View Account Types'],
+            ['name' => 'create-account-types', 'module' => 'account-types', 'label' => 'Create Account Types', 'description' => 'Can create account types'],
+            ['name' => 'edit-account-types', 'module' => 'account-types', 'label' => 'Edit Account Types', 'description' => 'Can edit account types'],
+            ['name' => 'delete-account-types', 'module' => 'account-types', 'label' => 'Delete Account Types', 'description' => 'Can delete account types'],
+            ['name' => 'toggle-status-account-types', 'module' => 'account-types', 'label' => 'Toggle Status Account Types', 'description' => 'Can toggle status account types'],
 
             // Account Industry management
-            ['name' => 'manage-account-industries', 'module' => 'account_industries', 'label' => 'Manage Account Industries', 'description' => 'Can manage account industries'],
-            ['name' => 'view-account-industries', 'module' => 'account_industries', 'label' => 'View Account Industries', 'description' => 'View Account Industries'],
-            ['name' => 'create-account-industries', 'module' => 'account_industries', 'label' => 'Create Account Industries', 'description' => 'Can create account industries'],
-            ['name' => 'edit-account-industries', 'module' => 'account_industries', 'label' => 'Edit Account Industries', 'description' => 'Can edit account industries'],
-            ['name' => 'delete-account-industries', 'module' => 'account_industries', 'label' => 'Delete Account Industries', 'description' => 'Can delete account industries'],
-            ['name' => 'toggle-status-account-industries', 'module' => 'account_industries', 'label' => 'Toggle Status Account Industries', 'description' => 'Can toggle status account industries'],
+            ['name' => 'manage-account-industries', 'module' => 'account-industries', 'label' => 'Manage Account Industries', 'description' => 'Can manage account industries'],
+            ['name' => 'view-account-industries', 'module' => 'account-industries', 'label' => 'View Account Industries', 'description' => 'View Account Industries'],
+            ['name' => 'create-account-industries', 'module' => 'account-industries', 'label' => 'Create Account Industries', 'description' => 'Can create account industries'],
+            ['name' => 'edit-account-industries', 'module' => 'account-industries', 'label' => 'Edit Account Industries', 'description' => 'Can edit account industries'],
+            ['name' => 'delete-account-industries', 'module' => 'account-industries', 'label' => 'Delete Account Industries', 'description' => 'Can delete account industries'],
+            ['name' => 'toggle-status-account-industries', 'module' => 'account-industries', 'label' => 'Toggle Status Account Industries', 'description' => 'Can toggle status account industries'],
 
             // Lead Status management
-            ['name' => 'manage-lead-statuses', 'module' => 'lead_statuses', 'label' => 'Manage Lead Statuses', 'description' => 'Can manage lead statuses'],
-            ['name' => 'view-lead-statuses', 'module' => 'lead_statuses', 'label' => 'View Lead Statuses', 'description' => 'View Lead Statuses'],
-            ['name' => 'create-lead-statuses', 'module' => 'lead_statuses', 'label' => 'Create Lead Statuses', 'description' => 'Can create lead statuses'],
-            ['name' => 'edit-lead-statuses', 'module' => 'lead_statuses', 'label' => 'Edit Lead Statuses', 'description' => 'Can edit lead statuses'],
-            ['name' => 'delete-lead-statuses', 'module' => 'lead_statuses', 'label' => 'Delete Lead Statuses', 'description' => 'Can delete lead statuses'],
-            ['name' => 'toggle-status-lead-statuses', 'module' => 'lead_statuses', 'label' => 'Toggle Status Lead Statuses', 'description' => 'Can toggle status lead statuses'],
+            ['name' => 'manage-lead-statuses', 'module' => 'lead-statuses', 'label' => 'Manage Lead Statuses', 'description' => 'Can manage lead statuses'],
+            ['name' => 'view-lead-statuses', 'module' => 'lead-statuses', 'label' => 'View Lead Statuses', 'description' => 'View Lead Statuses'],
+            ['name' => 'create-lead-statuses', 'module' => 'lead-statuses', 'label' => 'Create Lead Statuses', 'description' => 'Can create lead statuses'],
+            ['name' => 'edit-lead-statuses', 'module' => 'lead-statuses', 'label' => 'Edit Lead Statuses', 'description' => 'Can edit lead statuses'],
+            ['name' => 'delete-lead-statuses', 'module' => 'lead-statuses', 'label' => 'Delete Lead Statuses', 'description' => 'Can delete lead statuses'],
+            ['name' => 'toggle-status-lead-statuses', 'module' => 'lead-statuses', 'label' => 'Toggle Status Lead Statuses', 'description' => 'Can toggle status lead statuses'],
 
             // Lead Source management
-            ['name' => 'manage-lead-sources', 'module' => 'lead_sources', 'label' => 'Manage Lead Sources', 'description' => 'Can manage lead sources'],
-            ['name' => 'view-lead-sources', 'module' => 'lead_sources', 'label' => 'View Lead Sources', 'description' => 'View Lead Sources'],
-            ['name' => 'create-lead-sources', 'module' => 'lead_sources', 'label' => 'Create Lead Sources', 'description' => 'Can create lead sources'],
-            ['name' => 'edit-lead-sources', 'module' => 'lead_sources', 'label' => 'Edit Lead Sources', 'description' => 'Can edit lead sources'],
-            ['name' => 'delete-lead-sources', 'module' => 'lead_sources', 'label' => 'Delete Lead Sources', 'description' => 'Can delete lead sources'],
-            ['name' => 'toggle-status-lead-sources', 'module' => 'lead_sources', 'label' => 'Toggle Status Lead Sources', 'description' => 'Can toggle status lead sources'],
+            ['name' => 'manage-lead-sources', 'module' => 'lead-sources', 'label' => 'Manage Lead Sources', 'description' => 'Can manage lead sources'],
+            ['name' => 'view-lead-sources', 'module' => 'lead-sources', 'label' => 'View Lead Sources', 'description' => 'View Lead Sources'],
+            ['name' => 'create-lead-sources', 'module' => 'lead-sources', 'label' => 'Create Lead Sources', 'description' => 'Can create lead sources'],
+            ['name' => 'edit-lead-sources', 'module' => 'lead-sources', 'label' => 'Edit Lead Sources', 'description' => 'Can edit lead sources'],
+            ['name' => 'delete-lead-sources', 'module' => 'lead-sources', 'label' => 'Delete Lead Sources', 'description' => 'Can delete lead sources'],
+            ['name' => 'toggle-status-lead-sources', 'module' => 'lead-sources', 'label' => 'Toggle Status Lead Sources', 'description' => 'Can toggle status lead sources'],
 
             // Lead management
             ['name' => 'manage-leads', 'module' => 'leads', 'label' => 'Manage Leads', 'description' => 'Can manage leads'],
@@ -264,20 +264,20 @@ class PermissionSeeder extends Seeder
             ['name' => 'import-leads', 'module' => 'leads', 'label' => 'Import Leads', 'description' => 'Can import leads'],
 
             // Opportunity Stage management
-            ['name' => 'manage-opportunity-stages', 'module' => 'opportunity_stages', 'label' => 'Manage Opportunity Stages', 'description' => 'Can manage opportunity stages'],
-            ['name' => 'view-opportunity-stages', 'module' => 'opportunity_stages', 'label' => 'View Opportunity Stages', 'description' => 'View Opportunity Stages'],
-            ['name' => 'create-opportunity-stages', 'module' => 'opportunity_stages', 'label' => 'Create Opportunity Stages', 'description' => 'Can create opportunity stages'],
-            ['name' => 'edit-opportunity-stages', 'module' => 'opportunity_stages', 'label' => 'Edit Opportunity Stages', 'description' => 'Can edit opportunity stages'],
-            ['name' => 'delete-opportunity-stages', 'module' => 'opportunity_stages', 'label' => 'Delete Opportunity Stages', 'description' => 'Can delete opportunity stages'],
-            ['name' => 'toggle-status-opportunity-stages', 'module' => 'opportunity_stages', 'label' => 'Toggle Status Opportunity Stages', 'description' => 'Can toggle status opportunity stages'],
+            ['name' => 'manage-opportunity-stages', 'module' => 'opportunity-stages', 'label' => 'Manage Opportunity Stages', 'description' => 'Can manage opportunity stages'],
+            ['name' => 'view-opportunity-stages', 'module' => 'opportunity-stages', 'label' => 'View Opportunity Stages', 'description' => 'View Opportunity Stages'],
+            ['name' => 'create-opportunity-stages', 'module' => 'opportunity-stages', 'label' => 'Create Opportunity Stages', 'description' => 'Can create opportunity stages'],
+            ['name' => 'edit-opportunity-stages', 'module' => 'opportunity-stages', 'label' => 'Edit Opportunity Stages', 'description' => 'Can edit opportunity stages'],
+            ['name' => 'delete-opportunity-stages', 'module' => 'opportunity-stages', 'label' => 'Delete Opportunity Stages', 'description' => 'Can delete opportunity stages'],
+            ['name' => 'toggle-status-opportunity-stages', 'module' => 'opportunity-stages', 'label' => 'Toggle Status Opportunity Stages', 'description' => 'Can toggle status opportunity stages'],
 
             // Opportunity Source management
-            ['name' => 'manage-opportunity-sources', 'module' => 'opportunity_sources', 'label' => 'Manage Opportunity Sources', 'description' => 'Can manage opportunity sources'],
-            ['name' => 'view-opportunity-sources', 'module' => 'opportunity_sources', 'label' => 'View Opportunity Sources', 'description' => 'View Opportunity Sources'],
-            ['name' => 'create-opportunity-sources', 'module' => 'opportunity_sources', 'label' => 'Create Opportunity Sources', 'description' => 'Can create opportunity sources'],
-            ['name' => 'edit-opportunity-sources', 'module' => 'opportunity_sources', 'label' => 'Edit Opportunity Sources', 'description' => 'Can edit opportunity sources'],
-            ['name' => 'delete-opportunity-sources', 'module' => 'opportunity_sources', 'label' => 'Delete Opportunity Sources', 'description' => 'Can delete opportunity sources'],
-            ['name' => 'toggle-status-opportunity-sources', 'module' => 'opportunity_sources', 'label' => 'Toggle Status Opportunity Sources', 'description' => 'Can toggle status opportunity sources'],
+            ['name' => 'manage-opportunity-sources', 'module' => 'opportunity-sources', 'label' => 'Manage Opportunity Sources', 'description' => 'Can manage opportunity sources'],
+            ['name' => 'view-opportunity-sources', 'module' => 'opportunity-sources', 'label' => 'View Opportunity Sources', 'description' => 'View Opportunity Sources'],
+            ['name' => 'create-opportunity-sources', 'module' => 'opportunity-sources', 'label' => 'Create Opportunity Sources', 'description' => 'Can create opportunity sources'],
+            ['name' => 'edit-opportunity-sources', 'module' => 'opportunity-sources', 'label' => 'Edit Opportunity Sources', 'description' => 'Can edit opportunity sources'],
+            ['name' => 'delete-opportunity-sources', 'module' => 'opportunity-sources', 'label' => 'Delete Opportunity Sources', 'description' => 'Can delete opportunity sources'],
+            ['name' => 'toggle-status-opportunity-sources', 'module' => 'opportunity-sources', 'label' => 'Toggle Status Opportunity Sources', 'description' => 'Can toggle status opportunity sources'],
 
             // Opportunity management
             ['name' => 'manage-opportunities', 'module' => 'opportunities', 'label' => 'Manage Opportunities', 'description' => 'Can manage opportunities'],
@@ -289,20 +289,20 @@ class PermissionSeeder extends Seeder
             ['name' => 'export-opportunities', 'module' => 'opportunities', 'label' => 'Export Opportunities', 'description' => 'Can export opportunities'],
 
             // Campaign Type management
-            ['name' => 'manage-campaign-types', 'module' => 'campaign_types', 'label' => 'Manage Campaign Types', 'description' => 'Can manage campaign types'],
-            ['name' => 'view-campaign-types', 'module' => 'campaign_types', 'label' => 'View Campaign Types', 'description' => 'View Campaign Types'],
-            ['name' => 'create-campaign-types', 'module' => 'campaign_types', 'label' => 'Create Campaign Types', 'description' => 'Can create campaign types'],
-            ['name' => 'edit-campaign-types', 'module' => 'campaign_types', 'label' => 'Edit Campaign Types', 'description' => 'Can edit campaign types'],
-            ['name' => 'delete-campaign-types', 'module' => 'campaign_types', 'label' => 'Delete Campaign Types', 'description' => 'Can delete campaign types'],
-            ['name' => 'toggle-status-campaign-types', 'module' => 'campaign_types', 'label' => 'Toggle Status Campaign Types', 'description' => 'Can toggle status campaign types'],
+            ['name' => 'manage-campaign-types', 'module' => 'campaign-types', 'label' => 'Manage Campaign Types', 'description' => 'Can manage campaign types'],
+            ['name' => 'view-campaign-types', 'module' => 'campaign-types', 'label' => 'View Campaign Types', 'description' => 'View Campaign Types'],
+            ['name' => 'create-campaign-types', 'module' => 'campaign-types', 'label' => 'Create Campaign Types', 'description' => 'Can create campaign types'],
+            ['name' => 'edit-campaign-types', 'module' => 'campaign-types', 'label' => 'Edit Campaign Types', 'description' => 'Can edit campaign types'],
+            ['name' => 'delete-campaign-types', 'module' => 'campaign-types', 'label' => 'Delete Campaign Types', 'description' => 'Can delete campaign types'],
+            ['name' => 'toggle-status-campaign-types', 'module' => 'campaign-types', 'label' => 'Toggle Status Campaign Types', 'description' => 'Can toggle status campaign types'],
 
             // Target List management
-            ['name' => 'manage-target-lists', 'module' => 'target_lists', 'label' => 'Manage Target Lists', 'description' => 'Can manage target lists'],
-            ['name' => 'view-target-lists', 'module' => 'target_lists', 'label' => 'View Target Lists', 'description' => 'View Target Lists'],
-            ['name' => 'create-target-lists', 'module' => 'target_lists', 'label' => 'Create Target Lists', 'description' => 'Can create target lists'],
-            ['name' => 'edit-target-lists', 'module' => 'target_lists', 'label' => 'Edit Target Lists', 'description' => 'Can edit target lists'],
-            ['name' => 'delete-target-lists', 'module' => 'target_lists', 'label' => 'Delete Target Lists', 'description' => 'Can delete target lists'],
-            ['name' => 'toggle-status-target-lists', 'module' => 'target_lists', 'label' => 'Toggle Status Target Lists', 'description' => 'Can toggle status target lists'],
+            ['name' => 'manage-target-lists', 'module' => 'target-lists', 'label' => 'Manage Target Lists', 'description' => 'Can manage target lists'],
+            ['name' => 'view-target-lists', 'module' => 'target-lists', 'label' => 'View Target Lists', 'description' => 'View Target Lists'],
+            ['name' => 'create-target-lists', 'module' => 'target-lists', 'label' => 'Create Target Lists', 'description' => 'Can create target lists'],
+            ['name' => 'edit-target-lists', 'module' => 'target-lists', 'label' => 'Edit Target Lists', 'description' => 'Can edit target lists'],
+            ['name' => 'delete-target-lists', 'module' => 'target-lists', 'label' => 'Delete Target Lists', 'description' => 'Can delete target lists'],
+            ['name' => 'toggle-status-target-lists', 'module' => 'target-lists', 'label' => 'Toggle Status Target Lists', 'description' => 'Can toggle status target lists'],
 
             // Campaign management
             ['name' => 'manage-campaigns', 'module' => 'campaigns', 'label' => 'Manage Campaigns', 'description' => 'Can manage campaigns'],
@@ -313,12 +313,12 @@ class PermissionSeeder extends Seeder
             ['name' => 'toggle-status-campaigns', 'module' => 'campaigns', 'label' => 'Toggle Status Campaigns', 'description' => 'Can toggle status campaigns'],
 
             // Shipping Provider Type management
-            ['name' => 'manage-shipping-provider-types', 'module' => 'shipping_provider_types', 'label' => 'Manage Shipping Provider Types', 'description' => 'Can manage shipping provider types'],
-            ['name' => 'view-shipping-provider-types', 'module' => 'shipping_provider_types', 'label' => 'View Shipping Provider Types', 'description' => 'View Shipping Provider Types'],
-            ['name' => 'create-shipping-provider-types', 'module' => 'shipping_provider_types', 'label' => 'Create Shipping Provider Types', 'description' => 'Can create shipping provider types'],
-            ['name' => 'edit-shipping-provider-types', 'module' => 'shipping_provider_types', 'label' => 'Edit Shipping Provider Types', 'description' => 'Can edit shipping provider types'],
-            ['name' => 'delete-shipping-provider-types', 'module' => 'shipping_provider_types', 'label' => 'Delete Shipping Provider Types', 'description' => 'Can delete shipping provider types'],
-            ['name' => 'toggle-status-shipping-provider-types', 'module' => 'shipping_provider_types', 'label' => 'Toggle Status Shipping Provider Types', 'description' => 'Can toggle status shipping provider types'],
+            ['name' => 'manage-shipping-provider-types', 'module' => 'shipping-provider-types', 'label' => 'Manage Shipping Provider Types', 'description' => 'Can manage shipping provider types'],
+            ['name' => 'view-shipping-provider-types', 'module' => 'shipping-provider-types', 'label' => 'View Shipping Provider Types', 'description' => 'View Shipping Provider Types'],
+            ['name' => 'create-shipping-provider-types', 'module' => 'shipping-provider-types', 'label' => 'Create Shipping Provider Types', 'description' => 'Can create shipping provider types'],
+            ['name' => 'edit-shipping-provider-types', 'module' => 'shipping-provider-types', 'label' => 'Edit Shipping Provider Types', 'description' => 'Can edit shipping provider types'],
+            ['name' => 'delete-shipping-provider-types', 'module' => 'shipping-provider-types', 'label' => 'Delete Shipping Provider Types', 'description' => 'Can delete shipping provider types'],
+            ['name' => 'toggle-status-shipping-provider-types', 'module' => 'shipping-provider-types', 'label' => 'Toggle Status Shipping Provider Types', 'description' => 'Can toggle status shipping provider types'],
 
             // Case management
             ['name' => 'manage-cases', 'module' => 'cases', 'label' => 'Manage Cases', 'description' => 'Can manage cases'],
@@ -339,13 +339,13 @@ class PermissionSeeder extends Seeder
             ['name' => 'export-quotes', 'module' => 'quotes', 'label' => 'Export Quotes', 'description' => 'Can export quotes'],
 
             // Sales Order management
-            ['name' => 'manage-sales-orders', 'module' => 'sales_orders', 'label' => 'Manage Sales Orders', 'description' => 'Can manage sales orders'],
-            ['name' => 'view-sales-orders', 'module' => 'sales_orders', 'label' => 'View Sales Orders', 'description' => 'View Sales Orders'],
-            ['name' => 'create-sales-orders', 'module' => 'sales_orders', 'label' => 'Create Sales Orders', 'description' => 'Can create sales orders'],
-            ['name' => 'edit-sales-orders', 'module' => 'sales_orders', 'label' => 'Edit Sales Orders', 'description' => 'Can edit sales orders'],
-            ['name' => 'delete-sales-orders', 'module' => 'sales_orders', 'label' => 'Delete Sales Orders', 'description' => 'Can delete sales orders'],
-            ['name' => 'toggle-status-sales-orders', 'module' => 'sales_orders', 'label' => 'Toggle Status Sales Orders', 'description' => 'Can toggle status sales orders'],
-            ['name' => 'export-sales-orders', 'module' => 'sales_orders', 'label' => 'Export Sales Orders', 'description' => 'Can export sales orders'],
+            ['name' => 'manage-sales-orders', 'module' => 'sales-orders', 'label' => 'Manage Sales Orders', 'description' => 'Can manage sales orders'],
+            ['name' => 'view-sales-orders', 'module' => 'sales-orders', 'label' => 'View Sales Orders', 'description' => 'View Sales Orders'],
+            ['name' => 'create-sales-orders', 'module' => 'sales-orders', 'label' => 'Create Sales Orders', 'description' => 'Can create sales orders'],
+            ['name' => 'edit-sales-orders', 'module' => 'sales-orders', 'label' => 'Edit Sales Orders', 'description' => 'Can edit sales orders'],
+            ['name' => 'delete-sales-orders', 'module' => 'sales-orders', 'label' => 'Delete Sales Orders', 'description' => 'Can delete sales orders'],
+            ['name' => 'toggle-status-sales-orders', 'module' => 'sales-orders', 'label' => 'Toggle Status Sales Orders', 'description' => 'Can toggle status sales orders'],
+            ['name' => 'export-sales-orders', 'module' => 'sales-orders', 'label' => 'Export Sales Orders', 'description' => 'Can export sales orders'],
 
             // Invoice management
             ['name' => 'manage-invoices', 'module' => 'invoices', 'label' => 'Manage Invoices', 'description' => 'Can manage invoices'],
@@ -358,39 +358,39 @@ class PermissionSeeder extends Seeder
             ['name' => 'send-reminder-invoices', 'module' => 'invoices', 'label' => 'Send Reminder Invoices', 'description' => 'Can send payment reminder for invoices'],
 
             // Delivery Order management
-            ['name' => 'manage-delivery-orders', 'module' => 'delivery_orders', 'label' => 'Manage Delivery Orders', 'description' => 'Can manage delivery orders'],
-            ['name' => 'view-delivery-orders', 'module' => 'delivery_orders', 'label' => 'View Delivery Orders', 'description' => 'View Delivery Orders'],
-            ['name' => 'create-delivery-orders', 'module' => 'delivery_orders', 'label' => 'Create Delivery Orders', 'description' => 'Can create delivery orders'],
-            ['name' => 'edit-delivery-orders', 'module' => 'delivery_orders', 'label' => 'Edit Delivery Orders', 'description' => 'Can edit delivery orders'],
-            ['name' => 'delete-delivery-orders', 'module' => 'delivery_orders', 'label' => 'Delete Delivery Orders', 'description' => 'Can delete delivery orders'],
-            ['name' => 'toggle-status-delivery-orders', 'module' => 'delivery_orders', 'label' => 'Toggle Status Delivery Orders', 'description' => 'Can toggle status delivery orders'],
-            ['name' => 'export-delivery-orders', 'module' => 'delivery_orders', 'label' => 'Export Delivery Orders', 'description' => 'Can export delivery orders'],
+            ['name' => 'manage-delivery-orders', 'module' => 'delivery-orders', 'label' => 'Manage Delivery Orders', 'description' => 'Can manage delivery orders'],
+            ['name' => 'view-delivery-orders', 'module' => 'delivery-orders', 'label' => 'View Delivery Orders', 'description' => 'View Delivery Orders'],
+            ['name' => 'create-delivery-orders', 'module' => 'delivery-orders', 'label' => 'Create Delivery Orders', 'description' => 'Can create delivery orders'],
+            ['name' => 'edit-delivery-orders', 'module' => 'delivery-orders', 'label' => 'Edit Delivery Orders', 'description' => 'Can edit delivery orders'],
+            ['name' => 'delete-delivery-orders', 'module' => 'delivery-orders', 'label' => 'Delete Delivery Orders', 'description' => 'Can delete delivery orders'],
+            ['name' => 'toggle-status-delivery-orders', 'module' => 'delivery-orders', 'label' => 'Toggle Status Delivery Orders', 'description' => 'Can toggle status delivery orders'],
+            ['name' => 'export-delivery-orders', 'module' => 'delivery-orders', 'label' => 'Export Delivery Orders', 'description' => 'Can export delivery orders'],
 
             // Return Order management
-            ['name' => 'manage-return-orders', 'module' => 'return_orders', 'label' => 'Manage Return Orders', 'description' => 'Can manage return orders'],
-            ['name' => 'view-return-orders', 'module' => 'return_orders', 'label' => 'View Return Orders', 'description' => 'View Return Orders'],
-            ['name' => 'create-return-orders', 'module' => 'return_orders', 'label' => 'Create Return Orders', 'description' => 'Can create return orders'],
-            ['name' => 'edit-return-orders', 'module' => 'return_orders', 'label' => 'Edit Return Orders', 'description' => 'Can edit return orders'],
-            ['name' => 'delete-return-orders', 'module' => 'return_orders', 'label' => 'Delete Return Orders', 'description' => 'Can delete return orders'],
-            ['name' => 'export-return-orders', 'module' => 'return_orders', 'label' => 'Export Return Orders', 'description' => 'Can export return orders'],
+            ['name' => 'manage-return-orders', 'module' => 'return-orders', 'label' => 'Manage Return Orders', 'description' => 'Can manage return orders'],
+            ['name' => 'view-return-orders', 'module' => 'return-orders', 'label' => 'View Return Orders', 'description' => 'View Return Orders'],
+            ['name' => 'create-return-orders', 'module' => 'return-orders', 'label' => 'Create Return Orders', 'description' => 'Can create return orders'],
+            ['name' => 'edit-return-orders', 'module' => 'return-orders', 'label' => 'Edit Return Orders', 'description' => 'Can edit return orders'],
+            ['name' => 'delete-return-orders', 'module' => 'return-orders', 'label' => 'Delete Return Orders', 'description' => 'Can delete return orders'],
+            ['name' => 'export-return-orders', 'module' => 'return-orders', 'label' => 'Export Return Orders', 'description' => 'Can export return orders'],
 
             // Purchase Order management
-            ['name' => 'manage-purchase-orders', 'module' => 'purchase_orders', 'label' => 'Manage Purchase Orders', 'description' => 'Can manage purchase orders'],
-            ['name' => 'view-purchase-orders', 'module' => 'purchase_orders', 'label' => 'View Purchase Orders', 'description' => 'View Purchase Orders'],
-            ['name' => 'create-purchase-orders', 'module' => 'purchase_orders', 'label' => 'Create Purchase Orders', 'description' => 'Can create purchase orders'],
-            ['name' => 'edit-purchase-orders', 'module' => 'purchase_orders', 'label' => 'Edit Purchase Orders', 'description' => 'Can edit purchase orders'],
-            ['name' => 'delete-purchase-orders', 'module' => 'purchase_orders', 'label' => 'Delete Purchase Orders', 'description' => 'Can delete purchase orders'],
-            ['name' => 'toggle-status-purchase-orders', 'module' => 'purchase_orders', 'label' => 'Toggle Status Purchase Orders', 'description' => 'Can toggle status purchase orders'],
-            ['name' => 'export-purchase-orders', 'module' => 'purchase_orders', 'label' => 'Export Purchase Orders', 'description' => 'Can export purchase orders'],
+            ['name' => 'manage-purchase-orders', 'module' => 'purchase-orders', 'label' => 'Manage Purchase Orders', 'description' => 'Can manage purchase orders'],
+            ['name' => 'view-purchase-orders', 'module' => 'purchase-orders', 'label' => 'View Purchase Orders', 'description' => 'View Purchase Orders'],
+            ['name' => 'create-purchase-orders', 'module' => 'purchase-orders', 'label' => 'Create Purchase Orders', 'description' => 'Can create purchase orders'],
+            ['name' => 'edit-purchase-orders', 'module' => 'purchase-orders', 'label' => 'Edit Purchase Orders', 'description' => 'Can edit purchase orders'],
+            ['name' => 'delete-purchase-orders', 'module' => 'purchase-orders', 'label' => 'Delete Purchase Orders', 'description' => 'Can delete purchase orders'],
+            ['name' => 'toggle-status-purchase-orders', 'module' => 'purchase-orders', 'label' => 'Toggle Status Purchase Orders', 'description' => 'Can toggle status purchase orders'],
+            ['name' => 'export-purchase-orders', 'module' => 'purchase-orders', 'label' => 'Export Purchase Orders', 'description' => 'Can export purchase orders'],
 
             // Receipt Order management
-            ['name' => 'manage-receipt-orders', 'module' => 'receipt_orders', 'label' => 'Manage Receipt Orders', 'description' => 'Can manage receipt orders'],
-            ['name' => 'view-receipt-orders', 'module' => 'receipt_orders', 'label' => 'View Receipt Orders', 'description' => 'View Receipt Orders'],
-            ['name' => 'create-receipt-orders', 'module' => 'receipt_orders', 'label' => 'Create Receipt Orders', 'description' => 'Can create receipt orders'],
-            ['name' => 'edit-receipt-orders', 'module' => 'receipt_orders', 'label' => 'Edit Receipt Orders', 'description' => 'Can edit receipt orders'],
-            ['name' => 'delete-receipt-orders', 'module' => 'receipt_orders', 'label' => 'Delete Receipt Orders', 'description' => 'Can delete receipt orders'],
-            ['name' => 'toggle-status-receipt-orders', 'module' => 'receipt_orders', 'label' => 'Toggle Status Receipt Orders', 'description' => 'Can toggle status receipt orders'],
-            ['name' => 'export-receipt-orders', 'module' => 'receipt_orders', 'label' => 'Export Receipt Orders', 'description' => 'Can export receipt orders'],
+            ['name' => 'manage-receipt-orders', 'module' => 'receipt-orders', 'label' => 'Manage Receipt Orders', 'description' => 'Can manage receipt orders'],
+            ['name' => 'view-receipt-orders', 'module' => 'receipt-orders', 'label' => 'View Receipt Orders', 'description' => 'View Receipt Orders'],
+            ['name' => 'create-receipt-orders', 'module' => 'receipt-orders', 'label' => 'Create Receipt Orders', 'description' => 'Can create receipt orders'],
+            ['name' => 'edit-receipt-orders', 'module' => 'receipt-orders', 'label' => 'Edit Receipt Orders', 'description' => 'Can edit receipt orders'],
+            ['name' => 'delete-receipt-orders', 'module' => 'receipt-orders', 'label' => 'Delete Receipt Orders', 'description' => 'Can delete receipt orders'],
+            ['name' => 'toggle-status-receipt-orders', 'module' => 'receipt-orders', 'label' => 'Toggle Status Receipt Orders', 'description' => 'Can toggle status receipt orders'],
+            ['name' => 'export-receipt-orders', 'module' => 'receipt-orders', 'label' => 'Export Receipt Orders', 'description' => 'Can export receipt orders'],
 
             // Project management
             ['name' => 'manage-projects', 'module' => 'projects', 'label' => 'Manage Projects', 'description' => 'Can manage projects'],
@@ -402,22 +402,22 @@ class PermissionSeeder extends Seeder
             ['name' => 'export-projects', 'module' => 'projects', 'label' => 'Export Projects', 'description' => 'Can export projects'],
 
             // Project Task management
-            ['name' => 'manage-project-tasks', 'module' => 'project_tasks', 'label' => 'Manage Project Tasks', 'description' => 'Can manage project tasks'],
-            ['name' => 'view-project-tasks', 'module' => 'project_tasks', 'label' => 'View Project Tasks', 'description' => 'View Project Tasks'],
-            ['name' => 'create-project-tasks', 'module' => 'project_tasks', 'label' => 'Create Project Tasks', 'description' => 'Can create project tasks'],
-            ['name' => 'edit-project-tasks', 'module' => 'project_tasks', 'label' => 'Edit Project Tasks', 'description' => 'Can edit project tasks'],
-            ['name' => 'delete-project-tasks', 'module' => 'project_tasks', 'label' => 'Delete Project Tasks', 'description' => 'Can delete project tasks'],
-            // ['name' => 'toggle-status-project-tasks', 'module' => 'project_tasks', 'label' => 'Toggle Status Project Tasks', 'description' => 'Can toggle status project tasks'],
-            ['name' => 'export-project-tasks', 'module' => 'project_tasks', 'label' => 'Export Project Tasks', 'description' => 'Can export project tasks'],
-            ['name' => 'move-project-task', 'module' => 'project_tasks', 'label' => 'Move Project Task', 'description' => 'Can move project tasks between statuses'],
+            ['name' => 'manage-project-tasks', 'module' => 'project-tasks', 'label' => 'Manage Project Tasks', 'description' => 'Can manage project tasks'],
+            ['name' => 'view-project-tasks', 'module' => 'project-tasks', 'label' => 'View Project Tasks', 'description' => 'View Project Tasks'],
+            ['name' => 'create-project-tasks', 'module' => 'project-tasks', 'label' => 'Create Project Tasks', 'description' => 'Can create project tasks'],
+            ['name' => 'edit-project-tasks', 'module' => 'project-tasks', 'label' => 'Edit Project Tasks', 'description' => 'Can edit project tasks'],
+            ['name' => 'delete-project-tasks', 'module' => 'project-tasks', 'label' => 'Delete Project Tasks', 'description' => 'Can delete project tasks'],
+            // ['name' => 'toggle-status-project-tasks', 'module' => 'project-tasks', 'label' => 'Toggle Status Project Tasks', 'description' => 'Can toggle status project tasks'],
+            ['name' => 'export-project-tasks', 'module' => 'project-tasks', 'label' => 'Export Project Tasks', 'description' => 'Can export project tasks'],
+            ['name' => 'move-project-task', 'module' => 'project-tasks', 'label' => 'Move Project Task', 'description' => 'Can move project tasks between statuses'],
 
             // Task Status management
-            ['name' => 'manage-task-statuses', 'module' => 'task_statuses', 'label' => 'Manage Task Statuses', 'description' => 'Can manage task statuses'],
-            ['name' => 'view-task-statuses', 'module' => 'task_statuses', 'label' => 'View Task Statuses', 'description' => 'View Task Statuses'],
-            ['name' => 'create-task-statuses', 'module' => 'task_statuses', 'label' => 'Create Task Statuses', 'description' => 'Can create task statuses'],
-            ['name' => 'edit-task-statuses', 'module' => 'task_statuses', 'label' => 'Edit Task Statuses', 'description' => 'Can edit task statuses'],
-            ['name' => 'delete-task-statuses', 'module' => 'task_statuses', 'label' => 'Delete Task Statuses', 'description' => 'Can delete task statuses'],
-            ['name' => 'toggle-status-task-statuses', 'module' => 'task_statuses', 'label' => 'Toggle Status Task Statuses', 'description' => 'Can toggle status task statuses'],
+            ['name' => 'manage-task-statuses', 'module' => 'task-statuses', 'label' => 'Manage Task Statuses', 'description' => 'Can manage task statuses'],
+            ['name' => 'view-task-statuses', 'module' => 'task-statuses', 'label' => 'View Task Statuses', 'description' => 'View Task Statuses'],
+            ['name' => 'create-task-statuses', 'module' => 'task-statuses', 'label' => 'Create Task Statuses', 'description' => 'Can create task statuses'],
+            ['name' => 'edit-task-statuses', 'module' => 'task-statuses', 'label' => 'Edit Task Statuses', 'description' => 'Can edit task statuses'],
+            ['name' => 'delete-task-statuses', 'module' => 'task-statuses', 'label' => 'Delete Task Statuses', 'description' => 'Can delete task statuses'],
+            ['name' => 'toggle-status-task-statuses', 'module' => 'task-statuses', 'label' => 'Toggle Status Task Statuses', 'description' => 'Can toggle status task statuses'],
 
             // Meeting management
             ['name' => 'manage-meetings', 'module' => 'meetings', 'label' => 'Manage Meetings', 'description' => 'Can manage meetings'],
@@ -436,21 +436,21 @@ class PermissionSeeder extends Seeder
             ['name' => 'toggle-status-calls', 'module' => 'calls', 'label' => 'Toggle Status Calls', 'description' => 'Can toggle status calls'],
 
             // Document Folder management
-            // ['name' => 'manage-document-folders', 'module' => 'document_folders', 'label' => 'Manage Document Folders', 'description' => 'Can manage document folders'],
-            // ['name' => 'view-document-folders', 'module' => 'document_folders', 'label' => 'View Document Folders', 'description' => 'View Document Folders'],
-            ['name' => 'create-document-folders', 'module' => 'document_folders', 'label' => 'Create Document Folders', 'description' => 'Can create document folders'],
-            ['name' => 'edit-document-folders', 'module' => 'document_folders', 'label' => 'Edit Document Folders', 'description' => 'Can edit document folders'],
-            ['name' => 'delete-document-folders', 'module' => 'document_folders', 'label' => 'Delete Document Folders', 'description' => 'Can delete document folders'],
-            // ['name' => 'toggle-status-document-folders', 'module' => 'document_folders', 'label' => 'Toggle Status Document Folders', 'description' => 'Can toggle status document folders'],
+            // ['name' => 'manage-document-folders', 'module' => 'document-folders', 'label' => 'Manage Document Folders', 'description' => 'Can manage document folders'],
+            // ['name' => 'view-document-folders', 'module' => 'document-folders', 'label' => 'View Document Folders', 'description' => 'View Document Folders'],
+            ['name' => 'create-document-folders', 'module' => 'document-folders', 'label' => 'Create Document Folders', 'description' => 'Can create document folders'],
+            ['name' => 'edit-document-folders', 'module' => 'document-folders', 'label' => 'Edit Document Folders', 'description' => 'Can edit document folders'],
+            ['name' => 'delete-document-folders', 'module' => 'document-folders', 'label' => 'Delete Document Folders', 'description' => 'Can delete document folders'],
+            // ['name' => 'toggle-status-document-folders', 'module' => 'document-folders', 'label' => 'Toggle Status Document Folders', 'description' => 'Can toggle status document folders'],
 
 
             // Document Type management
-            ['name' => 'manage-document-types', 'module' => 'document_types', 'label' => 'Manage Document Types', 'description' => 'Can manage document types'],
-            ['name' => 'view-document-types', 'module' => 'document_types', 'label' => 'View Document Types', 'description' => 'View Document Types'],
-            ['name' => 'create-document-types', 'module' => 'document_types', 'label' => 'Create Document Types', 'description' => 'Can create document types'],
-            ['name' => 'edit-document-types', 'module' => 'document_types', 'label' => 'Edit Document Types', 'description' => 'Can edit document types'],
-            ['name' => 'delete-document-types', 'module' => 'document_types', 'label' => 'Delete Document Types', 'description' => 'Can delete document types'],
-            ['name' => 'toggle-status-document-types', 'module' => 'document_types', 'label' => 'Toggle Status Document Types', 'description' => 'Can toggle status document types'],
+            ['name' => 'manage-document-types', 'module' => 'document-types', 'label' => 'Manage Document Types', 'description' => 'Can manage document types'],
+            ['name' => 'view-document-types', 'module' => 'document-types', 'label' => 'View Document Types', 'description' => 'View Document Types'],
+            ['name' => 'create-document-types', 'module' => 'document-types', 'label' => 'Create Document Types', 'description' => 'Can create document types'],
+            ['name' => 'edit-document-types', 'module' => 'document-types', 'label' => 'Edit Document Types', 'description' => 'Can edit document types'],
+            ['name' => 'delete-document-types', 'module' => 'document-types', 'label' => 'Delete Document Types', 'description' => 'Can delete document types'],
+            ['name' => 'toggle-status-document-types', 'module' => 'document-types', 'label' => 'Toggle Status Document Types', 'description' => 'Can toggle status document types'],
 
             // Document management
             ['name' => 'manage-documents', 'module' => 'documents', 'label' => 'Manage Documents', 'description' => 'Can manage documents'],
@@ -469,11 +469,11 @@ class PermissionSeeder extends Seeder
             ['name' => 'manage-reports', 'module' => 'reports', 'label' => 'Manage Reports', 'description' => 'Can manage reports'],
 
             // // Notification Template management
-            ['name' => 'manage-notification-templates', 'module' => 'notification_templates', 'label' => 'Manage Notification Templates', 'description' => 'Can manage notification templates'],
-            ['name' => 'view-notification-templates', 'module' => 'notification_templates', 'label' => 'View Notification Templates', 'description' => 'View Notification Templates'],
-            ['name' => 'create-notification-templates', 'module' => 'notification_templates', 'label' => 'Create Notification Templates', 'description' => 'Can create notification templates'],
-            ['name' => 'edit-notification-templates', 'module' => 'notification_templates', 'label' => 'Edit Notification Templates', 'description' => 'Can edit notification templates'],
-            ['name' => 'delete-notification-templates', 'module' => 'notification_templates', 'label' => 'Delete Notification Templates', 'description' => 'Can delete notification templates'],
+            ['name' => 'manage-notification-templates', 'module' => 'notification-templates', 'label' => 'Manage Notification Templates', 'description' => 'Can manage notification templates'],
+            ['name' => 'view-notification-templates', 'module' => 'notification-templates', 'label' => 'View Notification Templates', 'description' => 'View Notification Templates'],
+            ['name' => 'create-notification-templates', 'module' => 'notification-templates', 'label' => 'Create Notification Templates', 'description' => 'Can create notification templates'],
+            ['name' => 'edit-notification-templates', 'module' => 'notification-templates', 'label' => 'Edit Notification Templates', 'description' => 'Can edit notification templates'],
+            ['name' => 'delete-notification-templates', 'module' => 'notification-templates', 'label' => 'Delete Notification Templates', 'description' => 'Can delete notification templates'],
 
             // Note management
             ['name' => 'manage-notes', 'module' => 'notes', 'label' => 'Manage Notes', 'description' => 'Can manage notes'],
@@ -483,12 +483,12 @@ class PermissionSeeder extends Seeder
             ['name' => 'delete-notes', 'module' => 'notes', 'label' => 'Delete Notes', 'description' => 'Can delete notes'],
 
             // Announcement Category management
-            ['name' => 'manage-announcement-categories', 'module' => 'announcement_categories', 'label' => 'Manage Announcement Categories', 'description' => 'Can manage announcement categories'],
-            ['name' => 'view-announcement-categories', 'module' => 'announcement_categories', 'label' => 'View Announcement Categories', 'description' => 'View Announcement Categories'],
-            ['name' => 'create-announcement-categories', 'module' => 'announcement_categories', 'label' => 'Create Announcement Categories', 'description' => 'Can create announcement categories'],
-            ['name' => 'edit-announcement-categories', 'module' => 'announcement_categories', 'label' => 'Edit Announcement Categories', 'description' => 'Can edit announcement categories'],
-            ['name' => 'delete-announcement-categories', 'module' => 'announcement_categories', 'label' => 'Delete Announcement Categories', 'description' => 'Can delete announcement categories'],
-            ['name' => 'toggle-status-announcement-categories', 'module' => 'announcement_categories', 'label' => 'Toggle Status Announcement Categories', 'description' => 'Can toggle status announcement categories'],
+            ['name' => 'manage-announcement-categories', 'module' => 'announcement-categories', 'label' => 'Manage Announcement Categories', 'description' => 'Can manage announcement categories'],
+            ['name' => 'view-announcement-categories', 'module' => 'announcement-categories', 'label' => 'View Announcement Categories', 'description' => 'View Announcement Categories'],
+            ['name' => 'create-announcement-categories', 'module' => 'announcement-categories', 'label' => 'Create Announcement Categories', 'description' => 'Can create announcement categories'],
+            ['name' => 'edit-announcement-categories', 'module' => 'announcement-categories', 'label' => 'Edit Announcement Categories', 'description' => 'Can edit announcement categories'],
+            ['name' => 'delete-announcement-categories', 'module' => 'announcement-categories', 'label' => 'Delete Announcement Categories', 'description' => 'Can delete announcement categories'],
+            ['name' => 'toggle-status-announcement-categories', 'module' => 'announcement-categories', 'label' => 'Toggle Status Announcement Categories', 'description' => 'Can toggle status announcement categories'],
 
             // Announcement management
             ['name' => 'manage-announcements', 'module' => 'announcements', 'label' => 'Manage Announcements', 'description' => 'Can manage announcements'],

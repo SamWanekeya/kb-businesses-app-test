@@ -79,7 +79,7 @@ class RoleController extends BaseController
         if ($userType === 'organization') {
             $query->where(function ($q) {
                 $q->where('module', '!=', 'settings')
-                    ->where('module', '!=', 'notification_templates')
+                    ->where('module', '!=', 'notification-templates')
                     ->orWhereIn('name', [
                         'manage-email-settings',
                         'manage-system-settings',
@@ -117,7 +117,7 @@ class RoleController extends BaseController
         if ($userType === 'organization') {
             $query->where(function ($q) {
                 $q->where('module', '!=', 'settings')
-                    ->where('module', '!=', 'notification_templates')
+                    ->where('module', '!=', 'notification-templates')
                     ->orWhereIn('name', [
                         'manage-email-settings',
                         'manage-system-settings',
