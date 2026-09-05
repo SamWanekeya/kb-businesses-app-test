@@ -35,10 +35,9 @@ return [
     |
     */
 
-    // Used this to avoid the default 'remember_web_*' cookie name
     'guards' => [
         'web' => [
-            'driver' => 'custom_session',
+            'driver' => 'session',
             'provider' => 'users',
         ],
     ],
