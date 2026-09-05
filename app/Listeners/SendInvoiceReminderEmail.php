@@ -14,8 +14,7 @@ class SendInvoiceReminderEmail
      */
     public function __construct(
         private EmailTemplateService $emailService
-    )
-    {
+    ) {
         //
     }
 

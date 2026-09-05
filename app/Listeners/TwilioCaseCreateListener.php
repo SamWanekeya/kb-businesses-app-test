@@ -14,8 +14,7 @@ class TwilioCaseCreateListener
      */
     public function __construct(
         private TwilioService $twilioService
-    )
-    {
+    ) {
         //
     }
 

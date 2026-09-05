@@ -244,14 +244,14 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
                 >
                     {t('Sign in')}
                 </AuthButton>
-                    <div className="text-center">
-                        <p className="text-sm text-gray-500">
-                            {t("Don't have an account?")}{' '}
-                            <TextLink href={route('register')} className="font-medium hover:underline" style={{ color: primaryColor }} tabIndex={6}>
-                                {t('Sign up')}
-                            </TextLink>
-                        </p>
-                    </div>
+                <div className="text-center">
+                    <p className="text-sm text-gray-500">
+                        {t("Don't have an account?")}{' '}
+                        <TextLink href={route('register')} className="font-medium hover:underline" style={{ color: primaryColor }} tabIndex={6}>
+                            {t('Sign up')}
+                        </TextLink>
+                    </p>
+                </div>
 
                 {isDemo && (
                     <>

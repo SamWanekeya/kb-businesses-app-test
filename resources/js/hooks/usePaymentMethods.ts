@@ -8,12 +8,12 @@ interface PaymentMethodConfig {
 }
 
 interface PaymentMethods {
-    stripe?: PaymentMethodConfig;
-    paypal?: PaymentMethodConfig;
-    razorpay?: PaymentMethodConfig;
-    mercadopago?: PaymentMethodConfig;
+    // stripe?: PaymentMethodConfig;
+    // paypal?: PaymentMethodConfig;
+    // razorpay?: PaymentMethodConfig;
+    // mercadopago?: PaymentMethodConfig;
     bank?: PaymentMethodConfig;
-    cashfree?: PaymentMethodConfig;
+    // cashfree?: PaymentMethodConfig;
 }
 
 export function usePaymentMethods() {

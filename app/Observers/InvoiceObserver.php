@@ -148,8 +148,8 @@ class InvoiceObserver
                 return '<span class="font-bold text-base">' . ($oldSalesOrder ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newSalesOrder ?? 'None') . '</span>';
             case 'billing_contact_id':
             case 'shipping_contact_id':
-            $oldContact = $oldValue ? Contact::find($oldValue)?->name : 'None';
-            $newContact = $newValue ? Contact::find($newValue)?->name : 'None';
+                $oldContact = $oldValue ? Contact::find($oldValue)?->name : 'None';
+                $newContact = $newValue ? Contact::find($newValue)?->name : 'None';
 
                 return '<span class="font-bold text-base">' . ($oldContact ?? 'None') . '</span> into <span class="font-bold text-base">' . ($newContact ?? 'None') . '</span>';
             case 'due_date':

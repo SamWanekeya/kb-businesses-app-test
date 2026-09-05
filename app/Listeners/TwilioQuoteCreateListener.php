@@ -14,8 +14,7 @@ class TwilioQuoteCreateListener
      */
     public function __construct(
         private TwilioService $twilioService,
-    )
-    {
+    ) {
         //
     }
 

@@ -7,40 +7,11 @@ import { Label } from '@/components/ui/label';
 import { Loader2, Tag } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { PayPalPaymentForm } from './paypal-payment-form';
-import { StripePaymentForm } from './stripe-payment-form';
 
 import { router } from '@inertiajs/react';
 import axios from 'axios';
-import { AamarpayPaymentForm } from './aamarpay-payment-form';
-import { AuthorizeNetPaymentForm } from './authorizenet-payment-form';
 import { BankTransferForm } from './bank-transfer-form';
-import { BenefitPaymentForm } from './benefit-payment-form';
-import { CashfreePaymentForm } from './cashfree-payment-form';
-import { CinetPayPaymentForm } from './cinetpay-payment-form';
-import { CoinGatePaymentForm } from './coingate-payment-form';
-import { EasebuzzPaymentForm } from './easebuzz-payment-form';
-import { FedaPayPaymentForm } from './fedapay-payment-form';
-import { FlutterwavePaymentForm } from './flutterwave-payment-form';
-import { IyzipayPaymentForm } from './iyzipay-payment-form';
-import { KhaltiPaymentForm } from './khalti-payment-form';
-import { MercadoPagoPaymentForm } from './mercadopago-payment-form';
-import { MidtransPaymentForm } from './midtrans-payment-form';
-import { MolliePaymentForm } from './mollie-payment-form';
-import { NepalstePaymentForm } from './nepalste-payment-form';
-import { OzowPaymentForm } from './ozow-payment-form';
-import { PaiementPaymentForm } from './paiement-payment-form';
-import { PayfastPaymentForm } from './payfast-payment-form';
-import { PayHerePaymentForm } from './payhere-payment-form';
 import { PaystackPaymentForm } from './paystack-payment-form';
-import { PayTabsPaymentForm } from './paytabs-payment-form';
-import { PayTRPaymentForm } from './paytr-payment-form';
-import { RazorpayPaymentForm } from './razorpay-payment-form';
-import { SkrillPaymentForm } from './skrill-payment-form';
-import { TapPaymentForm } from './tap-payment-form';
-import { ToyyibPayPaymentForm } from './toyyibpay-payment-form';
-import { XenditPaymentForm } from './xendit-payment-form';
-import { YooKassaPaymentForm } from './yookassa-payment-form';
 
 interface PaymentMethod {
     id: string;
@@ -180,38 +151,38 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
         };
 
         switch (selectedPaymentMethod) {
-            case 'stripe':
-                return <StripePaymentForm {...commonProps} amount={finalPrice} stripeKey={plan.paymentMethods?.stripe_key || ''} />;
-
-            case 'paypal':
-                return (
-                    <PayPalPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        paypalClientId={plan.paymentMethods?.paypal_client_id || ''}
-                        currency={plan.paymentMethods?.currency || 'USD'}
-                    />
-                );
+            // case 'stripe':
+            //     return <StripePaymentForm {...commonProps} amount={finalPrice} stripeKey={plan.paymentMethods?.stripe_key || ''} />;
+            //
+            // case 'paypal':
+            //     return (
+            //         <PayPalPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             paypalClientId={plan.paymentMethods?.paypal_client_id || ''}
+            //             currency={plan.paymentMethods?.currency || 'USD'}
+            //         />
+            //     );
             case 'bank':
                 return <BankTransferForm {...commonProps} planPrice={finalPrice} bankDetails={plan.paymentMethods?.bank_details || ''} />;
-            case 'razorpay':
-                return (
-                    <RazorpayPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        razorpayKey={plan.paymentMethods?.razorpay_key || ''}
-                        currency={plan.paymentMethods?.currency || 'INR'}
-                    />
-                );
-            case 'mercadopago':
-                return (
-                    <MercadoPagoPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        accessToken={plan.paymentMethods?.mercadopago_access_token || ''}
-                        currency={plan.paymentMethods?.currency || 'BRL'}
-                    />
-                );
+            // case 'razorpay':
+            //     return (
+            //         <RazorpayPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             razorpayKey={plan.paymentMethods?.razorpay_key || ''}
+            //             currency={plan.paymentMethods?.currency || 'INR'}
+            //         />
+            //     );
+            // case 'mercadopago':
+            //     return (
+            //         <MercadoPagoPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             accessToken={plan.paymentMethods?.mercadopago_access_token || ''}
+            //             currency={plan.paymentMethods?.currency || 'BRL'}
+            //         />
+            //     );
             case 'paystack':
                 return (
                     <PaystackPaymentForm
@@ -221,232 +192,232 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
                         currency={plan.paymentMethods?.currency || 'NGN'}
                     />
                 );
-            case 'flutterwave':
-                return (
-                    <FlutterwavePaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        flutterwaveKey={plan.paymentMethods?.flutterwave_public_key || ''}
-                        currency={plan.paymentMethods?.currency || 'NGN'}
-                    />
-                );
-            case 'paytabs':
-                return (
-                    <PayTabsPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        paytabsClientKey={''}
-                        currency={plan.paymentMethods?.currency || 'USD'}
-                    />
-                );
-            case 'skrill':
-                return (
-                    <SkrillPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        skrillMerchantId={plan.paymentMethods?.skrill_merchant_id || ''}
-                        currency={plan.paymentMethods?.currency || 'USD'}
-                    />
-                );
-            case 'coingate':
-                return (
-                    <CoinGatePaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        coinGateApiToken={plan.paymentMethods?.coingate_api_token || ''}
-                        currency={plan.paymentMethods?.currency || 'USD'}
-                    />
-                );
-            case 'payfast':
-                return (
-                    <PayfastPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        payfastMerchantId={plan.paymentMethods?.payfast_merchant_id || ''}
-                        currency={plan.paymentMethods?.currency || 'ZAR'}
-                    />
-                );
-            case 'toyyibpay':
-                return (
-                    <ToyyibPayPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        toyyibpayCategoryCode={plan.paymentMethods?.toyyibpay_category_code || ''}
-                        currency={plan.paymentMethods?.currency || 'MYR'}
-                    />
-                );
-            case 'paytr':
-                return (
-                    <PayTRPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        paytrMerchantId={plan.paymentMethods?.paytr_merchant_id || ''}
-                        currency={plan.paymentMethods?.currency || 'TRY'}
-                    />
-                );
-            case 'mollie':
-                return (
-                    <MolliePaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        mollieApiKey={plan.paymentMethods?.mollie_api_key || ''}
-                        currency={plan.paymentMethods?.currency || 'EUR'}
-                    />
-                );
-            case 'cashfree':
-                return (
-                    <CashfreePaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        cashfreeAppId={plan.paymentMethods?.cashfree_public_key || ''}
-                        mode={plan.paymentMethods?.cashfree_mode || 'sandbox'}
-                        currency={plan.paymentMethods?.currency || 'INR'}
-                    />
-                );
-            case 'iyzipay':
-                return (
-                    <IyzipayPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        iyzipayPublicKey={plan.paymentMethods?.iyzipay_public_key || ''}
-                        currency={plan.paymentMethods?.currency || 'USD'}
-                    />
-                );
-            case 'benefit':
-                return (
-                    <BenefitPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        benefitPublicKey={plan.paymentMethods?.benefit_public_key || ''}
-                        currency={plan.paymentMethods?.currency || 'BHD'}
-                    />
-                );
-            case 'ozow':
-                return (
-                    <OzowPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        ozowSiteKey={plan.paymentMethods?.ozow_site_key || ''}
-                        currency={plan.paymentMethods?.currency || 'ZAR'}
-                    />
-                );
-            case 'easebuzz':
-                return (
-                    <EasebuzzPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        easebuzzMerchantKey={plan.paymentMethods?.easebuzz_merchant_key || ''}
-                        currency={plan.paymentMethods?.currency || 'INR'}
-                    />
-                );
-            case 'khalti':
-                return (
-                    <KhaltiPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        khaltiPublicKey={plan.paymentMethods?.khalti_public_key || ''}
-                        currency={plan.paymentMethods?.currency || 'NPR'}
-                    />
-                );
-            case 'authorizenet':
-                return (
-                    <AuthorizeNetPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        authorizenetMerchantId={plan.paymentMethods?.authorizenet_merchant_id || ''}
-                        currency={plan.paymentMethods?.currency || 'USD'}
-                    />
-                );
-            case 'fedapay':
-                return (
-                    <FedaPayPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        fedapayPublicKey={plan.paymentMethods?.fedapay_public_key || ''}
-                        currency={plan.paymentMethods?.currency || 'XOF'}
-                    />
-                );
-            case 'payhere':
-                return (
-                    <PayHerePaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        payhereMerchantId={plan.paymentMethods?.payhere_merchant_id || ''}
-                        currency={plan.paymentMethods?.currency || 'LKR'}
-                    />
-                );
-            case 'cinetpay':
-                return (
-                    <CinetPayPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        cinetpaySiteId={plan.paymentMethods?.cinetpay_site_id || ''}
-                        currency={plan.paymentMethods?.currency || 'XOF'}
-                    />
-                );
-            case 'paiement':
-                return (
-                    <PaiementPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        paiementMerchantId={plan.paymentMethods?.paiement_merchant_id || ''}
-                        currency={plan.paymentMethods?.currency || 'XOF'}
-                    />
-                );
-            case 'nepalste':
-                return (
-                    <NepalstePaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        nepalstePublicKey={plan.paymentMethods?.nepalste_public_key || ''}
-                        currency={plan.paymentMethods?.currency || 'NPR'}
-                    />
-                );
-            case 'yookassa':
-                return (
-                    <YooKassaPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        yookassaShopId={plan.paymentMethods?.yookassa_shop_id || ''}
-                        currency={plan.paymentMethods?.currency || 'RUB'}
-                    />
-                );
-            case 'aamarpay':
-                return (
-                    <AamarpayPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        aamarpayStoreId={plan.paymentMethods?.aamarpay_store_id || ''}
-                        currency={plan.paymentMethods?.currency || 'BDT'}
-                    />
-                );
-            case 'midtrans':
-                return (
-                    <MidtransPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        midtransSecretKey={plan.paymentMethods?.midtrans_secret_key || ''}
-                        currency={plan.paymentMethods?.currency || 'IDR'}
-                    />
-                );
-            case 'tap':
-                return (
-                    <TapPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        tapSecretKey={plan.paymentMethods?.tap_secret_key || ''}
-                        currency={plan.paymentMethods?.currency || 'USD'}
-                    />
-                );
-            case 'xendit':
-                return (
-                    <XenditPaymentForm
-                        {...commonProps}
-                        planPrice={finalPrice}
-                        xenditApiKey={plan.paymentMethods?.xendit_api_key || ''}
-                        currency={plan.paymentMethods?.currency || 'PHP'}
-                    />
-                );
+            // case 'flutterwave':
+            //     return (
+            //         <FlutterwavePaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             flutterwaveKey={plan.paymentMethods?.flutterwave_public_key || ''}
+            //             currency={plan.paymentMethods?.currency || 'NGN'}
+            //         />
+            //     );
+            // case 'paytabs':
+            //     return (
+            //         <PayTabsPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             paytabsClientKey={''}
+            //             currency={plan.paymentMethods?.currency || 'USD'}
+            //         />
+            //     );
+            // case 'skrill':
+            //     return (
+            //         <SkrillPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             skrillMerchantId={plan.paymentMethods?.skrill_merchant_id || ''}
+            //             currency={plan.paymentMethods?.currency || 'USD'}
+            //         />
+            //     );
+            // case 'coingate':
+            //     return (
+            //         <CoinGatePaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             coinGateApiToken={plan.paymentMethods?.coingate_api_token || ''}
+            //             currency={plan.paymentMethods?.currency || 'USD'}
+            //         />
+            //     );
+            // case 'payfast':
+            //     return (
+            //         <PayfastPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             payfastMerchantId={plan.paymentMethods?.payfast_merchant_id || ''}
+            //             currency={plan.paymentMethods?.currency || 'ZAR'}
+            //         />
+            //     );
+            // case 'toyyibpay':
+            //     return (
+            //         <ToyyibPayPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             toyyibpayCategoryCode={plan.paymentMethods?.toyyibpay_category_code || ''}
+            //             currency={plan.paymentMethods?.currency || 'MYR'}
+            //         />
+            //     );
+            // case 'paytr':
+            //     return (
+            //         <PayTRPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             paytrMerchantId={plan.paymentMethods?.paytr_merchant_id || ''}
+            //             currency={plan.paymentMethods?.currency || 'TRY'}
+            //         />
+            //     );
+            // case 'mollie':
+            //     return (
+            //         <MolliePaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             mollieApiKey={plan.paymentMethods?.mollie_api_key || ''}
+            //             currency={plan.paymentMethods?.currency || 'EUR'}
+            //         />
+            //     );
+            // case 'cashfree':
+            //     return (
+            //         <CashfreePaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             cashfreeAppId={plan.paymentMethods?.cashfree_public_key || ''}
+            //             mode={plan.paymentMethods?.cashfree_mode || 'sandbox'}
+            //             currency={plan.paymentMethods?.currency || 'INR'}
+            //         />
+            //     );
+            // case 'iyzipay':
+            //     return (
+            //         <IyzipayPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             iyzipayPublicKey={plan.paymentMethods?.iyzipay_public_key || ''}
+            //             currency={plan.paymentMethods?.currency || 'USD'}
+            //         />
+            //     );
+            // case 'benefit':
+            //     return (
+            //         <BenefitPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             benefitPublicKey={plan.paymentMethods?.benefit_public_key || ''}
+            //             currency={plan.paymentMethods?.currency || 'BHD'}
+            //         />
+            //     );
+            // case 'ozow':
+            //     return (
+            //         <OzowPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             ozowSiteKey={plan.paymentMethods?.ozow_site_key || ''}
+            //             currency={plan.paymentMethods?.currency || 'ZAR'}
+            //         />
+            //     );
+            // case 'easebuzz':
+            //     return (
+            //         <EasebuzzPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             easebuzzMerchantKey={plan.paymentMethods?.easebuzz_merchant_key || ''}
+            //             currency={plan.paymentMethods?.currency || 'INR'}
+            //         />
+            //     );
+            // case 'khalti':
+            //     return (
+            //         <KhaltiPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             khaltiPublicKey={plan.paymentMethods?.khalti_public_key || ''}
+            //             currency={plan.paymentMethods?.currency || 'NPR'}
+            //         />
+            //     );
+            // case 'authorizenet':
+            //     return (
+            //         <AuthorizeNetPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             authorizenetMerchantId={plan.paymentMethods?.authorizenet_merchant_id || ''}
+            //             currency={plan.paymentMethods?.currency || 'USD'}
+            //         />
+            //     );
+            // case 'fedapay':
+            //     return (
+            //         <FedaPayPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             fedapayPublicKey={plan.paymentMethods?.fedapay_public_key || ''}
+            //             currency={plan.paymentMethods?.currency || 'XOF'}
+            //         />
+            //     );
+            // case 'payhere':
+            //     return (
+            //         <PayHerePaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             payhereMerchantId={plan.paymentMethods?.payhere_merchant_id || ''}
+            //             currency={plan.paymentMethods?.currency || 'LKR'}
+            //         />
+            //     );
+            // case 'cinetpay':
+            //     return (
+            //         <CinetPayPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             cinetpaySiteId={plan.paymentMethods?.cinetpay_site_id || ''}
+            //             currency={plan.paymentMethods?.currency || 'XOF'}
+            //         />
+            //     );
+            // case 'paiement':
+            //     return (
+            //         <PaiementPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             paiementMerchantId={plan.paymentMethods?.paiement_merchant_id || ''}
+            //             currency={plan.paymentMethods?.currency || 'XOF'}
+            //         />
+            //     );
+            // case 'nepalste':
+            //     return (
+            //         <NepalstePaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             nepalstePublicKey={plan.paymentMethods?.nepalste_public_key || ''}
+            //             currency={plan.paymentMethods?.currency || 'NPR'}
+            //         />
+            //     );
+            // case 'yookassa':
+            //     return (
+            //         <YooKassaPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             yookassaShopId={plan.paymentMethods?.yookassa_shop_id || ''}
+            //             currency={plan.paymentMethods?.currency || 'RUB'}
+            //         />
+            //     );
+            // case 'aamarpay':
+            //     return (
+            //         <AamarpayPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             aamarpayStoreId={plan.paymentMethods?.aamarpay_store_id || ''}
+            //             currency={plan.paymentMethods?.currency || 'BDT'}
+            //         />
+            //     );
+            // case 'midtrans':
+            //     return (
+            //         <MidtransPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             midtransSecretKey={plan.paymentMethods?.midtrans_secret_key || ''}
+            //             currency={plan.paymentMethods?.currency || 'IDR'}
+            //         />
+            //     );
+            // case 'tap':
+            //     return (
+            //         <TapPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             tapSecretKey={plan.paymentMethods?.tap_secret_key || ''}
+            //             currency={plan.paymentMethods?.currency || 'USD'}
+            //         />
+            //     );
+            // case 'xendit':
+            //     return (
+            //         <XenditPaymentForm
+            //             {...commonProps}
+            //             planPrice={finalPrice}
+            //             xenditApiKey={plan.paymentMethods?.xendit_api_key || ''}
+            //             currency={plan.paymentMethods?.currency || 'PHP'}
+            //         />
+            //     );
             default:
                 return null;
         }

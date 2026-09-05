@@ -11,8 +11,7 @@ class SlackQuoteCreateListener
 {
     public function __construct(
         private SlackService $slackService
-    )
-    {
+    ) {
         //
     }
 

@@ -16,8 +16,7 @@ class SendLeadStatusChangedEmail
     public function __construct(
         private EmailTemplateService $emailService,
         private WebhookService       $webhookService
-    )
-    {
+    ) {
         //
     }
 

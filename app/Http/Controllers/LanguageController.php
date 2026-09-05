@@ -9,7 +9,7 @@ use Inertia\Inertia;
 
 class LanguageController extends Controller
 {
-    public const ALLOWED_LANGUAGES = ['en', 'es', 'fr', 'de', 'it', 'pt', 'ru', 'ja', 'zh', 'ar', 'hi', 'ko', 'th', 'vi', 'tr', 'pl', 'nl', 'da', 'sv', 'no', 'fi', 'cs', 'sk', 'hu', 'ro', 'bg', 'hr', 'sl', 'et', 'lv', 'lt', 'mt', 'ga', 'cy', 'eu', 'ca', 'gl', 'pt-BR', 'zh-CN', 'zh-TW', 'he'];
+    public const ALLOWED_LANGUAGES = ['af-za', 'am-et', 'ar', 'ar-ae', 'ar-dz', 'ar-eg', 'ar-lb', 'ar-ma', 'ar-qa', 'ar-sa', 'bn', 'bn-bd', 'bn-in', 'da', 'de', 'de-at', 'de-ch', 'de-de', 'de-lu', 'en', 'en-ca', 'en-gb', 'en-gh', 'en-ke', 'en-ng', 'en-ug', 'en-us', 'en-za', 'en-zm', 'en-zw', 'es', 'es-ar', 'es-cl', 'es-co', 'es-es', 'es-mx', 'es-pe', 'es-us', 'fr', 'fr-be', 'fr-ca', 'fr-ch', 'fr-fr', 'fr-lu', 'ga-ie', 'ha', 'ha-gh', 'ha-ne', 'ha-ng', 'he-il', 'hi-in', 'it', 'it-it', 'ja-jp', 'ko-kr', 'pl-pl', 'pt', 'pt-br', 'pt-mz', 'pt-pt', 'ru', 'ru-kz', 'ru-ru', 'ru-ua', 'sn-zw', 'so-so', 'sw', 'sw-ke', 'sw-tz', 'tr-tr', 'xh-za', 'yo-ng', 'zh-cn', 'zh-tw', 'zu-za'];
 
     // Show the manage language Inertia page
     public function managePage(Request $request, $lang = null)

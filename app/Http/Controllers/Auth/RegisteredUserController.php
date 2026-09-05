@@ -11,7 +11,6 @@ use App\Models\ReferralSetting;
 use App\Models\TaskStatus;
 use App\Models\User;
 use Exception;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

@@ -11,8 +11,7 @@ class SlackAccountCreateListener
 {
     public function __construct(
         private SlackService $slackService
-    )
-    {
+    ) {
         //
     }
 

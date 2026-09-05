@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Middleware\CheckInstallation;
-use App\Http\Middleware\DemoModeMiddleware;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\ShareGlobalSettings;

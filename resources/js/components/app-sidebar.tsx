@@ -27,7 +27,6 @@ import {
     MegaphoneIcon,
     NotebookPen,
     Package,
-    Palette,
     Phone,
     Search,
     Settings,

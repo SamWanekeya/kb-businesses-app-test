@@ -1,10 +1,8 @@
 import { toast } from '@/components/custom-toast';
 import { SettingsSection } from '@/components/settings-section';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
 import { router, usePage } from '@inertiajs/react';
 import { Save } from 'lucide-react';
 import { useEffect, useState } from 'react';

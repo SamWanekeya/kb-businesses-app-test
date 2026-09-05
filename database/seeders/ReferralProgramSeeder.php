@@ -23,7 +23,7 @@ class ReferralProgramSeeder extends Seeder
             [
                 'name' => 'Organization',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => Hash::make('Kakbima@DemoAccount2026'),
                 'type' => 'organization',
                 'plan_id' => $plan->id,
                 'referral_code' => rand(100000, 999999),
@@ -46,7 +46,7 @@ class ReferralProgramSeeder extends Seeder
                 [
                     'name' => $organizationName,
                     'email_verified_at' => $faker->dateTimeBetween('-8 months', '-1 month'),
-                    'password' => Hash::make('password'),
+                    'password' => Hash::make('Kakbima@DemoAccount2026'),
                     'type' => 'organization',
                     'plan_id' => $plan->id,
                     'referral_code' => rand(100000, 999999),
@@ -132,7 +132,7 @@ class ReferralProgramSeeder extends Seeder
                 [
                     'name' => $organizationData['name'],
                     'email_verified_at' => now(),
-                    'password' => Hash::make('password'),
+                    'password' => Hash::make('Kakbima@DemoAccount2026'),
                     'type' => 'organization',
                     'plan_id' => $plan->id,
                     'referral_code' => rand(100000, 999999),
@@ -153,7 +153,7 @@ class ReferralProgramSeeder extends Seeder
                     [
                         'name' => $businessName,
                         'email_verified_at' => $faker->dateTimeBetween('-3 months', '-2 weeks'),
-                        'password' => Hash::make('password'),
+                        'password' => Hash::make('Kakbima@DemoAccount2026'),
                         'type' => 'organization',
                         'plan_id' => $plan->id,
                         'referral_code' => rand(100000, 999999),

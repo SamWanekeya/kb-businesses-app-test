@@ -14,8 +14,7 @@ class SendOpportunityCreatedEmail
      */
     public function __construct(
         private EmailTemplateService $emailService,
-    )
-    {
+    ) {
         //
     }
 

@@ -14,8 +14,7 @@ class TwilioAccountCreateListener
      */
     public function __construct(
         private TwilioService $twilioService,
-    )
-    {
+    ) {
         //
     }
 

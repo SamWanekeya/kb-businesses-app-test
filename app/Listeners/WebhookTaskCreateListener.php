@@ -14,8 +14,7 @@ class WebhookTaskCreateListener
      */
     public function __construct(
         private WebhookService $webhookService
-    )
-    {
+    ) {
         //
     }
 

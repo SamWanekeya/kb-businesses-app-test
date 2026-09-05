@@ -14,8 +14,7 @@ class SendInvoiceCreatedEmail
      */
     public function __construct(
         private EmailTemplateService $emailService,
-    )
-    {
+    ) {
         //
     }
 

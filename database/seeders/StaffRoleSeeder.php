@@ -936,7 +936,7 @@ class StaffRoleSeeder extends Seeder
                             [
                                 'name' => 'Sarah Johnson',
                                 'email_verified_at' => now(),
-                                'password' => Hash::make('password'),
+                                'password' => Hash::make('Kakbima@DemoAccount2026'),
                                 'type' => 'staff',
                                 'lang' => 'en',
                                 'created_by' => $organization->id,
@@ -948,9 +948,9 @@ class StaffRoleSeeder extends Seeder
                             'name' => $name,
                             'email' => $email,
                             'email_verified_at' => now(),
-                            'password' => Hash::make('password'),
+                            'password' => Hash::make('Kakbima@DemoAccount2026'),
                             'type' => 'staff',
-                            'lang' => $faker->randomElement(['en', 'es', 'fr', 'de']),
+                            'lang' => $faker->randomElement(['af-za', 'am-et', 'ar', 'ar-ae', 'ar-dz', 'ar-eg', 'ar-lb', 'ar-ma', 'ar-qa', 'ar-sa', 'bn', 'bn-bd', 'bn-in', 'da', 'de', 'de-at', 'de-ch', 'de-de', 'de-lu', 'en', 'en-ca', 'en-gb', 'en-gh', 'en-ke', 'en-ng', 'en-ug', 'en-us', 'en-za', 'en-zm', 'en-zw', 'es', 'es-ar', 'es-cl', 'es-co', 'es-es', 'es-mx', 'es-pe', 'es-us', 'fr', 'fr-be', 'fr-ca', 'fr-ch', 'fr-fr', 'fr-lu', 'ga-ie', 'ha', 'ha-gh', 'ha-ne', 'ha-ng', 'he-il', 'hi-in', 'it', 'it-it', 'ja-jp', 'ko-kr', 'pl-pl', 'pt', 'pt-br', 'pt-mz', 'pt-pt', 'ru', 'ru-kz', 'ru-ru', 'ru-ua', 'sn-zw', 'so-so', 'sw', 'sw-ke', 'sw-tz', 'tr-tr', 'xh-za', 'yo-ng', 'zh-cn', 'zh-tw', 'zu-za']),
                             'created_by' => $organization->id,
                             'created_at' => $faker->dateTimeBetween('-6 months', 'now'),
                         ]);
