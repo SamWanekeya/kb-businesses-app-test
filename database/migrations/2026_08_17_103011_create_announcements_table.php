@@ -10,7 +10,7 @@ return new class () extends Migration {
         Schema::create('announcements', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('announcement_content');
+            $table->longText('announcement_content');
             $table->foreignId('announcement_category_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
