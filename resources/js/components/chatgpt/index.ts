@@ -1,3 +1,3 @@
-export { ChatGptButton } from './ChatGptButton';
-export { ChatGptField } from './ChatGptField';
-export { ChatGptModal } from './ChatGptModal';
+export { ChatGptButton } from '@components/chatgpt/ChatGptButton';
+export { ChatGptField } from '@components/chatgpt/ChatGptField';
+export { ChatGptModal } from '@components/chatgpt/ChatGptModal';

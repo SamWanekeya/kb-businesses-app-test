@@ -7,7 +7,7 @@ import axios from 'axios';
 import { Download } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ColumnMappingModal } from './ColumnMappingModal';
+import { ColumnMappingModal } from '@components/ColumnMappingModal';
 
 interface ImportModalProps {
     isOpen: boolean;

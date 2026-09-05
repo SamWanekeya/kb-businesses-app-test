@@ -2,7 +2,7 @@ import { useLayout } from '@/contexts/LayoutContext';
 import { cn } from '@/lib/utils';
 import { Head } from '@inertiajs/react';
 import { AlignLeft, AlignRight, LucideIcon } from 'lucide-react';
-import HeadingSmall from './heading-small';
+import HeadingSmall from '@components/heading-small';
 
 export const LayoutRtlSettings = () => {
     const tabs: { value: 'left' | 'right'; icon: LucideIcon; label: string }[] = [

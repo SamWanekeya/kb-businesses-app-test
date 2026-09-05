@@ -3,10 +3,10 @@ import { hasPermission } from '@/utils/authorization';
 import { usePage } from '@inertiajs/react';
 import { Check, File, FileText, Image as ImageIcon, Plus, Search, Upload } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Badge } from './ui/badge';
-import { Button } from './ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
-import { Input } from './ui/input';
+import { Badge } from '@components/ui/badge';
+import { Button } from '@components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/ui/dialog';
+import { Input } from '@components/ui/input';
 
 interface MediaItem {
     id: number;

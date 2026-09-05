@@ -1,5 +1,5 @@
 import { useInitials } from '@/hooks/use-initials';
-import { Avatar, AvatarFallback } from './ui/avatar';
+import { Avatar, AvatarFallback } from '@components/ui/avatar';
 
 const COLORS = [
     'bg-red-50 text-red-700 border-red-300',

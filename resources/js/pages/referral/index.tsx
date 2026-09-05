@@ -7,10 +7,10 @@ import { usePage } from '@inertiajs/react';
 import { BarChart3, DollarSign, Settings as SettingsIcon, Users } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import PayoutRequests from './components/payout-requests';
-import ReferralDashboard from './components/referral-dashboard';
-import ReferralSettings from './components/referral-settings';
-import ReferredUsersSection from './components/referred-users-section';
+import PayoutRequests from '@pages/referral/components/payout-requests';
+import ReferralDashboard from '@pages/referral/components/referral-dashboard';
+import ReferralSettings from '@pages/referral/components/referral-settings';
+import ReferredUsersSection from '@pages/referral/components/referred-users-section';
 
 export default function Referral() {
     const { t } = useTranslation();

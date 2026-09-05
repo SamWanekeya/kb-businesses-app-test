@@ -12,16 +12,16 @@ import { useTranslation } from 'react-i18next';
 // Import quote templates
 import IframePortal, { IframePortalHandles } from '@/components/IframePortal';
 import { formatRelativeTime, getDisplayUrl } from '@/utils/helper';
-import Template1 from './templates/Template1';
-import Template10 from './templates/Template10';
-import Template2 from './templates/Template2';
-import Template3 from './templates/Template3';
-import Template4 from './templates/Template4';
-import Template5 from './templates/Template5';
-import Template6 from './templates/Template6';
-import Template7 from './templates/Template7';
-import Template8 from './templates/Template8';
-import Template9 from './templates/Template9';
+import Template1 from '@pages/quotes/templates/Template1';
+import Template10 from '@pages/quotes/templates/Template10';
+import Template2 from '@pages/quotes/templates/Template2';
+import Template3 from '@pages/quotes/templates/Template3';
+import Template4 from '@pages/quotes/templates/Template4';
+import Template5 from '@pages/quotes/templates/Template5';
+import Template6 from '@pages/quotes/templates/Template6';
+import Template7 from '@pages/quotes/templates/Template7';
+import Template8 from '@pages/quotes/templates/Template8';
+import Template9 from '@pages/quotes/templates/Template9';
 
 interface Quote {
     id: number;

@@ -5,17 +5,17 @@ import { createInertiaApp, router } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
-import { CustomToast } from './components/custom-toast';
-import { BrandProvider } from './contexts/BrandContext';
-import { LayoutProvider } from './contexts/LayoutContext';
-import { ModalStackProvider } from './contexts/ModalStackContext';
-import { SidebarProvider } from './contexts/SidebarContext';
-import { initializeTheme } from './hooks/use-appearance';
-import i18n from './i18n'; // Import i18n configuration
+import { CustomToast } from '@components/custom-toast';
+import { BrandProvider } from '@/contexts/BrandContext';
+import { LayoutProvider } from '@/contexts/LayoutContext';
+import { ModalStackProvider } from '@/contexts/ModalStackContext';
+import { SidebarProvider } from '@/contexts/SidebarContext';
+import { initializeTheme } from '@hooks/use-appearance';
+import i18n from '/i18n'; // Import i18n configuration
 import './utils/axios-config'; // Import axios configuration
-import { getCookie, isDemoMode } from './utils/cookie-utils';
-import { initializeGlobalSettings } from './utils/globalSettings';
-import { initPerformanceMonitoring, lazyLoadImages } from './utils/performance';
+import { getCookie, isDemoMode } from '@/utils/cookie-utils';
+import { initializeGlobalSettings } from '@/utils/globalSettings';
+import { initPerformanceMonitoring, lazyLoadImages } from '@/utils/performance';
 import './utils/routes'; // Import route helper
 
 // Initialize performance monitoring

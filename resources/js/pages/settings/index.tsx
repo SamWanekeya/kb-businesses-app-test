@@ -24,34 +24,34 @@ import {
     Webhook,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import OrganizationSystemSettings from './components/organization-system-settings';
-import SystemSettings from './components/system-settings';
+import OrganizationSystemSettings from '@pages/settings/components/organization-system-settings';
+import SystemSettings from '@pages/settings/components/system-settings';
 
-import CurrencySettings from './components/currency-settings';
-import EmailNotificationSettings from './components/email-notification-settings';
-import SlackNotificationSettings from './components/slack-notification-settings';
-import TwilioNotificationSettings from './components/twilio-notification-settings';
+import CurrencySettings from '@pages/settings/components/currency-settings';
+import EmailNotificationSettings from '@pages/settings/components/email-notification-settings';
+import SlackNotificationSettings from '@pages/settings/components/slack-notification-settings';
+import TwilioNotificationSettings from '@pages/settings/components/twilio-notification-settings';
 
-import BrandSettings from './components/brand-settings';
-import EmailSettings from './components/email-settings';
-import PaymentSettings from './components/payment-settings';
+import BrandSettings from '@pages/settings/components/brand-settings';
+import EmailSettings from '@pages/settings/components/email-settings';
+import PaymentSettings from '@pages/settings/components/payment-settings';
 
-import CacheSettings from './components/cache-settings';
-import ChatGptSettings from './components/chatgpt-settings';
-import CookieSettings from './components/cookie-settings';
-import GoogleCalendarSettings from './components/google-calendar-settings';
-import InvoiceTemplateSettings from './components/invoice-template-settings';
-import QuoteTemplateSettings from './components/quote-template-settings';
-import RecaptchaSettings from './components/recaptcha-settings';
-import SalesOrderTemplateSettings from './components/sales-order-template-settings';
-import SeoSettings from './components/seo-settings';
-import WebhookSettings from './components/webhook-settings';
+import CacheSettings from '@pages/settings/components/cache-settings';
+import ChatGptSettings from '@pages/settings/components/chatgpt-settings';
+import CookieSettings from '@pages/settings/components/cookie-settings';
+import GoogleCalendarSettings from '@pages/settings/components/google-calendar-settings';
+import InvoiceTemplateSettings from '@pages/settings/components/invoice-template-settings';
+import QuoteTemplateSettings from '@pages/settings/components/quote-template-settings';
+import RecaptchaSettings from '@pages/settings/components/recaptcha-settings';
+import SalesOrderTemplateSettings from '@pages/settings/components/sales-order-template-settings';
+import SeoSettings from '@pages/settings/components/seo-settings';
+import WebhookSettings from '@pages/settings/components/webhook-settings';
 
 import { Toaster } from '@/components/ui/toaster';
 import { useLayout } from '@/contexts/LayoutContext';
 import { hasPermission, hasRole } from '@/utils/authorization';
 import { useTranslation } from 'react-i18next';
-import StorageSettings from './components/storage-settings';
+import StorageSettings from '@pages/settings/components/storage-settings';
 
 export default function Settings() {
     const { t } = useTranslation();

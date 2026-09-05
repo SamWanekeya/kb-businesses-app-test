@@ -4,10 +4,6 @@ import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BankTransferForm } from './bank-transfer-form';
-import { MercadopagoPaymentForm } from './mercadopago-payment-form';
-import { PaypalPaymentForm } from './paypal-payment-form';
-import { RazorpayPaymentForm } from './razorpay-payment-form';
-import { StripePaymentForm } from './stripe-payment-form';
 
 interface PaymentMethod {
     id: string;
@@ -126,17 +122,17 @@ export function PaymentFormWrapper({ planId, planPrice, couponCode = '', billing
         };
 
         switch (selectedMethod) {
-            case 'stripe':
-                return <StripePaymentForm {...commonProps} stripeKey={method.config.key} />;
-
-            case 'razorpay':
-                return <RazorpayPaymentForm {...commonProps} razorpayKey={method.config.key} />;
-
-            case 'paypal':
-                return <PaypalPaymentForm {...commonProps} paypalConfig={method.config} />;
-
-            case 'mercadopago':
-                return <MercadopagoPaymentForm {...commonProps} mercadopagoConfig={method.config} />;
+            // case 'stripe':
+            //     return <StripePaymentForm {...commonProps} stripeKey={method.config.key} />;
+            //
+            // case 'razorpay':
+            //     return <RazorpayPaymentForm {...commonProps} razorpayKey={method.config.key} />;
+            //
+            // case 'paypal':
+            //     return <PaypalPaymentForm {...commonProps} paypalConfig={method.config} />;
+            //
+            // case 'mercadopago':
+            //     return <MercadopagoPaymentForm {...commonProps} mercadopagoConfig={method.config} />;
 
             case 'bank':
                 return <BankTransferForm {...commonProps} bankDetails={method.config.details} />;

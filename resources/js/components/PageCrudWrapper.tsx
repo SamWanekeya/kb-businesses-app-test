@@ -10,9 +10,9 @@ import { router, usePage } from '@inertiajs/react';
 import { PlusIcon } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CrudDeleteModal } from './CrudDeleteModal';
-import { CrudFormModal } from './CrudFormModal';
-import { CrudTable } from './CrudTable';
+import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import { CrudFormModal } from '@components/CrudFormModal';
+import { CrudTable } from '@components/CrudTable';
 
 export interface CrudButton {
     label: string;

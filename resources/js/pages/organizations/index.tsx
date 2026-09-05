@@ -20,7 +20,7 @@ import { router, usePage } from '@inertiajs/react';
 import { ArrowUpRight, Calendar, CreditCard, Edit, History, Info, KeyRound, Lock, Plus, Trash2, Unlock } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import ViewPopup from './view';
+import ViewPopup from '@pages/organizations/view';
 
 export default function Organizations() {
     const { t } = useTranslation();

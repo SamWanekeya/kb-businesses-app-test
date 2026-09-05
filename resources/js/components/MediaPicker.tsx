@@ -1,9 +1,9 @@
 import { File, FileText, Image as ImageIcon, Trash2, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import MediaLibraryModal from './MediaLibraryModal';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
+import { Button } from '@components/ui/button';
+import { Input } from '@components/ui/input';
+import { Label } from '@components/ui/label';
+import MediaLibraryModal from '@components/MediaLibraryModal';
 
 interface MediaPickerProps {
     label?: string;

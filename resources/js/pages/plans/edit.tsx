@@ -1,4 +1,4 @@
-import PlanForm from './form';
+import PlanForm from '@pages/plans/form';
 
 interface Plan {
     id: number;

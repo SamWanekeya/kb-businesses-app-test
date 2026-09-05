@@ -12,7 +12,7 @@ import { router, usePage } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import ViewPopup from './view';
+import ViewPopup from '@pages/currencies/view';
 
 export default function Currencies() {
     const { t } = useTranslation();

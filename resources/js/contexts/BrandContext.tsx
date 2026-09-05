@@ -2,7 +2,7 @@ import { Appearance, ThemeColor } from '@/hooks/use-appearance';
 import { getCookie, isDemoMode } from '@/utils/cookie-utils';
 import { getDisplayUrl } from '@/utils/helper';
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { LayoutPosition } from './LayoutContext';
+import { LayoutPosition } from '@/contexts/LayoutContext';
 // Default brand settings
 export const DEFAULT_BRAND_SETTINGS: BrandSettings = {
     logoDark: 'logo/logo-dark.png',

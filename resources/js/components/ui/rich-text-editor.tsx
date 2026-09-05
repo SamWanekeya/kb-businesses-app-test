@@ -26,10 +26,11 @@ import {
     Unlink,
 } from 'lucide-react';
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { Button } from './button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './dialog';
-import { Input } from './input';
-import { Separator } from './separator';
+import { Button } from '@components/ui/button';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@components/ui/dialog';
+
+import { Separator } from '@components/ui/separator';
+import { Input } from '@components/ui/input';
 
 interface RichTextEditorProps {
     content?: string;
