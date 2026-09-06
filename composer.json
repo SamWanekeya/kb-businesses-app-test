@@ -20,7 +20,6 @@
         "inertiajs/inertia-laravel": "v3.3.2",
         "iyzico/iyzipay-php": "v2.0.61",
         "lab404/laravel-impersonate": "1.7.8",
-        "larabug/larabug": "3.8.1",
         "laravel/framework": "v13.30.1",
         "laravel/tinker": "v3.0.2",
         "league/flysystem-aws-s3-v3": "3.35.3",

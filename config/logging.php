@@ -137,10 +137,6 @@ return [
             'level' => 'info',
         ],
 
-        'larabug' => [
-            'driver' => 'larabug',
-        ],
-
         'csp' => [
             'driver' => 'single',
             'path' => storage_path('logs/kakbima-csp.log'),
