@@ -5,7 +5,6 @@ import { PageTemplate } from '@/components/page-template';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { hasRole } from '@/utils/authorization';
 import { router, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -118,9 +117,10 @@ export default function LoginHistory() {
     const handleResetFilters = () => {
         router.get(route('sign-in-history.index'));
     };
+    const isSuperAdmin = auth?.user?.type === 'super_admin';
 
     let breadcrumbs = [];
-    if (hasRole('super_admin', auth.roles)) {
+    if (isSuperAdmin) {
         breadcrumbs = [
             { title: t('Dashboard'), href: route('dashboard') },
             { title: t('Organizations'), href: route('organizations.index') },

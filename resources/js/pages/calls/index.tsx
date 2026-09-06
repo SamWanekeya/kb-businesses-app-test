@@ -9,7 +9,7 @@ import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { capitalize } from '@/utils/helper';
 import { router, usePage } from '@inertiajs/react';
 import { Calendar, Plus } from 'lucide-react';
@@ -261,7 +261,7 @@ export default function Calls() {
     };
 
     const pageActions = [];
-    if (hasPermission(permissions, 'create-calls')) {
+    if (useHasPermission('create-calls')) {
         pageActions.push({
             label: t('Add Call'),
             icon: <Plus className="mr-2 h-4 w-4" />,

@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { getDisplayUrl } from '@/utils/helper';
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowLeft, Building2, Calendar, Eye, MapPin, Users } from 'lucide-react';
@@ -227,7 +227,7 @@ export default function MeetingShow() {
                                         <h3 className="text-base font-semibold">{t('Related To')}</h3>
                                     </div>
                                     <div className="p-4">
-                                        {hasPermission(permissions, viewRoute) ? (
+                                        {useHasPermission(viewRoute) ? (
                                             <Link
                                                 href={route(recordRoute, meeting.parent_id)}
                                                 className="hover:bg-muted/40 flex items-center justify-between rounded-lg border p-2.5 transition-colors"

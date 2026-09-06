@@ -2,7 +2,7 @@ import { toast } from '@/components/custom-toast';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
 import { router } from '@inertiajs/react';
 import { Calendar, Edit, Eye, MoreHorizontal, Plus, Trash2, User } from 'lucide-react';
@@ -69,7 +69,7 @@ export const ProjectTaskKanbanBoard: React.FC<ProjectTaskKanbanBoardProps> = ({
             return;
         }
 
-        if (!hasPermission(permissions, 'edit-project-tasks')) {
+        if (!useHasPermission('edit-project-tasks')) {
             toast.error(t('Permission denied.'));
             return;
         }
@@ -142,20 +142,20 @@ export const ProjectTaskKanbanBoard: React.FC<ProjectTaskKanbanBoardProps> = ({
     const renderTaskActions = (task: ProjectTask) => {
         return (
             <DropdownMenuContent align="end" className="z-50 w-48" sideOffset={5}>
-                {hasPermission(permissions, 'view-project-tasks') && (
+                {useHasPermission('view-project-tasks') && (
                     <DropdownMenuItem onClick={() => onItemAction('view', task)}>
                         <Eye className="mr-2 h-4 w-4" />
                         <span>{t('View Task')}</span>
                     </DropdownMenuItem>
                 )}
-                {hasPermission(permissions, 'edit-project-tasks') && (
+                {useHasPermission('edit-project-tasks') && (
                     <DropdownMenuItem onClick={() => onItemAction('edit', task)}>
                         <Edit className="mr-2 h-4 w-4" />
                         <span>{t('Edit')}</span>
                     </DropdownMenuItem>
                 )}
                 <DropdownMenuSeparator />
-                {hasPermission(permissions, 'delete-project-tasks') && (
+                {useHasPermission('delete-project-tasks') && (
                     <DropdownMenuItem onClick={() => onItemAction('delete', task)} className="text-red-600">
                         <Trash2 className="mr-2 h-4 w-4" />
                         <span>{t('Delete')}</span>
@@ -182,7 +182,7 @@ export const ProjectTaskKanbanBoard: React.FC<ProjectTaskKanbanBoardProps> = ({
                                             {kanbanData[status.id]?.tasks?.length || 0}
                                         </span>
                                     </div>
-                                    {hasPermission(permissions, 'create-project-tasks') && (
+                                    {useHasPermission('create-project-tasks') && (
                                         <Button variant="ghost" size="sm" className="h-7 w-full text-xs" onClick={() => onAddTask(status.id)}>
                                             <Plus className="mr-1 h-3 w-3" />
                                             {t('Add Task')}
@@ -203,7 +203,7 @@ export const ProjectTaskKanbanBoard: React.FC<ProjectTaskKanbanBoardProps> = ({
                                                     key={task.id}
                                                     draggableId={task.id.toString()}
                                                     index={index}
-                                                    isDragDisabled={isLoading || !hasPermission(permissions, 'edit-project-tasks')}
+                                                    isDragDisabled={isLoading || !useHasPermission('edit-project-tasks')}
                                                 >
                                                     {(provided, snapshot) => (
                                                         <Card
@@ -215,7 +215,7 @@ export const ProjectTaskKanbanBoard: React.FC<ProjectTaskKanbanBoardProps> = ({
                                                                     ? 'z-50 scale-105 rotate-2 border-blue-300 bg-white shadow-2xl'
                                                                     : 'hover:scale-[1.02] hover:border-blue-200 hover:shadow-lg'
                                                             } ${isLoading ? 'cursor-not-allowed opacity-50' : ''} ${
-                                                                hasPermission(permissions, 'edit-project-tasks')
+                                                                useHasPermission('edit-project-tasks')
                                                                     ? 'cursor-grab active:cursor-grabbing'
                                                                     : 'cursor-default'
                                                             }`}

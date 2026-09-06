@@ -8,7 +8,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { ChevronDown, ChevronUp, Edit, Lock, Search, Trash2, TrendingUp, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -214,10 +214,10 @@ export default function OpportunityStages() {
         setExpandedDescriptions(next);
     };
 
-    const canCreate = hasPermission(permissions, 'create-opportunity-stages');
-    const canEdit = hasPermission(permissions, 'edit-opportunity-stages');
-    const canDelete = hasPermission(permissions, 'delete-opportunity-stages');
-    const canToggleStatus = hasPermission(permissions, 'toggle-status-opportunity-stages');
+    const canCreate = useHasPermission('create-opportunity-stages');
+    const canEdit = useHasPermission('edit-opportunity-stages');
+    const canDelete = useHasPermission('delete-opportunity-stages');
+    const canToggleStatus = useHasPermission('toggle-status-opportunity-stages');
 
     const breadcrumbs = [
         { title: t('Dashboard'), href: route('dashboard') },

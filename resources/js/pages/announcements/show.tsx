@@ -3,7 +3,7 @@ import { toast } from '@/components/custom-toast';
 import { PageTemplate } from '@/components/page-template';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { Head, router, usePage } from '@inertiajs/react';
 import { ArrowLeft, CalendarDays, Star, Trash2 } from 'lucide-react';
 import { useState } from 'react';
@@ -45,7 +45,7 @@ export default function AnnouncementShow() {
 
     const pageActions = [];
 
-    if (hasPermission(permissions, 'delete-announcements')) {
+    if (useHasPermission('delete-announcements')) {
         pageActions.push({
             label: t('Delete'),
             icon: <Trash2 className="mr-2 h-4 w-4" />,

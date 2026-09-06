@@ -10,7 +10,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { ArrowRight, Calendar, Edit, Eye, ListChecks, Lock, MoreHorizontal, Plus, Trash2, TrendingUp, Wallet } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -210,7 +210,7 @@ export default function Campaigns() {
     const pageActions = [];
 
     // Add the "Add Campaign" button if user has permission
-    if (hasPermission(permissions, 'create-campaigns')) {
+    if (useHasPermission('create-campaigns')) {
         pageActions.push({
             label: t('Add Campaign'),
             icon: <Plus className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
@@ -576,26 +576,26 @@ export default function Campaigns() {
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end" className="z-50 w-45" sideOffset={5}>
-                                                    {hasPermission(permissions, 'view-campaigns') && (
+                                                    {useHasPermission('view-campaigns') && (
                                                         <DropdownMenuItem onClick={() => router.visit(route('campaigns.show', campaign.id))}>
                                                             <Eye className="mr-2 h-4 w-4" />
                                                             <span>{t('View Campaign')}</span>
                                                         </DropdownMenuItem>
                                                     )}
-                                                    {hasPermission(permissions, 'toggle-status-campaigns') && (
+                                                    {useHasPermission('toggle-status-campaigns') && (
                                                         <DropdownMenuItem onClick={() => handleAction('toggle-status', campaign)}>
                                                             <Lock className="mr-2 h-4 w-4" />
                                                             <span>{campaign.status === 'active' ? t('Deactivate') : t('Activate')}</span>
                                                         </DropdownMenuItem>
                                                     )}
-                                                    {hasPermission(permissions, 'edit-campaigns') && (
+                                                    {useHasPermission('edit-campaigns') && (
                                                         <DropdownMenuItem onClick={() => router.visit(route('campaigns.edit', campaign.id))}>
                                                             <Edit className="mr-2 h-4 w-4" />
                                                             <span>{t('Edit')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     <DropdownMenuSeparator />
-                                                    {hasPermission(permissions, 'delete-campaigns') && (
+                                                    {useHasPermission('delete-campaigns') && (
                                                         <DropdownMenuItem onClick={() => handleAction('delete', campaign)} className="text-rose-600">
                                                             <Trash2 className="mr-2 h-4 w-4" />
                                                             <span>{t('Delete')}</span>

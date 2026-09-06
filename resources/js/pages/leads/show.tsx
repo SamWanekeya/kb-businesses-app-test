@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { formatRelativeTime } from '@/utils/helper';
 import { Link, router, usePage } from '@inertiajs/react';
 import {
@@ -336,7 +336,7 @@ export default function LeadShow() {
                                                 </span>
                                             </p>
                                         </div>
-                                        {hasPermission(permissions, 'view-campaigns') && (
+                                        {useHasPermission('view-campaigns') && (
                                             <TooltipProvider delayDuration={200}>
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
@@ -398,7 +398,7 @@ export default function LeadShow() {
                                                         {account.email && <p className="text-muted-foreground truncate text-xs">{account.email}</p>}
                                                     </div>
                                                 </div>
-                                                {hasPermission(permissions, 'view-accounts') && (
+                                                {useHasPermission('view-accounts') && (
                                                     <TooltipProvider delayDuration={200}>
                                                         <Tooltip>
                                                             <TooltipTrigger asChild>
@@ -455,7 +455,7 @@ export default function LeadShow() {
                                                         {contact.email && <p className="text-muted-foreground truncate text-xs">{contact.email}</p>}
                                                     </div>
                                                 </div>
-                                                {hasPermission(permissions, 'view-contacts') && (
+                                                {useHasPermission('view-contacts') && (
                                                     <TooltipProvider delayDuration={200}>
                                                         <Tooltip>
                                                             <TooltipTrigger asChild>
@@ -561,7 +561,7 @@ export default function LeadShow() {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                {hasPermission(permissions, 'view-meetings') && (
+                                                                {useHasPermission('view-meetings') && (
                                                                     <TooltipProvider delayDuration={200}>
                                                                         <Tooltip>
                                                                             <TooltipTrigger asChild>
@@ -645,7 +645,7 @@ export default function LeadShow() {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                {hasPermission(permissions, 'view-calls') && (
+                                                                {useHasPermission('view-calls') && (
                                                                     <TooltipProvider delayDuration={200}>
                                                                         <Tooltip>
                                                                             <TooltipTrigger asChild>
@@ -674,7 +674,7 @@ export default function LeadShow() {
                     })()}
 
                 {/* Activity Stream - Full Width */}
-                {hasPermission(permissions, 'view-stream') && (
+                {useHasPermission('view-stream') && (
                     <Card className="shadow-sm">
                         <CardHeader className="border-b">
                             <CardTitle className="flex items-center text-lg font-semibold">
@@ -684,7 +684,7 @@ export default function LeadShow() {
                         </CardHeader>
                         <CardContent className="p-0">
                             {/* Add Comment Form */}
-                            {hasPermission(permissions, 'create-leads') && (
+                            {useHasPermission('create-leads') && (
                                 <div className="border-b px-5 pt-4 pb-4">
                                     <form
                                         onSubmit={(e) => {
@@ -820,7 +820,7 @@ export default function LeadShow() {
                                                                 <div className="flex flex-shrink-0 items-center gap-1">
                                                                     {activity.activity_type === 'comment' &&
                                                                         activity.user_id === auth?.user?.id &&
-                                                                        hasPermission(permissions, 'edit-leads') && (
+                                                                        useHasPermission('edit-leads') && (
                                                                             <TooltipProvider delayDuration={200}>
                                                                                 <Tooltip>
                                                                                     <TooltipTrigger asChild>
@@ -842,7 +842,7 @@ export default function LeadShow() {
                                                                                 </Tooltip>
                                                                             </TooltipProvider>
                                                                         )}
-                                                                    {hasPermission(permissions, 'delete-stream') && (
+                                                                    {useHasPermission('delete-stream') && (
                                                                         <TooltipProvider delayDuration={200}>
                                                                             <Tooltip>
                                                                                 <TooltipTrigger asChild>

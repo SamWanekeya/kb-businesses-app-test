@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
 import { Edit, Eye, MoreHorizontal, Trash2, User } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
@@ -246,7 +246,7 @@ export const OpportunityKanbanBoard: React.FC<OpportunityKanbanBoardProps> = ({
                                                                             </Button>
                                                                         </DropdownMenuTrigger>
                                                                         <DropdownMenuContent align="end" className="z-50 w-48" sideOffset={5}>
-                                                                            {hasPermission(permissions, 'view-opportunities') && (
+                                                                            {useHasPermission('view-opportunities') && (
                                                                                 <DropdownMenuItem
                                                                                     onClick={() => onOpportunityAction('view', opportunity)}
                                                                                 >
@@ -254,7 +254,7 @@ export const OpportunityKanbanBoard: React.FC<OpportunityKanbanBoardProps> = ({
                                                                                     <span>{t('View Opportunity')}</span>
                                                                                 </DropdownMenuItem>
                                                                             )}
-                                                                            {hasPermission(permissions, 'edit-opportunities') && (
+                                                                            {useHasPermission('edit-opportunities') && (
                                                                                 <DropdownMenuItem
                                                                                     onClick={() => onOpportunityAction('edit', opportunity)}
                                                                                 >
@@ -262,7 +262,7 @@ export const OpportunityKanbanBoard: React.FC<OpportunityKanbanBoardProps> = ({
                                                                                     <span>{t('Edit')}</span>
                                                                                 </DropdownMenuItem>
                                                                             )}
-                                                                            {hasPermission(permissions, 'delete-opportunities') && (
+                                                                            {useHasPermission('delete-opportunities') && (
                                                                                 <DropdownMenuItem
                                                                                     onClick={() => onOpportunityAction('delete', opportunity)}
                                                                                     className="text-red-600"

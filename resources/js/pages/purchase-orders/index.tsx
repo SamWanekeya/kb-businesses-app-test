@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { Link, router, usePage } from '@inertiajs/react';
 import { FileDown, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -194,7 +194,7 @@ export default function PurchaseOrders() {
 
     const pageActions = [];
 
-    if (hasPermission(permissions, 'export-purchase-orders')) {
+    if (useHasPermission('export-purchase-orders')) {
         pageActions.push({
             label: t('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
@@ -207,7 +207,7 @@ export default function PurchaseOrders() {
         });
     }
 
-    if (hasPermission(permissions, 'create-purchase-orders')) {
+    if (useHasPermission('create-purchase-orders')) {
         pageActions.push({
             label: t('Add Purchase Order'),
             icon: <Plus className="mr-0 h-4 w-4 min-[500px]:mr-2" />,

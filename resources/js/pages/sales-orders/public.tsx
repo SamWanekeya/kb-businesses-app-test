@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { Head, usePage } from '@inertiajs/react';
 import { Calendar, Check, Clock, Copy, DollarSign, MessageCircle, Package, Printer, Truck, User } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -260,7 +260,7 @@ export default function PublicSalesOrder({
                             <p className="mt-1 text-gray-600">{t('View your sales order')}</p>
                         </div>
                         <div className="flex flex-wrap gap-3">
-                            {hasPermission(permissions, 'view-sales-orders') && (
+                            {useHasPermission('view-sales-orders') && (
                                 <button
                                     onClick={copySalesOrderLink}
                                     className="inline-flex cursor-pointer items-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-md"

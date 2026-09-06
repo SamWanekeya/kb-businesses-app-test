@@ -9,7 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { Calendar, Edit, Eye, MoreHorizontal, NotebookPen, Plus, Share2, Trash2, User, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -158,7 +158,7 @@ export default function Notes() {
             title={t('Notes')}
             description={t('Manage your personal and shared notes')}
             actions={
-                hasPermission(permissions, 'create-notes')
+                useHasPermission('create-notes')
                     ? [
                           {
                               label: t('Add Note'),
@@ -299,19 +299,19 @@ export default function Notes() {
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
-                                                    {hasPermission(permissions, 'view-notes') && (
+                                                    {useHasPermission('view-notes') && (
                                                         <DropdownMenuItem onClick={() => handleAction('view', note)}>
                                                             <Eye className="mr-2 h-4 w-4" />
                                                             {t('View')}
                                                         </DropdownMenuItem>
                                                     )}
-                                                    {hasPermission(permissions, 'edit-notes') && note.created_by === auth.user.id && (
+                                                    {useHasPermission('edit-notes') && note.created_by === auth.user.id && (
                                                         <DropdownMenuItem onClick={() => handleAction('edit', note)}>
                                                             <Edit className="mr-2 h-4 w-4" />
                                                             {t('Edit')}
                                                         </DropdownMenuItem>
                                                     )}
-                                                    {hasPermission(permissions, 'delete-notes') && note.created_by === auth.user.id && (
+                                                    {useHasPermission('delete-notes') && note.created_by === auth.user.id && (
                                                         <>
                                                             <DropdownMenuSeparator />
                                                             <DropdownMenuItem onClick={() => handleAction('delete', note)} className="text-red-600">
@@ -352,19 +352,19 @@ export default function Notes() {
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
-                                                    {hasPermission(permissions, 'view-notes') && (
+                                                    {useHasPermission('view-notes') && (
                                                         <DropdownMenuItem onClick={() => handleAction('view', note)}>
                                                             <Eye className="mr-2 h-4 w-4 text-gray-500" />
                                                             {t('View')}
                                                         </DropdownMenuItem>
                                                     )}
-                                                    {hasPermission(permissions, 'edit-notes') && note.created_by === auth.user.id && (
+                                                    {useHasPermission('edit-notes') && note.created_by === auth.user.id && (
                                                         <DropdownMenuItem onClick={() => handleAction('edit', note)}>
                                                             <Edit className="mr-2 h-4 w-4 text-gray-500" />
                                                             {t('Edit')}
                                                         </DropdownMenuItem>
                                                     )}
-                                                    {hasPermission(permissions, 'delete-notes') && note.created_by === auth.user.id && (
+                                                    {useHasPermission('delete-notes') && note.created_by === auth.user.id && (
                                                         <>
                                                             <DropdownMenuSeparator />
                                                             <DropdownMenuItem onClick={() => handleAction('delete', note)} className="text-red-600">
@@ -435,7 +435,7 @@ export default function Notes() {
                                             dangerouslySetInnerHTML={{ __html: note.content || t('No content') }}
                                         />
                                         <div className="flex justify-end gap-1 border-t pt-3">
-                                            {hasPermission(permissions, 'view-notes') && (
+                                            {useHasPermission('view-notes') && (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
                                                         <Button
@@ -450,7 +450,7 @@ export default function Notes() {
                                                     <TooltipContent>{t('View')}</TooltipContent>
                                                 </Tooltip>
                                             )}
-                                            {hasPermission(permissions, 'edit-notes') && note.created_by === auth.user.id && (
+                                            {useHasPermission('edit-notes') && note.created_by === auth.user.id && (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
                                                         <Button
@@ -465,7 +465,7 @@ export default function Notes() {
                                                     <TooltipContent>{t('Edit')}</TooltipContent>
                                                 </Tooltip>
                                             )}
-                                            {hasPermission(permissions, 'delete-notes') && note.created_by === auth.user.id && (
+                                            {useHasPermission('delete-notes') && note.created_by === auth.user.id && (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
                                                         <Button
@@ -525,7 +525,7 @@ export default function Notes() {
                                             dangerouslySetInnerHTML={{ __html: note.content || t('No content') }}
                                         />
                                         <div className="flex justify-end gap-1 border-t pt-3">
-                                            {hasPermission(permissions, 'view-notes') && (
+                                            {useHasPermission('view-notes') && (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
                                                         <Button
@@ -540,7 +540,7 @@ export default function Notes() {
                                                     <TooltipContent>{t('View')}</TooltipContent>
                                                 </Tooltip>
                                             )}
-                                            {hasPermission(permissions, 'edit-notes') && note.created_by === auth.user.id && (
+                                            {useHasPermission('edit-notes') && note.created_by === auth.user.id && (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
                                                         <Button
@@ -555,7 +555,7 @@ export default function Notes() {
                                                     <TooltipContent>{t('Edit')}</TooltipContent>
                                                 </Tooltip>
                                             )}
-                                            {hasPermission(permissions, 'delete-notes') && note.created_by === auth.user.id && (
+                                            {useHasPermission('delete-notes') && note.created_by === auth.user.id && (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
                                                         <Button

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { Draggable } from '@hello-pangea/dnd';
 import { Building2, Edit, Eye, MoreHorizontal, Trash2, User, Users } from 'lucide-react';
 import React from 'react';
@@ -98,19 +98,19 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({ lead, index, onLeadActio
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end" className="z-50 w-48" sideOffset={5}>
-                                    {hasPermission(permissions, 'view-leads') && (
+                                    {useHasPermission('view-leads') && (
                                         <DropdownMenuItem onClick={() => onLeadAction('view', lead)}>
                                             <Eye className="mr-2 h-4 w-4" />
                                             <span>{t('View Lead')}</span>
                                         </DropdownMenuItem>
                                     )}
-                                    {hasPermission(permissions, 'edit-leads') && (
+                                    {useHasPermission('edit-leads') && (
                                         <DropdownMenuItem onClick={() => onLeadAction('edit', lead)}>
                                             <Edit className="mr-2 h-4 w-4" />
                                             <span>{t('Edit')}</span>
                                         </DropdownMenuItem>
                                     )}
-                                    {hasPermission(permissions, 'convert-leads') && (
+                                    {useHasPermission('convert-leads') && (
                                         <>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem onClick={() => onLeadAction('convert-to-account', lead)} className="text-green-600">
@@ -124,7 +124,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({ lead, index, onLeadActio
                                         </>
                                     )}
                                     <DropdownMenuSeparator />
-                                    {hasPermission(permissions, 'delete-leads') && (
+                                    {useHasPermission('delete-leads') && (
                                         <DropdownMenuItem onClick={() => onLeadAction('delete', lead)} className="text-red-600">
                                             <Trash2 className="mr-2 h-4 w-4" />
                                             <span>{t('Delete')}</span>

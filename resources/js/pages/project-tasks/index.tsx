@@ -9,7 +9,7 @@ import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { Calendar, Edit, Eye, FileDown, LayoutGrid, MoreHorizontal, Plus, Trash2, User } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -241,7 +241,7 @@ export default function ProjectTasks() {
 
     const pageActions: any[] = [];
 
-    if (hasPermission(permissions, 'export-project-tasks')) {
+    if (useHasPermission('export-project-tasks')) {
         pageActions.push({
             label: t('Export'),
             icon: <FileDown className="min-[390px]: mr-0 mr-2 h-4 w-4" />,
@@ -254,7 +254,7 @@ export default function ProjectTasks() {
         });
     }
 
-    if (hasPermission(permissions, 'create-project-tasks')) {
+    if (useHasPermission('create-project-tasks')) {
         pageActions.push({
             label: t('Add Task'),
             icon: <Plus className="mr-0 h-4 w-4 min-[390px]:mr-2" />,
@@ -375,7 +375,7 @@ export default function ProjectTasks() {
                                     {t('Set up task statuses to start organizing your work in a Kanban board.')}
                                 </p>
                             </div>
-                            {hasPermission(permissions, 'manage-task-statuses') && (
+                            {useHasPermission('manage-task-statuses') && (
                                 <button
                                     onClick={() => router.visit(route('task-statuses.index'))}
                                     className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
@@ -401,7 +401,7 @@ export default function ProjectTasks() {
                                     e.preventDefault();
                                     const taskId = e.dataTransfer.getData('taskId');
                                     if (!taskId) return;
-                                    if (!hasPermission(permissions, 'move-project-task')) {
+                                    if (!useHasPermission('move-project-task')) {
                                         toast.error(t('Permission denied.'));
                                         return;
                                     }
@@ -438,7 +438,7 @@ export default function ProjectTasks() {
                                             {statusTasks.length}
                                         </span>
                                     </div>
-                                    {hasPermission(permissions, 'create-project-tasks') && (
+                                    {useHasPermission('create-project-tasks') && (
                                         <button
                                             onClick={() => handleAddTask(status.id.toString())}
                                             className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-white/60 hover:text-gray-800"
@@ -462,9 +462,9 @@ export default function ProjectTasks() {
                                         statusTasks.map((task: any) => (
                                             <div
                                                 key={task.id}
-                                                draggable={hasPermission(permissions, 'move-project-task')}
+                                                draggable={useHasPermission('move-project-task')}
                                                 onDragStart={(e) => {
-                                                    if (!hasPermission(permissions, 'move-project-task')) {
+                                                    if (!useHasPermission('move-project-task')) {
                                                         e.preventDefault();
                                                         return;
                                                     }
@@ -473,7 +473,7 @@ export default function ProjectTasks() {
                                                 }}
                                                 onDragEnd={(e) => e.currentTarget.classList.remove('opacity-50')}
                                                 className={
-                                                    hasPermission(permissions, 'move-project-task') ? 'cursor-grab active:cursor-grabbing' : ''
+                                                    useHasPermission('move-project-task') ? 'cursor-grab active:cursor-grabbing' : ''
                                                 }
                                             >
                                                 <div className="rounded-lg border border-gray-100 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
@@ -491,9 +491,9 @@ export default function ProjectTasks() {
                                                                     <p className="mt-0.5 truncate text-xs text-gray-500">{task.project.name}</p>
                                                                 )}
                                                             </div>
-                                                            {(hasPermission(permissions, 'view-project-tasks') ||
-                                                                hasPermission(permissions, 'edit-project-tasks') ||
-                                                                hasPermission(permissions, 'delete-project-tasks')) && (
+                                                            {(useHasPermission('view-project-tasks') ||
+                                                                useHasPermission('edit-project-tasks') ||
+                                                                useHasPermission('delete-project-tasks')) && (
                                                                 <DropdownMenu>
                                                                     <DropdownMenuTrigger asChild>
                                                                         <Button
@@ -505,19 +505,19 @@ export default function ProjectTasks() {
                                                                         </Button>
                                                                     </DropdownMenuTrigger>
                                                                     <DropdownMenuContent align="end" className="w-32">
-                                                                        {hasPermission(permissions, 'view-project-tasks') && (
+                                                                        {useHasPermission('view-project-tasks') && (
                                                                             <DropdownMenuItem onClick={() => handleAction('view', task)}>
                                                                                 <Eye className="mr-2 h-4 w-4" />
                                                                                 {t('View')}
                                                                             </DropdownMenuItem>
                                                                         )}
-                                                                        {hasPermission(permissions, 'edit-project-tasks') && (
+                                                                        {useHasPermission('edit-project-tasks') && (
                                                                             <DropdownMenuItem onClick={() => handleAction('edit', task)}>
                                                                                 <Edit className="mr-2 h-4 w-4" />
                                                                                 {t('Edit')}
                                                                             </DropdownMenuItem>
                                                                         )}
-                                                                        {hasPermission(permissions, 'delete-project-tasks') && (
+                                                                        {useHasPermission('delete-project-tasks') && (
                                                                             <>
                                                                                 <DropdownMenuSeparator />
                                                                                 <DropdownMenuItem
@@ -612,7 +612,7 @@ export default function ProjectTasks() {
                 onClose={() => setIsFormModalOpen(false)}
                 onSubmit={handleFormSubmit}
                 formConfig={{
-                    ...(hasPermission(permissions, 'export-project-tasks') && { exportRoute: 'project-task.export' }),
+                    ...(useHasPermission('export-project-tasks') && { exportRoute: 'project-task.export' }),
                     fields: [
                         {
                             name: 'title',

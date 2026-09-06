@@ -2,7 +2,7 @@ import { CrudFormModal } from '@/components/CrudFormModal';
 import { toast } from '@/components/custom-toast';
 import { PageTemplate } from '@/components/page-template';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { ArrowLeft, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -358,7 +358,7 @@ export default function ProjectGantt() {
         },
     ];
 
-    if (hasPermission(permissions, 'create-project-tasks')) {
+    if (useHasPermission('create-project-tasks')) {
         pageActions.unshift({
             label: t('Add Task'),
             icon: <Plus className="mr-0 h-4 w-4 min-[1090px]:mr-2" />,

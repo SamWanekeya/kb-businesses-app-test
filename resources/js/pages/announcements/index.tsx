@@ -5,7 +5,7 @@ import { toast } from '@/components/custom-toast';
 import { PageTemplate } from '@/components/page-template';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { capitalize } from '@/utils/helper';
 import { router, usePage } from '@inertiajs/react';
 import { AlertCircle, CheckCircle, Clock, LayoutGrid, PanelsTopLeft, Plus, Tag } from 'lucide-react';
@@ -266,7 +266,7 @@ export default function Announcements() {
             title={t('Announcements')}
             description={t('Manage announcements.')}
             actions={[
-                ...(hasPermission(permissions, 'manage-announcements')
+                ...(useHasPermission('manage-announcements')
                     ? [
                           {
                               label: t('Dashboard View'),
@@ -279,7 +279,7 @@ export default function Announcements() {
                           },
                       ]
                     : []),
-                ...(hasPermission(permissions, 'create-announcements')
+                ...(useHasPermission('create-announcements')
                     ? [
                           {
                               label: t('Add Announcement'),

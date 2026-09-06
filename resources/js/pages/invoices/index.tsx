@@ -11,7 +11,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Textarea } from '@/components/ui/textarea';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { capitalize, getDisplayUrl } from '@/utils/helper';
 import { Link, router, usePage } from '@inertiajs/react';
 import { Calendar, CheckCircle, FileDown, Plus, XCircle } from 'lucide-react';
@@ -340,7 +340,7 @@ export default function Invoices() {
     const pageActions = [];
 
     // Add export button
-    if (hasPermission(permissions, 'export-invoices')) {
+    if (useHasPermission('export-invoices')) {
         pageActions.push({
             label: t('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
@@ -353,7 +353,7 @@ export default function Invoices() {
         });
     }
 
-    if (hasPermission(permissions, 'create-invoices')) {
+    if (useHasPermission('create-invoices')) {
         pageActions.push({
             label: t('Add Invoice'),
             icon: <Plus className="mr-0 h-4 w-4 min-[400px]:mr-2" />,

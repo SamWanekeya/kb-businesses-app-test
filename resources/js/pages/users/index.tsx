@@ -12,7 +12,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { getDisplayUrl } from '@/utils/helper';
 import { router, usePage } from '@inertiajs/react';
 import { Edit, Eye, History, KeyRound, Lock, Plus, Trash2, Unlock } from 'lucide-react';
@@ -270,7 +270,7 @@ export default function Users() {
     const pageActions = [];
 
     // Add User Logs button
-    if (hasPermission(permissions, 'manage-sign-in-history')) {
+    if (useHasPermission('manage-sign-in-history')) {
         pageActions.push({
             icon: <History className="mx-auto h-4 w-4" />,
             variant: 'outline',
@@ -280,7 +280,7 @@ export default function Users() {
     }
 
     // Add the "Add New User" button if user has permission and within limits
-    if (hasPermission(permissions, 'create-users')) {
+    if (useHasPermission('create-users')) {
         const canCreate = !planLimits || planLimits.can_create;
         pageActions.push({
             label:
@@ -537,7 +537,7 @@ export default function Users() {
                                     {/* Bottom: Actions + Role badge */}
                                     <div className="flex flex-wrap items-center justify-between gap-2">
                                         <div className="flex items-center gap-1">
-                                            {hasPermission(permissions, 'view-users') && (
+                                            {useHasPermission('view-users') && (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
                                                         <Button
@@ -552,7 +552,7 @@ export default function Users() {
                                                     <TooltipContent>{t('View')}</TooltipContent>
                                                 </Tooltip>
                                             )}
-                                            {hasPermission(permissions, 'edit-users') && (
+                                            {useHasPermission('edit-users') && (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
                                                         <Button
@@ -567,7 +567,7 @@ export default function Users() {
                                                     <TooltipContent>{t('Edit')}</TooltipContent>
                                                 </Tooltip>
                                             )}
-                                            {hasPermission(permissions, 'reset-password-users') && (
+                                            {useHasPermission('reset-password-users') && (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
                                                         <Button
@@ -582,7 +582,7 @@ export default function Users() {
                                                     <TooltipContent>{t('Reset Password')}</TooltipContent>
                                                 </Tooltip>
                                             )}
-                                            {hasPermission(permissions, 'toggle-status-users') && (
+                                            {useHasPermission('toggle-status-users') && (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
                                                         <Button
@@ -601,7 +601,7 @@ export default function Users() {
                                                     <TooltipContent>{user.status === 'active' ? t('Disable User') : t('Enable User')}</TooltipContent>
                                                 </Tooltip>
                                             )}
-                                            {hasPermission(permissions, 'delete-users') && (
+                                            {useHasPermission('delete-users') && (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
                                                         <Button
@@ -649,7 +649,7 @@ export default function Users() {
                                 </div>
                                 <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{t('No users found')}</h3>
                                 <p className="mb-6 text-gray-500 dark:text-gray-400">{t('Get started by creating your first user')}</p>
-                                {hasPermission(permissions, 'create-users') && (
+                                {useHasPermission('create-users') && (
                                     <Button onClick={handleAddNew}>
                                         <Plus className="mr-2 h-4 w-4" />
                                         {t('Add User')}

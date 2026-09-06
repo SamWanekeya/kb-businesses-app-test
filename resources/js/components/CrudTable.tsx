@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import { TableAction, TableColumn } from '@/types/crud';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { Link } from '@inertiajs/react';
 import * as LucidIcons from 'lucide-react';
 import { ChevronDown, ChevronUp, ChevronsUpDown } from 'lucide-react';
@@ -72,7 +72,7 @@ export function CrudTable({
                         ? entityPermissions.delete
                         : action.permission));
 
-        return !permissionKey || hasPermission(permissions, permissionKey);
+        return !permissionKey || useHasPermission(permissionKey);
     });
 
     const renderActionButtons = (row: any) => {
@@ -91,7 +91,7 @@ export function CrudTable({
                                     ? entityPermissions.delete
                                     : action.permission));
 
-                    if (permissionKey && !hasPermission(permissions, permissionKey)) {
+                    if (permissionKey && !useHasPermission(permissionKey)) {
                         return null;
                     }
 

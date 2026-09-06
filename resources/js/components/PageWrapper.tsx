@@ -1,7 +1,7 @@
 // components/PageWrapper.tsx
 import { PageAction, PageTemplate } from '@/components/page-template';
 import { BreadcrumbItem } from '@/types';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { usePage } from '@inertiajs/react';
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -36,7 +36,7 @@ export function PageWrapper({ title, url, description, buttons = [], children, b
 
     // Filter buttons based on permissions
     const filteredActions: PageAction[] = buttons
-        .filter((button) => !button.permission || hasPermission(permissions, button.permission))
+        .filter((button) => !button.permission || useHasPermission(button.permission))
         .map((button) => ({
             label: button.label,
             icon: button.icon,

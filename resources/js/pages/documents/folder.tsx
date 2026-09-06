@@ -8,7 +8,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useBrand } from '@/contexts/BrandContext';
 import { THEME_COLORS } from '@/hooks/use-appearance';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import * as LucidIcons from 'lucide-react';
 import {
@@ -202,7 +202,7 @@ export default function DocumentFolderView() {
                 folder.parent_folder?.id ? router.get(route('documents.folder', folder.parent_folder.id)) : router.get(route('documents.index')),
         },
     ];
-    if (hasPermission(permissions, 'create-document-folders')) {
+    if (useHasPermission('create-document-folders')) {
         pageActions.push({
             label: t('Create Folder'),
             icon: <FolderPlus className="mr-0 h-4 w-4 min-[1020px]:mr-2" />,
@@ -218,7 +218,7 @@ export default function DocumentFolderView() {
             },
         });
     }
-    if (hasPermission(permissions, 'create-documents')) {
+    if (useHasPermission('create-documents')) {
         pageActions.push({
             label: t('Upload Document'),
             icon: <Plus className="mr-0 h-4 w-4 min-[1020px]:mr-2" />,
@@ -361,7 +361,7 @@ export default function DocumentFolderView() {
                                         <div
                                             className="hover:border-primary hover:bg-primary/5 dark:hover:bg-primary/10 flex h-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-white p-4 pt-6 pb-5 transition-all duration-150 select-none dark:border-gray-700 dark:bg-gray-800"
                                             onClick={() =>
-                                                hasPermission(permissions, 'view-documents')
+                                                useHasPermission('view-documents')
                                                     ? router.get(route('documents.folder', sf.id))
                                                     : toast.error(t('Permission denied.'))
                                             }
@@ -372,8 +372,8 @@ export default function DocumentFolderView() {
                                             </span>
                                         </div>
                                         <div className="absolute top-1.5 right-1.5" onClick={(e) => e.stopPropagation()}>
-                                            {hasPermission(permissions, 'edit-document-folders') ||
-                                            hasPermission(permissions, 'delete-document-folders') ? (
+                                            {useHasPermission('edit-document-folders') ||
+                                            useHasPermission('delete-document-folders') ? (
                                                 <DropdownMenu>
                                                     <DropdownMenuTrigger asChild>
                                                         <Button
@@ -385,7 +385,7 @@ export default function DocumentFolderView() {
                                                         </Button>
                                                     </DropdownMenuTrigger>
                                                     <DropdownMenuContent align="end" className="z-50 w-28">
-                                                        {hasPermission(permissions, 'edit-document-folders') && (
+                                                        {useHasPermission('edit-document-folders') && (
                                                             <DropdownMenuItem
                                                                 onClick={() => {
                                                                     setCurrentSubFolder(sf);
@@ -397,9 +397,9 @@ export default function DocumentFolderView() {
                                                                 {t('Edit')}
                                                             </DropdownMenuItem>
                                                         )}
-                                                        {hasPermission(permissions, 'edit-document-folders') &&
-                                                            hasPermission(permissions, 'delete-document-folders') && <DropdownMenuSeparator />}
-                                                        {hasPermission(permissions, 'delete-document-folders') && (
+                                                        {useHasPermission('edit-document-folders') &&
+                                                            useHasPermission('delete-document-folders') && <DropdownMenuSeparator />}
+                                                        {useHasPermission('delete-document-folders') && (
                                                             <DropdownMenuItem
                                                                 className="text-red-600"
                                                                 onClick={() => {
@@ -435,7 +435,7 @@ export default function DocumentFolderView() {
                                             <div
                                                 className={`flex h-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-white p-4 pt-6 pb-5 transition-all duration-150 select-none dark:border-gray-700 dark:bg-gray-800 ${getDocHoverClasses(doc) ?? ''}`}
                                                 onClick={() =>
-                                                    hasPermission(permissions, 'view-documents')
+                                                    useHasPermission('view-documents')
                                                         ? router.get(route('documents.show', doc.id))
                                                         : toast.error(t('Permission denied.'))
                                                 }
@@ -447,9 +447,9 @@ export default function DocumentFolderView() {
                                                 </span>
                                             </div>
                                             <div className="absolute top-1.5 right-1.5" onClick={(e) => e.stopPropagation()}>
-                                                {hasPermission(permissions, 'view-documents') ||
-                                                hasPermission(permissions, 'edit-documents') ||
-                                                hasPermission(permissions, 'delete-documents') ? (
+                                                {useHasPermission('view-documents') ||
+                                                useHasPermission('edit-documents') ||
+                                                useHasPermission('delete-documents') ? (
                                                     <DropdownMenu>
                                                         <DropdownMenuTrigger asChild>
                                                             <Button
@@ -461,7 +461,7 @@ export default function DocumentFolderView() {
                                                             </Button>
                                                         </DropdownMenuTrigger>
                                                         <DropdownMenuContent align="end" className="z-50 w-28">
-                                                            {hasPermission(permissions, 'view-documents') && doc.attachment_url && (
+                                                            {useHasPermission('view-documents') && doc.attachment_url && (
                                                                 <DropdownMenuItem
                                                                     onClick={() => {
                                                                         const l = document.createElement('a');
@@ -476,7 +476,7 @@ export default function DocumentFolderView() {
                                                                     {t('Download')}
                                                                 </DropdownMenuItem>
                                                             )}
-                                                            {hasPermission(permissions, 'edit-documents') && (
+                                                            {useHasPermission('edit-documents') && (
                                                                 <DropdownMenuItem
                                                                     onClick={() => {
                                                                         setCurrentDoc(doc);
@@ -488,10 +488,10 @@ export default function DocumentFolderView() {
                                                                     {t('Edit')}
                                                                 </DropdownMenuItem>
                                                             )}
-                                                            {(hasPermission(permissions, 'view-documents') ||
-                                                                hasPermission(permissions, 'edit-documents')) &&
-                                                                hasPermission(permissions, 'delete-documents') && <DropdownMenuSeparator />}
-                                                            {hasPermission(permissions, 'delete-documents') && (
+                                                            {(useHasPermission('view-documents') ||
+                                                                useHasPermission('edit-documents')) &&
+                                                                useHasPermission('delete-documents') && <DropdownMenuSeparator />}
+                                                            {useHasPermission('delete-documents') && (
                                                                 <DropdownMenuItem
                                                                     className="text-red-600"
                                                                     onClick={() => {
@@ -542,7 +542,7 @@ export default function DocumentFolderView() {
                                 {t('Folder Details')}
                             </div>
                             <div className="flex items-center gap-1.5">
-                                {hasPermission(permissions, 'edit-document-folders') && (
+                                {useHasPermission('edit-document-folders') && (
                                     <TooltipProvider>
                                         <Tooltip>
                                             <TooltipTrigger asChild>
@@ -561,7 +561,7 @@ export default function DocumentFolderView() {
                                         </Tooltip>
                                     </TooltipProvider>
                                 )}
-                                {hasPermission(permissions, 'delete-document-folders') && (
+                                {useHasPermission('delete-document-folders') && (
                                     <TooltipProvider>
                                         <Tooltip>
                                             <TooltipTrigger asChild>

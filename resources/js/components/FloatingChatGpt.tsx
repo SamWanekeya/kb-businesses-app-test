@@ -15,8 +15,7 @@ export function FloatingChatGpt() {
     const [generatedContent, setGeneratedContent] = useState('');
 
     // Check if user can access ChatGPT
-    const userRole = auth?.roles?.[0] || auth?.user?.type;
-    const isSuperAdmin = userRole === 'super_admin' || auth?.user?.type === 'super_admin';
+    const isSuperAdmin = auth?.user?.type === 'super_admin';
     const isOrganization = auth?.user?.type === 'organization';
 
     let canUseChatGPT = false;

@@ -4,7 +4,7 @@ import { useBrand } from '@/contexts/BrandContext';
 import { useLayout } from '@/contexts/LayoutContext';
 import { useSidebarSettings } from '@/contexts/SidebarContext';
 import { type NavItem } from '@/types';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { getDisplayUrl } from '@/utils/helper';
 import { Link, usePage } from '@inertiajs/react';
 import {
@@ -128,7 +128,7 @@ export function AppSidebar() {
         const items: NavItem[] = [];
 
         // ── 1. Overview ──────────────────────────────────────────────
-        if (hasPermission(permissions, 'manage-dashboard')) {
+        if (useHasPermission('manage-dashboard')) {
             items.push({
                 title: t('Dashboard'),
                 href: route('dashboard'),
@@ -138,9 +138,9 @@ export function AppSidebar() {
         }
 
         if (
-            hasPermission(permissions, 'manage-meetings') ||
-            hasPermission(permissions, 'manage-calls') ||
-            hasPermission(permissions, 'manage-project-tasks')
+            useHasPermission('manage-meetings') ||
+            useHasPermission('manage-calls') ||
+            useHasPermission('manage-project-tasks')
         ) {
             items.push({
                 title: t('Calendar'),
@@ -150,7 +150,7 @@ export function AppSidebar() {
             });
         }
 
-        if (hasPermission(permissions, 'manage-reports')) {
+        if (useHasPermission('manage-reports')) {
             items.push({
                 title: t('Reports'),
                 icon: TrendingUp,
@@ -167,13 +167,13 @@ export function AppSidebar() {
 
         // ── 2. CRM ───────────────────────────────────────────────────
         const leadChildren = [];
-        if (hasPermission(permissions, 'manage-leads')) {
+        if (useHasPermission('manage-leads')) {
             leadChildren.push({ title: t('Leads'), href: route('leads.index') });
         }
-        if (hasPermission(permissions, 'manage-lead-sources')) {
+        if (useHasPermission('manage-lead-sources')) {
             leadChildren.push({ title: t('Lead Sources'), href: route('lead-sources.index') });
         }
-        if (hasPermission(permissions, 'manage-lead-statuses')) {
+        if (useHasPermission('manage-lead-statuses')) {
             leadChildren.push({ title: t('Lead Status'), href: route('lead-statuses.index') });
         }
         if (leadChildren.length > 0) {
@@ -181,13 +181,13 @@ export function AppSidebar() {
         }
 
         const opportunityChildren = [];
-        if (hasPermission(permissions, 'manage-opportunities')) {
+        if (useHasPermission('manage-opportunities')) {
             opportunityChildren.push({ title: t('Opportunities'), href: route('opportunities.index') });
         }
-        if (hasPermission(permissions, 'manage-opportunity-sources')) {
+        if (useHasPermission('manage-opportunity-sources')) {
             opportunityChildren.push({ title: t('Opportunity Sources'), href: route('opportunity-sources.index') });
         }
-        if (hasPermission(permissions, 'manage-opportunity-stages')) {
+        if (useHasPermission('manage-opportunity-stages')) {
             opportunityChildren.push({ title: t('Opportunity Stages'), href: route('opportunity-stages.index') });
         }
         if (opportunityChildren.length > 0) {
@@ -195,60 +195,60 @@ export function AppSidebar() {
         }
 
         const accountChildren = [];
-        if (hasPermission(permissions, 'manage-accounts')) {
+        if (useHasPermission('manage-accounts')) {
             accountChildren.push({ title: t('Accounts'), href: route('accounts.index') });
         }
-        if (hasPermission(permissions, 'manage-account-types')) {
+        if (useHasPermission('manage-account-types')) {
             accountChildren.push({ title: t('Account Types'), href: route('account-types.index') });
         }
-        if (hasPermission(permissions, 'manage-account-industries')) {
+        if (useHasPermission('manage-account-industries')) {
             accountChildren.push({ title: t('Account Industries'), href: route('account-industries.index') });
         }
         if (accountChildren.length > 0) {
             items.push({ title: t('Account Management'), icon: Building2, group: t('CRM'), children: accountChildren });
         }
 
-        if (hasPermission(permissions, 'manage-contacts')) {
+        if (useHasPermission('manage-contacts')) {
             items.push({ title: t('Contacts'), href: route('contacts.index'), icon: Users, group: t('CRM') });
         }
 
         const campaignChildren = [];
-        if (hasPermission(permissions, 'manage-campaigns')) {
+        if (useHasPermission('manage-campaigns')) {
             campaignChildren.push({ title: t('Campaigns'), href: route('campaigns.index') });
         }
-        if (hasPermission(permissions, 'manage-target-lists')) {
+        if (useHasPermission('manage-target-lists')) {
             campaignChildren.push({ title: t('Target Lists'), href: route('target-lists.index') });
         }
-        if (hasPermission(permissions, 'manage-campaign-types')) {
+        if (useHasPermission('manage-campaign-types')) {
             campaignChildren.push({ title: t('Campaign Types'), href: route('campaign-types.index') });
         }
         if (campaignChildren.length > 0) {
             items.push({ title: t('Campaign Management'), icon: Megaphone, group: t('CRM'), children: campaignChildren });
         }
 
-        if (hasPermission(permissions, 'manage-cases')) {
+        if (useHasPermission('manage-cases')) {
             items.push({ title: t('Cases'), href: route('cases.index'), icon: FileText, group: t('CRM') });
         }
 
         // ── 3. Sales ─────────────────────────────────────────────────
-        if (hasPermission(permissions, 'manage-quotes')) {
+        if (useHasPermission('manage-quotes')) {
             items.push({ title: t('Quotes'), href: route('quotes.index'), icon: FileText, group: t('Sales') });
         }
 
-        if (hasPermission(permissions, 'manage-sales-orders')) {
+        if (useHasPermission('manage-sales-orders')) {
             items.push({ title: t('Sales Orders'), href: route('sales-orders.index'), icon: ShoppingBag, group: t('Sales') });
         }
 
-        if (hasPermission(permissions, 'manage-invoices')) {
+        if (useHasPermission('manage-invoices')) {
             items.push({ title: t('Invoices'), href: route('invoices.index'), icon: FileText, group: t('Sales') });
         }
 
-        if (hasPermission(permissions, 'manage-receipt-orders')) {
+        if (useHasPermission('manage-receipt-orders')) {
             items.push({ title: t('Receipt Orders'), href: route('receipt-orders.index'), icon: FileText, group: t('Sales') });
         }
 
         // ── 4. Procurement & Fulfillment ─────────────────────────────
-        if (hasPermission(permissions, 'manage-purchase-orders')) {
+        if (useHasPermission('manage-purchase-orders')) {
             items.push({
                 title: t('Purchase Orders'),
                 href: route('purchase-orders.index'),
@@ -257,15 +257,15 @@ export function AppSidebar() {
             });
         }
 
-        if (hasPermission(permissions, 'manage-delivery-orders')) {
+        if (useHasPermission('manage-delivery-orders')) {
             items.push({ title: t('Delivery Orders'), href: route('delivery-orders.index'), icon: Ticket, group: t('Procurement & Fulfillment') });
         }
 
-        if (hasPermission(permissions, 'manage-return-orders')) {
+        if (useHasPermission('manage-return-orders')) {
             items.push({ title: t('Return Orders'), href: route('return-orders.index'), icon: FileText, group: t('Procurement & Fulfillment') });
         }
 
-        if (hasPermission(permissions, 'manage-shipping-provider-types')) {
+        if (useHasPermission('manage-shipping-provider-types')) {
             items.push({
                 title: t('Shipping Provider Types'),
                 href: route('shipping-provider-types.index'),
@@ -276,16 +276,16 @@ export function AppSidebar() {
 
         // ── 5. Catalog ───────────────────────────────────────────────
         const productSetupChildren = [];
-        if (hasPermission(permissions, 'manage-taxes')) {
+        if (useHasPermission('manage-taxes')) {
             productSetupChildren.push({ title: t('Taxes'), href: route('taxes.index') });
         }
-        if (hasPermission(permissions, 'manage-brands')) {
+        if (useHasPermission('manage-brands')) {
             productSetupChildren.push({ title: t('Brands'), href: route('brands.index') });
         }
-        if (hasPermission(permissions, 'manage-categories')) {
+        if (useHasPermission('manage-categories')) {
             productSetupChildren.push({ title: t('Categories'), href: route('categories.index') });
         }
-        if (hasPermission(permissions, 'manage-products')) {
+        if (useHasPermission('manage-products')) {
             items.push({ title: t('Products'), href: route('products.index'), icon: ShoppingBag, group: t('Catalog') });
         }
         if (productSetupChildren.length > 0) {
@@ -293,27 +293,27 @@ export function AppSidebar() {
         }
 
         // ── 6. Collaboration ─────────────────────────────────────────
-        if (hasPermission(permissions, 'manage-meetings')) {
+        if (useHasPermission('manage-meetings')) {
             items.push({ title: t('Meetings'), href: route('meetings.index'), icon: CalendarDays, group: t('Collaboration') });
         }
 
-        if (hasPermission(permissions, 'manage-calls')) {
+        if (useHasPermission('manage-calls')) {
             items.push({ title: t('Calls'), href: route('calls.index'), icon: Phone, group: t('Collaboration') });
         }
 
-        if (hasPermission(permissions, 'manage-stream')) {
+        if (useHasPermission('manage-stream')) {
             items.push({ title: t('Streams'), href: route('stream.index'), icon: Activity, group: t('Collaboration') });
         }
 
-        if (hasPermission(permissions, 'manage-notes')) {
+        if (useHasPermission('manage-notes')) {
             items.push({ title: t('Notes'), href: route('notes.index'), icon: NotebookPen, group: t('Collaboration') });
         }
 
         const announcementChildren = [];
-        if (hasPermission(permissions, 'manage-announcements')) {
+        if (useHasPermission('manage-announcements')) {
             announcementChildren.push({ title: t('Announcements'), href: route('announcements.index') });
         }
-        if (hasPermission(permissions, 'manage-announcement-categories')) {
+        if (useHasPermission('manage-announcement-categories')) {
             announcementChildren.push({ title: t('Categories'), href: route('announcement-categories.index') });
         }
         if (announcementChildren.length > 0) {
@@ -322,13 +322,13 @@ export function AppSidebar() {
 
         // ── 7. Projects ──────────────────────────────────────────────
         const projectChildren = [];
-        if (hasPermission(permissions, 'manage-projects')) {
+        if (useHasPermission('manage-projects')) {
             projectChildren.push({ title: t('Projects'), href: route('projects.index') });
         }
-        if (hasPermission(permissions, 'manage-project-tasks')) {
+        if (useHasPermission('manage-project-tasks')) {
             projectChildren.push({ title: t('Project Tasks'), href: route('project-tasks.index') });
         }
-        if (hasPermission(permissions, 'manage-task-statuses')) {
+        if (useHasPermission('manage-task-statuses')) {
             projectChildren.push({ title: t('Task Status'), href: route('task-statuses.index') });
         }
         if (projectChildren.length > 0) {
@@ -337,26 +337,26 @@ export function AppSidebar() {
 
         // ── 8. Documents ─────────────────────────────────────────────
         const documentChildren = [];
-        if (hasPermission(permissions, 'manage-documents')) {
+        if (useHasPermission('manage-documents')) {
             documentChildren.push({ title: t('Documents'), href: route('documents.index') });
         }
-        if (hasPermission(permissions, 'manage-document-types')) {
+        if (useHasPermission('manage-document-types')) {
             documentChildren.push({ title: t('Types'), href: route('document-types.index') });
         }
         if (documentChildren.length > 0) {
             items.push({ title: t('Document Management'), icon: Folder, group: t('Documents'), children: documentChildren });
         }
 
-        if (hasPermission(permissions, 'manage-media')) {
+        if (useHasPermission('manage-media')) {
             items.push({ title: t('Media Library'), href: route('media-library'), icon: Image, group: t('Documents') });
         }
 
         // ── 9. System Control ────────────────────────────────────────
         const staffChildren = [];
-        if (hasPermission(permissions, 'manage-users')) {
+        if (useHasPermission('manage-users')) {
             staffChildren.push({ title: t('Users'), href: route('users.index') });
         }
-        if (hasPermission(permissions, 'manage-roles')) {
+        if (useHasPermission('manage-roles')) {
             staffChildren.push({ title: t('Roles'), href: route('roles.index') });
         }
         if (staffChildren.length > 0) {
@@ -364,28 +364,28 @@ export function AppSidebar() {
         }
 
         const planChildren = [];
-        if (hasPermission(permissions, 'manage-plans')) {
+        if (useHasPermission('manage-plans')) {
             planChildren.push({ title: t('Plans'), href: route('plans.index') });
         }
-        if (hasPermission(permissions, 'manage-plan-requests')) {
+        if (useHasPermission('manage-plan-requests')) {
             planChildren.push({ title: t('Plan Requests'), href: route('plan-requests.index') });
         }
-        if (hasPermission(permissions, 'manage-plan-orders')) {
+        if (useHasPermission('manage-plan-orders')) {
             planChildren.push({ title: t('Plan Orders'), href: route('plan-orders.index') });
         }
         if (planChildren.length > 0) {
             items.push({ title: t('Plans'), icon: CreditCard, group: t('System Control'), children: planChildren });
         }
 
-        if (hasPermission(permissions, 'manage-referral')) {
+        if (useHasPermission('manage-referral')) {
             items.push({ title: t('Referral Program'), href: route('referral.index'), icon: Gift, group: t('System Control') });
         }
 
-        if (hasPermission(permissions, 'manage-notification-templates')) {
+        if (useHasPermission('manage-notification-templates')) {
             items.push({ title: t('Notification Templates'), href: route('notification-templates.index'), icon: Mail, group: t('System Control') });
         }
 
-        if (hasPermission(permissions, 'manage-settings')) {
+        if (useHasPermission('manage-settings')) {
             items.push({ title: t('Settings'), href: route('settings'), icon: Settings, group: t('System Control') });
         }
 

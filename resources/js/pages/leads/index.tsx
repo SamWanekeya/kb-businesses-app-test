@@ -12,7 +12,7 @@ import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import * as LucidIcons from 'lucide-react';
 import { Banknote, Building2, Edit, Eye, FileDown, FileUp, MoreHorizontal, Plus, Trash2, User, Users } from 'lucide-react';
@@ -213,7 +213,7 @@ export default function Leads() {
     };
 
     const handleToggleStatus = (lead: any) => {
-        if (!hasPermission(permissions, 'toggle-status-leads')) {
+        if (!useHasPermission('toggle-status-leads')) {
             toast.error(t('Permission denied.'));
             return;
         }
@@ -320,7 +320,7 @@ export default function Leads() {
     const pageActions = [];
 
     // Add export button
-    if (hasPermission(permissions, 'export-leads')) {
+    if (useHasPermission('export-leads')) {
         pageActions.push({
             label: t('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
@@ -334,7 +334,7 @@ export default function Leads() {
     }
 
     // Add import button
-    if (hasPermission(permissions, 'import-leads')) {
+    if (useHasPermission('import-leads')) {
         pageActions.push({
             label: t('Import'),
             icon: <FileUp className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
@@ -348,7 +348,7 @@ export default function Leads() {
     }
 
     // Add the "Add Lead" button if user has permission
-    if (hasPermission(permissions, 'create-leads')) {
+    if (useHasPermission('create-leads')) {
         pageActions.push({
             label: t('Add Lead'),
             icon: <Plus className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
@@ -716,7 +716,7 @@ export default function Leads() {
                                             {t('Set up lead statuses to start organizing your work in a Kanban board.')}
                                         </p>
                                     </div>
-                                    {hasPermission(permissions, 'manage-lead-statuses') && (
+                                    {useHasPermission('manage-lead-statuses') && (
                                         <button
                                             onClick={() => router.visit(route('lead-statuses.index'))}
                                             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
@@ -742,7 +742,7 @@ export default function Leads() {
                                             e.preventDefault();
                                             const leadId = e.dataTransfer.getData('leadId');
                                             if (!leadId) return;
-                                            if (!hasPermission(permissions, 'edit-leads')) {
+                                            if (!useHasPermission('edit-leads')) {
                                                 toast.error(t('Permission denied.'));
                                                 return;
                                             }
@@ -783,7 +783,7 @@ export default function Leads() {
                                                     {statusLeads.length}
                                                 </span>
                                             </div>
-                                            {hasPermission(permissions, 'create-leads') && (
+                                            {useHasPermission('create-leads') && (
                                                 <button
                                                     onClick={() => handleAddLead(status.id.toString())}
                                                     className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-white/60 hover:text-gray-800"
@@ -807,9 +807,9 @@ export default function Leads() {
                                                 statusLeads.map((lead: any) => (
                                                     <div
                                                         key={lead.id}
-                                                        draggable={hasPermission(permissions, 'edit-leads')}
+                                                        draggable={useHasPermission('edit-leads')}
                                                         onDragStart={(e) => {
-                                                            if (!hasPermission(permissions, 'edit-leads')) {
+                                                            if (!useHasPermission('edit-leads')) {
                                                                 e.preventDefault();
                                                                 return;
                                                             }
@@ -818,7 +818,7 @@ export default function Leads() {
                                                         }}
                                                         onDragEnd={(e) => e.currentTarget.classList.remove('opacity-50')}
                                                         className={
-                                                            hasPermission(permissions, 'edit-leads') ? 'cursor-grab active:cursor-grabbing' : ''
+                                                            useHasPermission('edit-leads') ? 'cursor-grab active:cursor-grabbing' : ''
                                                         }
                                                     >
                                                         <div className="rounded-lg border border-gray-100 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
@@ -837,10 +837,10 @@ export default function Leads() {
                                                                             {lead.email || t('No email')}
                                                                         </p>
                                                                     </div>
-                                                                    {(hasPermission(permissions, 'view-leads') ||
-                                                                        hasPermission(permissions, 'edit-leads') ||
-                                                                        hasPermission(permissions, 'convert-leads') ||
-                                                                        hasPermission(permissions, 'delete-leads')) && (
+                                                                    {(useHasPermission('view-leads') ||
+                                                                        useHasPermission('edit-leads') ||
+                                                                        useHasPermission('convert-leads') ||
+                                                                        useHasPermission('delete-leads')) && (
                                                                         <DropdownMenu>
                                                                             <DropdownMenuTrigger asChild>
                                                                                 <Button
@@ -852,19 +852,19 @@ export default function Leads() {
                                                                                 </Button>
                                                                             </DropdownMenuTrigger>
                                                                             <DropdownMenuContent align="end" className="w-40">
-                                                                                {hasPermission(permissions, 'view-leads') && (
+                                                                                {useHasPermission('view-leads') && (
                                                                                     <DropdownMenuItem onClick={() => handleAction('view', lead)}>
                                                                                         <Eye className="tex mr-2 h-4 w-4" />
                                                                                         {t('View')}
                                                                                     </DropdownMenuItem>
                                                                                 )}
-                                                                                {hasPermission(permissions, 'edit-leads') && (
+                                                                                {useHasPermission('edit-leads') && (
                                                                                     <DropdownMenuItem onClick={() => handleAction('edit', lead)}>
                                                                                         <Edit className="mr-2 h-4 w-4" />
                                                                                         {t('Edit')}
                                                                                     </DropdownMenuItem>
                                                                                 )}
-                                                                                {hasPermission(permissions, 'convert-leads') &&
+                                                                                {useHasPermission('convert-leads') &&
                                                                                     !lead.is_converted && (
                                                                                         <>
                                                                                             <DropdownMenuSeparator />
@@ -888,7 +888,7 @@ export default function Leads() {
                                                                                             </DropdownMenuItem>
                                                                                         </>
                                                                                     )}
-                                                                                {hasPermission(permissions, 'delete-leads') && (
+                                                                                {useHasPermission('delete-leads') && (
                                                                                     <>
                                                                                         <DropdownMenuSeparator />
                                                                                         <DropdownMenuItem
@@ -1013,26 +1013,26 @@ export default function Leads() {
                                         </div> */}
 
                     {/* Actions dropdown */}
-                    {/* {(hasPermission(permissions, 'view-leads') || hasPermission(permissions, 'edit-leads') || hasPermission(permissions, 'convert-leads') || hasPermission(permissions, 'delete-leads') || hasPermission(permissions, 'toggle-status-leads') || hasPermission(permissions, 'edit-leads')) && <DropdownMenu>
+                    {/* {(useHasPermission('view-leads') || useHasPermission('edit-leads') || useHasPermission('convert-leads') || useHasPermission('delete-leads') || useHasPermission('toggle-status-leads') || useHasPermission('edit-leads')) && <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
                                                 <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300">
                                                     <MoreHorizontal className="h-4 w-4" />
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end" className="w-48 z-50" sideOffset={5}>
-                                                {hasPermission(permissions, 'view-leads') && (
+                                                {useHasPermission('view-leads') && (
                                                     <DropdownMenuItem onClick={() => handleAction('view', lead)}>
                                                         <Eye className="h-4 w-4 mr-2" />
                                                         <span>{t("View Lead")}</span>
                                                     </DropdownMenuItem>
                                                 )}
-                                                {hasPermission(permissions, 'toggle-status-leads') && (
+                                                {useHasPermission('toggle-status-leads') && (
                                                     <DropdownMenuItem onClick={() => handleAction('toggle-status', lead)}>
                                                         <Lock className="h-4 w-4 mr-2" />
                                                         <span>{lead.status === 'active' ? t("Deactivate") : t("Activate")}</span>
                                                     </DropdownMenuItem>
                                                 )}
-                                                {hasPermission(permissions, 'convert-leads') && !lead.is_converted && (
+                                                {useHasPermission('convert-leads') && !lead.is_converted && (
                                                     <>
                                                         <DropdownMenuItem onClick={() => handleAction('convert-to-account', lead)} className="text-green-600">
                                                             <Building2 className='mr-2 w-4 h-4' />
@@ -1045,13 +1045,13 @@ export default function Leads() {
                                                     </>
                                                 )}
                                                 <DropdownMenuSeparator />
-                                                {hasPermission(permissions, 'edit-leads') && (
+                                                {useHasPermission('edit-leads') && (
                                                     <DropdownMenuItem onClick={() => handleAction('edit', lead)} className="text-amber-600">
                                                         <Edit className="h-4 w-4 mr-2" />
                                                         <span>{t("Edit")}</span>
                                                     </DropdownMenuItem>
                                                 )}
-                                                {hasPermission(permissions, 'delete-leads') && (
+                                                {useHasPermission('delete-leads') && (
                                                     <DropdownMenuItem onClick={() => handleAction('delete', lead)} className="text-rose-600">
                                                         <Trash2 className="h-4 w-4 mr-2" />
                                                         <span>{t("Delete")}</span>
@@ -1109,7 +1109,7 @@ export default function Leads() {
 
                     {/* Action buttons */}
                     {/* <div className="flex gap-2">
-                                        {hasPermission(permissions, 'edit-leads') && (
+                                        {useHasPermission('edit-leads') && (
                                             <Button
                                                 variant="outline"
                                                 size="sm"
@@ -1121,7 +1121,7 @@ export default function Leads() {
                                             </Button>
                                         )}
 
-                                        {hasPermission(permissions, 'view-leads') && (
+                                        {useHasPermission('view-leads') && (
                                             <Button
                                                 variant="outline"
                                                 size="sm"
@@ -1133,7 +1133,7 @@ export default function Leads() {
                                             </Button>
                                         )}
 
-                                        {hasPermission(permissions, 'delete-leads') && (
+                                        {useHasPermission('delete-leads') && (
                                             <Button
                                                 variant="outline"
                                                 size="sm"
@@ -1186,7 +1186,7 @@ export default function Leads() {
             )}
 
             {/* Export Modal - mounted for export functionality only */}
-            {hasPermission(permissions, 'export-leads') && (
+            {useHasPermission('export-leads') && (
                 <CrudFormModal
                     isOpen={false}
                     onClose={() => {}}

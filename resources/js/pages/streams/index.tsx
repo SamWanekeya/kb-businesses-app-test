@@ -1,7 +1,7 @@
 import { toast } from '@/components/custom-toast';
 import { PageWrapper } from '@/components/PageWrapper';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { Head, router, usePage } from '@inertiajs/react';
 import { Briefcase, Building2, FileIcon, FileText, ShoppingBag, Users } from 'lucide-react';
 import React from 'react';
@@ -36,7 +36,7 @@ export default function Index({ modules }: StreamsIndexProps) {
     };
 
     const handleViewStream = (key: string) => {
-        if (hasPermission(permissions, 'view-stream')) {
+        if (useHasPermission('view-stream')) {
             router.visit(route(`stream.${key.replace(/_/g, '-')}`));
         }
     };
@@ -45,7 +45,7 @@ export default function Index({ modules }: StreamsIndexProps) {
         <PageWrapper title={t('Streams')} description={t('View activity logs for various modules')} url={route('stream.index')}>
             <Head title={t('Streams')} />
 
-            {hasPermission(permissions, 'manage-stream') && (
+            {useHasPermission('manage-stream') && (
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
                     {Object.entries(modules || {}).map(([key, title]) => {
                         const IconComponent = getModuleIcon(key);
@@ -57,7 +57,7 @@ export default function Index({ modules }: StreamsIndexProps) {
                                         <CardTitle className="text-lg">{t(title)}</CardTitle>
                                     </CardHeader>
                                     <CardContent>
-                                        {hasPermission(permissions, 'view-stream') && (
+                                        {useHasPermission('view-stream') && (
                                             <p className="text-sm text-gray-600">
                                                 {t('View activity logs for')} {t(title.toLowerCase())}
                                             </p>

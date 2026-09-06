@@ -1,5 +1,5 @@
 import { toast } from '@/components/custom-toast';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { usePage } from '@inertiajs/react';
 import { Check, File, FileText, Image as ImageIcon, Plus, Search, Upload } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -38,8 +38,8 @@ export default function MediaLibraryModal({
 }: MediaLibraryModalProps) {
     const { auth, csrf_token, storageSettings } = usePage().props as any;
     const permissions = auth?.permissions || [];
-    const canCreateMedia = hasPermission(permissions, 'create-media');
-    const canManageMedia = hasPermission(permissions, 'manage-media');
+    const canCreateMedia = useHasPermission('create-media');
+    const canManageMedia = useHasPermission('manage-media');
 
     const allowedTypes = storageSettings?.allowed_file_types || 'jpg,png,webp,gif';
     const acceptAttribute = allowedTypes

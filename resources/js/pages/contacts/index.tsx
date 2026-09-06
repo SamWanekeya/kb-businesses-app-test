@@ -12,7 +12,7 @@ import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { Briefcase, Building2, Calendar, Edit, Eye, FileDown, Lock, Mail, MoreHorizontal, Phone, Plus, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -241,7 +241,7 @@ export default function Contacts() {
     const pageActions = [];
 
     // Add export button
-    if (hasPermission(permissions, 'export-contacts')) {
+    if (useHasPermission('export-contacts')) {
         pageActions.push({
             label: t('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
@@ -255,7 +255,7 @@ export default function Contacts() {
     }
 
     // Add the "Add Contact" button if user has permission and within limits
-    if (hasPermission(permissions, 'create-contacts')) {
+    if (useHasPermission('create-contacts')) {
         const isDisabled = planLimits && !planLimits.can_create;
         pageActions.push({
             label: isDisabled
@@ -533,26 +533,26 @@ export default function Contacts() {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end" className="z-50 w-40" sideOffset={5}>
-                                                {hasPermission(permissions, 'view-contacts') && (
+                                                {useHasPermission('view-contacts') && (
                                                     <DropdownMenuItem onClick={() => handleAction('view', contact)}>
                                                         <Eye className="mr-2 h-4 w-4" />
                                                         <span>{t('View Contact')}</span>
                                                     </DropdownMenuItem>
                                                 )}
-                                                {hasPermission(permissions, 'toggle-status-contacts') && (
+                                                {useHasPermission('toggle-status-contacts') && (
                                                     <DropdownMenuItem onClick={() => handleAction('toggle-status', contact)}>
                                                         <Lock className="mr-2 h-4 w-4" />
                                                         <span>{contact.status === 'active' ? t('Deactivate') : t('Activate')}</span>
                                                     </DropdownMenuItem>
                                                 )}
-                                                {hasPermission(permissions, 'edit-contacts') && (
+                                                {useHasPermission('edit-contacts') && (
                                                     <DropdownMenuItem onClick={() => handleAction('edit', contact)}>
                                                         <Edit className="mr-2 h-4 w-4" />
                                                         <span>{t('Edit')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 <DropdownMenuSeparator />
-                                                {hasPermission(permissions, 'delete-contacts') && (
+                                                {useHasPermission('delete-contacts') && (
                                                     <DropdownMenuItem onClick={() => handleAction('delete', contact)} className="text-rose-600">
                                                         <Trash2 className="mr-2 h-4 w-4" />
                                                         <span>{t('Delete')}</span>

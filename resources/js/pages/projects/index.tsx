@@ -7,7 +7,7 @@ import { Card } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import {
     AlertCircle,
@@ -232,7 +232,7 @@ export default function Projects() {
 
     const pageActions: any[] = [];
 
-    if (hasPermission(permissions, 'export-projects')) {
+    if (useHasPermission('export-projects')) {
         pageActions.push({
             label: t('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
@@ -245,7 +245,7 @@ export default function Projects() {
         });
     }
 
-    if (hasPermission(permissions, 'create-projects')) {
+    if (useHasPermission('create-projects')) {
         const canCreate = !planLimits || planLimits.can_create;
         pageActions.push({
             label:
@@ -481,23 +481,23 @@ export default function Projects() {
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end" className="z-50 w-48" sideOffset={5}>
-                                                    {hasPermission(permissions, 'view-projects') && (
+                                                    {useHasPermission('view-projects') && (
                                                         <DropdownMenuItem onClick={() => handleAction('view', project)}>
                                                             <Eye className="mr-2 h-4 w-4" /> {t('View Project')}
                                                         </DropdownMenuItem>
                                                     )}
-                                                    {hasPermission(permissions, 'toggle-status-projects') && (
+                                                    {useHasPermission('toggle-status-projects') && (
                                                         <DropdownMenuItem onClick={() => handleAction('toggle-status', project)}>
                                                             <RefreshCw className="mr-2 h-4 w-4" /> {t('Change Status')}
                                                         </DropdownMenuItem>
                                                     )}
-                                                    {hasPermission(permissions, 'edit-projects') && (
+                                                    {useHasPermission('edit-projects') && (
                                                         <DropdownMenuItem onClick={() => handleAction('edit', project)}>
                                                             <Edit className="mr-2 h-4 w-4" /> {t('Edit')}
                                                         </DropdownMenuItem>
                                                     )}
                                                     <DropdownMenuSeparator />
-                                                    {hasPermission(permissions, 'delete-projects') && (
+                                                    {useHasPermission('delete-projects') && (
                                                         <DropdownMenuItem onClick={() => handleAction('delete', project)} className="text-rose-600">
                                                             <Trash2 className="mr-2 h-4 w-4" /> {t('Delete')}
                                                         </DropdownMenuItem>
@@ -607,7 +607,7 @@ export default function Projects() {
                 onClose={() => setIsFormModalOpen(false)}
                 onSubmit={handleFormSubmit}
                 formConfig={{
-                    ...(hasPermission(permissions, 'export-projects') && { exportRoute: 'project.export' }),
+                    ...(useHasPermission('export-projects') && { exportRoute: 'project.export' }),
                     fields: [
                         {
                             name: 'name',

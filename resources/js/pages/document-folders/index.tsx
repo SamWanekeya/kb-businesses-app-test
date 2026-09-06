@@ -8,7 +8,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { ChevronDown, ChevronUp, Edit, Folder, Lock, Search, Trash2, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -200,10 +200,10 @@ export default function DocumentFolders() {
         setExpandedDescriptions(next);
     };
 
-    const canCreate = hasPermission(permissions, 'create-document-folders');
-    const canEdit = hasPermission(permissions, 'edit-document-folders');
-    const canDelete = hasPermission(permissions, 'delete-document-folders');
-    const canToggleStatus = hasPermission(permissions, 'toggle-status-document-folders');
+    const canCreate = useHasPermission('create-document-folders');
+    const canEdit = useHasPermission('edit-document-folders');
+    const canDelete = useHasPermission('delete-document-folders');
+    const canToggleStatus = useHasPermission('toggle-status-document-folders');
 
     const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Document Management') }, { title: t('Folders') }];
 

@@ -5,7 +5,7 @@ import { PageTemplate } from '@/components/page-template';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { getDisplayUrl } from '@/utils/helper';
 import { router, usePage } from '@inertiajs/react';
 import * as LucidIcons from 'lucide-react';
@@ -40,7 +40,7 @@ export default function DocumentShow() {
         if (flash.error) toast.error(t(flash.error));
         if (flash.success_title) toast.success(t(flash.success_title));
         if (flash.success) toast.success(t(flash.success));
-        if (!hasPermission(permissions, 'view-documents')) {
+        if (!useHasPermission('view-documents')) {
             toast.error(t('Permission denied.'));
             router.get(document.folder?.id ? route('documents.folder', document.folder.id) : route('documents.index'));
         }
@@ -322,7 +322,7 @@ export default function DocumentShow() {
                                 {t('Document Details')}
                             </div>
                             <div className="flex items-center gap-1.5">
-                                {hasPermission(permissions, 'view-documents') && document.attachment_url && (
+                                {useHasPermission('view-documents') && document.attachment_url && (
                                     <TooltipProvider>
                                         <Tooltip>
                                             <TooltipTrigger asChild>
@@ -336,7 +336,7 @@ export default function DocumentShow() {
                                         </Tooltip>
                                     </TooltipProvider>
                                 )}
-                                {hasPermission(permissions, 'view-documents') && document.attachment_url && (
+                                {useHasPermission('view-documents') && document.attachment_url && (
                                     <TooltipProvider>
                                         <Tooltip>
                                             <TooltipTrigger asChild>
@@ -351,7 +351,7 @@ export default function DocumentShow() {
                                         </Tooltip>
                                     </TooltipProvider>
                                 )}
-                                {hasPermission(permissions, 'toggle-status-documents') && (
+                                {useHasPermission('toggle-status-documents') && (
                                     <TooltipProvider>
                                         <Tooltip>
                                             <TooltipTrigger asChild>
@@ -370,7 +370,7 @@ export default function DocumentShow() {
                                         </Tooltip>
                                     </TooltipProvider>
                                 )}
-                                {hasPermission(permissions, 'edit-documents') && (
+                                {useHasPermission('edit-documents') && (
                                     <TooltipProvider>
                                         <Tooltip>
                                             <TooltipTrigger asChild>
@@ -385,7 +385,7 @@ export default function DocumentShow() {
                                         </Tooltip>
                                     </TooltipProvider>
                                 )}
-                                {hasPermission(permissions, 'delete-documents') && (
+                                {useHasPermission('delete-documents') && (
                                     <TooltipProvider>
                                         <Tooltip>
                                             <TooltipTrigger asChild>

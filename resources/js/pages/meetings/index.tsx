@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { capitalize } from '@/utils/helper';
 import { router, usePage } from '@inertiajs/react';
 import { CalendarDays, ChevronLeft, ChevronRight, Clock, Edit, Eye, MapPin, Plus, RefreshCw, Trash2, Users } from 'lucide-react';
@@ -193,7 +193,7 @@ export default function Meetings() {
     const daysInMonth = new Date(selectedYear, selectedMonth, 0).getDate();
 
     const pageActions = [];
-    if (hasPermission(permissions, 'create-meetings')) {
+    if (useHasPermission('create-meetings')) {
         pageActions.push({
             label: t('Add Meeting'),
             icon: <Plus className="mr-0 h-4 w-4 min-[350px]:mr-2" />,
@@ -487,7 +487,7 @@ export default function Meetings() {
                                                     </span>
                                                 </div>
                                                 <div className="flex shrink-0 items-center gap-0 sm:gap-0.5">
-                                                    {hasPermission(permissions, 'view-meetings') && (
+                                                    {useHasPermission('view-meetings') && (
                                                         <TooltipProvider>
                                                             <Tooltip>
                                                                 <TooltipTrigger asChild>
@@ -502,7 +502,7 @@ export default function Meetings() {
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}
-                                                    {hasPermission(permissions, 'edit-meetings') && (
+                                                    {useHasPermission('edit-meetings') && (
                                                         <TooltipProvider>
                                                             <Tooltip>
                                                                 <TooltipTrigger asChild>
@@ -517,7 +517,7 @@ export default function Meetings() {
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}
-                                                    {hasPermission(permissions, 'toggle-status-meetings') && (
+                                                    {useHasPermission('toggle-status-meetings') && (
                                                         <TooltipProvider>
                                                             <Tooltip>
                                                                 <TooltipTrigger asChild>
@@ -532,7 +532,7 @@ export default function Meetings() {
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}
-                                                    {hasPermission(permissions, 'delete-meetings') && (
+                                                    {useHasPermission('delete-meetings') && (
                                                         <TooltipProvider>
                                                             <Tooltip>
                                                                 <TooltipTrigger asChild>

@@ -5,7 +5,7 @@ import { PageTemplate } from '@/components/page-template';
 import { PermissionBadges } from '@/components/PermissionBadges';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -111,7 +111,7 @@ export default function RolesPage() {
     ];
 
     const pageActions = [];
-    if (hasPermission(permissions, 'create-roles')) {
+    if (useHasPermission('create-roles')) {
         pageActions.push({
             label: t('Add Role'),
             icon: <Plus className="mr-0 h-4 w-4 min-[420px]:mr-2" />,

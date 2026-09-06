@@ -9,7 +9,6 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useLayout } from '@/contexts/LayoutContext';
-import { hasRole } from '@/utils/authorization';
 import { isDemoMode, setCookie } from '@/utils/cookie-utils';
 import { router, usePage } from '@inertiajs/react';
 import { Globe, Plus, Settings } from 'lucide-react';
@@ -41,10 +40,7 @@ export const LanguageSwitcher: React.FC = () => {
 
     const isAuthenticated = auth?.user;
     const userRoles = auth?.roles || [];
-    const isSuperAdmin = isAuthenticated && hasRole('super_admin', userRoles);
-
-    // Allow organization users to manage languages when not in SaaS mode
-    const isOrganizationUser = userRoles.includes('organization');
+    const isSuperAdmin = auth?.user?.type === 'super_admin';
 
     // RTL languages list
     const rtlLanguages = ['ar', 'he'];

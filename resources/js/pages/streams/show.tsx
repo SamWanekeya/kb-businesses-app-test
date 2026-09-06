@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { capitalize, formatRelativeTime } from '@/utils/helper';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { ArrowLeft, Calendar, ExternalLink, MessageCircle, Trash2 } from 'lucide-react';
@@ -125,7 +125,7 @@ export default function Show({ module, moduleTitle, streams = [] }: StreamsShowP
         >
             <Head title={`${t(moduleTitle)} - ${t('Streams')}`} />
 
-            {hasPermission(permissions, 'view-stream') && (
+            {useHasPermission('view-stream') && (
                 <>
                     <Card className="shadow-sm">
                         <CardHeader className="border-b">
@@ -196,7 +196,7 @@ export default function Show({ module, moduleTitle, streams = [] }: StreamsShowP
                                                             {formatRelativeTime(activity.created_at)}
                                                         </span>
                                                     </div>
-                                                    {hasPermission(permissions, 'delete-stream') && (
+                                                    {useHasPermission('delete-stream') && (
                                                         <TooltipProvider delayDuration={200}>
                                                             <Tooltip>
                                                                 <TooltipTrigger asChild>

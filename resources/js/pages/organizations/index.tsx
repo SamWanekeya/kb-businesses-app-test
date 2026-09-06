@@ -14,7 +14,7 @@ import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { UpgradePlanModal } from '@/components/UpgradePlanModal';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { capitalize, getDisplayUrl } from '@/utils/helper';
 import { router, usePage } from '@inertiajs/react';
 import { ArrowUpRight, Calendar, CreditCard, Edit, History, Info, KeyRound, Lock, Plus, Trash2, Unlock } from 'lucide-react';
@@ -344,7 +344,7 @@ export default function Organizations() {
     const pageActions = [];
 
     // Add User Logs button for super_admin
-    if (auth?.user?.type === 'super_admin' && hasPermission(permissions, 'manage-sign-in-history')) {
+    if (auth?.user?.type === 'super_admin' && useHasPermission('manage-sign-in-history')) {
         pageActions.push({
             icon: <History className="mx-auto h-4 w-4" />,
             variant: 'outline',

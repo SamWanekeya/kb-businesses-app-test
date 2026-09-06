@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ArrowLeft, BarChart3, Calendar, DollarSign, Eye, Tag, Target, TrendingUp, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -320,7 +320,7 @@ export default function CampaignShow() {
                                                 <th className="px-6 py-3 text-left font-medium">{t('Name')}</th>
                                                 <th className="px-6 py-3 text-left font-medium">{t('Assigned To')}</th>
                                                 <th className="px-6 py-3 text-left font-medium">{t('Status')}</th>
-                                                {hasPermission(permissions, 'view-leads') && (
+                                                {useHasPermission('view-leads') && (
                                                     <th className="px-6 py-3 text-right font-medium">{t('Action')}</th>
                                                 )}
                                             </tr>
@@ -373,7 +373,7 @@ export default function CampaignShow() {
                                                             '-'
                                                         )}
                                                     </td>
-                                                    {hasPermission(permissions, 'view-leads') && (
+                                                    {useHasPermission('view-leads') && (
                                                         <td className="px-6 py-3 text-right">
                                                             <TooltipProvider delayDuration={200}>
                                                                 <Tooltip>

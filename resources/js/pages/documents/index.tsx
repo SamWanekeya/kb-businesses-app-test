@@ -8,7 +8,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { useBrand } from '@/contexts/BrandContext';
 import { THEME_COLORS } from '@/hooks/use-appearance';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { Edit, Folder, FolderPlus, MoreHorizontal, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -93,7 +93,7 @@ export default function Documents() {
     };
 
     const pageActions: any[] = [];
-    if (hasPermission(permissions, 'create-document-folders')) {
+    if (useHasPermission('create-document-folders')) {
         pageActions.push({
             label: t('Create Folder'),
             icon: <FolderPlus className="mr-0 h-4 w-4 min-[790px]:mr-2" />,
@@ -168,7 +168,7 @@ export default function Documents() {
                                             e.currentTarget.style.backgroundColor = '';
                                         }}
                                         onClick={() =>
-                                            hasPermission(permissions, 'view-documents')
+                                            useHasPermission('view-documents')
                                                 ? router.get(route('documents.folder', folder.id))
                                                 : toast.error(t('Permission denied.'))
                                         }
@@ -181,8 +181,8 @@ export default function Documents() {
 
                                     {/* Three-dot menu */}
                                     <div className="absolute top-2 right-2" onClick={(e) => e.stopPropagation()}>
-                                        {hasPermission(permissions, 'edit-document-folders') ||
-                                        hasPermission(permissions, 'delete-document-folders') ? (
+                                        {useHasPermission('edit-document-folders') ||
+                                        useHasPermission('delete-document-folders') ? (
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
                                                     <Button
@@ -194,7 +194,7 @@ export default function Documents() {
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end" className="z-50 w-24">
-                                                    {hasPermission(permissions, 'edit-document-folders') && (
+                                                    {useHasPermission('edit-document-folders') && (
                                                         <DropdownMenuItem
                                                             onClick={() => {
                                                                 setCurrentFolder(folder);
@@ -206,9 +206,9 @@ export default function Documents() {
                                                             {t('Edit')}
                                                         </DropdownMenuItem>
                                                     )}
-                                                    {hasPermission(permissions, 'edit-document-folders') &&
-                                                        hasPermission(permissions, 'delete-document-folders') && <DropdownMenuSeparator />}
-                                                    {hasPermission(permissions, 'delete-document-folders') && (
+                                                    {useHasPermission('edit-document-folders') &&
+                                                        useHasPermission('delete-document-folders') && <DropdownMenuSeparator />}
+                                                    {useHasPermission('delete-document-folders') && (
                                                         <DropdownMenuItem
                                                             className="text-red-600"
                                                             onClick={() => {

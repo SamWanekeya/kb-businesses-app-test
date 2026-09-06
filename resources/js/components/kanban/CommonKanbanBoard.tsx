@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
 import { router } from '@inertiajs/react';
 import { Building2, Edit, Eye, MoreHorizontal, Trash2, User, Users } from 'lucide-react';
@@ -170,19 +170,19 @@ export const CommonKanbanBoard: React.FC<CommonKanbanBoardProps> = ({
 
         return (
             <DropdownMenuContent align="end" className="z-50 w-48" sideOffset={5}>
-                {hasPermission(permissions, viewPermission) && (
+                {useHasPermission(viewPermission) && (
                     <DropdownMenuItem onClick={() => onItemAction('view', item)}>
                         <Eye className="mr-2 h-4 w-4" />
                         <span>{t(`View ${type}`)}</span>
                     </DropdownMenuItem>
                 )}
-                {hasPermission(permissions, editPermission) && (
+                {useHasPermission(editPermission) && (
                     <DropdownMenuItem onClick={() => onItemAction('edit', item)}>
                         <Edit className="mr-2 h-4 w-4" />
                         <span>{t('Edit')}</span>
                     </DropdownMenuItem>
                 )}
-                {type === 'lead' && hasPermission(permissions, 'convert-leads') && !item.is_converted && (
+                {type === 'lead' && useHasPermission('convert-leads') && !item.is_converted && (
                     <>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={() => onItemAction('convert-to-account', item)} className="text-green-600">
@@ -196,7 +196,7 @@ export const CommonKanbanBoard: React.FC<CommonKanbanBoardProps> = ({
                     </>
                 )}
                 <DropdownMenuSeparator />
-                {hasPermission(permissions, deletePermission) && (
+                {useHasPermission(deletePermission) && (
                     <DropdownMenuItem onClick={() => onItemAction('delete', item)} className="text-red-600">
                         <Trash2 className="mr-2 h-4 w-4" />
                         <span>{t('Delete')}</span>

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { AlertTriangle, ArrowLeft, BanknoteIcon, BarChart3, Building2, Calendar, Clock, DollarSign, LayoutGrid } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -36,7 +36,7 @@ export default function ProjectShow() {
         onClick: () => window.history.back(),
     });
 
-    if (hasPermission(permissions, 'view-project-tasks')) {
+    if (useHasPermission('view-project-tasks')) {
         pageActions.push({
             label: t('Kanban View'),
             icon: <LayoutGrid className="mr-0 h-4 w-4 min-[1100px]:mr-2" />,
@@ -388,7 +388,7 @@ export default function ProjectShow() {
                                                         <p className="text-xs text-gray-500">{meeting.assigned_user?.name || 'Unassigned'}</p>
                                                     </div>
                                                 </div>
-                                                {hasPermission(permissions, 'view-meetings') && (
+                                                {useHasPermission('view-meetings') && (
                                                     <a href={route('meetings.show', meeting.id)}>
                                                         <Button variant="outline" size="sm">
                                                             {t('View')}
@@ -452,7 +452,7 @@ export default function ProjectShow() {
                                                         <p className="text-xs text-gray-500">{call.assigned_user?.name || 'Unassigned'}</p>
                                                     </div>
                                                 </div>
-                                                {hasPermission(permissions, 'view-calls') && (
+                                                {useHasPermission('view-calls') && (
                                                     <a href={route('meetings.show', call.id)}>
                                                         <Button variant="outline" size="sm">
                                                             {t('View')}

@@ -8,7 +8,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { Bookmark, ChevronDown, ChevronUp, Edit, Lock, Search, Trash2, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -200,10 +200,10 @@ export default function Brands() {
         setExpandedDescriptions(next);
     };
 
-    const canCreate = hasPermission(permissions, 'create-brands');
-    const canEdit = hasPermission(permissions, 'edit-brands');
-    const canDelete = hasPermission(permissions, 'delete-brands');
-    const canToggleStatus = hasPermission(permissions, 'toggle-status-brands');
+    const canCreate = useHasPermission('create-brands');
+    const canEdit = useHasPermission('edit-brands');
+    const canDelete = useHasPermission('delete-brands');
+    const canToggleStatus = useHasPermission('toggle-status-brands');
 
     const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Product Setup') }, { title: t('Brands') }];
 

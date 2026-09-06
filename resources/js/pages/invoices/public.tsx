@@ -1,6 +1,6 @@
 import { toast } from '@/components/custom-toast';
 import { InvoicePaymentModal } from '@/components/invoice-payment-modal';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { getDisplayUrl } from '@/utils/helper';
 import { Head, usePage } from '@inertiajs/react';
 import { Calendar, Check, Copy, CreditCard, DollarSign, FileText, MapPin, Package, Printer, User } from 'lucide-react';
@@ -270,7 +270,7 @@ export default function PublicInvoice({
                             <p className="mt-1 text-gray-600 dark:text-gray-400">{t('View and manage your invoice')}</p>
                         </div>
                         <div className="flex flex-wrap gap-3">
-                            {hasPermission(permissions, 'view-invoices') && (
+                            {useHasPermission('view-invoices') && (
                                 <button
                                     onClick={copyInvoiceLink}
                                     className="inline-flex cursor-pointer items-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-gray-500 dark:hover:bg-gray-700"

@@ -11,7 +11,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { Link, router, usePage } from '@inertiajs/react';
 import { Building2, Calendar, Edit, Eye, FileDown, MoreHorizontal, Plus, RefreshCw, Trash2, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -274,7 +274,7 @@ export default function Cases() {
     // Define page actions
     const pageActions = [];
 
-    if (hasPermission(permissions, 'export-cases')) {
+    if (useHasPermission('export-cases')) {
         pageActions.push({
             label: t('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[360px]:mr-2" />,
@@ -288,7 +288,7 @@ export default function Cases() {
     }
 
     // Add the "Add Case" button if user has permission
-    if (hasPermission(permissions, 'create-cases')) {
+    if (useHasPermission('create-cases')) {
         pageActions.push({
             label: t('Add Case'),
             icon: <Plus className="mr-0 h-4 w-4 min-[360px]:mr-2" />,
@@ -650,26 +650,26 @@ export default function Cases() {
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end" className="z-50 w-40" sideOffset={5}>
-                                                    {hasPermission(permissions, 'view-cases') && (
+                                                    {useHasPermission('view-cases') && (
                                                         <DropdownMenuItem onClick={() => handleAction('view', caseItem)}>
                                                             <Eye className="mr-2 h-4 w-4" />
                                                             <span>{t('View Case')}</span>
                                                         </DropdownMenuItem>
                                                     )}
-                                                    {hasPermission(permissions, 'toggle-status-cases') && (
+                                                    {useHasPermission('toggle-status-cases') && (
                                                         <DropdownMenuItem onClick={() => handleAction('toggle-status', caseItem)}>
                                                             <RefreshCw className="mr-2 h-4 w-4" />
                                                             <span>{t('Change Status')}</span>
                                                         </DropdownMenuItem>
                                                     )}
-                                                    {hasPermission(permissions, 'edit-cases') && (
+                                                    {useHasPermission('edit-cases') && (
                                                         <DropdownMenuItem onClick={() => handleAction('edit', caseItem)}>
                                                             <Edit className="mr-2 h-4 w-4" />
                                                             <span>{t('Edit')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     <DropdownMenuSeparator />
-                                                    {hasPermission(permissions, 'delete-cases') && (
+                                                    {useHasPermission('delete-cases') && (
                                                         <DropdownMenuItem onClick={() => handleAction('delete', caseItem)} className="text-rose-600">
                                                             <Trash2 className="mr-2 h-4 w-4" />
                                                             <span>{t('Delete')}</span>

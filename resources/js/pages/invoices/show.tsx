@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { formatRelativeTime, getDisplayUrl } from '@/utils/helper';
 import { Link, router, usePage } from '@inertiajs/react';
 import {
@@ -792,7 +792,7 @@ export default function InvoiceShow() {
                     )}
 
                     {/* Activity Stream - moved inside left column so sidebar can stick */}
-                    {hasPermission(permissions, 'view-stream') && (
+                    {useHasPermission('view-stream') && (
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
@@ -801,7 +801,7 @@ export default function InvoiceShow() {
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
-                                {hasPermission(permissions, 'create-invoices') && (
+                                {useHasPermission('create-invoices') && (
                                     <div className="border-b px-5 pt-4 pb-4">
                                         <form
                                             onSubmit={(e) => {
@@ -934,7 +934,7 @@ export default function InvoiceShow() {
                                                                     <div className="flex flex-shrink-0 items-center gap-1">
                                                                         {activity.activity_type === 'comment' &&
                                                                             activity.user_id === auth?.user?.id &&
-                                                                            hasPermission(permissions, 'edit-invoices') && (
+                                                                            useHasPermission('edit-invoices') && (
                                                                                 <TooltipProvider delayDuration={200}>
                                                                                     <Tooltip>
                                                                                         <TooltipTrigger asChild>
@@ -956,7 +956,7 @@ export default function InvoiceShow() {
                                                                                     </Tooltip>
                                                                                 </TooltipProvider>
                                                                             )}
-                                                                        {hasPermission(permissions, 'delete-stream') && (
+                                                                        {useHasPermission('delete-stream') && (
                                                                             <TooltipProvider delayDuration={200}>
                                                                                 <Tooltip>
                                                                                     <TooltipTrigger asChild>
@@ -1093,13 +1093,13 @@ export default function InvoiceShow() {
                             )}
                             <div className="space-y-2">
                                 {['pending', 'overdue', 'partially_paid'].includes(invoice.status) &&
-                                    hasPermission(permissions, 'send-reminder-invoices') && (
+                                    useHasPermission('send-reminder-invoices') && (
                                         <Button variant="default" size="sm" className="w-full cursor-pointer" onClick={handleSendReminder}>
                                             <Bell className="mr-2 h-4 w-4" />
                                             {t('Send Reminder')}
                                         </Button>
                                     )}
-                                {hasPermission(permissions, 'edit-invoices') && (
+                                {useHasPermission('edit-invoices') && (
                                     <Button variant="outline" className="w-full" onClick={() => router.visit(route('invoices.edit', invoice.id))}>
                                         <Edit className="mr-2 h-4 w-4" />
                                         {t('Edit Invoice')}
@@ -1135,7 +1135,7 @@ export default function InvoiceShow() {
                                                     )}
                                                 </div>
                                             </div>
-                                            {hasPermission(permissions, 'view-contacts') && (
+                                            {useHasPermission('view-contacts') && (
                                                 <TooltipProvider delayDuration={200}>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
@@ -1169,7 +1169,7 @@ export default function InvoiceShow() {
                                                     )}
                                                 </div>
                                             </div>
-                                            {hasPermission(permissions, 'view-accounts') && (
+                                            {useHasPermission('view-accounts') && (
                                                 <TooltipProvider delayDuration={200}>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
@@ -1274,7 +1274,7 @@ export default function InvoiceShow() {
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2 p-5">
-                                {invoice.sales_order && hasPermission(permissions, 'view-sales-orders') && (
+                                {invoice.sales_order && useHasPermission('view-sales-orders') && (
                                     <Link
                                         href={route('sales-orders.show', invoice.sales_order.id)}
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
@@ -1288,7 +1288,7 @@ export default function InvoiceShow() {
                                         <Eye className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
                                     </Link>
                                 )}
-                                {invoice.quote && hasPermission(permissions, 'view-quotes') && (
+                                {invoice.quote && useHasPermission('view-quotes') && (
                                     <Link
                                         href={route('quotes.show', invoice.quote.id)}
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"

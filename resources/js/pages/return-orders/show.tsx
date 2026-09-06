@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ArrowLeft, Building2, Calendar, Edit, Eye, FileText, Hash, Package, User } from 'lucide-react';
 import { useEffect } from 'react';
@@ -341,7 +341,7 @@ export default function ReturnOrderShow() {
                                 <div className="flex flex-col items-end gap-1.5">{getStatusBadge(returnOrder.status)}</div>
                             </div>
                             <div className="space-y-2">
-                                {hasPermission(permissions, 'edit-return-orders') && (
+                                {useHasPermission('edit-return-orders') && (
                                     <Button
                                         variant="outline"
                                         className="w-full"
@@ -381,7 +381,7 @@ export default function ReturnOrderShow() {
                                                     )}
                                                 </div>
                                             </div>
-                                            {hasPermission(permissions, 'view-contacts') && (
+                                            {useHasPermission('view-contacts') && (
                                                 <TooltipProvider delayDuration={200}>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
@@ -418,7 +418,7 @@ export default function ReturnOrderShow() {
                                                     )}
                                                 </div>
                                             </div>
-                                            {hasPermission(permissions, 'view-accounts') && (
+                                            {useHasPermission('view-accounts') && (
                                                 <TooltipProvider delayDuration={200}>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
@@ -512,7 +512,7 @@ export default function ReturnOrderShow() {
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2 p-5">
-                                {returnOrder.sales_order && hasPermission(permissions, 'view-sales-orders') && (
+                                {returnOrder.sales_order && useHasPermission('view-sales-orders') && (
                                     <div className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors">
                                         <div className="min-w-0">
                                             <p className="text-muted-foreground text-xs">{t('Sales Order')}</p>
@@ -535,7 +535,7 @@ export default function ReturnOrderShow() {
                                         </TooltipProvider>
                                     </div>
                                 )}
-                                {returnOrder.shipping_provider_type && hasPermission(permissions, 'view-shipping-provider-types') && (
+                                {returnOrder.shipping_provider_type && useHasPermission('view-shipping-provider-types') && (
                                     <div className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors">
                                         <div className="min-w-0">
                                             <p className="text-muted-foreground text-xs">{t('Shipping Provider Type')}</p>

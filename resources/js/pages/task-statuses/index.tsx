@@ -8,7 +8,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { CheckSquare, ChevronDown, ChevronUp, Edit, Lock, Search, Trash2, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -200,10 +200,10 @@ export default function TaskStatuses() {
         setExpandedDescriptions(next);
     };
 
-    const canCreate = hasPermission(permissions, 'create-task-statuses');
-    const canEdit = hasPermission(permissions, 'edit-task-statuses');
-    const canDelete = hasPermission(permissions, 'delete-task-statuses');
-    const canToggleStatus = hasPermission(permissions, 'toggle-status-task-statuses');
+    const canCreate = useHasPermission('create-task-statuses');
+    const canEdit = useHasPermission('edit-task-statuses');
+    const canDelete = useHasPermission('delete-task-statuses');
+    const canToggleStatus = useHasPermission('toggle-status-task-statuses');
 
     const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Project Management') }, { title: t('Task Status') }];
 

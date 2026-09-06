@@ -1,34 +1,28 @@
-// utils/permissions.ts
+// utils/usePermissions.ts
 import { usePage } from '@inertiajs/react';
 
 /**
- * Check if the current user has a specific permission
+ * Hook to check if the current user has a specific permission
  * @param permission The permission name to check
  * @returns boolean indicating if the user has the permission
  */
-export const hasPermission = (permission: string): boolean => {
-    const { auth } = usePage().props as any;
+export const useHasPermission = (permission: string): boolean => {
+    const { auth } = usePage().props;
 
-    if (!auth || !auth.user || !auth.permissions) {
-        return false;
-    }
+    if (!auth || !auth.user || !auth.permissions) return false;
 
-    // Check if user has the specific permission
     return auth.permissions.includes(permission);
 };
 
 /**
- * Check if the current user has any of the specified permissions
+ * Hook to check if the current user has any of the specified permissions
  * @param permissions Array of permission names to check
  * @returns boolean indicating if the user has any of the permissions
  */
-export const hasAnyPermission = (permissions: string[]): boolean => {
-    const { auth } = usePage().props as any;
+export const useHasAnyPermission = (permissions: string[]): boolean => {
+    const { auth } = usePage().props;
 
-    if (!auth || !auth.user || !auth.permissions) {
-        return false;
-    }
+    if (!auth || !auth.user || !auth.permissions) return false;
 
-    // Check if user has any of the permissions
-    return permissions.some((permission) => auth.permissions.includes(permission));
+    return permissions.some((p) => auth.permissions?.includes(p));
 };

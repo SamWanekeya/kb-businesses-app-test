@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { TooltipContent, TooltipProvider, TooltipTrigger, Tooltip as UITooltip } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { Link, router, usePage } from '@inertiajs/react';
 import {
     ArrowUpRight,
@@ -269,7 +269,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                         <p className="mt-1 hidden text-xs text-slate-400 transition-colors duration-300 group-hover:text-slate-300 sm:block">
                             {t("Here's what's happening across your platform today.")}
                         </p>
-                        {hasPermission(auth?.permissions, 'manage-opportunities') && (
+                        {useHasPermission('manage-opportunities') && (
                             <div className="mt-3 flex items-center gap-3">
                                 <div className="flex items-center gap-1.5">
                                     <div
@@ -294,28 +294,28 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                     <div className="flex shrink-0 flex-wrap items-center gap-2">
                         <div className="hidden h-10 w-px bg-white/10 sm:block" />
                         {[
-                            hasPermission(auth?.permissions, 'manage-leads') && {
+                            useHasPermission('manage-leads') && {
                                 icon: Target,
                                 label: t('Leads'),
                                 href: route('leads.index'),
                                 color: 'text-emerald-300 hover:text-emerald-200',
                                 bg: 'hover:bg-emerald-400/10',
                             },
-                            hasPermission(auth?.permissions, 'manage-sales-orders') && {
+                            useHasPermission('manage-sales-orders') && {
                                 icon: DollarSign,
                                 label: t('Sales'),
                                 href: route('sales-orders.index'),
                                 color: 'text-blue-300 hover:text-blue-200',
                                 bg: 'hover:bg-blue-400/10',
                             },
-                            hasPermission(auth?.permissions, 'manage-projects') && {
+                            useHasPermission('manage-projects') && {
                                 icon: Briefcase,
                                 label: t('Projects'),
                                 href: route('projects.index'),
                                 color: 'text-violet-300 hover:text-violet-200',
                                 bg: 'hover:bg-violet-400/10',
                             },
-                            hasPermission(auth?.permissions, 'manage-settings') && {
+                            useHasPermission('manage-settings') && {
                                 icon: Settings,
                                 label: t('Settings'),
                                 href: route('settings'),
@@ -342,7 +342,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                 {/* ── KPI cards ── */}
                 <div className="dash-anim grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5" style={{ animationDelay: '80ms' }}>
                     {/* Total Leads */}
-                    {hasPermission(auth?.permissions, 'manage-leads') && (
+                    {useHasPermission('manage-leads') && (
                         <Link href={route('leads.index')} className="group">
                             <Card className="h-full cursor-pointer border border-green-200 bg-green-50 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-green-900/50 dark:bg-green-950/30">
                                 <CardContent className="relative overflow-hidden p-5">
@@ -374,7 +374,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                     )}
 
                     {/* Total Sales */}
-                    {hasPermission(auth?.permissions, 'manage-sales-orders') && (
+                    {useHasPermission('manage-sales-orders') && (
                         <Link href={route('sales-orders.index')} className="group">
                             <Card className="h-full cursor-pointer border border-violet-200 bg-violet-50 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-violet-900/50 dark:bg-violet-950/30">
                                 <CardContent className="relative overflow-hidden p-5">
@@ -405,7 +405,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                     )}
 
                     {/* Total Customers */}
-                    {hasPermission(auth?.permissions, 'manage-accounts') && (
+                    {useHasPermission('manage-accounts') && (
                         <Link href={route('accounts.index')} className="group">
                             <Card className="h-full cursor-pointer border border-orange-200 bg-orange-50 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-orange-900/50 dark:bg-orange-950/30">
                                 <CardContent className="relative overflow-hidden p-5">
@@ -434,7 +434,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                     )}
 
                     {/* Total Projects */}
-                    {hasPermission(auth?.permissions, 'manage-projects') && (
+                    {useHasPermission('manage-projects') && (
                         <Link href={route('projects.index')} className="group">
                             <Card className="h-full cursor-pointer border border-indigo-200 bg-indigo-50 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-indigo-900/50 dark:bg-indigo-950/30">
                                 <CardContent className="relative overflow-hidden p-5">
@@ -463,7 +463,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                     )}
 
                     {/* Organization Revenue */}
-                    {hasPermission(auth?.permissions, 'manage-invoices') && (
+                    {useHasPermission('manage-invoices') && (
                         <div className="group">
                             <Card className="h-full border border-emerald-300 bg-emerald-50 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg dark:border-emerald-800 dark:bg-emerald-950/40">
                                 <CardContent className="relative overflow-hidden p-5">
@@ -502,7 +502,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                 </div>
 
                 {/* ── Storage Usage ── */}
-                {/* {hasPermission(auth?.permissions, 'manage-dashboard') && (
+                {/* {useHasPermission('manage-dashboard') && (
                     <div className="dash-anim" style={{ animationDelay: '220ms' }}>
                         <Card className="border border-purple-100 dark:border-purple-900/40 shadow-sm dark:bg-slate-900 overflow-hidden">
                             <CardHeader className="pb-3 pt-5 px-5 border-b">
@@ -559,7 +559,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                 {/* ── Row 1: Latest Leads + Recent Sales ── */}
                 <div className="dash-anim grid gap-4 lg:grid-cols-2" style={{ animationDelay: '240ms' }}>
                     {/* Latest Leads */}
-                    {hasPermission(auth?.permissions, 'manage-leads') && (
+                    {useHasPermission('manage-leads') && (
                         <Card className="overflow-hidden border border-green-100 shadow-sm dark:border-green-900/40 dark:bg-slate-900">
                             <CardHeader className="border-b px-5 pt-5 pb-3">
                                 <div className="flex items-center justify-between">
@@ -567,7 +567,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                         <CardTitle className="text-base font-semibold">{t('Latest Leads')}</CardTitle>
                                         <p className="text-muted-foreground mt-0.5 text-xs">{t('Most recently created leads')}</p>
                                     </div>
-                                    {hasPermission(auth?.permissions, 'view-leads') && (
+                                    {useHasPermission('view-leads') && (
                                         <Link
                                             href={route('leads.index')}
                                             className="text-primary flex shrink-0 items-center gap-1 text-xs font-medium transition-all duration-150 hover:gap-1.5"
@@ -622,7 +622,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                     )}
 
                     {/* Recent Sales */}
-                    {hasPermission(auth?.permissions, 'manage-sales-orders') && (
+                    {useHasPermission('manage-sales-orders') && (
                         <Card className="overflow-hidden border border-violet-100 shadow-sm dark:border-violet-900/40 dark:bg-slate-900">
                             <CardHeader className="border-b px-5 pt-5 pb-3">
                                 <div className="flex items-center justify-between">
@@ -630,7 +630,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                         <CardTitle className="text-base font-semibold">{t('Recent Sales')}</CardTitle>
                                         <p className="text-muted-foreground mt-0.5 text-xs">{t('Latest sales orders')}</p>
                                     </div>
-                                    {hasPermission(auth?.permissions, 'view-sales-orders') && (
+                                    {useHasPermission('view-sales-orders') && (
                                         <Link
                                             href={route('sales-orders.index')}
                                             className="text-primary flex shrink-0 items-center gap-1 text-xs font-medium transition-all duration-150 hover:gap-1.5"
@@ -689,7 +689,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                     )}
                 </div>
                 {/* ── Row 3: Announcements (8) + Storage Donut (4) ── */}
-                {hasPermission(auth?.permissions, 'manage-announcements') && (
+                {useHasPermission('manage-announcements') && (
                     <div className="dash-anim grid gap-4 lg:grid-cols-12" style={{ animationDelay: '320ms' }}>
                         {/* Announcements — col-span-8 */}
                         <Card className="border-border overflow-hidden border shadow-sm lg:col-span-8 dark:bg-slate-900">
@@ -699,7 +699,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                         <CardTitle className="text-base font-semibold">{t('Announcements')}</CardTitle>
                                         <p className="text-muted-foreground mt-0.5 text-xs">{t('Latest organization announcements')}</p>
                                     </div>
-                                    {hasPermission(auth?.permissions, 'view-announcements') && (
+                                    {useHasPermission('view-announcements') && (
                                         <Link
                                             href={route('announcements.index')}
                                             className="text-primary flex shrink-0 items-center gap-1 text-xs font-medium transition-all duration-150 hover:gap-1.5"
@@ -886,7 +886,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                 )}
 
                 {/* ── Sales Trends + Revenue Chart ── */}
-                {hasPermission(auth?.permissions, 'view-sales-orders') && (
+                {useHasPermission('view-sales-orders') && (
                     <div className="dash-anim" style={{ animationDelay: '160ms' }}>
                         <Card className="border-border overflow-hidden border shadow-sm dark:bg-slate-900">
                             <CardHeader className="border-b px-5 pt-5 pb-3">
@@ -900,7 +900,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                         </p>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        {hasPermission(auth?.permissions, 'view-invoices') && (
+                                        {useHasPermission('view-invoices') && (
                                             <Tabs value={salesTab} onValueChange={(v) => setSalesTab(v as 'sales' | 'revenue')}>
                                                 <TabsList className="h-7">
                                                     <TabsTrigger value="sales" className="cursor-pointer px-3 py-1 text-xs">
@@ -917,7 +917,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                 {charts.salesTrends?.reduce((s, m) => s + m.sales, 0) || 0} {t('total')}
                                             </span>
                                         )}
-                                        {salesTab === 'revenue' && hasPermission(auth?.permissions, 'view-managemanagemanage') && (
+                                        {salesTab === 'revenue' && useHasPermission('view-managemanagemanage') && (
                                             <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-600/20 ring-inset dark:bg-emerald-900/20 dark:text-emerald-400 dark:ring-emerald-500/30">
                                                 {window.appSettings?.formatCurrency(charts.revenueChart?.reduce((s, m) => s + m.revenue, 0) || 0)}
                                             </span>
@@ -938,7 +938,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                 </div>
                             </CardHeader>
                             <CardContent className="p-4 pt-5">
-                                {salesTab === 'sales' || !hasPermission(auth?.permissions, 'view-invoices') ? (
+                                {salesTab === 'sales' || !useHasPermission('view-invoices') ? (
                                     charts.salesTrends && charts.salesTrends.length > 0 ? (
                                         <ResponsiveContainer width="100%" height={300}>
                                             <LineChart data={charts.salesTrends} margin={{ top: 20, right: 30, left: 0, bottom: 20 }}>
@@ -1048,7 +1048,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                 )}
 
                 {/* ── Lead Conversions Chart ── */}
-                {hasPermission(auth?.permissions, 'view-leads') && (
+                {useHasPermission('view-leads') && (
                     <div className="dash-anim" style={{ animationDelay: '200ms' }}>
                         <Card className="border-border overflow-hidden border shadow-sm dark:bg-slate-900">
                             <CardHeader className="border-b px-5 pt-5 pb-3">
@@ -1149,7 +1149,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                 {/* ── Row 2: Active Projects + New Customers ── */}
                 <div className="dash-anim grid gap-4 lg:grid-cols-2" style={{ animationDelay: '280ms' }}>
                     {/* Active Projects */}
-                    {hasPermission(auth?.permissions, 'manage-projects') && (
+                    {useHasPermission('manage-projects') && (
                         <Card className="overflow-hidden border border-indigo-100 shadow-sm dark:border-indigo-900/40 dark:bg-slate-900">
                             <CardHeader className="border-b px-5 pt-5 pb-3">
                                 <div className="flex items-center justify-between">
@@ -1157,7 +1157,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                         <CardTitle className="text-base font-semibold">{t('Active Projects')}</CardTitle>
                                         <p className="text-muted-foreground mt-0.5 text-xs">{t('All active and ongoing projects')}</p>
                                     </div>
-                                    {hasPermission(auth?.permissions, 'view-projects') && (
+                                    {useHasPermission('view-projects') && (
                                         <Link
                                             href={route('projects.index')}
                                             className="text-primary flex shrink-0 items-center gap-1 text-xs font-medium transition-all duration-150 hover:gap-1.5"
@@ -1212,7 +1212,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                     )}
 
                     {/* New Customers */}
-                    {hasPermission(auth?.permissions, 'manage-accounts') && (
+                    {useHasPermission('manage-accounts') && (
                         <Card className="border-border overflow-hidden border shadow-sm dark:bg-slate-900">
                             <CardHeader className="border-b px-5 pt-5 pb-3">
                                 <div className="flex items-center justify-between">
@@ -1220,7 +1220,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                         <CardTitle className="text-base font-semibold">{t('New Accounts')}</CardTitle>
                                         <p className="text-muted-foreground mt-0.5 text-xs">{t('Recently added customers')}</p>
                                     </div>
-                                    {hasPermission(auth?.permissions, 'view-accounts') && (
+                                    {useHasPermission('view-accounts') && (
                                         <Link
                                             href={route('contacts.index')}
                                             className="text-primary flex shrink-0 items-center gap-1 text-xs font-medium transition-all duration-150 hover:gap-1.5"

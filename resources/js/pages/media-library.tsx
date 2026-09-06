@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { usePage } from '@inertiajs/react';
 import {
     Calendar,
@@ -277,7 +277,7 @@ export default function MediaLibraryDemo() {
     };
 
     const handleShowInfo = (item: MediaItem) => {
-        if (!hasPermission(permissions, 'view-media')) return;
+        if (!useHasPermission('view-media')) return;
         setSelectedMediaInfo(item);
         setInfoModalOpen(true);
     };
@@ -363,7 +363,7 @@ export default function MediaLibraryDemo() {
     const breadcrumbs = [{ title: t('Dashboard'), href: '/dashboard' }, { title: t('Media Library') }];
 
     const canCreate = !planLimits || planLimits.can_create;
-    const pageActions = hasPermission(permissions, 'create-media')
+    const pageActions = useHasPermission('create-media')
         ? [
               {
                   label:
@@ -515,7 +515,7 @@ export default function MediaLibraryDemo() {
                                                 )}
 
                                                 {/* Hover Overlay */}
-                                                {hasPermission(permissions, 'view-media') && (
+                                                {useHasPermission('view-media') && (
                                                     <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-200 group-hover:bg-black/40">
                                                         <div className="opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                                                             <div className="rounded-lg bg-white/90 px-4 py-2 text-sm font-medium text-gray-900 backdrop-blur-sm">
@@ -861,7 +861,7 @@ export default function MediaLibraryDemo() {
 
                                     {/* Action Buttons */}
                                     <div className="border-border space-y-2 border-t pt-3">
-                                        {hasPermission(permissions, 'view-media') && (
+                                        {useHasPermission('view-media') && (
                                             <Button
                                                 variant="outline"
                                                 onClick={(e) => {
@@ -874,7 +874,7 @@ export default function MediaLibraryDemo() {
                                                 {t('View')}
                                             </Button>
                                         )}
-                                        {hasPermission(permissions, 'download-media') && (
+                                        {useHasPermission('download-media') && (
                                             <Button
                                                 variant="outline"
                                                 onClick={(e) => {
@@ -887,7 +887,7 @@ export default function MediaLibraryDemo() {
                                                 {t('Download')}
                                             </Button>
                                         )}
-                                        {hasPermission(permissions, 'delete-media') && (
+                                        {useHasPermission('delete-media') && (
                                             <Button
                                                 variant="outline"
                                                 onClick={handleDelete}

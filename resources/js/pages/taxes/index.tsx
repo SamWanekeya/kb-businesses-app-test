@@ -8,7 +8,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { ChevronDown, ChevronUp, Edit, Lock, Percent, Search, Trash2, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -212,10 +212,10 @@ export default function Taxes() {
         return item.type === 'percentage' ? `${rate}%` : `${currencySymbol}${rate}`;
     };
 
-    const canCreate = hasPermission(permissions, 'create-taxes');
-    const canEdit = hasPermission(permissions, 'edit-taxes');
-    const canDelete = hasPermission(permissions, 'delete-taxes');
-    const canToggleStatus = hasPermission(permissions, 'toggle-status-taxes');
+    const canCreate = useHasPermission('create-taxes');
+    const canEdit = useHasPermission('edit-taxes');
+    const canDelete = useHasPermission('delete-taxes');
+    const canToggleStatus = useHasPermission('toggle-status-taxes');
 
     const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Product Setup') }, { title: t('Taxes') }];
 

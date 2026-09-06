@@ -8,7 +8,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { ChevronDown, ChevronUp, Edit, Lock, Search, Tag, Trash2, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -213,10 +213,10 @@ export default function LeadStatuses() {
         setExpandedDescriptions(next);
     };
 
-    const canCreate = hasPermission(permissions, 'create-lead-statuses');
-    const canEdit = hasPermission(permissions, 'edit-lead-statuses');
-    const canDelete = hasPermission(permissions, 'delete-lead-statuses');
-    const canToggleStatus = hasPermission(permissions, 'toggle-status-lead-statuses');
+    const canCreate = useHasPermission('create-lead-statuses');
+    const canEdit = useHasPermission('edit-lead-statuses');
+    const canDelete = useHasPermission('delete-lead-statuses');
+    const canToggleStatus = useHasPermission('toggle-status-lead-statuses');
 
     const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Lead Management') }, { title: t('Lead Status') }];
 

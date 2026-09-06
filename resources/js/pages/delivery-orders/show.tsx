@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { Link, router, usePage } from '@inertiajs/react';
 import {
     AlertCircle,
@@ -321,7 +321,7 @@ export default function DeliveryOrderShow() {
                                 </div>
                             </div>
                             <div className="space-y-2">
-                                {hasPermission(permissions, 'edit-delivery-orders') && (
+                                {useHasPermission('edit-delivery-orders') && (
                                     <Button
                                         variant="outline"
                                         className="w-full"
@@ -361,7 +361,7 @@ export default function DeliveryOrderShow() {
                                                     )}
                                                 </div>
                                             </div>
-                                            {hasPermission(permissions, 'view-contacts') && (
+                                            {useHasPermission('view-contacts') && (
                                                 <TooltipProvider delayDuration={200}>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
@@ -398,7 +398,7 @@ export default function DeliveryOrderShow() {
                                                     )}
                                                 </div>
                                             </div>
-                                            {hasPermission(permissions, 'view-accounts') && (
+                                            {useHasPermission('view-accounts') && (
                                                 <TooltipProvider delayDuration={200}>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
@@ -510,7 +510,7 @@ export default function DeliveryOrderShow() {
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2 p-5">
-                                {deliveryOrder.sales_order && hasPermission(permissions, 'view-sales-orders') && (
+                                {deliveryOrder.sales_order && useHasPermission('view-sales-orders') && (
                                     <Link
                                         href={route('sales-orders.show', deliveryOrder.sales_order.id)}
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
@@ -531,7 +531,7 @@ export default function DeliveryOrderShow() {
                                         </TooltipProvider>
                                     </Link>
                                 )}
-                                {deliveryOrder.shipping_provider_type && hasPermission(permissions, 'view-shipping-provider-types') && (
+                                {deliveryOrder.shipping_provider_type && useHasPermission('view-shipping-provider-types') && (
                                     <Link
                                         href={route('shipping-provider-types.show', deliveryOrder.shipping_provider_type.id)}
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"

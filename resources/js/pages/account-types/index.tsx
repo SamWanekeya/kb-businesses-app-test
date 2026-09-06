@@ -8,7 +8,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { Building2, ChevronDown, ChevronUp, Edit, Lock, Search, Trash2, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -214,10 +214,10 @@ export default function AccountTypes() {
         setExpandedDescriptions(next);
     };
 
-    const canCreate = hasPermission(permissions, 'create-account-types');
-    const canEdit = hasPermission(permissions, 'edit-account-types');
-    const canDelete = hasPermission(permissions, 'delete-account-types');
-    const canToggleStatus = hasPermission(permissions, 'toggle-status-account-types');
+    const canCreate = useHasPermission('create-account-types');
+    const canEdit = useHasPermission('edit-account-types');
+    const canDelete = useHasPermission('delete-account-types');
+    const canToggleStatus = useHasPermission('toggle-status-account-types');
 
     const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Account Management') }, { title: t('Account Types') }];
 

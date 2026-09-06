@@ -8,7 +8,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { Edit, Eye, FileDown, FileUp, Lock, Package, Plus, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -188,7 +188,7 @@ export default function Products() {
     const pageActions = [];
 
     // Add export button
-    if (hasPermission(permissions, 'export-products')) {
+    if (useHasPermission('export-products')) {
         pageActions.push({
             label: t('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
@@ -204,7 +204,7 @@ export default function Products() {
     }
 
     // Add import button
-    if (hasPermission(permissions, 'import-products')) {
+    if (useHasPermission('import-products')) {
         pageActions.push({
             label: t('Import'),
             icon: <FileUp className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
@@ -218,7 +218,7 @@ export default function Products() {
     }
 
     // Add the "Add Product" button if user has permission
-    if (hasPermission(permissions, 'create-products')) {
+    if (useHasPermission('create-products')) {
         pageActions.push({
             label: t('Add Product'),
             icon: <Plus className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
@@ -658,7 +658,7 @@ export default function Products() {
                                         {/* Footer Actions */}
                                         <div className="-mx-4 mt-auto flex items-center justify-around border-t border-gray-300 px-4 pt-2 dark:border-gray-600">
                                             <TooltipProvider delayDuration={200}>
-                                                {hasPermission(permissions, 'view-products') && (
+                                                {useHasPermission('view-products') && (
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
                                                             <Button
@@ -678,7 +678,7 @@ export default function Products() {
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 )}
-                                                {hasPermission(permissions, 'edit-products') && (
+                                                {useHasPermission('edit-products') && (
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
                                                             <Button
@@ -698,7 +698,7 @@ export default function Products() {
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 )}
-                                                {hasPermission(permissions, 'toggle-status-products') && (
+                                                {useHasPermission('toggle-status-products') && (
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
                                                             <Button
@@ -718,7 +718,7 @@ export default function Products() {
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 )}
-                                                {hasPermission(permissions, 'delete-products') && (
+                                                {useHasPermission('delete-products') && (
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
                                                             <Button

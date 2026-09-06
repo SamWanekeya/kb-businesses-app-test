@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Pagination } from '@/components/ui/pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { Edit, FileText, Lock, Search, Trash2, X } from 'lucide-react';
 import { useState } from 'react';
@@ -165,10 +165,10 @@ export default function DocumentTypes() {
         );
     };
 
-    const canCreate = hasPermission(permissions, 'create-document-types');
-    const canEdit = hasPermission(permissions, 'edit-document-types');
-    const canDelete = hasPermission(permissions, 'delete-document-types');
-    const canToggleStatus = hasPermission(permissions, 'toggle-status-document-types');
+    const canCreate = useHasPermission('create-document-types');
+    const canEdit = useHasPermission('edit-document-types');
+    const canDelete = useHasPermission('delete-document-types');
+    const canToggleStatus = useHasPermission('toggle-status-document-types');
 
     const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Document Management') }, { title: t('Types') }];
 

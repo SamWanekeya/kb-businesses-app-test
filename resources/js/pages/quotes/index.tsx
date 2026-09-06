@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { Link, router, usePage } from '@inertiajs/react';
 import { FileDown, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -170,7 +170,7 @@ export default function Quotes() {
 
     const pageActions: any[] = [];
 
-    if (hasPermission(permissions, 'export-quotes')) {
+    if (useHasPermission('export-quotes')) {
         pageActions.push({
             label: t('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[380px]:mr-2" />,
@@ -185,7 +185,7 @@ export default function Quotes() {
         });
     }
 
-    if (hasPermission(permissions, 'create-quotes')) {
+    if (useHasPermission('create-quotes')) {
         pageActions.push({
             label: t('Add Quote'),
             icon: <Plus className="mr-0 h-4 w-4 min-[380px]:mr-2" />,
@@ -207,7 +207,7 @@ export default function Quotes() {
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: string, item: any) =>
-                hasPermission(permissions, 'view-quotes') ? (
+                useHasPermission('view-quotes') ? (
                     <Link
                         href={route('quotes.show', item.id)}
                         className="inline-flex cursor-pointer items-center rounded-md border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium whitespace-nowrap text-blue-700 transition-colors duration-200 hover:border-blue-400 hover:bg-blue-100"

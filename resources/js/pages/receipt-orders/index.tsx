@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { Link, router, usePage } from '@inertiajs/react';
 import { FileDown, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -186,7 +186,7 @@ export default function ReceiptOrders() {
 
     const pageActions = [];
 
-    if (hasPermission(permissions, 'export-receipt-orders')) {
+    if (useHasPermission('export-receipt-orders')) {
         pageActions.push({
             label: t('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[470px]:mr-2" />,
@@ -199,7 +199,7 @@ export default function ReceiptOrders() {
         });
     }
 
-    if (hasPermission(permissions, 'create-receipt-orders')) {
+    if (useHasPermission('create-receipt-orders')) {
         pageActions.push({
             label: t('Add Receipt Order'),
             icon: <Plus className="mr-0 h-4 w-4 min-[470px]:mr-2" />,

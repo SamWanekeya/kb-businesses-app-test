@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { Link, router, usePage } from '@inertiajs/react';
 import { FileDown, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -128,7 +128,7 @@ export default function ReturnOrders() {
 
     const pageActions = [];
 
-    if (hasPermission(permissions, 'export-return-orders')) {
+    if (useHasPermission('export-return-orders')) {
         pageActions.push({
             label: t('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
@@ -141,7 +141,7 @@ export default function ReturnOrders() {
         });
     }
 
-    if (hasPermission(permissions, 'create-return-orders')) {
+    if (useHasPermission('create-return-orders')) {
         pageActions.push({
             label: t('Add Return Order'),
             icon: <Plus className="mr-0 h-4 w-4 min-[500px]:mr-2" />,

@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { formatRelativeTime } from '@/utils/helper';
 import { Link, router, usePage } from '@inertiajs/react';
 import {
@@ -442,7 +442,7 @@ export default function PurchaseOrderShow() {
                     </Card>
 
                     {/* ── Activity Stream ── */}
-                    {hasPermission(permissions, 'view-stream') && (
+                    {useHasPermission('view-stream') && (
                         <Card className="shadow-sm">
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
@@ -451,7 +451,7 @@ export default function PurchaseOrderShow() {
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
-                                {hasPermission(permissions, 'create-purchase-orders') && (
+                                {useHasPermission('create-purchase-orders') && (
                                     <div className="border-b px-5 pt-4 pb-4">
                                         <form
                                             onSubmit={(e) => {
@@ -584,7 +584,7 @@ export default function PurchaseOrderShow() {
                                                                     <div className="flex flex-shrink-0 items-center gap-1">
                                                                         {activity.activity_type === 'comment' &&
                                                                             activity.user_id === auth?.user?.id &&
-                                                                            hasPermission(permissions, 'edit-purchase-orders') && (
+                                                                            useHasPermission('edit-purchase-orders') && (
                                                                                 <TooltipProvider delayDuration={200}>
                                                                                     <Tooltip>
                                                                                         <TooltipTrigger asChild>
@@ -606,7 +606,7 @@ export default function PurchaseOrderShow() {
                                                                                     </Tooltip>
                                                                                 </TooltipProvider>
                                                                             )}
-                                                                        {hasPermission(permissions, 'delete-stream') && (
+                                                                        {useHasPermission('delete-stream') && (
                                                                             <TooltipProvider delayDuration={200}>
                                                                                 <Tooltip>
                                                                                     <TooltipTrigger asChild>
@@ -721,7 +721,7 @@ export default function PurchaseOrderShow() {
                                 </div>
                             </div>
                             <div className="space-y-2">
-                                {hasPermission(permissions, 'edit-purchase-orders') && (
+                                {useHasPermission('edit-purchase-orders') && (
                                     <Button
                                         variant="outline"
                                         className="w-full"
@@ -760,7 +760,7 @@ export default function PurchaseOrderShow() {
                                                 )}
                                             </div>
                                         </div>
-                                        {hasPermission(permissions, 'view-accounts') && (
+                                        {useHasPermission('view-accounts') && (
                                             <TooltipProvider delayDuration={200}>
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
@@ -800,7 +800,7 @@ export default function PurchaseOrderShow() {
                                                                 )}
                                                             </div>
                                                         </div>
-                                                        {hasPermission(permissions, 'view-contacts') && (
+                                                        {useHasPermission('view-contacts') && (
                                                             <TooltipProvider delayDuration={200}>
                                                                 <Tooltip>
                                                                     <TooltipTrigger asChild>
@@ -840,7 +840,7 @@ export default function PurchaseOrderShow() {
                                                                 )}
                                                             </div>
                                                         </div>
-                                                        {hasPermission(permissions, 'view-contacts') && (
+                                                        {useHasPermission('view-contacts') && (
                                                             <TooltipProvider delayDuration={200}>
                                                                 <Tooltip>
                                                                     <TooltipTrigger asChild>
@@ -950,7 +950,7 @@ export default function PurchaseOrderShow() {
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2 p-5">
-                                {purchaseOrder.sales_order && hasPermission(permissions, 'view-sales-orders') && (
+                                {purchaseOrder.sales_order && useHasPermission('view-sales-orders') && (
                                     <Link
                                         href={route('sales-orders.show', purchaseOrder.sales_order.id)}
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
@@ -971,7 +971,7 @@ export default function PurchaseOrderShow() {
                                         </TooltipProvider>
                                     </Link>
                                 )}
-                                {purchaseOrder.shipping_provider_type && hasPermission(permissions, 'view-shipping-provider-types') && (
+                                {purchaseOrder.shipping_provider_type && useHasPermission('view-shipping-provider-types') && (
                                     <Link
                                         href={route('shipping-provider-types.show', purchaseOrder.shipping_provider_type.id)}
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"

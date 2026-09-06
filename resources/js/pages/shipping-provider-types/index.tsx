@@ -8,7 +8,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { ChevronDown, ChevronUp, Edit, Lock, Search, Trash2, Truck, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -200,10 +200,10 @@ export default function ShippingProviderTypes() {
         setExpandedDescriptions(next);
     };
 
-    const canCreate = hasPermission(permissions, 'create-shipping-provider-types');
-    const canEdit = hasPermission(permissions, 'edit-shipping-provider-types');
-    const canDelete = hasPermission(permissions, 'delete-shipping-provider-types');
-    const canToggleStatus = hasPermission(permissions, 'toggle-status-shipping-provider-types');
+    const canCreate = useHasPermission('create-shipping-provider-types');
+    const canEdit = useHasPermission('edit-shipping-provider-types');
+    const canDelete = useHasPermission('delete-shipping-provider-types');
+    const canToggleStatus = useHasPermission('toggle-status-shipping-provider-types');
 
     const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Shipping Provider Types') }];
 

@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { Link, router, usePage } from '@inertiajs/react';
 import {
     AlertTriangle,
@@ -150,7 +150,7 @@ export default function CaseShow() {
                     </div>
                 </div>
             </div>
-            {hasPermission(permissions, viewPermission) && (
+            {useHasPermission(viewPermission) && (
                 <TooltipProvider delayDuration={200}>
                     <Tooltip>
                         <TooltipTrigger asChild>
@@ -360,7 +360,7 @@ export default function CaseShow() {
                                                 )}
                                             </div>
                                         </div>
-                                        {hasPermission(permissions, 'view-accounts') && (
+                                        {useHasPermission('view-accounts') && (
                                             <TooltipProvider delayDuration={200}>
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
@@ -406,7 +406,7 @@ export default function CaseShow() {
                                                 )}
                                             </div>
                                         </div>
-                                        {hasPermission(permissions, 'view-contacts') && (
+                                        {useHasPermission('view-contacts') && (
                                             <TooltipProvider delayDuration={200}>
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>

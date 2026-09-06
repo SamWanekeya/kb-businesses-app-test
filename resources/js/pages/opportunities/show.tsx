@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { formatRelativeTime } from '@/utils/helper';
 import { Link, router, usePage } from '@inertiajs/react';
 import {
@@ -224,7 +224,7 @@ export default function OpportunityShow() {
                                             )}
                                         </div>
                                     </div>
-                                    {hasPermission(permissions, 'view-accounts') && (
+                                    {useHasPermission('view-accounts') && (
                                         <TooltipProvider delayDuration={200}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
@@ -256,7 +256,7 @@ export default function OpportunityShow() {
                                             )}
                                         </div>
                                     </div>
-                                    {hasPermission(permissions, 'view-contacts') && (
+                                    {useHasPermission('view-contacts') && (
                                         <TooltipProvider delayDuration={200}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
@@ -406,7 +406,7 @@ export default function OpportunityShow() {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                {hasPermission(permissions, 'view-meetings') && (
+                                                                {useHasPermission('view-meetings') && (
                                                                     <TooltipProvider delayDuration={200}>
                                                                         <Tooltip>
                                                                             <TooltipTrigger asChild>
@@ -489,7 +489,7 @@ export default function OpportunityShow() {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                {hasPermission(permissions, 'view-calls') && (
+                                                                {useHasPermission('view-calls') && (
                                                                     <TooltipProvider delayDuration={200}>
                                                                         <Tooltip>
                                                                             <TooltipTrigger asChild>
@@ -663,7 +663,7 @@ export default function OpportunityShow() {
                                             <p className="text-foreground text-sm font-semibold">{quote.quote_number}</p>
                                             <p className="text-muted-foreground mt-0.5 text-xs">{quote.name}</p>
                                         </div>
-                                        {hasPermission(permissions, 'view-quotes') && (
+                                        {useHasPermission('view-quotes') && (
                                             <Link href={route('quotes.show', quote.id)}>
                                                 <Button variant="outline" size="sm" className="bg-white">
                                                     {t('View')}
@@ -678,7 +678,7 @@ export default function OpportunityShow() {
                 )}
 
                 {/* Activity Stream */}
-                {hasPermission(permissions, 'view-stream') && (
+                {useHasPermission('view-stream') && (
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
@@ -687,7 +687,7 @@ export default function OpportunityShow() {
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
-                            {hasPermission(permissions, 'create-opportunities') && (
+                            {useHasPermission('create-opportunities') && (
                                 <div className="border-b px-5 pt-4 pb-4">
                                     <form
                                         onSubmit={(e) => {
@@ -811,7 +811,7 @@ export default function OpportunityShow() {
                                                                 <div className="flex flex-shrink-0 items-center gap-1">
                                                                     {activity.activity_type === 'comment' &&
                                                                         activity.user_id === auth?.user?.id &&
-                                                                        hasPermission(permissions, 'edit-opportunities') && (
+                                                                        useHasPermission('edit-opportunities') && (
                                                                             <TooltipProvider delayDuration={200}>
                                                                                 <Tooltip>
                                                                                     <TooltipTrigger asChild>
@@ -833,7 +833,7 @@ export default function OpportunityShow() {
                                                                                 </Tooltip>
                                                                             </TooltipProvider>
                                                                         )}
-                                                                    {hasPermission(permissions, 'delete-stream') && (
+                                                                    {useHasPermission('delete-stream') && (
                                                                         <TooltipProvider delayDuration={200}>
                                                                             <Tooltip>
                                                                                 <TooltipTrigger asChild>

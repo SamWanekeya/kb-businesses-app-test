@@ -1,6 +1,6 @@
 import { PageTemplate } from '@/components/page-template';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { ArrowRight, BarChart2, Calendar, Clock, Eye, List, Megaphone, Star, Tag, TrendingUp, XCircle } from 'lucide-react';
 import { useState } from 'react';
@@ -70,7 +70,7 @@ export default function AnnouncementDashboard() {
             title={t('Announcement Dashboard')}
             description={t('Organization-wide announcements and notices')}
             actions={[
-                ...(hasPermission(permissions, 'manage-announcements')
+                ...(useHasPermission('manage-announcements')
                     ? [
                           {
                               label: t('List View'),
@@ -158,7 +158,7 @@ export default function AnnouncementDashboard() {
                                                             </span>
                                                         )}
                                                     </div>
-                                                    {hasPermission(permissions, 'view-announcements') && (
+                                                    {useHasPermission('view-announcements') && (
                                                         <TooltipProvider>
                                                             <Tooltip>
                                                                 <TooltipTrigger asChild>

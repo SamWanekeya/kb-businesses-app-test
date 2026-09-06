@@ -8,7 +8,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { Bell, ChevronDown, ChevronUp, Edit, Lock, Search, Trash2, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -200,10 +200,10 @@ export default function AnnouncementCategories() {
         setExpandedDescriptions(next);
     };
 
-    const canCreate = hasPermission(permissions, 'create-announcement-categories');
-    const canEdit = hasPermission(permissions, 'edit-announcement-categories');
-    const canDelete = hasPermission(permissions, 'delete-announcement-categories');
-    const canToggleStatus = hasPermission(permissions, 'toggle-status-announcement-categories');
+    const canCreate = useHasPermission('create-announcement-categories');
+    const canEdit = useHasPermission('edit-announcement-categories');
+    const canDelete = useHasPermission('delete-announcement-categories');
+    const canToggleStatus = useHasPermission('toggle-status-announcement-categories');
 
     const breadcrumbs = [
         { title: t('Dashboard'), href: route('dashboard') },

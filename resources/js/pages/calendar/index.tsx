@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { capitalize } from '@/utils/helper';
 import allLocales from '@fullcalendar/core/locales-all';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -590,9 +590,9 @@ export default function CalendarIndex() {
                             {(() => {
                                 const eventType = selectedEvent.type;
                                 const hasViewPermission =
-                                    (eventType === 'meeting' && hasPermission(permissions, 'view-meetings')) ||
-                                    (eventType === 'call' && hasPermission(permissions, 'view-calls')) ||
-                                    (eventType === 'task' && hasPermission(permissions, 'view-project-tasks'));
+                                    (eventType === 'meeting' && useHasPermission('view-meetings')) ||
+                                    (eventType === 'call' && useHasPermission('view-calls')) ||
+                                    (eventType === 'task' && useHasPermission('view-project-tasks'));
 
                                 return hasViewPermission && !isDemo ? (
                                     <div className="flex justify-end border-t pt-4">

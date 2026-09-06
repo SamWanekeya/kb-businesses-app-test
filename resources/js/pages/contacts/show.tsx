@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ArrowLeft, Briefcase, Building, Calendar, Clock, Eye, FileText, MapPin, Phone, Tag, User, UserCheck } from 'lucide-react';
 import { useMemo } from 'react';
@@ -226,7 +226,7 @@ export default function ContactShow() {
                                             )}
                                         </div>
                                     </div>
-                                    {hasPermission(permissions, 'view-accounts') && (
+                                    {useHasPermission('view-accounts') && (
                                         <TooltipProvider delayDuration={200}>
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
@@ -284,7 +284,7 @@ export default function ContactShow() {
                                                     {quote.name && <p className="text-muted-foreground truncate text-xs">{quote.name}</p>}
                                                 </div>
                                             </div>
-                                            {hasPermission(permissions, 'view-quotes') && (
+                                            {useHasPermission('view-quotes') && (
                                                 <TooltipProvider delayDuration={200}>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
@@ -341,7 +341,7 @@ export default function ContactShow() {
                                                     {caseItem.status && <p className="text-muted-foreground truncate text-xs">{caseItem.status}</p>}
                                                 </div>
                                             </div>
-                                            {hasPermission(permissions, 'view-cases') && (
+                                            {useHasPermission('view-cases') && (
                                                 <TooltipProvider delayDuration={200}>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
@@ -443,7 +443,7 @@ export default function ContactShow() {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                {hasPermission(permissions, 'view-meetings') && (
+                                                                {useHasPermission('view-meetings') && (
                                                                     <TooltipProvider delayDuration={200}>
                                                                         <Tooltip>
                                                                             <TooltipTrigger asChild>
@@ -526,7 +526,7 @@ export default function ContactShow() {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                {hasPermission(permissions, 'view-calls') && (
+                                                                {useHasPermission('view-calls') && (
                                                                     <TooltipProvider delayDuration={200}>
                                                                         <Tooltip>
                                                                             <TooltipTrigger asChild>

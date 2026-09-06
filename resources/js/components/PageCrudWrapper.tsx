@@ -5,7 +5,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { BreadcrumbItem } from '@/types';
 import { CrudConfig } from '@/types/crud';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { PlusIcon } from 'lucide-react';
 import { ReactNode, useState } from 'react';
@@ -366,7 +366,7 @@ export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs 
 
     // Add custom buttons with permission check
     buttons.forEach((button) => {
-        if (!button.permission || hasPermission(permissions, button.permission)) {
+        if (!button.permission || useHasPermission(button.permission)) {
             pageActions.push({
                 label: button.label,
                 icon: button.icon,
@@ -377,7 +377,7 @@ export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs 
     });
 
     // Add the default "Add" button if allowed and user has permission
-    if (showAddButton && hasPermission(permissions, entity.permissions.create)) {
+    if (showAddButton && useHasPermission(entity.permissions.create)) {
         pageActions.push({
             label: `Add ${entity.name.slice(0, -1).charAt(0).toUpperCase() + entity.name.slice(0, -1).slice(1)}`,
             icon: <PlusIcon className="h-4 w-4" />,

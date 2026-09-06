@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { capitalize, formatRelativeTime } from '@/utils/helper';
 import { Link, router, usePage } from '@inertiajs/react';
 import {
@@ -305,7 +305,7 @@ export default function AccountShow() {
                                                     {contact.email && <p className="text-muted-foreground truncate text-xs">{contact.email}</p>}
                                                 </div>
                                             </div>
-                                            {hasPermission(permissions, 'view-contacts') && (
+                                            {useHasPermission('view-contacts') && (
                                                 <TooltipProvider delayDuration={200}>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
@@ -359,7 +359,7 @@ export default function AccountShow() {
                                                 <p className="text-foreground truncate text-sm font-semibold">{quote.quote_number}</p>
                                                 {quote.name && <p className="text-muted-foreground truncate text-xs">{quote.name}</p>}
                                             </div>
-                                            {hasPermission(permissions, 'view-quotes') && (
+                                            {useHasPermission('view-quotes') && (
                                                 <TooltipProvider delayDuration={200}>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
@@ -461,7 +461,7 @@ export default function AccountShow() {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                {hasPermission(permissions, 'view-meetings') && (
+                                                                {useHasPermission('view-meetings') && (
                                                                     <TooltipProvider delayDuration={200}>
                                                                         <Tooltip>
                                                                             <TooltipTrigger asChild>
@@ -544,7 +544,7 @@ export default function AccountShow() {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                {hasPermission(permissions, 'view-calls') && (
+                                                                {useHasPermission('view-calls') && (
                                                                     <TooltipProvider delayDuration={200}>
                                                                         <Tooltip>
                                                                             <TooltipTrigger asChild>
@@ -573,7 +573,7 @@ export default function AccountShow() {
                     })()}
 
                 {/* Activity Stream */}
-                {hasPermission(permissions, 'view-stream') && (
+                {useHasPermission('view-stream') && (
                     <Card className="shadow-sm">
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
@@ -582,7 +582,7 @@ export default function AccountShow() {
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
-                            {hasPermission(permissions, 'create-accounts') && (
+                            {useHasPermission('create-accounts') && (
                                 <div className="border-b px-5 pt-4 pb-4">
                                     <form
                                         onSubmit={(e) => {
@@ -706,7 +706,7 @@ export default function AccountShow() {
                                                                 <div className="flex flex-shrink-0 items-center gap-1">
                                                                     {activity.activity_type === 'comment' &&
                                                                         activity.user_id === auth?.user?.id &&
-                                                                        hasPermission(permissions, 'edit-accounts') && (
+                                                                        useHasPermission('edit-accounts') && (
                                                                             <TooltipProvider delayDuration={200}>
                                                                                 <Tooltip>
                                                                                     <TooltipTrigger asChild>
@@ -728,7 +728,7 @@ export default function AccountShow() {
                                                                                 </Tooltip>
                                                                             </TooltipProvider>
                                                                         )}
-                                                                    {hasPermission(permissions, 'delete-stream') && (
+                                                                    {useHasPermission('delete-stream') && (
                                                                         <TooltipProvider delayDuration={200}>
                                                                             <Tooltip>
                                                                                 <TooltipTrigger asChild>

@@ -10,7 +10,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import * as LucidIcons from 'lucide-react';
 import { Banknote, Building2, Calendar, Edit, Eye, FileDown, Lock, MoreHorizontal, Plus, Trash2, User } from 'lucide-react';
@@ -184,7 +184,7 @@ export default function Opportunities() {
     };
 
     const handleToggleStatus = (opportunity: any) => {
-        if (!hasPermission(permissions, 'toggle-status-opportunities')) {
+        if (!useHasPermission('toggle-status-opportunities')) {
             toast.error(t('Permission denied.'));
             return;
         }
@@ -262,7 +262,7 @@ export default function Opportunities() {
     const pageActions = [];
 
     // Add export button
-    if (hasPermission(permissions, 'export-opportunities')) {
+    if (useHasPermission('export-opportunities')) {
         pageActions.push({
             label: t('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
@@ -276,7 +276,7 @@ export default function Opportunities() {
     }
 
     // Add the "Add Opportunity" button if user has permission
-    if (hasPermission(permissions, 'create-opportunities')) {
+    if (useHasPermission('create-opportunities')) {
         pageActions.push({
             label: t('Add Opportunity'),
             icon: <Plus className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
@@ -635,7 +635,7 @@ export default function Opportunities() {
                                             {t('Set up opportunity stages to start organizing your work in a Kanban board.')}
                                         </p>
                                     </div>
-                                    {hasPermission(permissions, 'manage-opportunity-stages') && (
+                                    {useHasPermission('manage-opportunity-stages') && (
                                         <button
                                             onClick={() => router.visit(route('opportunity-stages.index'))}
                                             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
@@ -677,7 +677,7 @@ export default function Opportunities() {
                                             setDraggingId(null);
                                             const opportunityId = e.dataTransfer.getData('opportunityId');
                                             if (!opportunityId) return;
-                                            if (!hasPermission(permissions, 'edit-opportunities')) {
+                                            if (!useHasPermission('edit-opportunities')) {
                                                 toast.error(t('Permission denied.'));
                                                 return;
                                             }
@@ -731,7 +731,7 @@ export default function Opportunities() {
                                                     {stageOpportunities.length}
                                                 </span>
                                             </div>
-                                            {hasPermission(permissions, 'create-opportunities') && (
+                                            {useHasPermission('create-opportunities') && (
                                                 <button
                                                     onClick={() => handleAddOpportunity(stage.id.toString())}
                                                     className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-white/60 hover:text-gray-800"
@@ -755,9 +755,9 @@ export default function Opportunities() {
                                                 stageOpportunities.map((opportunity: any) => (
                                                     <div
                                                         key={opportunity.id}
-                                                        draggable={hasPermission(permissions, 'edit-opportunities') && !isDemoMode}
+                                                        draggable={useHasPermission('edit-opportunities') && !isDemoMode}
                                                         onDragStart={(e) => {
-                                                            if (!hasPermission(permissions, 'edit-opportunities') || isDemoMode) {
+                                                            if (!useHasPermission('edit-opportunities') || isDemoMode) {
                                                                 e.preventDefault();
                                                                 return;
                                                             }
@@ -769,7 +769,7 @@ export default function Opportunities() {
                                                             setDragOverStage(null);
                                                         }}
                                                         className={
-                                                            hasPermission(permissions, 'edit-opportunities') && !isDemoMode
+                                                            useHasPermission('edit-opportunities') && !isDemoMode
                                                                 ? 'cursor-grab active:cursor-grabbing'
                                                                 : ''
                                                         }
@@ -793,9 +793,9 @@ export default function Opportunities() {
                                                                             {opportunity.name}
                                                                         </h4>
                                                                     </div>
-                                                                    {(hasPermission(permissions, 'view-opportunities') ||
-                                                                        hasPermission(permissions, 'edit-opportunities') ||
-                                                                        hasPermission(permissions, 'delete-opportunities')) && (
+                                                                    {(useHasPermission('view-opportunities') ||
+                                                                        useHasPermission('edit-opportunities') ||
+                                                                        useHasPermission('delete-opportunities')) && (
                                                                         <DropdownMenu>
                                                                             <DropdownMenuTrigger asChild>
                                                                                 <Button
@@ -807,7 +807,7 @@ export default function Opportunities() {
                                                                                 </Button>
                                                                             </DropdownMenuTrigger>
                                                                             <DropdownMenuContent align="end" className="w-40">
-                                                                                {hasPermission(permissions, 'view-opportunities') && (
+                                                                                {useHasPermission('view-opportunities') && (
                                                                                     <DropdownMenuItem
                                                                                         onClick={() => handleAction('view', opportunity)}
                                                                                     >
@@ -815,7 +815,7 @@ export default function Opportunities() {
                                                                                         {t('View')}
                                                                                     </DropdownMenuItem>
                                                                                 )}
-                                                                                {hasPermission(permissions, 'edit-opportunities') && (
+                                                                                {useHasPermission('edit-opportunities') && (
                                                                                     <DropdownMenuItem
                                                                                         onClick={() => handleAction('edit', opportunity)}
                                                                                     >
@@ -823,7 +823,7 @@ export default function Opportunities() {
                                                                                         {t('Edit')}
                                                                                     </DropdownMenuItem>
                                                                                 )}
-                                                                                {hasPermission(permissions, 'delete-opportunities') && (
+                                                                                {useHasPermission('delete-opportunities') && (
                                                                                     <>
                                                                                         <DropdownMenuSeparator />
                                                                                         <DropdownMenuItem
@@ -976,26 +976,26 @@ export default function Opportunities() {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end" className="z-50 w-48" sideOffset={5}>
-                                                {hasPermission(permissions, 'view-opportunities') && (
+                                                {useHasPermission('view-opportunities') && (
                                                     <DropdownMenuItem onClick={() => handleAction('view', opportunity)}>
                                                         <Eye className="mr-2 h-4 w-4" />
                                                         <span>{t('View Opportunity')}</span>
                                                     </DropdownMenuItem>
                                                 )}
-                                                {hasPermission(permissions, 'toggle-status-opportunities') && (
+                                                {useHasPermission('toggle-status-opportunities') && (
                                                     <DropdownMenuItem onClick={() => handleAction('toggle-status', opportunity)}>
                                                         <Lock className="mr-2 h-4 w-4" />
                                                         <span>{opportunity.status === 'active' ? t('Deactivate') : t('Activate')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 <DropdownMenuSeparator />
-                                                {hasPermission(permissions, 'edit-opportunities') && (
+                                                {useHasPermission('edit-opportunities') && (
                                                     <DropdownMenuItem onClick={() => handleAction('edit', opportunity)} className="text-amber-600">
                                                         <Edit className="mr-2 h-4 w-4" />
                                                         <span>{t('Edit')}</span>
                                                     </DropdownMenuItem>
                                                 )}
-                                                {hasPermission(permissions, 'delete-opportunities') && (
+                                                {useHasPermission('delete-opportunities') && (
                                                     <DropdownMenuItem onClick={() => handleAction('delete', opportunity)} className="text-rose-600">
                                                         <Trash2 className="mr-2 h-4 w-4" />
                                                         <span>{t('Delete')}</span>
@@ -1067,7 +1067,7 @@ export default function Opportunities() {
 
                                     {/* Action buttons */}
                                     <div className="mt-auto flex gap-2">
-                                        {hasPermission(permissions, 'edit-opportunities') && (
+                                        {useHasPermission('edit-opportunities') && (
                                             <Button
                                                 variant="outline"
                                                 size="sm"
@@ -1079,7 +1079,7 @@ export default function Opportunities() {
                                             </Button>
                                         )}
 
-                                        {hasPermission(permissions, 'view-opportunities') && (
+                                        {useHasPermission('view-opportunities') && (
                                             <Button
                                                 variant="outline"
                                                 size="sm"
@@ -1091,7 +1091,7 @@ export default function Opportunities() {
                                             </Button>
                                         )}
 
-                                        {hasPermission(permissions, 'delete-opportunities') && (
+                                        {useHasPermission('delete-opportunities') && (
                                             <Button
                                                 variant="outline"
                                                 size="sm"

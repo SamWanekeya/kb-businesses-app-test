@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
-import { hasPermission } from '@/utils/authorization';
+import { useHasPermission } from '@/utils/Permissions';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ArrowLeft, Building2, Calendar, ClipboardCheck, Edit, Eye, FileText, Package, ShoppingCart, User } from 'lucide-react';
 import { useEffect } from 'react';
@@ -374,7 +374,7 @@ export default function ShowReceiptOrder() {
                                 <div className="flex flex-col items-end gap-1.5">{getStatusBadge(receiptOrder.status)}</div>
                             </div>
                             <div className="space-y-2">
-                                {hasPermission(permissions, 'edit-receipt-orders') && (
+                                {useHasPermission('edit-receipt-orders') && (
                                     <Button
                                         variant="outline"
                                         className="w-full"
@@ -414,7 +414,7 @@ export default function ShowReceiptOrder() {
                                                     )}
                                                 </div>
                                             </div>
-                                            {hasPermission(permissions, 'view-contacts') && (
+                                            {useHasPermission('view-contacts') && (
                                                 <TooltipProvider delayDuration={200}>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
@@ -451,7 +451,7 @@ export default function ShowReceiptOrder() {
                                                     )}
                                                 </div>
                                             </div>
-                                            {hasPermission(permissions, 'view-accounts') && (
+                                            {useHasPermission('view-accounts') && (
                                                 <TooltipProvider delayDuration={200}>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
@@ -538,7 +538,7 @@ export default function ShowReceiptOrder() {
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2 p-5">
-                                {receiptOrder.purchase_order && hasPermission(permissions, 'view-purchase-orders') && (
+                                {receiptOrder.purchase_order && useHasPermission('view-purchase-orders') && (
                                     <Link
                                         href={route('purchase-orders.show', receiptOrder.purchase_order.id)}
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
@@ -559,7 +559,7 @@ export default function ShowReceiptOrder() {
                                         </TooltipProvider>
                                     </Link>
                                 )}
-                                {receiptOrder.return_order && hasPermission(permissions, 'view-return-orders') && (
+                                {receiptOrder.return_order && useHasPermission('view-return-orders') && (
                                     <Link
                                         href={route('return-orders.show', receiptOrder.return_order.id)}
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
