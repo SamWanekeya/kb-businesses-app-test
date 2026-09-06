@@ -1,6 +1,6 @@
 // config/crud/contacts.ts
 import { CrudConfig } from '@/types/crud';
-import { columnRenderers } from '@/utils/columnRenderers';
+import { columnRenderers } from '@/utils/ColumnRenderers';
 import { t } from '@/utils/i18n';
 
 export const contactsConfig: CrudConfig = {
