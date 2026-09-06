@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function SalesOrderShow() {
     const { t } = useTranslation();
-    const { salesOrder, streamItems, auth } = usePage().props as any;
+    const { salesOrder, streamItems, auth } = usePage().props;
     const permissions = auth?.permissions || [];
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isDeleteAllModalOpen, setIsDeleteAllModalOpen] = useState(false);

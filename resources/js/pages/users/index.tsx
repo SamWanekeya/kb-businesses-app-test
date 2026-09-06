@@ -22,7 +22,7 @@ import ViewPopup from '@pages/users/view';
 
 export default function Users() {
     const { t } = useTranslation();
-    const { auth, users, roles, planLimits, filters: pageFilters = {} } = usePage().props as any;
+    const { auth, users, roles, planLimits, filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();
 

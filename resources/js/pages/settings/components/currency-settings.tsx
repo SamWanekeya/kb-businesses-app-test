@@ -24,7 +24,7 @@ interface CurrencyProps {
 
 export default function CurrencySettings() {
     const { t } = useTranslation();
-    const { currencies = [], systemSettings = {} } = usePage().props as any;
+    const { currencies = [], systemSettings = {} } = usePage().props;
 
     // Currency Settings form state
     const [currencySettings, setCurrencySettings] = useState({

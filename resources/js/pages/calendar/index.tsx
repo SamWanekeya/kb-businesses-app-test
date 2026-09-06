@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function CalendarIndex() {
     const { t, i18n } = useTranslation();
-    const { events, auth, settings = {}, globalSettings = {} } = usePage().props as any;
+    const { events, auth, settings = {}, globalSettings = {} } = usePage().props;
     const permissions = auth?.permissions || [];
     const isDemo = globalSettings?.is_demo === '1' || globalSettings?.is_demo === true;
     const [selectedEvent, setSelectedEvent] = useState(null);

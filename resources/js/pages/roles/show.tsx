@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function RolesShow() {
     const { t } = useTranslation();
-    const { auth, role, permissions: allPermissions } = usePage().props as any;
+    const { auth, role, permissions: allPermissions } = usePage().props;
     const userPermissions = auth?.permissions || [];
 
     const assignedPermissionNames: string[] = role.permissions?.map((p: any) => p.name) || [];

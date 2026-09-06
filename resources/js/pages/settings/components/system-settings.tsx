@@ -19,8 +19,8 @@ interface SystemSettingsProps {
 
 export default function SystemSettings({ settings = {}, timezones = {}, dateFormats = {}, timeFormats = {} }: SystemSettingsProps) {
     const { t } = useTranslation();
-    const pageProps = usePage().props as any;
-    const { globalSettings } = usePage().props as any;
+    const pageProps = usePage().props;
+    const { globalSettings } = usePage().props;
     const languageData = globalSettings?.availableLanguages || [];
 
     // Default settings

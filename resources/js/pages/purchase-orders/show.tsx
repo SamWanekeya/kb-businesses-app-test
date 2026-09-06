@@ -32,7 +32,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function PurchaseOrderShow() {
     const { t } = useTranslation();
-    const { purchaseOrder, streamItems, auth } = usePage().props as any;
+    const { purchaseOrder, streamItems, auth } = usePage().props;
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);

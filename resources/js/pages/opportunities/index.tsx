@@ -30,7 +30,7 @@ export default function Opportunities() {
         filters: pageFilters = {},
         flash = {},
         globalSettings = {},
-    } = usePage().props as any;
+    } = usePage().props;
     const isDemoMode = globalSettings?.is_demo === true;
 
     useEffect(() => {

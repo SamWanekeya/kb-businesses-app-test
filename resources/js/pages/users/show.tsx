@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function UserShow() {
     const { t } = useTranslation();
-    const { user, meetings } = usePage().props as any;
+    const { user, meetings } = usePage().props;
 
     const breadcrumbs = [
         { title: t('Dashboard'), href: route('dashboard') },

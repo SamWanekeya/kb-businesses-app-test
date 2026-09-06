@@ -47,7 +47,7 @@ const fmt = (n: number) => window.appSettings?.formatCurrency(n) ?? `$${n.toFixe
 
 export default function ReturnOrderCreate() {
     const { t } = useTranslation();
-    const { accounts = [], contacts = [], salesOrders = [], products = [], shippingProviderTypes = [], users = [] } = usePage().props as any;
+    const { accounts = [], contacts = [], salesOrders = [], products = [], shippingProviderTypes = [], users = [] } = usePage().props;
 
     const [form, setFormData] = useState({
         name: '',

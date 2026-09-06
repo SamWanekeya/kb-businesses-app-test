@@ -36,7 +36,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function LeadShow() {
     const { t } = useTranslation();
-    const { lead, streamItems, auth, relatedAccounts, relatedContacts, meetings } = usePage().props as any;
+    const { lead, streamItems, auth, relatedAccounts, relatedContacts, meetings } = usePage().props;
     const comments = lead.comments || [];
     const isOrganization = auth?.user?.type === 'organization';
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);

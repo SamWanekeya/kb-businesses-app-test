@@ -32,7 +32,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function AccountShow() {
     const { t } = useTranslation();
-    const { account, streamItems, auth, meetings } = usePage().props as any;
+    const { account, streamItems, auth, meetings } = usePage().props;
     const permissions = auth?.permissions || [];
     const isOrganization = auth?.user?.type === 'organization';
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);

@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 
 export function ProfileMenu() {
     const { t } = useTranslation();
-    const { auth } = usePage().props as any;
+    const { auth } = usePage().props;
     const user = auth?.user;
 
     const handleLogout = () => {

@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function AccountTypes() {
     const { t } = useTranslation();
-    const { auth, accountTypes, filters: pageFilters = {} } = usePage().props as any;
+    const { auth, accountTypes, filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');

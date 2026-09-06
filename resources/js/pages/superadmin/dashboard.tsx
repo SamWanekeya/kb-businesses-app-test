@@ -55,7 +55,7 @@ interface SuperAdminDashboardData {
 
 export default function SuperAdminDashboard({ dashboardData }: { dashboardData: SuperAdminDashboardData }) {
     const { t } = useTranslation();
-    const { auth } = usePage().props as any;
+    const { auth } = usePage().props;
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [mounted, setMounted] = useState(false);
     const [selectedYear, setSelectedYear] = useState<number>(() => dashboardData?.revenueYear ?? new Date().getFullYear());

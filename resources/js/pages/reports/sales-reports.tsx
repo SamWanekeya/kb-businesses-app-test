@@ -11,7 +11,7 @@ import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Too
 
 export default function SalesReports() {
     const { t } = useTranslation();
-    const { filters, summary, monthlyData, dailyData, salesByStatus, recentSales, topProducts } = usePage().props as any;
+    const { filters, summary, monthlyData, dailyData, salesByStatus, recentSales, topProducts } = usePage().props;
     const [chartView, setChartView] = useState<'daily' | 'monthly'>('monthly');
     const [primaryColor, setPrimaryColor] = useState('#4f46e5');
 

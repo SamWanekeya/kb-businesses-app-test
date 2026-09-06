@@ -29,7 +29,7 @@ export default function Contacts() {
         allUsers = [],
         planLimits,
         filters: pageFilters = {},
-    } = usePage().props as any;
+    } = usePage().props;
     const permissions = auth?.permissions || [];
 
     // State

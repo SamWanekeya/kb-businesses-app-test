@@ -75,7 +75,7 @@ interface OrganizationDashboardData {
 
 export default function Dashboard({ dashboardData }: { dashboardData: OrganizationDashboardData }) {
     const { t } = useTranslation();
-    const { auth } = usePage().props as any;
+    const { auth } = usePage().props;
     const [isRefreshing, setIsRefreshing] = React.useState(false);
 
     const stats = dashboardData?.stats || {};

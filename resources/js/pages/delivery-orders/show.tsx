@@ -30,7 +30,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function DeliveryOrderShow() {
     const { t } = useTranslation();
-    const { deliveryOrder, auth } = usePage().props as any;
+    const { deliveryOrder, auth } = usePage().props;
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();
     useEffect(() => {

@@ -39,7 +39,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function InvoiceShow() {
     const { t } = useTranslation();
-    const { invoice, streamItems, pendingPayments, invoiceReminders, availableSalesOrders, auth, flash } = usePage().props as any;
+    const { invoice, streamItems, pendingPayments, invoiceReminders, availableSalesOrders, auth, flash } = usePage().props;
     const isOrganization = auth?.user?.type === 'organization';
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();

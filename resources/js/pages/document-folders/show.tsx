@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function DocumentFolderShow() {
     const { t } = useTranslation();
-    const { documentFolder } = usePage().props as any;
+    const { documentFolder } = usePage().props;
 
     const breadcrumbs = [
         { title: t('Dashboard'), href: route('dashboard') },

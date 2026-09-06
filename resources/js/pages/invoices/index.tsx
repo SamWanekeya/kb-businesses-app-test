@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next';
 export default function Invoices() {
     const { t } = useTranslation();
     const getInitials = useInitials();
-    const { flash } = usePage().props as any;
+    const { flash } = usePage().props;
 
     useEffect(() => {
         if (flash?.success) toast.success(t(flash.success));
@@ -46,7 +46,7 @@ export default function Invoices() {
         publicUrlBase,
         encryptedInvoiceIds,
         pendingPayments = [],
-    } = usePage().props as any;
+    } = usePage().props;
     const permissions = auth?.permissions || [];
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');

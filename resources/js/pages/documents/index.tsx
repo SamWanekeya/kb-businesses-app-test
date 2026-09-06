@@ -18,7 +18,7 @@ export default function Documents() {
     const { t } = useTranslation();
     const { themeColor, customColor } = useBrand();
     const color = themeColor === 'custom' ? customColor : THEME_COLORS[themeColor as keyof typeof THEME_COLORS];
-    const { auth, rootFolders = [], parentFolders = [], filters: pageFilters = {} } = usePage().props as any;
+    const { auth, rootFolders = [], parentFolders = [], filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
     const flash = (usePage().props as any).flash || {};
 

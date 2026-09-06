@@ -41,7 +41,7 @@ interface MediaItem {
 
 export default function MediaLibraryDemo() {
     const { t } = useTranslation();
-    const { csrf_token, storageSettings, auth, planLimits } = usePage().props as any;
+    const { csrf_token, storageSettings, auth, planLimits } = usePage().props;
     const permissions = auth?.permissions || [];
 
     const allowedTypes = storageSettings?.allowed_file_types || 'jpg,png,webp,gif';

@@ -12,7 +12,7 @@ import { CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, Responsive
 
 export default function CustomerReports() {
     const { t } = useTranslation();
-    const { filters, summary, monthlyData, dailyData, topContacts, contactsByIndustry, recentInteractions } = usePage().props as any;
+    const { filters, summary, monthlyData, dailyData, topContacts, contactsByIndustry, recentInteractions } = usePage().props;
     const [chartView, setChartView] = useState<'daily' | 'monthly'>('monthly');
     const [primaryColor, setPrimaryColor] = useState('#4f46e5');
     const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);

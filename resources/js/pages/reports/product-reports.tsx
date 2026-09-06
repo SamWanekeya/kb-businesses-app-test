@@ -10,7 +10,7 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxi
 
 export default function ProductReports() {
     const { t } = useTranslation();
-    const { filters, summary, productSales, topProductsByQuantity, lowStockProducts, outOfStockProducts } = usePage().props as any;
+    const { filters, summary, productSales, topProductsByQuantity, lowStockProducts, outOfStockProducts } = usePage().props;
     const [primaryColor, setPrimaryColor] = useState('#4f46e5');
 
     useEffect(() => {

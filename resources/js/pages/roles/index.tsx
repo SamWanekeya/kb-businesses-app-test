@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function RolesPage() {
     const { t } = useTranslation();
-    const { auth, roles, filters: pageFilters = {}, globalSettings } = usePage().props as any;
+    const { auth, roles, filters: pageFilters = {}, globalSettings } = usePage().props;
     const permissions = auth?.permissions || [];
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');

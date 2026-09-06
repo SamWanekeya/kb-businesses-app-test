@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function RolesCreate() {
     const { t } = useTranslation();
-    const { auth, permissions, globalSettings } = usePage().props as any;
+    const { auth, permissions, globalSettings } = usePage().props;
     const isDemo = globalSettings?.is_demo;
 
     const [label, setLabel] = useState('');

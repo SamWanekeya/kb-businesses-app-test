@@ -26,7 +26,7 @@ export default function Quotes() {
         publicUrlBase,
         encryptedQuoteIds,
         flash = {},
-    } = usePage().props as any;
+    } = usePage().props;
     const permissions = auth?.permissions || [];
 
     useEffect(() => {

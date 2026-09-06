@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function Brands() {
     const { t } = useTranslation();
-    const { auth, brands, filters: pageFilters = {} } = usePage().props as any;
+    const { auth, brands, filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');

@@ -57,7 +57,7 @@ export default function ProjectTasks() {
         taskStatuses = [],
         allTaskStatuses = [],
         filters: pageFilters = {},
-    } = usePage().props as any;
+    } = usePage().props;
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();
 

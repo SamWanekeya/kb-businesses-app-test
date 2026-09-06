@@ -65,7 +65,7 @@ export default function Settings() {
         paymentSettings = {},
         webhooks = [],
         auth = {},
-    } = usePage().props as any;
+    } = usePage().props;
     const [activeSection, setActiveSection] = useState('system-settings');
 
     // Define all possible sidebar navigation items

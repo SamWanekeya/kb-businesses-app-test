@@ -19,7 +19,7 @@ export default function OpportunityEdit() {
         opportunitySources = [],
         products: productOptions = [],
         users = [],
-    } = usePage().props as any;
+    } = usePage().props;
 
     const { data, setData, setError, clearErrors, put, processing, errors } = useForm({
         name: opportunity.name || '',

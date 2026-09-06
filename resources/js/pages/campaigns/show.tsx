@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function CampaignShow() {
     const { t } = useTranslation();
-    const { campaign, campaignLeads } = usePage().props as any;
+    const { campaign, campaignLeads } = usePage().props;
     const permissions = (usePage().props as any).auth?.permissions;
     const getInitials = useInitials();
 

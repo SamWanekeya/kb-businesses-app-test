@@ -257,7 +257,7 @@ const GanttChart = ({ tasks, timeScale, onTaskClick }: { tasks: any[]; timeScale
 
 export default function ProjectGantt() {
     const { t } = useTranslation();
-    const { auth, project, tasks = [], taskStatuses = [], users = [], filters: pageFilters = {} } = usePage().props as any;
+    const { auth, project, tasks = [], taskStatuses = [], users = [], filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
     const isOrganization = auth?.user?.type === 'organization';
 

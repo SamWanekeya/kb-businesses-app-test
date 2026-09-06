@@ -16,7 +16,7 @@ import ViewPopup from '@pages/currencies/view';
 
 export default function Currencies() {
     const { t } = useTranslation();
-    const { auth, currencies, filters: pageFilters = {}, globalSettings } = usePage().props as any;
+    const { auth, currencies, filters: pageFilters = {}, globalSettings } = usePage().props;
     const permissions = auth?.permissions || [];
 
     // State

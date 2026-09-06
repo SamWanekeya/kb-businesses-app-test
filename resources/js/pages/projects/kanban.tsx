@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function ProjectKanban() {
     const { t } = useTranslation();
-    const { auth, project, kanbanData, statuses, users = [], filters: pageFilters = {} } = usePage().props as any;
+    const { auth, project, kanbanData, statuses, users = [], filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
     const isOrganization = auth?.user?.type === 'organization';
 

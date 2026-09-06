@@ -31,7 +31,7 @@ export default function Meetings() {
         selectedDate: backendDate,
         selectedMonth,
         selectedYear,
-    } = usePage().props as any;
+    } = usePage().props;
     const permissions = auth?.permissions || [];
     const isGoogleCalendarSynced = settings?.googleCalendarEnabled === '1';
 

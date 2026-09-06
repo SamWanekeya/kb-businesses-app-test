@@ -33,7 +33,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function CaseShow() {
     const { t } = useTranslation();
-    const { case: caseData, meetings } = usePage().props as any;
+    const { case: caseData, meetings } = usePage().props;
     const permissions = (usePage().props as any).auth?.permissions || [];
     const getInitials = useInitials();
 

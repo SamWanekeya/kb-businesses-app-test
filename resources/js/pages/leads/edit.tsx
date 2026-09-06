@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function LeadEdit() {
     const { t } = useTranslation();
-    const { lead, leadStatuses = [], leadSources = [], accountIndustries = [], campaigns = [], users = [] } = usePage().props as any;
+    const { lead, leadStatuses = [], leadSources = [], accountIndustries = [], campaigns = [], users = [] } = usePage().props;
 
     const { data, setData, setError, clearErrors, put, processing, errors } = useForm({
         name: lead.name || '',

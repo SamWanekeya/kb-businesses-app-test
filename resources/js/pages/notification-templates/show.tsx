@@ -31,7 +31,7 @@ interface Props {
 
 export default function NotificationTemplateShow({ template, languages, variables }: Props) {
     const { t } = useTranslation();
-    const { flash } = usePage().props as any;
+    const { flash } = usePage().props;
     const [currentLang, setCurrentLang] = useState(Object.keys(languages)[0] || 'en');
     const [templateLangs, setTemplateLangs] = useState(
         template.notification_template_langs.reduce(

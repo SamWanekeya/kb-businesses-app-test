@@ -79,7 +79,7 @@ export default function Plans({
     currencySymbol,
 }: Props) {
     const { t } = useTranslation();
-    const { flash, auth } = usePage().props as any;
+    const { flash, auth } = usePage().props;
     const [plans, setPlans] = useState<Plan[]>(initialPlans);
     const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>(initialBillingCycle);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);

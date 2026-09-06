@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 export function FloatingChatGpt() {
     const { t } = useTranslation();
-    const { auth } = usePage().props as any;
+    const { auth } = usePage().props;
     const { position } = useLayout();
     const [isOpen, setIsOpen] = useState(false);
     const [generatedContent, setGeneratedContent] = useState('');

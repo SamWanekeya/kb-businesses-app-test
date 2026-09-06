@@ -35,7 +35,7 @@ import { useTranslation } from 'react-i18next';
 export default function OpportunityShow() {
     const { t } = useTranslation();
     const getInitials = useInitials();
-    const { opportunity, streamItems, auth, meetings } = usePage().props as any;
+    const { opportunity, streamItems, auth, meetings } = usePage().props;
     const isOrganization = auth?.user?.type === 'organization';
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isDeleteAllModalOpen, setIsDeleteAllModalOpen] = useState(false);

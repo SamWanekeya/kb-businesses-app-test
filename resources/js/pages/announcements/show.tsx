@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function AnnouncementShow() {
     const { t } = useTranslation();
-    const { auth, announcement } = usePage().props as any;
+    const { auth, announcement } = usePage().props;
     const permissions = auth?.permissions || [];
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 

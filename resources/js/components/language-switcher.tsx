@@ -25,7 +25,7 @@ interface Language {
 
 export const LanguageSwitcher: React.FC = () => {
     const { t, i18n } = useTranslation();
-    const { auth, globalSettings } = usePage().props as any;
+    const { auth, globalSettings } = usePage().props;
     const { updatePosition } = useLayout();
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [currentLanguage, setCurrentLanguage] = useState<Language | null>(null);

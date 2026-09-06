@@ -157,7 +157,7 @@ const colors = [
 
 export default function SalesOrderTemplateSettings() {
     const { t } = useTranslation();
-    const { settings } = usePage().props as any;
+    const { settings } = usePage().props;
 
     const [saving, setSaving] = useState(false);
     const [settingsHeight, setSettingsHeight] = useState(0);

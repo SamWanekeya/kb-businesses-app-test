@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function PlanOrdersPage() {
     const { t } = useTranslation();
-    const { planOrders, filters: pageFilters = {}, auth, globalSettings } = usePage().props as any;
+    const { planOrders, filters: pageFilters = {}, auth, globalSettings } = usePage().props;
     const permissions = auth?.permissions || [];
 
     // State

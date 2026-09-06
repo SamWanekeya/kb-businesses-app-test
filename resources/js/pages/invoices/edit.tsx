@@ -52,7 +52,7 @@ function Field({ label, required, error, children }: { label: string; required?:
 
 export default function InvoiceEdit() {
     const { t } = useTranslation();
-    const { invoice, accounts, contacts, salesOrders, quotes, opportunities, products, users } = usePage().props as any;
+    const { invoice, accounts, contacts, salesOrders, quotes, opportunities, products, users } = usePage().props;
 
     const isPaidOrCancelled = invoice?.status === 'paid' || invoice?.status === 'cancelled';
 

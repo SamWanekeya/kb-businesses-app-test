@@ -24,7 +24,7 @@ import ViewPopup from '@pages/organizations/view';
 
 export default function Organizations() {
     const { t } = useTranslation();
-    const { auth, organizations, plans, filters: pageFilters = {} } = usePage().props as any;
+    const { auth, organizations, plans, filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();
 

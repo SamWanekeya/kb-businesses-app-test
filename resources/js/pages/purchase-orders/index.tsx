@@ -28,7 +28,7 @@ export default function PurchaseOrders() {
         allUsers = [],
         filters: pageFilters = {},
         flash = {},
-    } = usePage().props as any;
+    } = usePage().props;
     const permissions = auth?.permissions || [];
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');

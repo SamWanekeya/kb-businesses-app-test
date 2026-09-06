@@ -44,7 +44,7 @@ export default function DeliveryOrderEdit() {
         products = [],
         shippingProviderTypes = [],
         users = [],
-    } = usePage().props as any;
+    } = usePage().props;
 
     const [form, setFormData] = useState({
         name: deliveryOrder.name || '',

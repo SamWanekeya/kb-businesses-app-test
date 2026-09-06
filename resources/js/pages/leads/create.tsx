@@ -19,7 +19,7 @@ export default function LeadCreate() {
         campaigns = [],
         users = [],
         prefilledLeadStatusId = '',
-    } = usePage().props as any;
+    } = usePage().props;
 
     const { data, setData, setError, clearErrors, post, processing, errors } = useForm({
         name: '',

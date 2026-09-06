@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function QuoteShow() {
     const { t } = useTranslation();
-    const { quote, streamItems, auth } = usePage().props as any;
+    const { quote, streamItems, auth } = usePage().props;
     const permissions = auth?.permissions || [];
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isDeleteAllModalOpen, setIsDeleteAllModalOpen] = useState(false);

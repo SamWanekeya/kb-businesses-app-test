@@ -40,7 +40,7 @@ interface Props {
 
 export default function EmailTemplateShow({ template, languages, variables }: Props) {
     const { t } = useTranslation();
-    const { flash } = usePage().props as any;
+    const { flash } = usePage().props;
     const [fromName, setFromName] = useState(template.from);
     const [currentLang, setCurrentLang] = useState(languages[0]?.code || 'en');
     const [templateLangs, setTemplateLangs] = useState(

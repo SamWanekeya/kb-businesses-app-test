@@ -150,7 +150,7 @@ function Field({ label, required, error, children }: { label: string; required?:
 
 export default function SalesOrderEdit() {
     const { t } = useTranslation();
-    const { salesOrder, accounts, contacts, quotes, products, shippingProviderTypes, users } = usePage().props as any;
+    const { salesOrder, accounts, contacts, quotes, products, shippingProviderTypes, users } = usePage().props;
 
     const toDate = (d: string) => (d ? d.split('T')[0] : '');
 

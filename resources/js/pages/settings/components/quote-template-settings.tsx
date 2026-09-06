@@ -159,7 +159,7 @@ const colors = [
 
 export default function QuoteTemplateSettings() {
     const { t } = useTranslation();
-    const { settings } = usePage().props as any;
+    const { settings } = usePage().props;
     const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
     const [saving, setSaving] = useState(false);

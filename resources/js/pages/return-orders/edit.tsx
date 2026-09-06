@@ -53,7 +53,7 @@ export default function ReturnOrderEdit() {
         products = [],
         shippingProviderTypes = [],
         users = [],
-    } = usePage().props as any;
+    } = usePage().props;
 
     const [form, setFormData] = useState({
         name: returnOrder.name || '',

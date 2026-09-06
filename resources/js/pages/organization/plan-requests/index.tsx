@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function OrganizationPlanRequestsPage() {
     const { t } = useTranslation();
-    const { flash, planRequests, filters: pageFilters = {}, auth } = usePage().props as any;
+    const { flash, planRequests, filters: pageFilters = {}, auth } = usePage().props;
     const permissions = auth?.permissions || [];
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');

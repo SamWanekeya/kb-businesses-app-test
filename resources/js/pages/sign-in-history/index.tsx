@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function LoginHistory() {
     const { t } = useTranslation();
-    const { auth, loginHistory, filters: pageFilters = {}, globalSettings } = usePage().props as any;
+    const { auth, loginHistory, filters: pageFilters = {}, globalSettings } = usePage().props;
     const permissions = auth?.permissions || [];
 
     // State

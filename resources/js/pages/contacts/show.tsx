@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function ContactShow() {
     const { t } = useTranslation();
-    const { contact, meetings, auth } = usePage().props as any;
+    const { contact, meetings, auth } = usePage().props;
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();
 

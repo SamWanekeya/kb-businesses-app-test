@@ -20,7 +20,7 @@ const STEPS = [
 
 export default function ProductEdit() {
     const { t } = useTranslation();
-    const { product, categories, brands, taxes, users, mainImage, additionalImages, existingSkus } = usePage().props as any;
+    const { product, categories, brands, taxes, users, mainImage, additionalImages, existingSkus } = usePage().props;
     const [step, setStep] = useState(1);
     const [mainImageUrl, setMainImageUrl] = useState<string | null>(typeof mainImage === 'string' ? mainImage : mainImage?.url || null);
 
@@ -132,7 +132,7 @@ export default function ProductEdit() {
         });
     };
 
-    const { globalSettings } = usePage().props as any;
+    const { globalSettings } = usePage().props;
     const currencySymbol = globalSettings?.currencySymbol || '$';
 
     return (

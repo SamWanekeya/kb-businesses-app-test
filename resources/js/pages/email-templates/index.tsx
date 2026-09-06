@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function EmailTemplatesIndex() {
     const { t } = useTranslation();
-    const { templates, filters: pageFilters = {} } = usePage().props as any;
+    const { templates, filters: pageFilters = {} } = usePage().props;
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
 

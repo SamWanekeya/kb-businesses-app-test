@@ -27,7 +27,7 @@ function SectionTitle({ title, extra }: { title: string; extra?: React.ReactNode
 
 export default function AccountCreate() {
     const { t } = useTranslation();
-    const { accountTypes = [], accountIndustries = [], users = [] } = usePage().props as any;
+    const { accountTypes = [], accountIndustries = [], users = [] } = usePage().props;
 
     const { data, setData, setError, clearErrors, post, processing, errors } = useForm({
         name: '',

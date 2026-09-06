@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function AnnouncementDashboard() {
     const { t } = useTranslation();
-    const { auth, announcements = [] } = usePage().props as any;
+    const { auth, announcements = [] } = usePage().props;
     const permissions = auth?.permissions || [];
     const initialTab = (() => {
         const p = new URLSearchParams(window.location.search).get('tab');

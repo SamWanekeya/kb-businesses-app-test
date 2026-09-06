@@ -35,7 +35,7 @@ interface PageCrudWrapperProps {
 export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs }: PageCrudWrapperProps) {
     const { t } = useTranslation();
     const { entity, table, filters = [], form, hooks } = config;
-    const { auth, ...pageProps } = usePage().props as any;
+    const { auth, ...pageProps } = usePage().props;
     const permissions = auth?.permissions || [];
 
     // Get data from page props using entity name

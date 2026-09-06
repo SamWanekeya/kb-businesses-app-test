@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 export default function ReturnOrders() {
     const { t } = useTranslation();
     const getInitials = useInitials();
-    const { auth, returnOrders, allUsers = [], filters: pageFilters = {}, flash = {} } = usePage().props as any;
+    const { auth, returnOrders, allUsers = [], filters: pageFilters = {}, flash = {} } = usePage().props;
     const permissions = auth?.permissions || [];
 
     useEffect(() => {

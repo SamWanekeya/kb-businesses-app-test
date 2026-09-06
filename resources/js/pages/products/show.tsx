@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function ProductShow() {
     const { t } = useTranslation();
-    const { product, mainImage, additionalImages } = usePage().props as any;
+    const { product, mainImage, additionalImages } = usePage().props;
     const getInitials = useInitials();
     const images: any[] = additionalImages || [];
     const [adIndex, setAdIndex] = useState(0);

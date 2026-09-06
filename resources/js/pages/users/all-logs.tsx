@@ -33,7 +33,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters = {} 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
     const [selectedLogDetails, setSelectedLogDetails] = useState<any>(null);
-    const { auth } = usePage().props as any;
+    const { auth } = usePage().props;
 
     const breadcrumbs = [
         { title: t('Dashboard'), href: route('dashboard') },

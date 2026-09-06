@@ -17,7 +17,7 @@ interface SeoSettingsProps {
 
 export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
     const { t } = useTranslation();
-    const pageProps = usePage().props as any;
+    const pageProps = usePage().props;
 
     const defaultSettings = {
         metaKeywords: '',

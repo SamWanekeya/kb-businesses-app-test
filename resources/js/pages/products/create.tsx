@@ -20,7 +20,7 @@ const STEPS = [
 
 export default function ProductCreate() {
     const { t } = useTranslation();
-    const { categories, brands, taxes, users, existingSkus } = usePage().props as any;
+    const { categories, brands, taxes, users, existingSkus } = usePage().props;
     const [step, setStep] = useState(1);
     const [mainImageUrl, setMainImageUrl] = useState<string | null>(null);
 
@@ -120,7 +120,7 @@ export default function ProductCreate() {
         });
     };
 
-    const { globalSettings } = usePage().props as any;
+    const { globalSettings } = usePage().props;
     const currencySymbol = globalSettings?.currencySymbol || '$';
     const selectedCategory = categories?.find((c: any) => c.id.toString() === data.category_id);
 

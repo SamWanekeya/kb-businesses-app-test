@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function TargetLists() {
     const { t } = useTranslation();
-    const { auth, targetLists, filters: pageFilters = {} } = usePage().props as any;
+    const { auth, targetLists, filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');

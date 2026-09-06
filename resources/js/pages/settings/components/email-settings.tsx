@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function EmailSettings() {
     const { t } = useTranslation();
-    const { settings = {} } = usePage().props as any;
+    const { settings = {} } = usePage().props;
 
     // Email Settings form state
     const [emailSettings, setEmailSettings] = useState({

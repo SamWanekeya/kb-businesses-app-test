@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 export default function CallShow() {
     const { t } = useTranslation();
     const getInitials = useInitials();
-    const { call } = usePage().props as any;
+    const { call } = usePage().props;
     const permissions = (usePage().props as any).auth?.permissions;
 
     const breadcrumbs = [

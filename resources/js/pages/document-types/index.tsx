@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function DocumentTypes() {
     const { t } = useTranslation();
-    const { auth, documentTypes, filters: pageFilters = {} } = usePage().props as any;
+    const { auth, documentTypes, filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');

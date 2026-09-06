@@ -44,7 +44,7 @@ export default function DocumentFolderView() {
         types = [],
         opportunities = [],
         parentFolders = [],
-    } = usePage().props as any;
+    } = usePage().props;
     const permissions = auth?.permissions || [];
     const { themeColor, customColor } = useBrand();
     const resolvedThemeColor = themeColor === 'custom' ? customColor : THEME_COLORS[themeColor as keyof typeof THEME_COLORS] || '#10b77f';

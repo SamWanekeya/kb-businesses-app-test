@@ -18,7 +18,7 @@ interface CookieSettingsProps {
 
 export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
     const { t } = useTranslation();
-    const pageProps = usePage().props as any;
+    const pageProps = usePage().props;
 
     // Default settings
     const defaultSettings = {

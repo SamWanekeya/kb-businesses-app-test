@@ -42,7 +42,7 @@ import { useTranslation } from 'react-i18next';
 
 export function AppSidebar() {
     const { t, i18n } = useTranslation();
-    const { auth, globalSettings } = usePage().props as any;
+    const { auth, globalSettings } = usePage().props;
     const userRole = auth.user?.type || auth.user?.role;
     const permissions = auth?.permissions || [];
 

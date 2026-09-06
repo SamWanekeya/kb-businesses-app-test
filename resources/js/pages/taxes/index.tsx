@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function Taxes() {
     const { t } = useTranslation();
-    const { auth, taxes, filters: pageFilters = {} } = usePage().props as any;
+    const { auth, taxes, filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
     const currencySymbol = window?.appSettings?.currencySettings?.currencySymbol;
 

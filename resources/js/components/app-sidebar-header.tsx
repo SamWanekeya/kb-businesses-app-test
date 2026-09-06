@@ -15,7 +15,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@compo
 export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: BreadcrumbItemType[] }) {
     const { t } = useTranslation();
     const { position } = useLayout();
-    const { globalSettings } = usePage().props as any;
+    const { globalSettings } = usePage().props;
     const isDemo = globalSettings?.is_demo || false;
     // Determine current mode from DB (non-demo) or cookie (demo)
     const getCurrentMode = (): 'light' | 'dark' => {

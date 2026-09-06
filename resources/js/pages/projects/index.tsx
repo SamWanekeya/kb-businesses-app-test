@@ -73,7 +73,7 @@ export default function Projects() {
         planLimits,
         stats = {},
         filters: pageFilters = {},
-    } = usePage().props as any;
+    } = usePage().props;
     const permissions = auth?.permissions || [];
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');

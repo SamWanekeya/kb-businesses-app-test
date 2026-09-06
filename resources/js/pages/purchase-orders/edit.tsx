@@ -20,7 +20,7 @@ type ProductRow = {
 
 export default function PurchaseOrderEdit() {
     const { t } = useTranslation();
-    const { purchaseOrder, accounts = [], contacts = [], salesOrders = [], products: productOptions = [], users = [] } = usePage().props as any;
+    const { purchaseOrder, accounts = [], contacts = [], salesOrders = [], products: productOptions = [], users = [] } = usePage().props;
 
     const { data, setData, setError, clearErrors, put, processing, errors } = useForm({
         name: purchaseOrder.name || '',

@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 export default function Cases() {
     const { t } = useTranslation();
     const getInitials = useInitials();
-    const { auth, cases, accounts, allAccounts = [], contacts, users, allUsers = [], filters: pageFilters = {} } = usePage().props as any;
+    const { auth, cases, accounts, allAccounts = [], contacts, users, allUsers = [], filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
 
     // State

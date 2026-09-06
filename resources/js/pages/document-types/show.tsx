@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function ShowDocumentType() {
     const { t } = useTranslation();
-    const { auth, documentType } = usePage().props as any;
+    const { auth, documentType } = usePage().props;
     const permissions = auth?.permissions || [];
 
     const pageActions = [];

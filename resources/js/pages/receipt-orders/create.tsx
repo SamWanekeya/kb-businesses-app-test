@@ -32,7 +32,7 @@ function FieldError({ message }: { message?: string }) {
 
 export default function ReceiptOrderCreate() {
     const { t } = useTranslation();
-    const { accounts = [], contacts = [], purchaseOrders = [], returnOrders = [], products = [], users = [] } = usePage().props as any;
+    const { accounts = [], contacts = [], purchaseOrders = [], returnOrders = [], products = [], users = [] } = usePage().props;
 
     const [form, setFormData] = useState({
         name: '',

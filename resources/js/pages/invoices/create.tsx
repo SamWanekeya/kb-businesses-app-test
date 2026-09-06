@@ -74,7 +74,7 @@ function Field({ label, required, error, children }: { label: string; required?:
 
 export default function InvoiceCreate() {
     const { t } = useTranslation();
-    const { accounts, contacts, salesOrders, quotes, opportunities, products, users, globalSettings } = usePage().props as any;
+    const { accounts, contacts, salesOrders, quotes, opportunities, products, users, globalSettings } = usePage().props;
 
     const [form, setForm] = useState<FormData>({
         name: '',

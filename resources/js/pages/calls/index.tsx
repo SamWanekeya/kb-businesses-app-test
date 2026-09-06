@@ -28,7 +28,7 @@ export default function Calls() {
         allLeads = [],
         filters: pageFilters = {},
         settings = {},
-    } = usePage().props as any;
+    } = usePage().props;
 
     const userMap: Record<number, any> = Object.fromEntries(allUsers.map((u: any) => [u.id, u]));
     const contactMap: Record<number, any> = Object.fromEntries(allContacts.map((c: any) => [c.id, c]));

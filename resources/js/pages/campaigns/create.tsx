@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function CampaignCreate() {
     const { t } = useTranslation();
-    const { campaignTypes = [], targetLists = [], users = [] } = usePage().props as any;
+    const { campaignTypes = [], targetLists = [], users = [] } = usePage().props;
 
     const { data, setData, post, processing, errors, setError, clearErrors } = useForm({
         name: '',

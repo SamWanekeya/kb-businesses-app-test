@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 export default function MeetingShow() {
     const { t } = useTranslation();
     const getInitials = useInitials();
-    const { meeting } = usePage().props as any;
+    const { meeting } = usePage().props;
     const permissions = (usePage().props as any).auth?.permissions;
 
     const breadcrumbs = [

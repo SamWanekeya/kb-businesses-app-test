@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 export default function ProjectTaskShow() {
     const { t } = useTranslation();
     const getInitials = useInitials();
-    const { auth, task, taskStatuses = [] } = usePage().props as any;
+    const { auth, task, taskStatuses = [] } = usePage().props;
     const permissions = auth?.permissions || [];
 
     const handleEdit = () => {

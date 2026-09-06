@@ -11,7 +11,7 @@ import { CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, Responsive
 
 export default function ProjectReports() {
     const { t } = useTranslation();
-    const { filters, summary, monthlyData, dailyData, projectsByStatus, overdueProjects } = usePage().props as any;
+    const { filters, summary, monthlyData, dailyData, projectsByStatus, overdueProjects } = usePage().props;
     const [chartView, setChartView] = useState<'daily' | 'monthly'>('monthly');
     const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
 

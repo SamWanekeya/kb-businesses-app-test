@@ -13,7 +13,7 @@ interface StreamsIndexProps {
 
 export default function Index({ modules }: StreamsIndexProps) {
     const { t } = useTranslation();
-    const { auth, flash } = usePage().props as any;
+    const { auth, flash } = usePage().props;
     const permissions = auth?.permissions || [];
 
     React.useEffect(() => {

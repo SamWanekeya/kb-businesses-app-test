@@ -13,7 +13,7 @@ import { CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, Responsive
 
 export default function LeadReports() {
     const { t } = useTranslation();
-    const { filters, summary, monthlyData, dailyData, leadsBySource, conversionBySource, recentLeads, auth } = usePage().props as any;
+    const { filters, summary, monthlyData, dailyData, leadsBySource, conversionBySource, recentLeads, auth } = usePage().props;
     const [chartView, setChartView] = useState<'daily' | 'monthly'>('monthly');
     const getInitials = useInitials();
     const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);

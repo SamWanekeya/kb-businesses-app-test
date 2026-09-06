@@ -1,7 +1,7 @@
 import { usePage } from '@inertiajs/react';
 
 export default function TemplatePreview() {
-    const { invoice, templateId, templateColor, settings } = usePage().props as any;
+    const { invoice, templateId, templateColor, settings } = usePage().props;
 
     const currency = settings?.defaultCurrency || '$';
     // window.appSettings?.formatCurrency(parseFloat(value))

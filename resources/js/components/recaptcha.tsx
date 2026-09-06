@@ -15,7 +15,7 @@ declare global {
 }
 
 export function useRecaptchaSettings() {
-    const { settings = {} } = usePage().props as any;
+    const { settings = {} } = usePage().props;
     const recaptchaEnabled =
         settings.recaptchaEnabled === 'true' ||
         settings.recaptchaEnabled === true ||

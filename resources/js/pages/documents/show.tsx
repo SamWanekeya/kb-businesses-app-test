@@ -32,7 +32,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function DocumentShow() {
     const { t } = useTranslation();
-    const { auth, document, users = [], accounts = [], folders = [], types = [], opportunities = [] } = usePage().props as any;
+    const { auth, document, users = [], accounts = [], folders = [], types = [], opportunities = [] } = usePage().props;
     const permissions = auth?.permissions || [];
     const flash = (usePage().props as any).flash || {};
 

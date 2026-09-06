@@ -30,7 +30,7 @@ export default function Campaigns() {
         allUsers,
         filters: pageFilters = {},
         flash,
-    } = usePage().props as any;
+    } = usePage().props;
     const permissions = auth?.permissions || [];
 
     useEffect(() => {

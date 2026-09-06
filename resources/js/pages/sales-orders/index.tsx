@@ -25,7 +25,7 @@ export default function SalesOrders() {
         publicUrlBase,
         encryptedSalesOrderIds,
         flash = {},
-    } = usePage().props as any;
+    } = usePage().props;
 
     useEffect(() => {
         if (flash?.success) toast.success(t(flash.success));

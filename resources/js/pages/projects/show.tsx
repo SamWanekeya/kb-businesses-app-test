@@ -21,7 +21,7 @@ export default function ProjectShow() {
         progressPercentage = 0,
         meetings,
         taskStatuses = [],
-    } = usePage().props as any;
+    } = usePage().props;
     const permissions = auth?.permissions || [];
 
     const pageActions = [];

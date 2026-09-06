@@ -28,7 +28,7 @@ export default function QuoteCreate() {
         products: productOptions = [],
         shippingProviderTypes = [],
         users = [],
-    } = usePage().props as any;
+    } = usePage().props;
 
     const [sameAsBilling, setSameAsBilling] = useState(false);
 

@@ -38,7 +38,7 @@ export default function Leads() {
         filters: pageFilters = {},
         kanbanData: initialKanbanData,
         flash = {},
-    } = usePage().props as any;
+    } = usePage().props;
 
     useEffect(() => {
         if (importingRef.current) {

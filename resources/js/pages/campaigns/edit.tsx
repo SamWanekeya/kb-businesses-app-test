@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function CampaignEdit() {
     const { t } = useTranslation();
-    const { campaign, campaignTypes = [], targetLists = [], users = [] } = usePage().props as any;
+    const { campaign, campaignTypes = [], targetLists = [], users = [] } = usePage().props;
 
     const { data, setData, put, processing, errors, setError, clearErrors } = useForm({
         name: campaign?.name || '',

@@ -26,7 +26,7 @@ interface PageWrapperProps {
 
 export function PageWrapper({ title, url, description, buttons = [], children, breadcrumbs }: PageWrapperProps) {
     const { t } = useTranslation();
-    const { auth } = usePage().props as any;
+    const { auth } = usePage().props;
     const permissions = auth?.permissions || [];
 
     // Generate default breadcrumbs if not provided

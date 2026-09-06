@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function ShippingProviderTypeShow() {
     const { t } = useTranslation();
-    const { shippingProviderType } = usePage().props as any;
+    const { shippingProviderType } = usePage().props;
 
     const breadcrumbs = [
         { title: t('Dashboard'), href: route('dashboard') },

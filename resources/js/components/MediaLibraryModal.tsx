@@ -36,7 +36,7 @@ export default function MediaLibraryModal({
     returnType = 'url',
     preSelected = [],
 }: MediaLibraryModalProps) {
-    const { auth, csrf_token, storageSettings } = usePage().props as any;
+    const { auth, csrf_token, storageSettings } = usePage().props;
     const permissions = auth?.permissions || [];
     const canCreateMedia = useHasPermission('create-media');
     const canManageMedia = useHasPermission('manage-media');

@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function ShowReceiptOrder() {
     const { t } = useTranslation();
-    const { receiptOrder, auth } = usePage().props as any;
+    const { receiptOrder, auth } = usePage().props;
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();
     useEffect(() => {

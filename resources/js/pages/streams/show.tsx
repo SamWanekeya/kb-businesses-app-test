@@ -39,7 +39,7 @@ interface StreamsShowProps {
 
 export default function Show({ module, moduleTitle, streams = [] }: StreamsShowProps) {
     const { t } = useTranslation();
-    const { auth, flash } = usePage().props as any;
+    const { auth, flash } = usePage().props;
     const permissions = auth?.permissions || [];
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [currentActivity, setCurrentActivity] = useState<any>(null);

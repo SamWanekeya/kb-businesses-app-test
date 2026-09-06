@@ -25,7 +25,7 @@ export default function OrganizationSystemSettings({
     timeFormats = {},
 }: OrganizationSystemSettingsProps) {
     const { t } = useTranslation();
-    const pageProps = usePage().props as any;
+    const pageProps = usePage().props;
     const [processing, setProcessing] = useState(false);
 
     // Default settings

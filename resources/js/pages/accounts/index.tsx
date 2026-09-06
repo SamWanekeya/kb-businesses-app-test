@@ -29,7 +29,7 @@ export default function Accounts() {
         allAccountIndustries = [],
         planLimits,
         filters: pageFilters = {},
-    } = usePage().props as any;
+    } = usePage().props;
     useEffect(() => {
         if (flash?.success) toast.success(t(flash.success));
         else if (flash?.error) toast.error(t(flash.error));

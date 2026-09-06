@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function CouponsPage() {
     const { t } = useTranslation();
-    const { auth, coupons, filters: pageFilters = {}, globalSettings } = usePage().props as any;
+    const { auth, coupons, filters: pageFilters = {}, globalSettings } = usePage().props;
     const permissions = auth?.permissions || [];
 
     // State
