@@ -5,13 +5,13 @@ import { HTMLAttributes } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function AppearanceToggleTab({ className = '', ...props }: HTMLAttributes<HTMLDivElement>) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { appearance, updateAppearance } = useAppearance();
 
     const tabs: { value: Appearance; icon: LucideIcon; label: string }[] = [
-        { value: 'light', icon: Sun, label: t('Light') },
-        { value: 'dark', icon: Moon, label: t('Dark') },
-        { value: 'system', icon: Monitor, label: t('System') },
+        { value: 'light', icon: Sun, label: translate('Light') },
+        { value: 'dark', icon: Moon, label: translate('Dark') },
+        { value: 'system', icon: Monitor, label: translate('System') },
     ];
 
     return (

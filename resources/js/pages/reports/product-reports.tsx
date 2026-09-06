@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 export default function ProductReports() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { filters, summary, productSales, topProductsByQuantity, lowStockProducts, outOfStockProducts } = usePage().props;
     const [primaryColor, setPrimaryColor] = useState('#4f46e5');
 
@@ -18,23 +18,23 @@ export default function ProductReports() {
         if (raw) setPrimaryColor(raw);
     }, []);
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Reports'), href: '#' }, { title: t('Product Reports') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Reports'), href: '#' }, { title: translate('Product Reports') }];
 
     const summaryCards = [
         {
-            title: t('Total Products'),
+            title: translate('Total Products'),
             value: summary.total_products.toLocaleString(),
             icon: <Package className="h-6 w-6 text-blue-600" />,
             iconColor: 'bg-blue-100',
         },
         {
-            title: t('Active Products'),
+            title: translate('Active Products'),
             value: summary.active_products.toLocaleString(),
             icon: <CheckCircle className="h-6 w-6 text-green-600" />,
             iconColor: 'bg-green-100',
         },
         {
-            title: t('Total Revenue'),
+            title: translate('Total Revenue'),
             value: (
                 <span className="font-mono">
                     {window.appSettings?.formatCurrency(summary.total_revenue) || `$${summary.total_revenue.toLocaleString()}`}
@@ -44,8 +44,8 @@ export default function ProductReports() {
             iconColor: 'bg-purple-100',
         },
         {
-            title: t('Best Seller'),
-            value: summary.best_seller || t('-'),
+            title: translate('Best Seller'),
+            value: summary.best_seller || translate('-'),
             icon: <Award className="h-6 w-6 text-orange-600" />,
             iconColor: 'bg-orange-100',
         },
@@ -55,8 +55,8 @@ export default function ProductReports() {
 
     return (
         <PageTemplate
-            title={t('Product Reports')}
-            description={t('View and analyze product reports to track performance and sales.')}
+            title={translate('Product Reports')}
+            description={translate('View and analyze product reports to track performance and sales.')}
             url={route('reports.product-reports')}
             breadcrumbs={breadcrumbs}
             noPadding
@@ -67,7 +67,7 @@ export default function ProductReports() {
             <div className="mb-6 grid grid-cols-1 gap-6">
                 <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm dark:bg-slate-900">
                     <CardHeader className="flex shrink-0 flex-row items-center justify-between border-b px-5 pt-5 pb-3">
-                        <CardTitle className="text-base font-semibold">{t('Top Products by Revenue')}</CardTitle>
+                        <CardTitle className="text-base font-semibold">{translate('Top Products by Revenue')}</CardTitle>
                     </CardHeader>
                     <CardContent className="min-h-0 flex-1 p-4 pt-5" dir="ltr">
                         <ResponsiveContainer width="100%" height={400}>
@@ -102,7 +102,7 @@ export default function ProductReports() {
                                     labelStyle={{ color: primaryColor }}
                                     formatter={(value) => [
                                         window.appSettings?.formatCurrency(Number(value)) || `$${Number(value).toLocaleString()}`,
-                                        t('Revenue'),
+                                        translate('Revenue'),
                                     ]}
                                 />
                                 <Bar dataKey="revenue" fill={primaryColor} radius={[0, 4, 4, 0]} maxBarSize={30} opacity={0.8} />
@@ -115,9 +115,9 @@ export default function ProductReports() {
             <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <Card className="border-border overflow-hidden border shadow-sm dark:bg-slate-900">
                     <div className="border-b px-5 py-5">
-                        <h3 className="text-base font-semibold">{t('Low Stock Products')}</h3>
+                        <h3 className="text-base font-semibold">{translate('Low Stock Products')}</h3>
 
-                        <p className="text-muted-foreground mt-0.5 text-xs">{t('Inventory between 1 and 10')}</p>
+                        <p className="text-muted-foreground mt-0.5 text-xs">{translate('Inventory between 1 and 10')}</p>
                     </div>
 
                     <div className="custom-scrollbar max-h-[340px] overflow-y-auto">
@@ -167,7 +167,7 @@ export default function ProductReports() {
                                             <div className="min-w-0 flex-1">
                                                 <p className="truncate text-sm leading-tight font-semibold">{product.name}</p>
 
-                                                <p className="text-muted-foreground mt-0.5 truncate text-xs">SKU: {product.sku || t('N/A')}</p>
+                                                <p className="text-muted-foreground mt-0.5 truncate text-xs">SKU: {product.sku || translate('N/A')}</p>
                                             </div>
                                         </div>
 
@@ -179,7 +179,7 @@ export default function ProductReports() {
                             </div>
                         ) : (
                             <div className="flex h-[200px] flex-col items-center justify-center gap-3">
-                                <p className="text-muted-foreground text-sm">{t('No low stock products')}</p>
+                                <p className="text-muted-foreground text-sm">{translate('No low stock products')}</p>
                             </div>
                         )}
                     </div>
@@ -187,9 +187,9 @@ export default function ProductReports() {
 
                 <Card className="border-border overflow-hidden border shadow-sm dark:bg-slate-900">
                     <div className="border-b px-5 py-5">
-                        <h3 className="text-base font-semibold">{t('Out of Stock Products')}</h3>
+                        <h3 className="text-base font-semibold">{translate('Out of Stock Products')}</h3>
 
-                        <p className="text-muted-foreground mt-0.5 text-xs">{t('Inventory at 0')}</p>
+                        <p className="text-muted-foreground mt-0.5 text-xs">{translate('Inventory at 0')}</p>
                     </div>
 
                     <div className="custom-scrollbar max-h-[340px] overflow-y-auto">
@@ -240,7 +240,7 @@ export default function ProductReports() {
                                             <div className="min-w-0 flex-1">
                                                 <p className="truncate text-sm leading-tight font-semibold">{product.name}</p>
 
-                                                <p className="text-muted-foreground mt-0.5 truncate text-xs">SKU: {product.sku || t('N/A')}</p>
+                                                <p className="text-muted-foreground mt-0.5 truncate text-xs">SKU: {product.sku || translate('N/A')}</p>
                                             </div>
                                         </div>
 
@@ -252,7 +252,7 @@ export default function ProductReports() {
                             </div>
                         ) : (
                             <div className="flex h-40 items-center justify-center">
-                                <p className="text-muted-foreground text-sm">{t('No out of stock products')}</p>
+                                <p className="text-muted-foreground text-sm">{translate('No out of stock products')}</p>
                             </div>
                         )}
                     </div>
@@ -260,8 +260,8 @@ export default function ProductReports() {
 
                 <Card className="border-border col-span-full overflow-hidden border shadow-sm dark:bg-slate-900">
                     <div className="border-b px-5 py-5">
-                        <h3 className="text-base font-semibold">{t('Top 5 Products by Quantity Sold')}</h3>
-                        <p className="text-muted-foreground mt-0.5 text-xs">{t('Highest moving inventory')}</p>
+                        <h3 className="text-base font-semibold">{translate('Top 5 Products by Quantity Sold')}</h3>
+                        <p className="text-muted-foreground mt-0.5 text-xs">{translate('Highest moving inventory')}</p>
                     </div>
                     <div className="p-0">
                         {topProductsByQuantity && topProductsByQuantity.length > 0 ? (
@@ -310,7 +310,7 @@ export default function ProductReports() {
                                         <div className="min-w-0 flex-1">
                                             <p className="truncate text-sm leading-tight font-semibold">{product.name}</p>
                                             <p className="text-muted-foreground mt-0.5 truncate text-xs">
-                                                {product.quantity} {t('units sold')}
+                                                {product.quantity} {translate('units sold')}
                                             </p>
                                         </div>
                                         <div className="flex shrink-0 flex-col items-end gap-1">
@@ -323,7 +323,7 @@ export default function ProductReports() {
                             </div>
                         ) : (
                             <div className="flex h-40 flex-col items-center justify-center gap-3">
-                                <p className="text-muted-foreground text-sm">{t('No product performance data available')}</p>
+                                <p className="text-muted-foreground text-sm">{translate('No product performance data available')}</p>
                             </div>
                         )}
                     </div>

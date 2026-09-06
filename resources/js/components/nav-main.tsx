@@ -31,7 +31,7 @@ const STORAGE_KEY = 'nav_expanded_items';
 export function NavMain({ items = [], position, searchQuery = '' }: { items: NavItem[]; position: 'left' | 'right'; searchQuery?: string }) {
     const page = usePage();
     const { state, isMobile } = useSidebar();
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
 
     // Check if the document is in RTL mode
     const isRtl = document.documentElement.dir === 'rtl';
@@ -244,7 +244,7 @@ export function NavMain({ items = [], position, searchQuery = '' }: { items: Nav
             {searchQuery && items.length === 0 && (isMobile || state !== 'collapsed') ? (
                 <div className="flex flex-col items-center justify-center px-4 py-10 text-center">
                     <Search className="mb-3 h-8 w-8 text-gray-300 dark:text-gray-600" />
-                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('No menu found')}</p>
+                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('No menu found')}</p>
                     <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">"{searchQuery}"</p>
                 </div>
             ) : (

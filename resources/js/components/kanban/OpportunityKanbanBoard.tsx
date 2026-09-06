@@ -65,7 +65,7 @@ export const OpportunityKanbanBoard: React.FC<OpportunityKanbanBoardProps> = ({
     searchTerm = '',
     onDataUpdate,
 }) => {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
     const [kanbanData, setKanbanData] = useState<KanbanData>(initialData);
     const [isLoading, setIsLoading] = useState(false);
@@ -150,7 +150,7 @@ export const OpportunityKanbanBoard: React.FC<OpportunityKanbanBoardProps> = ({
                 throw new Error(data.message || 'Failed to update opportunity stage');
             }
 
-            toast.success(data.message || t('Opportunity stage updated successfully'));
+            toast.success(data.message || translate('Opportunity stage updated successfully'));
             if (onDataUpdate && data.opportunity) {
                 const updatedKanbanData = { ...kanbanData };
                 Object.keys(updatedKanbanData).forEach((stageId) => {
@@ -164,7 +164,7 @@ export const OpportunityKanbanBoard: React.FC<OpportunityKanbanBoardProps> = ({
             }
         } catch (error) {
             setKanbanData(initialData);
-            toast.error(error instanceof Error ? error.message : t('Failed to update opportunity stage'));
+            toast.error(error instanceof Error ? error.message : translate('Failed to update opportunity stage'));
         } finally {
             setIsLoading(false);
         }
@@ -251,7 +251,7 @@ export const OpportunityKanbanBoard: React.FC<OpportunityKanbanBoardProps> = ({
                                                                                     onClick={() => onOpportunityAction('view', opportunity)}
                                                                                 >
                                                                                     <Eye className="mr-2 h-4 w-4" />
-                                                                                    <span>{t('View Opportunity')}</span>
+                                                                                    <span>{translate('View Opportunity')}</span>
                                                                                 </DropdownMenuItem>
                                                                             )}
                                                                             {useHasPermission('edit-opportunities') && (
@@ -259,7 +259,7 @@ export const OpportunityKanbanBoard: React.FC<OpportunityKanbanBoardProps> = ({
                                                                                     onClick={() => onOpportunityAction('edit', opportunity)}
                                                                                 >
                                                                                     <Edit className="mr-2 h-4 w-4" />
-                                                                                    <span>{t('Edit')}</span>
+                                                                                    <span>{translate('Edit')}</span>
                                                                                 </DropdownMenuItem>
                                                                             )}
                                                                             {useHasPermission('delete-opportunities') && (
@@ -268,7 +268,7 @@ export const OpportunityKanbanBoard: React.FC<OpportunityKanbanBoardProps> = ({
                                                                                     className="text-red-600"
                                                                                 >
                                                                                     <Trash2 className="mr-2 h-4 w-4" />
-                                                                                    <span>{t('Delete')}</span>
+                                                                                    <span>{translate('Delete')}</span>
                                                                                 </DropdownMenuItem>
                                                                             )}
                                                                         </DropdownMenuContent>
@@ -278,7 +278,7 @@ export const OpportunityKanbanBoard: React.FC<OpportunityKanbanBoardProps> = ({
                                                                 <div className="space-y-1">
                                                                     {opportunity.amount && (
                                                                         <div className="flex items-center justify-between">
-                                                                            <span className="text-xs text-gray-500">{t('Amount')}:</span>
+                                                                            <span className="text-xs text-gray-500">{translate('Amount')}:</span>
                                                                             <span className="text-xs font-medium text-green-600">
                                                                                 ${parseFloat(opportunity.amount).toFixed(2)}
                                                                             </span>
@@ -319,8 +319,8 @@ export const OpportunityKanbanBoard: React.FC<OpportunityKanbanBoardProps> = ({
                                                     <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
                                                         <span className="text-xs">💼</span>
                                                     </div>
-                                                    <p className="mb-1 text-sm font-medium">{t('No opportunities here')}</p>
-                                                    <p className="text-xs opacity-75">{t('Drag opportunities here to update stage')}</p>
+                                                    <p className="mb-1 text-sm font-medium">{translate('No opportunities here')}</p>
+                                                    <p className="text-xs opacity-75">{translate('Drag opportunities here to update stage')}</p>
                                                 </div>
                                             )}
                                         </div>

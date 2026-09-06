@@ -33,7 +33,7 @@ interface PageCrudWrapperProps {
 }
 
 export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs }: PageCrudWrapperProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { entity, table, filters = [], form, hooks } = config;
     const { auth, ...pageProps } = usePage().props;
     const permissions = auth?.permissions || [];
@@ -222,7 +222,7 @@ export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs 
 
             if (formMode === 'create') {
                 // Show loading toast
-                toast.loading(t('Creating...'));
+                toast.loading(translate('Creating...'));
 
                 router.post(entity.endpoint, formDataObj, {
                     onSuccess: (page) => {
@@ -242,7 +242,7 @@ export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs 
                 });
             } else if (formMode === 'edit') {
                 // Show loading toast
-                toast.loading(t('Updating...'));
+                toast.loading(translate('Updating...'));
 
                 router.post(`${entity.endpoint}/${currentItem.id}?_method=PUT`, formDataObj, {
                     onSuccess: (page) => {
@@ -266,7 +266,7 @@ export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs 
 
         if (formMode === 'create') {
             // Show loading toast
-            toast.loading(t('Creating...'));
+            toast.loading(translate('Creating...'));
 
             router.post(entity.endpoint, processedFormData, {
                 onSuccess: (page) => {
@@ -294,7 +294,7 @@ export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs 
             });
         } else if (formMode === 'edit') {
             // Show loading toast
-            toast.loading(t('Updating...'));
+            toast.loading(translate('Updating...'));
 
             router.put(`${entity.endpoint}/${currentItem.id}`, processedFormData, {
                 onSuccess: (page) => {
@@ -315,7 +315,7 @@ export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs 
 
     const handleDeleteConfirm = () => {
         // Show loading toast
-        toast.loading(t('Deleting...'));
+        toast.loading(translate('Deleting...'));
 
         router.delete(`${entity.endpoint}/${currentItem.id}`, {
             onSuccess: (page) => {
@@ -389,7 +389,7 @@ export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs 
     const pageTitle = title || entity.name.charAt(0).toUpperCase() + entity.name.slice(1);
 
     // Generate default breadcrumbs if not provided
-    const defaultBreadcrumbs: BreadcrumbItem[] = [{ title: t('Dashboard'), href: route('dashboard') }, { title: pageTitle }];
+    const defaultBreadcrumbs: BreadcrumbItem[] = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: pageTitle }];
 
     const pageBreadcrumbs = breadcrumbs || defaultBreadcrumbs;
 

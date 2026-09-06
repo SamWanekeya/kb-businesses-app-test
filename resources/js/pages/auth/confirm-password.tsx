@@ -12,7 +12,7 @@ import AuthLayout from '@/layouts/auth-layout';
 import { useTranslation } from 'react-i18next';
 
 export default function ConfirmPassword() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { themeColor, customColor } = useBrand();
     const primaryColor = themeColor === 'custom' ? customColor : THEME_COLORS[themeColor as keyof typeof THEME_COLORS];
     const { data, setData, post, processing, errors, reset } = useForm<Required<{ password: string }>>({
@@ -22,21 +22,21 @@ export default function ConfirmPassword() {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(route('password.confirm'), {
-            onFinish: () => reset('password'),
+            onFinish: () => resetranslate('password'),
         });
     };
 
     return (
         <AuthLayout
-            title={t('Confirm your password')}
-            description={t('This is a secure area of the application. Please confirm your password before continuing.')}
+            title={translate('Confirm your password')}
+            description={translate('This is a secure area of the application. Please confirm your password before continuing.')}
             icon={<Lock className="h-7 w-7" style={{ color: primaryColor }} />}
         >
             <form onSubmit={submit} className="space-y-5">
                 <div className="space-y-4">
                     <div className="relative">
                         <Label htmlFor="password" className="mb-2 block font-medium text-gray-700 dark:text-gray-300">
-                            {t('Password')}
+                            {translate('Password')}
                         </Label>
                         <div className="relative">
                             <Input
@@ -63,7 +63,7 @@ export default function ConfirmPassword() {
                     className="w-full transform rounded-md py-2.5 text-sm font-medium tracking-wide text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg"
                     style={{ backgroundColor: primaryColor }}
                 >
-                    {t('CONFIRM PASSWORD').toUpperCase()}
+                    {translate('CONFIRM PASSWORD').toUpperCase()}
                 </AuthButton>
             </form>
         </AuthLayout>

@@ -24,7 +24,7 @@ export function PayPalPaymentForm({
     onSuccess,
     onCancel,
 }: PayPalPaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const paypalRef = useRef<HTMLDivElement>(null);
 
     const { processPayment } = usePaymentProcessor({
@@ -36,7 +36,7 @@ export function PayPalPaymentForm({
         if (!paypalClientId || !paypalRef.current) return;
 
         // Load PayPal SDK
-        const script = document.createElement('script');
+        const script = document.createElementranslate('script');
         script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=${currency.toUpperCase()}&disable-funding=credit,card`;
         script.async = true;
 
@@ -58,7 +58,7 @@ export function PayPalPaymentForm({
                         },
                         onApprove: (data: any, actions: any) => {
                             return actions.order.capture().then((details: any) => {
-                                processPayment('paypal', {
+                                processPaymentranslate('paypal', {
                                     planId,
                                     billingCycle,
                                     couponCode,
@@ -69,9 +69,9 @@ export function PayPalPaymentForm({
                         },
                         onError: (err: any) => {
                             if (err.message && err.message.includes('declined')) {
-                                toast.error(t('Card was declined. Please try a different payment method.'));
+                                toast.error(translate('Card was declined. Please try a different payment method.'));
                             } else {
-                                toast.error(t('Payment failed. Please try again.'));
+                                toast.error(translate('Payment failed. Please try again.'));
                             }
                         },
                         onCancel: () => {
@@ -92,7 +92,7 @@ export function PayPalPaymentForm({
     }, [paypalClientId, planId, billingCycle, couponCode, currency]);
 
     if (!paypalClientId) {
-        return <div className="p-4 text-center text-red-500">{t('PayPal not configured')}</div>;
+        return <div className="p-4 text-center text-red-500">{translate('PayPal not configured')}</div>;
     }
 
     return (

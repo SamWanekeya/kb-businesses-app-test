@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next';
 import ViewPopup from '@pages/users/view';
 
 export default function Users() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, users, roles, planLimits, filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();
@@ -123,7 +123,7 @@ export default function Users() {
         }
 
         if (formMode === 'create') {
-            toast.loading(t('Creating user...'));
+            toast.loading(translate('Creating user...'));
 
             router.post(route('users.store'), formData, {
                 onSuccess: (page) => {
@@ -147,7 +147,7 @@ export default function Users() {
                 },
             });
         } else if (formMode === 'edit') {
-            toast.loading(t('Updating user...'));
+            toast.loading(translate('Updating user...'));
 
             router.put(route('users.update', currentItem.id), formData, {
                 onSuccess: (page) => {
@@ -174,7 +174,7 @@ export default function Users() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting user...'));
+        toast.loading(translate('Deleting user...'));
 
         router.delete(route('users.destroy', currentItem.id), {
             onSuccess: (page) => {
@@ -200,7 +200,7 @@ export default function Users() {
     };
 
     const handleResetPasswordConfirm = (data: { password: string; password_confirmation: string }) => {
-        toast.loading(t('Resetting password...'));
+        toast.loading(translate('Resetting password...'));
 
         router.put(route('users.reset-password', currentItem.id), data, {
             onSuccess: (page) => {
@@ -225,7 +225,7 @@ export default function Users() {
 
     const handleToggleStatus = (user: any) => {
         const newStatus = user.status === 'active' ? 'inactive' : 'active';
-        toast.loading(`${newStatus === 'active' ? t('Activating') : t('Deactivating')} user...`);
+        toast.loading(`${newStatus === 'active' ? translate('Activating') : translate('Deactivating')} user...`);
 
         router.put(
             route('users.toggle-status', user.id),
@@ -275,7 +275,7 @@ export default function Users() {
             icon: <History className="mx-auto h-4 w-4" />,
             variant: 'outline',
             onClick: () => router.visit(route('sign-in-history.index')),
-            tooltip: t('Sign in History'),
+            tooltip: translate('Sign in History'),
         });
     }
 
@@ -285,19 +285,19 @@ export default function Users() {
         pageActions.push({
             label:
                 planLimits && !canCreate
-                    ? t('User Limit Reached ({{current}}/{{max}})', { current: planLimits.current_users, max: planLimits.maximum_users })
-                    : t('Add User'),
+                    ? translate('User Limit Reached ({{current}}/{{max}})', { current: planLimits.current_users, max: planLimits.maximum_users })
+                    : translate('Add User'),
             icon: <Plus className="mr-0 h-4 w-4 min-[300px]:mr-2" />,
             variant: canCreate ? 'default' : 'outline',
             className: 'h-8 w-8 min-[300px]:h-9 min-[300px]:w-auto px-0 min-[300px]:px-4',
             labelClassName: 'hidden min-[300px]:inline',
-            tooltip: t('Add User'),
+            tooltip: translate('Add User'),
             tooltipClassName: 'min-[300px]:hidden',
             onClick: canCreate
                 ? () => handleAddNew()
                 : () =>
                       toast.error(
-                          t('User limit exceeded. Your plan allows maximum {{max}} users. Please upgrade your plan.', {
+                          translate('User limit exceeded. Your plan allows maximum {{max}} users. Please upgrade your plan.', {
                               max: planLimits.maximum_users,
                           }),
                       ),
@@ -306,16 +306,16 @@ export default function Users() {
     }
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Staff'), href: route('users.index') },
-        { title: t('Users') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Staff'), href: route('users.index') },
+        { title: translate('Users') },
     ];
 
     // Define table columns
     const columns = [
         {
             key: 'name',
-            label: t('Name'),
+            label: translate('Name'),
             sortable: true,
             render: (value: any, row: any) => {
                 return (
@@ -334,7 +334,7 @@ export default function Users() {
         },
         {
             key: 'roles',
-            label: t('Roles'),
+            label: translate('Roles'),
             render: (value: any) => {
                 if (!value || !value.length) return <span className="text-muted-foreground">No roles assigned</span>;
 
@@ -352,7 +352,7 @@ export default function Users() {
         },
         {
             key: 'created_at',
-            label: t('Joined'),
+            label: translate('Joined'),
             sortable: true,
             type: 'date',
             // render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
@@ -362,35 +362,35 @@ export default function Users() {
     // Define table actions
     const actions = [
         {
-            label: t('Reset Password'),
+            label: translate('Reset Password'),
             icon: 'KeyRound',
             action: 'reset-password',
             className: 'text-blue-500',
             requiredPermission: 'reset-password-users',
         },
         {
-            label: t('Toggle Status'),
+            label: translate('Toggle Status'),
             icon: 'Lock',
             action: 'toggle-status',
             className: 'text-amber-500',
             requiredPermission: 'toggle-status-users',
         },
         {
-            label: t('View'),
+            label: translate('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
             requiredPermission: 'view-users',
         },
         {
-            label: t('Edit'),
+            label: translate('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
             requiredPermission: 'edit-users',
         },
         {
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
@@ -399,7 +399,7 @@ export default function Users() {
     ];
 
     return (
-        <PageTemplate title={t('Users')} description={t('Manage your users.')} url="/users" actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
+        <PageTemplate title={translate('Users')} description={translate('Manage your users.')} url="/users" actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
             {/* Search and filters section */}
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
@@ -409,13 +409,13 @@ export default function Users() {
                     filters={[
                         {
                             name: 'role',
-                            label: t('Role'),
+                            label: translate('Role'),
                             type: 'select',
                             value: selectedRole,
                             searchable: true,
                             onChange: setSelectedRole,
                             options: [
-                                { value: 'all', label: t('All Roles') },
+                                { value: 'all', label: translate('All Roles') },
                                 ...(roles || []).map((role: any) => ({
                                     value: role.id.toString(),
                                     label: role.label || role.name,
@@ -470,7 +470,7 @@ export default function Users() {
                         to={users?.to || 0}
                         total={users?.total || 0}
                         links={users?.links}
-                        entityName={t('users')}
+                        entityName={translate('users')}
                         onPageChange={(url) => router.get(url)}
                         currentPerPage={pageFilters.per_page?.toString() || '10'}
                         onPerPageChange={(value) => {
@@ -549,7 +549,7 @@ export default function Users() {
                                                             <Eye className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
-                                                    <TooltipContent>{t('View')}</TooltipContent>
+                                                    <TooltipContent>{translate('View')}</TooltipContent>
                                                 </Tooltip>
                                             )}
                                             {useHasPermission('edit-users') && (
@@ -564,7 +564,7 @@ export default function Users() {
                                                             <Edit className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
-                                                    <TooltipContent>{t('Edit')}</TooltipContent>
+                                                    <TooltipContent>{translate('Edit')}</TooltipContent>
                                                 </Tooltip>
                                             )}
                                             {useHasPermission('reset-password-users') && (
@@ -579,7 +579,7 @@ export default function Users() {
                                                             <KeyRound className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
-                                                    <TooltipContent>{t('Reset Password')}</TooltipContent>
+                                                    <TooltipContent>{translate('Reset Password')}</TooltipContent>
                                                 </Tooltip>
                                             )}
                                             {useHasPermission('toggle-status-users') && (
@@ -598,7 +598,7 @@ export default function Users() {
                                                             )}
                                                         </Button>
                                                     </TooltipTrigger>
-                                                    <TooltipContent>{user.status === 'active' ? t('Disable User') : t('Enable User')}</TooltipContent>
+                                                    <TooltipContent>{user.status === 'active' ? translate('Disable User') : translate('Enable User')}</TooltipContent>
                                                 </Tooltip>
                                             )}
                                             {useHasPermission('delete-users') && (
@@ -613,7 +613,7 @@ export default function Users() {
                                                             <Trash2 className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
-                                                    <TooltipContent>{t('Delete')}</TooltipContent>
+                                                    <TooltipContent>{translate('Delete')}</TooltipContent>
                                                 </Tooltip>
                                             )}
                                         </div>
@@ -626,7 +626,7 @@ export default function Users() {
                                                 </span>
                                             ) : (
                                                 <span className="inline-flex items-center rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-500 dark:bg-gray-700 dark:text-gray-400">
-                                                    {t('No role')}
+                                                    {translate('No role')}
                                                 </span>
                                             )}
                                         </div>
@@ -647,12 +647,12 @@ export default function Users() {
                                         />
                                     </svg>
                                 </div>
-                                <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{t('No users found')}</h3>
-                                <p className="mb-6 text-gray-500 dark:text-gray-400">{t('Get started by creating your first user')}</p>
+                                <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{translate('No users found')}</h3>
+                                <p className="mb-6 text-gray-500 dark:text-gray-400">{translate('Get started by creating your first user')}</p>
                                 {useHasPermission('create-users') && (
                                     <Button onClick={handleAddNew}>
                                         <Plus className="mr-2 h-4 w-4" />
-                                        {t('Add User')}
+                                        {translate('Add User')}
                                     </Button>
                                 )}
                             </div>
@@ -667,7 +667,7 @@ export default function Users() {
                                 to={users?.to || 0}
                                 total={users?.total || 0}
                                 links={users?.links}
-                                entityName={t('users')}
+                                entityName={translate('users')}
                                 onPageChange={(url) => router.get(url)}
                                 perPageOptions={[12, 24, 48, 96]}
                                 currentPerPage={pageFilters.per_page?.toString() || '12'}
@@ -704,27 +704,27 @@ export default function Users() {
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
-                        { name: 'name', label: t('Name'), type: 'text', required: true, placeholder: t('eg. John Smith') },
-                        { name: 'email', label: t('Email'), type: 'email', required: true, placeholder: t('eg. john@kakbima.dev') },
+                        { name: 'name', label: translate('Name'), type: 'text', required: true, placeholder: translate('eg. John Smith') },
+                        { name: 'email', label: translate('Email'), type: 'email', required: true, placeholder: translate('eg. john@kakbima.dev') },
                         {
                             name: 'password',
-                            label: t('Password'),
+                            label: translate('Password'),
                             type: 'password',
-                            placeholder: t('Enter Password'),
+                            placeholder: translate('Enter Password'),
                             required: true,
                             conditional: (mode) => mode === 'create',
                         },
                         {
                             name: 'password_confirmation',
-                            label: t('Confirm Password'),
+                            label: translate('Confirm Password'),
                             type: 'password',
-                            placeholder: t('Confirm Password'),
+                            placeholder: translate('Confirm Password'),
                             required: true,
                             conditional: (mode) => mode === 'create',
                         },
                         {
                             name: 'roles',
-                            label: t('Role'),
+                            label: translate('Role'),
                             type: 'select',
                             searchable: true,
                             options: roles
@@ -738,7 +738,7 @@ export default function Users() {
                                 !roles || roles.length === 0
                                     ? {
                                           link: route('roles.index'),
-                                          linkText: t('Roles'),
+                                          linkText: translate('Roles'),
                                       }
                                     : undefined,
                         },
@@ -753,7 +753,7 @@ export default function Users() {
                           }
                         : null
                 }
-                title={formMode === 'create' ? t('Add User') : t('Edit User')}
+                title={formMode === 'create' ? translate('Add User') : translate('Edit User')}
                 mode={formMode}
             />
 
@@ -773,13 +773,13 @@ export default function Users() {
                 onSubmit={handleResetPasswordConfirm}
                 formConfig={{
                     fields: [
-                        { name: 'password', label: t('New Password'), type: 'password', required: true, placeholder: t('Enter New Password') },
+                        { name: 'password', label: translate('New Password'), type: 'password', required: true, placeholder: translate('Enter New Password') },
                         {
                             name: 'password_confirmation',
-                            label: t('Confirm Password'),
+                            label: translate('Confirm Password'),
                             type: 'password',
                             required: true,
-                            placeholder: t('Confirm New Password'),
+                            placeholder: translate('Confirm New Password'),
                         },
                     ],
                     modalSize: 'sm',

@@ -55,7 +55,7 @@ export default function ReferredUsersSection({
     userType,
     currencySymbol,
 }: ReferredUsersSectionProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
 
     const getTotalCommission = (user: ReferredUser) => {
@@ -94,7 +94,7 @@ export default function ReferredUsersSection({
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{t('Total Referred Users')}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{translate('Total Referred Users')}</p>
                                 <p className="mt-2 text-2xl font-bold">{referredUsers.total}</p>
                             </div>
                             <div className="rounded-full bg-green-100 p-3 dark:bg-green-900">
@@ -108,7 +108,7 @@ export default function ReferredUsersSection({
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{t('Users with Plans')}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{translate('Users with Plans')}</p>
                                 <p className="mt-2 text-2xl font-bold">{usersWithPlans}</p>
                             </div>
                             <div className="rounded-full bg-blue-100 p-3 dark:bg-blue-900">
@@ -122,7 +122,7 @@ export default function ReferredUsersSection({
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{t('Total Commission Earned')}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{translate('Total Commission Earned')}</p>
                                 <p className="mt-2 font-mono text-2xl font-bold">
                                     {currencySymbol}
                                     {(totalCommissionEarned || 0).toFixed(2)}
@@ -138,17 +138,17 @@ export default function ReferredUsersSection({
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-base font-semibold">{t('Referred Users List')}</CardTitle>
+                    <CardTitle className="text-base font-semibold">{translate('Referred Users List')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     {referredUsers.data.length === 0 ? (
                         <div className="py-12 text-center">
                             <Users className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
-                            <p className="text-muted-foreground mb-2 text-base font-semibold">{t('No referred users yet')}</p>
+                            <p className="text-muted-foreground mb-2 text-base font-semibold">{translate('No referred users yet')}</p>
                             <p className="text-muted-foreground text-sm">
                                 {userType === 'super_admin'
-                                    ? t('No users have registered using referral codes yet.')
-                                    : t('Share your referral link to start earning commissions.')}
+                                    ? translate('No users have registered using referral codes yet.')
+                                    : translate('Share your referral link to start earning commissions.')}
                             </p>
                         </div>
                     ) : (
@@ -177,7 +177,7 @@ export default function ReferredUsersSection({
                                                 <div className="flex items-center space-x-2">
                                                     <Calendar className="text-muted-foreground h-4 w-4" />
                                                     <span className="text-muted-foreground truncate text-xs">
-                                                        {t('Registered')}{' '}
+                                                        {translate('Registered')}{' '}
                                                         {window.appSettings?.formatDateTime(user.created_at, false) ||
                                                             new Date(user.created_at).toLocaleDateString()}
                                                     </span>
@@ -201,7 +201,7 @@ export default function ReferredUsersSection({
                                                         </div>
                                                     ) : (
                                                         <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset">
-                                                            {t('No Plan')}
+                                                            {translate('No Plan')}
                                                         </span>
                                                     );
                                                 })()}
@@ -213,7 +213,7 @@ export default function ReferredUsersSection({
                                                         +{currencySymbol}
                                                         {getTotalCommission(user)?.toFixed(2)}
                                                     </p>
-                                                    <p className="text-muted-foreground mt-1 text-xs">{t('Commission')}</p>
+                                                    <p className="text-muted-foreground mt-1 text-xs">{translate('Commission')}</p>
                                                 </div>
                                             )}
                                         </div>
@@ -221,12 +221,12 @@ export default function ReferredUsersSection({
 
                                     {user.referrals && user.referrals.length > 0 && (
                                         <div className="mt-4 border-t pt-4">
-                                            <p className="mb-2 text-sm font-semibold">{t('Commission History')}</p>
+                                            <p className="mb-2 text-sm font-semibold">{translate('Commission History')}</p>
                                             <div className="space-y-2">
                                                 {user.referrals.map((referral) => (
                                                     <div key={referral.id} className="flex items-center justify-between">
                                                         <span className="text-muted-foreground text-sm">
-                                                            {referral.commission_percentage}% {t('commission')}
+                                                            {referral.commission_percentage}% {translate('commission')}
                                                         </span>
                                                         <span className="font-mono text-sm font-semibold text-green-600">
                                                             +{currencySymbol}
@@ -253,7 +253,7 @@ export default function ReferredUsersSection({
                     links={referredUsers.links}
                     currentPage={referredUsers.current_page}
                     lastPage={referredUsers.last_page}
-                    entityName={t('users')}
+                    entityName={translate('users')}
                     onPageChange={(url) => {
                         router.visit(url, {
                             preserveState: true,

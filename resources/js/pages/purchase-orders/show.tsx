@@ -31,7 +31,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function PurchaseOrderShow() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { purchaseOrder, streamItems, auth } = usePage().props;
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();
@@ -51,38 +51,38 @@ export default function PurchaseOrderShow() {
     }, []);
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Purchase Orders'), href: route('purchase-orders.index') },
-        { title: t('View Purchase Order ') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Purchase Orders'), href: route('purchase-orders.index') },
+        { title: translate('View Purchase Order ') },
     ];
 
     const PO_STATUS_STEPS = ['draft', 'sent', 'confirmed', 'received', 'cancelled'];
     const currentStatusIndex = PO_STATUS_STEPS.indexOf(purchaseOrder.status);
 
     const poStatusConfig: Record<string, { label: string; icon: React.ElementType; color: string; bg: string; ring: string }> = {
-        draft: { label: t('Draft'), icon: FileEdit, color: 'text-gray-600', bg: 'bg-gray-50 dark:bg-gray-800/40', ring: 'ring-gray-500/20' },
-        sent: { label: t('Sent'), icon: Send, color: 'text-blue-600', bg: 'bg-blue-50 dark:bg-blue-900/20', ring: 'ring-blue-600/20' },
+        draft: { label: translate('Draft'), icon: FileEdit, color: 'text-gray-600', bg: 'bg-gray-50 dark:bg-gray-800/40', ring: 'ring-gray-500/20' },
+        sent: { label: translate('Sent'), icon: Send, color: 'text-blue-600', bg: 'bg-blue-50 dark:bg-blue-900/20', ring: 'ring-blue-600/20' },
         confirmed: {
-            label: t('Confirmed'),
+            label: translate('Confirmed'),
             icon: CheckCircle,
             color: 'text-green-600',
             bg: 'bg-green-50 dark:bg-green-900/20',
             ring: 'ring-green-600/20',
         },
         received: {
-            label: t('Received'),
+            label: translate('Received'),
             icon: Package,
             color: 'text-purple-600',
             bg: 'bg-purple-50 dark:bg-purple-900/20',
             ring: 'ring-purple-600/20',
         },
-        cancelled: { label: t('Cancelled'), icon: XCircle, color: 'text-red-600', bg: 'bg-red-50 dark:bg-red-900/20', ring: 'ring-red-600/20' },
+        cancelled: { label: translate('Cancelled'), icon: XCircle, color: 'text-red-600', bg: 'bg-red-50 dark:bg-red-900/20', ring: 'ring-red-600/20' },
     };
 
     const formatCurrency = (amount: number) => window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     const formatDate = (dateString: string) => {
-        if (!dateString) return t('-');
+        if (!dateString) return translate('-');
         return window.appSettings?.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
@@ -123,11 +123,11 @@ export default function PurchaseOrderShow() {
     return (
         <PageTemplate
             title={purchaseOrder.order_number}
-            description={t('Purchase order details and related information')}
+            description={translate('Purchase order details and related information')}
             breadcrumbs={breadcrumbs}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="h-4 w-4 sm:me-2" />,
                     labelClassName: 'hidden sm:inline',
                     variant: 'outline',
@@ -150,7 +150,7 @@ export default function PurchaseOrderShow() {
                         </CardHeader>
                         <CardContent className="px-6 py-5">
                             {/* Order Progress */}
-                            <p className="text-muted-foreground mb-3 text-xs font-semibold">{t('Order Progress')}</p>
+                            <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Order Progress')}</p>
                             <div className="flex flex-wrap items-center gap-y-2">
                                 {PO_STATUS_STEPS.map((step, i) => {
                                     const s = poStatusConfig[step];
@@ -193,60 +193,60 @@ export default function PurchaseOrderShow() {
                             </div>
                             <div className="mt-5 grid grid-cols-1 gap-6 border-t pt-5 xl:grid-cols-2">
                                 <div>
-                                    <p className="text-muted-foreground mb-3 text-xs font-semibold">{t('Billing Address')}</p>
+                                    <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Billing Address')}</p>
                                     <div className="space-y-2">
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{t('Address')}</p>
-                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.billing_address || t('-')}</p>
+                                                <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
+                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.billing_address || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{t('City')}</p>
-                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.billing_city || t('-')}</p>
+                                                <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
+                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.billing_city || translate('-')}</p>
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{t('State')}</p>
-                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.billing_state || t('-')}</p>
+                                                <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
+                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.billing_state || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{t('Postal Code')}</p>
-                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.billing_postal_code || t('-')}</p>
+                                                <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
+                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.billing_postal_code || translate('-')}</p>
                                             </div>
                                         </div>
                                         <div className="space-y-0.5">
-                                            <p className="text-muted-foreground text-xs font-medium">{t('Country')}</p>
-                                            <p className="text-foreground text-sm font-medium">{purchaseOrder.billing_country || t('-')}</p>
+                                            <p className="text-muted-foreground text-xs font-medium">{translate('Country')}</p>
+                                            <p className="text-foreground text-sm font-medium">{purchaseOrder.billing_country || translate('-')}</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="border-t pt-6 xl:border-s xl:border-t-0 xl:ps-6 xl:pt-0">
-                                    <p className="text-muted-foreground mb-3 text-xs font-semibold">{t('Shipping Address')}</p>
+                                    <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Shipping Address')}</p>
                                     <div className="space-y-2">
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{t('Address')}</p>
-                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.shipping_address || t('-')}</p>
+                                                <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
+                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.shipping_address || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{t('City')}</p>
-                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.shipping_city || t('-')}</p>
+                                                <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
+                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.shipping_city || translate('-')}</p>
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{t('State')}</p>
-                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.shipping_state || t('-')}</p>
+                                                <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
+                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.shipping_state || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{t('Postal Code')}</p>
-                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.shipping_postal_code || t('-')}</p>
+                                                <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
+                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.shipping_postal_code || translate('-')}</p>
                                             </div>
                                         </div>
                                         <div className="space-y-0.5">
-                                            <p className="text-muted-foreground text-xs font-medium">{t('Country')}</p>
-                                            <p className="text-foreground text-sm font-medium">{purchaseOrder.shipping_country || t('-')}</p>
+                                            <p className="text-muted-foreground text-xs font-medium">{translate('Country')}</p>
+                                            <p className="text-foreground text-sm font-medium">{purchaseOrder.shipping_country || translate('-')}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -259,7 +259,7 @@ export default function PurchaseOrderShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <Package className="text-muted-foreground me-3 h-5 w-5" />
-                                {t('Products')}
+                                {translate('Products')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
@@ -269,18 +269,18 @@ export default function PurchaseOrderShow() {
                                         <Table className="min-w-[850px]">
                                             <TableHeader>
                                                 <TableRow className="bg-muted hover:!bg-muted border-b">
-                                                    <TableHead className="py-2.5 font-semibold whitespace-nowrap">{t('Product')}</TableHead>
+                                                    <TableHead className="py-2.5 font-semibold whitespace-nowrap">{translate('Product')}</TableHead>
                                                     <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
-                                                        {t('Quantity')}
+                                                        {translate('Quantity')}
                                                     </TableHead>
                                                     <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
-                                                        {t('Unit Price')}
+                                                        {translate('Unit Price')}
                                                     </TableHead>
                                                     <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
-                                                        {t('Discount')}
+                                                        {translate('Discount')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">{t('Tax')}</TableHead>
-                                                    <TableHead className="py-2.5 text-end font-semibold whitespace-nowrap">{t('Total')}</TableHead>
+                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">{translate('Tax')}</TableHead>
+                                                    <TableHead className="py-2.5 text-end font-semibold whitespace-nowrap">{translate('Total')}</TableHead>
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
@@ -385,25 +385,25 @@ export default function PurchaseOrderShow() {
                                     <div className="bg-muted/10 flex flex-col items-start gap-4 border-t px-4 py-5 sm:items-end sm:px-6">
                                         <div className="w-full overflow-hidden rounded-xl border sm:max-w-sm">
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{t('Subtotal')}</span>
+                                                <span className="text-muted-foreground text-sm font-medium">{translate('Subtotal')}</span>
                                                 <span className="text-foreground font-mono text-sm font-semibold">
                                                     {formatCurrency(purchaseOrder.subtotal ?? subtotal)}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{t('Discount')}</span>
+                                                <span className="text-muted-foreground text-sm font-medium">{translate('Discount')}</span>
                                                 <span className="font-mono text-sm font-semibold text-red-500">
                                                     -{formatCurrency(purchaseOrder.discount_amount || totalDiscount)}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{t('Total Tax')}</span>
+                                                <span className="text-muted-foreground text-sm font-medium">{translate('Total Tax')}</span>
                                                 <span className="text-foreground font-mono text-sm font-semibold">
                                                     {formatCurrency(purchaseOrder.tax_amount ?? totalTax)}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between px-4 py-3">
-                                                <span className="text-foreground text-sm font-bold">{t('Grand Total')}</span>
+                                                <span className="text-foreground text-sm font-bold">{translate('Grand Total')}</span>
                                                 <span className="font-mono text-lg font-bold text-emerald-600">
                                                     {formatCurrency(purchaseOrder.total_amount ?? grandTotal)}
                                                 </span>
@@ -416,7 +416,7 @@ export default function PurchaseOrderShow() {
                                     <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
                                         <Package className="text-muted-foreground/40 h-8 w-8" />
                                     </div>
-                                    <p className="text-muted-foreground text-sm font-medium">{t('No products added to this purchase order')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">{translate('No products added to this purchase order')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -427,14 +427,14 @@ export default function PurchaseOrderShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <FileText className="text-muted-foreground me-3 h-5 w-5" />
-                                {t('Description')}
+                                {translate('Description')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
                             <div className="max-h-[150px] overflow-y-auto">
                                 <div className="px-5 py-4">
                                     <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">
-                                        {purchaseOrder.description || t('-')}
+                                        {purchaseOrder.description || translate('-')}
                                     </p>
                                 </div>
                             </div>
@@ -447,7 +447,7 @@ export default function PurchaseOrderShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
                                     <MessageCircle className="text-muted-foreground me-3 h-5 w-5" />
-                                    {t('Activity Stream')}
+                                    {translate('Activity Stream')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
@@ -460,7 +460,7 @@ export default function PurchaseOrderShow() {
                                                     router.post(
                                                         route('purchase-orders.comments.store', purchaseOrder.id),
                                                         { comment: newComment },
-                                                        { preserveScroll: true, onSuccess: () => setNewComment('') },
+                                                        { preserveScroll: true, onSuccess: () => setNewCommentranslate('') },
                                                     );
                                                 }
                                             }}
@@ -477,13 +477,13 @@ export default function PurchaseOrderShow() {
                                                             </Avatar>
                                                         </TooltipTrigger>
                                                         <TooltipContent side="top">
-                                                            <p>{auth?.user?.name || t('Me')}</p>
+                                                            <p>{auth?.user?.name || translate('Me')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
                                                 <div className="flex-1 overflow-hidden rounded-xl border shadow-sm">
                                                     <Textarea
-                                                        placeholder={t('Write a comment...')}
+                                                        placeholder={translate('Write a comment...')}
                                                         value={newComment}
                                                         onChange={(e) => setNewComment(e.target.value)}
                                                         className="resize-none border-0 bg-transparent focus-visible:ring-0"
@@ -503,7 +503,7 @@ export default function PurchaseOrderShow() {
                                                                     </Button>
                                                                 </TooltipTrigger>
                                                                 <TooltipContent side="top">
-                                                                    <p>{t('Send')}</p>
+                                                                    <p>{translate('Send')}</p>
                                                                 </TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
@@ -552,7 +552,7 @@ export default function PurchaseOrderShow() {
                                                                         </Avatar>
                                                                     </TooltipTrigger>
                                                                     <TooltipContent side="top">
-                                                                        <p>{activity.user?.name || t('System')}</p>
+                                                                        <p>{activity.user?.name || translate('System')}</p>
                                                                     </TooltipContent>
                                                                 </Tooltip>
                                                             </TooltipProvider>
@@ -568,7 +568,7 @@ export default function PurchaseOrderShow() {
                                                             >
                                                                 <div className="flex flex-wrap items-center gap-2">
                                                                     <span className="text-foreground text-sm font-semibold">
-                                                                        {activity.user?.name || t('System')}
+                                                                        {activity.user?.name || translate('System')}
                                                                     </span>
                                                                     <span
                                                                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${badgeCls}`}
@@ -601,7 +601,7 @@ export default function PurchaseOrderShow() {
                                                                                             </Button>
                                                                                         </TooltipTrigger>
                                                                                         <TooltipContent side="top">
-                                                                                            <p>{t('Edit')}</p>
+                                                                                            <p>{translate('Edit')}</p>
                                                                                         </TooltipContent>
                                                                                     </Tooltip>
                                                                                 </TooltipProvider>
@@ -623,7 +623,7 @@ export default function PurchaseOrderShow() {
                                                                                         </Button>
                                                                                     </TooltipTrigger>
                                                                                     <TooltipContent side="top">
-                                                                                        <p>{t('Delete')}</p>
+                                                                                        <p>{translate('Delete')}</p>
                                                                                     </TooltipContent>
                                                                                 </Tooltip>
                                                                             </TooltipProvider>
@@ -648,7 +648,7 @@ export default function PurchaseOrderShow() {
                                                                                     variant="outline"
                                                                                     onClick={() => setEditingComment(null)}
                                                                                 >
-                                                                                    {t('Cancel')}
+                                                                                    {translate('Cancel')}
                                                                                 </Button>
                                                                                 <Button
                                                                                     size="sm"
@@ -665,7 +665,7 @@ export default function PurchaseOrderShow() {
                                                                                         setEditingComment(null);
                                                                                     }}
                                                                                 >
-                                                                                    {t('Save')}
+                                                                                    {translate('Save')}
                                                                                 </Button>
                                                                             </div>
                                                                         </div>
@@ -693,7 +693,7 @@ export default function PurchaseOrderShow() {
                                     ) : (
                                         <div className="text-muted-foreground py-12 text-center">
                                             <MessageCircle className="text-muted-foreground/30 mx-auto mb-3 h-10 w-10" />
-                                            <p className="text-sm">{t('No activities found')}</p>
+                                            <p className="text-sm">{translate('No activities found')}</p>
                                         </div>
                                     )}
                                 </div>
@@ -710,13 +710,13 @@ export default function PurchaseOrderShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-base font-semibold">
                                 <FileText className="me-2 h-4 w-4 text-emerald-600" />
-                                {t('Summary & Actions')}
+                                {translate('Summary & Actions')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
                             <div className="mb-4 flex items-start justify-between">
                                 <div>
-                                    <p className="text-muted-foreground mb-1 text-xs">{t('Total Amount')}</p>
+                                    <p className="text-muted-foreground mb-1 text-xs">{translate('Total Amount')}</p>
                                     <p className="text-foreground font-mono text-2xl font-bold">{formatCurrency(purchaseOrder.total_amount)}</p>
                                 </div>
                             </div>
@@ -728,7 +728,7 @@ export default function PurchaseOrderShow() {
                                         onClick={() => router.visit(route('purchase-orders.edit', purchaseOrder.id))}
                                     >
                                         <Edit className="me-2 h-4 w-4" />
-                                        {t('Edit Purchase Order')}
+                                        {translate('Edit Purchase Order')}
                                     </Button>
                                 )}
                             </div>
@@ -741,14 +741,14 @@ export default function PurchaseOrderShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-semibold">
                                     <User className="me-2 h-4 w-4 text-emerald-600" />
-                                    {t('Customer Info')}
+                                    {translate('Customer Info')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
                                 <div className="px-4 pt-3 pb-3">
                                     <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs text-[10px]">
                                         <Building2 className="h-3.5 w-3.5 shrink-0 text-gray-500" />
-                                        {t('Account')}
+                                        {translate('Account')}
                                     </p>
                                     <div className="flex min-w-0 items-center justify-between">
                                         <div className="flex min-w-0 items-center gap-2">
@@ -769,7 +769,7 @@ export default function PurchaseOrderShow() {
                                                         </Link>
                                                     </TooltipTrigger>
                                                     <TooltipContent side="top">
-                                                        <p>{t('View')}</p>
+                                                        <p>{translate('View')}</p>
                                                     </TooltipContent>
                                                 </Tooltip>
                                             </TooltipProvider>
@@ -784,7 +784,7 @@ export default function PurchaseOrderShow() {
                                                 <div>
                                                     <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs text-[10px]">
                                                         <User className="h-3.5 w-3.5 shrink-0 text-gray-500" />
-                                                        {t('Billing Contact')}
+                                                        {translate('Billing Contact')}
                                                     </p>
                                                     <div className="flex min-w-0 items-center justify-between">
                                                         <div className="flex min-w-0 items-center gap-2">
@@ -812,7 +812,7 @@ export default function PurchaseOrderShow() {
                                                                         </Link>
                                                                     </TooltipTrigger>
                                                                     <TooltipContent side="top">
-                                                                        <p>{t('View')}</p>
+                                                                        <p>{translate('View')}</p>
                                                                     </TooltipContent>
                                                                 </Tooltip>
                                                             </TooltipProvider>
@@ -824,7 +824,7 @@ export default function PurchaseOrderShow() {
                                                 <div>
                                                     <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs text-[10px]">
                                                         <User className="h-3.5 w-3.5 shrink-0 text-gray-500" />
-                                                        {t('Shipping Contact')}
+                                                        {translate('Shipping Contact')}
                                                     </p>
                                                     <div className="flex min-w-0 items-center justify-between">
                                                         <div className="flex min-w-0 items-center gap-2">
@@ -852,7 +852,7 @@ export default function PurchaseOrderShow() {
                                                                         </Link>
                                                                     </TooltipTrigger>
                                                                     <TooltipContent side="top">
-                                                                        <p>{t('View')}</p>
+                                                                        <p>{translate('View')}</p>
                                                                     </TooltipContent>
                                                                 </Tooltip>
                                                             </TooltipProvider>
@@ -872,36 +872,36 @@ export default function PurchaseOrderShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-base font-semibold">
                                 <FileText className="me-2 h-4 w-4 text-emerald-600" />
-                                {t('Order Details')}
+                                {translate('Order Details')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3 p-5">
                             <div className="flex items-start gap-3">
                                 <FileText className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{t('Order Number')}</p>
+                                    <p className="text-muted-foreground text-xs">{translate('Order Number')}</p>
                                     <p className="text-foreground text-sm font-medium">{purchaseOrder.order_number}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{t('Order Date')}</p>
+                                    <p className="text-muted-foreground text-xs">{translate('Order Date')}</p>
                                     <p className="text-foreground text-sm font-medium">{formatDate(purchaseOrder.order_date)}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{t('Expected Delivery')}</p>
+                                    <p className="text-muted-foreground text-xs">{translate('Expected Delivery')}</p>
                                     <p className="text-foreground text-sm font-medium">
-                                        {purchaseOrder.expected_delivery_date ? formatDate(purchaseOrder.expected_delivery_date) : t('-')}
+                                        {purchaseOrder.expected_delivery_date ? formatDate(purchaseOrder.expected_delivery_date) : translate('-')}
                                     </p>
                                 </div>
                             </div>
                             {purchaseOrder.assigned_user && (
                                 <div className="border-t pt-3">
-                                    <p className="text-muted-foreground mb-2 text-xs">{t('Assigned To')}</p>
+                                    <p className="text-muted-foreground mb-2 text-xs">{translate('Assigned To')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={purchaseOrder.assigned_user.avatar} alt={purchaseOrder.assigned_user.name} />
@@ -920,7 +920,7 @@ export default function PurchaseOrderShow() {
                             )}
                             {purchaseOrder.creator && (
                                 <div className="border-t pt-3">
-                                    <p className="text-muted-foreground mb-2 text-xs">{t('Created By')}</p>
+                                    <p className="text-muted-foreground mb-2 text-xs">{translate('Created By')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={purchaseOrder.creator.avatar} alt={purchaseOrder.creator.name} />
@@ -946,7 +946,7 @@ export default function PurchaseOrderShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-semibold">
                                     <Package className="me-2 h-4 w-4 text-gray-600" />
-                                    {t('Related Records')}
+                                    {translate('Related Records')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2 p-5">
@@ -956,7 +956,7 @@ export default function PurchaseOrderShow() {
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs">{t('Sales Order')}</p>
+                                            <p className="text-muted-foreground text-xs">{translate('Sales Order')}</p>
                                             <p className="text-foreground truncate text-sm font-medium">{purchaseOrder.sales_order.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
@@ -965,7 +965,7 @@ export default function PurchaseOrderShow() {
                                                     <Eye className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top">
-                                                    <p>{t('View')}</p>
+                                                    <p>{translate('View')}</p>
                                                 </TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>
@@ -977,7 +977,7 @@ export default function PurchaseOrderShow() {
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs">{t('Shipping Provider')}</p>
+                                            <p className="text-muted-foreground text-xs">{translate('Shipping Provider')}</p>
                                             <p className="text-foreground truncate text-sm font-medium">
                                                 {purchaseOrder.shipping_provider_type.name}
                                             </p>
@@ -988,7 +988,7 @@ export default function PurchaseOrderShow() {
                                                     <Eye className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top">
-                                                    <p>{t('View')}</p>
+                                                    <p>{translate('View')}</p>
                                                 </TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>
@@ -1011,8 +1011,8 @@ export default function PurchaseOrderShow() {
                     });
                     setIsDeleteModalOpen(false);
                 }}
-                itemName={t('this activity')}
-                entityName={t('activity')}
+                itemName={translate('this activity')}
+                entityName={translate('activity')}
             />
 
             <CrudDeleteModal
@@ -1022,8 +1022,8 @@ export default function PurchaseOrderShow() {
                     router.delete(route('purchase-orders.delete-activities', purchaseOrder.id), { preserveScroll: true });
                     setIsDeleteAllModalOpen(false);
                 }}
-                itemName={t('all activities for {{name}}', { name: purchaseOrder.name })}
-                entityName={t('activities')}
+                itemName={translate('all activities for {{name}}', { name: purchaseOrder.name })}
+                entityName={translate('activities')}
             />
         </PageTemplate>
     );

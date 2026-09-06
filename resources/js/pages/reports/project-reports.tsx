@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 export default function ProjectReports() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { filters, summary, monthlyData, dailyData, projectsByStatus, overdueProjects } = usePage().props;
     const [chartView, setChartView] = useState<'daily' | 'monthly'>('monthly');
     const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
@@ -32,29 +32,29 @@ export default function ProjectReports() {
 
     const chartData = chartView === 'daily' ? dailyData : monthlyData;
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Reports'), href: '#' }, { title: t('Project Reports') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Reports'), href: '#' }, { title: translate('Project Reports') }];
 
     const summaryCards = [
         {
-            title: t('Total Projects'),
+            title: translate('Total Projects'),
             value: summary.total_projects.toLocaleString(),
             icon: <Briefcase className="h-6 w-6 text-blue-600" />,
             iconColor: 'bg-blue-100',
         },
         {
-            title: t('Active Projects'),
+            title: translate('Active Projects'),
             value: summary.active_projects.toLocaleString(),
             icon: <Play className="h-6 w-6 text-green-600" />,
             iconColor: 'bg-green-100',
         },
         {
-            title: t('Completed Projects'),
+            title: translate('Completed Projects'),
             value: summary.completed_projects.toLocaleString(),
             icon: <CheckCircle className="h-6 w-6 text-purple-600" />,
             iconColor: 'bg-purple-100',
         },
         {
-            title: t('Completion Rate'),
+            title: translate('Completion Rate'),
             value: `${summary.completion_rate.toFixed(2)}%`,
             icon: <Percent className="h-6 w-6 text-orange-600" />,
             iconColor: 'bg-orange-100',
@@ -65,8 +65,8 @@ export default function ProjectReports() {
 
     return (
         <PageTemplate
-            title={t('Project Reports')}
-            description={t('View and analyze project reports to track performance and progress.')}
+            title={translate('Project Reports')}
+            description={translate('View and analyze project reports to track performance and progress.')}
             url="/reports/projects"
             breadcrumbs={breadcrumbs}
             noPadding
@@ -78,16 +78,16 @@ export default function ProjectReports() {
                 <div className="col-span-full">
                     <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm dark:bg-slate-900">
                         <CardHeader className="flex shrink-0 flex-row items-center justify-between border-b px-5 pt-5 pb-3">
-                            <CardTitle className="text-base font-semibold">{t('Project Trend')}</CardTitle>
+                            <CardTitle className="text-base font-semibold">{translate('Project Trend')}</CardTitle>
                             <div className="flex gap-2">
                                 <div className="flex items-center gap-2">
                                     <Tabs value={chartView} onValueChange={(v) => setChartView(v as 'daily' | 'monthly')}>
                                         <TabsList className="h-7">
                                             <TabsTrigger value="daily" className="cursor-pointer px-3 py-1 text-xs">
-                                                {t('Daily')}
+                                                {translate('Daily')}
                                             </TabsTrigger>
                                             <TabsTrigger value="monthly" className="cursor-pointer px-3 py-1 text-xs">
-                                                {t('Monthly')}
+                                                {translate('Monthly')}
                                             </TabsTrigger>
                                         </TabsList>
                                     </Tabs>
@@ -127,7 +127,7 @@ export default function ProjectReports() {
                                         type="monotone"
                                         dataKey="count"
                                         stroke={primaryColor}
-                                        name={t('Projects')}
+                                        name={translate('Projects')}
                                         strokeWidth={2.5}
                                         dot={{ r: 3, fill: primaryColor, strokeWidth: 0 }}
                                         activeDot={{ r: 6 }}
@@ -144,7 +144,7 @@ export default function ProjectReports() {
                             className="border-border bg-muted/30 flex shrink-0 flex-row items-center border-b px-5"
                             style={{ minHeight: '72px' }}
                         >
-                            <CardTitle className="text-foreground text-base font-semibold">{t('Projects by Status')}</CardTitle>
+                            <CardTitle className="text-foreground text-base font-semibold">{translate('Projects by Status')}</CardTitle>
                         </CardHeader>
 
                         <CardContent className="min-h-0 flex-1 p-4 pt-5" dir="ltr">
@@ -160,10 +160,10 @@ export default function ProjectReports() {
                                                 ? ({ percent }) => (percent > 0.05 ? `${(percent * 100).toFixed(0)}%` : '')
                                                 : ({ status, percent, total }) => {
                                                       const statusLabels: { [key: string]: string } = {
-                                                          active: t('Active'),
-                                                          completed: t('Completed'),
-                                                          on_hold: t('On Hold'),
-                                                          inactive: t('Inactive'),
+                                                          active: translate('Active'),
+                                                          completed: translate('Completed'),
+                                                          on_hold: translate('On Hold'),
+                                                          inactive: translate('Inactive'),
                                                       };
                                                       const label = statusLabels[status] || status;
                                                       return `${label} ${(percent * 100).toFixed(0)}% (${total})`;
@@ -180,10 +180,10 @@ export default function ProjectReports() {
                                     <Tooltip
                                         formatter={(value, name, props) => {
                                             const statusLabels: { [key: string]: string } = {
-                                                active: t('Active'),
-                                                completed: t('Completed'),
-                                                on_hold: t('On Hold'),
-                                                inactive: t('Inactive'),
+                                                active: translate('Active'),
+                                                completed: translate('Completed'),
+                                                on_hold: translate('On Hold'),
+                                                inactive: translate('Inactive'),
                                             };
                                             const label = statusLabels[props.payload.status] || props.payload.status;
                                             return [value, label];
@@ -196,10 +196,10 @@ export default function ProjectReports() {
                                             wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }}
                                             formatter={(value, entry: any) => {
                                                 const statusLabels: { [key: string]: string } = {
-                                                    active: t('Active'),
-                                                    completed: t('Completed'),
-                                                    on_hold: t('On Hold'),
-                                                    inactive: t('Inactive'),
+                                                    active: translate('Active'),
+                                                    completed: translate('Completed'),
+                                                    on_hold: translate('On Hold'),
+                                                    inactive: translate('Inactive'),
                                                 };
                                                 return statusLabels[entry.payload.status] || entry.payload.status;
                                             }}
@@ -215,8 +215,8 @@ export default function ProjectReports() {
                     <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm dark:bg-slate-900">
                         <div className="border-border bg-muted/30 flex shrink-0 items-center border-b px-5" style={{ minHeight: '72px' }}>
                             <div>
-                                <h3 className="text-foreground text-base font-semibold">{t('Overdue Projects')}</h3>
-                                <p className="text-muted-foreground mt-0.5 text-xs">{t('Active projects past their deadline')}</p>
+                                <h3 className="text-foreground text-base font-semibold">{translate('Overdue Projects')}</h3>
+                                <p className="text-muted-foreground mt-0.5 text-xs">{translate('Active projects past their deadline')}</p>
                             </div>
                         </div>
 
@@ -256,7 +256,7 @@ export default function ProjectReports() {
                                 <div className="flex h-full min-h-[200px] flex-col items-center justify-center gap-3">
                                     <CheckCircle className="h-10 w-10 text-emerald-500/50" />
 
-                                    <p className="text-sm font-medium text-gray-500 dark:text-gray-500">{t('No overdue projects')}</p>
+                                    <p className="text-sm font-medium text-gray-500 dark:text-gray-500">{translate('No overdue projects')}</p>
                                 </div>
                             )}
                         </div>

@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function EmailSettings() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { settings = {} } = usePage().props;
 
     // Email Settings form state
@@ -46,7 +46,7 @@ export default function EmailSettings() {
     const submitEmailSettings = (e: React.FormEvent) => {
         e.preventDefault();
 
-        toast.loading(t('Saving email settings...'));
+        toast.loading(translate('Saving email settings...'));
         setProcessing(true);
 
         router.post(route('settings.email.update'), emailSettings, {
@@ -62,13 +62,13 @@ export default function EmailSettings() {
                 } else if (errorMessage) {
                     toast.error(errorMessage);
                 } else {
-                    toast.success(t('Email settings saved successfully'));
+                    toast.success(translate('Email settings saved successfully'));
                 }
             },
             onError: (errors) => {
                 setProcessing(false);
                 toast.dismiss();
-                const errorMessage = errors.error || Object.values(errors).join(', ') || t('Failed to save email settings');
+                const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to save email settings');
                 toast.error(errorMessage);
             },
         });
@@ -81,7 +81,7 @@ export default function EmailSettings() {
 
         setIsSending(true);
         setTestResult(null);
-        toast.loading(t('Sending test email...'));
+        toast.loading(translate('Sending test email...'));
 
         router.post(
             route('settings.email.test'),
@@ -101,7 +101,7 @@ export default function EmailSettings() {
                         toast.error(errorMessage);
                         setTestResult({ success: false, message: errorMessage });
                     } else {
-                        const message = t('Test email sent successfully to {{email}}', { email: testEmail });
+                        const message = translate('Test email sent successfully to {{email}}', { email: testEmail });
                         toast.success(message);
                         setTestResult({ success: true, message });
                     }
@@ -114,7 +114,7 @@ export default function EmailSettings() {
                 onError: (errors) => {
                     setIsSending(false);
                     toast.dismiss();
-                    const errorMessage = errors.error || Object.values(errors).join(', ') || t('Failed to send test email');
+                    const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to send test email');
                     toast.error(errorMessage);
                     setTestResult({ success: false, message: errorMessage });
 
@@ -129,12 +129,12 @@ export default function EmailSettings() {
 
     return (
         <SettingsSection
-            title={t('Email Settings')}
-            description={t('Configure email server settings for system notifications and communications')}
+            title={translate('Email Settings')}
+            description={translate('Configure email server settings for system notifications and communications')}
             action={
                 <Button type="submit" disabled={processing} form="email-settings-form" size="sm" className="max-[1300px]:px-2.5">
                     <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                    <span className="max-[1300px]:hidden">{processing ? t('Saving...') : t('Save Changes')}</span>
+                    <span className="max-[1300px]:hidden">{processing ? translate('Saving...') : translate('Save Changes')}</span>
                 </Button>
             }
         >
@@ -149,7 +149,7 @@ export default function EmailSettings() {
                                         <div className="flex items-center gap-2">
                                             <Mail className="text-muted-foreground h-4 w-4" />
                                             <Label htmlFor="provider" className="font-medium">
-                                                {t('Email Provider')}
+                                                {translate('Email Provider')}
                                             </Label>
                                         </div>
                                         <Select
@@ -182,7 +182,7 @@ export default function EmailSettings() {
                                         <div className="flex items-center gap-2">
                                             <Server className="text-muted-foreground h-4 w-4" />
                                             <Label htmlFor="driver" className="font-medium" required>
-                                                {t('Mail Driver')}
+                                                {translate('Mail Driver')}
                                             </Label>
                                         </div>
                                         <Input
@@ -197,7 +197,7 @@ export default function EmailSettings() {
                                         <div className="flex items-center gap-2">
                                             <Server className="text-muted-foreground h-4 w-4" />
                                             <Label htmlFor="host" className="font-medium" required>
-                                                {t('SMTP Host')}
+                                                {translate('SMTP Host')}
                                             </Label>
                                         </div>
                                         <Input
@@ -212,7 +212,7 @@ export default function EmailSettings() {
                                         <div className="flex items-center gap-2">
                                             <Server className="text-muted-foreground h-4 w-4" />
                                             <Label htmlFor="port" className="font-medium" required>
-                                                {t('SMTP Port')}
+                                                {translate('SMTP Port')}
                                             </Label>
                                             <TooltipProvider>
                                                 <Tooltip>
@@ -220,7 +220,7 @@ export default function EmailSettings() {
                                                         <AlertCircle className="text-muted-foreground h-4 w-4" />
                                                     </TooltipTrigger>
                                                     <TooltipContent>
-                                                        <p>{t('Common ports: 25, 465, 587, 2525')}</p>
+                                                        <p>{translate('Common ports: 25, 465, 587, 2525')}</p>
                                                     </TooltipContent>
                                                 </Tooltip>
                                             </TooltipProvider>
@@ -237,7 +237,7 @@ export default function EmailSettings() {
                                         <div className="flex items-center gap-2">
                                             <User className="text-muted-foreground h-4 w-4" />
                                             <Label htmlFor="username" className="font-medium" required>
-                                                {t('SMTP Username')}
+                                                {translate('SMTP Username')}
                                             </Label>
                                         </div>
                                         <Input
@@ -252,7 +252,7 @@ export default function EmailSettings() {
                                         <div className="flex items-center gap-2">
                                             <Lock className="text-muted-foreground h-4 w-4" />
                                             <Label htmlFor="password" className="font-medium">
-                                                {t('SMTP Password')}
+                                                {translate('SMTP Password')}
                                             </Label>
                                         </div>
                                         <Input
@@ -268,7 +268,7 @@ export default function EmailSettings() {
                                         <div className="flex items-center gap-2">
                                             <Lock className="text-muted-foreground h-4 w-4" />
                                             <Label htmlFor="encryption" className="font-medium">
-                                                {t('Mail Encryption')}
+                                                {translate('Mail Encryption')}
                                             </Label>
                                         </div>
                                         <Select
@@ -290,7 +290,7 @@ export default function EmailSettings() {
                                         <div className="flex items-center gap-2">
                                             <Mail className="text-muted-foreground h-4 w-4" />
                                             <Label htmlFor="fromAddress" className="font-medium" required>
-                                                {t('From Address')}
+                                                {translate('From Address')}
                                             </Label>
                                         </div>
                                         <Input
@@ -305,7 +305,7 @@ export default function EmailSettings() {
                                         <div className="flex items-center gap-2">
                                             <User className="text-muted-foreground h-4 w-4" />
                                             <Label htmlFor="fromName" className="font-medium" required>
-                                                {t('From Name')}
+                                                {translate('From Name')}
                                             </Label>
                                         </div>
                                         <Input
@@ -328,12 +328,12 @@ export default function EmailSettings() {
                             <form onSubmit={sendTestEmail} className="space-y-4">
                                 <div className="mb-4 flex items-center gap-2">
                                     <Send className="text-primary h-4 w-4" />
-                                    <h3 className="text-base font-medium">{t('Test Email Configuration')}</h3>
+                                    <h3 className="text-base font-medium">{translate('Test Email Configuration')}</h3>
                                 </div>
 
                                 <div className="space-y-1.5">
                                     <Label htmlFor="testEmail" className="font-medium">
-                                        {t('Send Test To')}
+                                        {translate('Send Test To')}
                                     </Label>
                                     <Input
                                         id="testEmail"
@@ -343,19 +343,19 @@ export default function EmailSettings() {
                                         placeholder="test@kakbima.dev"
                                         required
                                     />
-                                    <p className="text-muted-foreground text-xs">{t('Enter an email address to send a test message')}</p>
+                                    <p className="text-muted-foreground text-xs">{translate('Enter an email address to send a test message')}</p>
                                 </div>
 
                                 <Button type="submit" className="w-full" disabled={isSending || !testEmail}>
                                     {isSending ? (
                                         <>
                                             <span className="mr-2 animate-spin">◌</span>
-                                            {t('Sending...')}
+                                            {translate('Sending...')}
                                         </>
                                     ) : (
                                         <>
                                             <Send className="mr-2 h-4 w-4" />
-                                            {t('Send Test Email')}
+                                            {translate('Send Test Email')}
                                         </>
                                     )}
                                 </Button>

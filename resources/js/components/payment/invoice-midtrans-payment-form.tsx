@@ -25,13 +25,13 @@ export function InvoiceMidtransPaymentForm({
     onSuccess,
     onCancel,
 }: InvoiceMidtransPaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     const handlePayment = async () => {
         if (!midtransClientKey) {
-            setError(t('Midtrans not configured'));
+            setError(translate('Midtrans not configured'));
             return;
         }
 
@@ -57,24 +57,24 @@ export function InvoiceMidtransPaymentForm({
             if (data.success) {
                 initializeMidtransSnap(data.snap_token, data.order_id);
             } else {
-                throw new Error(data.error || t('Payment creation failed'));
+                throw new Error(data.error || translate('Payment creation failed'));
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : t('Payment initialization failed'));
+            setError(err instanceof Error ? err.message : translate('Payment initialization failed'));
             setIsLoading(false);
         }
     };
 
     const initializeMidtransSnap = (snapToken: string, orderId: string) => {
         if (!window.snap) {
-            const script = document.createElement('script');
+            const script = document.createElementranslate('script');
             script.src = 'https://app.sandbox.midtrans.com/snap/snap.js';
             script.setAttribute('data-client-key', midtransClientKey);
             script.onload = () => {
                 openSnapPayment(snapToken, orderId);
             };
             script.onerror = () => {
-                setError(t('Failed to load Midtrans script'));
+                setError(translate('Failed to load Midtrans script'));
                 setIsLoading(false);
             };
             document.head.appendChild(script);
@@ -92,7 +92,7 @@ export function InvoiceMidtransPaymentForm({
                 setIsLoading(false);
             },
             onError: (result: any) => {
-                setError(t('Payment failed'));
+                setError(translate('Payment failed'));
                 setIsLoading(false);
             },
             onClose: () => {
@@ -115,7 +115,7 @@ export function InvoiceMidtransPaymentForm({
                     onSuccess();
                 },
                 onError: () => {
-                    setError(t('Payment processing failed'));
+                    setError(translate('Payment processing failed'));
                     setIsLoading(false);
                 },
             },
@@ -125,7 +125,7 @@ export function InvoiceMidtransPaymentForm({
     const formatPrice = (price: number) => {
         return (
             window.appSettings?.formatCurrency(Number(price || 0)) ||
-            new Intl.NumberFormat('en-US', {
+            new Intl.NumberFormatranslate('en-US', {
                 style: 'currency',
                 currency: currency,
             }).format(price)
@@ -137,7 +137,7 @@ export function InvoiceMidtransPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {t('Midtrans Payment')}
+                    {translate('Midtrans Payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -150,16 +150,16 @@ export function InvoiceMidtransPaymentForm({
 
                 <div className="bg-muted rounded-lg p-4">
                     <div className="flex items-center justify-between">
-                        <span className="font-medium">{t('Payment Amount')}</span>
+                        <span className="font-medium">{translate('Payment Amount')}</span>
                         <span className="text-lg font-bold">{formatPrice(amount)}</span>
                     </div>
                     <div className="text-muted-foreground mt-1 text-sm">
-                        {t('Payment Type')}: {t(paymentType === 'full' ? 'Full Payment' : 'Partial Payment')}
+                        {translate('Payment Type')}: {t(paymentType === 'full' ? 'Full Payment' : 'Partial Payment')}
                     </div>
                 </div>
 
                 <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-                    <h4 className="mb-2 font-medium text-blue-900">{t('Supported Payment Methods')}</h4>
+                    <h4 className="mb-2 font-medium text-blue-900">{translate('Supported Payment Methods')}</h4>
                     <ul className="space-y-1 text-sm text-blue-800">
                         <li>• Credit/Debit Cards</li>
                         <li>• Bank Transfer</li>
@@ -170,18 +170,18 @@ export function InvoiceMidtransPaymentForm({
 
                 <div className="flex gap-3">
                     <Button variant="outline" onClick={onCancel} disabled={isLoading} className="flex-1">
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     <Button onClick={handlePayment} disabled={isLoading || !midtransClientKey} className="flex-1">
                         {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                {t('Processing...')}
+                                {translate('Processing...')}
                             </>
                         ) : (
                             <>
                                 <CreditCard className="mr-2 h-4 w-4" />
-                                {t('Pay with Midtrans')}
+                                {translate('Pay with Midtrans')}
                             </>
                         )}
                     </Button>

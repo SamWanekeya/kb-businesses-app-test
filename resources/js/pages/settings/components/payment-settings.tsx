@@ -11,7 +11,7 @@ import { PaymentInputField } from '@/components/payment/payment-input-field';
 import { PaymentMethodCard } from '@/components/payment/payment-method-card';
 import { SettingsSection } from '@/components/settings-section';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { PAYMENT_METHODS, PAYMENT_METHOD_HELP_URLS, PAYMENT_METHOD_LABELS } from '@/utils/payment';
+import { PAYMENT_METHODS, PAYMENT_METHOD_HELP_URLS, PAYMENT_METHOD_LABELS } from '@/utils/Payment';
 import { useForm } from '@inertiajs/react';
 import { AlertCircle, Banknote, CreditCard, Save, Search, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
@@ -135,7 +135,7 @@ interface PaymentSettingsProps {
 }
 
 export default function PaymentSettings({ settings = {} }: PaymentSettingsProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState<'all' | 'enabled' | 'disabled'>('all');
 
@@ -331,19 +331,19 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                 }
             },
             onError: (errors) => {
-                toast.error(t('Failed to update payment settings'));
+                toast.error(translate('Failed to update payment settings'));
             },
         });
     };
 
     return (
         <SettingsSection
-            title={t('Payment Settings')}
-            description={t('Configure payment gateway for subscription plans')}
+            title={translate('Payment Settings')}
+            description={translate('Configure payment gateway for subscription plans')}
             action={
                 <Button type="submit" form="payment-settings-form" size="sm" disabled={processing} className="max-[1300px]:px-2.5">
                     <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                    <span className="max-[1300px]:hidden">{processing ? t('Saving...') : t('Save Changes')}</span>
+                    <span className="max-[1300px]:hidden">{processing ? translate('Saving...') : translate('Save Changes')}</span>
                 </Button>
             }
         >
@@ -352,8 +352,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                     {/* Payment Methods */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>{t('Payment Methods')}</CardTitle>
-                            <CardDescription>{t('Configure available payment methods for subscription plans')}</CardDescription>
+                            <CardTitle>{translate('Payment Methods')}</CardTitle>
+                            <CardDescription>{translate('Configure available payment methods for subscription plans')}</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
                             {/* Search and Filter Controls */}
@@ -361,7 +361,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                 <div className="relative flex-1">
                                     <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
                                     <Input
-                                        placeholder={t('Search payment methods...')}
+                                        placeholder={translate('Search payment methods...')}
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                         className="pr-10 pl-10"
@@ -383,9 +383,9 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">{t('All Methods')}</SelectItem>
-                                        <SelectItem value="enabled">{t('Enabled Only')}</SelectItem>
-                                        <SelectItem value="disabled">{t('Disabled Only')}</SelectItem>
+                                        <SelectItem value="all">{translate('All Methods')}</SelectItem>
+                                        <SelectItem value="enabled">{translate('Enabled Only')}</SelectItem>
+                                        <SelectItem value="disabled">{translate('Disabled Only')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -393,10 +393,10 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/* Active Filters */}
                             {(searchTerm || statusFilter !== 'all') && (
                                 <div className="flex flex-wrap items-center gap-2">
-                                    <span className="text-muted-foreground text-sm">{t('Active filters:')} </span>
+                                    <span className="text-muted-foreground text-sm">{translate('Active filters:')} </span>
                                     {searchTerm && (
                                         <Badge variant="secondary" className="text-xs">
-                                            {t('Search:')} "{searchTerm}"
+                                            {translate('Search:')} "{searchTerm}"
                                             <Button
                                                 type="button"
                                                 variant="ghost"
@@ -410,7 +410,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                     )}
                                     {statusFilter !== 'all' && (
                                         <Badge variant="secondary" className="text-xs">
-                                            {t('Status:')} {statusFilter === 'enabled' ? t('Enabled') : t('Disabled')}
+                                            {translate('Status:')} {statusFilter === 'enabled' ? translate('Enabled') : translate('Disabled')}
                                             <Button
                                                 type="button"
                                                 variant="ghost"
@@ -430,11 +430,11 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                 <div className="text-muted-foreground flex items-center justify-between text-sm">
                                     <span>
                                         {filteredMethods.length > 0
-                                            ? t('Showing {{count}} of {{total}} payment methods', {
+                                            ? translate('Showing {{count}} of {{total}} payment methods', {
                                                   count: filteredMethods.length,
                                                   total: paymentMethods.length,
                                               })
-                                            : t('No payment methods found matching your criteria')}
+                                            : translate('No payment methods found matching your criteria')}
                                     </span>
                                 </div>
                             )}
@@ -444,8 +444,8 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                     <div className="bg-muted mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full">
                                         <Search className="text-muted-foreground h-5 w-5" />
                                     </div>
-                                    <h3 className="mb-2 text-lg font-medium">{t('No results found')}</h3>
-                                    <p className="text-muted-foreground mb-4">{t('Try adjusting your search or filter criteria')}</p>
+                                    <h3 className="mb-2 text-lg font-medium">{translate('No results found')}</h3>
+                                    <p className="text-muted-foreground mb-4">{translate('Try adjusting your search or filter criteria')}</p>
                                     <Button
                                         type="button"
                                         variant="outline"
@@ -455,7 +455,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                             setStatusFilter('all');
                                         }}
                                     >
-                                        {t('Clear filters')}
+                                        {translate('Clear filters')}
                                     </Button>
                                 </div>
                             )}
@@ -469,16 +469,16 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                     onToggle={(checked) => setData('is_bank_payment_mode_enabled', checked)}
                                 >
                                     <div className="space-y-2">
-                                        <Label htmlFor="bank_details">{t('Bank Details')}</Label>
+                                        <Label htmlFor="bank_details">{translate('Bank Details')}</Label>
                                         <Textarea
                                             id="bank_details"
                                             value={data.bank_details}
                                             onChange={(e) => setData('bank_details', e.target.value)}
-                                            placeholder={t('Bank: Your Bank Name\nAccount Number: 0000 0000\nRouting Number: 000000000')}
+                                            placeholder={translate('Bank: Your Bank Name\nAccount Number: 0000 0000\nRouting Number: 000000000')}
                                             rows={6}
                                         />
                                         <p className="text-muted-foreground text-xs">
-                                            {t('Enter your bank details that customers will use for manual transfers')}
+                                            {translate('Enter your bank details that customers will use for manual transfers')}
                                         </p>
                                         {errors.bank_details && <p className="text-destructive text-sm">{errors.bank_details}</p>}
                                     </div>
@@ -493,12 +493,12 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        enabled={data.is_stripe_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_stripe_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.STRIPE]}*/}
-                            {/*        helpText={t('Get your Stripe API keys from your')}*/}
+                            {/*        helpText={translate('Get your Stripe API keys from your')}*/}
                             {/*    >*/}
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="stripe_key"*/}
-                            {/*                label={t('Publishable Key')}*/}
+                            {/*                label={translate('Publishable Key')}*/}
                             {/*                value={data.stripe_key}*/}
                             {/*                onChange={(value) => setData('stripe_key', value)}*/}
                             {/*                placeholder="pk_test_..."*/}
@@ -506,7 +506,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="stripe_secret"*/}
-                            {/*                label={t('Secret Key')}*/}
+                            {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.stripe_secret}*/}
                             {/*                onChange={(value) => setData('stripe_secret', value)}*/}
                             {/*                placeholder="sk_test_..."*/}
@@ -525,7 +525,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        enabled={data.is_paypal_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_paypal_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.PAYPAL]}*/}
-                            {/*        helpText={t('Get your PayPal API credentials from your')}*/}
+                            {/*        helpText={translate('Get your PayPal API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <div className="space-y-4">*/}
                             {/*            <PaymentModeSelector*/}
@@ -536,18 +536,18 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*                <PaymentInputField*/}
                             {/*                    id="paypal_client_id"*/}
-                            {/*                    label={t('Client ID')}*/}
+                            {/*                    label={translate('Client ID')}*/}
                             {/*                    value={data.paypal_client_id}*/}
                             {/*                    onChange={(value) => setData('paypal_client_id', value)}*/}
-                            {/*                    placeholder={t('Client ID')}*/}
+                            {/*                    placeholder={translate('Client ID')}*/}
                             {/*                    error={errors.paypal_client_id}*/}
                             {/*                />*/}
                             {/*                <PaymentInputField*/}
                             {/*                    id="paypal_secret_key"*/}
-                            {/*                    label={t('Secret Key')}*/}
+                            {/*                    label={translate('Secret Key')}*/}
                             {/*                    value={data.paypal_secret_key}*/}
                             {/*                    onChange={(value) => setData('paypal_secret_key', value)}*/}
-                            {/*                    placeholder={t('Secret Key')}*/}
+                            {/*                    placeholder={translate('Secret Key')}*/}
                             {/*                    isSecret*/}
                             {/*                    error={errors.paypal_secret_key}*/}
                             {/*                />*/}
@@ -564,12 +564,12 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        enabled={data.is_razorpay_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_razorpay_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.RAZORPAY]}*/}
-                            {/*        helpText={t('Get your Razorpay API credentials from your')}*/}
+                            {/*        helpText={translate('Get your Razorpay API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="razorpay_key"*/}
-                            {/*                label={t('Key ID')}*/}
+                            {/*                label={translate('Key ID')}*/}
                             {/*                value={data.razorpay_key}*/}
                             {/*                onChange={(value) => setData('razorpay_key', value)}*/}
                             {/*                placeholder="rzp_test_..."*/}
@@ -577,7 +577,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="razorpay_secret"*/}
-                            {/*                label={t('Secret Key')}*/}
+                            {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.razorpay_secret}*/}
                             {/*                onChange={(value) => setData('razorpay_secret', value)}*/}
                             {/*                placeholder="..."*/}
@@ -596,7 +596,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        enabled={data.is_mercadopago_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_mercadopago_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.MERCADOPAGO]}*/}
-                            {/*        helpText={t('Get your Mercado Pago API credentials from your')}*/}
+                            {/*        helpText={translate('Get your Mercado Pago API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <div className="space-y-4">*/}
                             {/*            <PaymentModeSelector*/}
@@ -606,7 +606,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="mercadopago_access_token"*/}
-                            {/*                label={t('Access Token')}*/}
+                            {/*                label={translate('Access Token')}*/}
                             {/*                value={data.mercadopago_access_token}*/}
                             {/*                onChange={(value) => setData('mercadopago_access_token', value)}*/}
                             {/*                placeholder={data.mercadopago_mode === 'sandbox' ? 'TEST-' : 'APP_USR-'}*/}
@@ -638,12 +638,12 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                     enabled={data.is_paystack_payment_mode_enabled}
                                     onToggle={(checked) => setData('is_paystack_payment_mode_enabled', checked)}
                                     helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.PAYSTACK]}
-                                    helpText={t('Get your Paystack API credentials from your')}
+                                    helpText={translate('Get your Paystack API credentials from your')}
                                 >
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <PaymentInputField
                                             id="paystack_public_key"
-                                            label={t('Public Key')}
+                                            label={translate('Public Key')}
                                             value={data.paystack_public_key}
                                             onChange={(value) => setData('paystack_public_key', value)}
                                             placeholder="pk_test_..."
@@ -651,7 +651,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                         />
                                         <PaymentInputField
                                             id="paystack_secret_key"
-                                            label={t('Secret Key')}
+                                            label={translate('Secret Key')}
                                             value={data.paystack_secret_key}
                                             onChange={(value) => setData('paystack_secret_key', value)}
                                             placeholder="sk_test_..."
@@ -670,12 +670,12 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        enabled={data.is_flutterwave_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_flutterwave_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.FLUTTERWAVE]}*/}
-                            {/*        helpText={t('Get your Flutterwave API credentials from your')}*/}
+                            {/*        helpText={translate('Get your Flutterwave API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="flutterwave_public_key"*/}
-                            {/*                label={t('Public Key')}*/}
+                            {/*                label={translate('Public Key')}*/}
                             {/*                value={data.flutterwave_public_key}*/}
                             {/*                onChange={(value) => setData('flutterwave_public_key', value)}*/}
                             {/*                placeholder="FLWPUBK_TEST-..."*/}
@@ -683,7 +683,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="flutterwave_secret_key"*/}
-                            {/*                label={t('Secret Key')}*/}
+                            {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.flutterwave_secret_key}*/}
                             {/*                onChange={(value) => setData('flutterwave_secret_key', value)}*/}
                             {/*                placeholder="FLWSECK_TEST-..."*/}
@@ -702,7 +702,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        enabled={data.is_paytabs_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_paytabs_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.PAYTABS]}*/}
-                            {/*        helpText={t('Get your PayTabs API credentials from your')}*/}
+                            {/*        helpText={translate('Get your PayTabs API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <div className="space-y-4">*/}
                             {/*            <PaymentModeSelector*/}
@@ -713,36 +713,36 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*                <PaymentInputField*/}
                             {/*                    id="paytabs_profile_id"*/}
-                            {/*                    label={t('Profile ID')}*/}
+                            {/*                    label={translate('Profile ID')}*/}
                             {/*                    value={data.paytabs_profile_id}*/}
                             {/*                    onChange={(value) => setData('paytabs_profile_id', value)}*/}
-                            {/*                    placeholder={t('Profile ID')}*/}
+                            {/*                    placeholder={translate('Profile ID')}*/}
                             {/*                    error={errors.paytabs_profile_id}*/}
                             {/*                />*/}
                             {/*                <PaymentInputField*/}
                             {/*                    id="paytabs_server_key"*/}
-                            {/*                    label={t('Server Key')}*/}
+                            {/*                    label={translate('Server Key')}*/}
                             {/*                    value={data.paytabs_server_key}*/}
                             {/*                    onChange={(value) => setData('paytabs_server_key', value)}*/}
-                            {/*                    placeholder={t('Server Key')}*/}
+                            {/*                    placeholder={translate('Server Key')}*/}
                             {/*                    isSecret*/}
                             {/*                    error={errors.paytabs_server_key}*/}
                             {/*                />*/}
                             {/*            </div>*/}
                             {/*            <div className="space-y-2">*/}
-                            {/*                <Label htmlFor="paytabs_region">{t('Region')}</Label>*/}
+                            {/*                <Label htmlFor="paytabs_region">{translate('Region')}</Label>*/}
                             {/*                <Select value={data.paytabs_region} onValueChange={(value) => setData('paytabs_region', value)}>*/}
                             {/*                    <SelectTrigger>*/}
-                            {/*                        <SelectValue placeholder={t('Select Region')} />*/}
+                            {/*                        <SelectValue placeholder={translate('Select Region')} />*/}
                             {/*                    </SelectTrigger>*/}
                             {/*                    <SelectContent>*/}
-                            {/*                        <SelectItem value="ARE">{t('UAE')}</SelectItem>*/}
-                            {/*                        <SelectItem value="SAU">{t('Saudi Arabia')}</SelectItem>*/}
-                            {/*                        <SelectItem value="OMN">{t('Oman')}</SelectItem>*/}
-                            {/*                        <SelectItem value="JOR">{t('Jordan')}</SelectItem>*/}
-                            {/*                        <SelectItem value="EGY">{t('Egypt')}</SelectItem>*/}
-                            {/*                        <SelectItem value="IRQ">{t('Iraq')}</SelectItem>*/}
-                            {/*                        <SelectItem value="GLOBAL">{t('Global')}</SelectItem>*/}
+                            {/*                        <SelectItem value="ARE">{translate('UAE')}</SelectItem>*/}
+                            {/*                        <SelectItem value="SAU">{translate('Saudi Arabia')}</SelectItem>*/}
+                            {/*                        <SelectItem value="OMN">{translate('Oman')}</SelectItem>*/}
+                            {/*                        <SelectItem value="JOR">{translate('Jordan')}</SelectItem>*/}
+                            {/*                        <SelectItem value="EGY">{translate('Egypt')}</SelectItem>*/}
+                            {/*                        <SelectItem value="IRQ">{translate('Iraq')}</SelectItem>*/}
+                            {/*                        <SelectItem value="GLOBAL">{translate('Global')}</SelectItem>*/}
                             {/*                    </SelectContent>*/}
                             {/*                </Select>*/}
                             {/*                {errors.paytabs_region && <p className="text-destructive text-sm">{errors.paytabs_region}</p>}*/}
@@ -759,23 +759,23 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        enabled={data.is_skrill_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_skrill_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.SKRILL]}*/}
-                            {/*        helpText={t('Get your Skrill merchant credentials from your')}*/}
+                            {/*        helpText={translate('Get your Skrill merchant credentials from your')}*/}
                             {/*    >*/}
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="skrill_merchant_id"*/}
-                            {/*                label={t('Merchant ID')}*/}
+                            {/*                label={translate('Merchant ID')}*/}
                             {/*                value={data.skrill_merchant_id}*/}
                             {/*                onChange={(value) => setData('skrill_merchant_id', value)}*/}
-                            {/*                placeholder={t('Merchant ID')}*/}
+                            {/*                placeholder={translate('Merchant ID')}*/}
                             {/*                error={errors.skrill_merchant_id}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="skrill_secret_word"*/}
-                            {/*                label={t('Secret Word')}*/}
+                            {/*                label={translate('Secret Word')}*/}
                             {/*                value={data.skrill_secret_word}*/}
                             {/*                onChange={(value) => setData('skrill_secret_word', value)}*/}
-                            {/*                placeholder={t('Secret Word')}*/}
+                            {/*                placeholder={translate('Secret Word')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.skrill_secret_word}*/}
                             {/*            />*/}
@@ -791,7 +791,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        enabled={data.is_coingate_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_coingate_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.COINGATE]}*/}
-                            {/*        helpText={t('Get your CoinGate API credentials from your')}*/}
+                            {/*        helpText={translate('Get your CoinGate API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <div className="space-y-4">*/}
                             {/*            <PaymentModeSelector*/}
@@ -801,10 +801,10 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="coingate_api_token"*/}
-                            {/*                label={t('API Token')}*/}
+                            {/*                label={translate('API Token')}*/}
                             {/*                value={data.coingate_api_token}*/}
                             {/*                onChange={(value) => setData('coingate_api_token', value)}*/}
-                            {/*                placeholder={t('API Token')}*/}
+                            {/*                placeholder={translate('API Token')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.coingate_api_token}*/}
                             {/*            />*/}
@@ -820,7 +820,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        enabled={data.is_payfast_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_payfast_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.PAYFAST]}*/}
-                            {/*        helpText={t('Get your Payfast merchant credentials from your')}*/}
+                            {/*        helpText={translate('Get your Payfast merchant credentials from your')}*/}
                             {/*    >*/}
                             {/*        <div className="space-y-4">*/}
                             {/*            <PaymentModeSelector*/}
@@ -831,28 +831,28 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*                <PaymentInputField*/}
                             {/*                    id="payfast_merchant_id"*/}
-                            {/*                    label={t('Merchant ID')}*/}
+                            {/*                    label={translate('Merchant ID')}*/}
                             {/*                    value={data.payfast_merchant_id}*/}
                             {/*                    onChange={(value) => setData('payfast_merchant_id', value)}*/}
-                            {/*                    placeholder={t('Merchant ID')}*/}
+                            {/*                    placeholder={translate('Merchant ID')}*/}
                             {/*                    error={errors.payfast_merchant_id}*/}
                             {/*                />*/}
                             {/*                <PaymentInputField*/}
                             {/*                    id="payfast_merchant_key"*/}
-                            {/*                    label={t('Merchant Key')}*/}
+                            {/*                    label={translate('Merchant Key')}*/}
                             {/*                    value={data.payfast_merchant_key}*/}
                             {/*                    onChange={(value) => setData('payfast_merchant_key', value)}*/}
-                            {/*                    placeholder={t('Merchant Key')}*/}
+                            {/*                    placeholder={translate('Merchant Key')}*/}
                             {/*                    isSecret*/}
                             {/*                    error={errors.payfast_merchant_key}*/}
                             {/*                />*/}
                             {/*            </div>*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="payfast_passphrase"*/}
-                            {/*                label={t('Passphrase')}*/}
+                            {/*                label={translate('Passphrase')}*/}
                             {/*                value={data.payfast_passphrase}*/}
                             {/*                onChange={(value) => setData('payfast_passphrase', value)}*/}
-                            {/*                placeholder={t('Passphrase (optional)')}*/}
+                            {/*                placeholder={translate('Passphrase (optional)')}*/}
                             {/*                error={errors.payfast_passphrase}*/}
                             {/*            />*/}
                             {/*        </div>*/}
@@ -867,14 +867,14 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        enabled={data.is_tap_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_tap_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.TAP]}*/}
-                            {/*        helpText={t('Get your Tap API credentials from your')}*/}
+                            {/*        helpText={translate('Get your Tap API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <PaymentInputField*/}
                             {/*            id="tap_secret_key"*/}
-                            {/*            label={t('Secret Key')}*/}
+                            {/*            label={translate('Secret Key')}*/}
                             {/*            value={data.tap_secret_key}*/}
                             {/*            onChange={(value) => setData('tap_secret_key', value)}*/}
-                            {/*            placeholder={t('Secret Key')}*/}
+                            {/*            placeholder={translate('Secret Key')}*/}
                             {/*            isSecret*/}
                             {/*            error={errors.tap_secret_key}*/}
                             {/*        />*/}
@@ -889,14 +889,14 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        enabled={data.is_xendit_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_xendit_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.XENDIT]}*/}
-                            {/*        helpText={t('Get your Xendit API credentials from your')}*/}
+                            {/*        helpText={translate('Get your Xendit API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <PaymentInputField*/}
                             {/*            id="xendit_api_key"*/}
-                            {/*            label={t('API Key')}*/}
+                            {/*            label={translate('API Key')}*/}
                             {/*            value={data.xendit_api_key}*/}
                             {/*            onChange={(value) => setData('xendit_api_key', value)}*/}
-                            {/*            placeholder={t('API Key')}*/}
+                            {/*            placeholder={translate('API Key')}*/}
                             {/*            isSecret*/}
                             {/*            error={errors.xendit_api_key}*/}
                             {/*        />*/}
@@ -911,33 +911,33 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        enabled={data.is_paytr_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_paytr_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.PAYTR]}*/}
-                            {/*        helpText={t('Get your PayTR merchant credentials from your')}*/}
+                            {/*        helpText={translate('Get your PayTR merchant credentials from your')}*/}
                             {/*    >*/}
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="paytr_merchant_id"*/}
-                            {/*                label={t('Merchant ID')}*/}
+                            {/*                label={translate('Merchant ID')}*/}
                             {/*                value={data.paytr_merchant_id}*/}
                             {/*                onChange={(value) => setData('paytr_merchant_id', value)}*/}
-                            {/*                placeholder={t('Merchant ID')}*/}
+                            {/*                placeholder={translate('Merchant ID')}*/}
                             {/*                error={errors.paytr_merchant_id}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="paytr_merchant_key"*/}
-                            {/*                label={t('Merchant Key')}*/}
+                            {/*                label={translate('Merchant Key')}*/}
                             {/*                value={data.paytr_merchant_key}*/}
                             {/*                onChange={(value) => setData('paytr_merchant_key', value)}*/}
-                            {/*                placeholder={t('Merchant Key')}*/}
+                            {/*                placeholder={translate('Merchant Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.paytr_merchant_key}*/}
                             {/*            />*/}
                             {/*        </div>*/}
                             {/*        <PaymentInputField*/}
                             {/*            id="paytr_merchant_salt"*/}
-                            {/*            label={t('Merchant Salt')}*/}
+                            {/*            label={translate('Merchant Salt')}*/}
                             {/*            value={data.paytr_merchant_salt}*/}
                             {/*            onChange={(value) => setData('paytr_merchant_salt', value)}*/}
-                            {/*            placeholder={t('Merchant Salt')}*/}
+                            {/*            placeholder={translate('Merchant Salt')}*/}
                             {/*            isSecret*/}
                             {/*            error={errors.paytr_merchant_salt}*/}
                             {/*        />*/}
@@ -952,14 +952,14 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        enabled={data.is_mollie_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_mollie_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.MOLLIE]}*/}
-                            {/*        helpText={t('Get your Mollie API credentials from your')}*/}
+                            {/*        helpText={translate('Get your Mollie API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <PaymentInputField*/}
                             {/*            id="mollie_api_key"*/}
-                            {/*            label={t('API Key')}*/}
+                            {/*            label={translate('API Key')}*/}
                             {/*            value={data.mollie_api_key}*/}
                             {/*            onChange={(value) => setData('mollie_api_key', value)}*/}
-                            {/*            placeholder={t('API Key')}*/}
+                            {/*            placeholder={translate('API Key')}*/}
                             {/*            isSecret*/}
                             {/*            error={errors.mollie_api_key}*/}
                             {/*        />*/}
@@ -974,23 +974,23 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        enabled={data.is_toyyibpay_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_toyyibpay_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.TOYYIBPAY]}*/}
-                            {/*        helpText={t('Get your toyyibPay credentials from your')}*/}
+                            {/*        helpText={translate('Get your toyyibPay credentials from your')}*/}
                             {/*    >*/}
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="toyyibpay_category_code"*/}
-                            {/*                label={t('Category Code')}*/}
+                            {/*                label={translate('Category Code')}*/}
                             {/*                value={data.toyyibpay_category_code}*/}
                             {/*                onChange={(value) => setData('toyyibpay_category_code', value)}*/}
-                            {/*                placeholder={t('Category Code')}*/}
+                            {/*                placeholder={translate('Category Code')}*/}
                             {/*                error={errors.toyyibpay_category_code}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="toyyibpay_secret_key"*/}
-                            {/*                label={t('Secret Key')}*/}
+                            {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.toyyibpay_secret_key}*/}
                             {/*                onChange={(value) => setData('toyyibpay_secret_key', value)}*/}
-                            {/*                placeholder={t('Secret Key')}*/}
+                            {/*                placeholder={translate('Secret Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.toyyibpay_secret_key}*/}
                             {/*            />*/}
@@ -1001,12 +1001,12 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* Benefit *!/*/}
                             {/*{shouldShowMethod('benefit') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t('Benefit')}*/}
+                            {/*        title={translate('Benefit')}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_benefit_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_benefit_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.BENEFIT]}*/}
-                            {/*        helpText={t('Get your Benefit API credentials from your')}*/}
+                            {/*        helpText={translate('Get your Benefit API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <PaymentModeSelector*/}
                             {/*            value={data.benefit_mode as 'sandbox' | 'live'}*/}
@@ -1016,18 +1016,18 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="benefit_public_key"*/}
-                            {/*                label={t('Public Key')}*/}
+                            {/*                label={translate('Public Key')}*/}
                             {/*                value={data.benefit_public_key}*/}
                             {/*                onChange={(value) => setData('benefit_public_key', value)}*/}
-                            {/*                placeholder={t('Public Key')}*/}
+                            {/*                placeholder={translate('Public Key')}*/}
                             {/*                error={errors.benefit_public_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="benefit_secret_key"*/}
-                            {/*                label={t('Secret Key')}*/}
+                            {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.benefit_secret_key}*/}
                             {/*                onChange={(value) => setData('benefit_secret_key', value)}*/}
-                            {/*                placeholder={t('Secret Key')}*/}
+                            {/*                placeholder={translate('Secret Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.benefit_secret_key}*/}
                             {/*            />*/}
@@ -1038,12 +1038,12 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* Iyzipay *!/*/}
                             {/*{shouldShowMethod('iyzipay') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t('Iyzipay')}*/}
+                            {/*        title={translate('Iyzipay')}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_iyzipay_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_iyzipay_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.IYZIPAY]}*/}
-                            {/*        helpText={t('Get your Iyzipay API credentials from your')}*/}
+                            {/*        helpText={translate('Get your Iyzipay API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <PaymentModeSelector*/}
                             {/*            value={data.iyzipay_mode as 'sandbox' | 'live'}*/}
@@ -1053,18 +1053,18 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="iyzipay_public_key"*/}
-                            {/*                label={t('Public Key')}*/}
+                            {/*                label={translate('Public Key')}*/}
                             {/*                value={data.iyzipay_public_key}*/}
                             {/*                onChange={(value) => setData('iyzipay_public_key', value)}*/}
-                            {/*                placeholder={t('Public Key')}*/}
+                            {/*                placeholder={translate('Public Key')}*/}
                             {/*                error={errors.iyzipay_public_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="iyzipay_secret_key"*/}
-                            {/*                label={t('Secret Key')}*/}
+                            {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.iyzipay_secret_key}*/}
                             {/*                onChange={(value) => setData('iyzipay_secret_key', value)}*/}
-                            {/*                placeholder={t('Secret Key')}*/}
+                            {/*                placeholder={translate('Secret Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.iyzipay_secret_key}*/}
                             {/*            />*/}
@@ -1075,28 +1075,28 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* Aamarpay *!/*/}
                             {/*{shouldShowMethod('aamarpay') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t('Aamarpay')}*/}
+                            {/*        title={translate('Aamarpay')}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_aamarpay_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_aamarpay_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.AAMARPAY]}*/}
-                            {/*        helpText={t('Get your Aamarpay API credentials from your')}*/}
+                            {/*        helpText={translate('Get your Aamarpay API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="aamarpay_store_id"*/}
-                            {/*                label={t('Store ID')}*/}
+                            {/*                label={translate('Store ID')}*/}
                             {/*                value={data.aamarpay_store_id}*/}
                             {/*                onChange={(value) => setData('aamarpay_store_id', value)}*/}
-                            {/*                placeholder={t('Store ID')}*/}
+                            {/*                placeholder={translate('Store ID')}*/}
                             {/*                error={errors.aamarpay_store_id}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="aamarpay_signature"*/}
-                            {/*                label={t('Signature')}*/}
+                            {/*                label={translate('Signature')}*/}
                             {/*                value={data.aamarpay_signature}*/}
                             {/*                onChange={(value) => setData('aamarpay_signature', value)}*/}
-                            {/*                placeholder={t('Signature')}*/}
+                            {/*                placeholder={translate('Signature')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.aamarpay_signature}*/}
                             {/*            />*/}
@@ -1107,12 +1107,12 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* Midtrans *!/*/}
                             {/*{shouldShowMethod('midtrans') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t('Midtrans')}*/}
+                            {/*        title={translate('Midtrans')}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_midtrans_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_midtrans_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.MIDTRANS]}*/}
-                            {/*        helpText={t('Get your Midtrans API credentials from your')}*/}
+                            {/*        helpText={translate('Get your Midtrans API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <PaymentModeSelector*/}
                             {/*            value={data.midtrans_mode as 'sandbox' | 'live'}*/}
@@ -1121,10 +1121,10 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        />*/}
                             {/*        <PaymentInputField*/}
                             {/*            id="midtrans_secret_key"*/}
-                            {/*            label={t('Secret Key')}*/}
+                            {/*            label={translate('Secret Key')}*/}
                             {/*            value={data.midtrans_secret_key}*/}
                             {/*            onChange={(value) => setData('midtrans_secret_key', value)}*/}
-                            {/*            placeholder={t('Secret Key')}*/}
+                            {/*            placeholder={translate('Secret Key')}*/}
                             {/*            isSecret*/}
                             {/*            error={errors.midtrans_secret_key}*/}
                             {/*        />*/}
@@ -1134,28 +1134,28 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* YooKassa *!/*/}
                             {/*{shouldShowMethod('yookassa') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t('YooKassa')}*/}
+                            {/*        title={translate('YooKassa')}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_yookassa_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_yookassa_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.YOOKASSA]}*/}
-                            {/*        helpText={t('Get your YooKassa API credentials from your')}*/}
+                            {/*        helpText={translate('Get your YooKassa API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="yookassa_shop_id"*/}
-                            {/*                label={t('Shop ID')}*/}
+                            {/*                label={translate('Shop ID')}*/}
                             {/*                value={data.yookassa_shop_id}*/}
                             {/*                onChange={(value) => setData('yookassa_shop_id', value)}*/}
-                            {/*                placeholder={t('Shop ID')}*/}
+                            {/*                placeholder={translate('Shop ID')}*/}
                             {/*                error={errors.yookassa_shop_id}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="yookassa_secret_key"*/}
-                            {/*                label={t('Secret Key')}*/}
+                            {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.yookassa_secret_key}*/}
                             {/*                onChange={(value) => setData('yookassa_secret_key', value)}*/}
-                            {/*                placeholder={t('Secret Key')}*/}
+                            {/*                placeholder={translate('Secret Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.yookassa_secret_key}*/}
                             {/*            />*/}
@@ -1166,7 +1166,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/* Nepalste */}
                             {/* {shouldShowMethod('nepalste') && (
               <PaymentMethodCard
-                title={t('Nepalste')}
+                title={translate('Nepalste')}
                 icon={<CreditCard className="h-5 w-5" />}
                 enabled={data.is_nepalste_payment_mode_enabled}
                 onToggle={(checked) => setData('is_nepalste_payment_mode_enabled', checked)}
@@ -1203,19 +1203,19 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* Paiement Pro *!/*/}
                             {/*{shouldShowMethod('paiement') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t('Paiement Pro')}*/}
+                            {/*        title={translate('Paiement Pro')}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_paiement_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_paiement_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.PAIEMENT]}*/}
-                            {/*        helpText={t('Get your Paiement Pro API credentials from your')}*/}
+                            {/*        helpText={translate('Get your Paiement Pro API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <PaymentInputField*/}
                             {/*            id="paiement_merchant_id"*/}
-                            {/*            label={t('Merchant ID')}*/}
+                            {/*            label={translate('Merchant ID')}*/}
                             {/*            value={data.paiement_merchant_id}*/}
                             {/*            onChange={(value) => setData('paiement_merchant_id', value)}*/}
-                            {/*            placeholder={t('Merchant ID')}*/}
+                            {/*            placeholder={translate('Merchant ID')}*/}
                             {/*            error={errors.paiement_merchant_id}*/}
                             {/*        />*/}
                             {/*    </PaymentMethodCard>*/}
@@ -1224,36 +1224,36 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* CinetPay *!/*/}
                             {/*{shouldShowMethod('cinetpay') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t('CinetPay')}*/}
+                            {/*        title={translate('CinetPay')}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_cinetpay_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_cinetpay_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.CINETPAY]}*/}
-                            {/*        helpText={t('Get your CinetPay API credentials from your')}*/}
+                            {/*        helpText={translate('Get your CinetPay API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="cinetpay_site_id"*/}
-                            {/*                label={t('Site ID')}*/}
+                            {/*                label={translate('Site ID')}*/}
                             {/*                value={data.cinetpay_site_id}*/}
                             {/*                onChange={(value) => setData('cinetpay_site_id', value)}*/}
-                            {/*                placeholder={t('Site ID')}*/}
+                            {/*                placeholder={translate('Site ID')}*/}
                             {/*                error={errors.cinetpay_site_id}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="cinetpay_api_key"*/}
-                            {/*                label={t('API Key')}*/}
+                            {/*                label={translate('API Key')}*/}
                             {/*                value={data.cinetpay_api_key}*/}
                             {/*                onChange={(value) => setData('cinetpay_api_key', value)}*/}
-                            {/*                placeholder={t('API Key')}*/}
+                            {/*                placeholder={translate('API Key')}*/}
                             {/*                error={errors.cinetpay_api_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="cinetpay_secret_key"*/}
-                            {/*                label={t('Secret Key')}*/}
+                            {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.cinetpay_secret_key}*/}
                             {/*                onChange={(value) => setData('cinetpay_secret_key', value)}*/}
-                            {/*                placeholder={t('Secret Key')}*/}
+                            {/*                placeholder={translate('Secret Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.cinetpay_secret_key}*/}
                             {/*            />*/}
@@ -1264,12 +1264,12 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* PayHere *!/*/}
                             {/*{shouldShowMethod('payhere') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t('PayHere')}*/}
+                            {/*        title={translate('PayHere')}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_payhere_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_payhere_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.PAYHERE]}*/}
-                            {/*        helpText={t('Get your PayHere API credentials from your')}*/}
+                            {/*        helpText={translate('Get your PayHere API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <PaymentModeSelector*/}
                             {/*            value={data.payhere_mode as 'sandbox' | 'live'}*/}
@@ -1279,35 +1279,35 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="payhere_merchant_id"*/}
-                            {/*                label={t('Merchant ID')}*/}
+                            {/*                label={translate('Merchant ID')}*/}
                             {/*                value={data.payhere_merchant_id}*/}
                             {/*                onChange={(value) => setData('payhere_merchant_id', value)}*/}
-                            {/*                placeholder={t('Merchant ID')}*/}
+                            {/*                placeholder={translate('Merchant ID')}*/}
                             {/*                error={errors.payhere_merchant_id}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="payhere_merchant_secret"*/}
-                            {/*                label={t('Merchant Secret')}*/}
+                            {/*                label={translate('Merchant Secret')}*/}
                             {/*                value={data.payhere_merchant_secret}*/}
                             {/*                onChange={(value) => setData('payhere_merchant_secret', value)}*/}
-                            {/*                placeholder={t('Merchant Secret')}*/}
+                            {/*                placeholder={translate('Merchant Secret')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.payhere_merchant_secret}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="payhere_app_id"*/}
-                            {/*                label={t('App ID')}*/}
+                            {/*                label={translate('App ID')}*/}
                             {/*                value={data.payhere_app_id}*/}
                             {/*                onChange={(value) => setData('payhere_app_id', value)}*/}
-                            {/*                placeholder={t('App ID')}*/}
+                            {/*                placeholder={translate('App ID')}*/}
                             {/*                error={errors.payhere_app_id}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="payhere_app_secret"*/}
-                            {/*                label={t('App Secret')}*/}
+                            {/*                label={translate('App Secret')}*/}
                             {/*                value={data.payhere_app_secret}*/}
                             {/*                onChange={(value) => setData('payhere_app_secret', value)}*/}
-                            {/*                placeholder={t('App Secret')}*/}
+                            {/*                placeholder={translate('App Secret')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.payhere_app_secret}*/}
                             {/*            />*/}
@@ -1318,12 +1318,12 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* FedaPay *!/*/}
                             {/*{shouldShowMethod('fedapay') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t('FedaPay')}*/}
+                            {/*        title={translate('FedaPay')}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_fedapay_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_fedapay_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.FEDAPAY]}*/}
-                            {/*        helpText={t('Get your FedaPay API credentials from your')}*/}
+                            {/*        helpText={translate('Get your FedaPay API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <PaymentModeSelector*/}
                             {/*            value={data.fedapay_mode as 'sandbox' | 'live'}*/}
@@ -1333,18 +1333,18 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="fedapay_public_key"*/}
-                            {/*                label={t('Public Key')}*/}
+                            {/*                label={translate('Public Key')}*/}
                             {/*                value={data.fedapay_public_key}*/}
                             {/*                onChange={(value) => setData('fedapay_public_key', value)}*/}
-                            {/*                placeholder={t('Public Key')}*/}
+                            {/*                placeholder={translate('Public Key')}*/}
                             {/*                error={errors.fedapay_public_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="fedapay_secret_key"*/}
-                            {/*                label={t('Secret Key')}*/}
+                            {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.fedapay_secret_key}*/}
                             {/*                onChange={(value) => setData('fedapay_secret_key', value)}*/}
-                            {/*                placeholder={t('Secret Key')}*/}
+                            {/*                placeholder={translate('Secret Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.fedapay_secret_key}*/}
                             {/*            />*/}
@@ -1355,12 +1355,12 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* AuthorizeNet *!/*/}
                             {/*{shouldShowMethod('authorizenet') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t('AuthorizeNet')}*/}
+                            {/*        title={translate('AuthorizeNet')}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_authorizenet_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_authorizenet_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.AUTHORIZENET]}*/}
-                            {/*        helpText={t('Get your AuthorizeNet API credentials from your')}*/}
+                            {/*        helpText={translate('Get your AuthorizeNet API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <PaymentModeSelector*/}
                             {/*            value={data.authorizenet_mode as 'sandbox' | 'live'}*/}
@@ -1370,18 +1370,18 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="authorizenet_merchant_id"*/}
-                            {/*                label={t('Merchant ID')}*/}
+                            {/*                label={translate('Merchant ID')}*/}
                             {/*                value={data.authorizenet_merchant_id}*/}
                             {/*                onChange={(value) => setData('authorizenet_merchant_id', value)}*/}
-                            {/*                placeholder={t('Merchant ID')}*/}
+                            {/*                placeholder={translate('Merchant ID')}*/}
                             {/*                error={errors.authorizenet_merchant_id}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="authorizenet_transaction_key"*/}
-                            {/*                label={t('Transaction Key')}*/}
+                            {/*                label={translate('Transaction Key')}*/}
                             {/*                value={data.authorizenet_transaction_key}*/}
                             {/*                onChange={(value) => setData('authorizenet_transaction_key', value)}*/}
-                            {/*                placeholder={t('Transaction Key')}*/}
+                            {/*                placeholder={translate('Transaction Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.authorizenet_transaction_key}*/}
                             {/*            />*/}
@@ -1392,28 +1392,28 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* Khalti *!/*/}
                             {/*{shouldShowMethod('khalti') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t('Khalti')}*/}
+                            {/*        title={translate('Khalti')}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_khalti_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_khalti_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.KHALTI]}*/}
-                            {/*        helpText={t('Get your Khalti API credentials from your')}*/}
+                            {/*        helpText={translate('Get your Khalti API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="khalti_public_key"*/}
-                            {/*                label={t('Public Key')}*/}
+                            {/*                label={translate('Public Key')}*/}
                             {/*                value={data.khalti_public_key}*/}
                             {/*                onChange={(value) => setData('khalti_public_key', value)}*/}
-                            {/*                placeholder={t('Public Key')}*/}
+                            {/*                placeholder={translate('Public Key')}*/}
                             {/*                error={errors.khalti_public_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="khalti_secret_key"*/}
-                            {/*                label={t('Secret Key')}*/}
+                            {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.khalti_secret_key}*/}
                             {/*                onChange={(value) => setData('khalti_secret_key', value)}*/}
-                            {/*                placeholder={t('Secret Key')}*/}
+                            {/*                placeholder={translate('Secret Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.khalti_secret_key}*/}
                             {/*            />*/}
@@ -1424,37 +1424,37 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* Easebuzz *!/*/}
                             {/*{shouldShowMethod('easebuzz') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t('Easebuzz')}*/}
+                            {/*        title={translate('Easebuzz')}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_easebuzz_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_easebuzz_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.EASEBUZZ]}*/}
-                            {/*        helpText={t('Get your Easebuzz API credentials from your')}*/}
+                            {/*        helpText={translate('Get your Easebuzz API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="easebuzz_merchant_key"*/}
-                            {/*                label={t('Merchant Key')}*/}
+                            {/*                label={translate('Merchant Key')}*/}
                             {/*                value={data.easebuzz_merchant_key}*/}
                             {/*                onChange={(value) => setData('easebuzz_merchant_key', value)}*/}
-                            {/*                placeholder={t('Merchant Key')}*/}
+                            {/*                placeholder={translate('Merchant Key')}*/}
                             {/*                error={errors.easebuzz_merchant_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="easebuzz_salt_key"*/}
-                            {/*                label={t('Salt Key')}*/}
+                            {/*                label={translate('Salt Key')}*/}
                             {/*                value={data.easebuzz_salt_key}*/}
                             {/*                onChange={(value) => setData('easebuzz_salt_key', value)}*/}
-                            {/*                placeholder={t('Salt Key')}*/}
+                            {/*                placeholder={translate('Salt Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.easebuzz_salt_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="easebuzz_environment"*/}
-                            {/*                label={t('Environment')}*/}
+                            {/*                label={translate('Environment')}*/}
                             {/*                value={data.easebuzz_environment}*/}
                             {/*                onChange={(value) => setData('easebuzz_environment', value)}*/}
-                            {/*                placeholder={t('prod/test')}*/}
+                            {/*                placeholder={translate('prod/test')}*/}
                             {/*                error={errors.easebuzz_environment}*/}
                             {/*            />*/}
                             {/*        </div>*/}
@@ -1464,12 +1464,12 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* Ozow *!/*/}
                             {/*{shouldShowMethod('ozow') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t('Ozow')}*/}
+                            {/*        title={translate('Ozow')}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_ozow_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_ozow_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.OZOW]}*/}
-                            {/*        helpText={t('Get your Ozow API credentials from your')}*/}
+                            {/*        helpText={translate('Get your Ozow API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <PaymentModeSelector*/}
                             {/*            value={data.ozow_mode as 'sandbox' | 'live'}*/}
@@ -1479,27 +1479,27 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="ozow_site_key"*/}
-                            {/*                label={t('Site Key')}*/}
+                            {/*                label={translate('Site Key')}*/}
                             {/*                value={data.ozow_site_key}*/}
                             {/*                onChange={(value) => setData('ozow_site_key', value)}*/}
-                            {/*                placeholder={t('Site Key')}*/}
+                            {/*                placeholder={translate('Site Key')}*/}
                             {/*                error={errors.ozow_site_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="ozow_private_key"*/}
-                            {/*                label={t('Private Key')}*/}
+                            {/*                label={translate('Private Key')}*/}
                             {/*                value={data.ozow_private_key}*/}
                             {/*                onChange={(value) => setData('ozow_private_key', value)}*/}
-                            {/*                placeholder={t('Private Key')}*/}
+                            {/*                placeholder={translate('Private Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.ozow_private_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="ozow_api_key"*/}
-                            {/*                label={t('API Key')}*/}
+                            {/*                label={translate('API Key')}*/}
                             {/*                value={data.ozow_api_key}*/}
                             {/*                onChange={(value) => setData('ozow_api_key', value)}*/}
-                            {/*                placeholder={t('API Key')}*/}
+                            {/*                placeholder={translate('API Key')}*/}
                             {/*                error={errors.ozow_api_key}*/}
                             {/*            />*/}
                             {/*        </div>*/}
@@ -1509,12 +1509,12 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* Cashfree *!/*/}
                             {/*{shouldShowMethod('cashfree') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t('Cashfree')}*/}
+                            {/*        title={translate('Cashfree')}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_cashfree_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_cashfree_payment_mode_enabled', checked)}*/}
                             {/*        helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.CASHFREE]}*/}
-                            {/*        helpText={t('Get your Cashfree API credentials from your')}*/}
+                            {/*        helpText={translate('Get your Cashfree API credentials from your')}*/}
                             {/*    >*/}
                             {/*        <PaymentModeSelector*/}
                             {/*            value={data.cashfree_mode as 'sandbox' | 'live'}*/}
@@ -1524,18 +1524,18 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="cashfree_public_key"*/}
-                            {/*                label={t('Public Key')}*/}
+                            {/*                label={translate('Public Key')}*/}
                             {/*                value={data.cashfree_public_key}*/}
                             {/*                onChange={(value) => setData('cashfree_public_key', value)}*/}
-                            {/*                placeholder={t('Public Key')}*/}
+                            {/*                placeholder={translate('Public Key')}*/}
                             {/*                error={errors.cashfree_public_key}*/}
                             {/*            />*/}
                             {/*            <PaymentInputField*/}
                             {/*                id="cashfree_secret_key"*/}
-                            {/*                label={t('Secret Key')}*/}
+                            {/*                label={translate('Secret Key')}*/}
                             {/*                value={data.cashfree_secret_key}*/}
                             {/*                onChange={(value) => setData('cashfree_secret_key', value)}*/}
-                            {/*                placeholder={t('Secret Key')}*/}
+                            {/*                placeholder={translate('Secret Key')}*/}
                             {/*                isSecret*/}
                             {/*                error={errors.cashfree_secret_key}*/}
                             {/*            />*/}
@@ -1549,7 +1549,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                     <Alert>
                         <AlertCircle className="h-4 w-4" />
                         <AlertDescription>
-                            <strong>{t('Important:')}</strong>{' '}
+                            <strong>{translate('Important:')}</strong>{' '}
                             {t(
                                 'These payment settings will be used for all subscription plan payments. Make sure to test your configuration before going live.',
                             )}

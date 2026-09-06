@@ -28,7 +28,7 @@ const sidebarNavItems: NavItem[] = [
 ];
 
 export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerifyEmail?: boolean; status?: string }) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, globalSettings } = usePage<SharedData>().props as any;
     const [activeSection, setActiveSection] = useState('profile');
 
@@ -63,7 +63,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
         e.preventDefault();
 
         if (!globalSettings?.is_demo) {
-            toast.loading(t('Updating profile...'));
+            toast.loading(translate('Updating profile...'));
         }
         setProfileProcessing(true);
 
@@ -97,7 +97,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                 if (typeof errors === 'string') {
                     toast.error(t(errors));
                 } else {
-                    toast.error(t('Failed to update profile: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to update profile: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
             },
         });
@@ -121,7 +121,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
         e.preventDefault();
 
         if (!globalSettings?.is_demo) {
-            toast.loading(t('Updating password...'));
+            toast.loading(translate('Updating password...'));
         }
         setPasswordProcessing(true);
 
@@ -157,7 +157,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                 if (typeof errors === 'string') {
                     toast.error(t(errors));
                 } else {
-                    toast.error(t('Failed to update password: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to update password: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
             },
         });
@@ -209,7 +209,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
     };
 
     return (
-        <PageTemplate title={t('Profile Settings')} url="/profile">
+        <PageTemplate title={translate('Profile Settings')} url="/profile">
             <style>{`
             main {
             max-width: 100vw;
@@ -252,7 +252,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                     <section id="profile" ref={profileRef} className="mb-16">
                         <Card className="shadow-sm">
                             <CardHeader>
-                                <CardTitle className="text-lg font-semibold">{t('Profile Information')}</CardTitle>
+                                <CardTitle className="text-lg font-semibold">{translate('Profile Information')}</CardTitle>
                                 <CardDescription>{t("Update your account's profile information and email address")}</CardDescription>
                             </CardHeader>
                             <CardContent>
@@ -277,17 +277,17 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                                                 className="border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex cursor-pointer items-center rounded-md border px-4 py-2 text-sm font-medium transition-colors"
                                             >
                                                 <Camera className="mr-2 h-4 w-4" />
-                                                {t('Change Avatar')}
+                                                {translate('Change Avatar')}
                                             </Label>
                                             <Input id="avatar" type="file" accept="image/*" onChange={handleAvatarChange} className="hidden" />
-                                            <p className="text-muted-foreground text-xs">{t('JPG, PNG, GIF up to 2MB')}</p>
+                                            <p className="text-muted-foreground text-xs">{translate('JPG, PNG, GIF up to 2MB')}</p>
                                         </div>
                                     </div>
                                     <InputError className="mt-2" message={profileErrors.avatar} />
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="name" required>
-                                            {t('Name')}
+                                            {translate('Name')}
                                         </Label>
                                         <Input
                                             id="name"
@@ -295,14 +295,14 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                                             value={profileData.name}
                                             onChange={(e) => setProfileData((prev) => ({ ...prev, name: e.target.value }))}
                                             autoComplete="name"
-                                            placeholder={t('Full name')}
+                                            placeholder={translate('Full name')}
                                         />
                                         <InputError className="mt-2" message={profileErrors.name} />
                                     </div>
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="email" required>
-                                            {t('Email address')}
+                                            {translate('Email address')}
                                         </Label>
                                         <Input
                                             id="email"
@@ -311,7 +311,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                                             value={profileData.email}
                                             onChange={(e) => setProfileData((prev) => ({ ...prev, email: e.target.value }))}
                                             autoComplete="username"
-                                            placeholder={t('Email address')}
+                                            placeholder={translate('Email address')}
                                         />
                                         <InputError className="mt-2" message={profileErrors.email} />
                                     </div>
@@ -319,26 +319,26 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                                     {mustVerifyEmail && auth?.user?.email_verified_at === null && (
                                         <div>
                                             <p className="text-muted-foreground -mt-4 text-sm">
-                                                {t('Your email address is unverified.')}{' '}
+                                                {translate('Your email address is unverified.')}{' '}
                                                 <button
                                                     type="button"
                                                     onClick={() => route('verification.send')}
                                                     className="text-foreground cursor-pointer underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current dark:decoration-neutral-500"
                                                 >
-                                                    {t('Click here to resend the verification email.')}
+                                                    {translate('Click here to resend the verification email.')}
                                                 </button>
                                             </p>
 
                                             {status === 'verification-link-sent' && (
                                                 <div className="mt-2 text-sm font-medium text-green-600">
-                                                    {t('A new verification link has been sent to your email address.')}
+                                                    {translate('A new verification link has been sent to your email address.')}
                                                 </div>
                                             )}
                                         </div>
                                     )}
 
                                     <div className="flex items-center gap-4">
-                                        <Button disabled={profileProcessing && !globalSettings?.is_demo}>{t('Save')}</Button>
+                                        <Button disabled={profileProcessing && !globalSettings?.is_demo}>{translate('Save')}</Button>
                                     </div>
                                 </form>
                             </CardContent>
@@ -349,14 +349,14 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                     <section id="password" ref={passwordRef} className="mb-16">
                         <Card className="shadow-sm">
                             <CardHeader>
-                                <CardTitle className="text-lg font-semibold">{t('Update Password')}</CardTitle>
-                                <CardDescription>{t('Ensure your account is using a long, random password to stay secure')}</CardDescription>
+                                <CardTitle className="text-lg font-semibold">{translate('Update Password')}</CardTitle>
+                                <CardDescription>{translate('Ensure your account is using a long, random password to stay secure')}</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <form id="password-form" onSubmit={updatePassword} className="space-y-6">
                                     <div className="grid gap-2">
                                         <Label htmlFor="current_password" required>
-                                            {t('Current password')}
+                                            {translate('Current password')}
                                         </Label>
                                         <Input
                                             id="current_password"
@@ -373,7 +373,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="password" required>
-                                            {t('New password')}
+                                            {translate('New password')}
                                         </Label>
                                         <Input
                                             id="password"
@@ -390,7 +390,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="password_confirmation" required>
-                                            {t('Confirm password')}
+                                            {translate('Confirm password')}
                                         </Label>
                                         <Input
                                             id="password_confirmation"
@@ -405,7 +405,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                                     </div>
 
                                     <div className="flex items-center gap-4">
-                                        <Button disabled={passwordProcessing && !globalSettings?.is_demo}>{t('Save')}</Button>
+                                        <Button disabled={passwordProcessing && !globalSettings?.is_demo}>{translate('Save')}</Button>
                                     </div>
                                 </form>
                             </CardContent>

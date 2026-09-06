@@ -16,7 +16,7 @@ interface SeoSettingsProps {
 }
 
 export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const pageProps = usePage().props;
 
     const defaultSettings = {
@@ -87,17 +87,17 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
         setIsSaving(true);
         if (!seoSettings.metaKeywords.trim()) {
             setIsSaving(false);
-            toast.error(t('Meta Keywords is required'));
+            toast.error(translate('Meta Keywords is required'));
             return;
         }
         if (!seoSettings.metaDescription.trim()) {
             setIsSaving(false);
-            toast.error(t('Meta Description is required'));
+            toast.error(translate('Meta Description is required'));
             return;
         }
         if (!seoSettings.metaImage.trim() && !imageFile) {
             setIsSaving(false);
-            toast.error(t('Meta Image is required'));
+            toast.error(translate('Meta Image is required'));
             return;
         }
         router.post(
@@ -123,7 +123,7 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
                 },
                 onError: (errors) => {
                     setIsSaving(false);
-                    toast.error(errors.error || Object.values(errors).join(', ') || t('Failed to update SEO settings'));
+                    toast.error(errors.error || Object.values(errors).join(', ') || translate('Failed to update SEO settings'));
                 },
             },
         );
@@ -134,7 +134,7 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
 
     return (
         <SettingsSection
-            title={t('SEO Settings')}
+            title={translate('SEO Settings')}
             description={t("Configure SEO settings to improve your website's search engine visibility")}
             action={
                 <Button
@@ -145,7 +145,7 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
                     disabled={isSaving}
                 >
                     <Save className="h-4 w-4 max-[1300px]:mr-0" />
-                    <span className="max-[1300px]:hidden">{isSaving ? t('Saving...') : t('Save Changes')}</span>
+                    <span className="max-[1300px]:hidden">{isSaving ? translate('Saving...') : translate('Save Changes')}</span>
                 </Button>
             }
         >
@@ -159,31 +159,31 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
                                 {/* Meta Keywords */}
                                 <div className="space-y-1.5">
                                     <Label htmlFor="metaKeywords">
-                                        {t('Meta Keywords')} <span className="text-red-500">*</span>
+                                        {translate('Meta Keywords')} <span className="text-red-500">*</span>
                                     </Label>
                                     <Input
                                         id="metaKeywords"
                                         type="text"
                                         value={seoSettings.metaKeywords}
                                         onChange={(e) => handleSeoSettingsChange('metaKeywords', e.target.value)}
-                                        placeholder={t('Enter keywords separated by commas')}
+                                        placeholder={translate('Enter keywords separated by commas')}
                                     />
                                     <p className="text-muted-foreground text-xs">
-                                        {t('Use relevant keywords that describe your content. Separate multiple keywords with commas.')}
+                                        {translate('Use relevant keywords that describe your content. Separate multiple keywords with commas.')}
                                     </p>
                                 </div>
 
                                 {/* Meta Description */}
                                 <div className="space-y-1.5">
                                     <Label htmlFor="metaDescription">
-                                        {t('Meta Description')} <span className="text-red-500">*</span>
+                                        {translate('Meta Description')} <span className="text-red-500">*</span>
                                     </Label>
                                     <div className="relative">
                                         <Textarea
                                             id="metaDescription"
                                             value={seoSettings.metaDescription}
                                             onChange={(e) => handleSeoSettingsChange('metaDescription', e.target.value)}
-                                            placeholder={t('Enter a brief description for search engines (max 160 characters)')}
+                                            placeholder={translate('Enter a brief description for search engines (max 160 characters)')}
                                             maxLength={160}
                                             rows={4}
                                             className="pb-6"
@@ -202,7 +202,7 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
                                 {/* Meta Image */}
                                 <div className="space-y-1.5">
                                     <Label htmlFor="metaImageUpload">
-                                        {t('Meta Image')} <span className="text-red-500">*</span>
+                                        {translate('Meta Image')} <span className="text-red-500">*</span>
                                     </Label>
                                     <div className="border-input flex h-10 w-full items-center overflow-hidden rounded-md border bg-transparent text-sm">
                                         <label
@@ -210,7 +210,7 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
                                             className="flex flex-1 cursor-pointer items-center gap-2 px-3 py-2 select-none"
                                         >
                                             <Upload className="text-muted-foreground h-4 w-4 shrink-0" />
-                                            <span className="text-muted-foreground">{hasImage ? t('Change Image') : t('Upload Image')}</span>
+                                            <span className="text-muted-foreground">{hasImage ? translate('Change Image') : translate('Upload Image')}</span>
                                         </label>
                                         <Input id="metaImageUpload" type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
                                         {hasImage && (
@@ -228,7 +228,7 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
                                         )}
                                     </div>
                                     <p className="text-muted-foreground text-xs">
-                                        {t('Recommended size: 1200x630px for optimal social media sharing.')}
+                                        {translate('Recommended size: 1200x630px for optimal social media sharing.')}
                                     </p>
                                 </div>
                             </div>
@@ -239,14 +239,14 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
                                     {/* Panel header */}
                                     <div className="flex items-center gap-2 text-sm font-semibold">
                                         <Search className="text-muted-foreground h-4 w-4" />
-                                        <span>{t('SEO Preview')}</span>
+                                        <span>{translate('SEO Preview')}</span>
                                     </div>
 
                                     {/* Social Media Preview card */}
                                     <div className="overflow-hidden rounded-lg border">
                                         {/* Card title */}
                                         <div className="px-3 pt-3 pb-2">
-                                            <p className="text-muted-foreground text-xs font-semibold">{t('Social Media Preview')}</p>
+                                            <p className="text-muted-foreground text-xs font-semibold">{translate('Social Media Preview')}</p>
                                         </div>
 
                                         {/* Image row: gray side bars + white image area in center */}
@@ -279,7 +279,7 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
                                         <div className="px-3 py-3">
                                             <p className="text-muted-foreground line-clamp-3 text-xs leading-relaxed">
                                                 {seoSettings.metaDescription || (
-                                                    <span className="italic">{t('Your meta description will appear here…')}</span>
+                                                    <span className="italic">{translate('Your meta description will appear here…')}</span>
                                                 )}
                                             </p>
                                         </div>
@@ -289,17 +289,17 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
                                     <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 dark:border-blue-800 dark:bg-blue-950/20">
                                         <div className="mb-2 flex items-center gap-1.5">
                                             <Lightbulb className="h-3.5 w-3.5 text-blue-500" />
-                                            <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">{t('SEO Tips')}</span>
+                                            <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">{translate('SEO Tips')}</span>
                                         </div>
                                         <ul className="space-y-1 text-xs">
                                             <li className="text-blue-600 dark:text-blue-400">
-                                                <span className="font-medium">{t('Keywords:')}</span> <span>{t('Use 3-5 relevant keywords')}</span>
+                                                <span className="font-medium">{translate('Keywords:')}</span> <span>{translate('Use 3-5 relevant keywords')}</span>
                                             </li>
                                             <li className="text-blue-600 dark:text-blue-400">
-                                                <span className="font-medium">{t('Description:')}</span> <span>{t('150-160 characters')}</span>
+                                                <span className="font-medium">{translate('Description:')}</span> <span>{translate('150-160 characters')}</span>
                                             </li>
                                             <li className="text-blue-600 dark:text-blue-400">
-                                                <span className="font-medium">{t('Image:')}</span> <span>{t('1200x630px works well')}</span>
+                                                <span className="font-medium">{translate('Image:')}</span> <span>{translate('1200x630px works well')}</span>
                                             </li>
                                         </ul>
                                     </div>

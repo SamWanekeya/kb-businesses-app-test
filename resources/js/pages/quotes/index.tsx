@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Quotes() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
     const {
         auth,
@@ -124,7 +124,7 @@ export default function Quotes() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting quote...'));
+        toast.loading(translate('Deleting quote...'));
         router.delete(route('quotes.destroy', currentItem.id), {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);
@@ -132,7 +132,7 @@ export default function Quotes() {
             },
             onError: (errors) => {
                 toast.dismiss();
-                toast.error(t('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
     };
@@ -144,10 +144,10 @@ export default function Quotes() {
         navigator.clipboard
             .writeText(quoteUrl)
             .then(() => {
-                toast.success(t('Quote link copied to clipboard!'));
+                toast.success(translate('Quote link copied to clipboard!'));
             })
             .catch(() => {
-                toast.error(t('Failed to copy quote link'));
+                toast.error(translate('Failed to copy quote link'));
             });
     };
 
@@ -159,7 +159,7 @@ export default function Quotes() {
             },
             onError: (errors) => {
                 toast.dismiss();
-                toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
     };
@@ -172,7 +172,7 @@ export default function Quotes() {
 
     if (useHasPermission('export-quotes')) {
         pageActions.push({
-            label: t('Export'),
+            label: translate('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[380px]:mr-2" />,
             variant: 'outline',
             onClick: () => {
@@ -180,30 +180,30 @@ export default function Quotes() {
             },
             className: 'h-8 w-8 min-[380px]:h-9 min-[380px]:w-auto px-0 min-[380px]:px-4',
             labelClassName: 'hidden min-[380px]:inline',
-            tooltip: t('Export'),
+            tooltip: translate('Export'),
             tooltipClassName: 'min-[380px]:hidden',
         });
     }
 
     if (useHasPermission('create-quotes')) {
         pageActions.push({
-            label: t('Add Quote'),
+            label: translate('Add Quote'),
             icon: <Plus className="mr-0 h-4 w-4 min-[380px]:mr-2" />,
             variant: 'default',
             onClick: () => router.visit(route('quotes.create')),
             className: 'h-8 w-8 min-[380px]:h-9 min-[380px]:w-auto px-0 min-[380px]:px-4',
             labelClassName: 'hidden min-[380px]:inline',
-            tooltip: t('Add Quote'),
+            tooltip: translate('Add Quote'),
             tooltipClassName: 'min-[380px]:hidden',
         });
     }
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Quotes') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Quotes') }];
 
     const columns = [
         {
             key: 'quote_number',
-            label: t('Quote Number'),
+            label: translate('Quote Number'),
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: string, item: any) =>
@@ -225,13 +225,13 @@ export default function Quotes() {
         },
         {
             key: 'name',
-            label: t('Name'),
+            label: translate('Name'),
             sortable: true,
             render: (value: string) => <span className="font-medium whitespace-nowrap">{value || '-'}</span>,
         },
         {
             key: 'assigned_user',
-            label: t('Assigned To'),
+            label: translate('Assigned To'),
             className: 'whitespace-nowrap',
             render: (value: any) =>
                 value ? (
@@ -246,12 +246,12 @@ export default function Quotes() {
                         </div>
                     </div>
                 ) : (
-                    <span className="whitespace-nowrap">{t('Unassigned')}</span>
+                    <span className="whitespace-nowrap">{translate('Unassigned')}</span>
                 ),
         },
         {
             key: 'total_amount',
-            label: t('Amount'),
+            label: translate('Amount'),
             render: (value: any) => (
                 <span className="font-mono whitespace-nowrap">
                     {window.appSettings?.formatCurrency(Number(value || 0)) || `$${Number(value || 0).toFixed(2)}`}
@@ -260,7 +260,7 @@ export default function Quotes() {
         },
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             className: 'whitespace-nowrap',
             render: (value: string) => {
                 const statusColors: Record<string, string> = {
@@ -274,7 +274,7 @@ export default function Quotes() {
                     <span
                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${statusColors[value] || statusColors.draft}`}
                     >
-                        {t(value?.charAt(0).toUpperCase() + value?.slice(1)) || t('Draft')}
+                        {t(value?.charAt(0).toUpperCase() + value?.slice(1)) || translate('Draft')}
                     </span>
                 );
             },
@@ -282,7 +282,7 @@ export default function Quotes() {
 
         // {
         //     key: 'created_at',
-        //     label: t('Date'),
+        //     label: translate('Date'),
         //     sortable: true,
         //     className: 'whitespace-nowrap',
         //     type: 'date'
@@ -290,32 +290,32 @@ export default function Quotes() {
     ];
 
     const actions = [
-        { label: t('Copy Quote Link'), icon: 'Copy', action: 'copy-link', className: 'text-purple-500', requiredPermission: 'view-quotes' },
+        { label: translate('Copy Quote Link'), icon: 'Copy', action: 'copy-link', className: 'text-purple-500', requiredPermission: 'view-quotes' },
         {
-            label: t('Change Status'),
+            label: translate('Change Status'),
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
             requiredPermission: 'toggle-status-quotes',
         },
-        { label: t('View'), icon: 'Eye', action: 'view', className: 'text-blue-500', requiredPermission: 'view-quotes' },
-        { label: t('Edit'), icon: 'Edit', action: 'edit', className: 'text-amber-500', requiredPermission: 'edit-quotes' },
-        { label: t('Delete'), icon: 'Trash2', action: 'delete', className: 'text-grey-500', requiredPermission: 'delete-quotes' },
+        { label: translate('View'), icon: 'Eye', action: 'view', className: 'text-blue-500', requiredPermission: 'view-quotes' },
+        { label: translate('Edit'), icon: 'Edit', action: 'edit', className: 'text-amber-500', requiredPermission: 'edit-quotes' },
+        { label: translate('Delete'), icon: 'Trash2', action: 'delete', className: 'text-grey-500', requiredPermission: 'delete-quotes' },
     ];
 
     const statusOptions = [
-        { value: 'all', label: t('All Statuses') },
-        { value: 'draft', label: t('Draft') },
-        { value: 'sent', label: t('Sent') },
-        { value: 'accepted', label: t('Accepted') },
-        { value: 'rejected', label: t('Rejected') },
-        { value: 'expired', label: t('Expired') },
+        { value: 'all', label: translate('All Statuses') },
+        { value: 'draft', label: translate('Draft') },
+        { value: 'sent', label: translate('Sent') },
+        { value: 'accepted', label: translate('Accepted') },
+        { value: 'rejected', label: translate('Rejected') },
+        { value: 'expired', label: translate('Expired') },
     ];
 
     return (
         <PageTemplate
-            title={t('Quotes')}
-            description={t('Manage your quotes.')}
+            title={translate('Quotes')}
+            description={translate('Manage your quotes.')}
             url="/quotes"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -329,7 +329,7 @@ export default function Quotes() {
                     filters={[
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
@@ -337,37 +337,37 @@ export default function Quotes() {
                         },
                         {
                             name: 'account_id',
-                            label: t('Account'),
+                            label: translate('Account'),
                             type: 'select',
                             searchable: true,
                             value: selectedAccount,
                             onChange: setSelectedAccount,
                             options: [
-                                { value: 'all', label: t('All Accounts') },
+                                { value: 'all', label: translate('All Accounts') },
                                 ...(allAccounts?.map((acc: any) => ({ value: acc.id.toString(), label: acc.name })) || []),
                             ],
                         },
                         {
                             name: 'opportunity_id',
-                            label: t('Opportunity'),
+                            label: translate('Opportunity'),
                             type: 'select',
                             searchable: true,
                             value: selectedOpportunity,
                             onChange: setSelectedOpportunity,
                             options: [
-                                { value: 'all', label: t('All Opportunities') },
+                                { value: 'all', label: translate('All Opportunities') },
                                 ...(allOpportunities?.map((opp: any) => ({ value: opp.id.toString(), label: opp.name })) || []),
                             ],
                         },
                         {
                             name: 'assigned_to',
-                            label: t('Assigned To'),
+                            label: translate('Assigned To'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: t('All Users') },
+                                { value: 'all', label: translate('All Users') },
                                 ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name })),
                             ],
                         },
@@ -398,7 +398,7 @@ export default function Quotes() {
                     to={quotes?.to || 0}
                     total={quotes?.total || 0}
                     links={quotes?.links}
-                    entityName={t('quotes')}
+                    entityName={translate('quotes')}
                     onPageChange={(url) => router.get(url)}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
@@ -429,22 +429,22 @@ export default function Quotes() {
                     fields: [
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             required: true,
                             options: [
-                                { value: 'draft', label: t('Draft') },
-                                { value: 'sent', label: t('Sent') },
-                                { value: 'accepted', label: t('Accepted') },
-                                { value: 'rejected', label: t('Rejected') },
-                                { value: 'expired', label: t('Expired') },
+                                { value: 'draft', label: translate('Draft') },
+                                { value: 'sent', label: translate('Sent') },
+                                { value: 'accepted', label: translate('Accepted') },
+                                { value: 'rejected', label: translate('Rejected') },
+                                { value: 'expired', label: translate('Expired') },
                             ],
                         },
                     ],
                     modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
-                title={t('Change Quote Status')}
+                title={translate('Change Quote Status')}
                 mode="edit"
             />
 
@@ -453,7 +453,7 @@ export default function Quotes() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={t('quote')}
+                entityName={translate('quote')}
             />
         </PageTemplate>
     );

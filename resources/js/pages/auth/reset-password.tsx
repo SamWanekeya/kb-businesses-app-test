@@ -24,7 +24,7 @@ type ResetPasswordForm = {
 };
 
 export default function ResetPassword({ token, email }: ResetPasswordProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { themeColor, customColor } = useBrand();
     const primaryColor = themeColor === 'custom' ? customColor : THEME_COLORS[themeColor as keyof typeof THEME_COLORS];
     const { data, setData, post, processing, errors, reset } = useForm<Required<ResetPasswordForm>>({
@@ -37,21 +37,21 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(route('password.store'), {
-            onFinish: () => reset('password', 'password_confirmation'),
+            onFinish: () => resetranslate('password', 'password_confirmation'),
         });
     };
 
     return (
         <AuthLayout
-            title={t('Reset your password')}
-            description={t('Please enter your new password below')}
+            title={translate('Reset your password')}
+            description={translate('Please enter your new password below')}
             icon={<Lock className="h-7 w-7" style={{ color: primaryColor }} />}
         >
             <form onSubmit={submit} className="space-y-5">
                 <div className="space-y-4">
                     <div className="relative">
                         <Label htmlFor="email" className="mb-2 block font-medium text-gray-700 dark:text-gray-300" required>
-                            {t('Email')}
+                            {translate('Email')}
                         </Label>
                         <div className="relative">
                             <Input
@@ -68,7 +68,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
 
                     <div className="relative">
                         <Label htmlFor="password" className="mb-2 block font-medium text-gray-700 dark:text-gray-300" required>
-                            {t('Password')}
+                            {translate('Password')}
                         </Label>
                         <div className="relative">
                             <Input
@@ -90,7 +90,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
 
                     <div className="relative">
                         <Label htmlFor="password_confirmation" className="mb-2 block font-medium text-gray-700 dark:text-gray-300" required>
-                            {t('Confirm password')}
+                            {translate('Confirm password')}
                         </Label>
                         <div className="relative">
                             <Input
@@ -116,7 +116,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                     className="w-full transform rounded-md py-2.5 text-sm font-medium tracking-wide text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg"
                     style={{ backgroundColor: primaryColor }}
                 >
-                    {t('Reset Password')}
+                    {translate('Reset Password')}
                 </AuthButton>
             </form>
         </AuthLayout>

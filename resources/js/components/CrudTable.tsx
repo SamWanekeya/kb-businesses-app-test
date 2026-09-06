@@ -43,7 +43,7 @@ export function CrudTable({
     permissions,
     entityPermissions,
 }: CrudTableProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const renderSortIcon = (column: TableColumn) => {
         if (!column.sortable) return null;
 
@@ -175,7 +175,7 @@ export function CrudTable({
 
             case 'image':
                 if (!value) {
-                    return <div className="text-center text-gray-400">{t('No image')}</div>;
+                    return <div className="text-center text-gray-400">{translate('No image')}</div>;
                 }
                 return (
                     <div className="flex justify-center">
@@ -246,7 +246,7 @@ export function CrudTable({
                                 </div>
                             </TableHead>
                         ))}
-                        {hasAnyActionPermission && <TableHead className="w-24 py-2.5 text-center font-semibold">{t('Actions')}</TableHead>}
+                        {hasAnyActionPermission && <TableHead className="w-24 py-2.5 text-center font-semibold">{translate('Actions')}</TableHead>}
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -268,7 +268,7 @@ export function CrudTable({
                                 colSpan={columns.length + (hasAnyActionPermission ? 2 : 1)}
                                 className="text-muted-foreground h-24 text-center dark:text-gray-400"
                             >
-                                {t('No results found.')}
+                                {translate('No results found.')}
                             </TableCell>
                         </TableRow>
                     )}

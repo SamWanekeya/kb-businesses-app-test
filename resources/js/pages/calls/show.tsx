@@ -11,15 +11,15 @@ import { ArrowLeft, Building2, Calendar, Eye, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function CallShow() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
     const { call } = usePage().props;
     const permissions = (usePage().props as any).auth?.permissions;
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Calls'), href: route('calls.index') },
-        { title: t('View Call') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Calls'), href: route('calls.index') },
+        { title: translate('View Call') },
     ];
 
     const formatDateTime = (date: string, time: string) => {
@@ -30,12 +30,12 @@ export default function CallShow() {
     return (
         <PageTemplate
             title={call.title}
-            description={t('View call details and related information')}
+            description={translate('View call details and related information')}
             url={`/calls/${call.id}`}
             breadcrumbs={breadcrumbs}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => window.history.back(),
@@ -49,14 +49,14 @@ export default function CallShow() {
                     {/* Call Details */}
                     <Card>
                         <div className="border-b px-6 py-4">
-                            <h2 className="text-lg font-semibold">{t('Call Details')}</h2>
+                            <h2 className="text-lg font-semibold">{translate('Call Details')}</h2>
                         </div>
                         <div className="p-6">
                             <div className="space-y-4">
                                 <div className="flex items-start gap-3">
                                     <Calendar className="mt-0.5 h-5 w-5 text-gray-500" />
                                     <div>
-                                        <p className="font-medium">{t('Date & Time')}</p>
+                                        <p className="font-medium">{translate('Date & Time')}</p>
                                         <p className="text-muted-foreground text-sm">
                                             {window.appSettings?.formatDateTime(call.start_date, false) ||
                                                 new Date(call.start_date).toLocaleDateString()}{' '}
@@ -69,13 +69,13 @@ export default function CallShow() {
 
                                 {call.description && (
                                     <div>
-                                        <p className="mb-2 font-medium">{t('Description')}</p>
+                                        <p className="mb-2 font-medium">{translate('Description')}</p>
                                         <p className="text-muted-foreground text-sm whitespace-pre-wrap">{call.description}</p>
                                     </div>
                                 )}
 
                                 <div className="flex items-center gap-2">
-                                    <span className="font-medium">{t('Status')}:</span>
+                                    <span className="font-medium">{translate('Status')}:</span>
                                     <span
                                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
                                             call.status === 'planned'
@@ -88,11 +88,11 @@ export default function CallShow() {
                                         }`}
                                     >
                                         {call.status === 'planned'
-                                            ? t('Planned')
+                                            ? translate('Planned')
                                             : call.status === 'held'
-                                              ? t('Held')
+                                              ? translate('Held')
                                               : call.status === 'not_held'
-                                                ? t('Not Held')
+                                                ? translate('Not Held')
                                                 : call.status}
                                     </span>
                                 </div>
@@ -105,7 +105,7 @@ export default function CallShow() {
                         <Card>
                             <div className="flex items-center gap-2 border-b px-6 py-4">
                                 <Users className="h-5 w-5" />
-                                <h2 className="text-lg font-semibold">{t('Attendees')}</h2>
+                                <h2 className="text-lg font-semibold">{translate('Attendees')}</h2>
                             </div>
                             <div className="space-y-3 p-6">
                                 {call.attendees.map((attendee: any, index: number) => (
@@ -128,7 +128,7 @@ export default function CallShow() {
                                             <UserInitials name={attendee.attendee?.name} />
                                         )}
                                         <div>
-                                            <p className="font-medium">{attendee.attendee?.name || t('Unknown')}</p>
+                                            <p className="font-medium">{attendee.attendee?.name || translate('Unknown')}</p>
                                             <p className="text-muted-foreground text-sm capitalize">
                                                 {t(attendee.attendee_type)} {attendee.attendee?.email && `• ${attendee.attendee.email}`}
                                             </p>
@@ -145,11 +145,11 @@ export default function CallShow() {
                     {/* Call Info */}
                     <Card>
                         <div className="border-b px-6 py-4">
-                            <h3 className="font-semibold">{t('Call Information')}</h3>
+                            <h3 className="font-semibold">{translate('Call Information')}</h3>
                         </div>
                         <div className="space-y-3 p-6">
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{t('Created By')}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{translate('Created By')}</p>
                                 <div className="mt-1.5 flex items-center gap-2">
                                     {call.creator ? (
                                         <>
@@ -165,14 +165,14 @@ export default function CallShow() {
                                             </div>
                                         </>
                                     ) : (
-                                        <p className="text-muted-foreground text-sm">{t('Unknown')}</p>
+                                        <p className="text-muted-foreground text-sm">{translate('Unknown')}</p>
                                     )}
                                 </div>
                             </div>
 
                             {call.assigned_user && (
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{t('Assigned To')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">{translate('Assigned To')}</p>
                                     <div className="mt-1.5 flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
                                             <AvatarImage src={call.assigned_user.avatar} alt={call.assigned_user.name} />
@@ -191,7 +191,7 @@ export default function CallShow() {
                             )}
 
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{t('Created At')}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{translate('Created At')}</p>
                                 <div className="mt-1 flex items-center gap-1.5">
                                     <Calendar className="h-3.5 w-3.5 text-gray-500" />
                                     <p className="text-sm">
@@ -202,7 +202,7 @@ export default function CallShow() {
 
                             {call.updated_at !== call.created_at && (
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{t('Last Updated')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">{translate('Last Updated')}</p>
                                     <div className="mt-1 flex items-center gap-1.5">
                                         <Calendar className="h-3.5 w-3.5 text-gray-500" />
                                         <p className="text-sm">
@@ -239,7 +239,7 @@ export default function CallShow() {
                                 <Card className="shadow-sm">
                                     <div className="flex items-center gap-2 border-b px-5 py-3.5">
                                         <Building2 className="text-muted-foreground h-4 w-4" />
-                                        <h3 className="text-base font-semibold">{t('Related To')}</h3>
+                                        <h3 className="text-base font-semibold">{translate('Related To')}</h3>
                                     </div>
                                     <div className="p-4">
                                         {useHasPermission(viewRoute) ? (
@@ -254,7 +254,7 @@ export default function CallShow() {
                                                             <Eye className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
                                                         </TooltipTrigger>
                                                         <TooltipContent side="top">
-                                                            <p>{t('View')}</p>
+                                                            <p>{translate('View')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>

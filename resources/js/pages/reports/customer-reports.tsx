@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 export default function CustomerReports() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { filters, summary, monthlyData, dailyData, topContacts, contactsByIndustry, recentInteractions } = usePage().props;
     const [chartView, setChartView] = useState<'daily' | 'monthly'>('monthly');
     const [primaryColor, setPrimaryColor] = useState('#4f46e5');
@@ -32,29 +32,29 @@ export default function CustomerReports() {
 
     const chartData = chartView === 'daily' ? dailyData : monthlyData;
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Reports'), href: '#' }, { title: t('Contact Reports') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Reports'), href: '#' }, { title: translate('Contact Reports') }];
 
     const summaryCards = [
         {
-            title: t('Total Contacts'),
+            title: translate('Total Contacts'),
             value: summary.total_contacts.toLocaleString(),
             icon: <Users className="h-6 w-6 text-blue-600" />,
             iconColor: 'bg-blue-100',
         },
         {
-            title: t('New Contacts'),
+            title: translate('New Contacts'),
             value: summary.new_contacts.toLocaleString(),
             icon: <UserPlus className="h-6 w-6 text-green-600" />,
             iconColor: 'bg-green-100',
         },
         {
-            title: t('Active Contacts'),
+            title: translate('Active Contacts'),
             value: summary.active_contacts.toLocaleString(),
             icon: <UserCheck className="h-6 w-6 text-purple-600" />,
             iconColor: 'bg-purple-100',
         },
         {
-            title: t('Contact Lifetime Value'),
+            title: translate('Contact Lifetime Value'),
             value: (
                 <span className="font-mono">
                     {window.appSettings?.formatCurrency(summary.contact_lifetime_value) || `$${summary.contact_lifetime_value.toLocaleString()}`}
@@ -69,8 +69,8 @@ export default function CustomerReports() {
 
     return (
         <PageTemplate
-            title={t('Contact Reports')}
-            description={t('View and analyze customer reports to track performance and engagement.')}
+            title={translate('Contact Reports')}
+            description={translate('View and analyze customer reports to track performance and engagement.')}
             url="/reports/customers"
             breadcrumbs={breadcrumbs}
             noPadding
@@ -82,16 +82,16 @@ export default function CustomerReports() {
                 <div className="col-span-full">
                     <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm dark:bg-slate-900">
                         <CardHeader className="flex shrink-0 flex-row items-center justify-between border-b px-5 pt-5 pb-3">
-                            <CardTitle className="text-base font-semibold">{t('Contact Growth')}</CardTitle>
+                            <CardTitle className="text-base font-semibold">{translate('Contact Growth')}</CardTitle>
                             <div className="flex gap-2">
                                 <div className="flex items-center gap-2">
                                     <Tabs value={chartView} onValueChange={(v) => setChartView(v as 'daily' | 'monthly')}>
                                         <TabsList className="h-7">
                                             <TabsTrigger value="daily" className="cursor-pointer px-3 py-1 text-xs">
-                                                {t('Daily')}
+                                                {translate('Daily')}
                                             </TabsTrigger>
                                             <TabsTrigger value="monthly" className="cursor-pointer px-3 py-1 text-xs">
-                                                {t('Monthly')}
+                                                {translate('Monthly')}
                                             </TabsTrigger>
                                         </TabsList>
                                     </Tabs>
@@ -131,7 +131,7 @@ export default function CustomerReports() {
                                         type="monotone"
                                         dataKey="count"
                                         stroke={primaryColor}
-                                        name={t('Contacts')}
+                                        name={translate('Contacts')}
                                         strokeWidth={2.5}
                                         dot={{ r: 3, fill: primaryColor, strokeWidth: 0 }}
                                         activeDot={{ r: 6 }}
@@ -148,7 +148,7 @@ export default function CustomerReports() {
                             className="flex shrink-0 flex-row items-center justify-between border-b px-5 pt-5 pb-3"
                             style={{ minHeight: '72px' }}
                         >
-                            <CardTitle className="text-base font-semibold">{t('Contacts by Industry')}</CardTitle>
+                            <CardTitle className="text-base font-semibold">{translate('Contacts by Industry')}</CardTitle>
                         </CardHeader>
                         <CardContent className="min-h-0 flex-1 p-4 pt-5" dir="ltr">
                             <ResponsiveContainer width="100%" height={300}>
@@ -162,7 +162,7 @@ export default function CustomerReports() {
                                             label={
                                                 isMobileOrTablet
                                                     ? ({ percent }) => (percent > 0.05 ? `${(percent * 100).toFixed(0)}%` : '')
-                                                    : ({ industry, percent }) => `${industry || t('Unknown')} ${(percent * 100).toFixed(0)}%`
+                                                    : ({ industry, percent }) => `${industry || translate('Unknown')} ${(percent * 100).toFixed(0)}%`
                                             }
 
                                             outerRadius={isMobileOrTablet ? 75 : 80}
@@ -173,19 +173,19 @@ export default function CustomerReports() {
                                                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                             ))}
                                         </Pie>
-                                        <Tooltip formatter={(value, name, props) => [value, props.payload.industry || t('Unknown')]} />
+                                        <Tooltip formatter={(value, name, props) => [value, props.payload.industry || translate('Unknown')]} />
                                         {isMobileOrTablet && (
                                             <Legend
                                                 verticalAlign="bottom"
                                                 iconType="circle"
                                                 wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }}
-                                                formatter={(value, entry: any) => entry.payload.industry || t('Unknown')}
+                                                formatter={(value, entry: any) => entry.payload.industry || translate('Unknown')}
                                             />
                                         )}
                                     </PieChart>
                                 ) : (
                                     <div className="text-muted-foreground flex h-full flex-col items-center justify-center gap-3">
-                                        <p>{t('No industry data available')}</p>
+                                        <p>{translate('No industry data available')}</p>
                                     </div>
                                 )}
                             </ResponsiveContainer>
@@ -197,8 +197,8 @@ export default function CustomerReports() {
                     <Card className="border-border flex h-full flex-col overflow-hidden border shadow-sm dark:bg-slate-900">
                         <div className="flex shrink-0 items-center justify-between border-b px-5" style={{ minHeight: '72px' }}>
                             <div>
-                                <h3 className="text-base font-semibold">{t('Recent Interactions')}</h3>
-                                <p className="text-muted-foreground mt-0.5 text-xs">{t('Latest calls and meetings')}</p>
+                                <h3 className="text-base font-semibold">{translate('Recent Interactions')}</h3>
+                                <p className="text-muted-foreground mt-0.5 text-xs">{translate('Latest calls and meetings')}</p>
                             </div>
                         </div>
                         <div className="custom-scrollbar max-h-[340px] overflow-y-auto p-0">
@@ -223,7 +223,7 @@ export default function CustomerReports() {
                                                         </time>
                                                     </div>
                                                     <div className="text-muted-foreground text-xs">
-                                                        {t('With:')} <span className="text-foreground font-medium">{interaction.contact_name}</span>
+                                                        {translate('With:')} <span className="text-foreground font-medium">{interaction.contact_name}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -233,7 +233,7 @@ export default function CustomerReports() {
                             ) : (
                                 <div className="flex h-full min-h-[200px] flex-col items-center justify-center gap-3">
                                     <MessageSquare className="text-muted-foreground/50 h-10 w-10" />
-                                    <p className="text-muted-foreground text-sm">{t('No recent interactions')}</p>
+                                    <p className="text-muted-foreground text-sm">{translate('No recent interactions')}</p>
                                 </div>
                             )}
                         </div>
@@ -243,8 +243,8 @@ export default function CustomerReports() {
 
             <Card className="border-border col-span-full overflow-hidden border shadow-sm dark:bg-slate-900">
                 <div className="border-b px-5 py-5">
-                    <h3 className="text-base font-semibold">{t('Top Contacts')}</h3>
-                    <p className="text-muted-foreground mt-0.5 text-xs">{t('Contacts by order volume and spending')}</p>
+                    <h3 className="text-base font-semibold">{translate('Top Contacts')}</h3>
+                    <p className="text-muted-foreground mt-0.5 text-xs">{translate('Contacts by order volume and spending')}</p>
                 </div>
                 <div className="p-0">
                     {topContacts && topContacts.length > 0 ? (
@@ -259,14 +259,14 @@ export default function CustomerReports() {
                                     </div>
                                     <div className="min-w-0 flex-1">
                                         <p className="truncate text-sm leading-tight font-semibold">{contact.name}</p>
-                                        <p className="text-muted-foreground mt-0.5 truncate text-xs">{contact.email || t('No Email')}</p>
+                                        <p className="text-muted-foreground mt-0.5 truncate text-xs">{contact.email || translate('No Email')}</p>
                                     </div>
                                     <div className="flex shrink-0 flex-col items-end gap-1">
                                         <span className={`text-foreground inline-flex items-center text-sm font-bold`}>
                                             {window.appSettings?.formatCurrency(contact.total_spent) || `$${contact.total_spent}`}
                                         </span>
                                         <span className="flex items-center gap-1 text-[11px] text-gray-500 dark:text-gray-400">
-                                            {contact.order_count} {t('Orders')}
+                                            {contact.order_count} {translate('Orders')}
                                         </span>
                                     </div>
                                 </div>
@@ -274,7 +274,7 @@ export default function CustomerReports() {
                         </div>
                     ) : (
                         <div className="flex h-40 flex-col items-center justify-center gap-3">
-                            <p className="text-muted-foreground text-sm">{t('No contacts found')}</p>
+                            <p className="text-muted-foreground text-sm">{translate('No contacts found')}</p>
                         </div>
                     )}
                 </div>

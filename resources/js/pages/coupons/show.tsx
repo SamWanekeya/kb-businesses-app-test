@@ -37,32 +37,32 @@ interface CouponData {
 }
 
 export default function CouponDetailsPage() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { coupon, usage_history } = usePage().props as { coupon: CouponData; usage_history: any };
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Coupons'), href: route('coupons.index') },
-        { title: t('Coupon Details') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Coupons'), href: route('coupons.index') },
+        { title: translate('Coupon Details') },
     ];
 
     const usageColumns = [
-        { key: 'user_name', label: t('User'), sortable: true },
-        { key: 'user_email', label: t('Email'), sortable: true },
-        { key: 'order_id', label: t('Order ID'), sortable: true },
+        { key: 'user_name', label: translate('User'), sortable: true },
+        { key: 'user_email', label: translate('Email'), sortable: true },
+        { key: 'order_id', label: translate('Order ID'), sortable: true },
         {
             key: 'amount',
-            label: t('Order Amount'),
+            label: translate('Order Amount'),
             render: (value: number) => <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${value.toFixed(2)}`}</span>,
         },
         {
             key: 'discount_amount',
-            label: t('Discount Applied'),
+            label: translate('Discount Applied'),
             render: (value: number) => <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${value.toFixed(2)}`}</span>,
         },
         {
             key: 'used_at',
-            label: t('Used At'),
+            label: translate('Used At'),
             sortable: true,
             render: (value: string) => (
                 <div className="flex items-center gap-1.5 whitespace-nowrap text-gray-500">
@@ -80,18 +80,18 @@ export default function CouponDetailsPage() {
     const getStatusBadge = (status: boolean) => {
         return status ? (
             <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset">
-                {t('Active')}
+                {translate('Active')}
             </span>
         ) : (
             <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/20 ring-inset">
-                {t('Inactive')}
+                {translate('Inactive')}
             </span>
         );
     };
 
     const getTypeBadge = (type: string) => {
         const className = type === 'percentage' ? 'bg-blue-50 text-blue-700 ring-blue-600/20' : 'bg-green-50 text-green-700 ring-blue-600/20';
-        const label = type === 'percentage' ? t('Percentage') : t('Flat Amount');
+        const label = type === 'percentage' ? translate('Percentage') : translate('Flat Amount');
         return <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${className}`}>{label}</span>;
     };
     return (
@@ -100,7 +100,7 @@ export default function CouponDetailsPage() {
             breadcrumbs={breadcrumbs}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => window.history.back(),
@@ -112,7 +112,7 @@ export default function CouponDetailsPage() {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <div>
-                            <p className="text-l font-bold">{t('Coupon Details & Usage History')}</p>
+                            <p className="text-l font-bold">{translate('Coupon Details & Usage History')}</p>
                         </div>
                     </div>
                     {getStatusBadge(coupon.status)}
@@ -124,7 +124,7 @@ export default function CouponDetailsPage() {
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{t('Discount Value')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">{translate('Discount Value')}</p>
                                     <h3 className="mt-2 font-mono text-xl font-semibold">{formatDiscount(coupon.type, coupon.discount_amount)}</h3>
                                 </div>
                                 <div className="rounded-full bg-blue-100 p-3 dark:bg-blue-900">
@@ -138,7 +138,7 @@ export default function CouponDetailsPage() {
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{t('Times Used')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">{translate('Times Used')}</p>
                                     <h3 className="mt-2 text-xl font-semibold">
                                         {coupon.used_count}
                                         {coupon.use_limit_per_coupon && ` / ${coupon.use_limit_per_coupon}`}
@@ -155,8 +155,8 @@ export default function CouponDetailsPage() {
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{t('User Limit')}</p>
-                                    <h3 className="mt-2 text-xl font-semibold"> {coupon.use_limit_per_user || t('Unlimited')}</h3>
+                                    <p className="text-muted-foreground text-sm font-medium">{translate('User Limit')}</p>
+                                    <h3 className="mt-2 text-xl font-semibold"> {coupon.use_limit_per_user || translate('Unlimited')}</h3>
                                 </div>
                                 <div className="rounded-full bg-purple-100 p-3 dark:bg-purple-900">
                                     <Users className="h-5 w-5 text-purple-600 dark:text-purple-400" />
@@ -169,12 +169,12 @@ export default function CouponDetailsPage() {
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{t('Expires')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">{translate('Expires')}</p>
                                     <h3 className="mt-2 text-xl font-semibold">
                                         {' '}
                                         {coupon.expiry_date
                                             ? window.appSettings?.formatDateTime(coupon.expiry_date, false) || coupon.expiry_date
-                                            : t('Never')}
+                                            : translate('Never')}
                                     </h3>
                                 </div>
                                 <div className="rounded-full bg-orange-100 p-3 dark:bg-orange-900">
@@ -187,22 +187,22 @@ export default function CouponDetailsPage() {
 
                 {/* Coupon Details */}
                 <Card className="p-6">
-                    <h2 className="mb-4 text-lg font-semibold">{t('Coupon Information')}</h2>
+                    <h2 className="mb-4 text-lg font-semibold">{translate('Coupon Information')}</h2>
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                         <div className="space-y-4">
                             <div>
-                                <label className="text-sm font-bold">{t('Coupon Code')}</label>
+                                <label className="text-sm font-bold">{translate('Coupon Code')}</label>
                                 <p className="mt-1 rounded bg-gray-100 px-3 py-2 font-mono text-base dark:bg-gray-800">{coupon.code}</p>
                             </div>
                             <div>
-                                <label className="text-sm font-bold">{t('Type')}</label>
+                                <label className="text-sm font-bold">{translate('Type')}</label>
                                 <div className="mt-1 py-2">{getTypeBadge(coupon.type)}</div>
                             </div>
                         </div>
                         <div className="space-y-4">
                             {coupon.minimum_spend && (
                                 <div>
-                                    <label className="text-sm font-bold">{t('Minimum Spend')}</label>
+                                    <label className="text-sm font-bold">{translate('Minimum Spend')}</label>
                                     <p className="mt-1 py-2 font-mono text-sm">
                                         {window.appSettings?.formatCurrency(coupon.minimum_spend) || `$${coupon.minimum_spend.toFixed(2)}`}
                                     </p>
@@ -210,7 +210,7 @@ export default function CouponDetailsPage() {
                             )}
                             {coupon.maximum_spend && (
                                 <div>
-                                    <label className="text-sm font-bold">{t('Maximum Spend')}</label>
+                                    <label className="text-sm font-bold">{translate('Maximum Spend')}</label>
                                     <p className="mt-1 py-2 font-mono text-sm">
                                         {window.appSettings?.formatCurrency(coupon.maximum_spend) || `$${coupon.maximum_spend.toFixed(2)}`}
                                     </p>
@@ -222,7 +222,7 @@ export default function CouponDetailsPage() {
 
                 {/* Usage History */}
                 <Card className="p-6">
-                    <h2 className="mb-4 text-lg font-semibold">{t('Usage History')}</h2>
+                    <h2 className="mb-4 text-lg font-semibold">{translate('Usage History')}</h2>
                     <div className="rounded-lg border">
                         <Table>
                             <TableHeader>
@@ -246,7 +246,7 @@ export default function CouponDetailsPage() {
                                 ) : (
                                     <TableRow>
                                         <TableCell colSpan={usageColumns.length} className="py-8 text-center text-gray-500">
-                                            {t('No usage history found')}
+                                            {translate('No usage history found')}
                                         </TableCell>
                                     </TableRow>
                                 )}
@@ -263,10 +263,10 @@ export default function CouponDetailsPage() {
                                 total={usage_history.total || 0}
                                 currentPage={usage_history.current_page}
                                 lastPage={usage_history.last_page}
-                                entityName={t('records')}
+                                entityName={translate('records')}
                                 onPageChange={(url) => {
                                     const urlObj = new URL(url, window.location.origin);
-                                    const page = urlObj.searchParams.get('page');
+                                    const page = urlObj.searchParams.getranslate('page');
                                     window.location.href = route('coupons.show', {
                                         coupon: coupon.id,
                                         page: page,

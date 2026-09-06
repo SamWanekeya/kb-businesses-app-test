@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 export default function SalesReports() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { filters, summary, monthlyData, dailyData, salesByStatus, recentSales, topProducts } = usePage().props;
     const [chartView, setChartView] = useState<'daily' | 'monthly'>('monthly');
     const [primaryColor, setPrimaryColor] = useState('#4f46e5');
@@ -22,11 +22,11 @@ export default function SalesReports() {
 
     const chartData = chartView === 'daily' ? dailyData : monthlyData;
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Reports'), href: '#' }, { title: t('Sales Reports') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Reports'), href: '#' }, { title: translate('Sales Reports') }];
 
     const summaryCards = [
         {
-            title: t('Total Sales'),
+            title: translate('Total Sales'),
             value: (
                 <span className="font-mono">
                     {window.appSettings?.formatCurrency(summary.total_sales) || `$${summary.total_sales.toLocaleString()}`}
@@ -36,13 +36,13 @@ export default function SalesReports() {
             iconColor: 'bg-green-100',
         },
         {
-            title: t('Total Orders'),
+            title: translate('Total Orders'),
             value: summary.total_orders.toLocaleString(),
             icon: <ShoppingCart className="h-6 w-6 text-blue-600" />,
             iconColor: 'bg-blue-100',
         },
         {
-            title: t('Average Order Value'),
+            title: translate('Average Order Value'),
             value: (
                 <span className="font-mono">
                     {window.appSettings?.formatCurrency(summary.avg_order_value) || `$${summary.avg_order_value.toLocaleString()}`}
@@ -52,7 +52,7 @@ export default function SalesReports() {
             iconColor: 'bg-purple-100',
         },
         {
-            title: t('Growth Rate'),
+            title: translate('Growth Rate'),
             value: `${summary.growth_rate.toFixed(2)}%`,
             icon: <TrendingUp className="h-6 w-6 text-orange-600" />,
             iconColor: 'bg-orange-100',
@@ -61,8 +61,8 @@ export default function SalesReports() {
 
     return (
         <PageTemplate
-            title={t('Sales Reports')}
-            description={t('View and analyze sales reports to track revenue and performance.')}
+            title={translate('Sales Reports')}
+            description={translate('View and analyze sales reports to track revenue and performance.')}
             url="/reports/sales"
             breadcrumbs={breadcrumbs}
             noPadding
@@ -76,16 +76,16 @@ export default function SalesReports() {
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
-                                    <CardTitle className="text-base font-semibold">{t('Sales Trends')}</CardTitle>
+                                    <CardTitle className="text-base font-semibold">{translate('Sales Trends')}</CardTitle>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Tabs value={chartView} onValueChange={(v) => setChartView(v as 'daily' | 'monthly')}>
                                         <TabsList className="h-7">
                                             <TabsTrigger value="daily" className="cursor-pointer px-3 py-1 text-xs">
-                                                {t('Daily')}
+                                                {translate('Daily')}
                                             </TabsTrigger>
                                             <TabsTrigger value="monthly" className="cursor-pointer px-3 py-1 text-xs">
-                                                {t('Monthly')}
+                                                {translate('Monthly')}
                                             </TabsTrigger>
                                         </TabsList>
                                     </Tabs>
@@ -122,14 +122,14 @@ export default function SalesReports() {
                                         labelStyle={{ color: primaryColor }}
                                         formatter={(value) => [
                                             window.appSettings?.formatCurrency(Number(value)) || `$${Number(value).toLocaleString()}`,
-                                            t('Revenue'),
+                                            translate('Revenue'),
                                         ]}
                                     />
                                     <Line
                                         type="monotone"
                                         dataKey="revenue"
                                         stroke={primaryColor}
-                                        name={t('Revenue')}
+                                        name={translate('Revenue')}
                                         strokeWidth={2.5}
                                         dot={{ r: 3, fill: primaryColor, strokeWidth: 0 }}
                                         activeDot={{ r: 6 }}
@@ -143,7 +143,7 @@ export default function SalesReports() {
                 <div className="col-span-full">
                     <Card className="border-border overflow-hidden border shadow-sm dark:bg-slate-900">
                         <CardHeader className="border-b px-5 pt-5 pb-3">
-                            <CardTitle className="text-base font-semibold">{t('Sales by Status')}</CardTitle>
+                            <CardTitle className="text-base font-semibold">{translate('Sales by Status')}</CardTitle>
                         </CardHeader>
                         <CardContent className="p-4 pt-5" dir="ltr">
                             <ResponsiveContainer width="100%" height={300}>
@@ -175,7 +175,7 @@ export default function SalesReports() {
                                         labelStyle={{ color: primaryColor }}
                                         formatter={(value) => [
                                             window.appSettings?.formatCurrency(Number(value)) || `$${Number(value).toLocaleString()}`,
-                                            t('Amount'),
+                                            translate('Amount'),
                                         ]}
                                     />
                                     <Bar dataKey="amount" fill={primaryColor} radius={[4, 4, 0, 0]} maxBarSize={60} opacity={0.8} />
@@ -189,14 +189,14 @@ export default function SalesReports() {
                     <CardHeader className="shrink-0 border-b px-5 pt-5 pb-3">
                         <div className="flex items-center justify-between">
                             <div>
-                                <CardTitle className="text-base font-semibold">{t('Recent Sales')}</CardTitle>
-                                <p className="text-muted-foreground mt-0.5 text-xs">{t('Latest sales orders')}</p>
+                                <CardTitle className="text-base font-semibold">{translate('Recent Sales')}</CardTitle>
+                                <p className="text-muted-foreground mt-0.5 text-xs">{translate('Latest sales orders')}</p>
                             </div>
                             <Link
                                 href={route('sales-orders.index')}
                                 className="text-primary flex shrink-0 items-center gap-1 text-xs font-medium transition-all duration-150 hover:gap-1.5"
                             >
-                                {t('View all')} <ArrowUpRight className="h-3.5 w-3.5" />
+                                {translate('View all')} <ArrowUpRight className="h-3.5 w-3.5" />
                             </Link>
                         </div>
                     </CardHeader>
@@ -232,7 +232,7 @@ export default function SalesReports() {
                             </div>
                         ) : (
                             <div className="flex min-h-[160px] flex-1 flex-col items-center justify-center gap-3">
-                                <p className="text-muted-foreground text-sm">{t('No recent sales found')}</p>
+                                <p className="text-muted-foreground text-sm">{translate('No recent sales found')}</p>
                             </div>
                         )}
                     </CardContent>
@@ -242,14 +242,14 @@ export default function SalesReports() {
                     <CardHeader className="shrink-0 border-b px-5 pt-5 pb-3">
                         <div className="flex items-center justify-between">
                             <div>
-                                <CardTitle className="text-base font-semibold">{t('Top Selling Products')}</CardTitle>
-                                <p className="text-muted-foreground mt-0.5 text-xs">{t('Highest revenue products')}</p>
+                                <CardTitle className="text-base font-semibold">{translate('Top Selling Products')}</CardTitle>
+                                <p className="text-muted-foreground mt-0.5 text-xs">{translate('Highest revenue products')}</p>
                             </div>
                             <Link
                                 href={route('products.index')}
                                 className="text-primary flex shrink-0 items-center gap-1 text-xs font-medium transition-all duration-150 hover:gap-1.5"
                             >
-                                {t('View all')} <ArrowUpRight className="h-3.5 w-3.5" />
+                                {translate('View all')} <ArrowUpRight className="h-3.5 w-3.5" />
                             </Link>
                         </div>
                     </CardHeader>
@@ -300,7 +300,7 @@ export default function SalesReports() {
                                         <div className="min-w-0 flex-1">
                                             <p className="truncate text-sm leading-tight font-semibold">{product.name}</p>
                                             <p className="text-muted-foreground mt-0.5 truncate text-xs">
-                                                {product.total_quantity} {t('units sold')}
+                                                {product.total_quantity} {translate('units sold')}
                                             </p>
                                         </div>
                                         <div className="flex shrink-0 flex-col items-end gap-1">
@@ -313,7 +313,7 @@ export default function SalesReports() {
                             </div>
                         ) : (
                             <div className="flex min-h-[160px] flex-1 flex-col items-center justify-center gap-3">
-                                <p className="text-muted-foreground text-sm">{t('No products sold yet')}</p>
+                                <p className="text-muted-foreground text-sm">{translate('No products sold yet')}</p>
                             </div>
                         )}
                     </CardContent>

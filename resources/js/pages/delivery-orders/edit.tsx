@@ -35,7 +35,7 @@ function SectionHeader({ title }: { title: string }) {
 }
 
 export default function DeliveryOrderEdit() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const {
         deliveryOrder,
         accounts = [],
@@ -81,9 +81,9 @@ export default function DeliveryOrderEdit() {
     const [processing, setProcessing] = useState(false);
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Delivery Orders'), href: route('delivery-orders.index') },
-        { title: t('Edit') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Delivery Orders'), href: route('delivery-orders.index') },
+        { title: translate('Edit') },
     ];
 
     const set = (name: string, value: string) => {
@@ -96,7 +96,7 @@ export default function DeliveryOrderEdit() {
     };
 
     const handleSalesOrderChange = async (id: string) => {
-        set('sales_order_id', id);
+        setranslate('sales_order_id', id);
         if (!id) return;
         try {
             const res = await fetch(route('api.delivery-orders.sales-orders.details', id));
@@ -148,23 +148,23 @@ export default function DeliveryOrderEdit() {
 
     const handleSubmit = () => {
         const errs: Errors = {};
-        if (!form.name.trim()) errs.name = t('Name is required');
-        if (!form.sales_order_id) errs.sales_order_id = t('Sales Order is required');
-        if (!form.account_id) errs.account_id = t('Account is required');
-        if (!form.contact_id) errs.contact_id = t('Contact is required');
-        if (!form.shipping_provider_type_id) errs.shipping_provider_type_id = t('Shipping Provider is required');
-        if (!form.delivery_date) errs.delivery_date = t('Delivery Date is required');
-        if (!form.delivery_address.trim()) errs.delivery_address = t('Delivery Address is required');
-        if (!form.delivery_city.trim()) errs.delivery_city = t('City is required');
-        if (!form.delivery_state.trim()) errs.delivery_state = t('State is required');
-        if (!form.delivery_postal_code.trim()) errs.delivery_postal_code = t('Postal Code is required');
-        if (!form.delivery_country.trim()) errs.delivery_country = t('Country is required');
-        if (!form.assigned_to) errs.assigned_to = t('Assigned To is required');
-        if (!productRows.length || productRows.every((r) => !r.product_id)) errs.products = t('At least one product is required');
+        if (!form.name.trim()) errs.name = translate('Name is required');
+        if (!form.sales_order_id) errs.sales_order_id = translate('Sales Order is required');
+        if (!form.account_id) errs.account_id = translate('Account is required');
+        if (!form.contact_id) errs.contact_id = translate('Contact is required');
+        if (!form.shipping_provider_type_id) errs.shipping_provider_type_id = translate('Shipping Provider is required');
+        if (!form.delivery_date) errs.delivery_date = translate('Delivery Date is required');
+        if (!form.delivery_address.trim()) errs.delivery_address = translate('Delivery Address is required');
+        if (!form.delivery_city.trim()) errs.delivery_city = translate('City is required');
+        if (!form.delivery_state.trim()) errs.delivery_state = translate('State is required');
+        if (!form.delivery_postal_code.trim()) errs.delivery_postal_code = translate('Postal Code is required');
+        if (!form.delivery_country.trim()) errs.delivery_country = translate('Country is required');
+        if (!form.assigned_to) errs.assigned_to = translate('Assigned To is required');
+        if (!productRows.length || productRows.every((r) => !r.product_id)) errs.products = translate('At least one product is required');
         productRows.forEach((r, i) => {
-            if (!r.product_id) errs[`products.${i}.product_id`] = t('Product is required');
-            if (r.product_id && (!r.quantity || parseFloat(r.quantity) < 1)) errs[`products.${i}.quantity`] = t('Min 1');
-            if (r.product_id && (!r.unit_weight || parseFloat(r.unit_weight) < 0)) errs[`products.${i}.unit_weight`] = t('Required');
+            if (!r.product_id) errs[`products.${i}.product_id`] = translate('Product is required');
+            if (r.product_id && (!r.quantity || parseFloat(r.quantity) < 1)) errs[`products.${i}.quantity`] = translate('Min 1');
+            if (r.product_id && (!r.unit_weight || parseFloat(r.unit_weight) < 0)) errs[`products.${i}.unit_weight`] = translate('Required');
         });
 
         if (Object.keys(errs).length) {
@@ -177,7 +177,7 @@ export default function DeliveryOrderEdit() {
             return;
         }
         setProcessing(true);
-        toast.loading(t('Saving...'));
+        toast.loading(translate('Saving...'));
 
         router.put(
             route('delivery-orders.update', deliveryOrder.id),
@@ -202,14 +202,14 @@ export default function DeliveryOrderEdit() {
 
     return (
         <PageTemplate
-            title={t('Edit Delivery Order')}
-            description={t('Update delivery order details and related information')}
+            title={translate('Edit Delivery Order')}
+            description={translate('Update delivery order details and related information')}
             breadcrumbs={breadcrumbs}
             url="/delivery-orders"
             noPadding
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => router.visit(route('delivery-orders.index')),
@@ -219,38 +219,38 @@ export default function DeliveryOrderEdit() {
             <div className="space-y-8 rounded-lg border border-gray-200 bg-white p-6 text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-white">
                 {/* ── Order Details ── */}
                 <div>
-                    <SectionHeader title={t('Order Details')} />
+                    <SectionHeader title={translate('Order Details')} />
                     <div className="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2">
                         <div className="space-y-1.5 md:col-span-2">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {t('Delivery Order Name')} <span className="text-red-500">*</span>
+                                {translate('Delivery Order Name')} <span className="text-red-500">*</span>
                             </Label>
                             <Input
                                 value={form.name}
-                                onChange={(e) => set('name', e.target.value)}
-                                placeholder={t('e.g. Q1 Hardware Delivery')}
+                                onChange={(e) => setranslate('name', e.target.value)}
+                                placeholder={translate('e.g. Q1 Hardware Delivery')}
                                 className={errors.name ? 'border-red-500' : ''}
                             />
                             <FieldError message={errors.name} />
                         </div>
 
                         <div className="space-y-1.5 md:col-span-2">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{t('Description')}</Label>
+                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Description')}</Label>
                             <Textarea
                                 value={form.description}
-                                onChange={(e) => set('description', e.target.value)}
+                                onChange={(e) => setranslate('description', e.target.value)}
                                 rows={2}
-                                placeholder={t('Optional notes about this delivery...')}
+                                placeholder={translate('Optional notes about this delivery...')}
                             />
                         </div>
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {t('Sales Order')} <span className="text-red-500">*</span>
+                                {translate('Sales Order')} <span className="text-red-500">*</span>
                             </Label>
                             <Select value={form.sales_order_id} onValueChange={handleSalesOrderChange}>
                                 <SelectTrigger className={errors.sales_order_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select sales order')} />
+                                    <SelectValue placeholder={translate('Select sales order')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {salesOrders.map((so: any) => (
@@ -265,11 +265,11 @@ export default function DeliveryOrderEdit() {
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {t('Account')} <span className="text-red-500">*</span>
+                                {translate('Account')} <span className="text-red-500">*</span>
                             </Label>
-                            <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
+                            <Select value={form.account_id} onValueChange={(v) => setranslate('account_id', v)}>
                                 <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select account')} />
+                                    <SelectValue placeholder={translate('Select account')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {accounts.map((a: any) => (
@@ -284,11 +284,11 @@ export default function DeliveryOrderEdit() {
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {t('Contact')} <span className="text-red-500">*</span>
+                                {translate('Contact')} <span className="text-red-500">*</span>
                             </Label>
-                            <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
+                            <Select value={form.contact_id} onValueChange={(v) => setranslate('contact_id', v)}>
                                 <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select contact')} />
+                                    <SelectValue placeholder={translate('Select contact')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {contacts.map((c: any) => (
@@ -303,11 +303,11 @@ export default function DeliveryOrderEdit() {
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {t('Shipping Provider')} <span className="text-red-500">*</span>
+                                {translate('Shipping Provider')} <span className="text-red-500">*</span>
                             </Label>
-                            <Select value={form.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
+                            <Select value={form.shipping_provider_type_id} onValueChange={(v) => setranslate('shipping_provider_type_id', v)}>
                                 <SelectTrigger className={errors.shipping_provider_type_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select shipping provider')} />
+                                    <SelectValue placeholder={translate('Select shipping provider')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {shippingProviderTypes.map((s: any) => (
@@ -322,7 +322,7 @@ export default function DeliveryOrderEdit() {
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {t('Delivery Date')} <span className="text-red-500">*</span>
+                                {translate('Delivery Date')} <span className="text-red-500">*</span>
                             </Label>
                             <div
                                 className="cursor-pointer"
@@ -338,7 +338,7 @@ export default function DeliveryOrderEdit() {
                                 <Input
                                     type="date"
                                     value={form.delivery_date}
-                                    onChange={(e) => set('delivery_date', e.target.value)}
+                                    onChange={(e) => setranslate('delivery_date', e.target.value)}
                                     className={`cursor-pointer ${errors.delivery_date ? 'border-red-500' : ''}`}
                                 />
                             </div>
@@ -346,7 +346,7 @@ export default function DeliveryOrderEdit() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{t('Expected Delivery Date')}</Label>
+                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Expected Delivery Date')}</Label>
                             <div
                                 className="cursor-pointer"
                                 onClick={(e) => {
@@ -361,7 +361,7 @@ export default function DeliveryOrderEdit() {
                                 <Input
                                     type="date"
                                     value={form.expected_delivery_date}
-                                    onChange={(e) => set('expected_delivery_date', e.target.value)}
+                                    onChange={(e) => setranslate('expected_delivery_date', e.target.value)}
                                     className="cursor-pointer"
                                 />
                             </div>
@@ -369,29 +369,29 @@ export default function DeliveryOrderEdit() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{t('Status')}</Label>
-                            <Select value={form.status} onValueChange={(v) => set('status', v)}>
+                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Status')}</Label>
+                            <Select value={form.status} onValueChange={(v) => setranslate('status', v)}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="pending">{t('Pending')}</SelectItem>
-                                    <SelectItem value="in_transit">{t('In Transit')}</SelectItem>
-                                    <SelectItem value="delivered">{t('Delivered')}</SelectItem>
-                                    <SelectItem value="cancelled">{t('Cancelled')}</SelectItem>
+                                    <SelectItem value="pending">{translate('Pending')}</SelectItem>
+                                    <SelectItem value="in_transit">{translate('In Transit')}</SelectItem>
+                                    <SelectItem value="delivered">{translate('Delivered')}</SelectItem>
+                                    <SelectItem value="cancelled">{translate('Cancelled')}</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{t('Shipping Cost')}</Label>
+                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Shipping Cost')}</Label>
                             <div className="relative">
                                 <Input
                                     type="number"
                                     min="0"
                                     step="0.01"
                                     value={form.shipping_cost}
-                                    onChange={(e) => set('shipping_cost', e.target.value)}
+                                    onChange={(e) => setranslate('shipping_cost', e.target.value)}
                                     placeholder="0.00"
                                 />
                             </div>
@@ -399,11 +399,11 @@ export default function DeliveryOrderEdit() {
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {t('Assigned To')} <span className="text-red-500">*</span>
+                                {translate('Assigned To')} <span className="text-red-500">*</span>
                             </Label>
-                            <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
+                            <Select value={form.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select user')} />
+                                    <SelectValue placeholder={translate('Select user')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {users.map((u: any) => (
@@ -422,7 +422,7 @@ export default function DeliveryOrderEdit() {
                 <div className="-mx-6">
                     <div className="flex items-center justify-between border-t border-b bg-gray-50 px-6 py-3 dark:bg-gray-800">
                         <div className="flex items-center gap-2">
-                            <h2 className="text-base font-semibold text-gray-900 dark:text-white">{t('Products')}</h2>
+                            <h2 className="text-base font-semibold text-gray-900 dark:text-white">{translate('Products')}</h2>
                             {errors.products && <span className="text-xs font-normal text-red-500">{errors.products}</span>}
                         </div>
                         <Button
@@ -432,13 +432,13 @@ export default function DeliveryOrderEdit() {
                                 setProductRows((p) => [...p, { id: crypto.randomUUID(), product_id: '', quantity: '1', unit_weight: '0' }])
                             }
                         >
-                            <Plus className="mr-1 h-4 w-4" /> {t('Add Product')}
+                            <Plus className="mr-1 h-4 w-4" /> {translate('Add Product')}
                         </Button>
                     </div>
 
                     {productRows.length === 0 ? (
                         <div className="mx-6 my-4 rounded-lg border-2 border-dashed border-gray-200 py-10 text-center dark:border-gray-700">
-                            <p className="text-sm text-gray-400">{t('No products added yet. Click "Add Product" to begin.')}</p>
+                            <p className="text-sm text-gray-400">{translate('No products added yet. Click "Add Product" to begin.')}</p>
                         </div>
                     ) : (
                         <>
@@ -447,13 +447,13 @@ export default function DeliveryOrderEdit() {
                                     <thead className="hidden xl:table-header-group">
                                         <tr className="border-b bg-gray-50 text-xs font-semibold text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                                             <th className="min-w-[220px] px-4 py-3 text-left">
-                                                {t('Product')} <span className="text-red-500">*</span>
+                                                {translate('Product')} <span className="text-red-500">*</span>
                                             </th>
                                             <th className="w-28 px-4 py-3 text-left">
-                                                {t('Quantity')} <span className="text-red-500">*</span>
+                                                {translate('Quantity')} <span className="text-red-500">*</span>
                                             </th>
-                                            <th className="w-36 px-4 py-3 text-left">{t('Unit Weight (kg)')}</th>
-                                            <th className="w-36 px-4 py-3 text-left">{t('Total Weight (kg)')}</th>
+                                            <th className="w-36 px-4 py-3 text-left">{translate('Unit Weight (kg)')}</th>
+                                            <th className="w-36 px-4 py-3 text-left">{translate('Total Weight (kg)')}</th>
                                             <th className="w-12 px-4 py-3"></th>
                                         </tr>
                                     </thead>
@@ -467,11 +467,11 @@ export default function DeliveryOrderEdit() {
                                                 >
                                                     <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-[220px] xl:px-4 xl:py-3">
                                                         <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                            {t('Product')} <span className="text-red-500">*</span>
+                                                            {translate('Product')} <span className="text-red-500">*</span>
                                                         </span>
                                                         <Select value={row.product_id} onValueChange={(v) => setRow(row.id, 'product_id', v)}>
                                                             <SelectTrigger>
-                                                                <SelectValue placeholder={t('Select product')} />
+                                                                <SelectValue placeholder={translate('Select product')} />
                                                             </SelectTrigger>
                                                             <SelectContent searchable>
                                                                 {products
@@ -490,16 +490,16 @@ export default function DeliveryOrderEdit() {
                                                         </Select>
                                                         {i === 0 && products.length === 0 && (
                                                             <p className="mt-1 text-xs">
-                                                                {t('Click here to add')}{' '}
+                                                                {translate('Click here to add')}{' '}
                                                                 <a href={route('products.index')} className="font-medium underline">
-                                                                    {t('Products')}
+                                                                    {translate('Products')}
                                                                 </a>
                                                             </p>
                                                         )}
                                                     </td>
                                                     <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
                                                         <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                            {t('Quantity')} <span className="text-red-500">*</span>
+                                                            {translate('Quantity')} <span className="text-red-500">*</span>
                                                         </span>
                                                         <Input
                                                             type="number"
@@ -514,7 +514,7 @@ export default function DeliveryOrderEdit() {
                                                     </td>
                                                     <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-36 xl:px-4 xl:py-3">
                                                         <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                            {t('Unit Weight (kg)')}
+                                                            {translate('Unit Weight (kg)')}
                                                         </span>
                                                         <Input
                                                             type="number"
@@ -530,7 +530,7 @@ export default function DeliveryOrderEdit() {
                                                     </td>
                                                     <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-36 xl:px-4 xl:py-3">
                                                         <span className="text-muted-foreground block text-xs font-semibold xl:hidden">
-                                                            {t('Total Weight (kg)')}
+                                                            {translate('Total Weight (kg)')}
                                                         </span>
                                                         <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
                                                             {lineWeight.toFixed(2)} kg
@@ -558,7 +558,7 @@ export default function DeliveryOrderEdit() {
                                 <div className="flex justify-end border-t border-gray-100 bg-white px-6 py-3 dark:border-gray-800 dark:bg-gray-900">
                                     <div className="w-64">
                                         <div className="flex justify-between border-t pt-2 text-base font-bold text-gray-900 dark:text-gray-100">
-                                            <span>{t('Total Weight')}</span>
+                                            <span>{translate('Total Weight')}</span>
                                             <span className="text-lg text-green-600">{totalWeight.toFixed(2)} kg</span>
                                         </div>
                                     </div>
@@ -573,17 +573,17 @@ export default function DeliveryOrderEdit() {
                     <div className="border-t border-gray-200 dark:border-gray-700" />
                 </div>
                 <div className="mt-6">
-                    <SectionHeader title={t('Delivery Address')} />
+                    <SectionHeader title={translate('Delivery Address')} />
                     <div className="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2">
                         <div className="space-y-1.5 md:col-span-2">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {t('Delivery Address')} <span className="text-red-500">*</span>
+                                {translate('Delivery Address')} <span className="text-red-500">*</span>
                             </Label>
                             <Textarea
                                 value={form.delivery_address}
-                                onChange={(e) => set('delivery_address', e.target.value)}
+                                onChange={(e) => setranslate('delivery_address', e.target.value)}
                                 rows={2}
-                                placeholder={t('e.g. 123 Main St, Suite 100')}
+                                placeholder={translate('e.g. 123 Main St, Suite 100')}
                                 className={errors.delivery_address ? 'border-red-500' : ''}
                             />
                             <FieldError message={errors.delivery_address} />
@@ -591,12 +591,12 @@ export default function DeliveryOrderEdit() {
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {t('DeliveryCity')} <span className="text-red-500">*</span>
+                                {translate('DeliveryCity')} <span className="text-red-500">*</span>
                             </Label>
                             <Input
                                 value={form.delivery_city}
-                                onChange={(e) => set('delivery_city', e.target.value)}
-                                placeholder={t('e.g. New York')}
+                                onChange={(e) => setranslate('delivery_city', e.target.value)}
+                                placeholder={translate('e.g. New York')}
                                 className={errors.delivery_city ? 'border-red-500' : ''}
                             />
                             <FieldError message={errors.delivery_city} />
@@ -604,12 +604,12 @@ export default function DeliveryOrderEdit() {
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {t('Delivery State')} <span className="text-red-500">*</span>
+                                {translate('Delivery State')} <span className="text-red-500">*</span>
                             </Label>
                             <Input
                                 value={form.delivery_state}
-                                onChange={(e) => set('delivery_state', e.target.value)}
-                                placeholder={t('e.g. NY')}
+                                onChange={(e) => setranslate('delivery_state', e.target.value)}
+                                placeholder={translate('e.g. NY')}
                                 className={errors.delivery_state ? 'border-red-500' : ''}
                             />
                             <FieldError message={errors.delivery_state} />
@@ -617,12 +617,12 @@ export default function DeliveryOrderEdit() {
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {t('Delivery Country')} <span className="text-red-500">*</span>
+                                {translate('Delivery Country')} <span className="text-red-500">*</span>
                             </Label>
                             <Input
                                 value={form.delivery_country}
-                                onChange={(e) => set('delivery_country', e.target.value)}
-                                placeholder={t('e.g. United States')}
+                                onChange={(e) => setranslate('delivery_country', e.target.value)}
+                                placeholder={translate('e.g. United States')}
                                 className={errors.delivery_country ? 'border-red-500' : ''}
                             />
                             <FieldError message={errors.delivery_country} />
@@ -630,24 +630,24 @@ export default function DeliveryOrderEdit() {
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {t('Delivery Postal Code')} <span className="text-red-500">*</span>
+                                {translate('Delivery Postal Code')} <span className="text-red-500">*</span>
                             </Label>
                             <Input
                                 value={form.delivery_postal_code}
-                                onChange={(e) => set('delivery_postal_code', e.target.value)}
-                                placeholder={t('e.g. 10001')}
+                                onChange={(e) => setranslate('delivery_postal_code', e.target.value)}
+                                placeholder={translate('e.g. 10001')}
                                 className={errors.delivery_postal_code ? 'border-red-500' : ''}
                             />
                             <FieldError message={errors.delivery_postal_code} />
                         </div>
 
                         <div className="space-y-1.5 md:col-span-2">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{t('Delivery Notes')}</Label>
+                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Delivery Notes')}</Label>
                             <Textarea
                                 value={form.delivery_notes}
-                                onChange={(e) => set('delivery_notes', e.target.value)}
+                                onChange={(e) => setranslate('delivery_notes', e.target.value)}
                                 rows={3}
-                                placeholder={t('e.g. Leave at reception, handle with care...')}
+                                placeholder={translate('e.g. Leave at reception, handle with care...')}
                             />
                         </div>
                     </div>
@@ -656,10 +656,10 @@ export default function DeliveryOrderEdit() {
                 {/* ── Actions ── */}
                 <div className="flex justify-end gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
                     <Button type="button" variant="outline" onClick={() => window.history.back()}>
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     <Button type="button" disabled={processing} onClick={handleSubmit}>
-                        {processing ? t('Saving...') : t('Save')}
+                        {processing ? translate('Saving...') : translate('Save')}
                     </Button>
                 </div>
             </div>

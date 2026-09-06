@@ -14,7 +14,7 @@ interface CreateLanguageModalProps {
 }
 
 export function CreateLanguageModal({ open, onOpenChange, onSuccess }: CreateLanguageModalProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [formData, setFormData] = useState({
         code: '',
         name: '',
@@ -41,7 +41,7 @@ export function CreateLanguageModal({ open, onOpenChange, onSuccess }: CreateLan
             const data = await response.json();
 
             if (response.ok && data.success) {
-                toast.success(data.message || t('Language created successfully'));
+                toast.success(data.message || translate('Language created successfully'));
                 setFormData({ code: '', name: '', countryCode: '' });
                 onOpenChange(false);
                 onSuccess?.();
@@ -50,7 +50,7 @@ export function CreateLanguageModal({ open, onOpenChange, onSuccess }: CreateLan
                 toast.error(data.error || t(data.message));
             }
         } catch (error) {
-            toast.error(t('Failed to create language'));
+            toast.error(translate('Failed to create language'));
         } finally {
             setIsLoading(false);
         }
@@ -60,34 +60,34 @@ export function CreateLanguageModal({ open, onOpenChange, onSuccess }: CreateLan
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>{t('Create Language')}</DialogTitle>
+                    <DialogTitle>{translate('Create Language')}</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <Label htmlFor="code">{t('Language Code')}</Label>
+                        <Label htmlFor="code">{translate('Language Code')}</Label>
                         <Input
                             id="code"
-                            placeholder={t('e.g., fr, de, ja')}
+                            placeholder={translate('e.g., fr, de, ja')}
                             value={formData.code}
                             onChange={(e) => setFormData({ ...formData, code: e.target.value })}
                             required
                         />
                     </div>
                     <div>
-                        <Label htmlFor="name">{t('Language Name')}</Label>
+                        <Label htmlFor="name">{translate('Language Name')}</Label>
                         <Input
                             id="name"
-                            placeholder={t('e.g., Français, Deutsch, 日本語')}
+                            placeholder={translate('e.g., Français, Deutsch, 日本語')}
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             required
                         />
                     </div>
                     <div>
-                        <Label htmlFor="countryCode">{t('Country Code')}</Label>
+                        <Label htmlFor="countryCode">{translate('Country Code')}</Label>
                         <Input
                             id="countryCode"
-                            placeholder={t('e.g., FR, DE, JP')}
+                            placeholder={translate('e.g., FR, DE, JP')}
                             maxLength={2}
                             value={formData.countryCode}
                             onChange={(e) => setFormData({ ...formData, countryCode: e.target.value.toUpperCase() })}
@@ -96,16 +96,16 @@ export function CreateLanguageModal({ open, onOpenChange, onSuccess }: CreateLan
                     </div>
                     <div className="flex justify-end gap-2">
                         <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                            {t('Cancel')}
+                            {translate('Cancel')}
                         </Button>
                         <Button type="submit" disabled={isLoading}>
                             {isLoading ? (
                                 <>
                                     <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                                    {t('Creating...')}
+                                    {translate('Creating...')}
                                 </>
                             ) : (
-                                t('Create Language')
+                                translate('Create Language')
                             )}
                         </Button>
                     </div>

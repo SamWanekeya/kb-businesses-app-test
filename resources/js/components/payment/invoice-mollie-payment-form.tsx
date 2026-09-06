@@ -24,7 +24,7 @@ export function InvoiceMolliePaymentForm({
     onSuccess,
     onCancel,
 }: InvoiceMolliePaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isProcessing, setIsProcessing] = useState(false);
 
     const handlePayment = async () => {
@@ -49,7 +49,7 @@ export function InvoiceMolliePaymentForm({
             );
 
             if (response.data.success && response.data.checkout_url) {
-                toast.success(t('Redirecting to Mollie payment page...'));
+                toast.success(translate('Redirecting to Mollie payment page...'));
                 setTimeout(() => {
                     window.location.href = response.data.checkout_url;
                 }, 1000);
@@ -57,7 +57,7 @@ export function InvoiceMolliePaymentForm({
                 throw new Error(response.data.message || 'Payment initialization failed');
             }
         } catch (error: any) {
-            toast.error(error.response?.data?.message || t('Payment failed. Please try again.'));
+            toast.error(error.response?.data?.message || translate('Payment failed. Please try again.'));
             setIsProcessing(false);
         }
     };
@@ -68,9 +68,9 @@ export function InvoiceMolliePaymentForm({
                 <div className="flex items-start gap-3">
                     <ExternalLink className="mt-0.5 h-5 w-5 text-blue-600" />
                     <div>
-                        <h4 className="mb-1 font-medium text-blue-900">{t('Secure Payment with Mollie')}</h4>
+                        <h4 className="mb-1 font-medium text-blue-900">{translate('Secure Payment with Mollie')}</h4>
                         <p className="text-sm text-blue-700">
-                            {t('You will be redirected to Mollie secure payment page to complete your transaction.')}
+                            {translate('You will be redirected to Mollie secure payment page to complete your transaction.')}
                         </p>
                     </div>
                 </div>
@@ -78,11 +78,11 @@ export function InvoiceMolliePaymentForm({
 
             <div className="rounded-lg border bg-gray-50 p-4">
                 <div className="mb-2 flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-600">{t('Payment Type')}:</span>
+                    <span className="text-sm font-medium text-gray-600">{translate('Payment Type')}:</span>
                     <span className="text-sm text-gray-900 capitalize">{paymentType}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-600">{t('Amount')}:</span>
+                    <span className="text-sm font-medium text-gray-600">{translate('Amount')}:</span>
                     <span className="text-lg font-bold text-gray-900">
                         {currency} {amount}
                     </span>
@@ -91,18 +91,18 @@ export function InvoiceMolliePaymentForm({
 
             <div className="flex gap-3">
                 <Button variant="outline" onClick={onCancel} className="flex-1" disabled={isProcessing}>
-                    {t('Cancel')}
+                    {translate('Cancel')}
                 </Button>
                 <Button onClick={handlePayment} disabled={isProcessing} className="flex-1">
                     {isProcessing ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            {t('Redirecting...')}
+                            {translate('Redirecting...')}
                         </>
                     ) : (
                         <>
                             <ExternalLink className="mr-2 h-4 w-4" />
-                            {t('Pay with Mollie')}
+                            {translate('Pay with Mollie')}
                         </>
                     )}
                 </Button>

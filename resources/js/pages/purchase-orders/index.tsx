@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function PurchaseOrders() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
     const {
         auth,
@@ -128,7 +128,7 @@ export default function PurchaseOrders() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting purchase order...'));
+        toast.loading(translate('Deleting purchase order...'));
 
         router.delete(route('purchase-orders.destroy', currentItem.id), {
             onSuccess: () => {
@@ -137,7 +137,7 @@ export default function PurchaseOrders() {
             },
             onError: (errors) => {
                 toast.dismiss();
-                toast.error(t('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
     };
@@ -148,13 +148,13 @@ export default function PurchaseOrders() {
                 setIsStatusModalOpen(false);
             },
             onError: (errors) => {
-                toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
     };
 
     const handleToggleStatus = (purchaseOrder: any) => {
-        toast.loading(t('Updating purchase order status...'));
+        toast.loading(translate('Updating purchase order status...'));
 
         router.put(
             route('purchase-orders.toggle-status', purchaseOrder.id),
@@ -168,7 +168,7 @@ export default function PurchaseOrders() {
                 },
                 onError: (errors) => {
                     toast.dismiss();
-                    toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 },
             },
         );
@@ -186,7 +186,7 @@ export default function PurchaseOrders() {
     const handleResetFilters = () => {
         setSearchTerm('');
         setSelectedStatus('all');
-        setSelectedAccount('all');
+        setSelectedAccountranslate('all');
         setSelectedSalesOrder('all');
         setSelectedAssignee('all');
         router.get(route('purchase-orders.index'));
@@ -196,36 +196,36 @@ export default function PurchaseOrders() {
 
     if (useHasPermission('export-purchase-orders')) {
         pageActions.push({
-            label: t('Export'),
+            label: translate('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
             variant: 'outline',
             onClick: () => (window.location.href = route('purchase-order.export')),
             className: 'h-8 w-8 min-[500px]:h-9 min-[500px]:w-auto px-0 min-[500px]:px-4',
             labelClassName: 'hidden min-[500px]:inline',
-            tooltip: t('Export'),
+            tooltip: translate('Export'),
             tooltipClassName: 'min-[500px]:hidden',
         });
     }
 
     if (useHasPermission('create-purchase-orders')) {
         pageActions.push({
-            label: t('Add Purchase Order'),
+            label: translate('Add Purchase Order'),
             icon: <Plus className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
             variant: 'default',
             onClick: () => handleAddNew(),
             className: 'h-8 w-8 min-[500px]:h-9 min-[500px]:w-auto px-0 min-[500px]:px-4',
             labelClassName: 'hidden min-[500px]:inline',
-            tooltip: t('Add Purchase Order'),
+            tooltip: translate('Add Purchase Order'),
             tooltipClassName: 'min-[500px]:hidden',
         });
     }
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Purchase Orders') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Purchase Orders') }];
 
     const columns = [
         {
             key: 'order_number',
-            label: t('Order Number'),
+            label: translate('Order Number'),
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: string, item: any) => (
@@ -242,13 +242,13 @@ export default function PurchaseOrders() {
         },
         {
             key: 'name',
-            label: t('Name'),
+            label: translate('Name'),
             sortable: true,
             render: (value: string) => <span className="font-medium whitespace-nowrap">{value || '-'}</span>,
         },
         {
             key: 'assigned_user',
-            label: t('Assigned To'),
+            label: translate('Assigned To'),
             className: 'whitespace-nowrap',
             render: (value: any) =>
                 value ? (
@@ -263,25 +263,25 @@ export default function PurchaseOrders() {
                         </div>
                     </div>
                 ) : (
-                    <span className="whitespace-nowrap">{t('Unassigned')}</span>
+                    <span className="whitespace-nowrap">{translate('Unassigned')}</span>
                 ),
         },
         {
             key: 'sales_order',
-            label: t('Sales Order'),
+            label: translate('Sales Order'),
             className: 'whitespace-nowrap',
-            render: (value: any) => <span className="whitespace-nowrap">{value?.name || t('-')}</span>,
+            render: (value: any) => <span className="whitespace-nowrap">{value?.name || translate('-')}</span>,
         },
         {
             key: 'order_date',
-            label: t('Order Date'),
+            label: translate('Order Date'),
             sortable: true,
             className: 'whitespace-nowrap',
             type: 'date',
         },
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             className: 'whitespace-nowrap',
             render: (value: string) => {
                 const statusColors = {
@@ -302,7 +302,7 @@ export default function PurchaseOrders() {
         },
         // {
         //     key: 'created_at',
-        //     label: t('Created At'),
+        //     label: translate('Created At'),
         //     sortable: true,
         //     className: 'whitespace-nowrap',
         //     type: 'date'
@@ -311,28 +311,28 @@ export default function PurchaseOrders() {
 
     const actions = [
         {
-            label: t('Change Status'),
+            label: translate('Change Status'),
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
             requiredPermission: 'toggle-status-purchase-orders',
         },
         {
-            label: t('View'),
+            label: translate('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
             requiredPermission: 'view-purchase-orders',
         },
         {
-            label: t('Edit'),
+            label: translate('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
             requiredPermission: 'edit-purchase-orders',
         },
         {
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
@@ -341,18 +341,18 @@ export default function PurchaseOrders() {
     ];
 
     const statusOptions = [
-        { value: 'all', label: t('All Statuses') },
-        { value: 'draft', label: t('Draft') },
-        { value: 'sent', label: t('Sent') },
-        { value: 'confirmed', label: t('Confirmed') },
-        { value: 'received', label: t('Received') },
-        { value: 'cancelled', label: t('Cancelled') },
+        { value: 'all', label: translate('All Statuses') },
+        { value: 'draft', label: translate('Draft') },
+        { value: 'sent', label: translate('Sent') },
+        { value: 'confirmed', label: translate('Confirmed') },
+        { value: 'received', label: translate('Received') },
+        { value: 'cancelled', label: translate('Cancelled') },
     ];
 
     return (
         <PageTemplate
-            title={t('Purchase Orders')}
-            description={t('Manage your purchase orders.')}
+            title={translate('Purchase Orders')}
+            description={translate('Manage your purchase orders.')}
             url="/purchase-orders"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -366,7 +366,7 @@ export default function PurchaseOrders() {
                     filters={[
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
@@ -374,38 +374,38 @@ export default function PurchaseOrders() {
                         },
                         {
                             name: 'account_id',
-                            label: t('Account'),
+                            label: translate('Account'),
                             type: 'select',
                             searchable: true,
                             value: selectedAccount,
                             onChange: setSelectedAccount,
                             options: [
-                                { value: 'all', label: t('All Accounts') },
+                                { value: 'all', label: translate('All Accounts') },
                                 ...(allAccounts?.map((acc: any) => ({ value: acc.id.toString(), label: acc.name })) || []),
                             ],
                         },
                         {
                             name: 'sales_order_id',
-                            label: t('Sales Order'),
+                            label: translate('Sales Order'),
                             type: 'select',
                             searchable: true,
                             value: selectedSalesOrder,
                             onChange: setSelectedSalesOrder,
                             options: [
-                                { value: 'all', label: t('All Sales Orders') },
+                                { value: 'all', label: translate('All Sales Orders') },
                                 ...(salesOrders?.map((so: any) => ({ value: so.id.toString(), label: so.name })) || []),
                             ],
                         },
                         {
                             name: 'assigned_to',
-                            label: t('Assigned To'),
+                            label: translate('Assigned To'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: t('All Users') },
-                                { value: 'unassigned', label: t('Unassigned') },
+                                { value: 'all', label: translate('All Users') },
+                                { value: 'unassigned', label: translate('Unassigned') },
                                 ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name })),
                             ],
                         },
@@ -442,7 +442,7 @@ export default function PurchaseOrders() {
                     to={purchaseOrders?.to || 0}
                     total={purchaseOrders?.total || 0}
                     links={purchaseOrders?.links}
-                    entityName={t('purchase orders')}
+                    entityName={translate('purchase orders')}
                     onPageChange={(url) => router.get(url)}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
@@ -473,22 +473,22 @@ export default function PurchaseOrders() {
                     fields: [
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             required: true,
                             options: [
-                                { value: 'draft', label: t('Draft') },
-                                { value: 'sent', label: t('Sent') },
-                                { value: 'confirmed', label: t('Confirmed') },
-                                { value: 'received', label: t('Received') },
-                                { value: 'cancelled', label: t('Cancelled') },
+                                { value: 'draft', label: translate('Draft') },
+                                { value: 'sent', label: translate('Sent') },
+                                { value: 'confirmed', label: translate('Confirmed') },
+                                { value: 'received', label: translate('Received') },
+                                { value: 'cancelled', label: translate('Cancelled') },
                             ],
                         },
                     ],
                     modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
-                title={t('Change Purchase Order Status')}
+                title={translate('Change Purchase Order Status')}
                 mode="edit"
             />
 
@@ -497,7 +497,7 @@ export default function PurchaseOrders() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={t('purchase order')}
+                entityName={translate('purchase order')}
             />
         </PageTemplate>
     );

@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function OrganizationPlanOrdersPage() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { flash, planOrders, filters: pageFilters = {}, auth } = usePage().props;
     const permissions = auth?.permissions || [];
 
@@ -83,9 +83,9 @@ export default function OrganizationPlanOrdersPage() {
     };
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Plans'), href: route('plans.index') },
-        { title: t('Plan Orders') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Plans'), href: route('plans.index') },
+        { title: translate('Plan Orders') },
     ];
 
     const hasActiveFilters = () => {
@@ -97,7 +97,7 @@ export default function OrganizationPlanOrdersPage() {
     };
 
     return (
-        <PageTemplate title={t('Plan Orders')} url="/organization/plan-orders" breadcrumbs={breadcrumbs} noPadding>
+        <PageTemplate title={translate('Plan Orders')} url="/organization/plan-orders" breadcrumbs={breadcrumbs} noPadding>
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
@@ -148,12 +148,12 @@ export default function OrganizationPlanOrdersPage() {
                     to={planOrders?.to || 0}
                     total={planOrders?.total || 0}
                     links={planOrders?.links}
-                    entityName={t('plan orders')}
+                    entityName={translate('plan orders')}
                     onPageChange={(url) => {
                         if (url) {
                             const urlObj = new URL(url, window.location.origin);
                             if (pageFilters.per_page) {
-                                urlObj.searchParams.set('per_page', pageFilters.per_page.toString());
+                                urlObj.searchParams.setranslate('per_page', pageFilters.per_page.toString());
                             }
                             router.get(urlObj.toString());
                         }

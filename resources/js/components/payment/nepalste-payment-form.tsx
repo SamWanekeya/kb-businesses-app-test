@@ -26,13 +26,13 @@ export function NepalstePaymentForm({
     onSuccess,
     onCancel,
 }: NepalstePaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     const handlePayment = async () => {
         if (!nepalstePublicKey) {
-            setError(t('Nepalste not configured'));
+            setError(translate('Nepalste not configured'));
             return;
         }
 
@@ -56,12 +56,12 @@ export function NepalstePaymentForm({
             const data = await response.json();
 
             if (data.success) {
-                const form = document.createElement('form');
+                const form = document.createElementranslate('form');
                 form.method = 'POST';
                 form.action = data.payment_url;
 
                 Object.keys(data.payment_data).forEach((key) => {
-                    const input = document.createElement('input');
+                    const input = document.createElementranslate('input');
                     input.type = 'hidden';
                     input.name = key;
                     input.value = typeof data.payment_data[key] === 'object' ? JSON.stringify(data.payment_data[key]) : data.payment_data[key];
@@ -71,16 +71,16 @@ export function NepalstePaymentForm({
                 document.body.appendChild(form);
                 form.submit();
             } else {
-                throw new Error(data.error || t('Payment creation failed'));
+                throw new Error(data.error || translate('Payment creation failed'));
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : t('Payment initialization failed'));
+            setError(err instanceof Error ? err.message : translate('Payment initialization failed'));
             setIsLoading(false);
         }
     };
 
     const formatPrice = (price: number) => {
-        return new Intl.NumberFormat('en-NP', {
+        return new Intl.NumberFormatranslate('en-NP', {
             style: 'currency',
             currency: currency,
         }).format(price);
@@ -91,7 +91,7 @@ export function NepalstePaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {t('Nepalste Payment')}
+                    {translate('Nepalste Payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -104,21 +104,21 @@ export function NepalstePaymentForm({
 
                 <div className="bg-muted rounded-lg p-4">
                     <div className="flex items-center justify-between">
-                        <span className="font-medium">{t('Total Amount')}</span>
+                        <span className="font-medium">{translate('Total Amount')}</span>
                         <span className="text-lg font-bold">{formatPrice(planPrice)}</span>
                     </div>
                     <div className="text-muted-foreground mt-1 text-sm">
-                        {t('Billing Cycle')}: {t(billingCycle)}
+                        {translate('Billing Cycle')}: {t(billingCycle)}
                     </div>
                     {couponCode && (
                         <div className="mt-1 text-sm text-green-600">
-                            {t('Coupon Applied')}: {couponCode}
+                            {translate('Coupon Applied')}: {couponCode}
                         </div>
                     )}
                 </div>
 
                 <div className="rounded-lg border border-red-200 bg-red-50 p-4">
-                    <h4 className="mb-2 font-medium text-red-900">{t('Supported Payment Methods')}</h4>
+                    <h4 className="mb-2 font-medium text-red-900">{translate('Supported Payment Methods')}</h4>
                     <ul className="space-y-1 text-sm text-red-800">
                         <li>• eSewa</li>
                         <li>• Khalti</li>
@@ -129,18 +129,18 @@ export function NepalstePaymentForm({
 
                 <div className="flex gap-3">
                     <Button variant="outline" onClick={onCancel} disabled={isLoading} className="flex-1">
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     <Button onClick={handlePayment} disabled={isLoading || !nepalstePublicKey} className="flex-1">
                         {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                {t('Redirecting...')}
+                                {translate('Redirecting...')}
                             </>
                         ) : (
                             <>
                                 <ExternalLink className="mr-2 h-4 w-4" />
-                                {t('Pay with Nepalste')}
+                                {translate('Pay with Nepalste')}
                             </>
                         )}
                     </Button>

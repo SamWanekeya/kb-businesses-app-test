@@ -27,7 +27,7 @@ export function ChatGptModal({
     title = 'AI Content Generator',
     placeholder = 'Describe what you want to generate...',
 }: ChatGptModalProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { modalId, zIndex } = useStackedModal('chatgpt-modal', isOpen);
     const [prompt, setPrompt] = useState('');
     const [generatedContent, setGeneratedContent] = useState('');
@@ -41,7 +41,7 @@ export function ChatGptModal({
 
     const handleGenerate = async () => {
         if (!prompt.trim()) {
-            toast.error(t('Please enter a prompt'));
+            toast.error(translate('Please enter a prompt'));
             return;
         }
 
@@ -71,10 +71,10 @@ export function ChatGptModal({
                 }
                 setGeneratedContent(data.content);
             } else {
-                toast.error(data.message || t('Failed to generate content'));
+                toast.error(data.message || translate('Failed to generate content'));
             }
         } catch (error) {
-            toast.error(t('Error connecting to AI service'));
+            toast.error(translate('Error connecting to AI service'));
         } finally {
             setIsLoading(false);
         }
@@ -88,9 +88,9 @@ export function ChatGptModal({
     };
 
     const handleClose = () => {
-        setPrompt('');
-        setGeneratedContent('');
-        setSelectedText('');
+        setPromptranslate('');
+        setGeneratedContentranslate('');
+        setSelectedTextranslate('');
         setCopied(false);
         onClose();
     };
@@ -99,10 +99,10 @@ export function ChatGptModal({
         try {
             await navigator.clipboard.writeText(text);
             setCopied(true);
-            toast.success(t('Copied to clipboard'));
+            toast.success(translate('Copied to clipboard'));
             setTimeout(() => setCopied(false), 2000);
         } catch (error) {
-            toast.error(t('Failed to copy'));
+            toast.error(translate('Failed to copy'));
         }
     };
 
@@ -143,7 +143,7 @@ export function ChatGptModal({
                 <div className="space-y-4 p-6">
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <Label>{t('Language')}</Label>
+                            <Label>{translate('Language')}</Label>
                             <Select value={language} onValueChange={setLanguage}>
                                 <SelectTrigger>
                                     <SelectValue />
@@ -163,15 +163,15 @@ export function ChatGptModal({
                             </Select>
                         </div>
                         <div>
-                            <Label>{t('AI Creativity')}</Label>
+                            <Label>{translate('AI Creativity')}</Label>
                             <Select value={creativity} onValueChange={setCreativity}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent style={{ zIndex: zIndex + 10 }}>
-                                    <SelectItem value="low">{t('Low')} (0.3)</SelectItem>
-                                    <SelectItem value="medium">{t('Medium')} (0.7)</SelectItem>
-                                    <SelectItem value="high">{t('High')} (0.9)</SelectItem>
+                                    <SelectItem value="low">{translate('Low')} (0.3)</SelectItem>
+                                    <SelectItem value="medium">{translate('Medium')} (0.7)</SelectItem>
+                                    <SelectItem value="high">{translate('High')} (0.9)</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -179,17 +179,17 @@ export function ChatGptModal({
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <Label>{t('Number of Results')}</Label>
+                            <Label>{translate('Number of Results')}</Label>
                             <Input type="number" value={numResults} onChange={(e) => setNumResults(Number(e.target.value))} min={1} max={5} />
                         </div>
                         <div>
-                            <Label>{t('Max Result Length')}</Label>
+                            <Label>{translate('Max Result Length')}</Label>
                             <Input type="number" value={maxLength} onChange={(e) => setMaxLength(Number(e.target.value))} min={50} max={500} />
                         </div>
                     </div>
 
                     <div>
-                        <Label htmlFor="prompt">{t('Add Text')}</Label>
+                        <Label htmlFor="prompt">{translate('Add Text')}</Label>
                         <Textarea
                             id="prompt"
                             value={prompt}
@@ -204,12 +204,12 @@ export function ChatGptModal({
                         {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                {t('Generating...')}
+                                {translate('Generating...')}
                             </>
                         ) : (
                             <>
                                 <Sparkles className="mr-2 h-4 w-4" />
-                                {t('Generate')}
+                                {translate('Generate')}
                             </>
                         )}
                     </Button>
@@ -217,17 +217,17 @@ export function ChatGptModal({
                     {generatedContent && (
                         <div>
                             <div className="mb-2 flex items-center justify-between">
-                                <Label htmlFor="generated">{t('Output Text')}</Label>
+                                <Label htmlFor="generated">{translate('Output Text')}</Label>
                                 <div className="flex gap-2">
                                     {selectedText && (
                                         <Button size="sm" variant="outline" onClick={() => copyToClipboard(selectedText)}>
                                             {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                                            {t('Copy Selected')}
+                                            {translate('Copy Selected')}
                                         </Button>
                                     )}
                                     <Button size="sm" variant="outline" onClick={() => copyToClipboard(generatedContent)}>
                                         {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                                        {t('Copy Text')}
+                                        {translate('Copy Text')}
                                     </Button>
                                 </div>
                             </div>
@@ -241,10 +241,10 @@ export function ChatGptModal({
                             />
                             <div className="mt-2 flex gap-2">
                                 <Button onClick={handleUse} className="flex-1">
-                                    {t('Use This Content')}
+                                    {translate('Use This Content')}
                                 </Button>
                                 <Button variant="outline" onClick={handleGenerate} disabled={isLoading}>
-                                    {t('Regenerate')}
+                                    {translate('Regenerate')}
                                 </Button>
                             </div>
                         </div>

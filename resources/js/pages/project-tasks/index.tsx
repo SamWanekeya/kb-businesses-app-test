@@ -16,7 +16,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 function ParentTaskSelect({ tasksRef, value, onChange }: { tasksRef: React.MutableRefObject<any[]>; value: string; onChange: (v: string) => void }) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [tasks, setTasks] = useState<any[]>(() => [...tasksRef.current]);
 
     useEffect(() => {
@@ -30,7 +30,7 @@ function ParentTaskSelect({ tasksRef, value, onChange }: { tasksRef: React.Mutab
     return (
         <Select value={value || ''} onValueChange={onChange}>
             <SelectTrigger>
-                <SelectValue placeholder={t('Select Parent Task')} />
+                <SelectValue placeholder={translate('Select Parent Task')} />
             </SelectTrigger>
             <SelectContent className="z-[60000]">
                 {tasks.map((task: any) => (
@@ -44,7 +44,7 @@ function ParentTaskSelect({ tasksRef, value, onChange }: { tasksRef: React.Mutab
 }
 
 export default function ProjectTasks() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const {
         auth,
         kanbanData: initialKanbanData,
@@ -182,7 +182,7 @@ export default function ProjectTasks() {
 
     const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
-            toast.loading(t('Creating task...'));
+            toast.loading(translate('Creating task...'));
             router.post(
                 route('project-tasks.store'),
                 {
@@ -199,13 +199,13 @@ export default function ProjectTasks() {
                     onError: (errors) => {
                         toast.dismiss();
                         toast.error(
-                            typeof errors === 'string' ? errors : t('Failed to create: {{errors}}', { errors: Object.values(errors).join(', ') }),
+                            typeof errors === 'string' ? errors : translate('Failed to create: {{errors}}', { errors: Object.values(errors).join(', ') }),
                         );
                     },
                 },
             );
         } else if (formMode === 'edit') {
-            toast.loading(t('Updating task...'));
+            toast.loading(translate('Updating task...'));
             router.put(route('project-tasks.update', currentItem.id), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
@@ -216,7 +216,7 @@ export default function ProjectTasks() {
                 onError: (errors) => {
                     toast.dismiss();
                     toast.error(
-                        typeof errors === 'string' ? errors : t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }),
+                        typeof errors === 'string' ? errors : translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }),
                     );
                 },
             });
@@ -224,7 +224,7 @@ export default function ProjectTasks() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting task...'));
+        toast.loading(translate('Deleting task...'));
         router.delete(route('project-tasks.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
@@ -234,7 +234,7 @@ export default function ProjectTasks() {
             },
             onError: (errors) => {
                 toast.dismiss();
-                toast.error(typeof errors === 'string' ? errors : t('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(typeof errors === 'string' ? errors : translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
     };
@@ -243,34 +243,34 @@ export default function ProjectTasks() {
 
     if (useHasPermission('export-project-tasks')) {
         pageActions.push({
-            label: t('Export'),
+            label: translate('Export'),
             icon: <FileDown className="min-[390px]: mr-0 mr-2 h-4 w-4" />,
             variant: 'outline',
             onClick: () => (window.location.href = route('project-task.export')),
             className: 'h-8 w-8 min-[390px]:h-9 min-[390px]:w-auto px-0 min-[390px]:px-4',
             labelClassName: 'hidden min-[390px]:inline',
-            tooltip: t('Export'),
+            tooltip: translate('Export'),
             tooltipClassName: 'min-[390px]:hidden',
         });
     }
 
     if (useHasPermission('create-project-tasks')) {
         pageActions.push({
-            label: t('Add Task'),
+            label: translate('Add Task'),
             icon: <Plus className="mr-0 h-4 w-4 min-[390px]:mr-2" />,
             variant: 'default',
             className: 'h-8 w-8 min-[390px]:h-9 min-[390px]:w-auto px-0 min-[390px]:px-4',
             labelClassName: 'hidden min-[390px]:inline',
-            tooltip: t('Add Task'),
+            tooltip: translate('Add Task'),
             tooltipClassName: 'min-[390px]:hidden',
             onClick: () => handleAddTask(''),
         });
     }
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Project Management'), href: route('project-tasks.index') },
-        { title: t('Project Tasks') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Project Management'), href: route('project-tasks.index') },
+        { title: translate('Project Tasks') },
     ];
 
     const priorityColors: any = {
@@ -282,8 +282,8 @@ export default function ProjectTasks() {
 
     return (
         <PageTemplate
-            title={t('Project Tasks')}
-            description={t('Manage your project tasks.')}
+            title={translate('Project Tasks')}
+            description={translate('Manage your project tasks.')}
             url="/project-tasks"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -307,50 +307,50 @@ export default function ProjectTasks() {
                     filters={[
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
                             options: [
-                                { value: 'all', label: t('All Status') },
+                                { value: 'all', label: translate('All Status') },
                                 ...allTaskStatuses.map((s: any) => ({ value: s.id.toString(), label: s.name })),
                             ],
                         },
                         {
                             name: 'priority',
-                            label: t('Priority'),
+                            label: translate('Priority'),
                             type: 'select',
                             value: selectedPriority,
                             onChange: setSelectedPriority,
                             options: [
-                                { value: 'all', label: t('All Priorities') },
-                                { value: 'low', label: t('Low') },
-                                { value: 'medium', label: t('Medium') },
-                                { value: 'high', label: t('High') },
-                                { value: 'urgent', label: t('Urgent') },
+                                { value: 'all', label: translate('All Priorities') },
+                                { value: 'low', label: translate('Low') },
+                                { value: 'medium', label: translate('Medium') },
+                                { value: 'high', label: translate('High') },
+                                { value: 'urgent', label: translate('Urgent') },
                             ],
                         },
                         {
                             name: 'project_id',
-                            label: t('Project'),
+                            label: translate('Project'),
                             type: 'select',
                             searchable: true,
                             value: selectedProject,
                             onChange: setSelectedProject,
                             options: [
-                                { value: 'all', label: t('All Projects') },
+                                { value: 'all', label: translate('All Projects') },
                                 ...allProjects.map((p: any) => ({ value: p.id.toString(), label: p.name })),
                             ],
                         },
                         {
                             name: 'assigned_to',
-                            label: t('Assigned To'),
+                            label: translate('Assigned To'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: t('All Users') },
+                                { value: 'all', label: translate('All Users') },
                                 ...allUsers.map((u: any) => ({ value: u.id.toString(), label: u.name })),
                             ],
                         },
@@ -370,9 +370,9 @@ export default function ProjectTasks() {
                                 <LayoutGrid className="text-primary h-10 w-10" />
                             </div>
                             <div className="space-y-1.5">
-                                <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{t('No Task Status Yet')}</h3>
+                                <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{translate('No Task Status Yet')}</h3>
                                 <p className="text-muted-foreground text-sm leading-relaxed">
-                                    {t('Set up task statuses to start organizing your work in a Kanban board.')}
+                                    {translate('Set up task statuses to start organizing your work in a Kanban board.')}
                                 </p>
                             </div>
                             {useHasPermission('manage-task-statuses') && (
@@ -381,7 +381,7 @@ export default function ProjectTasks() {
                                     className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
                                 >
                                     <Plus className="h-4 w-4" />
-                                    {t('Add Task Status')}
+                                    {translate('Add Task Status')}
                                 </button>
                             )}
                         </div>
@@ -402,10 +402,10 @@ export default function ProjectTasks() {
                                     const taskId = e.dataTransfer.getData('taskId');
                                     if (!taskId) return;
                                     if (!useHasPermission('move-project-task')) {
-                                        toast.error(t('Permission denied.'));
+                                        toast.error(translate('Permission denied.'));
                                         return;
                                     }
-                                    toast.loading(t('Updating task status...'));
+                                    toast.loading(translate('Updating task status...'));
                                     router.put(
                                         route('project-tasks.update-status', taskId),
                                         { task_status_id: status.id },
@@ -420,7 +420,7 @@ export default function ProjectTasks() {
                                             },
                                             onError: () => {
                                                 toast.dismiss();
-                                                toast.error(t('Failed to update task status'));
+                                                toast.error(translate('Failed to update task status'));
                                             },
                                         },
                                     );
@@ -442,7 +442,7 @@ export default function ProjectTasks() {
                                         <button
                                             onClick={() => handleAddTask(status.id.toString())}
                                             className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-white/60 hover:text-gray-800"
-                                            title={t('Add Task')}
+                                            title={translate('Add Task')}
                                         >
                                             <Plus className="h-4 w-4" />
                                         </button>
@@ -456,7 +456,7 @@ export default function ProjectTasks() {
                                             <div className="mb-2 flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-gray-200">
                                                 <User className="h-6 w-6 text-gray-300" />
                                             </div>
-                                            <p className="text-xs text-gray-400">{t('Drop tasks here')}</p>
+                                            <p className="text-xs text-gray-400">{translate('Drop tasks here')}</p>
                                         </div>
                                     ) : (
                                         statusTasks.map((task: any) => (
@@ -508,13 +508,13 @@ export default function ProjectTasks() {
                                                                         {useHasPermission('view-project-tasks') && (
                                                                             <DropdownMenuItem onClick={() => handleAction('view', task)}>
                                                                                 <Eye className="mr-2 h-4 w-4" />
-                                                                                {t('View')}
+                                                                                {translate('View')}
                                                                             </DropdownMenuItem>
                                                                         )}
                                                                         {useHasPermission('edit-project-tasks') && (
                                                                             <DropdownMenuItem onClick={() => handleAction('edit', task)}>
                                                                                 <Edit className="mr-2 h-4 w-4" />
-                                                                                {t('Edit')}
+                                                                                {translate('Edit')}
                                                                             </DropdownMenuItem>
                                                                         )}
                                                                         {useHasPermission('delete-project-tasks') && (
@@ -525,7 +525,7 @@ export default function ProjectTasks() {
                                                                                     className="text-red-600"
                                                                                 >
                                                                                     <Trash2 className="mr-2 h-4 w-4" />
-                                                                                    {t('Delete')}
+                                                                                    {translate('Delete')}
                                                                                 </DropdownMenuItem>
                                                                             </>
                                                                         )}
@@ -546,7 +546,7 @@ export default function ProjectTasks() {
                                                         {/* Progress bar */}
                                                         <div className="mb-2.5">
                                                             <div className="mb-1 flex justify-between text-xs">
-                                                                <span className="text-gray-500">{t('Progress')}</span>
+                                                                <span className="text-gray-500">{translate('Progress')}</span>
                                                                 <span className="font-medium text-gray-700">{task.progress}%</span>
                                                             </div>
                                                             <div className="h-1.5 w-full rounded-full bg-gray-200">
@@ -562,11 +562,11 @@ export default function ProjectTasks() {
                                                             <div className="flex items-center gap-1 text-xs text-gray-500">
                                                                 <Calendar className="h-3 w-3" />
                                                                 <span>
-                                                                    {t('Due')}:{' '}
+                                                                    {translate('Due')}:{' '}
                                                                     {task.due_date
                                                                         ? window.appSettings?.formatDateTime(task.due_date, false) ||
                                                                           new Date(task.due_date).toLocaleDateString()
-                                                                        : t('No due date')}
+                                                                        : translate('No due date')}
                                                                 </span>
                                                             </div>
                                                             {task.assigned_user ? (
@@ -616,20 +616,20 @@ export default function ProjectTasks() {
                     fields: [
                         {
                             name: 'title',
-                            label: t('Task Title'),
+                            label: translate('Task Title'),
                             type: 'text',
                             required: true,
-                            placeholder: t('e.g. Design homepage mockup, Fix sign in bug'),
+                            placeholder: translate('e.g. Design homepage mockup, Fix sign in bug'),
                         },
-                        { name: 'description', label: t('Description'), type: 'textarea', placeholder: t('Enter task description...') },
+                        { name: 'description', label: translate('Description'), type: 'textarea', placeholder: translate('Enter task description...') },
                         {
                             name: formMode === 'view' ? 'project_name' : 'project_id',
-                            label: t('Project'),
+                            label: translate('Project'),
                             type: formMode === 'view' ? 'text' : 'select',
                             required: true,
                             searchable: true,
                             readOnly: formMode === 'view',
-                            emptyNote: { link: route('projects.index'), linkText: t('Projects') },
+                            emptyNote: { link: route('projects.index'), linkText: translate('Projects') },
                             options: formMode === 'view' ? [] : projects.map((p: any) => ({ value: String(p.id), label: p.name })),
                             onChange: (value: string) => {
                                 setParentTasks([]);
@@ -643,7 +643,7 @@ export default function ProjectTasks() {
                         },
                         {
                             name: 'parent_id',
-                            label: t('Parent Task'),
+                            label: translate('Parent Task'),
                             type: 'custom',
                             render: (_field: any, formData: any, handleChange: any, _errors: any, mode: any) => {
                                 if (mode === 'view') {
@@ -658,43 +658,43 @@ export default function ProjectTasks() {
                                 );
                             },
                         },
-                        { name: 'start_date', label: t('Start Date'), type: 'date' },
-                        { name: 'due_date', label: t('Due Date'), type: 'date' },
+                        { name: 'start_date', label: translate('Start Date'), type: 'date' },
+                        { name: 'due_date', label: translate('Due Date'), type: 'date' },
                         {
                             name: 'priority',
-                            label: t('Priority'),
+                            label: translate('Priority'),
                             type: 'select',
                             options: [
-                                { value: 'low', label: t('Low') },
-                                { value: 'medium', label: t('Medium') },
-                                { value: 'high', label: t('High') },
-                                { value: 'urgent', label: t('Urgent') },
+                                { value: 'low', label: translate('Low') },
+                                { value: 'medium', label: translate('Medium') },
+                                { value: 'high', label: translate('High') },
+                                { value: 'urgent', label: translate('Urgent') },
                             ],
                             defaultValue: 'medium',
                         },
                         {
                             name: 'task_status_id',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('task-statuses.index'), linkText: t('Task Statuses') },
+                            emptyNote: { link: route('task-statuses.index'), linkText: translate('Task Statuses') },
                             options: taskStatuses.map((s: any) => ({ value: String(s.id), label: s.name })),
                             defaultValue: prefilledStatus
                                 ? String(prefilledStatus)
                                 : String(taskStatuses.find((s: any) => s.name === 'To Do')?.id || taskStatuses[0]?.id || ''),
                             hidden: formMode === 'create' && !!prefilledStatus,
                         },
-                        { name: 'estimated_hours', label: t('Estimated Hours'), type: 'number', step: '0.5', placeholder: t('e.g. 8') },
-                        { name: 'actual_hours', label: t('Actual Hours'), type: 'number', step: '0.5', placeholder: t('e.g. 6.5') },
-                        { name: 'progress', label: t('Progress (%)'), type: 'number', min: '0', max: '100', placeholder: t('e.g. 50') },
+                        { name: 'estimated_hours', label: translate('Estimated Hours'), type: 'number', step: '0.5', placeholder: translate('e.g. 8') },
+                        { name: 'actual_hours', label: translate('Actual Hours'), type: 'number', step: '0.5', placeholder: translate('e.g. 6.5') },
+                        { name: 'progress', label: translate('Progress (%)'), type: 'number', min: '0', max: '100', placeholder: translate('e.g. 50') },
                         {
                             name: formMode === 'view' ? 'assigned_user_name' : 'assigned_to',
-                            label: t('Assign To'),
+                            label: translate('Assign To'),
                             type: formMode === 'view' ? 'text' : 'select',
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('users.index'), linkText: t('Users') },
+                            emptyNote: { link: route('users.index'), linkText: translate('Users') },
                             options: formMode === 'view' ? [] : users.map((u: any) => ({ value: String(u.id), label: `${u.name} (${u.email})` })),
                             readOnly: formMode === 'view',
                         },
@@ -709,13 +709,13 @@ export default function ProjectTasks() {
                               assigned_to: currentItem.assigned_user?.id ? String(currentItem.assigned_user.id) : '',
                               task_status_id: currentItem.task_status_id ? String(currentItem.task_status_id) : '',
                               parent_id: currentItem.parent_id ? String(currentItem.parent_id) : '',
-                              assigned_user_name: currentItem.assigned_user?.name || t('Unassigned'),
-                              project_name: currentItem.project?.name || t('No Project'),
-                              parent_name: currentItem.parent?.title || t('No Parent Task'),
+                              assigned_user_name: currentItem.assigned_user?.name || translate('Unassigned'),
+                              project_name: currentItem.project?.name || translate('No Project'),
+                              parent_name: currentItem.parent?.title || translate('No Parent Task'),
                           }
                         : null
                 }
-                title={formMode === 'create' ? t('Add Task') : formMode === 'edit' ? t('Edit Task') : t('View Task')}
+                title={formMode === 'create' ? translate('Add Task') : formMode === 'edit' ? translate('Edit Task') : translate('View Task')}
                 mode={formMode}
             />
 
@@ -724,7 +724,7 @@ export default function ProjectTasks() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.title || ''}
-                entityName={t('task')}
+                entityName={translate('task')}
             />
         </PageTemplate>
     );

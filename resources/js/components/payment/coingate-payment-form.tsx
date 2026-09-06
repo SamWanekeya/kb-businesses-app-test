@@ -16,7 +16,7 @@ interface CoinGatePaymentFormProps {
 }
 
 export function CoinGatePaymentForm({ planId, couponCode, billingCycle, planPrice, currency, onSuccess, onCancel }: CoinGatePaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isProcessing, setIsProcessing] = useState(false);
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -24,14 +24,14 @@ export function CoinGatePaymentForm({ planId, couponCode, billingCycle, planPric
         setIsProcessing(true);
 
         // Create form and submit directly to avoid CORS
-        const form = document.createElement('form');
+        const form = document.createElementranslate('form');
         form.method = 'POST';
         form.action = route('coingate.payment');
 
         // Add CSRF token
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
         if (csrfToken) {
-            const csrfInput = document.createElement('input');
+            const csrfInput = document.createElementranslate('input');
             csrfInput.type = 'hidden';
             csrfInput.name = '_token';
             csrfInput.value = csrfToken;
@@ -47,7 +47,7 @@ export function CoinGatePaymentForm({ planId, couponCode, billingCycle, planPric
         };
 
         Object.entries(formData).forEach(([key, value]) => {
-            const input = document.createElement('input');
+            const input = document.createElementranslate('input');
             input.type = 'hidden';
             input.name = key;
             input.value = String(value);
@@ -63,31 +63,31 @@ export function CoinGatePaymentForm({ planId, couponCode, billingCycle, planPric
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <Coins className="h-5 w-5 text-orange-500" />
-                    {t('CoinGate Cryptocurrency Payment')}
+                    {translate('CoinGate Cryptocurrency Payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent>
                 <Alert className="mb-4">
                     <Info className="h-4 w-4" />
-                    <AlertDescription>{t('You will be redirected to CoinGate to complete your cryptocurrency payment securely.')}</AlertDescription>
+                    <AlertDescription>{translate('You will be redirected to CoinGate to complete your cryptocurrency payment securely.')}</AlertDescription>
                 </Alert>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="bg-muted rounded-lg p-4">
                         <div className="mb-2 flex items-center justify-between">
-                            <span className="text-sm font-medium">{t('Plan')}</span>
+                            <span className="text-sm font-medium">{translate('Plan')}</span>
                             <span className="text-sm">
-                                {t(billingCycle)} {t('billing')}
+                                {t(billingCycle)} {translate('billing')}
                             </span>
                         </div>
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium">{t('Amount')}</span>
+                            <span className="text-sm font-medium">{translate('Amount')}</span>
                             <span className="text-lg font-bold">
                                 {currency} {planPrice}
                             </span>
                         </div>
                         <p className="text-muted-foreground mt-2 text-xs">
-                            {t('Final cryptocurrency amount will be calculated at checkout based on current exchange rates')}
+                            {translate('Final cryptocurrency amount will be calculated at checkout based on current exchange rates')}
                         </p>
                     </div>
 
@@ -95,11 +95,11 @@ export function CoinGatePaymentForm({ planId, couponCode, billingCycle, planPric
                         <div className="flex items-start gap-2">
                             <Info className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-600" />
                             <div className="text-xs text-blue-800">
-                                <p className="mb-1 font-medium">{t('Payment Process:')}</p>
+                                <p className="mb-1 font-medium">{translate('Payment Process:')}</p>
                                 <ul className="list-inside list-disc space-y-1">
-                                    <li>{t('Click "Pay with Crypto" to proceed to CoinGate')}</li>
-                                    <li>{t('Complete payment using your selected cryptocurrency')}</li>
-                                    <li>{t('You will be redirected back after payment completion')}</li>
+                                    <li>{translate('Click "Pay with Crypto" to proceed to CoinGate')}</li>
+                                    <li>{translate('Complete payment using your selected cryptocurrency')}</li>
+                                    <li>{translate('You will be redirected back after payment completion')}</li>
                                 </ul>
                             </div>
                         </div>
@@ -107,18 +107,18 @@ export function CoinGatePaymentForm({ planId, couponCode, billingCycle, planPric
 
                     <div className="flex gap-3 pt-4">
                         <Button type="button" variant="outline" onClick={onCancel} className="flex-1" disabled={isProcessing}>
-                            {t('Cancel')}
+                            {translate('Cancel')}
                         </Button>
                         <Button type="submit" disabled={isProcessing} className="flex-1 bg-orange-600 hover:bg-orange-700">
                             {isProcessing ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    {t('Redirecting...')}
+                                    {translate('Redirecting...')}
                                 </>
                             ) : (
                                 <>
                                     <Coins className="mr-2 h-4 w-4" />
-                                    {t('Pay with Crypto')}
+                                    {translate('Pay with Crypto')}
                                 </>
                             )}
                         </Button>

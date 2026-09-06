@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function RolesCreate() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, permissions, globalSettings } = usePage().props;
     const isDemo = globalSettings?.is_demo;
 
@@ -23,18 +23,18 @@ export default function RolesCreate() {
     const [processing, setProcessing] = useState(false);
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Staff'), href: route('users.index') },
-        { title: t('Roles'), href: route('roles.index') },
-        { title: t('Add Role') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Staff'), href: route('users.index') },
+        { title: translate('Roles'), href: route('roles.index') },
+        { title: translate('Add Role') },
     ];
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
         const newErrors: Record<string, string> = {};
-        if (!label.trim()) newErrors.label = t('Role name is required');
-        if (selectedPermissions.length === 0) newErrors.permissions = t('At least one permission is required');
+        if (!label.trim()) newErrors.label = translate('Role name is required');
+        if (selectedPermissions.length === 0) newErrors.permissions = translate('At least one permission is required');
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -43,7 +43,7 @@ export default function RolesCreate() {
 
         if (!isDemo) {
             setProcessing(true);
-            if (!globalSettings?.is_demo) toast.loading(t('Creating role...'));
+            if (!globalSettings?.is_demo) toast.loading(translate('Creating role...'));
         }
 
         router.post(
@@ -73,7 +73,7 @@ export default function RolesCreate() {
 
     const pageActions = [
         {
-            label: t('Back'),
+            label: translate('Back'),
             icon: <ArrowLeft className="mr-2 h-4 w-4" />,
             variant: 'outline' as const,
             onClick: () => router.get(route('roles.index')),
@@ -82,8 +82,8 @@ export default function RolesCreate() {
 
     return (
         <PageTemplate
-            title={t('Add Role')}
-            description={t('Fill in the details to create a new role')}
+            title={translate('Add Role')}
+            description={translate('Fill in the details to create a new role')}
             url="/roles/create"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -92,32 +92,32 @@ export default function RolesCreate() {
                 {/* Basic Info */}
                 <Card>
                     <CardHeader className="pb-3">
-                        <CardTitle className="text-base font-semibold">{t('Role Information')}</CardTitle>
-                        <CardDescription>{t('Enter the role name and an optional description.')}</CardDescription>
+                        <CardTitle className="text-base font-semibold">{translate('Role Information')}</CardTitle>
+                        <CardDescription>{translate('Enter the role name and an optional description.')}</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1.5">
                                 <Label required htmlFor="label">
-                                    {t('Role Name')}
+                                    {translate('Role Name')}
                                 </Label>
                                 <Input
                                     id="label"
                                     required
                                     value={label}
                                     onChange={(e) => setLabel(e.target.value)}
-                                    placeholder={t('e.g. Legal Consultant, Junior Advocate, Associate Advocate')}
+                                    placeholder={translate('e.g. Legal Consultant, Junior Advocate, Associate Advocate')}
                                     className={errors.label ? 'border-red-500' : ''}
                                 />
                                 {errors.label && <p className="text-xs text-red-500">{errors.label}</p>}
                             </div>
                             <div className="space-y-1.5">
-                                <Label htmlFor="description">{t('Description')}</Label>
+                                <Label htmlFor="description">{translate('Description')}</Label>
                                 <Textarea
                                     id="description"
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
-                                    placeholder={t('Enter role description...')}
+                                    placeholder={translate('Enter role description...')}
                                     rows={3}
                                 />
                             </div>
@@ -128,12 +128,12 @@ export default function RolesCreate() {
                 {/* Permissions */}
                 <Card>
                     <CardHeader className="pb-3">
-                        <CardTitle className="text-base font-semibold">{t('Role Permissions')}</CardTitle>
+                        <CardTitle className="text-base font-semibold">{translate('Role Permissions')}</CardTitle>
                         <CardDescription>
-                            {t('Select permissions for this role. You can select all permissions at once or manage them by module.')}
+                            {translate('Select permissions for this role. You can select all permissions at once or manage them by module.')}
                             {auth?.user?.type !== 'super_admin' && (
                                 <span className="mt-1 block text-xs text-amber-600">
-                                    {t('Note: Only permissions for modules available to your role are shown.')}
+                                    {translate('Note: Only permissions for modules available to your role are shown.')}
                                 </span>
                             )}
                         </CardDescription>
@@ -151,10 +151,10 @@ export default function RolesCreate() {
                 {/* Submit */}
                 <div className="flex flex-col-reverse justify-end gap-3 pb-2 sm:flex-row">
                     <Button type="button" variant="outline" onClick={() => router.get(route('roles.index'))}>
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     <Button type="submit" disabled={processing}>
-                        {processing && !isDemo ? t('Saving...') : t('Save')}
+                        {processing && !isDemo ? translate('Saving...') : translate('Save')}
                     </Button>
                 </div>
             </form>

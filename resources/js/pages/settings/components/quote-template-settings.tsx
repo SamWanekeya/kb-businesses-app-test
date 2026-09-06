@@ -158,7 +158,7 @@ const colors = [
 ];
 
 export default function QuoteTemplateSettings() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { settings } = usePage().props;
     const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
@@ -265,7 +265,7 @@ export default function QuoteTemplateSettings() {
 
             if (result.success) {
                 toast.success(result.success);
-                reset('quoteLogo');
+                resetranslate('quoteLogo');
             } else if (result.error) {
                 toast.error(result.error);
             } else {
@@ -280,12 +280,12 @@ export default function QuoteTemplateSettings() {
 
     return (
         <SettingsSection
-            title={t('Quote Templates')}
-            description={t('Configure quote template, colors, and display options')}
+            title={translate('Quote Templates')}
+            description={translate('Configure quote template, colors, and display options')}
             action={
                 <Button type="submit" disabled={saving} form="quote-template-settings-form" size="sm" className="max-[1300px]:px-2.5">
                     <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                    <span className="max-[1300px]:hidden">{saving ? t('Saving...') : t('Save Changes')}</span>
+                    <span className="max-[1300px]:hidden">{saving ? translate('Saving...') : translate('Save Changes')}</span>
                 </Button>
             }
         >
@@ -295,10 +295,10 @@ export default function QuoteTemplateSettings() {
                         <div className="grid grid-cols-1 gap-6 min-[1300px]:grid-cols-[320px_1fr] min-[1300px]:items-start">
                             <div ref={settingsRef} className="space-y-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="quote_template">{t('Quote Template')}</Label>
+                                    <Label htmlFor="quote_template">{translate('Quote Template')}</Label>
                                     <Select value={data.quoteTemplate} onValueChange={(value) => setData('quoteTemplate', value)}>
                                         <SelectTrigger>
-                                            <SelectValue placeholder={t('Select template')} />
+                                            <SelectValue placeholder={translate('Select template')} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {Object.entries(templates).map(([key, name]) => (
@@ -313,7 +313,7 @@ export default function QuoteTemplateSettings() {
 
                                 <div className="flex items-center justify-between">
                                     <Label htmlFor="quote_qr_enabled" className="text-sm font-medium">
-                                        {t('QR Display?')}
+                                        {translate('QR Display?')}
                                     </Label>
                                     <Switch
                                         id="quote_qr_enabled"
@@ -323,7 +323,7 @@ export default function QuoteTemplateSettings() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label>{t('Color Input')}</Label>
+                                    <Label>{translate('Color Input')}</Label>
                                     <div className="grid w-50 grid-cols-6 gap-1">
                                         {colors.map((color) => (
                                             <label key={color} className="cursor-pointer">
@@ -347,22 +347,22 @@ export default function QuoteTemplateSettings() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="quoteLogo">{t('Quote Logo')}</Label>
+                                    <Label htmlFor="quoteLogo">{translate('Quote Logo')}</Label>
                                     <MediaPicker
                                         label=""
                                         value={data.quoteLogoId || ''}
                                         onChange={handleLogoSelect}
-                                        placeholder={t('Select quote logo...')}
+                                        placeholder={translate('Select quote logo...')}
                                         showPreview={true}
                                         returnType="id"
                                     />
                                     {errors.quoteLogo && <p className="text-sm text-red-600">{errors.quoteLogo}</p>}
-                                    <p className="text-xs text-gray-500">{t('Select a logo for quotes')}</p>
+                                    <p className="text-xs text-gray-500">{translate('Select a logo for quotes')}</p>
                                 </div>
                             </div>
 
                             <div className="space-y-2">
-                                <Label>{t('Preview')}</Label>
+                                <Label>{translate('Preview')}</Label>
                                 <div
                                     className="overflow-x-auto overflow-y-auto rounded-lg border bg-white lg:sticky lg:top-6"
                                     style={{ height: settingsHeight - 25 || 'auto' }}

@@ -27,7 +27,7 @@ export function InvoiceSkrillPaymentForm({
     onSuccess,
     onCancel,
 }: InvoiceSkrillPaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isProcessing, setIsProcessing] = useState(false);
     const [email, setEmail] = useState('');
 
@@ -39,12 +39,12 @@ export function InvoiceSkrillPaymentForm({
         e.preventDefault();
 
         if (!email) {
-            toast.error(t('Please enter your email address'));
+            toast.error(translate('Please enter your email address'));
             return;
         }
 
         if (!email.includes('@')) {
-            toast.error(t('Please enter a valid email address'));
+            toast.error(translate('Please enter a valid email address'));
             return;
         }
 
@@ -67,7 +67,7 @@ export function InvoiceSkrillPaymentForm({
                     if (errors.error) {
                         toast.error(errors.error);
                     } else {
-                        toast.error(t('Payment failed. Please try again.'));
+                        toast.error(translate('Payment failed. Please try again.'));
                     }
                     setIsProcessing(false);
                 },
@@ -76,7 +76,7 @@ export function InvoiceSkrillPaymentForm({
                 },
             });
         } catch (error) {
-            toast.error(t('Payment failed. Please try again.'));
+            toast.error(translate('Payment failed. Please try again.'));
             setIsProcessing(false);
         }
     };
@@ -86,7 +86,7 @@ export function InvoiceSkrillPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <Wallet className="h-5 w-5" />
-                    {t('Skrill Payment')}
+                    {translate('Skrill Payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent>
@@ -94,29 +94,29 @@ export function InvoiceSkrillPaymentForm({
                     {/* Payment Summary */}
                     <div className="bg-muted/50 rounded-lg p-3">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium">{t('Payment Amount')}:</span>
+                            <span className="text-sm font-medium">{translate('Payment Amount')}:</span>
                             <span className="font-bold">{formatCurrency(amount)}</span>
                         </div>
                         <div className="mt-1 flex items-center justify-between">
-                            <span className="text-muted-foreground text-sm">{t('Payment Type')}:</span>
+                            <span className="text-muted-foreground text-sm">{translate('Payment Type')}:</span>
                             <span className="text-sm capitalize">
-                                {paymentType} {t('Payment')}
+                                {paymentType} {translate('Payment')}
                             </span>
                         </div>
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="email">{t('Email Address')}</Label>
+                        <Label htmlFor="email">{translate('Email Address')}</Label>
                         <Input
                             id="email"
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            placeholder={t('Enter your email address')}
+                            placeholder={translate('Enter your email address')}
                             required
                             disabled={isProcessing}
                         />
-                        <p className="text-muted-foreground text-xs">{t('You will be redirected to Skrill to complete the payment')}</p>
+                        <p className="text-muted-foreground text-xs">{translate('You will be redirected to Skrill to complete the payment')}</p>
                     </div>
 
                     {/* Skrill Information */}
@@ -124,7 +124,7 @@ export function InvoiceSkrillPaymentForm({
                         <div className="flex items-start gap-2">
                             <Wallet className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-600" />
                             <div className="text-sm">
-                                <p className="font-medium text-blue-900 dark:text-blue-100">{t('Secure Payment with Skrill')}</p>
+                                <p className="font-medium text-blue-900 dark:text-blue-100">{translate('Secure Payment with Skrill')}</p>
                                 <p className="mt-1 text-blue-700 dark:text-blue-300">
                                     {t("You will be redirected to Skrill's secure payment page to complete your transaction.")}
                                 </p>
@@ -134,18 +134,18 @@ export function InvoiceSkrillPaymentForm({
 
                     <div className="flex gap-3 pt-4">
                         <Button type="button" variant="outline" onClick={onCancel} className="flex-1" disabled={isProcessing}>
-                            {t('Cancel')}
+                            {translate('Cancel')}
                         </Button>
                         <Button type="submit" disabled={isProcessing || !email} className="flex-1">
                             {isProcessing ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    {t('Processing...')}
+                                    {translate('Processing...')}
                                 </>
                             ) : (
                                 <>
                                     <Wallet className="mr-2 h-4 w-4" />
-                                    {t('Pay with Skrill')}
+                                    {translate('Pay with Skrill')}
                                 </>
                             )}
                         </Button>

@@ -31,7 +31,7 @@ function FieldError({ message }: { message?: string }) {
 }
 
 export default function ReceiptOrderEdit() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { receiptOrder, accounts = [], contacts = [], purchaseOrders = [], returnOrders = [], products = [], users = [] } = usePage().props;
 
     const [form, setFormData] = useState({
@@ -63,9 +63,9 @@ export default function ReceiptOrderEdit() {
     const [processing, setProcessing] = useState(false);
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Receipt Orders'), href: route('receipt-orders.index') },
-        { title: t('Edit') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Receipt Orders'), href: route('receipt-orders.index') },
+        { title: translate('Edit') },
     ];
 
     const set = (name: string, value: string) => {
@@ -78,7 +78,7 @@ export default function ReceiptOrderEdit() {
     };
 
     const handlePurchaseOrderChange = async (id: string) => {
-        set('purchase_order_id', id);
+        setranslate('purchase_order_id', id);
         setFormData((prev) => ({ ...prev, return_order_id: '' }));
         if (!id) return;
         try {
@@ -117,7 +117,7 @@ export default function ReceiptOrderEdit() {
     };
 
     const handleReturnOrderChange = async (id: string) => {
-        set('return_order_id', id);
+        setranslate('return_order_id', id);
         setFormData((prev) => ({ ...prev, purchase_order_id: '' }));
         if (!id) return;
         try {
@@ -196,17 +196,17 @@ export default function ReceiptOrderEdit() {
 
     const handleSubmit = () => {
         const errs: Errors = {};
-        if (!form.name.trim()) errs.name = t('Name is required');
-        if (!form.purchase_order_id && !form.return_order_id) errs.purchase_order_id = t('Either Purchase Order or Return Order is required');
-        if (!form.account_id) errs.account_id = t('Account is required');
-        if (!form.contact_id) errs.contact_id = t('Contact is required');
-        if (!form.receipt_date) errs.receipt_date = t('Receipt Date is required');
-        if (!form.assigned_to) errs.assigned_to = t('Assigned To is required');
-        if (!productRows.length || productRows.every((r) => !r.product_id)) errs.products = t('At least one product is required');
+        if (!form.name.trim()) errs.name = translate('Name is required');
+        if (!form.purchase_order_id && !form.return_order_id) errs.purchase_order_id = translate('Either Purchase Order or Return Order is required');
+        if (!form.account_id) errs.account_id = translate('Account is required');
+        if (!form.contact_id) errs.contact_id = translate('Contact is required');
+        if (!form.receipt_date) errs.receipt_date = translate('Receipt Date is required');
+        if (!form.assigned_to) errs.assigned_to = translate('Assigned To is required');
+        if (!productRows.length || productRows.every((r) => !r.product_id)) errs.products = translate('At least one product is required');
 
         if (Object.keys(errs).length) {
             setErrors(errs);
-            toast.error(t('Please fix the errors before submitting.'));
+            toast.error(translate('Please fix the errors before submitting.'));
             return;
         }
 
@@ -215,7 +215,7 @@ export default function ReceiptOrderEdit() {
             return;
         }
         setProcessing(true);
-        toast.loading(t('Updating...'));
+        toast.loading(translate('Updating...'));
 
         router.put(
             route('receipt-orders.update', receiptOrder.id),
@@ -244,15 +244,15 @@ export default function ReceiptOrderEdit() {
 
     return (
         <PageTemplate
-            title={t('Edit Receipt Order')}
-            description={t('Update receipt order details and related information')}
+            title={translate('Edit Receipt Order')}
+            description={translate('Update receipt order details and related information')}
             breadcrumbs={breadcrumbs}
             url="/receipt-orders"
 
             noPadding
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => router.visit(route('receipt-orders.index')),
@@ -263,39 +263,39 @@ export default function ReceiptOrderEdit() {
                 {/* Basic Information */}
                 <div className="border-b border-gray-200 dark:border-gray-700">
                     <div className="px-6 pt-5">
-                        <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{t('Basic Information')}</h2>
+                        <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Basic Information')}</h2>
                     </div>
                     <div className="grid grid-cols-1 gap-x-6 gap-y-4 p-6 md:grid-cols-2">
                         {/* Name + Description */}
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {t('Receipt Order Name')} <span className="text-red-500">*</span>
+                                {translate('Receipt Order Name')} <span className="text-red-500">*</span>
                             </Label>
                             <Input
                                 value={form.name}
-                                onChange={(e) => set('name', e.target.value)}
-                                placeholder={t('e.g. Q1 Supplier Receipt')}
+                                onChange={(e) => setranslate('name', e.target.value)}
+                                placeholder={translate('e.g. Q1 Supplier Receipt')}
                                 className={errors.name ? 'border-red-500' : ''}
                             />
                             <FieldError message={errors.name} />
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{t('Description')}</Label>
+                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Description')}</Label>
                             <Textarea
                                 value={form.description}
-                                onChange={(e) => set('description', e.target.value)}
+                                onChange={(e) => setranslate('description', e.target.value)}
                                 rows={2}
-                                placeholder={t('Optional description about this receipt order...')}
+                                placeholder={translate('Optional description about this receipt order...')}
                             />
                         </div>
 
                         {/* Purchase Order + Return Order */}
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{t('Purchase Order')}</Label>
+                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Purchase Order')}</Label>
                             <Select value={form.purchase_order_id} onValueChange={handlePurchaseOrderChange}>
                                 <SelectTrigger className={errors.purchase_order_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select purchase order')} />
+                                    <SelectValue placeholder={translate('Select purchase order')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {purchaseOrders.map((po: any) => (
@@ -308,19 +308,19 @@ export default function ReceiptOrderEdit() {
                             <FieldError message={errors.purchase_order_id} />
                             {purchaseOrders.length === 0 && (
                                 <p className="mt-1 text-xs">
-                                    {t('Click here to add')}{' '}
+                                    {translate('Click here to add')}{' '}
                                     <a href={route('purchase-orders.index')} className="font-medium underline">
-                                        {t('Purchase Orders')}
+                                        {translate('Purchase Orders')}
                                     </a>
                                 </p>
                             )}
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{t('Return Order')}</Label>
+                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Return Order')}</Label>
                             <Select value={form.return_order_id} onValueChange={handleReturnOrderChange}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder={t('Select return order')} />
+                                    <SelectValue placeholder={translate('Select return order')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {returnOrders.map((ro: any) => (
@@ -335,11 +335,11 @@ export default function ReceiptOrderEdit() {
                         {/* Account + Contact */}
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {t('Account')} <span className="text-red-500">*</span>
+                                {translate('Account')} <span className="text-red-500">*</span>
                             </Label>
-                            <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
+                            <Select value={form.account_id} onValueChange={(v) => setranslate('account_id', v)}>
                                 <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select account')} />
+                                    <SelectValue placeholder={translate('Select account')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {accounts.map((a: any) => (
@@ -352,9 +352,9 @@ export default function ReceiptOrderEdit() {
                             <FieldError message={errors.account_id} />
                             {accounts.length === 0 && (
                                 <p className="mt-1 text-xs">
-                                    {t('Click here to add')}{' '}
+                                    {translate('Click here to add')}{' '}
                                     <a href={route('accounts.index')} className="font-medium underline">
-                                        {t('Accounts')}
+                                        {translate('Accounts')}
                                     </a>
                                 </p>
                             )}
@@ -362,11 +362,11 @@ export default function ReceiptOrderEdit() {
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {t('Contact')} <span className="text-red-500">*</span>
+                                {translate('Contact')} <span className="text-red-500">*</span>
                             </Label>
-                            <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
+                            <Select value={form.contact_id} onValueChange={(v) => setranslate('contact_id', v)}>
                                 <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select contact')} />
+                                    <SelectValue placeholder={translate('Select contact')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {contacts.map((c: any) => (
@@ -379,9 +379,9 @@ export default function ReceiptOrderEdit() {
                             <FieldError message={errors.contact_id} />
                             {contacts.length === 0 && (
                                 <p className="mt-1 text-xs">
-                                    {t('Click here to add')}{' '}
+                                    {translate('Click here to add')}{' '}
                                     <a href={route('contacts.index')} className="font-medium underline">
-                                        {t('Contacts')}
+                                        {translate('Contacts')}
                                     </a>
                                 </p>
                             )}
@@ -390,7 +390,7 @@ export default function ReceiptOrderEdit() {
                         {/* Receipt Date + Expected Date */}
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {t('Receipt Date')} <span className="text-red-500">*</span>
+                                {translate('Receipt Date')} <span className="text-red-500">*</span>
                             </Label>
                             <div
                                 className="cursor-pointer"
@@ -406,7 +406,7 @@ export default function ReceiptOrderEdit() {
                                 <Input
                                     type="date"
                                     value={form.receipt_date}
-                                    onChange={(e) => set('receipt_date', e.target.value)}
+                                    onChange={(e) => setranslate('receipt_date', e.target.value)}
                                     className={`cursor-pointer ${errors.receipt_date ? 'border-red-500' : ''}`}
                                 />
                             </div>
@@ -414,7 +414,7 @@ export default function ReceiptOrderEdit() {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{t('Expected Date')}</Label>
+                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Expected Date')}</Label>
                             <div
                                 className="cursor-pointer"
                                 onClick={(e) => {
@@ -429,7 +429,7 @@ export default function ReceiptOrderEdit() {
                                 <Input
                                     type="date"
                                     value={form.expected_date}
-                                    onChange={(e) => set('expected_date', e.target.value)}
+                                    onChange={(e) => setranslate('expected_date', e.target.value)}
                                     className={`cursor-pointer ${errors.expected_date ? 'border-red-500' : ''}`}
                                 />
                             </div>
@@ -438,28 +438,28 @@ export default function ReceiptOrderEdit() {
 
                         {/* Status + Assigned To */}
                         <div className="space-y-1.5">
-                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{t('Status')}</Label>
-                            <Select value={form.status} onValueChange={(v) => set('status', v)}>
+                            <Label className="text-sm font-semibold text-gray-900 dark:text-white">{translate('Status')}</Label>
+                            <Select value={form.status} onValueChange={(v) => setranslate('status', v)}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="pending">{t('Pending')}</SelectItem>
-                                    <SelectItem value="received">{t('Received')}</SelectItem>
-                                    <SelectItem value="partial">{t('Partial')}</SelectItem>
-                                    <SelectItem value="completed">{t('Completed')}</SelectItem>
-                                    <SelectItem value="cancelled">{t('Cancelled')}</SelectItem>
+                                    <SelectItem value="pending">{translate('Pending')}</SelectItem>
+                                    <SelectItem value="received">{translate('Received')}</SelectItem>
+                                    <SelectItem value="partial">{translate('Partial')}</SelectItem>
+                                    <SelectItem value="completed">{translate('Completed')}</SelectItem>
+                                    <SelectItem value="cancelled">{translate('Cancelled')}</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
 
                         <div className="space-y-1.5">
                             <Label className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {t('Assigned To')} <span className="text-red-500">*</span>
+                                {translate('Assigned To')} <span className="text-red-500">*</span>
                             </Label>
-                            <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
+                            <Select value={form.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select user')} />
+                                    <SelectValue placeholder={translate('Select user')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {users.map((u: any) => (
@@ -478,11 +478,11 @@ export default function ReceiptOrderEdit() {
                 <div className="border-b border-gray-200 dark:border-gray-700">
                     <div className="flex items-center justify-between border-b bg-gray-50 px-6 py-3 dark:bg-gray-800">
                         <h2 className="text-base font-semibold text-gray-900 dark:text-white">
-                            {t('Products')}
+                            {translate('Products')}
                             {errors.products && <span className="ml-2 text-xs font-normal text-red-500">{errors.products}</span>}
                         </h2>
                         <Button type="button" size="sm" onClick={addProductRow}>
-                            <Plus className="mr-1 h-4 w-4" /> {t('Add Product')}
+                            <Plus className="mr-1 h-4 w-4" /> {translate('Add Product')}
                         </Button>
                     </div>
 
@@ -492,18 +492,18 @@ export default function ReceiptOrderEdit() {
                                 <thead className="hidden xl:table-header-group">
                                     <tr className="border-b bg-gray-50 text-xs font-semibold text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                                         <th className="min-w-[200px] px-4 py-3 text-left">
-                                            {t('Product')} <span className="text-red-500">*</span>
+                                            {translate('Product')} <span className="text-red-500">*</span>
                                         </th>
                                         <th className="w-24 px-4 py-3 text-left">
-                                            {t('Quantity')} <span className="text-red-500">*</span>
+                                            {translate('Quantity')} <span className="text-red-500">*</span>
                                         </th>
                                         <th className="w-32 px-4 py-3 text-left">
-                                            {t('Unit Price')} <span className="text-red-500">*</span>
+                                            {translate('Unit Price')} <span className="text-red-500">*</span>
                                         </th>
-                                        <th className="w-32 px-4 py-3 text-left">{t('Discount Type')}</th>
-                                        <th className="w-28 px-4 py-3 text-left">{t('Discount Value')}</th>
-                                        <th className="w-28 px-4 py-3 text-left">{t('Tax')}</th>
-                                        <th className="w-28 px-4 py-3 text-left">{t('Line Total')}</th>
+                                        <th className="w-32 px-4 py-3 text-left">{translate('Discount Type')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{translate('Discount Value')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{translate('Tax')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{translate('Line Total')}</th>
                                         <th className="w-12 px-4 py-3"></th>
                                     </tr>
                                 </thead>
@@ -517,11 +517,11 @@ export default function ReceiptOrderEdit() {
                                             >
                                                 <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-[200px] xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Product')} <span className="text-red-500">*</span>
+                                                        {translate('Product')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Select value={row.product_id} onValueChange={(v) => setRow(row.id, 'product_id', v)}>
                                                         <SelectTrigger>
-                                                            <SelectValue placeholder={t('Select product')} />
+                                                            <SelectValue placeholder={translate('Select product')} />
                                                         </SelectTrigger>
                                                         <SelectContent searchable>
                                                             {products
@@ -540,9 +540,9 @@ export default function ReceiptOrderEdit() {
                                                     </Select>
                                                     {i === 0 && products.length === 0 && (
                                                         <p className="mt-1 text-xs">
-                                                            {t('Click here to add')}{' '}
+                                                            {translate('Click here to add')}{' '}
                                                             <a href={route('products.index')} className="font-medium underline">
-                                                                {t('Products')}
+                                                                {translate('Products')}
                                                             </a>
                                                         </p>
                                                     )}
@@ -550,7 +550,7 @@ export default function ReceiptOrderEdit() {
 
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-24 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Quantity')} <span className="text-red-500">*</span>
+                                                        {translate('Quantity')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
                                                         type="number"
@@ -562,7 +562,7 @@ export default function ReceiptOrderEdit() {
 
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Unit Price')} <span className="text-red-500">*</span>
+                                                        {translate('Unit Price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
                                                         type="number"
@@ -575,23 +575,23 @@ export default function ReceiptOrderEdit() {
 
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-36 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Discount Type')}
+                                                        {translate('Discount Type')}
                                                     </span>
                                                     <Select value={row.discount_type} onValueChange={(v) => setRow(row.id, 'discount_type', v)}>
                                                         <SelectTrigger>
                                                             <SelectValue />
                                                         </SelectTrigger>
                                                         <SelectContent>
-                                                            <SelectItem value="none">{t('None')}</SelectItem>
-                                                            <SelectItem value="percentage">{t('Percentage (%)')}</SelectItem>
-                                                            <SelectItem value="fixed">{t('Fixed Amount')}</SelectItem>
+                                                            <SelectItem value="none">{translate('None')}</SelectItem>
+                                                            <SelectItem value="percentage">{translate('Percentage (%)')}</SelectItem>
+                                                            <SelectItem value="fixed">{translate('Fixed Amount')}</SelectItem>
                                                         </SelectContent>
                                                     </Select>
                                                 </td>
 
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Discount Value')}
+                                                        {translate('Discount Value')}
                                                     </span>
                                                     <Input
                                                         type="number"
@@ -606,21 +606,21 @@ export default function ReceiptOrderEdit() {
                                                 </td>
 
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-36 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{t('Tax')}</span>
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{translate('Tax')}</span>
                                                     {(() => {
                                                         const prod = products.find((p: any) => String(p.id) === String(row.product_id));
                                                         return (
                                                             <span className="text-muted-foreground text-sm font-medium">
                                                                 {prod?.tax
                                                                     ? `${prod.tax.name} (${parseFloat(prod.tax.rate).toFixed(2)}%)`
-                                                                    : t('No Tax')}
+                                                                    : translate('No Tax')}
                                                             </span>
                                                         );
                                                     })()}
                                                 </td>
 
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-mono font-medium xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{t('Total')}</span>
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{translate('Total')}</span>
                                                     <span>{fmt(c.net + c.tax)}</span>
                                                 </td>
 
@@ -646,19 +646,19 @@ export default function ReceiptOrderEdit() {
                         <div className="flex justify-end border-t p-4">
                             <div className="w-64 space-y-2">
                                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                                    <span>{t('Subtotal')}</span>
+                                    <span>{translate('Subtotal')}</span>
                                     <span className="font-mono font-medium">{fmt(totals.subtotal + totals.discount)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-red-600">
-                                    <span>{t('Discount')}</span>
+                                    <span>{translate('Discount')}</span>
                                     <span className="font-mono font-medium">-{fmt(totals.discount)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                                    <span>{t('Tax')}</span>
+                                    <span>{translate('Tax')}</span>
                                     <span className="font-mono font-medium">{fmt(totals.tax)}</span>
                                 </div>
                                 <div className="flex justify-between border-t pt-2 text-base font-bold text-gray-900 dark:text-gray-100">
-                                    <span>{t('Grand Total')}</span>
+                                    <span>{translate('Grand Total')}</span>
                                     <span className="font-mono text-lg text-green-600">{fmt(totals.subtotal + totals.tax)}</span>
                                 </div>
                             </div>
@@ -668,22 +668,22 @@ export default function ReceiptOrderEdit() {
 
                 {/* Additional Notes */}
                 <div className="border-b border-gray-200 p-6 dark:border-gray-700">
-                    <h2 className="mb-4 text-sm font-semibold text-gray-900 dark:text-white">{t('Additional Notes')}</h2>
+                    <h2 className="mb-4 text-sm font-semibold text-gray-900 dark:text-white">{translate('Additional Notes')}</h2>
                     <Textarea
                         value={form.notes}
-                        onChange={(e) => set('notes', e.target.value)}
+                        onChange={(e) => setranslate('notes', e.target.value)}
                         rows={3}
-                        placeholder={t('Enter any additional notes...')}
+                        placeholder={translate('Enter any additional notes...')}
                     />
                 </div>
 
                 {/* Actions */}
                 <div className="flex justify-end gap-3 px-6 py-4">
                     <Button type="button" variant="outline" onClick={() => window.history.back()}>
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     <Button type="button" disabled={processing} onClick={handleSubmit}>
-                        {processing ? t('Updating...') : t('Save')}
+                        {processing ? translate('Updating...') : translate('Save')}
                     </Button>
                 </div>
             </div>

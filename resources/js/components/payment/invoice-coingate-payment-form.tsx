@@ -23,7 +23,7 @@ export function InvoiceCoingatePaymentForm({
     onSuccess,
     onCancel,
 }: InvoiceCoingatePaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isProcessing, setIsProcessing] = useState(false);
 
     const formatCurrency = (amount: number) => {
@@ -35,14 +35,14 @@ export function InvoiceCoingatePaymentForm({
         setIsProcessing(true);
 
         // Create form and submit directly to avoid CORS
-        const form = document.createElement('form');
+        const form = document.createElementranslate('form');
         form.method = 'POST';
         form.action = route('invoice.coingate.payment');
 
         // Add CSRF token
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
         if (csrfToken) {
-            const csrfInput = document.createElement('input');
+            const csrfInput = document.createElementranslate('input');
             csrfInput.type = 'hidden';
             csrfInput.name = '_token';
             csrfInput.value = csrfToken;
@@ -57,7 +57,7 @@ export function InvoiceCoingatePaymentForm({
         };
 
         Object.entries(formData).forEach(([key, value]) => {
-            const input = document.createElement('input');
+            const input = document.createElementranslate('input');
             input.type = 'hidden';
             input.name = key;
             input.value = String(value);
@@ -73,7 +73,7 @@ export function InvoiceCoingatePaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <Coins className="h-5 w-5" />
-                    {t('Coingate Payment')}
+                    {translate('Coingate Payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent>
@@ -81,13 +81,13 @@ export function InvoiceCoingatePaymentForm({
                     {/* Payment Summary */}
                     <div className="bg-muted/50 rounded-lg p-3">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium">{t('Payment Amount')}:</span>
+                            <span className="text-sm font-medium">{translate('Payment Amount')}:</span>
                             <span className="font-bold">{formatCurrency(amount)}</span>
                         </div>
                         <div className="mt-1 flex items-center justify-between">
-                            <span className="text-muted-foreground text-sm">{t('Payment Type')}:</span>
+                            <span className="text-muted-foreground text-sm">{translate('Payment Type')}:</span>
                             <span className="text-sm capitalize">
-                                {paymentType} {t('Payment')}
+                                {paymentType} {translate('Payment')}
                             </span>
                         </div>
                     </div>
@@ -97,12 +97,12 @@ export function InvoiceCoingatePaymentForm({
                         <div className="flex items-start gap-2">
                             <Coins className="mt-0.5 h-4 w-4 flex-shrink-0 text-orange-600" />
                             <div className="text-sm">
-                                <p className="font-medium text-orange-900 dark:text-orange-100">{t('Secure Cryptocurrency Payment')}</p>
+                                <p className="font-medium text-orange-900 dark:text-orange-100">{translate('Secure Cryptocurrency Payment')}</p>
                                 <p className="mt-1 text-orange-700 dark:text-orange-300">
-                                    {t('You will be redirected to Coingate to complete your payment with cryptocurrency.')}
+                                    {translate('You will be redirected to Coingate to complete your payment with cryptocurrency.')}
                                 </p>
                                 <p className="mt-1 text-xs text-orange-600 dark:text-orange-400">
-                                    {t('Supports Bitcoin, Ethereum, Litecoin and 70+ other cryptocurrencies')}
+                                    {translate('Supports Bitcoin, Ethereum, Litecoin and 70+ other cryptocurrencies')}
                                 </p>
                             </div>
                         </div>
@@ -112,11 +112,11 @@ export function InvoiceCoingatePaymentForm({
                         <div className="flex items-start gap-2">
                             <Coins className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-600" />
                             <div className="text-xs text-blue-800">
-                                <p className="mb-1 font-medium">{t('Payment Process:')}</p>
+                                <p className="mb-1 font-medium">{translate('Payment Process:')}</p>
                                 <ul className="list-inside list-disc space-y-1">
-                                    <li>{t('Click "Pay with Crypto" to proceed to Coingate')}</li>
-                                    <li>{t('Complete payment using your selected cryptocurrency')}</li>
-                                    <li>{t('You will be redirected back after payment completion')}</li>
+                                    <li>{translate('Click "Pay with Crypto" to proceed to Coingate')}</li>
+                                    <li>{translate('Complete payment using your selected cryptocurrency')}</li>
+                                    <li>{translate('You will be redirected back after payment completion')}</li>
                                 </ul>
                             </div>
                         </div>
@@ -124,18 +124,18 @@ export function InvoiceCoingatePaymentForm({
 
                     <div className="flex gap-3 pt-4">
                         <Button type="button" variant="outline" onClick={onCancel} className="flex-1" disabled={isProcessing}>
-                            {t('Cancel')}
+                            {translate('Cancel')}
                         </Button>
                         <Button type="submit" disabled={isProcessing} className="flex-1">
                             {isProcessing ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    {t('Redirecting...')}
+                                    {translate('Redirecting...')}
                                 </>
                             ) : (
                                 <>
                                     <Coins className="mr-2 h-4 w-4" />
-                                    {t('Pay with Crypto')}
+                                    {translate('Pay with Crypto')}
                                 </>
                             )}
                         </Button>

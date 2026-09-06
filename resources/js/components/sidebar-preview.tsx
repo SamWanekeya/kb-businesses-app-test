@@ -9,7 +9,7 @@ interface SidebarPreviewProps {
 }
 
 export function SidebarPreview({ variant, style, themeColor, customColor }: SidebarPreviewProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     // Get the color based on theme color - use CSS variable for primary color
     const getColor = () => {
         // Use the CSS variable for primary color to ensure it matches the theme
@@ -71,33 +71,33 @@ export function SidebarPreview({ variant, style, themeColor, customColor }: Side
         <div className={`overflow-hidden rounded-md p-3 ${getVariantClass()}`} style={getBackgroundStyle()}>
             <div className="mb-4 flex items-center gap-2">
                 <SidebarIcon className={`h-4 w-4 ${isColoredStyle ? 'text-white' : 'text-primary'}`} />
-                <span className={`font-medium ${isColoredStyle ? 'text-white' : 'text-foreground'}`}>{t('Sidebar')}</span>
+                <span className={`font-medium ${isColoredStyle ? 'text-white' : 'text-foreground'}`}>{translate('Sidebar')}</span>
             </div>
 
             <div className="space-y-1">
                 <div className={`flex items-center gap-2 rounded px-2 py-1.5 ${isColoredStyle ? 'bg-white/20' : 'bg-primary/10'}`}>
                     <Home className={`h-4 w-4 ${isColoredStyle ? 'text-white' : 'text-primary'}`} />
-                    <span className={`text-sm ${isColoredStyle ? 'text-white' : 'text-foreground'}`}>{t('Dashboard')}</span>
+                    <span className={`text-sm ${isColoredStyle ? 'text-white' : 'text-foreground'}`}>{translate('Dashboard')}</span>
                 </div>
 
                 <div className="flex items-center gap-2 rounded px-2 py-1.5">
                     <Users className={`h-4 w-4 ${isColoredStyle ? 'text-white' : 'text-primary'}`} />
-                    <span className={`text-sm ${isColoredStyle ? 'text-white' : 'text-foreground'}`}>{t('Users')}</span>
+                    <span className={`text-sm ${isColoredStyle ? 'text-white' : 'text-foreground'}`}>{translate('Users')}</span>
                 </div>
 
                 <div className="flex items-center gap-2 rounded px-2 py-1.5">
                     <FileText className={`h-4 w-4 ${isColoredStyle ? 'text-white' : 'text-primary'}`} />
-                    <span className={`text-sm ${isColoredStyle ? 'text-white' : 'text-foreground'}`}>{t('Reports')}</span>
+                    <span className={`text-sm ${isColoredStyle ? 'text-white' : 'text-foreground'}`}>{translate('Reports')}</span>
                 </div>
 
                 <div className="flex items-center gap-2 rounded px-2 py-1.5">
                     <ShoppingCart className={`h-4 w-4 ${isColoredStyle ? 'text-white' : 'text-primary'}`} />
-                    <span className={`text-sm ${isColoredStyle ? 'text-white' : 'text-foreground'}`}>{t('Products')}</span>
+                    <span className={`text-sm ${isColoredStyle ? 'text-white' : 'text-foreground'}`}>{translate('Products')}</span>
                 </div>
 
                 <div className="flex items-center gap-2 rounded px-2 py-1.5">
                     <Settings className={`h-4 w-4 ${isColoredStyle ? 'text-white' : 'text-primary'}`} />
-                    <span className={`text-sm ${isColoredStyle ? 'text-white' : 'text-foreground'}`}>{t('Settings')}</span>
+                    <span className={`text-sm ${isColoredStyle ? 'text-white' : 'text-foreground'}`}>{translate('Settings')}</span>
                 </div>
             </div>
         </div>

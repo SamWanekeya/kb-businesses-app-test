@@ -15,7 +15,7 @@ interface GoogleCalendarSettingsProps {
 }
 
 export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendarSettingsProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const [isSyncing, setIsSyncing] = useState(false);
     const [formData, setFormData] = useState({
@@ -48,12 +48,12 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                 } else if (errorMessage) {
                     toast.error(errorMessage);
                 } else {
-                    toast.success(t('Calendar settings updated successfully'));
+                    toast.success(translate('Calendar settings updated successfully'));
                 }
             },
             onError: (errors) => {
                 setIsLoading(false);
-                const errorMessage = errors.error || Object.values(errors).join(', ') || t('Failed to update Google Calendar settings');
+                const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to update Google Calendar settings');
                 toast.error(errorMessage);
             },
         });
@@ -78,7 +78,7 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                     }
                 },
                 onError: (errors) => {
-                    const errorMessage = errors.error || Object.values(errors).join(', ') || t('Sync failed');
+                    const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Sync failed');
                     toast.error(errorMessage);
                 },
                 onFinish: () => {
@@ -90,12 +90,12 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
 
     return (
         <SettingsSection
-            title={t('Google Calendar Settings')}
-            description={t('Configure Google Calendar integration for appointment synchronization')}
+            title={translate('Google Calendar Settings')}
+            description={translate('Configure Google Calendar integration for appointment synchronization')}
             action={
                 <Button type="submit" form="google-calendar-form" disabled={isLoading} size="sm" className="max-[1300px]:px-2.5">
                     <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                    <span className="max-[1300px]:hidden">{isLoading ? t('Saving...') : t('Save Changes')}</span>
+                    <span className="max-[1300px]:hidden">{isLoading ? translate('Saving...') : translate('Save Changes')}</span>
                 </Button>
             }
         >
@@ -104,8 +104,8 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                     <form id="google-calendar-form" onSubmit={handleSubmit} className="space-y-6">
                         <div className="flex items-center justify-between">
                             <div className="space-y-0.5">
-                                <Label htmlFor="googleCalendarEnabled">{t('Enable Google Calendar')}</Label>
-                                <p className="text-muted-foreground text-sm">{t('Enable Google Calendar integration for appointments')}</p>
+                                <Label htmlFor="googleCalendarEnabled">{translate('Enable Google Calendar')}</Label>
+                                <p className="text-muted-foreground text-sm">{translate('Enable Google Calendar integration for appointments')}</p>
                             </div>
                             <Switch
                                 id="googleCalendarEnabled"
@@ -117,7 +117,7 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                         <div className="space-y-4">
                             <div className="space-y-2">
                                 <Label htmlFor="googleCalendarId">
-                                    {t('Google Calendar ID')}
+                                    {translate('Google Calendar ID')}
                                     <span className="ml-1 text-red-500">*</span>
                                 </Label>
                                 <Input
@@ -131,7 +131,7 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="googleCalendarJson">{t('Service Account JSON File')}</Label>
+                                <Label htmlFor="googleCalendarJson">{translate('Service Account JSON File')}</Label>
                                 <Input
                                     id="googleCalendarJson"
                                     type="file"
@@ -141,16 +141,16 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                                 />
                                 {jsonFile && (
                                     <p className="text-sm text-green-600">
-                                        {t('Selected file')}: {jsonFile.name}
+                                        {translate('Selected file')}: {jsonFile.name}
                                     </p>
                                 )}
-                                <p className="text-muted-foreground text-xs">{t('Upload your Google service account JSON credentials')}</p>
+                                <p className="text-muted-foreground text-xs">{translate('Upload your Google service account JSON credentials')}</p>
                             </div>
 
                             <div className="flex justify-end">
                                 <Button type="button" variant="outline" onClick={handleSync} disabled={!formData.googleCalendarEnabled || isSyncing}>
                                     <RefreshCw className={`mr-2 h-4 w-4 ${isSyncing ? 'animate-spin' : ''}`} />
-                                    {isSyncing ? t('Syncing...') : t('Test Sync')}
+                                    {isSyncing ? translate('Syncing...') : translate('Test Sync')}
                                 </Button>
                             </div>
                         </div>

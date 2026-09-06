@@ -19,7 +19,7 @@ type ProductRow = {
 };
 
 export default function PurchaseOrderCreate() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { accounts = [], contacts = [], salesOrders = [], products: productOptions = [], users = [] } = usePage().props;
 
     const { data, setData, setError, clearErrors, post, processing, errors } = useForm({
@@ -47,9 +47,9 @@ export default function PurchaseOrderCreate() {
     });
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Purchase Orders'), href: route('purchase-orders.index') },
-        { title: t('Create') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Purchase Orders'), href: route('purchase-orders.index') },
+        { title: translate('Create') },
     ];
 
     const set = (name: string, value: string) => {
@@ -58,7 +58,7 @@ export default function PurchaseOrderCreate() {
     };
 
     const handleSalesOrderChange = async (id: string) => {
-        set('sales_order_id', id);
+        setranslate('sales_order_id', id);
         if (!id) return;
         try {
             const res = await fetch(route('api.sales-orders.details', id));
@@ -158,20 +158,20 @@ export default function PurchaseOrderCreate() {
         e.preventDefault();
         const errs: Record<string, string> = {};
 
-        if (!data.name) errs.name = t('Purchase Order Name is required');
-        if (!data.sales_order_id) errs.sales_order_id = t('Sales Order is required');
-        if (!data.account_id) errs.account_id = t('Account is required');
-        if (!data.billing_contact_id) errs.billing_contact_id = t('Billing Contact is required');
-        if (!data.shipping_contact_id) errs.shipping_contact_id = t('Shipping Contact is required');
-        if (!data.order_date) errs.order_date = t('Order Date is required');
-        if (!data.assigned_to) errs.assigned_to = t('Assign To is required');
+        if (!data.name) errs.name = translate('Purchase Order Name is required');
+        if (!data.sales_order_id) errs.sales_order_id = translate('Sales Order is required');
+        if (!data.account_id) errs.account_id = translate('Account is required');
+        if (!data.billing_contact_id) errs.billing_contact_id = translate('Billing Contact is required');
+        if (!data.shipping_contact_id) errs.shipping_contact_id = translate('Shipping Contact is required');
+        if (!data.order_date) errs.order_date = translate('Order Date is required');
+        if (!data.assigned_to) errs.assigned_to = translate('Assign To is required');
 
-        if (!data.products.length || data.products.every((r: any) => !r.product_id)) errs.products = t('At least one product is required');
+        if (!data.products.length || data.products.every((r: any) => !r.product_id)) errs.products = translate('At least one product is required');
 
         data.products.forEach((row, i) => {
-            if (!row.product_id) errs[`products.${i}.product_id`] = t('Product is required');
-            if (row.product_id && (!row.quantity || parseFloat(row.quantity) < 1)) errs[`products.${i}.quantity`] = t('Min 1');
-            if (row.product_id && (row.unit_price === '' || parseFloat(row.unit_price) < 0)) errs[`products.${i}.unit_price`] = t('Required');
+            if (!row.product_id) errs[`products.${i}.product_id`] = translate('Product is required');
+            if (row.product_id && (!row.quantity || parseFloat(row.quantity) < 1)) errs[`products.${i}.quantity`] = translate('Min 1');
+            if (row.product_id && (row.unit_price === '' || parseFloat(row.unit_price) < 0)) errs[`products.${i}.unit_price`] = translate('Required');
         });
 
         if (Object.keys(errs).length > 0) {
@@ -179,7 +179,7 @@ export default function PurchaseOrderCreate() {
             return;
         }
 
-        toast.loading(t('Creating purchase order...'));
+        toast.loading(translate('Creating purchase order...'));
         post(route('purchase-orders.store'), {
             onSuccess: () => toast.dismiss(),
             onError: () => {
@@ -190,12 +190,12 @@ export default function PurchaseOrderCreate() {
 
     return (
         <PageTemplate
-            title={t('Create Purchase Order')}
-            description={t('Fill in the details to create a new purchase order')}
+            title={translate('Create Purchase Order')}
+            description={translate('Fill in the details to create a new purchase order')}
             breadcrumbs={breadcrumbs}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => router.visit(route('purchase-orders.index')),
@@ -207,32 +207,32 @@ export default function PurchaseOrderCreate() {
                 <div className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     {/* ── PURCHASE ORDER DETAILS ── */}
                     <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                        <p className="text-base font-bold text-gray-900 dark:text-white">{t('Purchase Order Details')}</p>
+                        <p className="text-base font-bold text-gray-900 dark:text-white">{translate('Purchase Order Details')}</p>
                     </div>
 
                     <div className="space-y-4 border-b border-gray-200 px-6 py-5 dark:border-gray-700">
                         {/* PO Name */}
                         <div className="space-y-1">
                             <Label className="text-sm font-medium" required>
-                                {t('Purchase Order Name')}
+                                {translate('Purchase Order Name')}
                             </Label>
                             <Input
                                 value={data.name}
-                                onChange={(e) => set('name', e.target.value)}
+                                onChange={(e) => setranslate('name', e.target.value)}
                                 className={errors.name ? 'border-red-500' : ''}
-                                placeholder={t('e.g. Q3 Raw Materials Restock')}
+                                placeholder={translate('e.g. Q3 Raw Materials Restock')}
                             />
                             {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
                         </div>
 
                         {/* Description */}
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium">{t('Description')}</Label>
+                            <Label className="text-sm font-medium">{translate('Description')}</Label>
                             <Textarea
                                 value={data.description}
-                                onChange={(e) => set('description', e.target.value)}
+                                onChange={(e) => setranslate('description', e.target.value)}
                                 rows={3}
-                                placeholder={t('Brief description of this purchase order...')}
+                                placeholder={translate('Brief description of this purchase order...')}
                             />
                         </div>
 
@@ -240,11 +240,11 @@ export default function PurchaseOrderCreate() {
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1">
                                 <Label className="text-sm font-medium" required>
-                                    {t('Sales Order')}
+                                    {translate('Sales Order')}
                                 </Label>
                                 <Select value={data.sales_order_id} onValueChange={handleSalesOrderChange}>
                                     <SelectTrigger className={errors.sales_order_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select sales order')} />
+                                        <SelectValue placeholder={translate('Select sales order')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {salesOrders.map((so: any) => (
@@ -257,9 +257,9 @@ export default function PurchaseOrderCreate() {
                                 {errors.sales_order_id && <p className="text-xs text-red-500">{errors.sales_order_id}</p>}
                                 {salesOrders.length === 0 && (
                                     <p className="mt-1 text-xs">
-                                        {t('Click here to add')}{' '}
+                                        {translate('Click here to add')}{' '}
                                         <a href={route('sales-orders.index')} className="font-medium underline">
-                                            {t('Sales Orders')}
+                                            {translate('Sales Orders')}
                                         </a>
                                     </p>
                                 )}
@@ -267,11 +267,11 @@ export default function PurchaseOrderCreate() {
 
                             <div className="space-y-1">
                                 <Label className="text-sm font-medium" required>
-                                    {t('Account')}
+                                    {translate('Account')}
                                 </Label>
-                                <Select value={data.account_id} onValueChange={(v) => set('account_id', v)}>
+                                <Select value={data.account_id} onValueChange={(v) => setranslate('account_id', v)}>
                                     <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select account')} />
+                                        <SelectValue placeholder={translate('Select account')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {accounts.map((a: any) => (
@@ -284,9 +284,9 @@ export default function PurchaseOrderCreate() {
                                 {errors.account_id && <p className="text-xs text-red-500">{errors.account_id}</p>}
                                 {accounts.length === 0 && (
                                     <p className="mt-1 text-xs">
-                                        {t('Click here to add')}{' '}
+                                        {translate('Click here to add')}{' '}
                                         <a href={route('accounts.index')} className="font-medium underline">
-                                            {t('Accounts')}
+                                            {translate('Accounts')}
                                         </a>
                                     </p>
                                 )}
@@ -297,11 +297,11 @@ export default function PurchaseOrderCreate() {
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1">
                                 <Label className="text-sm font-medium" required>
-                                    {t('Billing Contact')}
+                                    {translate('Billing Contact')}
                                 </Label>
-                                <Select value={data.billing_contact_id} onValueChange={(v) => set('billing_contact_id', v)}>
+                                <Select value={data.billing_contact_id} onValueChange={(v) => setranslate('billing_contact_id', v)}>
                                     <SelectTrigger className={errors.billing_contact_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select billing contact')} />
+                                        <SelectValue placeholder={translate('Select billing contact')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {contacts.map((c: any) => (
@@ -314,9 +314,9 @@ export default function PurchaseOrderCreate() {
                                 {errors.billing_contact_id && <p className="text-xs text-red-500">{errors.billing_contact_id}</p>}
                                 {contacts.length === 0 && (
                                     <p className="mt-1 text-xs">
-                                        {t('Click here to add')}{' '}
+                                        {translate('Click here to add')}{' '}
                                         <a href={route('contacts.index')} className="font-medium underline">
-                                            {t('Contacts')}
+                                            {translate('Contacts')}
                                         </a>
                                     </p>
                                 )}
@@ -324,11 +324,11 @@ export default function PurchaseOrderCreate() {
 
                             <div className="space-y-1">
                                 <Label className="text-sm font-medium" required>
-                                    {t('Shipping Contact')}
+                                    {translate('Shipping Contact')}
                                 </Label>
-                                <Select value={data.shipping_contact_id} onValueChange={(v) => set('shipping_contact_id', v)}>
+                                <Select value={data.shipping_contact_id} onValueChange={(v) => setranslate('shipping_contact_id', v)}>
                                     <SelectTrigger className={errors.shipping_contact_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select shipping contact')} />
+                                        <SelectValue placeholder={translate('Select shipping contact')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {contacts.map((c: any) => (
@@ -345,24 +345,24 @@ export default function PurchaseOrderCreate() {
                         {/* Status + Order Date */}
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium">{t('Status')}</Label>
-                                <Select value={data.status} onValueChange={(v) => set('status', v)}>
+                                <Label className="text-sm font-medium">{translate('Status')}</Label>
+                                <Select value={data.status} onValueChange={(v) => setranslate('status', v)}>
                                     <SelectTrigger>
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="draft">{t('Draft')}</SelectItem>
-                                        <SelectItem value="sent">{t('Sent')}</SelectItem>
-                                        <SelectItem value="confirmed">{t('Confirmed')}</SelectItem>
-                                        <SelectItem value="received">{t('Received')}</SelectItem>
-                                        <SelectItem value="cancelled">{t('Cancelled')}</SelectItem>
+                                        <SelectItem value="draft">{translate('Draft')}</SelectItem>
+                                        <SelectItem value="sent">{translate('Sent')}</SelectItem>
+                                        <SelectItem value="confirmed">{translate('Confirmed')}</SelectItem>
+                                        <SelectItem value="received">{translate('Received')}</SelectItem>
+                                        <SelectItem value="cancelled">{translate('Cancelled')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
 
                             <div className="space-y-1">
                                 <Label className="text-sm font-medium" required>
-                                    {t('Order Date')}
+                                    {translate('Order Date')}
                                 </Label>
                                 <div
                                     className="cursor-pointer"
@@ -378,7 +378,7 @@ export default function PurchaseOrderCreate() {
                                     <Input
                                         type="date"
                                         value={data.order_date}
-                                        onChange={(e) => set('order_date', e.target.value)}
+                                        onChange={(e) => setranslate('order_date', e.target.value)}
                                         className={`cursor-pointer ${errors.order_date ? 'border-red-500' : ''}`}
                                     />
                                 </div>
@@ -389,7 +389,7 @@ export default function PurchaseOrderCreate() {
                         {/* Expected Delivery Date + Assign To */}
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium">{t('Expected Delivery Date')}</Label>
+                                <Label className="text-sm font-medium">{translate('Expected Delivery Date')}</Label>
                                 <div
                                     className="cursor-pointer"
                                     onClick={(e) => {
@@ -404,7 +404,7 @@ export default function PurchaseOrderCreate() {
                                     <Input
                                         type="date"
                                         value={data.expected_delivery_date}
-                                        onChange={(e) => set('expected_delivery_date', e.target.value)}
+                                        onChange={(e) => setranslate('expected_delivery_date', e.target.value)}
                                         className={`cursor-pointer ${errors.expected_delivery_date ? 'border-red-500' : ''}`}
                                     />
                                 </div>
@@ -413,11 +413,11 @@ export default function PurchaseOrderCreate() {
 
                             <div className="space-y-1">
                                 <Label className="text-sm font-medium" required>
-                                    {t('Assign To')}
+                                    {translate('Assign To')}
                                 </Label>
-                                <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
+                                <Select value={data.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
                                     <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select user')} />
+                                        <SelectValue placeholder={translate('Select user')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {users.map((u: any) => (
@@ -430,9 +430,9 @@ export default function PurchaseOrderCreate() {
                                 {errors.assigned_to && <p className="text-xs text-red-500">{errors.assigned_to}</p>}
                                 {users.length === 0 && (
                                     <p className="mt-1 text-xs">
-                                        {t('Click here to add')}{' '}
+                                        {translate('Click here to add')}{' '}
                                         <a href={route('users.index')} className="font-medium underline">
-                                            {t('Users')}
+                                            {translate('Users')}
                                         </a>
                                     </p>
                                 )}
@@ -442,10 +442,10 @@ export default function PurchaseOrderCreate() {
 
                     {/* ── PRODUCTS ── */}
                     <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                        <p className="text-base font-bold text-gray-900 dark:text-white">{t('Products')}</p>
+                        <p className="text-base font-bold text-gray-900 dark:text-white">{translate('Products')}</p>
                         <Button type="button" size="sm" onClick={addProductRow}>
                             <Plus className="mr-1 h-4 w-4" />
-                            {t('Add Product')}
+                            {translate('Add Product')}
                         </Button>
                     </div>
 
@@ -457,18 +457,18 @@ export default function PurchaseOrderCreate() {
                                 <thead className="hidden xl:table-header-group">
                                     <tr className="border-b bg-gray-50 text-xs font-semibold text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                                         <th className="min-w-[180px] px-4 py-3 text-left">
-                                            {t('Product')} <span className="text-red-500">*</span>
+                                            {translate('Product')} <span className="text-red-500">*</span>
                                         </th>
                                         <th className="w-24 px-4 py-3 text-left">
-                                            {t('Quantity')} <span className="text-red-500">*</span>
+                                            {translate('Quantity')} <span className="text-red-500">*</span>
                                         </th>
                                         <th className="w-32 px-4 py-3 text-left">
-                                            {t('Unit Price')} <span className="text-red-500">*</span>
+                                            {translate('Unit Price')} <span className="text-red-500">*</span>
                                         </th>
-                                        <th className="w-36 px-4 py-3 text-left">{t('Discount Type')}</th>
-                                        <th className="w-28 px-4 py-3 text-left">{t('Discount Val')}</th>
-                                        <th className="w-32 px-4 py-3 text-left">{t('Tax')}</th>
-                                        <th className="w-28 px-4 py-3 text-left">{t('Total')}</th>
+                                        <th className="w-36 px-4 py-3 text-left">{translate('Discount Type')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{translate('Discount Val')}</th>
+                                        <th className="w-32 px-4 py-3 text-left">{translate('Tax')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{translate('Total')}</th>
                                         <th className="w-10 px-4 py-3"></th>
                                     </tr>
                                 </thead>
@@ -484,11 +484,11 @@ export default function PurchaseOrderCreate() {
                                             >
                                                 <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-[180px] xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Product')} <span className="text-red-500">*</span>
+                                                        {translate('Product')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Select value={row.product_id} onValueChange={(v) => updateProductRow(row.id, 'product_id', v)}>
                                                         <SelectTrigger className={errors[`products.${i}.product_id`] ? 'border-red-500' : ''}>
-                                                            <SelectValue placeholder={t('Select product')} />
+                                                            <SelectValue placeholder={translate('Select product')} />
                                                         </SelectTrigger>
                                                         <SelectContent searchable>
                                                             {productOptions
@@ -510,16 +510,16 @@ export default function PurchaseOrderCreate() {
                                                     )}
                                                     {i === 0 && productOptions.length === 0 && (
                                                         <p className="mt-1 text-xs">
-                                                            {t('Click here to add')}{' '}
+                                                            {translate('Click here to add')}{' '}
                                                             <a href={route('products.index')} className="font-medium underline">
-                                                                {t('Products')}
+                                                                {translate('Products')}
                                                             </a>
                                                         </p>
                                                     )}
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-24 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Quantity')} <span className="text-red-500">*</span>
+                                                        {translate('Quantity')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
                                                         type="number"
@@ -534,7 +534,7 @@ export default function PurchaseOrderCreate() {
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Unit Price')} <span className="text-red-500">*</span>
+                                                        {translate('Unit Price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
                                                         type="number"
@@ -551,7 +551,7 @@ export default function PurchaseOrderCreate() {
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-36 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Discount Type')}
+                                                        {translate('Discount Type')}
                                                     </span>
                                                     <Select
                                                         value={row.discount_type}
@@ -561,15 +561,15 @@ export default function PurchaseOrderCreate() {
                                                             <SelectValue />
                                                         </SelectTrigger>
                                                         <SelectContent>
-                                                            <SelectItem value="none">{t('None')}</SelectItem>
-                                                            <SelectItem value="percentage">{t('Percentage (%)')}</SelectItem>
-                                                            <SelectItem value="fixed">{t('Fixed Amount')}</SelectItem>
+                                                            <SelectItem value="none">{translate('None')}</SelectItem>
+                                                            <SelectItem value="percentage">{translate('Percentage (%)')}</SelectItem>
+                                                            <SelectItem value="fixed">{translate('Fixed Amount')}</SelectItem>
                                                         </SelectContent>
                                                     </Select>
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Discount Val')}
+                                                        {translate('Discount Val')}
                                                     </span>
                                                     <Input
                                                         type="number"
@@ -583,16 +583,16 @@ export default function PurchaseOrderCreate() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-32 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{t('Tax')}</span>
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{translate('Tax')}</span>
                                                     <span className="text-muted-foreground text-sm font-medium">
                                                         {(() => {
                                                             const p = productOptions.find((p: any) => String(p.id) === row.product_id);
-                                                            return p?.tax ? `${p.tax.name} (${parseFloat(p.tax.rate).toFixed(2)}%)` : t('No Tax');
+                                                            return p?.tax ? `${p.tax.name} (${parseFloat(p.tax.rate).toFixed(2)}%)` : translate('No Tax');
                                                         })()}
                                                     </span>
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-mono font-medium xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{t('Total')}</span>
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{translate('Total')}</span>
                                                     <span>{fmt(total)}</span>
                                                 </td>
                                                 <td className="col-span-1 block w-full border-t px-0 py-0 pt-2 text-right sm:col-span-2 xl:table-cell xl:w-10 xl:border-t-0 xl:px-4 xl:py-3 xl:pt-0 xl:text-left">
@@ -617,19 +617,19 @@ export default function PurchaseOrderCreate() {
                             <div className="mt-4 flex justify-end">
                                 <div className="min-w-[260px] space-y-1.5">
                                     <div className="flex justify-between text-sm text-gray-600">
-                                        <span>{t('Subtotal')}</span>
+                                        <span>{translate('Subtotal')}</span>
                                         <span className="font-mono font-medium">{fmt(subtotal + totalDiscount)}</span>
                                     </div>
                                     <div className="flex justify-between text-sm text-red-600">
-                                        <span>{t('Discount')}</span>
+                                        <span>{translate('Discount')}</span>
                                         <span className="font-mono font-medium">-{fmt(totalDiscount)}</span>
                                     </div>
                                     <div className="flex justify-between text-sm text-gray-600">
-                                        <span>{t('Tax')}</span>
+                                        <span>{translate('Tax')}</span>
                                         <span className="font-mono font-medium">{fmt(totalTax)}</span>
                                     </div>
                                     <div className="flex justify-between border-t pt-2 text-base font-bold text-gray-900">
-                                        <span>{t('Grand Total')}</span>
+                                        <span>{translate('Grand Total')}</span>
                                         <span className="font-mono text-lg text-green-600">{fmt(grandTotal)}</span>
                                     </div>
                                 </div>
@@ -640,10 +640,10 @@ export default function PurchaseOrderCreate() {
                     {/* ── ACTIONS ── */}
                     <div className="flex justify-end gap-3 px-6 py-4">
                         <Button type="button" variant="outline" onClick={() => router.visit(route('purchase-orders.index'))}>
-                            {t('Cancel')}
+                            {translate('Cancel')}
                         </Button>
                         <Button type="submit" disabled={processing}>
-                            {processing ? t('Saving...') : t('Save')}
+                            {processing ? translate('Saving...') : translate('Save')}
                         </Button>
                     </div>
                 </div>

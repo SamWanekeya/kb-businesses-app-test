@@ -26,14 +26,14 @@ export function IyzipayPaymentForm({
     onSuccess,
     onCancel,
 }: IyzipayPaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
 
     const handlePayment = async () => {
         if (!iyzipayPublicKey) {
-            setError(t('Iyzipay configuration is missing'));
+            setError(translate('Iyzipay configuration is missing'));
             return;
         }
 
@@ -61,17 +61,17 @@ export function IyzipayPaymentForm({
                 // Redirect to Iyzipay payment page
                 window.location.href = data.redirect_url;
             } else {
-                throw new Error(data.error || t('Failed to create payment form'));
+                throw new Error(data.error || translate('Failed to create payment form'));
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : t('Payment initialization failed'));
+            setError(err instanceof Error ? err.message : translate('Payment initialization failed'));
         } finally {
             setIsLoading(false);
         }
     };
 
     const formatPrice = (price: number) => {
-        return new Intl.NumberFormat('en-US', {
+        return new Intl.NumberFormatranslate('en-US', {
             style: 'currency',
             currency: currency,
         }).format(price);
@@ -82,7 +82,7 @@ export function IyzipayPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {t('Iyzipay Payment')}
+                    {translate('Iyzipay Payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -95,15 +95,15 @@ export function IyzipayPaymentForm({
 
                 <div className="bg-muted rounded-lg p-4">
                     <div className="flex items-center justify-between">
-                        <span className="font-medium">{t('Total Amount')}</span>
+                        <span className="font-medium">{translate('Total Amount')}</span>
                         <span className="text-lg font-bold">{formatPrice(planPrice)}</span>
                     </div>
                     <div className="text-muted-foreground mt-1 text-sm">
-                        {t('Billing Cycle')}: {t(billingCycle)}
+                        {translate('Billing Cycle')}: {t(billingCycle)}
                     </div>
                     {couponCode && (
                         <div className="mt-1 text-sm text-green-600">
-                            {t('Coupon Applied')}: {couponCode}
+                            {translate('Coupon Applied')}: {couponCode}
                         </div>
                     )}
                 </div>
@@ -111,31 +111,31 @@ export function IyzipayPaymentForm({
                 {isLoading ? (
                     <div className="py-8 text-center">
                         <Loader2 className="mx-auto mb-4 h-8 w-8 animate-spin" />
-                        <p>{t('Redirecting to payment page...')}</p>
+                        <p>{translate('Redirecting to payment page...')}</p>
                     </div>
                 ) : (
                     <div className="space-y-4">
                         <Alert>
                             <AlertCircle className="h-4 w-4" />
                             <AlertDescription>
-                                {t('You will be redirected to Iyzipay secure payment page to complete your payment.')}
+                                {translate('You will be redirected to Iyzipay secure payment page to complete your payment.')}
                             </AlertDescription>
                         </Alert>
 
                         <div className="flex gap-3">
                             <Button variant="outline" onClick={onCancel} disabled={isLoading} className="flex-1">
-                                {t('Cancel')}
+                                {translate('Cancel')}
                             </Button>
                             <Button onClick={handlePayment} disabled={isLoading || !iyzipayPublicKey} className="flex-1">
                                 {isLoading ? (
                                     <>
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                        {t('Processing...')}
+                                        {translate('Processing...')}
                                     </>
                                 ) : (
                                     <>
                                         <CreditCard className="mr-2 h-4 w-4" />
-                                        {t('Pay with Iyzipay')}
+                                        {translate('Pay with Iyzipay')}
                                     </>
                                 )}
                             </Button>
@@ -143,7 +143,7 @@ export function IyzipayPaymentForm({
                     </div>
                 )}
 
-                <div className="text-muted-foreground text-center text-xs">{t('Powered by Iyzipay - Secure payment processing')}</div>
+                <div className="text-muted-foreground text-center text-xs">{translate('Powered by Iyzipay - Secure payment processing')}</div>
             </CardContent>
         </Card>
     );

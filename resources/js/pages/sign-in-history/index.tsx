@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function LoginHistory() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, loginHistory, filters: pageFilters = {}, globalSettings } = usePage().props;
     const permissions = auth?.permissions || [];
 
@@ -86,7 +86,7 @@ export default function LoginHistory() {
 
     const handleDeleteConfirm = () => {
         if (!globalSettings?.is_demo) {
-            toast.loading(t('Deleting sign in history...'));
+            toast.loading(translate('Deleting sign in history...'));
         }
 
         router.delete(route('sign-in-history.destroy', currentItem.id), {
@@ -108,7 +108,7 @@ export default function LoginHistory() {
                 if (typeof errors === 'string') {
                     toast.error(t(errors));
                 } else {
-                    toast.error(t('Failed to delete sign in history: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to delete sign in history: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
             },
         });
@@ -122,15 +122,15 @@ export default function LoginHistory() {
     let breadcrumbs = [];
     if (isSuperAdmin) {
         breadcrumbs = [
-            { title: t('Dashboard'), href: route('dashboard') },
-            { title: t('Organizations'), href: route('organizations.index') },
-            { title: t('Sign in History') },
+            { title: translate('Dashboard'), href: route('dashboard') },
+            { title: translate('Organizations'), href: route('organizations.index') },
+            { title: translate('Sign in History') },
         ];
     } else {
         breadcrumbs = [
-            { title: t('Dashboard'), href: route('dashboard') },
-            { title: t('Staff'), href: route('users.index') },
-            { title: t('Sign in History') },
+            { title: translate('Dashboard'), href: route('dashboard') },
+            { title: translate('Staff'), href: route('users.index') },
+            { title: translate('Sign in History') },
         ];
     }
 
@@ -138,7 +138,7 @@ export default function LoginHistory() {
     const columns = [
         {
             key: 'user.name',
-            label: t('User'),
+            label: translate('User'),
             render: (_, row) => (
                 <div>
                     <div className="font-medium">{row.user?.name || '-'}</div>
@@ -148,7 +148,7 @@ export default function LoginHistory() {
         },
         {
             key: 'user.type',
-            label: t('User Type'),
+            label: translate('User Type'),
             render: (_, row) => {
                 const userType = row.user?.type || '-';
                 return userType.charAt(0).toUpperCase() + userType.slice(1);
@@ -156,20 +156,20 @@ export default function LoginHistory() {
         },
         {
             key: 'ip_address',
-            label: t('IP Address'),
+            label: translate('IP Address'),
             sortable: true,
             render: (value) => value || '-',
         },
         {
             key: 'date',
-            label: t('Sign in Date'),
+            label: translate('Sign in Date'),
             sortable: true,
             type: 'date',
             // render: (value) => window.appSettings?.formatDateTime(value, false) || '-'
         },
         {
             key: 'details',
-            label: t('Details'),
+            label: translate('Details'),
             render: (value) => {
                 try {
                     return (
@@ -188,14 +188,14 @@ export default function LoginHistory() {
     // Define table actions
     const actions = [
         {
-            label: t('View'),
+            label: translate('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
             requiredPermission: 'show-sign-in-history',
         },
         {
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
@@ -205,8 +205,8 @@ export default function LoginHistory() {
 
     return (
         <PageTemplate
-            title={t('Sign in History')}
-            description={t('Manage your sign in history records.')}
+            title={translate('Sign in History')}
+            description={translate('Manage your sign in history records.')}
             url="/sign-in-history"
             breadcrumbs={breadcrumbs}
             noPadding
@@ -247,7 +247,7 @@ export default function LoginHistory() {
                     to={loginHistory?.to || 0}
                     total={loginHistory?.total || 0}
                     links={loginHistory?.links}
-                    entityName={t('sign in records')}
+                    entityName={translate('sign in records')}
                     onPageChange={(url) => router.get(url)}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
@@ -270,36 +270,36 @@ export default function LoginHistory() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={`${currentItem?.user?.name || ''} `}
-                itemType={t('Sign in history')}
+                itemType={translate('Sign in history')}
             />
 
             {/* View Modal */}
             <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
                 <DialogContent className="max-h-[80vh] max-w-xl scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 overflow-y-auto">
                     <DialogHeader>
-                        <DialogTitle>{t('Sign in Details')}</DialogTitle>
+                        <DialogTitle>{translate('Sign in Details')}</DialogTitle>
                     </DialogHeader>
                     <div className="space-y-4">
                         <div className="flex justify-between border-b border-gray-100 py-2">
-                            <span className="text-gray-600">{t('User')}</span>
+                            <span className="text-gray-600">{translate('User')}</span>
                             <span className="font-medium">{currentItem?.user?.name || '-'}</span>
                         </div>
                         <div className="flex justify-between border-b border-gray-100 py-2">
-                            <span className="text-gray-600">{t('Email')}</span>
+                            <span className="text-gray-600">{translate('Email')}</span>
                             <span className="font-medium">{currentItem?.user?.email || '-'}</span>
                         </div>
                         <div className="flex justify-between border-b border-gray-100 py-2">
-                            <span className="text-gray-600">{t('User Type')}</span>
+                            <span className="text-gray-600">{translate('User Type')}</span>
                             <span className="font-medium">
                                 {currentItem?.user?.type ? currentItem.user.type.charAt(0).toUpperCase() + currentItem.user.type.slice(1) : '-'}
                             </span>
                         </div>
                         <div className="flex justify-between border-b border-gray-100 py-2">
-                            <span className="text-gray-600">{t('IP Address')}</span>
+                            <span className="text-gray-600">{translate('IP Address')}</span>
                             <span className="font-medium">{currentItem?.ip || '-'}</span>
                         </div>
                         <div className="flex justify-between border-b border-gray-100 py-2">
-                            <span className="text-gray-600">{t('Sign in Date')}</span>
+                            <span className="text-gray-600">{translate('Sign in Date')}</span>
                             <span className="font-medium">{window.appSettings?.formatDateTime(currentItem?.date, false) || '-'}</span>
                         </div>
                         {(() => {

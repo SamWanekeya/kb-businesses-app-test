@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function DocumentTypes() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, documentTypes, filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
 
@@ -113,7 +113,7 @@ export default function DocumentTypes() {
                 },
                 onError: (errors) => {
                     setFormErrors(errors);
-                    toast.error(t('Failed to create document type.'));
+                    toast.error(translate('Failed to create document type.'));
                 },
             });
         } else {
@@ -126,7 +126,7 @@ export default function DocumentTypes() {
                 },
                 onError: (errors) => {
                     setFormErrors(errors);
-                    toast.error(t('Failed to update document type.'));
+                    toast.error(translate('Failed to update document type.'));
                 },
             });
         }
@@ -143,7 +143,7 @@ export default function DocumentTypes() {
             },
             onError: (errors) => {
                 setIsDeleteModalOpen(false);
-                toast.error(`${t('Failed to delete document type')}: ${Object.values(errors).join(', ')}`);
+                toast.error(`${translate('Failed to delete document type')}: ${Object.values(errors).join(', ')}`);
             },
         });
     };
@@ -160,7 +160,7 @@ export default function DocumentTypes() {
                             setFormData((prev) => ({ ...prev, status: item.status === 'active' ? 'inactive' : 'active' }));
                     } else if (page.props.flash.error) toast.error(page.props.flash.error);
                 },
-                onError: (errors) => toast.error(`${t('Failed to update document type')}: ${Object.values(errors).join(', ')}`),
+                onError: (errors) => toast.error(`${translate('Failed to update document type')}: ${Object.values(errors).join(', ')}`),
             },
         );
     };
@@ -170,12 +170,12 @@ export default function DocumentTypes() {
     const canDelete = useHasPermission('delete-document-types');
     const canToggleStatus = useHasPermission('toggle-status-document-types');
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Document Management') }, { title: t('Types') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Document Management') }, { title: translate('Types') }];
 
     return (
         <PageTemplate
-            title={t('Types')}
-            description={t('Manage document types for your documents.')}
+            title={translate('Types')}
+            description={translate('Manage document types for your documents.')}
             url="/document-types"
             breadcrumbs={breadcrumbs}
             noPadding
@@ -186,25 +186,25 @@ export default function DocumentTypes() {
                     <div className="sticky top-4 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 p-6 dark:border-gray-700">
                             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                {formMode === 'create' ? t('Add New Document Type') : t('Edit Document Type')}
+                                {formMode === 'create' ? translate('Add New Document Type') : translate('Edit Document Type')}
                             </h2>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                 {formMode === 'create'
-                                    ? t('Fill in the details to create a new document type')
-                                    : t('Update the document type details below')}
+                                    ? translate('Fill in the details to create a new document type')
+                                    : translate('Update the document type details below')}
                             </p>
                         </div>
                         <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="type_name" required>
-                                    {t('Type Name')}
+                                    {translate('Type Name')}
                                 </Label>
                                 <Input
                                     id="type_name"
                                     type="text"
                                     value={formData.type_name}
                                     onChange={(e) => setFormData({ ...formData, type_name: e.target.value })}
-                                    placeholder={t('e.g. Contract, NDA, Invoice, Report')}
+                                    placeholder={translate('e.g. Contract, NDA, Invoice, Report')}
                                     className={formErrors.type_name ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
                                     required
@@ -212,7 +212,7 @@ export default function DocumentTypes() {
                                 {formErrors.type_name && <p className="text-sm text-red-500">{formErrors.type_name}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="status">{t('Status')}</Label>
+                                <Label htmlFor="status">{translate('Status')}</Label>
                                 <Select
                                     value={formData.status}
                                     onValueChange={(value) => setFormData({ ...formData, status: value })}
@@ -222,20 +222,20 @@ export default function DocumentTypes() {
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="active">{t('Active')}</SelectItem>
-                                        <SelectItem value="inactive">{t('Inactive')}</SelectItem>
+                                        <SelectItem value="active">{translate('Active')}</SelectItem>
+                                        <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
                             <div className="flex items-center gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
                                 {(canCreate || canEdit) && (
                                     <Button type="submit" className="flex-1">
-                                        {formMode === 'create' ? t('Add Document Type') : t('Update Document Type')}
+                                        {formMode === 'create' ? translate('Add Document Type') : translate('Update Document Type')}
                                     </Button>
                                 )}
                                 {formMode === 'edit' && (
                                     <Button type="button" variant="outline" onClick={resetForm}>
-                                        {t('Cancel')}
+                                        {translate('Cancel')}
                                     </Button>
                                 )}
                             </div>
@@ -252,7 +252,7 @@ export default function DocumentTypes() {
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
                                         type="text"
-                                        placeholder={t('Search document types...')}
+                                        placeholder={translate('Search document types...')}
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                         onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)}
@@ -260,12 +260,12 @@ export default function DocumentTypes() {
                                     />
                                 </div>
                                 <Button onClick={handleSearch} variant="default">
-                                    {t('Search')}
+                                    {translate('Search')}
                                 </Button>
                                 {hasActiveFilters() && (
                                     <Button onClick={handleResetFilters} variant="outline">
                                         <X className="mr-2 h-4 w-4" />
-                                        {t('Reset')}
+                                        {translate('Reset')}
                                     </Button>
                                 )}
                             </div>
@@ -278,12 +278,12 @@ export default function DocumentTypes() {
                                     }}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={t('All Statuses')} />
+                                        <SelectValue placeholder={translate('All Statuses')} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">{t('All Statuses')}</SelectItem>
-                                        <SelectItem value="active">{t('Active')}</SelectItem>
-                                        <SelectItem value="inactive">{t('Inactive')}</SelectItem>
+                                        <SelectItem value="all">{translate('All Statuses')}</SelectItem>
+                                        <SelectItem value="active">{translate('Active')}</SelectItem>
+                                        <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -294,8 +294,8 @@ export default function DocumentTypes() {
                         {(documentTypes?.data || []).length > 0 ? (
                             <>
                                 {/* <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Document Types')}</h3>
-                                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{t('Manage document type categories.')}</p>
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Document Types')}</h3>
+                                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{translate('Manage document type categories.')}</p>
                                 </div> */}
                                 {/* Desktop Table */}
                                 <div className="hidden overflow-x-auto lg:block">
@@ -304,10 +304,10 @@ export default function DocumentTypes() {
                                             <tr className="border-t bg-[#F0F0F1] hover:bg-[#F0F0F1] dark:border-gray-900 dark:bg-gray-900">
                                                 <th
                                                     className="cursor-pointer px-4 py-3 text-left text-xs font-medium tracking-wider text-gray-500 select-none dark:text-gray-300"
-                                                    onClick={() => handleSort('type_name')}
+                                                    onClick={() => handleSortranslate('type_name')}
                                                 >
                                                     <div className="flex items-center gap-1">
-                                                        {t('Type Name')}
+                                                        {translate('Type Name')}
                                                         {pageFilters.sort_field === 'type_name' ? (
                                                             pageFilters.sort_direction === 'asc' ? (
                                                                 ' ↑'
@@ -320,10 +320,10 @@ export default function DocumentTypes() {
                                                     </div>
                                                 </th>
                                                 <th className="px-3 py-3 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">
-                                                    {t('Status')}
+                                                    {translate('Status')}
                                                 </th>
                                                 <th className="px-4 py-3 pr-[50px] text-right text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">
-                                                    {t('Actions')}
+                                                    {translate('Actions')}
                                                 </th>
                                             </tr>
                                         </thead>
@@ -344,7 +344,7 @@ export default function DocumentTypes() {
                                                         <span
                                                             className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${item.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
                                                         >
-                                                            {item.status === 'active' ? t('Active') : t('Inactive')}
+                                                            {item.status === 'active' ? translate('Active') : translate('Inactive')}
                                                         </span>
                                                     </td>
                                                     <td className="px-4 py-4 text-right whitespace-nowrap">
@@ -362,7 +362,7 @@ export default function DocumentTypes() {
                                                                                 <Edit className="h-4 w-4 text-gray-500" />
                                                                             </Button>
                                                                         </TooltipTrigger>
-                                                                        <TooltipContent>{t('Edit')}</TooltipContent>
+                                                                        <TooltipContent>{translate('Edit')}</TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>
                                                             )}
@@ -380,7 +380,7 @@ export default function DocumentTypes() {
                                                                             </Button>
                                                                         </TooltipTrigger>
                                                                         <TooltipContent>
-                                                                            {item.status === 'active' ? t('Deactivate') : t('Activate')}
+                                                                            {item.status === 'active' ? translate('Deactivate') : translate('Activate')}
                                                                         </TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>
@@ -398,7 +398,7 @@ export default function DocumentTypes() {
                                                                                 <Trash2 className="h-4 w-4 text-gray-500" />
                                                                             </Button>
                                                                         </TooltipTrigger>
-                                                                        <TooltipContent>{t('Delete')}</TooltipContent>
+                                                                        <TooltipContent>{translate('Delete')}</TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>
                                                             )}
@@ -429,7 +429,7 @@ export default function DocumentTypes() {
                                                             <span
                                                                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${item.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
                                                             >
-                                                                {item.status === 'active' ? t('Active') : t('Inactive')}
+                                                                {item.status === 'active' ? translate('Active') : translate('Inactive')}
                                                             </span>
                                                         </div>
                                                     </div>
@@ -448,7 +448,7 @@ export default function DocumentTypes() {
                                                                         <Edit className="h-4 w-4 text-gray-500" />
                                                                     </Button>
                                                                 </TooltipTrigger>
-                                                                <TooltipContent>{t('Edit')}</TooltipContent>
+                                                                <TooltipContent>{translate('Edit')}</TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}
@@ -466,7 +466,7 @@ export default function DocumentTypes() {
                                                                     </Button>
                                                                 </TooltipTrigger>
                                                                 <TooltipContent>
-                                                                    {item.status === 'active' ? t('Deactivate') : t('Activate')}
+                                                                    {item.status === 'active' ? translate('Deactivate') : translate('Activate')}
                                                                 </TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
@@ -484,7 +484,7 @@ export default function DocumentTypes() {
                                                                         <Trash2 className="h-4 w-4 text-gray-500" />
                                                                     </Button>
                                                                 </TooltipTrigger>
-                                                                <TooltipContent>{t('Delete')}</TooltipContent>
+                                                                <TooltipContent>{translate('Delete')}</TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}
@@ -500,7 +500,7 @@ export default function DocumentTypes() {
                                             to={documentTypes?.to || 0}
                                             total={documentTypes?.total || 0}
                                             links={documentTypes?.links}
-                                            entityName={t('document types')}
+                                            entityName={translate('document types')}
                                             hidePerPage={true}
                                             onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
                                         />
@@ -512,15 +512,15 @@ export default function DocumentTypes() {
                                 <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700">
                                     <FileText className="h-8 w-8 text-gray-400" />
                                 </div>
-                                <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{t('No document types found')}</h3>
+                                <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{translate('No document types found')}</h3>
                                 <p className="mx-auto mb-6 max-w-sm text-gray-500 dark:text-gray-400">
                                     {hasActiveFilters()
-                                        ? t('No document types match your search criteria. Try adjusting your filters.')
-                                        : t('Create document types to categorize your documents.')}
+                                        ? translate('No document types match your search criteria. Try adjusting your filters.')
+                                        : translate('Create document types to categorize your documents.')}
                                 </p>
                                 {!hasActiveFilters() && canCreate && (
                                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                                        {t('Use the form on the left to add your first document type.')}
+                                        {translate('Use the form on the left to add your first document type.')}
                                     </p>
                                 )}
                             </div>
@@ -533,7 +533,7 @@ export default function DocumentTypes() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.type_name || ''}
-                entityName={t('document type')}
+                entityName={translate('document type')}
             />
         </PageTemplate>
     );

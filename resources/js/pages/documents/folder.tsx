@@ -33,7 +33,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function DocumentFolderView() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const {
         auth,
         folder,
@@ -64,7 +64,7 @@ export default function DocumentFolderView() {
         });
         if (!formData.folder_id) formData.folder_id = folder.id;
         if (docFormMode === 'create') {
-            toast.loading(t('Creating document...'));
+            toast.loading(translate('Creating document...'));
             router.post(route('documents.store'), formData, {
                 preserveState: false,
                 onSuccess: (page) => {
@@ -76,11 +76,11 @@ export default function DocumentFolderView() {
                 },
                 onError: (errors) => {
                     toast.dismiss();
-                    toast.error(t('Failed to create: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to create: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 },
             });
         } else {
-            toast.loading(t('Updating document...'));
+            toast.loading(translate('Updating document...'));
             router.put(route('documents.update', currentDoc.id), formData, {
                 preserveState: false,
                 onSuccess: (page) => {
@@ -92,14 +92,14 @@ export default function DocumentFolderView() {
                 },
                 onError: (errors) => {
                     toast.dismiss();
-                    toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 },
             });
         }
     };
 
     const handleDocDeleteConfirm = () => {
-        toast.loading(t('Deleting document...'));
+        toast.loading(translate('Deleting document...'));
         router.delete(route('documents.destroy', currentDoc.id), {
             onSuccess: (page) => {
                 setIsDocDeleteModalOpen(false);
@@ -110,7 +110,7 @@ export default function DocumentFolderView() {
             },
             onError: (errors) => {
                 toast.dismiss();
-                toast.error(t('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
     };
@@ -128,7 +128,7 @@ export default function DocumentFolderView() {
                 },
                 onError: (errors) => {
                     toast.dismiss();
-                    toast.error(t('Failed to update status: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to update status: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 },
             },
         );
@@ -137,7 +137,7 @@ export default function DocumentFolderView() {
     const handleFolderFormSubmit = (formData: any) => {
         if (formData.parent_folder_id === 'null') formData.parent_folder_id = null;
         if (folderFormMode === 'create') {
-            toast.loading(t('Creating folder...'));
+            toast.loading(translate('Creating folder...'));
             router.post(route('document-folders.store'), formData, {
                 preserveState: false,
                 onSuccess: (page) => {
@@ -149,11 +149,11 @@ export default function DocumentFolderView() {
                 },
                 onError: (errors) => {
                     toast.dismiss();
-                    toast.error(t('Failed to create: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to create: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 },
             });
         } else {
-            toast.loading(t('Updating folder...'));
+            toast.loading(translate('Updating folder...'));
             router.put(route('document-folders.update', currentSubFolder.id), formData, {
                 preserveState: false,
                 onSuccess: (page) => {
@@ -165,14 +165,14 @@ export default function DocumentFolderView() {
                 },
                 onError: (errors) => {
                     toast.dismiss();
-                    toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 },
             });
         }
     };
 
     const handleFolderDeleteConfirm = () => {
-        toast.loading(t('Deleting folder...'));
+        toast.loading(translate('Deleting folder...'));
         const deletingCurrentFolder = currentSubFolder?.id === folder.id;
         router.delete(route('document-folders.destroy', currentSubFolder.id), {
             onSuccess: (page) => {
@@ -188,14 +188,14 @@ export default function DocumentFolderView() {
             },
             onError: (errors) => {
                 toast.dismiss();
-                toast.error(t('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
     };
 
     const pageActions: any[] = [
         {
-            label: t('Back'),
+            label: translate('Back'),
             icon: <ArrowLeft className="mr-2 h-4 w-4" />,
             variant: 'outline',
             onClick: () =>
@@ -204,12 +204,12 @@ export default function DocumentFolderView() {
     ];
     if (useHasPermission('create-document-folders')) {
         pageActions.push({
-            label: t('Create Folder'),
+            label: translate('Create Folder'),
             icon: <FolderPlus className="mr-0 h-4 w-4 min-[1020px]:mr-2" />,
             variant: 'outline',
             className: 'h-8 w-8 min-[1020px]:h-9 min-[1020px]:w-auto px-0 min-[1020px]:px-4',
             labelClassName: 'hidden min-[1020px]:inline',
-            tooltip: t('Create Folder'),
+            tooltip: translate('Create Folder'),
             tooltipClassName: 'min-[1020px]:hidden',
             onClick: () => {
                 setCurrentSubFolder(null);
@@ -220,12 +220,12 @@ export default function DocumentFolderView() {
     }
     if (useHasPermission('create-documents')) {
         pageActions.push({
-            label: t('Upload Document'),
+            label: translate('Upload Document'),
             icon: <Plus className="mr-0 h-4 w-4 min-[1020px]:mr-2" />,
             variant: 'default',
             className: 'h-8 w-8 min-[1020px]:h-9 min-[1020px]:w-auto px-0 min-[1020px]:px-4',
             labelClassName: 'hidden min-[1020px]:inline',
-            tooltip: t('Upload Document'),
+            tooltip: translate('Upload Document'),
             tooltipClassName: 'min-[1020px]:hidden',
             onClick: () => {
                 setCurrentDoc(null);
@@ -236,9 +236,9 @@ export default function DocumentFolderView() {
     }
 
     const breadcrumbs: any[] = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Document Management') },
-        { title: t('Documents'), href: route('documents.index') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Document Management') },
+        { title: translate('Documents'), href: route('documents.index') },
     ];
     if (folder.parent_folder) {
         breadcrumbs.push({ title: folder.parent_folder.name, href: route('documents.folder', folder.parent_folder.id) });
@@ -246,18 +246,18 @@ export default function DocumentFolderView() {
     breadcrumbs.push({ title: folder.name });
 
     const folderFields = [
-        { name: 'name', label: t('Folder Name'), type: 'text', required: true, placeholder: t('e.g. Contracts, HR Documents') },
+        { name: 'name', label: translate('Folder Name'), type: 'text', required: true, placeholder: translate('e.g. Contracts, HR Documents') },
         {
             name: 'parent_folder_id',
-            label: t('Parent Folder'),
+            label: translate('Parent Folder'),
             type: 'select',
             searchable: true,
             options: [
-                { value: 'null', label: t('Root Folder') },
+                { value: 'null', label: translate('Root Folder') },
                 ...parentFolders.map((f: any) => ({ value: f.id, label: f.display_name || f.name })),
             ],
         },
-        { name: 'description', label: t('Description'), type: 'textarea', placeholder: t('Enter folder description...') },
+        { name: 'description', label: translate('Description'), type: 'textarea', placeholder: translate('Enter folder description...') },
     ];
 
     const getExt = (url: string) => (url || '').split('?')[0].split('.').pop()?.toLowerCase() || '';
@@ -315,7 +315,7 @@ export default function DocumentFolderView() {
     return (
         <PageTemplate
             title={folder.name}
-            description={t('Manage your documents and folders.')}
+            description={translate('Manage your documents and folders.')}
             url={`/documents/folder/${folder.id}`}
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -333,7 +333,7 @@ export default function DocumentFolderView() {
                         <div className="min-w-0 flex-1">
                             <h1 className="truncate text-base font-semibold text-gray-900 dark:text-white">{folder.name}</h1>
                             <p className="text-xs text-gray-400">
-                                {subFolders.length + docsList.length} {t('items')}
+                                {subFolders.length + docsList.length} {translate('items')}
                             </p>
                         </div>
                     </div>
@@ -352,8 +352,8 @@ export default function DocumentFolderView() {
                                 {subFolders.length === 0 && docsList.length === 0 && (
                                     <div className="col-span-full flex flex-col items-center justify-center gap-3" style={{ minHeight: '390px' }}>
                                         <Folder className="h-16 w-16 text-gray-300 dark:text-gray-600" strokeWidth={1} />
-                                        <p className="text-base font-semibold text-gray-500 dark:text-gray-400">{t('This folder is empty')}</p>
-                                        <p className="text-sm text-gray-400 dark:text-gray-500">{t('No subfolders or documents found')}</p>
+                                        <p className="text-base font-semibold text-gray-500 dark:text-gray-400">{translate('This folder is empty')}</p>
+                                        <p className="text-sm text-gray-400 dark:text-gray-500">{translate('No subfolders or documents found')}</p>
                                     </div>
                                 )}
                                 {subFolders.map((sf: any) => (
@@ -363,7 +363,7 @@ export default function DocumentFolderView() {
                                             onClick={() =>
                                                 useHasPermission('view-documents')
                                                     ? router.get(route('documents.folder', sf.id))
-                                                    : toast.error(t('Permission denied.'))
+                                                    : toast.error(translate('Permission denied.'))
                                             }
                                         >
                                             <Folder className="text-primary mb-3 h-14 w-14" strokeWidth={1.8} />
@@ -394,7 +394,7 @@ export default function DocumentFolderView() {
                                                                 }}
                                                             >
                                                                 <Edit className="mr-2 h-4 w-4 text-gray-500" />
-                                                                {t('Edit')}
+                                                                {translate('Edit')}
                                                             </DropdownMenuItem>
                                                         )}
                                                         {useHasPermission('edit-document-folders') &&
@@ -408,7 +408,7 @@ export default function DocumentFolderView() {
                                                                 }}
                                                             >
                                                                 <Trash2 className="mr-2 h-4 w-4 text-gray-500" />
-                                                                {t('Delete')}
+                                                                {translate('Delete')}
                                                             </DropdownMenuItem>
                                                         )}
                                                     </DropdownMenuContent>
@@ -418,7 +418,7 @@ export default function DocumentFolderView() {
                                                     variant="ghost"
                                                     size="sm"
                                                     className="border-none bg-transparent p-0 text-gray-400 opacity-0 shadow-none transition-opacity group-hover:opacity-100 hover:bg-transparent hover:text-gray-700"
-                                                    onClick={() => toast.error(t('Permission denied.'))}
+                                                    onClick={() => toast.error(translate('Permission denied.'))}
                                                 >
                                                     <MoreHorizontal className="h-3.5 w-3.5" />
                                                 </Button>
@@ -437,7 +437,7 @@ export default function DocumentFolderView() {
                                                 onClick={() =>
                                                     useHasPermission('view-documents')
                                                         ? router.get(route('documents.show', doc.id))
-                                                        : toast.error(t('Permission denied.'))
+                                                        : toast.error(translate('Permission denied.'))
                                                 }
                                                 {...(isImage ? getImageDocHoverHandlers() : {})}
                                             >
@@ -464,7 +464,7 @@ export default function DocumentFolderView() {
                                                             {useHasPermission('view-documents') && doc.attachment_url && (
                                                                 <DropdownMenuItem
                                                                     onClick={() => {
-                                                                        const l = document.createElement('a');
+                                                                        const l = document.createElementranslate('a');
                                                                         l.href = route('documents.download', doc.id);
                                                                         l.download = '';
                                                                         document.body.appendChild(l);
@@ -473,7 +473,7 @@ export default function DocumentFolderView() {
                                                                     }}
                                                                 >
                                                                     <Download className="mr-2 h-4 w-4 text-gray-500" />
-                                                                    {t('Download')}
+                                                                    {translate('Download')}
                                                                 </DropdownMenuItem>
                                                             )}
                                                             {useHasPermission('edit-documents') && (
@@ -485,7 +485,7 @@ export default function DocumentFolderView() {
                                                                     }}
                                                                 >
                                                                     <Edit className="mr-2 h-4 w-4 text-gray-500" />
-                                                                    {t('Edit')}
+                                                                    {translate('Edit')}
                                                                 </DropdownMenuItem>
                                                             )}
                                                             {(useHasPermission('view-documents') ||
@@ -500,7 +500,7 @@ export default function DocumentFolderView() {
                                                                     }}
                                                                 >
                                                                     <Trash2 className="mr-2 h-4 w-4 text-gray-500" />
-                                                                    {t('Delete')}
+                                                                    {translate('Delete')}
                                                                 </DropdownMenuItem>
                                                             )}
                                                         </DropdownMenuContent>
@@ -510,7 +510,7 @@ export default function DocumentFolderView() {
                                                         variant="ghost"
                                                         size="sm"
                                                         className="border-none bg-transparent p-0 text-gray-400 opacity-0 shadow-none transition-opacity group-hover:opacity-100 hover:bg-transparent hover:text-gray-700"
-                                                        onClick={() => toast.error(t('Permission denied.'))}
+                                                        onClick={() => toast.error(translate('Permission denied.'))}
                                                     >
                                                         <MoreHorizontal className="h-3.5 w-3.5" />
                                                     </Button>
@@ -527,7 +527,7 @@ export default function DocumentFolderView() {
                                 to={docsPagination.to || 0}
                                 total={total}
                                 links={docsPagination.links}
-                                entityName={t('items')}
+                                entityName={translate('items')}
                                 onPageChange={(url) => router.get(url)}
                             />
                         )}
@@ -539,7 +539,7 @@ export default function DocumentFolderView() {
                         <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3 dark:border-gray-700">
                             <div className="flex items-center gap-2 text-sm font-bold text-gray-800 dark:text-gray-100">
                                 <Folder className="text-grey h-4 w-4" strokeWidth={1.5} />
-                                {t('Folder Details')}
+                                {translate('Folder Details')}
                             </div>
                             <div className="flex items-center gap-1.5">
                                 {useHasPermission('edit-document-folders') && (
@@ -557,7 +557,7 @@ export default function DocumentFolderView() {
                                                     <Edit className="h-4 w-4 text-gray-500" />
                                                 </button>
                                             </TooltipTrigger>
-                                            <TooltipContent>{t('Edit')}</TooltipContent>
+                                            <TooltipContent>{translate('Edit')}</TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
                                 )}
@@ -575,7 +575,7 @@ export default function DocumentFolderView() {
                                                     <Trash2 className="h-4 w-4 text-gray-500" />
                                                 </button>
                                             </TooltipTrigger>
-                                            <TooltipContent>{t('Delete')}</TooltipContent>
+                                            <TooltipContent>{translate('Delete')}</TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
                                 )}
@@ -583,10 +583,10 @@ export default function DocumentFolderView() {
                         </div>
                         {/* Rows */}
                         <div>
-                            <PanelRow label={t('Name')} value={folder.name} />
-                            <PanelRow label={t('Parent Folder')} value={folder.parent_folder ? folder.parent_folder.name : t('Root Folder')} />
+                            <PanelRow label={translate('Name')} value={folder.name} />
+                            <PanelRow label={translate('Parent Folder')} value={folder.parent_folder ? folder.parent_folder.name : translate('Root Folder')} />
                             <PanelRow
-                                label={t('Created')}
+                                label={translate('Created')}
                                 value={
                                     <div className="flex items-center gap-2 whitespace-nowrap">
                                         {folder.created_at && <LucidIcons.Calendar className="h-4 w-4 text-gray-500" />}
@@ -602,7 +602,7 @@ export default function DocumentFolderView() {
                         </div>
                         {folder.description && (
                             <div className="border-t border-gray-100 px-4 py-3 dark:border-gray-700">
-                                <p className="mb-1 text-sm font-bold text-gray-800 dark:text-gray-100">{t('Description')}</p>
+                                <p className="mb-1 text-sm font-bold text-gray-800 dark:text-gray-100">{translate('Description')}</p>
                                 <p className="text-sm leading-relaxed break-words whitespace-pre-wrap text-gray-500 dark:text-gray-400">
                                     {folder.description}
                                 </p>
@@ -619,70 +619,70 @@ export default function DocumentFolderView() {
                 onSubmit={handleDocFormSubmit}
                 formConfig={{
                     fields: [
-                        { name: 'name', label: t('Document Name'), type: 'text', required: true, placeholder: t('e.g. Q1 Sales Contract') },
+                        { name: 'name', label: translate('Document Name'), type: 'text', required: true, placeholder: translate('e.g. Q1 Sales Contract') },
                         {
                             name: 'account_id',
-                            label: t('Account'),
+                            label: translate('Account'),
                             type: 'select',
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('accounts.index'), linkText: t('Accounts') },
+                            emptyNote: { link: route('accounts.index'), linkText: translate('Accounts') },
                             options: accounts.map((a: any) => ({ value: a.id, label: a.name })),
                         },
                         {
                             name: 'folder_id',
-                            label: t('Folder'),
+                            label: translate('Folder'),
                             type: 'select',
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('documents.index'), linkText: t('Document Folders') },
+                            emptyNote: { link: route('documents.index'), linkText: translate('Document Folders') },
                             options: folders.map((f: any) => ({ value: f.id, label: f.name })),
                         },
                         {
                             name: 'type_id',
-                            label: t('Type'),
+                            label: translate('Type'),
                             type: 'select',
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('document-types.index'), linkText: t('Document Types') },
+                            emptyNote: { link: route('document-types.index'), linkText: translate('Document Types') },
                             options: types.map((type: any) => ({ value: type.id, label: type.type_name })),
                         },
                         {
                             name: 'opportunity_id',
-                            label: t('Opportunity'),
+                            label: translate('Opportunity'),
                             type: 'select',
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('opportunities.index'), linkText: t('Opportunities') },
+                            emptyNote: { link: route('opportunities.index'), linkText: translate('Opportunities') },
                             options: opportunities.map((o: any) => ({ value: o.id, label: o.name })),
                         },
-                        { name: 'publish_date', label: t('Publish Date'), type: 'date' },
-                        { name: 'expiration_date', label: t('Expiration Date'), type: 'date' },
+                        { name: 'publish_date', label: translate('Publish Date'), type: 'date' },
+                        { name: 'expiration_date', label: translate('Expiration Date'), type: 'date' },
                         {
                             name: 'attachment',
-                            label: t('Attachment'),
+                            label: translate('Attachment'),
                             required: true,
                             type: 'media-picker',
                             returnType: 'id',
-                            placeholder: t('Select file...'),
+                            placeholder: translate('Select file...'),
                         },
                         {
                             name: 'assigned_to',
-                            label: t('Assign To'),
+                            label: translate('Assign To'),
                             type: 'select',
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('users.index'), linkText: t('Users') },
+                            emptyNote: { link: route('users.index'), linkText: translate('Users') },
                             options: users.map((u: any) => ({ value: u.id, label: `${u.name} (${u.email})` })),
                         },
-                        { name: 'description', label: t('Description'), type: 'textarea', placeholder: t('Enter document description...') },
+                        { name: 'description', label: translate('Description'), type: 'textarea', placeholder: translate('Enter document description...') },
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             options: [
-                                { value: 'active', label: t('Active') },
-                                { value: 'inactive', label: t('Inactive') },
+                                { value: 'active', label: translate('Active') },
+                                { value: 'inactive', label: translate('Inactive') },
                             ],
                             defaultValue: 'active',
                         },
@@ -706,7 +706,7 @@ export default function DocumentFolderView() {
                           }
                         : { folder_id: folder.id, status: 'active' }
                 }
-                title={docFormMode === 'create' ? t('Upload Document') : t('Edit Document')}
+                title={docFormMode === 'create' ? translate('Upload Document') : translate('Edit Document')}
                 mode={docFormMode}
             />
 
@@ -726,7 +726,7 @@ export default function DocumentFolderView() {
                               parent_folder_id: currentSubFolder?.parent_folder_id ? String(currentSubFolder.parent_folder_id) : 'null',
                           }
                 }
-                title={folderFormMode === 'create' ? t('Create Folder') : t('Edit Folder')}
+                title={folderFormMode === 'create' ? translate('Create Folder') : translate('Edit Folder')}
                 mode={folderFormMode}
             />
 
@@ -735,14 +735,14 @@ export default function DocumentFolderView() {
                 onClose={() => setIsDocDeleteModalOpen(false)}
                 onConfirm={handleDocDeleteConfirm}
                 itemName={currentDoc?.name || ''}
-                entityName={t('document')}
+                entityName={translate('document')}
             />
             <CrudDeleteModal
                 isOpen={isFolderDeleteModalOpen}
                 onClose={() => setIsFolderDeleteModalOpen(false)}
                 onConfirm={handleFolderDeleteConfirm}
                 itemName={currentSubFolder?.name || folder.name}
-                entityName={t('folder')}
+                entityName={translate('folder')}
             />
         </PageTemplate>
     );

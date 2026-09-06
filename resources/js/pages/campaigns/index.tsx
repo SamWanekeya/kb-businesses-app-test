@@ -17,7 +17,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Campaigns() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
     const {
         auth,
@@ -137,7 +137,7 @@ export default function Campaigns() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting campaign...'));
+        toast.loading(translate('Deleting campaign...'));
 
         router.delete(route('campaigns.destroy', currentItem.id), {
             onSuccess: (page) => {
@@ -154,7 +154,7 @@ export default function Campaigns() {
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
-                    toast.error(t('Failed to delete campaign: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to delete campaign: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
             },
         });
@@ -162,7 +162,7 @@ export default function Campaigns() {
 
     const handleToggleStatus = (campaign: any) => {
         const newStatus = campaign.status === 'active' ? 'inactive' : 'active';
-        toast.loading(`${newStatus === 'active' ? t('Activating') : t('Deactivating')} campaign...`);
+        toast.loading(`${newStatus === 'active' ? translate('Activating') : translate('Deactivating')} campaign...`);
 
         router.put(
             route('campaigns.toggle-status', campaign.id),
@@ -181,7 +181,7 @@ export default function Campaigns() {
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
-                        toast.error(t('Failed to update campaign status: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        toast.error(translate('Failed to update campaign status: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
                 },
             },
@@ -200,7 +200,7 @@ export default function Campaigns() {
     const handleResetFilters = () => {
         setSearchTerm('');
         setSelectedCampaignType('all');
-        setSelectedTargetList('all');
+        setSelectedTargetListranslate('all');
         setSelectedStatus('all');
         setSelectedAssignee('all');
         router.get(route('campaigns.index'), { view: activeView });
@@ -212,28 +212,28 @@ export default function Campaigns() {
     // Add the "Add Campaign" button if user has permission
     if (useHasPermission('create-campaigns')) {
         pageActions.push({
-            label: t('Add Campaign'),
+            label: translate('Add Campaign'),
             icon: <Plus className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
             variant: 'default',
             onClick: () => handleAddNew(),
             className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
             labelClassName: 'hidden min-[400px]:inline',
-            tooltip: t('Add Campaign'),
+            tooltip: translate('Add Campaign'),
             tooltipClassName: 'min-[400px]:hidden',
         });
     }
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Campaign Management'), href: route('campaigns.index') },
-        { title: t('Campaigns') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Campaign Management'), href: route('campaigns.index') },
+        { title: translate('Campaigns') },
     ];
 
     // Define table columns
     const columns = [
         {
             key: 'name',
-            label: t('Name'),
+            label: translate('Name'),
             sortable: true,
             render: (value: any, row: any) => (
                 <div>
@@ -244,7 +244,7 @@ export default function Campaigns() {
         },
         {
             key: 'assigned_user',
-            label: t('Assigned To'),
+            label: translate('Assigned To'),
             className: 'whitespace-nowrap',
             render: (value: any) =>
                 value ? (
@@ -259,12 +259,12 @@ export default function Campaigns() {
                         </div>
                     </div>
                 ) : (
-                    <span className="whitespace-nowrap">{t('Unassigned')}</span>
+                    <span className="whitespace-nowrap">{translate('Unassigned')}</span>
                 ),
         },
         {
             key: 'start_date',
-            label: t('Date'),
+            label: translate('Date'),
             sortable: true,
             render: (value: any, row: any) => (
                 <div className="flex flex-col text-sm text-gray-500">
@@ -284,7 +284,7 @@ export default function Campaigns() {
         },
         {
             key: 'budget',
-            label: t('Budget'),
+            label: translate('Budget'),
             sortable: true,
             render: (value: any) => (
                 <span className="font-mono whitespace-nowrap">
@@ -294,7 +294,7 @@ export default function Campaigns() {
         },
         {
             key: 'actual_cost',
-            label: t('Actual Cost'),
+            label: translate('Actual Cost'),
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: any) => (
@@ -305,12 +305,12 @@ export default function Campaigns() {
         },
         {
             key: 'target_list',
-            label: t('Target List'),
+            label: translate('Target List'),
             render: (value: any) => <span className="whitespace-nowrap">{value?.name || '-'}</span>,
         },
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             className: 'whitespace-nowrap',
             render: (value: string) => (
                 <span
@@ -320,13 +320,13 @@ export default function Campaigns() {
                             : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                     }`}
                 >
-                    {value === 'active' ? t('Active') : t('Inactive')}
+                    {value === 'active' ? translate('Active') : translate('Inactive')}
                 </span>
             ),
         },
         // {
         //     key: 'created_at',
-        //     label: t('Created At'),
+        //     label: translate('Created At'),
         //     sortable: true,
         //     className: 'whitespace-nowrap',
         //     type: 'date'
@@ -336,28 +336,28 @@ export default function Campaigns() {
     // Define table actions
     const actions = [
         {
-            label: t('Toggle Status'),
+            label: translate('Toggle Status'),
             icon: 'Lock',
             action: 'toggle-status',
             className: 'text-amber-500',
             requiredPermission: 'toggle-status-campaigns',
         },
         {
-            label: t('View'),
+            label: translate('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
             requiredPermission: 'view-campaigns',
         },
         {
-            label: t('Edit'),
+            label: translate('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
             requiredPermission: 'edit-campaigns',
         },
         {
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
@@ -367,7 +367,7 @@ export default function Campaigns() {
 
     // Prepare filter options
     const campaignTypeOptions = [
-        { value: 'all', label: t('All Campaign Types') },
+        { value: 'all', label: translate('All Campaign Types') },
         ...(allCampaignTypes || []).map((type: any) => ({
             value: type.id.toString(),
             label: type.name,
@@ -375,7 +375,7 @@ export default function Campaigns() {
     ];
 
     const targetListOptions = [
-        { value: 'all', label: t('All Target Lists') },
+        { value: 'all', label: translate('All Target Lists') },
         ...(allTargetLists || []).map((list: any) => ({
             value: list.id.toString(),
             label: list.name,
@@ -383,15 +383,15 @@ export default function Campaigns() {
     ];
 
     const statusOptions = [
-        { value: 'all', label: t('All Statuses') },
-        { value: 'active', label: t('Active') },
-        { value: 'inactive', label: t('Inactive') },
+        { value: 'all', label: translate('All Statuses') },
+        { value: 'active', label: translate('Active') },
+        { value: 'inactive', label: translate('Inactive') },
     ];
 
     return (
         <PageTemplate
-            title={t('Campaigns')}
-            description={t('Manage your campaigns.')}
+            title={translate('Campaigns')}
+            description={translate('Manage your campaigns.')}
             url="/campaigns"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -406,7 +406,7 @@ export default function Campaigns() {
                     filters={[
                         {
                             name: 'campaign_type_id',
-                            label: t('Campaign Type'),
+                            label: translate('Campaign Type'),
                             type: 'select',
                             searchable: true,
                             value: selectedCampaignType,
@@ -415,7 +415,7 @@ export default function Campaigns() {
                         },
                         {
                             name: 'target_list_id',
-                            label: t('Target List'),
+                            label: translate('Target List'),
                             type: 'select',
                             searchable: true,
                             value: selectedTargetList,
@@ -424,7 +424,7 @@ export default function Campaigns() {
                         },
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
@@ -432,14 +432,14 @@ export default function Campaigns() {
                         },
                         {
                             name: 'assigned_to',
-                            label: t('Assigned To'),
+                            label: translate('Assigned To'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: t('All Users') },
-                                { value: 'unassigned', label: t('Unassigned') },
+                                { value: 'all', label: translate('All Users') },
+                                { value: 'unassigned', label: translate('Unassigned') },
                                 ...(allUsers || []).map((user: any) => ({ value: user.id.toString(), label: user.name })),
                             ],
                         },
@@ -496,7 +496,7 @@ export default function Campaigns() {
                         to={campaigns?.to || 0}
                         total={campaigns?.total || 0}
                         links={campaigns?.links}
-                        entityName={t('campaigns')}
+                        entityName={translate('campaigns')}
                         onPageChange={(url) => router.get(url)}
                         currentPerPage={pageFilters.per_page?.toString() || '10'}
                         onPerPageChange={(value) => {
@@ -579,26 +579,26 @@ export default function Campaigns() {
                                                     {useHasPermission('view-campaigns') && (
                                                         <DropdownMenuItem onClick={() => router.visit(route('campaigns.show', campaign.id))}>
                                                             <Eye className="mr-2 h-4 w-4" />
-                                                            <span>{t('View Campaign')}</span>
+                                                            <span>{translate('View Campaign')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('toggle-status-campaigns') && (
                                                         <DropdownMenuItem onClick={() => handleAction('toggle-status', campaign)}>
                                                             <Lock className="mr-2 h-4 w-4" />
-                                                            <span>{campaign.status === 'active' ? t('Deactivate') : t('Activate')}</span>
+                                                            <span>{campaign.status === 'active' ? translate('Deactivate') : translate('Activate')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('edit-campaigns') && (
                                                         <DropdownMenuItem onClick={() => router.visit(route('campaigns.edit', campaign.id))}>
                                                             <Edit className="mr-2 h-4 w-4" />
-                                                            <span>{t('Edit')}</span>
+                                                            <span>{translate('Edit')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     <DropdownMenuSeparator />
                                                     {useHasPermission('delete-campaigns') && (
                                                         <DropdownMenuItem onClick={() => handleAction('delete', campaign)} className="text-rose-600">
                                                             <Trash2 className="mr-2 h-4 w-4" />
-                                                            <span>{t('Delete')}</span>
+                                                            <span>{translate('Delete')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                 </DropdownMenuContent>
@@ -618,7 +618,7 @@ export default function Campaigns() {
                                                             : 'bg-red-50 text-red-700 ring-red-600/20'
                                                     }`}
                                                 >
-                                                    {campaign.status === 'active' ? t('Active') : t('Inactive')}
+                                                    {campaign.status === 'active' ? translate('Active') : translate('Inactive')}
                                                 </span>
                                                 {campaign.campaign_type && (
                                                     <span
@@ -634,7 +634,7 @@ export default function Campaigns() {
                                         <div className="mb-3 space-y-1.5">
                                             <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                                                 <Calendar className="h-3.5 w-3.5 shrink-0 text-gray-500" />
-                                                <span className="shrink-0 text-gray-500">{t('Duration')}:</span>
+                                                <span className="shrink-0 text-gray-500">{translate('Duration')}:</span>
                                                 <span className="truncate text-gray-500">
                                                     {fmtDuration(campaign.start_date, campaign.end_date) ?? '-'}
                                                 </span>
@@ -648,13 +648,13 @@ export default function Campaigns() {
                                             <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                                                 <Wallet className="h-3.5 w-3.5 shrink-0 text-gray-400" />
                                                 <span className="truncate">
-                                                    {t('Budget')}: <span className="font-mono">{budget > 0 ? fmtCur(budget) : '—'}</span>
+                                                    {translate('Budget')}: <span className="font-mono">{budget > 0 ? fmtCur(budget) : '—'}</span>
                                                 </span>
                                             </div>
                                             <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                                                 <TrendingUp className="h-3.5 w-3.5 shrink-0 text-gray-400" />
                                                 <span className="truncate">
-                                                    {t('Spent')}: <span className="font-mono">{fmtCur(actualCost)}</span>
+                                                    {translate('Spent')}: <span className="font-mono">{fmtCur(actualCost)}</span>
                                                 </span>
                                             </div>
                                         </div>
@@ -663,7 +663,7 @@ export default function Campaigns() {
                                         {budget > 0 && (
                                             <div className="mb-3">
                                                 <div className="mb-1 flex items-center justify-between">
-                                                    <span className="text-[10px] text-gray-500">{t('Budget Used')}</span>
+                                                    <span className="text-[10px] text-gray-500">{translate('Budget Used')}</span>
                                                     <span
                                                         className={`text-[10px] font-semibold ${
                                                             spendPct >= 90 ? 'text-red-600' : spendPct >= 70 ? 'text-amber-600' : 'text-emerald-600'
@@ -706,7 +706,7 @@ export default function Campaigns() {
                                                 })()}
                                             {campaign.assigned_user && (
                                                 <div className="flex items-center gap-1.5">
-                                                    <span className="text-xs text-gray-500 dark:text-gray-400">{t('Assigned to')}</span>
+                                                    <span className="text-xs text-gray-500 dark:text-gray-400">{translate('Assigned to')}</span>
                                                     <TooltipProvider>
                                                         <Tooltip>
                                                             <TooltipTrigger asChild>
@@ -741,7 +741,7 @@ export default function Campaigns() {
                             to={campaigns?.to || 0}
                             total={campaigns?.total || 0}
                             links={campaigns?.links}
-                            entityName={t('campaigns')}
+                            entityName={translate('campaigns')}
                             onPageChange={(url) => router.get(url)}
                             perPageOptions={[12, 24, 48, 96]}
                             currentPerPage={pageFilters.per_page?.toString() || '12'}
@@ -774,7 +774,7 @@ export default function Campaigns() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={t('campaign')}
+                entityName={translate('campaign')}
             />
         </PageTemplate>
     );

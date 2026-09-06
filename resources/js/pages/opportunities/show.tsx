@@ -33,7 +33,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function OpportunityShow() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
     const { opportunity, streamItems, auth, meetings } = usePage().props;
     const isOrganization = auth?.user?.type === 'organization';
@@ -45,10 +45,10 @@ export default function OpportunityShow() {
     const [editCommentText, setEditCommentText] = useState('');
     const permissions = auth?.permissions || [];
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Opportunity Management') },
-        { title: t('Opportunities'), href: route('opportunities.index') },
-        { title: t('View Opportunity') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Opportunity Management') },
+        { title: translate('Opportunities'), href: route('opportunities.index') },
+        { title: translate('View Opportunity') },
     ];
 
     const getStatusBadge = (status: string) => {
@@ -69,7 +69,7 @@ export default function OpportunityShow() {
     const formatCurrency = (amount: number) => window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     const formatDate = (dateString: string) => {
-        if (!dateString) return t('-');
+        if (!dateString) return translate('-');
         return window.appSettings?.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
@@ -95,10 +95,10 @@ export default function OpportunityShow() {
         <PageTemplate
             title={opportunity.name}
             breadcrumbs={breadcrumbs}
-            description={t('Opportunity details and related information')}
+            description={translate('Opportunity details and related information')}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => router.visit(route('opportunities.index')),
@@ -112,28 +112,28 @@ export default function OpportunityShow() {
                     {(
                         [
                             {
-                                label: t('Amount'),
+                                label: translate('Amount'),
                                 value: formatCurrency(opportunity.amount),
                                 icon: DollarSign,
                                 iconCls: 'text-emerald-600',
                                 blobCls: 'bg-emerald-50 dark:bg-emerald-900/30',
                             },
                             {
-                                label: t('Stage'),
+                                label: translate('Stage'),
                                 value: opportunity.opportunity_stage?.name || '—',
                                 icon: TrendingUp,
                                 iconCls: 'text-blue-600',
                                 blobCls: 'bg-blue-50 dark:bg-blue-900/30',
                             },
                             {
-                                label: t('Products'),
-                                value: `${opportunity.products?.length || 0} ${(opportunity.products?.length || 0) === 1 ? t('item') : t('items')}`,
+                                label: translate('Products'),
+                                value: `${opportunity.products?.length || 0} ${(opportunity.products?.length || 0) === 1 ? translate('item') : translate('items')}`,
                                 icon: Package,
                                 iconCls: 'text-orange-600',
                                 blobCls: 'bg-orange-50 dark:bg-orange-900/30',
                             },
                             {
-                                label: t('Close Date'),
+                                label: translate('Close Date'),
                                 value: formatDate(opportunity.close_date),
                                 icon: Clock,
                                 iconCls: 'text-purple-600',
@@ -165,22 +165,22 @@ export default function OpportunityShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <FileText className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Opportunity Summary')}
+                                {translate('Opportunity Summary')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
                             <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{t('Status')}</p>
+                                    <p className="text-muted-foreground text-xs font-medium">{translate('Status')}</p>
                                     <div>{getStatusBadge(opportunity.status)}</div>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{t('Source')}</p>
+                                    <p className="text-muted-foreground text-xs font-medium">{translate('Source')}</p>
                                     <p className="text-foreground text-sm font-medium">{opportunity.opportunity_source?.name || '—'}</p>
                                 </div>
                             </div>
                             <div className="border-border mt-4 border-t pt-4">
-                                <p className="text-muted-foreground mb-1.5 text-xs font-medium">{t('Assigned To')}</p>
+                                <p className="text-muted-foreground mb-1.5 text-xs font-medium">{translate('Assigned To')}</p>
                                 {opportunity.assigned_user ? (
                                     <div className="flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
@@ -197,7 +197,7 @@ export default function OpportunityShow() {
                                         </div>
                                     </div>
                                 ) : (
-                                    <p className="text-muted-foreground text-sm">{t('Unassigned')}</p>
+                                    <p className="text-muted-foreground text-sm">{translate('Unassigned')}</p>
                                 )}
                             </div>
                         </CardContent>
@@ -208,7 +208,7 @@ export default function OpportunityShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <Building className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Related Records')}
+                                {translate('Related Records')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3 p-5">
@@ -217,7 +217,7 @@ export default function OpportunityShow() {
                                     <div className="flex min-w-0 items-center gap-2.5">
                                         <UserInitials name={opportunity.account.name} />
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs font-medium">{t('Account')}</p>
+                                            <p className="text-muted-foreground text-xs font-medium">{translate('Account')}</p>
                                             <p className="text-foreground truncate text-sm font-semibold">{opportunity.account.name}</p>
                                             {opportunity.account.email && (
                                                 <p className="text-muted-foreground truncate text-xs">{opportunity.account.email}</p>
@@ -233,7 +233,7 @@ export default function OpportunityShow() {
                                                     </Link>
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top">
-                                                    <p>{t('View')}</p>
+                                                    <p>{translate('View')}</p>
                                                 </TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>
@@ -241,7 +241,7 @@ export default function OpportunityShow() {
                                 </div>
                             ) : (
                                 <div className="border-border bg-muted/20 flex items-center rounded-xl border p-3.5">
-                                    <p className="text-muted-foreground text-xs">{t('No account linked')}</p>
+                                    <p className="text-muted-foreground text-xs">{translate('No account linked')}</p>
                                 </div>
                             )}
                             {opportunity.contact ? (
@@ -249,7 +249,7 @@ export default function OpportunityShow() {
                                     <div className="flex min-w-0 items-center gap-2.5">
                                         <UserInitials name={opportunity.contact.name} />
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs font-medium">{t('Contact')}</p>
+                                            <p className="text-muted-foreground text-xs font-medium">{translate('Contact')}</p>
                                             <p className="text-foreground truncate text-sm font-semibold">{opportunity.contact.name}</p>
                                             {opportunity.contact.email && (
                                                 <p className="text-muted-foreground truncate text-xs">{opportunity.contact.email}</p>
@@ -265,7 +265,7 @@ export default function OpportunityShow() {
                                                     </Link>
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top">
-                                                    <p>{t('View')}</p>
+                                                    <p>{translate('View')}</p>
                                                 </TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>
@@ -273,7 +273,7 @@ export default function OpportunityShow() {
                                 </div>
                             ) : (
                                 <div className="border-border bg-muted/20 flex items-center rounded-xl border p-3.5">
-                                    <p className="text-muted-foreground text-xs">{t('No contact linked')}</p>
+                                    <p className="text-muted-foreground text-xs">{translate('No contact linked')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -286,7 +286,7 @@ export default function OpportunityShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <FileText className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Notes')}
+                                {translate('Notes')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
@@ -297,7 +297,7 @@ export default function OpportunityShow() {
                                     ) : (
                                         <div className="flex flex-col items-center justify-center py-6 text-center">
                                             <FileText className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                            <p className="text-muted-foreground text-sm">{t('No notes available')}</p>
+                                            <p className="text-muted-foreground text-sm">{translate('No notes available')}</p>
                                         </div>
                                     )}
                                 </div>
@@ -309,7 +309,7 @@ export default function OpportunityShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <FileText className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Description')}
+                                {translate('Description')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
@@ -320,7 +320,7 @@ export default function OpportunityShow() {
                                     ) : (
                                         <div className="flex flex-col items-center justify-center py-6 text-center">
                                             <FileText className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                            <p className="text-muted-foreground text-sm">{t('No description available')}</p>
+                                            <p className="text-muted-foreground text-sm">{translate('No description available')}</p>
                                         </div>
                                     )}
                                 </div>
@@ -339,7 +339,7 @@ export default function OpportunityShow() {
                                 <CardHeader className="border-b px-5 py-3.5">
                                     <CardTitle className="flex items-center text-lg font-semibold">
                                         <Calendar className="text-muted-foreground mr-3 h-5 w-5" />
-                                        {t('Meetings & Calls')}
+                                        {translate('Meetings & Calls')}
                                         <span className="bg-muted text-muted-foreground ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
                                             {meetings.length}
                                         </span>
@@ -352,7 +352,7 @@ export default function OpportunityShow() {
                                                 <CardTitle className="text-muted-foreground flex items-center justify-between text-sm font-semibold">
                                                     <div className="flex items-center gap-2">
                                                         <UserCheck className="h-3.5 w-3.5" />
-                                                        {t('Meetings')}
+                                                        {translate('Meetings')}
                                                     </div>
                                                     <span className="bg-muted text-muted-foreground inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium">
                                                         {meetingItems.length}
@@ -361,7 +361,7 @@ export default function OpportunityShow() {
                                             </CardHeader>
                                             <CardContent className="p-0">
                                                 {meetingItems.length === 0 ? (
-                                                    <p className="text-muted-foreground py-6 text-center text-sm">{t('No meetings found')}</p>
+                                                    <p className="text-muted-foreground py-6 text-center text-sm">{translate('No meetings found')}</p>
                                                 ) : (
                                                     <div
                                                         className="space-y-2 overflow-y-auto p-3"
@@ -420,7 +420,7 @@ export default function OpportunityShow() {
                                                                                 </Link>
                                                                             </TooltipTrigger>
                                                                             <TooltipContent side="top">
-                                                                                <p>{t('View ')}</p>
+                                                                                <p>{translate('View ')}</p>
                                                                             </TooltipContent>
                                                                         </Tooltip>
                                                                     </TooltipProvider>
@@ -437,7 +437,7 @@ export default function OpportunityShow() {
                                                 <CardTitle className="text-muted-foreground flex items-center justify-between text-sm font-semibold">
                                                     <div className="flex items-center gap-2">
                                                         <Phone className="h-3.5 w-3.5" />
-                                                        {t('Calls')}
+                                                        {translate('Calls')}
                                                     </div>
                                                     <span className="bg-muted text-muted-foreground inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium">
                                                         {callItems.length}
@@ -446,7 +446,7 @@ export default function OpportunityShow() {
                                             </CardHeader>
                                             <CardContent className="p-0">
                                                 {callItems.length === 0 ? (
-                                                    <p className="text-muted-foreground py-6 text-center text-sm">{t('No calls found')}</p>
+                                                    <p className="text-muted-foreground py-6 text-center text-sm">{translate('No calls found')}</p>
                                                 ) : (
                                                     <div
                                                         className="space-y-2 overflow-y-auto p-3"
@@ -500,7 +500,7 @@ export default function OpportunityShow() {
                                                                                 </Link>
                                                                             </TooltipTrigger>
                                                                             <TooltipContent side="top">
-                                                                                <p>{t('View')}</p>
+                                                                                <p>{translate('View')}</p>
                                                                             </TooltipContent>
                                                                         </Tooltip>
                                                                     </TooltipProvider>
@@ -524,7 +524,7 @@ export default function OpportunityShow() {
                         <div className="flex items-center justify-between">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <ShoppingCart className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Products')}
+                                {translate('Products')}
                             </CardTitle>
                         </div>
                     </CardHeader>
@@ -536,11 +536,11 @@ export default function OpportunityShow() {
                                 <Table>
                                     <TableHeader>
                                         <TableRow className="border-b bg-[#F0F0F1] hover:!bg-[#F0F0F1] dark:bg-gray-800 dark:hover:!bg-gray-800">
-                                            <TableHead className="py-2.5 font-semibold">{t('Product')}</TableHead>
-                                            <TableHead className="py-2.5 text-center font-semibold">{t('Quantity')}</TableHead>
-                                            <TableHead className="py-2.5 text-center font-semibold">{t('Unit Price')}</TableHead>
-                                            <TableHead className="py-2.5 text-center font-semibold">{t('Tax')}</TableHead>
-                                            <TableHead className="py-2.5 text-right font-semibold">{t('Total')}</TableHead>
+                                            <TableHead className="py-2.5 font-semibold">{translate('Product')}</TableHead>
+                                            <TableHead className="py-2.5 text-center font-semibold">{translate('Quantity')}</TableHead>
+                                            <TableHead className="py-2.5 text-center font-semibold">{translate('Unit Price')}</TableHead>
+                                            <TableHead className="py-2.5 text-center font-semibold">{translate('Tax')}</TableHead>
+                                            <TableHead className="py-2.5 text-right font-semibold">{translate('Total')}</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -618,15 +618,15 @@ export default function OpportunityShow() {
                                 <div className="bg-muted/10 flex flex-col items-start justify-end gap-4 border-t px-6 py-5 md:flex-row md:items-end">
                                     <div className="w-full max-w-sm overflow-hidden rounded-xl border">
                                         <div className="flex items-center justify-between border-b px-4 py-3">
-                                            <span className="text-muted-foreground text-sm font-medium">{t('Subtotal')}</span>
+                                            <span className="text-muted-foreground text-sm font-medium">{translate('Subtotal')}</span>
                                             <span className="text-foreground font-mono text-sm font-semibold">{formatCurrency(subtotal)}</span>
                                         </div>
                                         <div className="flex items-center justify-between border-b px-4 py-3">
-                                            <span className="text-muted-foreground text-sm font-medium">{t('Total Tax')}</span>
+                                            <span className="text-muted-foreground text-sm font-medium">{translate('Total Tax')}</span>
                                             <span className="text-foreground font-mono text-sm font-semibold">{formatCurrency(totalTax)}</span>
                                         </div>
                                         <div className="flex items-center justify-between px-4 py-3">
-                                            <span className="text-foreground text-sm font-bold">{t('Grand Total')}</span>
+                                            <span className="text-foreground text-sm font-bold">{translate('Grand Total')}</span>
                                             <span className="font-mono text-lg font-bold text-emerald-600">{formatCurrency(grandTotal)}</span>
                                         </div>
                                     </div>
@@ -637,7 +637,7 @@ export default function OpportunityShow() {
                                 <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
                                     <Package className="text-muted-foreground/40 h-8 w-8" />
                                 </div>
-                                <p className="text-muted-foreground text-sm font-medium">{t('No products added to this opportunity')}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{translate('No products added to this opportunity')}</p>
                             </div>
                         )}
                     </CardContent>
@@ -649,7 +649,7 @@ export default function OpportunityShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <FileText className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Related Quotes')} ({opportunity.quotes.length})
+                                {translate('Related Quotes')} ({opportunity.quotes.length})
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
@@ -666,7 +666,7 @@ export default function OpportunityShow() {
                                         {useHasPermission('view-quotes') && (
                                             <Link href={route('quotes.show', quote.id)}>
                                                 <Button variant="outline" size="sm" className="bg-white">
-                                                    {t('View')}
+                                                    {translate('View')}
                                                 </Button>
                                             </Link>
                                         )}
@@ -683,7 +683,7 @@ export default function OpportunityShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <MessageCircle className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Activity Stream')}
+                                {translate('Activity Stream')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
@@ -696,7 +696,7 @@ export default function OpportunityShow() {
                                                 router.post(
                                                     route('opportunities.comments.store', opportunity.id),
                                                     { comment: newComment },
-                                                    { preserveScroll: true, onSuccess: () => setNewComment('') },
+                                                    { preserveScroll: true, onSuccess: () => setNewCommentranslate('') },
                                                 );
                                             }
                                         }}
@@ -713,13 +713,13 @@ export default function OpportunityShow() {
                                                         </Avatar>
                                                     </TooltipTrigger>
                                                     <TooltipContent side="top">
-                                                        <p>{auth?.user?.name || t('User')}</p>
+                                                        <p>{auth?.user?.name || translate('User')}</p>
                                                     </TooltipContent>
                                                 </Tooltip>
                                             </TooltipProvider>
                                             <div className="flex-1 overflow-hidden rounded-xl border shadow-sm">
                                                 <Textarea
-                                                    placeholder={t('Write a comment...')}
+                                                    placeholder={translate('Write a comment...')}
                                                     value={newComment}
                                                     onChange={(e) => setNewComment(e.target.value)}
                                                     className="resize-none border-0 bg-transparent focus-visible:ring-0"
@@ -734,7 +734,7 @@ export default function OpportunityShow() {
                                                                 </Button>
                                                             </TooltipTrigger>
                                                             <TooltipContent side="top">
-                                                                <p>{t('Send')}</p>
+                                                                <p>{translate('Send')}</p>
                                                             </TooltipContent>
                                                         </Tooltip>
                                                     </TooltipProvider>
@@ -780,7 +780,7 @@ export default function OpportunityShow() {
                                                                     </Avatar>
                                                                 </TooltipTrigger>
                                                                 <TooltipContent side="top">
-                                                                    <p>{activity.user?.name || t('System')}</p>
+                                                                    <p>{activity.user?.name || translate('System')}</p>
                                                                 </TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
@@ -796,7 +796,7 @@ export default function OpportunityShow() {
                                                         >
                                                             <div className="flex flex-wrap items-center gap-2">
                                                                 <span className="text-foreground text-sm font-semibold">
-                                                                    {activity.user?.name || t('System')}
+                                                                    {activity.user?.name || translate('System')}
                                                                 </span>
                                                                 <span
                                                                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${badgeCls}`}
@@ -828,7 +828,7 @@ export default function OpportunityShow() {
                                                                                         </Button>
                                                                                     </TooltipTrigger>
                                                                                     <TooltipContent side="top">
-                                                                                        <p>{t('Edit')}</p>
+                                                                                        <p>{translate('Edit')}</p>
                                                                                     </TooltipContent>
                                                                                 </Tooltip>
                                                                             </TooltipProvider>
@@ -850,7 +850,7 @@ export default function OpportunityShow() {
                                                                                     </Button>
                                                                                 </TooltipTrigger>
                                                                                 <TooltipContent side="top">
-                                                                                    <p>{t('Delete')}</p>
+                                                                                    <p>{translate('Delete')}</p>
                                                                                 </TooltipContent>
                                                                             </Tooltip>
                                                                         </TooltipProvider>
@@ -875,7 +875,7 @@ export default function OpportunityShow() {
                                                                                 variant="outline"
                                                                                 onClick={() => setEditingComment(null)}
                                                                             >
-                                                                                {t('Cancel')}
+                                                                                {translate('Cancel')}
                                                                             </Button>
                                                                             <Button
                                                                                 size="sm"
@@ -892,7 +892,7 @@ export default function OpportunityShow() {
                                                                                     setEditingComment(null);
                                                                                 }}
                                                                             >
-                                                                                {t('Save')}
+                                                                                {translate('Save')}
                                                                             </Button>
                                                                         </div>
                                                                     </div>
@@ -918,7 +918,7 @@ export default function OpportunityShow() {
                                 ) : (
                                     <div className="text-muted-foreground py-12 text-center">
                                         <Calendar className="text-muted-foreground/30 mx-auto mb-3 h-10 w-10" />
-                                        <p className="text-sm">{t('No activities found')}</p>
+                                        <p className="text-sm">{translate('No activities found')}</p>
                                     </div>
                                 )}
                             </div>
@@ -937,8 +937,8 @@ export default function OpportunityShow() {
                     });
                     setIsDeleteModalOpen(false);
                 }}
-                itemName={t('this activity')}
-                entityName={t('activity')}
+                itemName={translate('this activity')}
+                entityName={translate('activity')}
             />
 
             {/* Delete All Activities Modal */}
@@ -951,8 +951,8 @@ export default function OpportunityShow() {
                     });
                     setIsDeleteAllModalOpen(false);
                 }}
-                itemName={t('all activities for {{name}}', { name: opportunity.name })}
-                entityName={t('activities')}
+                itemName={translate('all activities for {{name}}', { name: opportunity.name })}
+                entityName={translate('activities')}
             />
         </PageTemplate>
     );

@@ -35,7 +35,7 @@ export default function DomainConfig({
     canUseCustomDomain = true,
     canUseSubdomain = true,
 }: DomainConfigProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [domainType, setDomainType] = React.useState(data.domain_type || 'slug');
     const [domainStatus, setDomainStatus] = React.useState({ available: true, checking: false });
 
@@ -117,13 +117,13 @@ export default function DomainConfig({
                     <span className="mr-1.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-gray-100 text-xs dark:bg-gray-700">
                         2
                     </span>
-                    {t('Domain & URL Settings')}
+                    {translate('Domain & URL Settings')}
                 </h3>
             </div>
             <div className="space-y-3 p-3">
                 {/* Domain Type Selection */}
                 <div>
-                    <Label className="mb-1 block text-sm">{t('URL Type')}</Label>
+                    <Label className="mb-1 block text-sm">{translate('URL Type')}</Label>
                     <div className="flex space-x-3">
                         <div className="flex items-center">
                             <input
@@ -139,7 +139,7 @@ export default function DomainConfig({
                                 className="h-3 w-3 text-blue-600"
                             />
                             <Label htmlFor="slug" className="ml-1 cursor-pointer text-sm">
-                                {t('Slug')}
+                                {translate('Slug')}
                             </Label>
                         </div>
 
@@ -158,8 +158,8 @@ export default function DomainConfig({
                                 className="h-3 w-3 text-blue-600 disabled:opacity-50"
                             />
                             <Label htmlFor="subdomain" className={`ml-1 cursor-pointer text-sm ${!canUseSubdomain ? 'opacity-50' : ''}`}>
-                                {t('Subdomain')}
-                                {!canUseSubdomain && <span className="ml-1 text-xs text-amber-600">({t('Plan upgrade required')})</span>}
+                                {translate('Subdomain')}
+                                {!canUseSubdomain && <span className="ml-1 text-xs text-amber-600">({translate('Plan upgrade required')})</span>}
                             </Label>
                         </div>
 
@@ -178,8 +178,8 @@ export default function DomainConfig({
                                 className="h-3 w-3 text-blue-600 disabled:opacity-50"
                             />
                             <Label htmlFor="domain" className={`ml-1 cursor-pointer text-sm ${!canUseCustomDomain ? 'opacity-50' : ''}`}>
-                                {t('Domain')}
-                                {!canUseCustomDomain && <span className="ml-1 text-xs text-amber-600">({t('Plan upgrade required')})</span>}
+                                {translate('Domain')}
+                                {!canUseCustomDomain && <span className="ml-1 text-xs text-amber-600">({translate('Plan upgrade required')})</span>}
                             </Label>
                         </div>
                     </div>
@@ -189,7 +189,7 @@ export default function DomainConfig({
                 <div className="space-y-3">
                     {domainType === 'domain' && (
                         <div>
-                            <Label className="mb-1 block text-sm">{t('Custom Domain')}</Label>
+                            <Label className="mb-1 block text-sm">{translate('Custom Domain')}</Label>
                             <Input
                                 value={data.custom_domain || ''}
                                 onChange={(e) => {
@@ -201,12 +201,12 @@ export default function DomainConfig({
                             />
                             {domainStatus && (
                                 <div className="mt-1 flex items-center">
-                                    {domainStatus.checking && <span className="text-xs text-gray-500">{t('Checking...')}</span>}
+                                    {domainStatus.checking && <span className="text-xs text-gray-500">{translate('Checking...')}</span>}
                                     {!domainStatus.checking && !domainStatus.available && (
-                                        <span className="text-xs text-red-500">{t('Not available')}</span>
+                                        <span className="text-xs text-red-500">{translate('Not available')}</span>
                                     )}
                                     {!domainStatus.checking && domainStatus.available && data.custom_domain && (
-                                        <span className="text-xs text-green-500">{t('Available')}</span>
+                                        <span className="text-xs text-green-500">{translate('Available')}</span>
                                     )}
                                 </div>
                             )}
@@ -215,7 +215,7 @@ export default function DomainConfig({
 
                     {domainType === 'slug' && (
                         <div>
-                            <Label className="mb-1 block text-sm">{t('URL Prefix')}</Label>
+                            <Label className="mb-1 block text-sm">{translate('URL Prefix')}</Label>
                             <Input
                                 value={data.url_prefix || ''}
                                 onChange={(e) => {
@@ -230,7 +230,7 @@ export default function DomainConfig({
 
                     {(domainType === 'slug' || domainType === 'subdomain') && (
                         <div>
-                            <Label className="mb-1 block text-sm">{t('Slug')}</Label>
+                            <Label className="mb-1 block text-sm">{translate('Slug')}</Label>
                             <Input
                                 value={data.slug || ''}
                                 onChange={(e) => (onSlugChange ? onSlugChange(e.target.value) : onUpdate('slug', e.target.value))}
@@ -239,12 +239,12 @@ export default function DomainConfig({
                             />
                             {slugStatus && (
                                 <div className="mt-1 flex items-center">
-                                    {slugStatus.checking && <span className="text-xs text-gray-500">{t('Checking...')}</span>}
+                                    {slugStatus.checking && <span className="text-xs text-gray-500">{translate('Checking...')}</span>}
                                     {!slugStatus.checking && !slugStatus.available && (
-                                        <span className="text-xs text-red-500">{t('Not available')}</span>
+                                        <span className="text-xs text-red-500">{translate('Not available')}</span>
                                     )}
                                     {!slugStatus.checking && slugStatus.available && data.slug && (
-                                        <span className="text-xs text-green-500">{t('Available')}</span>
+                                        <span className="text-xs text-green-500">{translate('Available')}</span>
                                     )}
                                 </div>
                             )}
@@ -255,7 +255,7 @@ export default function DomainConfig({
                 {/* Password Protection */}
                 <div className="border-t pt-3">
                     <div className="mb-2 flex items-center justify-between">
-                        <Label className="text-sm">{t('Password Protection')}</Label>
+                        <Label className="text-sm">{translate('Password Protection')}</Label>
                         <Switch
                             checked={data.password_enabled || false}
                             onCheckedChange={(checked) => onUpdate('password_enabled', checked)}
@@ -265,12 +265,12 @@ export default function DomainConfig({
 
                     {data.password_enabled && (
                         <div>
-                            <Label className="mb-1 block text-sm">{t('Password')}</Label>
+                            <Label className="mb-1 block text-sm">{translate('Password')}</Label>
                             <Input
                                 type="password"
                                 value={data.password || ''}
                                 onChange={(e) => onUpdate('password', e.target.value)}
-                                placeholder={t('Enter password')}
+                                placeholder={translate('Enter password')}
                                 className="h-9 text-sm"
                                 minLength={4}
                             />
@@ -281,7 +281,7 @@ export default function DomainConfig({
                 {/* Preview URL */}
                 <div>
                     <div className="mb-1 flex items-center justify-between">
-                        <Label className="text-sm">{t('Public URL')}</Label>
+                        <Label className="text-sm">{translate('Public URL')}</Label>
                         <Button
                             type="button"
                             variant="outline"
@@ -291,7 +291,7 @@ export default function DomainConfig({
                                 navigator.clipboard.writeText(getPreviewUrl());
                             }}
                         >
-                            {t('Copy')}
+                            {translate('Copy')}
                         </Button>
                     </div>
                     <div className="rounded border bg-gray-50 p-2 text-sm dark:bg-gray-800">

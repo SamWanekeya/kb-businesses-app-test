@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function CouponsPage() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, coupons, filters: pageFilters = {}, globalSettings } = usePage().props;
     const permissions = auth?.permissions || [];
 
@@ -148,7 +148,7 @@ export default function CouponsPage() {
 
         if (formMode === 'create') {
             if (!globalSettings?.is_demo) {
-                toast.loading(t('Creating coupon...'));
+                toast.loading(translate('Creating coupon...'));
             }
 
             router.post(route('coupons.store'), formData, {
@@ -170,13 +170,13 @@ export default function CouponsPage() {
                     if (typeof errors === 'string') {
                         toast.error(t(errors));
                     } else {
-                        toast.error(t('Failed to create coupon: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        toast.error(translate('Failed to create coupon: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
                 },
             });
         } else if (formMode === 'edit') {
             if (!globalSettings?.is_demo) {
-                toast.loading(t('Updating coupon...'));
+                toast.loading(translate('Updating coupon...'));
             }
 
             router.put(route('coupons.update', currentItem.id), formData, {
@@ -198,7 +198,7 @@ export default function CouponsPage() {
                     if (typeof errors === 'string') {
                         toast.error(t(errors));
                     } else {
-                        toast.error(t('Failed to update coupon: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        toast.error(translate('Failed to update coupon: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
                 },
             });
@@ -207,7 +207,7 @@ export default function CouponsPage() {
 
     const handleDeleteConfirm = () => {
         if (!globalSettings?.is_demo) {
-            toast.loading(t('Deleting coupon...'));
+            toast.loading(translate('Deleting coupon...'));
         }
 
         router.delete(route('coupons.destroy', currentItem.id), {
@@ -229,7 +229,7 @@ export default function CouponsPage() {
                 if (typeof errors === 'string') {
                     toast.error(t(errors));
                 } else {
-                    toast.error(t('Failed to delete coupon: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to delete coupon: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
             },
         });
@@ -241,7 +241,7 @@ export default function CouponsPage() {
 
     const handleToggleStatus = (coupon: any) => {
         if (!globalSettings?.is_demo) {
-            toast.loading(t(coupon.status ? 'Deactivating' : 'Activating') + ' ' + t('coupon...'));
+            toast.loading(t(coupon.status ? 'Deactivating' : 'Activating') + ' ' + translate('coupon...'));
         }
 
         router.put(
@@ -265,7 +265,7 @@ export default function CouponsPage() {
                     if (typeof errors === 'string') {
                         toast.error(t(errors));
                     } else {
-                        toast.error(t('Failed to update coupon status: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        toast.error(translate('Failed to update coupon status: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
                 },
             },
@@ -287,29 +287,29 @@ export default function CouponsPage() {
 
     if (useHasPermission('create-coupons')) {
         pageActions.push({
-            label: t('Add Coupon'),
+            label: translate('Add Coupon'),
             icon: <Plus className="mr-0 h-4 w-4 min-[380px]:mr-2" />,
             variant: 'default',
             onClick: () => handleAddNew(),
             className: 'h-8 w-8 min-[380px]:h-9 min-[380px]:w-auto px-0 min-[380px]:px-4',
             labelClassName: 'hidden min-[380px]:inline',
-            tooltip: t('Add Coupon'),
+            tooltip: translate('Add Coupon'),
             tooltipClassName: 'min-[380px]:hidden',
         });
     }
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Coupons') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Coupons') }];
 
     // Define table columns
     const columns = [
         {
             key: 'name',
-            label: t('Name'),
+            label: translate('Name'),
             sortable: true,
         },
         {
             key: 'code',
-            label: t('Code'),
+            label: translate('Code'),
             sortable: true,
             render: (value) => (
                 <div className="flex flex-col items-start">
@@ -319,31 +319,31 @@ export default function CouponsPage() {
                     >
                         {value}
                     </button>
-                    {copiedCode === value && <span className="mt-1 ml-3 text-xs font-medium text-red-600 dark:text-red-400">{t('Copied!')}</span>}
+                    {copiedCode === value && <span className="mt-1 ml-3 text-xs font-medium text-red-600 dark:text-red-400">{translate('Copied!')}</span>}
                 </div>
             ),
         },
         {
             key: 'type',
-            label: t('Type'),
+            label: translate('Type'),
             sortable: true,
-            render: (value) => (value === 'percentage' ? t('Percentage') : t('Flat Amount')),
+            render: (value) => (value === 'percentage' ? translate('Percentage') : translate('Flat Amount')),
         },
         {
             key: 'minimum_spend',
-            label: t('Min Spend'),
+            label: translate('Min Spend'),
             render: (value) =>
                 value ? <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${parseFloat(value).toFixed(2)}`}</span> : '-',
         },
         {
             key: 'maximum_spend',
-            label: t('Max Spend'),
+            label: translate('Max Spend'),
             render: (value) =>
                 value ? <span className="font-mono">{window.appSettings?.formatCurrency(value) || `$${parseFloat(value).toFixed(2)}`}</span> : '-',
         },
         {
             key: 'discount_amount',
-            label: t('Discount'),
+            label: translate('Discount'),
             render: (_, row) => {
                 const amount = parseFloat(row.discount_amount);
                 return row.type === 'percentage' ? (
@@ -355,24 +355,24 @@ export default function CouponsPage() {
         },
         {
             key: 'use_limit_per_coupon',
-            label: t('Coupon Limit'),
-            render: (value) => value || t('Unlimited'),
+            label: translate('Coupon Limit'),
+            render: (value) => value || translate('Unlimited'),
         },
         {
             key: 'use_limit_per_user',
-            label: t('User Limit'),
-            render: (value) => value || t('Unlimited'),
+            label: translate('User Limit'),
+            render: (value) => value || translate('Unlimited'),
         },
         {
             key: 'expiry_date',
-            label: t('Expiry Date'),
+            label: translate('Expiry Date'),
             sortable: true,
             type: 'date',
             // render: (value) => window.appSettings?.formatDateTime(value, false) || '-'
         },
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             render: (_, row) => (
                 <div className="flex items-center">
                     <Switch checked={!!row.status} onCheckedChange={() => handleToggleStatus(row)} />
@@ -384,21 +384,21 @@ export default function CouponsPage() {
     // Define table actions
     const actions = [
         {
-            label: t('View Details'),
+            label: translate('View Details'),
             icon: 'Eye',
             action: 'view-details',
             className: 'text-blue-500',
             requiredPermission: 'view-coupons',
         },
         {
-            label: t('Edit'),
+            label: translate('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
             requiredPermission: 'create-coupons',
         },
         {
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
@@ -408,24 +408,24 @@ export default function CouponsPage() {
 
     // Prepare filter options
     const typeOptions = [
-        { value: 'all', label: t('All Types') },
-        { value: 'percentage', label: t('Percentage') },
-        { value: 'flat', label: t('Flat Amount') },
+        { value: 'all', label: translate('All Types') },
+        { value: 'percentage', label: translate('Percentage') },
+        { value: 'flat', label: translate('Flat Amount') },
     ];
 
     const statusOptions = [
-        { value: 'all', label: t('All Status') },
-        { value: '1', label: t('Active') },
-        { value: '0', label: t('Inactive') },
+        { value: 'all', label: translate('All Status') },
+        { value: '1', label: translate('Active') },
+        { value: '0', label: translate('Inactive') },
     ];
 
     return (
         <PageTemplate
-            title={t('Coupons')}
+            title={translate('Coupons')}
             url="/coupons"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
-            description={t('Manage your coupons and discounts.')}
+            description={translate('Manage your coupons and discounts.')}
             noPadding
         >
             {/* Search and filters section */}
@@ -437,7 +437,7 @@ export default function CouponsPage() {
                     filters={[
                         {
                             name: 'type',
-                            label: t('Type'),
+                            label: translate('Type'),
                             type: 'select',
                             value: selectedType,
                             onChange: setSelectedType,
@@ -445,7 +445,7 @@ export default function CouponsPage() {
                         },
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
@@ -453,14 +453,14 @@ export default function CouponsPage() {
                         },
                         {
                             name: 'date_from',
-                            label: t('Date From'),
+                            label: translate('Date From'),
                             type: 'date',
                             value: dateFrom,
                             onChange: setDateFrom,
                         },
                         {
                             name: 'date_to',
-                            label: t('Date To'),
+                            label: translate('Date To'),
                             type: 'date',
                             value: dateTo,
                             onChange: setDateTo,
@@ -498,7 +498,7 @@ export default function CouponsPage() {
                     to={coupons?.to || 0}
                     total={coupons?.total || 0}
                     links={coupons?.links}
-                    entityName={t('coupons')}
+                    entityName={translate('coupons')}
                     onPageChange={(url) => router.get(url)}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
@@ -529,59 +529,59 @@ export default function CouponsPage() {
                     fields: [
                         {
                             name: 'name',
-                            label: t('Coupon Name'),
+                            label: translate('Coupon Name'),
                             type: 'text',
                             required: true,
-                            placeholder: t('Enter coupon name'),
+                            placeholder: translate('Enter coupon name'),
                             width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'type',
-                            label: t('Discount Type'),
+                            label: translate('Discount Type'),
                             type: 'select',
                             required: true,
                             options: [
-                                { value: 'percentage', label: t('Percentage (%)') },
-                                { value: 'flat', label: t('Fixed Amount ($)') },
+                                { value: 'percentage', label: translate('Percentage (%)') },
+                                { value: 'flat', label: translate('Fixed Amount ($)') },
                             ],
                             width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'discount_amount',
-                            label: t('Discount Value'),
+                            label: translate('Discount Value'),
                             type: 'number',
                             required: true,
                             min: 0,
                             step: 0.01,
-                            placeholder: t('Enter value'),
+                            placeholder: translate('Enter value'),
                             width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'use_limit_per_coupon',
-                            label: t('Total Usage Limit'),
+                            label: translate('Total Usage Limit'),
                             type: 'number',
                             min: 1,
-                            placeholder: t('Leave empty for unlimited'),
+                            placeholder: translate('Leave empty for unlimited'),
                             width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'code_type',
-                            label: t('Code Generation'),
+                            label: translate('Code Generation'),
                             type: 'radio',
                             required: true,
                             options: [
-                                { value: 'manual', label: t('Manual Entry') },
-                                { value: 'auto', label: t('Auto Generate') },
+                                { value: 'manual', label: translate('Manual Entry') },
+                                { value: 'auto', label: translate('Auto Generate') },
                             ],
                             defaultValue: 'manual',
                             width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'code',
-                            label: t('Coupon Code'),
+                            label: translate('Coupon Code'),
                             type: 'text',
                             required: true,
-                            placeholder: t('Enter coupon code'),
+                            placeholder: translate('Enter coupon code'),
                             width: 'calc(50% - 0.5rem)',
                             render: (field, formData, handleChange) => {
                                 const isAutoGenerate = formData.code_type === 'auto';
@@ -593,7 +593,7 @@ export default function CouponsPage() {
                                                     id={field.name}
                                                     name={field.name}
                                                     type="text"
-                                                    placeholder={t('Click generate to create code')}
+                                                    placeholder={translate('Click generate to create code')}
                                                     value={formData[field.name] || ''}
                                                     readOnly
                                                     className="flex-1"
@@ -603,7 +603,7 @@ export default function CouponsPage() {
                                                     onClick={() => handleChange(field.name, generateCouponCode())}
                                                     variant="default"
                                                 >
-                                                    {t('Generate')}
+                                                    {translate('Generate')}
                                                 </Button>
                                             </div>
                                         ) : (
@@ -622,33 +622,33 @@ export default function CouponsPage() {
                         },
                         {
                             name: 'minimum_spend',
-                            label: t('Minimum Spend'),
+                            label: translate('Minimum Spend'),
                             type: 'number',
                             min: 0,
                             step: 0.01,
-                            placeholder: t('Optional'),
+                            placeholder: translate('Optional'),
                             width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'maximum_spend',
-                            label: t('Maximum Spend'),
+                            label: translate('Maximum Spend'),
                             type: 'number',
                             min: 0,
                             step: 0.01,
-                            placeholder: t('Optional'),
+                            placeholder: translate('Optional'),
                             width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'use_limit_per_user',
-                            label: t('Usage Limit Per User'),
+                            label: translate('Usage Limit Per User'),
                             type: 'number',
                             min: 1,
-                            placeholder: t('Leave empty for unlimited'),
+                            placeholder: translate('Leave empty for unlimited'),
                             width: 'calc(50% - 0.5rem)',
                         },
                         {
                             name: 'expiry_date',
-                            label: t('Expiry Date'),
+                            label: translate('Expiry Date'),
                             type: 'date',
                             width: 'calc(50% - 0.5rem)',
                         },
@@ -657,7 +657,7 @@ export default function CouponsPage() {
                     layout: 'flex',
                 }}
                 initialData={currentItem}
-                title={formMode === 'create' ? t('Add Coupon') : formMode === 'edit' ? t('Edit Coupon') : t('View Coupon')}
+                title={formMode === 'create' ? translate('Add Coupon') : formMode === 'edit' ? translate('Edit Coupon') : translate('View Coupon')}
                 mode={formMode}
             />
 

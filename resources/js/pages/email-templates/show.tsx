@@ -39,7 +39,7 @@ interface Props {
 }
 
 export default function EmailTemplateShow({ template, languages, variables }: Props) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { flash } = usePage().props;
     const [fromName, setFromName] = useState(template.from);
     const [currentLang, setCurrentLang] = useState(languages[0]?.code || 'en');
@@ -71,7 +71,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
     };
 
     const handleSave = () => {
-        toast.info(t('Save functionality will be implemented later'));
+        toast.info(translate('Save functionality will be implemented later'));
     };
 
     // Handle flash messages
@@ -85,8 +85,8 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
     }, [flash]);
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Email Templates'), href: route('email-templates.index') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Email Templates'), href: route('email-templates.index') },
         { title: template.name },
     ];
 
@@ -97,7 +97,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
             breadcrumbs={breadcrumbs}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="h-4 w-4 ltr:mr-2 rtl:ml-2 rtl:rotate-180" />,
                     variant: 'outline',
                     labelClassName: 'max-[400px]:hidden',
@@ -112,7 +112,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                     <Card className="w-full min-w-0">
                         <CardHeader className="p-4 sm:p-6">
                             <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
-                                <CardTitle className="text-base sm:text-lg">{t('Template Settings')}</CardTitle>
+                                <CardTitle className="text-base sm:text-lg">{translate('Template Settings')}</CardTitle>
                                 <Button
                                     onClick={() => {
                                         router.put(route('email-templates.update-settings', template.id), {
@@ -123,26 +123,26 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                     className="w-full sm:w-auto"
                                 >
                                     <Save className="h-4 w-4 ltr:mr-2 rtl:ml-2" />
-                                    {t('Save Changes')}
+                                    {translate('Save Changes')}
                                 </Button>
                             </div>
                         </CardHeader>
                         <CardContent className="space-y-4 p-4 pt-0 sm:p-6">
                             <div className="grid gap-2">
-                                <Label>{t('Template Name')}</Label>
+                                <Label>{translate('Template Name')}</Label>
                                 <Input value={template.name} disabled className="bg-muted" />
-                                <p className="text-muted-foreground text-xs">{t('Template name cannot be changed')}</p>
+                                <p className="text-muted-foreground text-xs">{translate('Template name cannot be changed')}</p>
                             </div>
 
                             <div className="grid gap-2">
                                 <Label htmlFor="from" required>
-                                    {t('From Name')}
+                                    {translate('From Name')}
                                 </Label>
                                 <Input
                                     id="from"
                                     value={fromName}
                                     onChange={(e) => setFromName(e.target.value)}
-                                    placeholder={t('Enter from name (e.g., {app_name}, Support Team)')}
+                                    placeholder={translate('Enter from name (e.g., {app_name}, Support Team)')}
                                     className="focus:ring-primary focus:ring-2"
                                 />
                             </div>
@@ -153,9 +153,9 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                         <CardHeader className="p-4 sm:p-6">
                             <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
                                 <div>
-                                    <CardTitle className="text-base sm:text-lg">{t('Email Content')}</CardTitle>
+                                    <CardTitle className="text-base sm:text-lg">{translate('Email Content')}</CardTitle>
                                     <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
-                                        {t('Customize email content for different languages')}
+                                        {translate('Customize email content for different languages')}
                                     </p>
                                 </div>
                                 <Button
@@ -173,7 +173,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                     className="w-full shrink-0 sm:w-auto"
                                 >
                                     <Save className="h-4 w-4 ltr:mr-2 rtl:ml-2" />
-                                    {t('Save Content')}
+                                    {translate('Save Content')}
                                 </Button>
                             </div>
                         </CardHeader>
@@ -203,20 +203,20 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                             </Badge>
                                             <div>
                                                 <span className="font-medium">{language.name}</span>
-                                                <p className="text-muted-foreground text-xs">{t('Edit email content for this language')}</p>
+                                                <p className="text-muted-foreground text-xs">{translate('Edit email content for this language')}</p>
                                             </div>
                                         </div>
 
                                         <div className="space-y-4">
                                             <div className="grid gap-3">
                                                 <Label htmlFor={`subject-${language.code}`} className="text-sm font-medium" required>
-                                                    {t('Email Subject')}
+                                                    {translate('Email Subject')}
                                                 </Label>
                                                 <Input
                                                     id={`subject-${language.code}`}
                                                     value={templateLangs[language.code]?.subject || ''}
                                                     onChange={(e) => handleSubjectChange(language.code, e.target.value)}
-                                                    placeholder={t('Enter email subject (you can use variables like {app_name})')}
+                                                    placeholder={translate('Enter email subject (you can use variables like {app_name})')}
                                                     className="focus:ring-primary focus:ring-2"
                                                 />
                                             </div>
@@ -226,11 +226,11 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                                     label="Email Content"
                                                     value={templateLangs[language.code]?.content || ''}
                                                     onChange={(content) => handleContentChange(language.code, content)}
-                                                    placeholder={t('Write your email content here. You can use HTML formatting and variables...')}
+                                                    placeholder={translate('Write your email content here. You can use HTML formatting and variables...')}
                                                     className="min-h-[300px]"
                                                 />
                                                 <p className="text-muted-foreground text-xs">
-                                                    💡 {t('Tip: Use the variables from the sidebar to personalize your emails')}
+                                                    💡 {translate('Tip: Use the variables from the sidebar to personalize your emails')}
                                                 </p>
                                             </div>
                                         </div>
@@ -245,13 +245,13 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                     <Card className="w-full min-w-0">
                         <CardHeader className="p-4 sm:p-6">
                             <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                                <span>{t('Available Variables')}</span>
+                                <span>{translate('Available Variables')}</span>
                                 <Badge variant="secondary" className="text-xs">
                                     {Object.keys(variables).length}
                                 </Badge>
                             </CardTitle>
                             <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
-                                {t('Click to copy variables to use in your email content')}
+                                {translate('Click to copy variables to use in your email content')}
                             </p>
                         </CardHeader>
                         <CardContent className="p-4 pt-0 sm:p-6">
@@ -270,7 +270,7 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                             </code>
                                             <div className="opacity-100 transition-opacity lg:opacity-0 lg:group-hover:opacity-100">
                                                 <Badge variant="outline" className="text-xs">
-                                                    {t('Click to copy')}
+                                                    {translate('Click to copy')}
                                                 </Badge>
                                             </div>
                                         </div>
@@ -280,8 +280,8 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                             </div>
                             <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-3">
                                 <p className="text-xs text-blue-700">
-                                    💡 <strong>{t('Tip')}:</strong>{' '}
-                                    {t('These variables will be automatically replaced with actual values when emails are sent.')}
+                                    💡 <strong>{translate('Tip')}:</strong>{' '}
+                                    {translate('These variables will be automatically replaced with actual values when emails are sent.')}
                                 </p>
                             </div>
                         </CardContent>

@@ -17,7 +17,7 @@ interface CookieSettingsProps {
 }
 
 export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const pageProps = usePage().props;
 
     // Default settings
@@ -100,7 +100,7 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
             },
             onError: (errors) => {
                 setProcessing(false);
-                const errorMessage = errors.error || Object.values(errors).join(', ') || t('Failed to update cookie settings');
+                const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to update cookie settings');
                 toast.error(errorMessage);
             },
         });
@@ -113,12 +113,12 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
 
     return (
         <SettingsSection
-            title={t('Cookie Settings')}
-            description={t('Configure cookie consent and privacy settings for your application')}
+            title={translate('Cookie Settings')}
+            description={translate('Configure cookie consent and privacy settings for your application')}
             action={
                 <Button type="submit" disabled={processing} form="cookie-settings-form" size="sm">
                     <Save className="mr-2 h-4 w-4" />
-                    {processing ? t('Saving...') : t('Save Changes')}
+                    {processing ? translate('Saving...') : translate('Save Changes')}
                 </Button>
             }
         >
@@ -129,8 +129,8 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                             {/* Enable Logging Switch */}
                             <div className="flex items-center justify-between space-x-2">
                                 <div className="space-y-0.5">
-                                    <Label htmlFor="enableLogging">{t('Enable Logging')}</Label>
-                                    <p className="text-muted-foreground text-sm">{t('Enable cookie activity logging')}</p>
+                                    <Label htmlFor="enableLogging">{translate('Enable Logging')}</Label>
+                                    <p className="text-muted-foreground text-sm">{translate('Enable cookie activity logging')}</p>
                                 </div>
                                 <Switch
                                     id="enableLogging"
@@ -142,8 +142,8 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                             {/* Strictly Necessary Cookies Switch */}
                             <div className="flex items-center justify-between space-x-2">
                                 <div className="space-y-0.5">
-                                    <Label htmlFor="strictlyNecessaryCookies">{t('Strictly Necessary Cookies')}</Label>
-                                    <p className="text-muted-foreground text-sm">{t('Enable strictly necessary cookies')}</p>
+                                    <Label htmlFor="strictlyNecessaryCookies">{translate('Strictly Necessary Cookies')}</Label>
+                                    <p className="text-muted-foreground text-sm">{translate('Enable strictly necessary cookies')}</p>
                                 </div>
                                 <Switch
                                     id="strictlyNecessaryCookies"
@@ -157,28 +157,28 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                             {/* Cookie Title */}
                             <div className="grid gap-2">
                                 <Label htmlFor="cookieTitle" required>
-                                    {t('Cookie Title')}
+                                    {translate('Cookie Title')}
                                 </Label>
                                 <Input
                                     id="cookieTitle"
                                     type="text"
                                     value={cookieSettings.cookieTitle}
                                     onChange={(e) => handleCookieSettingsChange('cookieTitle', e.target.value)}
-                                    placeholder={t('Enter the main cookie consent title')}
+                                    placeholder={translate('Enter the main cookie consent title')}
                                 />
                             </div>
 
                             {/* Strictly Cookie Title */}
                             <div className="grid gap-2">
                                 <Label htmlFor="strictlyCookieTitle" required>
-                                    {t('Strictly Cookie Title')}
+                                    {translate('Strictly Cookie Title')}
                                 </Label>
                                 <Input
                                     id="strictlyCookieTitle"
                                     type="text"
                                     value={cookieSettings.strictlyCookieTitle}
                                     onChange={(e) => handleCookieSettingsChange('strictlyCookieTitle', e.target.value)}
-                                    placeholder={t('Enter the strictly necessary cookies title')}
+                                    placeholder={translate('Enter the strictly necessary cookies title')}
                                 />
                             </div>
                         </div>
@@ -187,13 +187,13 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                             {/* Cookie Description */}
                             <div className="grid gap-2">
                                 <Label htmlFor="cookieDescription" required>
-                                    {t('Cookie Description')}
+                                    {translate('Cookie Description')}
                                 </Label>
                                 <Textarea
                                     id="cookieDescription"
                                     value={cookieSettings.cookieDescription}
                                     onChange={(e) => handleCookieSettingsChange('cookieDescription', e.target.value)}
-                                    placeholder={t('Enter the cookie consent description')}
+                                    placeholder={translate('Enter the cookie consent description')}
                                     rows={4}
                                 />
                             </div>
@@ -201,13 +201,13 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                             {/* Strictly Cookie Description */}
                             <div className="grid gap-2">
                                 <Label htmlFor="strictlyCookieDescription" required>
-                                    {t('Strictly Cookie Description')}
+                                    {translate('Strictly Cookie Description')}
                                 </Label>
                                 <Textarea
                                     id="strictlyCookieDescription"
                                     value={cookieSettings.strictlyCookieDescription}
                                     onChange={(e) => handleCookieSettingsChange('strictlyCookieDescription', e.target.value)}
-                                    placeholder={t('Enter the strictly necessary cookies description')}
+                                    placeholder={translate('Enter the strictly necessary cookies description')}
                                     rows={4}
                                 />
                             </div>
@@ -217,13 +217,13 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                             {/* Contact Us Description */}
                             <div className="grid gap-2">
                                 <Label htmlFor="contactUsDescription" required>
-                                    {t('Contact Us Description')}
+                                    {translate('Contact Us Description')}
                                 </Label>
                                 <Textarea
                                     id="contactUsDescription"
                                     value={cookieSettings.contactUsDescription}
                                     onChange={(e) => handleCookieSettingsChange('contactUsDescription', e.target.value)}
-                                    placeholder={t('Enter the contact us description for cookie inquiries')}
+                                    placeholder={translate('Enter the contact us description for cookie inquiries')}
                                     rows={3}
                                 />
                             </div>
@@ -231,14 +231,14 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                             {/* Contact Us URL */}
                             <div className="grid gap-2">
                                 <Label htmlFor="contactUsUrl" required>
-                                    {t('Contact Us URL')}
+                                    {translate('Contact Us URL')}
                                 </Label>
                                 <Input
                                     id="contactUsUrl"
                                     type="url"
                                     value={cookieSettings.contactUsUrl}
                                     onChange={(e) => handleCookieSettingsChange('contactUsUrl', e.target.value)}
-                                    placeholder={t('Enter the contact us URL for cookie inquiries')}
+                                    placeholder={translate('Enter the contact us URL for cookie inquiries')}
                                 />
                             </div>
                         </div>
@@ -247,7 +247,7 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                         <div className="border-t pt-4">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <h4 className="text-sm font-medium">{t('Download Accepted Cookies')}</h4>
+                                    <h4 className="text-sm font-medium">{translate('Download Accepted Cookies')}</h4>
                                     <p className="text-muted-foreground text-sm">Download a CSV file of accepted cookie preferences</p>
                                 </div>
                                 <TooltipProvider>
@@ -261,11 +261,11 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                                                 className="max-[1300px]:px-2.5"
                                             >
                                                 <Download className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                                                <span className="max-[1300px]:hidden">{t('Download CSV')}</span>
+                                                <span className="max-[1300px]:hidden">{translate('Download CSV')}</span>
                                             </Button>
                                         </TooltipTrigger>
                                         <TooltipContent>
-                                            <p>{t('Download CSV')}</p>
+                                            <p>{translate('Download CSV')}</p>
                                         </TooltipContent>
                                     </Tooltip>
                                 </TooltipProvider>

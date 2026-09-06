@@ -15,7 +15,7 @@ interface PaymentMethodCardProps {
 }
 
 export function PaymentMethodCard({ title, icon, enabled, onToggle, children, helpUrl, helpText }: PaymentMethodCardProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
 
     return (
         <div className="rounded-lg border">
@@ -34,7 +34,7 @@ export function PaymentMethodCard({ title, icon, enabled, onToggle, children, he
                             <AlertDescription>
                                 {helpText}{' '}
                                 <a href={helpUrl} target="_blank" rel="noopener noreferrer" className="underline">
-                                    {t('Dashboard')}
+                                    {translate('Dashboard')}
                                 </a>
                             </AlertDescription>
                         </Alert>

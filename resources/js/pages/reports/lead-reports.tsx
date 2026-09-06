@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 export default function LeadReports() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { filters, summary, monthlyData, dailyData, leadsBySource, conversionBySource, recentLeads, auth } = usePage().props;
     const [chartView, setChartView] = useState<'daily' | 'monthly'>('monthly');
     const getInitials = useInitials();
@@ -50,11 +50,11 @@ export default function LeadReports() {
 
     const chartData = chartView === 'daily' ? dailyData : monthlyData;
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Reports'), href: '#' }, { title: t('Lead Reports') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Reports'), href: '#' }, { title: translate('Lead Reports') }];
 
     const summaryCards = [
         {
-            title: t('Total Leads'),
+            title: translate('Total Leads'),
             value: summary.total_leads.toLocaleString(),
             icon: <Users />,
             iconColor: 'bg-indigo-100/50',
@@ -62,7 +62,7 @@ export default function LeadReports() {
             blobCls: 'bg-indigo-50 dark:bg-indigo-900/30',
         },
         {
-            title: t('Converted Leads'),
+            title: translate('Converted Leads'),
             value: summary.converted_leads.toLocaleString(),
             icon: <TrendingUp />,
             iconColor: 'bg-emerald-100/50',
@@ -70,7 +70,7 @@ export default function LeadReports() {
             blobCls: 'bg-emerald-50 dark:bg-emerald-900/30',
         },
         {
-            title: t('Conversion Rate'),
+            title: translate('Conversion Rate'),
             value: `${summary.conversion_rate.toFixed(2)}%`,
             icon: <Target />,
             iconColor: 'bg-amber-100/50',
@@ -78,7 +78,7 @@ export default function LeadReports() {
             blobCls: 'bg-amber-50 dark:bg-amber-900/30',
         },
         {
-            title: t('Avg Conversion Time'),
+            title: translate('Avg Conversion Time'),
             value: `${summary.avg_conversion_time} days`,
             icon: <Clock />,
             iconColor: 'bg-rose-100/50',
@@ -91,8 +91,8 @@ export default function LeadReports() {
 
     return (
         <PageTemplate
-            title={t('Lead Reports')}
-            description={t('View and analyze lead reports to track performance and conversion rates.')}
+            title={translate('Lead Reports')}
+            description={translate('View and analyze lead reports to track performance and conversion rates.')}
             url="/reports/leads"
             breadcrumbs={breadcrumbs}
             noPadding
@@ -107,16 +107,16 @@ export default function LeadReports() {
                         <CardHeader className="border-b px-5 pt-5 pb-3">
                             <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
-                                    <CardTitle className="text-base font-semibold">{t('Lead Trends')}</CardTitle>
+                                    <CardTitle className="text-base font-semibold">{translate('Lead Trends')}</CardTitle>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Tabs value={chartView} onValueChange={(v) => setChartView(v as 'daily' | 'monthly')}>
                                         <TabsList className="h-7">
                                             <TabsTrigger value="daily" className="cursor-pointer px-3 py-1 text-xs">
-                                                {t('Daily')}
+                                                {translate('Daily')}
                                             </TabsTrigger>
                                             <TabsTrigger value="monthly" className="cursor-pointer px-3 py-1 text-xs">
-                                                {t('Monthly')}
+                                                {translate('Monthly')}
                                             </TabsTrigger>
                                         </TabsList>
                                     </Tabs>
@@ -157,7 +157,7 @@ export default function LeadReports() {
                                         type="monotone"
                                         dataKey="count"
                                         stroke={primaryColor}
-                                        name={t('Leads')}
+                                        name={translate('Leads')}
                                         strokeWidth={2.5}
                                         dot={{ r: 4, fill: primaryColor, strokeWidth: 2, stroke: '#fff' }}
                                         activeDot={{ r: 6 }}
@@ -170,7 +170,7 @@ export default function LeadReports() {
 
                 <Card className="border-border overflow-hidden border shadow-sm dark:bg-slate-900">
                     <CardHeader className="border-border flex shrink-0 flex-row items-center border-b px-5" style={{ minHeight: '64px' }}>
-                        <CardTitle className="text-base font-semibold">{t('Leads by Source')}</CardTitle>
+                        <CardTitle className="text-base font-semibold">{translate('Leads by Source')}</CardTitle>
                     </CardHeader>
                     <CardContent className="p-4 pt-5" dir="ltr">
                         <ResponsiveContainer width="100%" height={300}>
@@ -208,14 +208,14 @@ export default function LeadReports() {
                     <CardHeader className="flex shrink-0 flex-row items-center justify-between border-b px-5 py-3.5">
                         <div className="flex w-full items-center justify-between">
                             <div>
-                                <CardTitle className="text-base font-semibold">{t('Recent Leads')}</CardTitle>
-                                <p className="text-muted-foreground mt-0.5 text-xs">{t('Most recently created leads')}</p>
+                                <CardTitle className="text-base font-semibold">{translate('Recent Leads')}</CardTitle>
+                                <p className="text-muted-foreground mt-0.5 text-xs">{translate('Most recently created leads')}</p>
                             </div>
                             <Link
                                 href={route('leads.index')}
                                 className="text-primary flex shrink-0 items-center gap-1 text-xs font-medium transition-all duration-150 hover:gap-1.5"
                             >
-                                {t('View all')} <ArrowUpRight className="h-3.5 w-3.5" />
+                                {translate('View all')} <ArrowUpRight className="h-3.5 w-3.5" />
                             </Link>
                         </div>
                     </CardHeader>
@@ -254,7 +254,7 @@ export default function LeadReports() {
                                 <div className="bg-muted animate-pulse rounded-full p-4">
                                     <Target className="text-muted-foreground/50 h-6 w-6" />
                                 </div>
-                                <p className="text-muted-foreground text-sm">{t('No leads yet')}</p>
+                                <p className="text-muted-foreground text-sm">{translate('No leads yet')}</p>
                             </div>
                         )}
                     </CardContent>

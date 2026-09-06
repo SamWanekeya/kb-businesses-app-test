@@ -16,7 +16,7 @@ interface Template2Props {
 
 export default function Template2({ salesOrder, items, taxesData, settings, color, qr_invoice, qrCodeSvg, styles: externalStyles }: Template2Props) {
     const { logoDark } = useBrand();
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const fontColor =
         color === 'ffffff' || color === 'fbdd03' || color === 'c1d82f' || color === '46de98' || color === '40c7d0' || color === 'fac168'
             ? '#000000'
@@ -124,7 +124,7 @@ export default function Template2({ salesOrder, items, taxesData, settings, colo
                                     <img src={settings.salesOrderLogo || logoDark} style={{ maxWidth: '150px', maxHeight: '150px' }} alt="Logo" />
                                 </td>
                                 <td className="text-right" style={{ ...styles.headerCell, textAlign: 'right' }}>
-                                    <strong>{t('From')}:</strong>
+                                    <strong>{translate('From')}:</strong>
                                     <p style={{ margin: '10px 0', lineHeight: '1.5' }}>
                                         {formatValue(salesOrder.creator?.name) && (
                                             <>
@@ -144,20 +144,20 @@ export default function Template2({ salesOrder, items, taxesData, settings, colo
                             <tr>
                                 <td style={styles.headerCell}>
                                     <h3 style={{ textTransform: 'uppercase', fontSize: '25px', fontWeight: 'bold', marginBottom: '15px' }}>
-                                        {t('SALES ORDER')}
+                                        {translate('SALES ORDER')}
                                     </h3>
                                     <table className="no-space" style={{ width: '100%' }}>
                                         <tbody>
                                             <tr>
                                                 <td style={{ ...styles.noSpace }}>
-                                                    {t('Number')}: {formatValue(salesOrder.sales_order_number)}
+                                                    {translate('Number')}: {formatValue(salesOrder.sales_order_number)}
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style={{ ...styles.noSpace }}>
-                                                    {t('Order Date')}: {formatValue(salesOrder.order_date)}
+                                                    {translate('Order Date')}: {formatValue(salesOrder.order_date)}
                                                     <br />
-                                                    {t('Delivery Date')}: {formatValue(salesOrder.delivery_date)}
+                                                    {translate('Delivery Date')}: {formatValue(salesOrder.delivery_date)}
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -178,7 +178,7 @@ export default function Template2({ salesOrder, items, taxesData, settings, colo
                         <tbody>
                             <tr>
                                 <td style={{ verticalAlign: 'top' }}>
-                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{t('Bill To')}:</strong>
+                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill To')}:</strong>
                                     <p style={{ margin: 0, lineHeight: '1.5' }}>
                                         {salesOrder.billing_contact?.name}
                                         <br />
@@ -194,7 +194,7 @@ export default function Template2({ salesOrder, items, taxesData, settings, colo
                                     </p>
                                 </td>
                                 <td className="text-right" style={{ verticalAlign: 'top', textAlign: 'right' }}>
-                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{t('Ship To')}:</strong>
+                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship To')}:</strong>
                                     <p style={{ margin: 0, lineHeight: '1.5' }}>
                                         {salesOrder.shipping_contact?.name}
                                         <br />
@@ -216,13 +216,13 @@ export default function Template2({ salesOrder, items, taxesData, settings, colo
                     <table className="add-border invoice-summary" style={{ ...styles.table, marginTop: '30px' }}>
                         <tbody>
                             <tr style={{ background: `#${color}`, color: fontColor }}>
-                                <th style={styles.th}>{t('Item')}</th>
-                                <th style={styles.th}>{t('Quantity')}</th>
-                                <th style={styles.th}>{t('Rate')}</th>
-                                <th style={styles.th}>{t('Tax')} (%)</th>
-                                <th style={styles.th}>{t('Discount')}</th>
+                                <th style={styles.th}>{translate('Item')}</th>
+                                <th style={styles.th}>{translate('Quantity')}</th>
+                                <th style={styles.th}>{translate('Rate')}</th>
+                                <th style={styles.th}>{translate('Tax')} (%)</th>
+                                <th style={styles.th}>{translate('Discount')}</th>
                                 <th style={styles.th}>
-                                    {t('Price')} <small style={{ display: 'block', fontSize: '12px' }}>{t('before tax & discount')}</small>
+                                    {translate('Price')} <small style={{ display: 'block', fontSize: '12px' }}>{translate('before tax & discount')}</small>
                                 </th>
                             </tr>
                             {items.map((item, index) => (
@@ -249,7 +249,7 @@ export default function Template2({ salesOrder, items, taxesData, settings, colo
                                 </tr>
                             ))}
                             <tr>
-                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{t('Total')}</td>
+                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{translate('Total')}</td>
                                 <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{salesOrder.totalQuantity}</td>
                                 <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{formatCurrency(salesOrder.totalRate)}</td>
                                 <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{formatCurrency(salesOrder.totalTaxPrice)}</td>
@@ -262,7 +262,7 @@ export default function Template2({ salesOrder, items, taxesData, settings, colo
                                         <tbody>
                                             {salesOrder.total_discount > 0 && (
                                                 <tr>
-                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{t('Discount')}:</td>
+                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{translate('Discount')}:</td>
                                                     <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
                                                         {formatCurrency(salesOrder.total_discount)}
                                                     </td>
@@ -278,7 +278,7 @@ export default function Template2({ salesOrder, items, taxesData, settings, colo
                                             ))}
                                             <tr>
                                                 <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>
-                                                    <strong>{t('Total')}:</strong>
+                                                    <strong>{translate('Total')}:</strong>
                                                 </td>
                                                 <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
                                                     <strong>{formatCurrency(salesOrder.total_amount || 0)}</strong>

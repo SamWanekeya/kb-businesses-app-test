@@ -54,7 +54,7 @@ export const ProjectTaskKanbanBoard: React.FC<ProjectTaskKanbanBoardProps> = ({
     onAddTask,
     onDataUpdate,
 }) => {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [kanbanData, setKanbanData] = useState<KanbanData>(initialData);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -70,7 +70,7 @@ export const ProjectTaskKanbanBoard: React.FC<ProjectTaskKanbanBoardProps> = ({
         }
 
         if (!useHasPermission('edit-project-tasks')) {
-            toast.error(t('Permission denied.'));
+            toast.error(translate('Permission denied.'));
             return;
         }
 
@@ -132,7 +132,7 @@ export const ProjectTaskKanbanBoard: React.FC<ProjectTaskKanbanBoardProps> = ({
                 },
             );
         } catch (error) {
-            toast.error(t('Failed to update task status'));
+            toast.error(translate('Failed to update task status'));
             setKanbanData(initialData);
         } finally {
             setIsLoading(false);
@@ -145,20 +145,20 @@ export const ProjectTaskKanbanBoard: React.FC<ProjectTaskKanbanBoardProps> = ({
                 {useHasPermission('view-project-tasks') && (
                     <DropdownMenuItem onClick={() => onItemAction('view', task)}>
                         <Eye className="mr-2 h-4 w-4" />
-                        <span>{t('View Task')}</span>
+                        <span>{translate('View Task')}</span>
                     </DropdownMenuItem>
                 )}
                 {useHasPermission('edit-project-tasks') && (
                     <DropdownMenuItem onClick={() => onItemAction('edit', task)}>
                         <Edit className="mr-2 h-4 w-4" />
-                        <span>{t('Edit')}</span>
+                        <span>{translate('Edit')}</span>
                     </DropdownMenuItem>
                 )}
                 <DropdownMenuSeparator />
                 {useHasPermission('delete-project-tasks') && (
                     <DropdownMenuItem onClick={() => onItemAction('delete', task)} className="text-red-600">
                         <Trash2 className="mr-2 h-4 w-4" />
-                        <span>{t('Delete')}</span>
+                        <span>{translate('Delete')}</span>
                     </DropdownMenuItem>
                 )}
             </DropdownMenuContent>
@@ -185,7 +185,7 @@ export const ProjectTaskKanbanBoard: React.FC<ProjectTaskKanbanBoardProps> = ({
                                     {useHasPermission('create-project-tasks') && (
                                         <Button variant="ghost" size="sm" className="h-7 w-full text-xs" onClick={() => onAddTask(status.id)}>
                                             <Plus className="mr-1 h-3 w-3" />
-                                            {t('Add Task')}
+                                            {translate('Add Task')}
                                         </Button>
                                     )}
                                 </div>
@@ -315,7 +315,7 @@ export const ProjectTaskKanbanBoard: React.FC<ProjectTaskKanbanBoardProps> = ({
                                                                 </div>
 
                                                                 <div className="mb-4 text-xs text-gray-500 dark:text-gray-400">
-                                                                    {t('Created')}:{' '}
+                                                                    {translate('Created')}:{' '}
                                                                     {window.appSettings?.formatDateTime(task.created_at, false) ||
                                                                         new Date(task.created_at).toLocaleDateString()}
                                                                 </div>
@@ -331,8 +331,8 @@ export const ProjectTaskKanbanBoard: React.FC<ProjectTaskKanbanBoardProps> = ({
                                                     <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
                                                         <span className="text-lg">📋</span>
                                                     </div>
-                                                    <p className="mb-1 text-sm font-medium">{t('No tasks here')}</p>
-                                                    <p className="text-xs opacity-75">{t('Drag tasks here or add new ones')}</p>
+                                                    <p className="mb-1 text-sm font-medium">{translate('No tasks here')}</p>
+                                                    <p className="text-xs opacity-75">{translate('Drag tasks here or add new ones')}</p>
                                                 </div>
                                             )}
                                         </div>

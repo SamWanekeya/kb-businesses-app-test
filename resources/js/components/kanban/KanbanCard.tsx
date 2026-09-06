@@ -42,7 +42,7 @@ interface KanbanCardProps {
 }
 
 export const KanbanCard: React.FC<KanbanCardProps> = ({ lead, index, onLeadAction, permissions, isLoading }) => {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
 
     const formatValue = (value: string) => {
@@ -83,7 +83,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({ lead, index, onLeadActio
                                     <h4 className="truncate text-sm font-medium text-gray-900 transition-colors hover:text-blue-600 dark:text-white dark:hover:text-blue-400">
                                         {lead.name}
                                     </h4>
-                                    <p className="truncate text-xs text-gray-500 dark:text-gray-400">{lead.email || t('No email')}</p>
+                                    <p className="truncate text-xs text-gray-500 dark:text-gray-400">{lead.email || translate('No email')}</p>
                                 </div>
                             </div>
 
@@ -101,13 +101,13 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({ lead, index, onLeadActio
                                     {useHasPermission('view-leads') && (
                                         <DropdownMenuItem onClick={() => onLeadAction('view', lead)}>
                                             <Eye className="mr-2 h-4 w-4" />
-                                            <span>{t('View Lead')}</span>
+                                            <span>{translate('View Lead')}</span>
                                         </DropdownMenuItem>
                                     )}
                                     {useHasPermission('edit-leads') && (
                                         <DropdownMenuItem onClick={() => onLeadAction('edit', lead)}>
                                             <Edit className="mr-2 h-4 w-4" />
-                                            <span>{t('Edit')}</span>
+                                            <span>{translate('Edit')}</span>
                                         </DropdownMenuItem>
                                     )}
                                     {useHasPermission('convert-leads') && (
@@ -115,11 +115,11 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({ lead, index, onLeadActio
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem onClick={() => onLeadAction('convert-to-account', lead)} className="text-green-600">
                                                 <Building2 className="mr-2 h-4 w-4" />
-                                                <span>{t('Convert to Account')}</span>
+                                                <span>{translate('Convert to Account')}</span>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem onClick={() => onLeadAction('convert-to-contact', lead)} className="text-blue-600">
                                                 <Users className="mr-2 h-4 w-4" />
-                                                <span>{t('Convert to Contact')}</span>
+                                                <span>{translate('Convert to Contact')}</span>
                                             </DropdownMenuItem>
                                         </>
                                     )}
@@ -127,7 +127,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({ lead, index, onLeadActio
                                     {useHasPermission('delete-leads') && (
                                         <DropdownMenuItem onClick={() => onLeadAction('delete', lead)} className="text-red-600">
                                             <Trash2 className="mr-2 h-4 w-4" />
-                                            <span>{t('Delete')}</span>
+                                            <span>{translate('Delete')}</span>
                                         </DropdownMenuItem>
                                     )}
                                 </DropdownMenuContent>
@@ -145,7 +145,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({ lead, index, onLeadActio
 
                             {lead.value && (
                                 <div className="flex items-center justify-between">
-                                    <span className="text-xs text-gray-500 dark:text-gray-400">{t('Value')}:</span>
+                                    <span className="text-xs text-gray-500 dark:text-gray-400">{translate('Value')}:</span>
                                     <span className="text-xs font-medium text-green-600 dark:text-green-400">{formatValue(lead.value)}</span>
                                 </div>
                             )}

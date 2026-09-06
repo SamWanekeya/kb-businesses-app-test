@@ -18,7 +18,7 @@ interface InvoicePaymentModalProps {
 }
 
 export function InvoicePaymentModal({ isOpen, onClose, invoice, amount, onAmountChange }: InvoicePaymentModalProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
 
     const handlePaymentSuccess = () => {
         onClose();
@@ -30,7 +30,7 @@ export function InvoicePaymentModal({ isOpen, onClose, invoice, amount, onAmount
             <DialogContent className="flex max-h-[90vh] max-w-lg flex-col print:hidden">
                 <DialogHeader className="flex-shrink-0">
                     <DialogTitle>
-                        {t('Pay Invoice')} #{invoice.invoice_number}
+                        {translate('Pay Invoice')} #{invoice.invoice_number}
                     </DialogTitle>
                 </DialogHeader>
 

@@ -19,7 +19,7 @@ interface ColumnMappingModalProps {
 }
 
 export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFields, importRoute, data, previewData = [] }: ColumnMappingModalProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [mapping, setMapping] = useState<Record<string, string>>({});
     const [isImporting, setIsImporting] = useState(false);
 
@@ -38,7 +38,7 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
 
     const handleSubmit = () => {
         if (!data || data.length === 0) {
-            toast.error(t('No data available for import'));
+            toast.error(translate('No data available for import'));
             return;
         }
 
@@ -46,7 +46,7 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
         const missingFields = requiredFields.filter((f) => !mapping[f.key]);
 
         if (missingFields.length > 0) {
-            toast.error(t('Please map all required fields: {{fields}}', { fields: missingFields.map((f) => f.key).join(', ') }));
+            toast.error(translate('Please map all required fields: {{fields}}', { fields: missingFields.map((f) => f.key).join(', ') }));
             return;
         }
 
@@ -60,7 +60,7 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
         });
 
         setIsImporting(true);
-        toast.loading(t('Importing...'));
+        toast.loading(translate('Importing...'));
 
         router.post(
             route(importRoute),
@@ -85,7 +85,7 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
-                        toast.error(t('Failed to import'));
+                        toast.error(translate('Failed to import'));
                     }
                 },
             },
@@ -96,16 +96,16 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()} modal={false}>
             <DialogContent className="flex max-h-[90vh] max-w-6xl flex-col overflow-hidden">
                 <DialogHeader>
-                    <DialogTitle>{t('Import Customers')}</DialogTitle>
+                    <DialogTitle>{translate('Import Customers')}</DialogTitle>
                 </DialogHeader>
 
                 <Alert className="border-amber-200 bg-amber-50">
                     <Info className="h-4 w-4 text-amber-600" />
-                    <AlertDescription className="text-amber-800">{t('Map your CSV columns to database fields')}</AlertDescription>
+                    <AlertDescription className="text-amber-800">{translate('Map your CSV columns to database fields')}</AlertDescription>
                 </Alert>
 
                 <div className="flex-1 overflow-auto">
-                    <h3 className="mb-3 text-sm font-semibold">{t('Map Excel Columns to Database Fields')}</h3>
+                    <h3 className="mb-3 text-sm font-semibold">{translate('Map Excel Columns to Database Fields')}</h3>
                     <div className="rounded-lg border">
                         <table className="w-full text-sm">
                             <thead className="border-b bg-gray-50">
@@ -136,10 +136,10 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
                                                     }}
                                                 >
                                                     <SelectTrigger className="h-8 w-full text-xs">
-                                                        <SelectValue placeholder={t('Select column...')} />
+                                                        <SelectValue placeholder={translate('Select column...')} />
                                                     </SelectTrigger>
                                                     <SelectContent position="popper" className="z-[9999]">
-                                                        <SelectItem value="__unselect__">{t('Select column...')}</SelectItem>
+                                                        <SelectItem value="__unselect__">{translate('Select column...')}</SelectItem>
                                                         {excelColumns.map((col) => {
                                                             const isUsed = Object.values(mapping).includes(col) && mapping[field.key] !== col;
                                                             return (
@@ -160,7 +160,7 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
                                     <tr key={idx} className="border-b">
                                         {databaseFields.map((field) => (
                                             <td key={field.key} className="px-4 py-2 text-gray-600">
-                                                {mapping[field.key] ? row[mapping[field.key]] || t('No data') : t('-')}
+                                                {mapping[field.key] ? row[mapping[field.key]] || translate('No data') : translate('-')}
                                             </td>
                                         ))}
                                     </tr>
@@ -172,10 +172,10 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
 
                 <DialogFooter>
                     <Button type="button" variant="outline" onClick={onClose} disabled={isImporting}>
-                        {t('Back')}
+                        {translate('Back')}
                     </Button>
                     <Button type="button" onClick={handleSubmit} disabled={isImporting}>
-                        {t('Import Data')}
+                        {translate('Import Data')}
                     </Button>
                 </DialogFooter>
             </DialogContent>

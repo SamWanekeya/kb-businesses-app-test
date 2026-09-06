@@ -27,7 +27,7 @@ interface PlanSubscriptionModalProps {
 }
 
 export function PlanSubscriptionModal({ isOpen, onClose, plan, billingCycle, paymentMethods, currencySymbol }: PlanSubscriptionModalProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
 
     const handlePaymentSuccess = () => {
         onClose();
@@ -39,7 +39,7 @@ export function PlanSubscriptionModal({ isOpen, onClose, plan, billingCycle, pay
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="flex max-h-[90vh] max-w-lg flex-col">
                 <DialogHeader className="flex-shrink-0">
-                    <DialogTitle>{t('Subscribe to {{planName}}', { planName: plan.name })}</DialogTitle>
+                    <DialogTitle>{translate('Subscribe to {{planName}}', { planName: plan.name })}</DialogTitle>
                 </DialogHeader>
 
                 <div className="flex-1 overflow-y-auto pr-2">

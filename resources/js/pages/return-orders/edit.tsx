@@ -44,7 +44,7 @@ function FieldError({ message }: { message?: string }) {
 }
 
 export default function ReturnOrderEdit() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const {
         returnOrder,
         accounts = [],
@@ -115,9 +115,9 @@ export default function ReturnOrderEdit() {
     const [processing, setProcessing] = useState(false);
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Return Orders'), href: route('return-orders.index') },
-        { title: t('Edit') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Return Orders'), href: route('return-orders.index') },
+        { title: translate('Edit') },
     ];
 
     const set = (name: string, value: string) => {
@@ -130,7 +130,7 @@ export default function ReturnOrderEdit() {
     };
 
     const handleSalesOrderChange = async (id: string) => {
-        set('sales_order_id', id);
+        setranslate('sales_order_id', id);
         setSalesOrderItems([]);
         setReturnItems([]);
         if (!id) return;
@@ -231,14 +231,14 @@ export default function ReturnOrderEdit() {
 
     const handleSubmit = () => {
         const errs: Errors = {};
-        if (!form.name.trim()) errs.name = t('Name is required');
-        if (!form.sales_order_id) errs.sales_order_id = t('Sales Order is required');
-        if (!form.account_id) errs.account_id = t('Account is required');
-        if (!form.contact_id) errs.contact_id = t('Contact is required');
-        if (!form.shipping_provider_type_id) errs.shipping_provider_type_id = t('Shipping Provider is required');
-        if (!form.return_date) errs.return_date = t('Return Date is required');
-        if (!form.assigned_to) errs.assigned_to = t('Assigned To is required');
-        if (!returnItems.length) errs.products = t('At least one product is required');
+        if (!form.name.trim()) errs.name = translate('Name is required');
+        if (!form.sales_order_id) errs.sales_order_id = translate('Sales Order is required');
+        if (!form.account_id) errs.account_id = translate('Account is required');
+        if (!form.contact_id) errs.contact_id = translate('Contact is required');
+        if (!form.shipping_provider_type_id) errs.shipping_provider_type_id = translate('Shipping Provider is required');
+        if (!form.return_date) errs.return_date = translate('Return Date is required');
+        if (!form.assigned_to) errs.assigned_to = translate('Assigned To is required');
+        if (!returnItems.length) errs.products = translate('At least one product is required');
 
         if (Object.keys(errs).length) {
             setErrors(errs);
@@ -250,7 +250,7 @@ export default function ReturnOrderEdit() {
             return;
         }
         setProcessing(true);
-        toast.loading(t('Saving...'));
+        toast.loading(translate('Saving...'));
 
         router.put(
             route('return-orders.update', returnOrder.id),
@@ -279,15 +279,15 @@ export default function ReturnOrderEdit() {
 
     return (
         <PageTemplate
-            title={t('Edit Return Order')}
-            description={t('Update return order details and related information')}
+            title={translate('Edit Return Order')}
+            description={translate('Update return order details and related information')}
             breadcrumbs={breadcrumbs}
             url="/return-orders"
             fullWidth
             noPadding
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => router.visit(route('return-orders.index')),
@@ -313,17 +313,17 @@ export default function ReturnOrderEdit() {
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                                 />
                             </svg>
-                            <span className="text-base font-bold text-gray-900 dark:text-white">{t('Basic Information')}</span>
+                            <span className="text-base font-bold text-gray-900 dark:text-white">{translate('Basic Information')}</span>
                         </div>
                         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                             <div className="space-y-1 md:col-span-2 lg:col-span-3">
                                 <Label className="text-sm font-medium" required>
-                                    {t('Return Order Name')}
+                                    {translate('Return Order Name')}
                                 </Label>
                                 <Input
                                     value={form.name}
-                                    onChange={(e) => set('name', e.target.value)}
-                                    placeholder={t('e.g. Defective Items Return')}
+                                    onChange={(e) => setranslate('name', e.target.value)}
+                                    placeholder={translate('e.g. Defective Items Return')}
                                     className={errors.name ? 'border-red-500' : ''}
                                 />
                                 {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
@@ -331,11 +331,11 @@ export default function ReturnOrderEdit() {
 
                             <div className="space-y-1">
                                 <Label className="text-sm font-medium" required>
-                                    {t('Sales Order')}
+                                    {translate('Sales Order')}
                                 </Label>
                                 <Select value={form.sales_order_id} onValueChange={handleSalesOrderChange}>
                                     <SelectTrigger className={errors.sales_order_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select sales order')} />
+                                        <SelectValue placeholder={translate('Select sales order')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {salesOrders.map((so: any) => (
@@ -350,11 +350,11 @@ export default function ReturnOrderEdit() {
 
                             <div className="space-y-1">
                                 <Label className="text-sm font-medium" required>
-                                    {t('Account')}
+                                    {translate('Account')}
                                 </Label>
-                                <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
+                                <Select value={form.account_id} onValueChange={(v) => setranslate('account_id', v)}>
                                     <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select account')} />
+                                        <SelectValue placeholder={translate('Select account')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {accounts.map((a: any) => (
@@ -369,11 +369,11 @@ export default function ReturnOrderEdit() {
 
                             <div className="space-y-1">
                                 <Label className="text-sm font-medium" required>
-                                    {t('Contact')}
+                                    {translate('Contact')}
                                 </Label>
-                                <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
+                                <Select value={form.contact_id} onValueChange={(v) => setranslate('contact_id', v)}>
                                     <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select contact')} />
+                                        <SelectValue placeholder={translate('Select contact')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {contacts.map((c: any) => (
@@ -388,11 +388,11 @@ export default function ReturnOrderEdit() {
 
                             <div className="space-y-1">
                                 <Label className="text-sm font-medium" required>
-                                    {t('Shipping Provider')}
+                                    {translate('Shipping Provider')}
                                 </Label>
-                                <Select value={form.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
+                                <Select value={form.shipping_provider_type_id} onValueChange={(v) => setranslate('shipping_provider_type_id', v)}>
                                     <SelectTrigger className={errors.shipping_provider_type_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select shipping provider')} />
+                                        <SelectValue placeholder={translate('Select shipping provider')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {shippingProviderTypes.map((s: any) => (
@@ -407,7 +407,7 @@ export default function ReturnOrderEdit() {
 
                             <div className="space-y-1">
                                 <Label className="text-sm font-medium" required>
-                                    {t('Return Date')}
+                                    {translate('Return Date')}
                                 </Label>
                                 <div
                                     className="cursor-pointer"
@@ -423,7 +423,7 @@ export default function ReturnOrderEdit() {
                                     <Input
                                         type="date"
                                         value={form.return_date}
-                                        onChange={(e) => set('return_date', e.target.value)}
+                                        onChange={(e) => setranslate('return_date', e.target.value)}
                                         className={`cursor-pointer ${errors.return_date ? 'border-red-500' : ''}`}
                                     />
                                 </div>
@@ -431,45 +431,45 @@ export default function ReturnOrderEdit() {
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium">{t('Status')}</Label>
-                                <Select value={form.status} onValueChange={(v) => set('status', v)}>
+                                <Label className="text-sm font-medium">{translate('Status')}</Label>
+                                <Select value={form.status} onValueChange={(v) => setranslate('status', v)}>
                                     <SelectTrigger>
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="pending">{t('Pending')}</SelectItem>
-                                        <SelectItem value="approved">{t('Approved')}</SelectItem>
-                                        <SelectItem value="shipped">{t('Shipped')}</SelectItem>
-                                        <SelectItem value="received">{t('Received')}</SelectItem>
-                                        <SelectItem value="processed">{t('Processed')}</SelectItem>
-                                        <SelectItem value="cancelled">{t('Cancelled')}</SelectItem>
+                                        <SelectItem value="pending">{translate('Pending')}</SelectItem>
+                                        <SelectItem value="approved">{translate('Approved')}</SelectItem>
+                                        <SelectItem value="shipped">{translate('Shipped')}</SelectItem>
+                                        <SelectItem value="received">{translate('Received')}</SelectItem>
+                                        <SelectItem value="processed">{translate('Processed')}</SelectItem>
+                                        <SelectItem value="cancelled">{translate('Cancelled')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
 
                             <div className="space-y-1">
-                                <Label className="text-sm font-medium">{t('Return Reason')}</Label>
-                                <Select value={form.reason} onValueChange={(v) => set('reason', v)}>
+                                <Label className="text-sm font-medium">{translate('Return Reason')}</Label>
+                                <Select value={form.reason} onValueChange={(v) => setranslate('reason', v)}>
                                     <SelectTrigger>
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="defective">{t('Defective')}</SelectItem>
-                                        <SelectItem value="wrong_item">{t('Wrong Item')}</SelectItem>
-                                        <SelectItem value="damaged">{t('Damaged')}</SelectItem>
-                                        <SelectItem value="not_needed">{t('Not Needed')}</SelectItem>
-                                        <SelectItem value="other">{t('Other')}</SelectItem>
+                                        <SelectItem value="defective">{translate('Defective')}</SelectItem>
+                                        <SelectItem value="wrong_item">{translate('Wrong Item')}</SelectItem>
+                                        <SelectItem value="damaged">{translate('Damaged')}</SelectItem>
+                                        <SelectItem value="not_needed">{translate('Not Needed')}</SelectItem>
+                                        <SelectItem value="other">{translate('Other')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
 
                             <div className="space-y-1">
                                 <Label className="text-sm font-medium" required>
-                                    {t('Assigned To')}
+                                    {translate('Assigned To')}
                                 </Label>
-                                <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
+                                <Select value={form.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
                                     <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select user')} />
+                                        <SelectValue placeholder={translate('Select user')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {users.map((u: any) => (
@@ -483,22 +483,22 @@ export default function ReturnOrderEdit() {
                             </div>
 
                             <div className="space-y-1 md:col-span-2 lg:col-span-3">
-                                <Label className="text-sm font-medium">{t('Description')}</Label>
+                                <Label className="text-sm font-medium">{translate('Description')}</Label>
                                 <Textarea
                                     value={form.description}
-                                    onChange={(e) => set('description', e.target.value)}
+                                    onChange={(e) => setranslate('description', e.target.value)}
                                     rows={2}
-                                    placeholder={t('Optional description about this return order...')}
+                                    placeholder={translate('Optional description about this return order...')}
                                 />
                             </div>
 
                             <div className="space-y-1 md:col-span-2 lg:col-span-3">
-                                <Label className="text-sm font-medium">{t('Reason Description')}</Label>
+                                <Label className="text-sm font-medium">{translate('Reason Description')}</Label>
                                 <Textarea
                                     value={form.reason_description}
-                                    onChange={(e) => set('reason_description', e.target.value)}
+                                    onChange={(e) => setranslate('reason_description', e.target.value)}
                                     rows={2}
-                                    placeholder={t('Describe the reason for return in detail...')}
+                                    placeholder={translate('Describe the reason for return in detail...')}
                                 />
                             </div>
                         </div>
@@ -524,10 +524,10 @@ export default function ReturnOrderEdit() {
                                 />
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 3H8a2 2 0 00-2 2v2h12V5a2 2 0 00-2-2z" />
                             </svg>
-                            <span className="text-base font-bold text-gray-900 dark:text-white">{t('Available Product from Sales Order')}</span>
+                            <span className="text-base font-bold text-gray-900 dark:text-white">{translate('Available Product from Sales Order')}</span>
                         </div>
                         {salesOrderItems.length === 0 ? (
-                            <p className="py-8 text-center text-sm text-gray-400">{t('Select an invoice to see available items.')}</p>
+                            <p className="py-8 text-center text-sm text-gray-400">{translate('Select an invoice to see available items.')}</p>
                         ) : (
                             <div className="overflow-x-auto">
                                 <table className="w-full text-sm">
@@ -569,7 +569,7 @@ export default function ReturnOrderEdit() {
                                                                 {item.tax.name} ({parseFloat(String(item.tax.rate)).toFixed(2)}%)
                                                             </span>
                                                         ) : (
-                                                            <span className="text-xs text-gray-400">{t('No Tax')}</span>
+                                                            <span className="text-xs text-gray-400">{translate('No Tax')}</span>
                                                         )}
                                                     </td>
                                                     <td className="py-4 pe-6 font-mono font-medium text-gray-900 dark:text-gray-100">
@@ -578,11 +578,11 @@ export default function ReturnOrderEdit() {
                                                     <td className="py-4">
                                                         {isAdded ? (
                                                             <Button type="button" disabled size="sm">
-                                                                {t('Added')}
+                                                                {translate('Added')}
                                                             </Button>
                                                         ) : availableQuantity === 0 ? (
                                                             <Button type="button" disabled size="sm" variant="outline">
-                                                                {t('Fully Returned')}
+                                                                {translate('Fully Returned')}
                                                             </Button>
                                                         ) : (
                                                             <TooltipProvider delayDuration={200}>
@@ -595,11 +595,11 @@ export default function ReturnOrderEdit() {
                                                                             className="flex h-8 w-8 items-center justify-center bg-emerald-500 p-2 text-white hover:bg-emerald-600 min-[1200px]:h-auto min-[1200px]:w-auto min-[1200px]:px-3 min-[1200px]:py-1.5"
                                                                         >
                                                                             <Plus className="h-4 w-4 min-[1200px]:mr-1" />
-                                                                            <span className="hidden min-[1200px]:inline">{t('Add to Return')}</span>
+                                                                            <span className="hidden min-[1200px]:inline">{translate('Add to Return')}</span>
                                                                         </Button>
                                                                     </TooltipTrigger>
                                                                     <TooltipContent side="top" className="min-[1200px]:hidden">
-                                                                        <p>{t('Add to Return')}</p>
+                                                                        <p>{translate('Add to Return')}</p>
                                                                     </TooltipContent>
                                                                 </Tooltip>
                                                             </TooltipProvider>
@@ -633,12 +633,12 @@ export default function ReturnOrderEdit() {
                                     d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                                 />
                             </svg>
-                            <span className="text-base font-bold text-gray-900 dark:text-white">{t('Return Product')}</span>
+                            <span className="text-base font-bold text-gray-900 dark:text-white">{translate('Return Product')}</span>
                             {errors.products && <span className="ml-1 text-xs font-normal text-red-500">{errors.products}</span>}
                         </div>
                         {returnItems.length === 0 ? (
                             <p className="py-8 text-center text-sm text-gray-400">
-                                {t('No items added yet. Click "Add to Return" from the available items above.')}
+                                {translate('No items added yet. Click "Add to Return" from the available items above.')}
                             </p>
                         ) : (
                             <div className="overflow-x-auto">
@@ -675,7 +675,7 @@ export default function ReturnOrderEdit() {
                                                         />
                                                         {quantityError && (
                                                             <p className="mt-1 text-xs text-red-500">
-                                                                {t('Max')} {item.maximum_quantity}
+                                                                {translate('Max')} {item.maximum_quantity}
                                                             </p>
                                                         )}
                                                     </td>
@@ -686,7 +686,7 @@ export default function ReturnOrderEdit() {
                                                                 {item.tax.name} ({parseFloat(String(item.tax.rate)).toFixed(2)}%)
                                                             </span>
                                                         ) : (
-                                                            <span className="text-xs text-gray-400">{t('No Tax')}</span>
+                                                            <span className="text-xs text-gray-400">{translate('No Tax')}</span>
                                                         )}
                                                     </td>
                                                     <td className="py-4 pe-6 font-mono font-medium text-gray-900 dark:text-gray-100">
@@ -712,18 +712,18 @@ export default function ReturnOrderEdit() {
                         {returnItems.length > 0 && (
                             <div className="mt-8 flex justify-end">
                                 <div className="w-80">
-                                    <p className="mb-3 text-base font-bold text-gray-900 dark:text-white">{t('Return Summary')}</p>
+                                    <p className="mb-3 text-base font-bold text-gray-900 dark:text-white">{translate('Return Summary')}</p>
                                     <div className="space-y-1.5 text-sm">
                                         <div className="flex justify-between">
-                                            <span className="text-gray-500 dark:text-gray-400">{t('Subtotal')}</span>
+                                            <span className="text-gray-500 dark:text-gray-400">{translate('Subtotal')}</span>
                                             <span className="font-mono text-gray-900 dark:text-gray-100">{fmt(totals.subtotal)}</span>
                                         </div>
                                         <div className="flex justify-between">
-                                            <span className="text-gray-500 dark:text-gray-400">{t('Tax')}</span>
+                                            <span className="text-gray-500 dark:text-gray-400">{translate('Tax')}</span>
                                             <span className="font-mono text-gray-900 dark:text-gray-100">{fmt(totals.tax)}</span>
                                         </div>
                                         <div className="mt-1 flex justify-between border-t border-gray-200 pt-2 text-base font-bold dark:border-gray-700">
-                                            <span className="text-gray-900 dark:text-white">{t('Total Return Amount')}</span>
+                                            <span className="text-gray-900 dark:text-white">{translate('Total Return Amount')}</span>
                                             <span className="font-mono text-green-600 dark:text-green-400">{fmt(totals.subtotal + totals.tax)}</span>
                                         </div>
                                     </div>
@@ -751,15 +751,15 @@ export default function ReturnOrderEdit() {
                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                                 />
                             </svg>
-                            <span className="text-base font-bold text-gray-900 dark:text-white">{t('Additional Notes')}</span>
+                            <span className="text-base font-bold text-gray-900 dark:text-white">{translate('Additional Notes')}</span>
                         </div>
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium">{t('Notes')}</Label>
+                            <Label className="text-sm font-medium">{translate('Notes')}</Label>
                             <Textarea
                                 value={form.notes}
-                                onChange={(e) => set('notes', e.target.value)}
+                                onChange={(e) => setranslate('notes', e.target.value)}
                                 rows={3}
-                                placeholder={t('Enter any additional notes...')}
+                                placeholder={translate('Enter any additional notes...')}
                             />
                         </div>
                     </CardContent>
@@ -768,10 +768,10 @@ export default function ReturnOrderEdit() {
                 {/* Actions */}
                 <div className="flex justify-end gap-3 pb-6">
                     <Button type="button" variant="outline" onClick={() => window.history.back()}>
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     <Button type="button" disabled={processing || returnItems.length === 0} onClick={handleSubmit}>
-                        {processing ? t('Saving...') : t('Save')}
+                        {processing ? translate('Saving...') : translate('Save')}
                     </Button>
                 </div>
             </div>

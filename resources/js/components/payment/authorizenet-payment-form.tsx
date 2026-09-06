@@ -36,7 +36,7 @@ export function AuthorizeNetPaymentForm({
     onSuccess,
     onCancel,
 }: AuthorizeNetPaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
@@ -104,23 +104,23 @@ export function AuthorizeNetPaymentForm({
         const errors: Record<string, string> = {};
 
         if (!validateCardNumber(cardData.card_number)) {
-            errors.card_number = t('Please enter a valid card number (13-19 digits)');
+            errors.card_number = translate('Please enter a valid card number (13-19 digits)');
         }
 
         if (!validateExpiryMonth(cardData.expiry_month)) {
-            errors.expiry_month = t('Please enter a valid month (01-12)');
+            errors.expiry_month = translate('Please enter a valid month (01-12)');
         }
 
         if (!validateExpiryYear(cardData.expiry_year)) {
-            errors.expiry_year = t('Please enter a valid year (current year or later)');
+            errors.expiry_year = translate('Please enter a valid year (current year or later)');
         }
 
         if (!validateCVV(cardData.cvv)) {
-            errors.cvv = t('Please enter a valid CVV (3-4 digits)');
+            errors.cvv = translate('Please enter a valid CVV (3-4 digits)');
         }
 
         if (!validateCardholderName(cardData.cardholder_name)) {
-            errors.cardholder_name = t('Please enter a valid cardholder name (2-50 characters)');
+            errors.cardholder_name = translate('Please enter a valid cardholder name (2-50 characters)');
         }
 
         setValidationErrors(errors);
@@ -129,12 +129,12 @@ export function AuthorizeNetPaymentForm({
 
     const handlePayment = async () => {
         if (!authorizenetMerchantId) {
-            setError(t('AuthorizeNet not configured'));
+            setError(translate('AuthorizeNet not configured'));
             return;
         }
 
         if (!validateForm()) {
-            setError(t('Please correct the errors below'));
+            setError(translate('Please correct the errors below'));
             return;
         }
 
@@ -151,7 +151,7 @@ export function AuthorizeNetPaymentForm({
             },
             {
                 onSuccess: () => {
-                    toast.success(t('Payment successful'));
+                    toast.success(translate('Payment successful'));
                     onSuccess();
                 },
                 onError: (errors) => {
@@ -163,7 +163,7 @@ export function AuthorizeNetPaymentForm({
     };
 
     const formatPrice = (price: number) => {
-        return new Intl.NumberFormat('en-US', {
+        return new Intl.NumberFormatranslate('en-US', {
             style: 'currency',
             currency: currency,
         }).format(price);
@@ -174,7 +174,7 @@ export function AuthorizeNetPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {t('AuthorizeNet Payment')}
+                    {translate('AuthorizeNet Payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -187,34 +187,34 @@ export function AuthorizeNetPaymentForm({
 
                 <div className="bg-muted rounded-lg p-4">
                     <div className="flex items-center justify-between">
-                        <span className="font-medium">{t('Total Amount')}</span>
+                        <span className="font-medium">{translate('Total Amount')}</span>
                         <span className="text-lg font-bold">{formatPrice(planPrice)}</span>
                     </div>
                     <div className="text-muted-foreground mt-1 text-sm">
-                        {t('Billing Cycle')}: {t(billingCycle)}
+                        {translate('Billing Cycle')}: {t(billingCycle)}
                     </div>
                     {couponCode && (
                         <div className="mt-1 text-sm text-green-600">
-                            {t('Coupon Applied')}: {couponCode}
+                            {translate('Coupon Applied')}: {couponCode}
                         </div>
                     )}
                 </div>
 
                 <div className="space-y-4">
                     <div>
-                        <Label htmlFor="cardholder_name">{t('Cardholder Name')}</Label>
+                        <Label htmlFor="cardholder_name">{translate('Cardholder Name')}</Label>
                         <Input
                             id="cardholder_name"
                             value={cardData.cardholder_name}
                             onChange={(e) => handleInputChange('cardholder_name', e.target.value)}
-                            placeholder={t('Enter cardholder name')}
+                            placeholder={translate('Enter cardholder name')}
                             className={validationErrors.cardholder_name ? 'border-red-500' : ''}
                         />
                         {validationErrors.cardholder_name && <p className="mt-1 text-sm text-red-500">{validationErrors.cardholder_name}</p>}
                     </div>
 
                     <div>
-                        <Label htmlFor="card_number">{t('Card Number')}</Label>
+                        <Label htmlFor="card_number">{translate('Card Number')}</Label>
                         <Input
                             id="card_number"
                             value={cardData.card_number}
@@ -228,7 +228,7 @@ export function AuthorizeNetPaymentForm({
 
                     <div className="grid grid-cols-3 gap-4">
                         <div>
-                            <Label htmlFor="expiry_month">{t('Month')}</Label>
+                            <Label htmlFor="expiry_month">{translate('Month')}</Label>
                             <Input
                                 id="expiry_month"
                                 value={cardData.expiry_month}
@@ -240,7 +240,7 @@ export function AuthorizeNetPaymentForm({
                             {validationErrors.expiry_month && <p className="mt-1 text-sm text-red-500">{validationErrors.expiry_month}</p>}
                         </div>
                         <div>
-                            <Label htmlFor="expiry_year">{t('Year')}</Label>
+                            <Label htmlFor="expiry_year">{translate('Year')}</Label>
                             <Input
                                 id="expiry_year"
                                 value={cardData.expiry_year}
@@ -252,7 +252,7 @@ export function AuthorizeNetPaymentForm({
                             {validationErrors.expiry_year && <p className="mt-1 text-sm text-red-500">{validationErrors.expiry_year}</p>}
                         </div>
                         <div>
-                            <Label htmlFor="cvv">{t('CVV')}</Label>
+                            <Label htmlFor="cvv">{translate('CVV')}</Label>
                             <Input
                                 id="cvv"
                                 value={cardData.cvv}
@@ -268,18 +268,18 @@ export function AuthorizeNetPaymentForm({
 
                 <div className="flex gap-3">
                     <Button variant="outline" onClick={onCancel} disabled={isLoading} className="flex-1">
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     <Button onClick={handlePayment} disabled={isLoading || !authorizenetMerchantId} className="flex-1">
                         {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                {t('Processing...')}
+                                {translate('Processing...')}
                             </>
                         ) : (
                             <>
                                 <CreditCard className="mr-2 h-4 w-4" />
-                                {t('Pay with AuthorizeNet')}
+                                {translate('Pay with AuthorizeNet')}
                             </>
                         )}
                     </Button>
@@ -289,20 +289,20 @@ export function AuthorizeNetPaymentForm({
                     {isSandbox && (
                         <Alert>
                             <Info className="h-4 w-4" />
-                            <AlertDescription>{t('Test Mode: This is a sandbox transaction. No real money will be charged.')}</AlertDescription>
+                            <AlertDescription>{translate('Test Mode: This is a sandbox transaction. No real money will be charged.')}</AlertDescription>
                         </Alert>
                     )}
 
                     <div className="text-muted-foreground space-y-1 text-center text-xs">
                         <div className="flex items-center justify-center gap-1">
                             <CheckCircle className="h-3 w-3 text-green-500" />
-                            {t('Powered by AuthorizeNet - Secure payment processing')}
+                            {translate('Powered by AuthorizeNet - Secure payment processing')}
                         </div>
                         <div>
-                            {t('Supported currencies')}: {supportedCurrencies.join(', ')}
+                            {translate('Supported currencies')}: {supportedCurrencies.join(', ')}
                         </div>
                         <div>
-                            {t('Supported countries')}: {supportedCountries.join(', ')}
+                            {translate('Supported countries')}: {supportedCountries.join(', ')}
                         </div>
                     </div>
                 </div>

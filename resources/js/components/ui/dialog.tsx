@@ -39,7 +39,7 @@ const DialogOverlay = React.forwardRef<
                     return;
                 }
                 // Allow ChatGPT button clicks
-                if (target.closest('[data-chatgpt-button]')) {
+                if (target.closestranslate('[data-chatgpt-button]')) {
                     e.stopPropagation();
                     return;
                 }
@@ -77,7 +77,7 @@ const DialogContent = React.forwardRef<
                 style={{ zIndex: zIndex + 1 }}
                 onPointerDownOutside={(e) => {
                     const target = e.target as Element;
-                    if (target.closest('[data-chatgpt-button]') || target.closest('[data-chatgpt-modal]')) {
+                    if (target.closestranslate('[data-chatgpt-button]') || target.closestranslate('[data-chatgpt-modal]')) {
                         e.preventDefault();
                         return;
                     }
@@ -86,7 +86,7 @@ const DialogContent = React.forwardRef<
                 }}
                 onInteractOutside={(e) => {
                     const target = e.target as Element;
-                    if (target.closest('[data-chatgpt-button]') || target.closest('[data-chatgpt-modal]')) {
+                    if (target.closestranslate('[data-chatgpt-button]') || target.closestranslate('[data-chatgpt-modal]')) {
                         e.preventDefault();
                         return;
                     }

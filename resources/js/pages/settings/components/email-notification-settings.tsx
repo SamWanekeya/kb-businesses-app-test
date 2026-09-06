@@ -17,7 +17,7 @@ interface NotificationItem {
 }
 
 export default function EmailNotificationSettings() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [notifications, setNotifications] = useState<Record<string, boolean>>({});
     const [availableNotifications, setAvailableNotifications] = useState<NotificationItem[]>([]);
     const [processing, setProcessing] = useState(false);
@@ -50,7 +50,7 @@ export default function EmailNotificationSettings() {
     const handleSave = (e: React.FormEvent) => {
         e.preventDefault();
         setProcessing(true);
-        toast.loading(t('Saving email notification settings...'));
+        toast.loading(translate('Saving email notification settings...'));
         router.post(route('settings.email-notifications.update'), notifications, {
             preserveScroll: true,
             onSuccess: (page) => {
@@ -76,12 +76,12 @@ export default function EmailNotificationSettings() {
 
     return (
         <SettingsSection
-            title={t('Email Notification Settings')}
-            description={t('Configure which email notifications are sent')}
+            title={translate('Email Notification Settings')}
+            description={translate('Configure which email notifications are sent')}
             action={
                 <Button onClick={handleSave} disabled={processing} size="sm" className="max-[1300px]:px-2.5">
                     <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                    <span className="max-[1300px]:hidden">{processing ? t('Saving...') : t('Save Changes')}</span>
+                    <span className="max-[1300px]:hidden">{processing ? translate('Saving...') : translate('Save Changes')}</span>
                 </Button>
             }
         >

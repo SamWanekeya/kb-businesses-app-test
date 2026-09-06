@@ -10,7 +10,7 @@ import { AlertTriangle, ArrowLeft, BanknoteIcon, BarChart3, Building2, Calendar,
 import { useTranslation } from 'react-i18next';
 
 export default function ProjectShow() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
     const {
         auth,
@@ -26,45 +26,45 @@ export default function ProjectShow() {
 
     const pageActions = [];
     pageActions.push({
-        label: t('Back'),
+        label: translate('Back'),
         icon: <ArrowLeft className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
         variant: 'outline',
         className: 'h-8 w-8 min-[450px]:h-9 min-[450px]:w-auto px-0 min-[450px]:px-4',
         labelClassName: 'hidden min-[450px]:inline',
-        tooltip: t('Back'),
+        tooltip: translate('Back'),
         tooltipClassName: 'min-[450px]:hidden',
         onClick: () => window.history.back(),
     });
 
     if (useHasPermission('view-project-tasks')) {
         pageActions.push({
-            label: t('Kanban View'),
+            label: translate('Kanban View'),
             icon: <LayoutGrid className="mr-0 h-4 w-4 min-[1100px]:mr-2" />,
             variant: 'default',
             className: 'h-8 w-8 min-[1100px]:h-9 min-[1100px]:w-auto px-0 min-[1100px]:px-4',
             labelClassName: 'hidden min-[1100px]:inline',
-            tooltip: t('Kanban View'),
+            tooltip: translate('Kanban View'),
             tooltipClassName: 'min-[1100px]:hidden',
             onClick: () => router.get(route('projects.kanban', project.id)),
         });
 
         pageActions.push({
-            label: t('Gantt View'),
+            label: translate('Gantt View'),
             icon: <BarChart3 className="mr-0 h-4 w-4 min-[1100px]:mr-2" />,
             variant: 'default',
             className: 'h-8 w-8 min-[1100px]:h-9 min-[1100px]:w-auto px-0 min-[1100px]:px-4',
             labelClassName: 'hidden min-[1100px]:inline',
-            tooltip: t('Gantt View'),
+            tooltip: translate('Gantt View'),
             tooltipClassName: 'min-[1100px]:hidden',
             onClick: () => router.get(route('projects.gantt', project.id)),
         });
     }
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Project Management') },
-        { title: t('Projects'), href: route('projects.index') },
-        { title: t('View Project') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Project Management') },
+        { title: translate('Projects'), href: route('projects.index') },
+        { title: translate('View Project') },
     ];
 
     const getPriorityColor = (priority: string) => {
@@ -100,7 +100,7 @@ export default function ProjectShow() {
     return (
         <PageTemplate
             title={project.name}
-            description={t('Project details and related information')}
+            description={translate('Project details and related information')}
             url={`/projects/${project.id}`}
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -114,7 +114,7 @@ export default function ProjectShow() {
                             <h1 className="max-w-[280px] truncate text-lg font-bold sm:max-w-none">{project.name}</h1>
                             {project.code && (
                                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                    {t('Code')}: {project.code}
+                                    {translate('Code')}: {project.code}
                                 </p>
                             )}
                         </div>
@@ -160,11 +160,11 @@ export default function ProjectShow() {
                 {totalTasks > 0 && (
                     <Card>
                         <div className="border-b px-6 py-4">
-                            <h3 className="text-lg font-semibold">{t('Task Progress')}</h3>
+                            <h3 className="text-lg font-semibold">{translate('Task Progress')}</h3>
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="flex items-center justify-between">
-                                <span className="text-sm text-gray-600 dark:text-gray-400">{t('Overall Progress')}</span>
+                                <span className="text-sm text-gray-600 dark:text-gray-400">{translate('Overall Progress')}</span>
                                 <span className="text-primary text-lg font-bold">{progressPercentage}%</span>
                             </div>
                             <div className="h-3 w-full rounded-full bg-gray-200">
@@ -190,7 +190,7 @@ export default function ProjectShow() {
                                 ))}
                             </div>
                             <div className="text-center text-sm text-gray-600 dark:text-gray-400">
-                                {completedTasks} {t('of')} {totalTasks} {t('tasks completed')}
+                                {completedTasks} {translate('of')} {totalTasks} {translate('tasks completed')}
                             </div>
                         </div>
                     </Card>
@@ -202,7 +202,7 @@ export default function ProjectShow() {
                     <Card>
                         <div className="flex items-center gap-2 border-b px-6 py-4">
                             <Building2 className="h-5 w-5 text-gray-400" />
-                            <h3 className="text-lg font-semibold">{t('Account Information')}</h3>
+                            <h3 className="text-lg font-semibold">{translate('Account Information')}</h3>
                         </div>
                         <div className="space-y-3 p-6">
                             {project.account ? (
@@ -218,7 +218,7 @@ export default function ProjectShow() {
                             )}
                             {project.account?.phone && (
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{t('Phone')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">{translate('Phone')}</p>
                                     <p className="mt-1 text-sm">{project.account.phone}</p>
                                 </div>
                             )}
@@ -229,11 +229,11 @@ export default function ProjectShow() {
                     <Card>
                         <div className="flex items-center gap-2 border-b px-6 py-4">
                             <Calendar className="h-5 w-5 text-gray-400" />
-                            <h3 className="text-lg font-semibold">{t('Timeline')}</h3>
+                            <h3 className="text-lg font-semibold">{translate('Timeline')}</h3>
                         </div>
                         <div className="space-y-3 p-6">
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{t('Start Date')}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{translate('Start Date')}</p>
                                 <div className="mt-1 flex items-center gap-1.5">
                                     <Calendar className="text-muted-foreground h-3.5 w-3.5" />
                                     <p className="text-sm">
@@ -245,7 +245,7 @@ export default function ProjectShow() {
                                 </div>
                             </div>
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{t('End Date')}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{translate('End Date')}</p>
                                 <div className="mt-1 flex items-center gap-1.5">
                                     <Calendar className="text-muted-foreground h-3.5 w-3.5" />
                                     <p className="text-sm">
@@ -257,7 +257,7 @@ export default function ProjectShow() {
                                 </div>
                             </div>
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{t('Created')}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{translate('Created')}</p>
                                 <div className="mt-1 flex items-center gap-1.5">
                                     <Calendar className="text-muted-foreground h-3.5 w-3.5" />
                                     <p className="text-sm">
@@ -273,11 +273,11 @@ export default function ProjectShow() {
                     <Card>
                         <div className="flex items-center gap-2 border-b px-6 py-4">
                             <DollarSign className="h-5 w-5 text-gray-400" />
-                            <h3 className="text-lg font-semibold">{t('Budget & Assignment')}</h3>
+                            <h3 className="text-lg font-semibold">{translate('Budget & Assignment')}</h3>
                         </div>
                         <div className="space-y-3 p-6">
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{t('Budget')}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{translate('Budget')}</p>
                                 <div className="mt-1 flex items-center">
                                     <BanknoteIcon className="text-muted-foreground mr-2 h-4 w-4" />
                                     <p className="mt-1 font-mono text-sm">
@@ -288,7 +288,7 @@ export default function ProjectShow() {
                                 </div>
                             </div>
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{t('Assigned To')}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{translate('Assigned To')}</p>
                                 <div className="mt-1.5 flex items-center gap-2">
                                     {project.assigned_user ? (
                                         <>
@@ -306,12 +306,12 @@ export default function ProjectShow() {
                                             </div>
                                         </>
                                     ) : (
-                                        <p className="text-muted-foreground text-sm">{t('Unassigned')}</p>
+                                        <p className="text-muted-foreground text-sm">{translate('Unassigned')}</p>
                                     )}
                                 </div>
                             </div>
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{t('Created By')}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{translate('Created By')}</p>
                                 <div className="mt-1.5 flex items-center gap-2">
                                     {project.creator ? (
                                         <>
@@ -329,7 +329,7 @@ export default function ProjectShow() {
                                             </div>
                                         </>
                                     ) : (
-                                        <p className="text-muted-foreground text-sm">{t('Unknown')}</p>
+                                        <p className="text-muted-foreground text-sm">{translate('Unknown')}</p>
                                     )}
                                 </div>
                             </div>
@@ -341,7 +341,7 @@ export default function ProjectShow() {
                 {meetings && meetings.length > 0 && (
                     <Card>
                         <div className="border-b px-6 py-4">
-                            <h3 className="text-lg font-semibold">{t('Activities')}</h3>
+                            <h3 className="text-lg font-semibold">{translate('Activities')}</h3>
                         </div>
                         <div className="grid grid-cols-1 gap-8 p-6 md:grid-cols-2">
                             {/* Meetings Section */}
@@ -356,7 +356,7 @@ export default function ProjectShow() {
                                         />
                                     </svg>
                                     <h4 className="text-muted-foreground text-sm font-medium">
-                                        {t('Meetings')} ({meetings.filter((m: any) => m.type !== 'call').length})
+                                        {translate('Meetings')} ({meetings.filter((m: any) => m.type !== 'call').length})
                                     </h4>
                                 </div>
                                 <div className="space-y-3">
@@ -391,7 +391,7 @@ export default function ProjectShow() {
                                                 {useHasPermission('view-meetings') && (
                                                     <a href={route('meetings.show', meeting.id)}>
                                                         <Button variant="outline" size="sm">
-                                                            {t('View')}
+                                                            {translate('View')}
                                                         </Button>
                                                     </a>
                                                 )}
@@ -420,7 +420,7 @@ export default function ProjectShow() {
                                         />
                                     </svg>
                                     <h4 className="text-muted-foreground text-sm font-medium">
-                                        {t('Calls')} ({meetings.filter((m: any) => m.type === 'call').length})
+                                        {translate('Calls')} ({meetings.filter((m: any) => m.type === 'call').length})
                                     </h4>
                                 </div>
                                 <div className="space-y-3">
@@ -455,7 +455,7 @@ export default function ProjectShow() {
                                                 {useHasPermission('view-calls') && (
                                                     <a href={route('meetings.show', call.id)}>
                                                         <Button variant="outline" size="sm">
-                                                            {t('View')}
+                                                            {translate('View')}
                                                         </Button>
                                                     </a>
                                                 )}
@@ -479,7 +479,7 @@ export default function ProjectShow() {
                 {project.description && (
                     <Card>
                         <div className="border-b px-6 py-4">
-                            <h3 className="text-lg font-semibold">{t('Description')}</h3>
+                            <h3 className="text-lg font-semibold">{translate('Description')}</h3>
                         </div>
                         <div className="prose dark:prose-invert max-w-none p-6">
                             <p className="whitespace-pre-wrap text-gray-700 dark:text-gray-300">{project.description}</p>

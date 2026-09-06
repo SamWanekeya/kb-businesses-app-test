@@ -15,7 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function DocumentFolders() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, documentFolders, parentFolders = [], filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
 
@@ -142,7 +142,7 @@ export default function DocumentFolders() {
                 },
                 onError: (errors) => {
                     setFormErrors(errors);
-                    toast.error(t('Failed to create document folder.'));
+                    toast.error(translate('Failed to create document folder.'));
                 },
             });
         } else {
@@ -155,7 +155,7 @@ export default function DocumentFolders() {
                 },
                 onError: (errors) => {
                     setFormErrors(errors);
-                    toast.error(t('Failed to update document folder.'));
+                    toast.error(translate('Failed to update document folder.'));
                 },
             });
         }
@@ -172,7 +172,7 @@ export default function DocumentFolders() {
             },
             onError: (errors) => {
                 setIsDeleteModalOpen(false);
-                toast.error(`${t('Failed to delete document folder')}: ${Object.values(errors).join(', ')}`);
+                toast.error(`${translate('Failed to delete document folder')}: ${Object.values(errors).join(', ')}`);
             },
         });
     };
@@ -189,7 +189,7 @@ export default function DocumentFolders() {
                             setFormData((prev) => ({ ...prev, status: item.status === 'active' ? 'inactive' : 'active' }));
                     } else if (page.props.flash.error) toast.error(page.props.flash.error);
                 },
-                onError: (errors) => toast.error(`${t('Failed to update document folder')}: ${Object.values(errors).join(', ')}`),
+                onError: (errors) => toast.error(`${translate('Failed to update document folder')}: ${Object.values(errors).join(', ')}`),
             },
         );
     };
@@ -205,35 +205,35 @@ export default function DocumentFolders() {
     const canDelete = useHasPermission('delete-document-folders');
     const canToggleStatus = useHasPermission('toggle-status-document-folders');
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Document Management') }, { title: t('Folders') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Document Management') }, { title: translate('Folders') }];
 
     return (
-        <PageTemplate title={t('Folders')} url="/document-folders" breadcrumbs={breadcrumbs} noPadding>
+        <PageTemplate title={translate('Folders')} url="/document-folders" breadcrumbs={breadcrumbs} noPadding>
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Left — Form */}
                 <div className="lg:col-span-1">
                     <div className="sticky top-4 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 p-6 dark:border-gray-700">
                             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                {formMode === 'create' ? t('Add New Folder') : t('Edit Folder')}
+                                {formMode === 'create' ? translate('Add New Folder') : translate('Edit Folder')}
                             </h2>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                 {formMode === 'create'
-                                    ? t('Fill in the details to create a new document folder')
-                                    : t('Update the document folder details below')}
+                                    ? translate('Fill in the details to create a new document folder')
+                                    : translate('Update the document folder details below')}
                             </p>
                         </div>
                         <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="name" required>
-                                    {t('Folder Name')}
+                                    {translate('Folder Name')}
                                 </Label>
                                 <Input
                                     id="name"
                                     type="text"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    placeholder={t('e.g. Contracts, HR Documents, Invoices')}
+                                    placeholder={translate('e.g. Contracts, HR Documents, Invoices')}
                                     className={formErrors.name ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
                                     required
@@ -241,17 +241,17 @@ export default function DocumentFolders() {
                                 {formErrors.name && <p className="text-sm text-red-500">{formErrors.name}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="parent_folder_id">{t('Parent Folder')}</Label>
+                                <Label htmlFor="parent_folder_id">{translate('Parent Folder')}</Label>
                                 <Select
                                     value={formData.parent_folder_id}
                                     onValueChange={(value) => setFormData({ ...formData, parent_folder_id: value })}
                                     disabled={!canCreate && !canEdit}
                                 >
                                     <SelectTrigger className={formErrors.parent_folder_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select parent folder')} />
+                                        <SelectValue placeholder={translate('Select parent folder')} />
                                     </SelectTrigger>
                                     <SelectContent searchable={true}>
-                                        <SelectItem value="null">{t('Root Folder')}</SelectItem>
+                                        <SelectItem value="null">{translate('Root Folder')}</SelectItem>
                                         {parentFolders.map((folder: any) => (
                                             <SelectItem key={folder.id} value={String(folder.id)}>
                                                 {folder.display_name || folder.name}
@@ -262,12 +262,12 @@ export default function DocumentFolders() {
                                 {formErrors.parent_folder_id && <p className="text-sm text-red-500">{formErrors.parent_folder_id}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="description">{t('Description')}</Label>
+                                <Label htmlFor="description">{translate('Description')}</Label>
                                 <Textarea
                                     id="description"
                                     value={formData.description}
                                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                    placeholder={t('Enter folder description...')}
+                                    placeholder={translate('Enter folder description...')}
                                     rows={3}
                                     className={formErrors.description ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
@@ -275,7 +275,7 @@ export default function DocumentFolders() {
                                 {formErrors.description && <p className="text-sm text-red-500">{formErrors.description}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="status">{t('Status')}</Label>
+                                <Label htmlFor="status">{translate('Status')}</Label>
                                 <Select
                                     value={formData.status}
                                     onValueChange={(value) => setFormData({ ...formData, status: value })}
@@ -285,20 +285,20 @@ export default function DocumentFolders() {
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="active">{t('Active')}</SelectItem>
-                                        <SelectItem value="inactive">{t('Inactive')}</SelectItem>
+                                        <SelectItem value="active">{translate('Active')}</SelectItem>
+                                        <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
                             <div className="flex items-center gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
                                 {(canCreate || canEdit) && (
                                     <Button type="submit" className="flex-1">
-                                        {formMode === 'create' ? t('Add Folder') : t('Update Folder')}
+                                        {formMode === 'create' ? translate('Add Folder') : translate('Update Folder')}
                                     </Button>
                                 )}
                                 {formMode === 'edit' && (
                                     <Button type="button" variant="outline" onClick={resetForm}>
-                                        {t('Cancel')}
+                                        {translate('Cancel')}
                                     </Button>
                                 )}
                             </div>
@@ -315,7 +315,7 @@ export default function DocumentFolders() {
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
                                         type="text"
-                                        placeholder={t('Search folders...')}
+                                        placeholder={translate('Search folders...')}
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                         onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)}
@@ -323,23 +323,23 @@ export default function DocumentFolders() {
                                     />
                                 </div>
                                 <Button onClick={handleSearch} variant="default">
-                                    {t('Search')}
+                                    {translate('Search')}
                                 </Button>
                                 {hasActiveFilters() && (
                                     <Button onClick={handleResetFilters} variant="outline">
                                         <X className="mr-2 h-4 w-4" />
-                                        {t('Reset')}
+                                        {translate('Reset')}
                                     </Button>
                                 )}
                             </div>
                             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                                 <Select value={selectedParentFolder} onValueChange={setSelectedParentFolder}>
                                     <SelectTrigger>
-                                        <SelectValue placeholder={t('All Folders')} />
+                                        <SelectValue placeholder={translate('All Folders')} />
                                     </SelectTrigger>
                                     <SelectContent searchable={true}>
-                                        <SelectItem value="all">{t('All Folders')}</SelectItem>
-                                        <SelectItem value="null">{t('Root Folders')}</SelectItem>
+                                        <SelectItem value="all">{translate('All Folders')}</SelectItem>
+                                        <SelectItem value="null">{translate('Root Folders')}</SelectItem>
                                         {parentFolders.map((folder: any) => (
                                             <SelectItem key={folder.id} value={String(folder.id)}>
                                                 {folder.display_name || folder.name}
@@ -349,12 +349,12 @@ export default function DocumentFolders() {
                                 </Select>
                                 <Select value={selectedStatus} onValueChange={setSelectedStatus}>
                                     <SelectTrigger>
-                                        <SelectValue placeholder={t('All Statuses')} />
+                                        <SelectValue placeholder={translate('All Statuses')} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">{t('All Statuses')}</SelectItem>
-                                        <SelectItem value="active">{t('Active')}</SelectItem>
-                                        <SelectItem value="inactive">{t('Inactive')}</SelectItem>
+                                        <SelectItem value="all">{translate('All Statuses')}</SelectItem>
+                                        <SelectItem value="active">{translate('Active')}</SelectItem>
+                                        <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -365,9 +365,9 @@ export default function DocumentFolders() {
                         {(documentFolders?.data || []).length > 0 ? (
                             <>
                                 <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Document Folders')}</h3>
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Document Folders')}</h3>
                                     <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                        {t('Manage folders for organizing your documents.')}
+                                        {translate('Manage folders for organizing your documents.')}
                                     </p>
                                 </div>
                                 {/* Desktop Table */}
@@ -377,10 +377,10 @@ export default function DocumentFolders() {
                                             <tr className="border-t bg-[#F0F0F1] hover:bg-[#F0F0F1] dark:border-gray-900 dark:bg-gray-900">
                                                 <th
                                                     className="cursor-pointer px-4 py-3 text-left text-xs font-medium tracking-wider text-gray-500 select-none dark:text-gray-300"
-                                                    onClick={() => handleSort('name')}
+                                                    onClick={() => handleSortranslate('name')}
                                                 >
                                                     <div className="flex items-center gap-1">
-                                                        {t('Folder')}
+                                                        {translate('Folder')}
                                                         {pageFilters.sort_field === 'name' ? (
                                                             pageFilters.sort_direction === 'asc' ? (
                                                                 ' ↑'
@@ -393,13 +393,13 @@ export default function DocumentFolders() {
                                                     </div>
                                                 </th>
                                                 <th className="px-3 py-3 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">
-                                                    {t('Parent Folder')}
+                                                    {translate('Parent Folder')}
                                                 </th>
                                                 <th className="px-3 py-3 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">
-                                                    {t('Status')}
+                                                    {translate('Status')}
                                                 </th>
                                                 <th className="px-4 py-3 text-right text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">
-                                                    {t('Actions')}
+                                                    {translate('Actions')}
                                                 </th>
                                             </tr>
                                         </thead>
@@ -433,12 +433,12 @@ export default function DocumentFolders() {
                                                                                 {expandedDescriptions.has(item.id) ? (
                                                                                     <>
                                                                                         <ChevronUp className="mr-1 h-3 w-3" />
-                                                                                        {t('Show less')}
+                                                                                        {translate('Show less')}
                                                                                     </>
                                                                                 ) : (
                                                                                     <>
                                                                                         <ChevronDown className="mr-1 h-3 w-3" />
-                                                                                        {t('Show more')}
+                                                                                        {translate('Show more')}
                                                                                     </>
                                                                                 )}
                                                                             </button>
@@ -449,13 +449,13 @@ export default function DocumentFolders() {
                                                         </div>
                                                     </td>
                                                     <td className="px-3 py-4 text-sm text-gray-700 dark:text-gray-300">
-                                                        {item.parent_folder?.name || t('Root Folder')}
+                                                        {item.parent_folder?.name || translate('Root Folder')}
                                                     </td>
                                                     <td className="px-3 py-4">
                                                         <span
                                                             className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${item.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
                                                         >
-                                                            {item.status === 'active' ? t('Active') : t('Inactive')}
+                                                            {item.status === 'active' ? translate('Active') : translate('Inactive')}
                                                         </span>
                                                     </td>
                                                     <td className="px-4 py-4 text-right whitespace-nowrap">
@@ -473,7 +473,7 @@ export default function DocumentFolders() {
                                                                                 <Edit className="h-4 w-4" />
                                                                             </Button>
                                                                         </TooltipTrigger>
-                                                                        <TooltipContent>{t('Edit')}</TooltipContent>
+                                                                        <TooltipContent>{translate('Edit')}</TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>
                                                             )}
@@ -491,7 +491,7 @@ export default function DocumentFolders() {
                                                                             </Button>
                                                                         </TooltipTrigger>
                                                                         <TooltipContent>
-                                                                            {item.status === 'active' ? t('Deactivate') : t('Activate')}
+                                                                            {item.status === 'active' ? translate('Deactivate') : translate('Activate')}
                                                                         </TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>
@@ -509,7 +509,7 @@ export default function DocumentFolders() {
                                                                                 <Trash2 className="h-4 w-4" />
                                                                             </Button>
                                                                         </TooltipTrigger>
-                                                                        <TooltipContent>{t('Delete')}</TooltipContent>
+                                                                        <TooltipContent>{translate('Delete')}</TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>
                                                             )}
@@ -553,12 +553,12 @@ export default function DocumentFolders() {
                                                                         {expandedDescriptions.has(item.id) ? (
                                                                             <>
                                                                                 <ChevronUp className="mr-1 h-3 w-3" />
-                                                                                {t('Show less')}
+                                                                                {translate('Show less')}
                                                                             </>
                                                                         ) : (
                                                                             <>
                                                                                 <ChevronDown className="mr-1 h-3 w-3" />
-                                                                                {t('Show more')}
+                                                                                {translate('Show more')}
                                                                             </>
                                                                         )}
                                                                     </button>
@@ -581,7 +581,7 @@ export default function DocumentFolders() {
                                                                         <Edit className="h-4 w-4" />
                                                                     </Button>
                                                                 </TooltipTrigger>
-                                                                <TooltipContent>{t('Edit')}</TooltipContent>
+                                                                <TooltipContent>{translate('Edit')}</TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}
@@ -599,7 +599,7 @@ export default function DocumentFolders() {
                                                                     </Button>
                                                                 </TooltipTrigger>
                                                                 <TooltipContent>
-                                                                    {item.status === 'active' ? t('Deactivate') : t('Activate')}
+                                                                    {item.status === 'active' ? translate('Deactivate') : translate('Activate')}
                                                                 </TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
@@ -617,7 +617,7 @@ export default function DocumentFolders() {
                                                                         <Trash2 className="h-4 w-4" />
                                                                     </Button>
                                                                 </TooltipTrigger>
-                                                                <TooltipContent>{t('Delete')}</TooltipContent>
+                                                                <TooltipContent>{translate('Delete')}</TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}
@@ -625,17 +625,17 @@ export default function DocumentFolders() {
                                             </div>
                                             <div className="mt-3 grid grid-cols-2 gap-4 border-t border-gray-100 pt-3 dark:border-gray-700">
                                                 <div>
-                                                    <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">{t('Parent Folder')}</p>
+                                                    <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">{translate('Parent Folder')}</p>
                                                     <span className="text-sm text-gray-900 dark:text-white">
-                                                        {item.parent_folder?.name || t('Root Folder')}
+                                                        {item.parent_folder?.name || translate('Root Folder')}
                                                     </span>
                                                 </div>
                                                 <div>
-                                                    <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">{t('Status')}</p>
+                                                    <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">{translate('Status')}</p>
                                                     <span
                                                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${item.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
                                                     >
-                                                        {item.status === 'active' ? t('Active') : t('Inactive')}
+                                                        {item.status === 'active' ? translate('Active') : translate('Inactive')}
                                                     </span>
                                                 </div>
                                             </div>
@@ -649,7 +649,7 @@ export default function DocumentFolders() {
                                             to={documentFolders?.to || 0}
                                             total={documentFolders?.total || 0}
                                             links={documentFolders?.links}
-                                            entityName={t('document folders')}
+                                            entityName={translate('document folders')}
                                             onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
                                         />
                                     </div>
@@ -660,15 +660,15 @@ export default function DocumentFolders() {
                                 <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700">
                                     <Folder className="h-8 w-8 text-gray-400" />
                                 </div>
-                                <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{t('No document folders found')}</h3>
+                                <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{translate('No document folders found')}</h3>
                                 <p className="mx-auto mb-6 max-w-sm text-gray-500 dark:text-gray-400">
                                     {hasActiveFilters()
-                                        ? t('No folders match your search criteria. Try adjusting your filters.')
-                                        : t('Create folders to organize your documents.')}
+                                        ? translate('No folders match your search criteria. Try adjusting your filters.')
+                                        : translate('Create folders to organize your documents.')}
                                 </p>
                                 {!hasActiveFilters() && canCreate && (
                                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                                        {t('Use the form on the left to add your first folder.')}
+                                        {translate('Use the form on the left to add your first folder.')}
                                     </p>
                                 )}
                             </div>
@@ -681,7 +681,7 @@ export default function DocumentFolders() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={t('document folder')}
+                entityName={translate('document folder')}
             />
         </PageTemplate>
     );

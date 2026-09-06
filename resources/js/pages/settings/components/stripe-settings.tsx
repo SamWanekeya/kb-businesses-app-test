@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function StripeSettings() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     // Stripe Settings form state
     const [stripeSettings, setStripeSettings] = useState({
         enabled: false,
@@ -41,12 +41,12 @@ export default function StripeSettings() {
 
     return (
         <SettingsSection
-            title={t('Stripe Payment Settings')}
-            description={t('Configure Stripe payment gateway integration for online payments')}
+            title={translate('Stripe Payment Settings')}
+            description={translate('Configure Stripe payment gateway integration for online payments')}
             action={
                 <Button type="submit" form="stripe-settings-form" size="sm" className="max-[1300px]:px-2.5">
                     <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                    <span className="max-[1300px]:hidden">{t('Save Changes')}</span>
+                    <span className="max-[1300px]:hidden">{translate('Save Changes')}</span>
                 </Button>
             }
         >
@@ -57,9 +57,9 @@ export default function StripeSettings() {
                             <CreditCard className="text-primary mt-0.5 h-5 w-5" />
                             <div>
                                 <Label htmlFor="stripeEnabled" className="text-base font-medium">
-                                    {t('Stripe Payment Gateway')}
+                                    {translate('Stripe Payment Gateway')}
                                 </Label>
-                                <p className="text-muted-foreground mt-1 text-sm">{t('Enable or disable Stripe payment processing')}</p>
+                                <p className="text-muted-foreground mt-1 text-sm">{translate('Enable or disable Stripe payment processing')}</p>
                             </div>
                         </div>
                         <Switch
@@ -73,9 +73,9 @@ export default function StripeSettings() {
                         <Alert variant="info" className="mb-6">
                             <AlertCircle className="h-4 w-4" />
                             <AlertDescription>
-                                {t('You need to set up a Stripe account and obtain API keys before enabling this integration.')}
+                                {translate('You need to set up a Stripe account and obtain API keys before enabling this integration.')}
                                 <a href="https://dashboard.stripe.com/apikeys" target="_blank" rel="noopener noreferrer" className="ml-1 underline">
-                                    {t('Get your API keys')}
+                                    {translate('Get your API keys')}
                                 </a>
                             </AlertDescription>
                         </Alert>
@@ -83,9 +83,9 @@ export default function StripeSettings() {
                         <div className="flex items-center justify-between rounded-md border p-4">
                             <div>
                                 <Label htmlFor="testMode" className="font-medium">
-                                    {t('Test Mode')}
+                                    {translate('Test Mode')}
                                 </Label>
-                                <p className="text-muted-foreground mt-1 text-xs">{t('Use Stripe test environment for development')}</p>
+                                <p className="text-muted-foreground mt-1 text-xs">{translate('Use Stripe test environment for development')}</p>
                             </div>
                             <Switch
                                 id="testMode"
@@ -108,7 +108,7 @@ export default function StripeSettings() {
                                             </TooltipTrigger>
                                             <TooltipContent>
                                                 <p>
-                                                    {t('Starts with')} {stripeSettings.testMode ? 'pk_test_' : 'pk_live_'}
+                                                    {translate('Starts with')} {stripeSettings.testMode ? 'pk_test_' : 'pk_live_'}
                                                 </p>
                                             </TooltipContent>
                                         </Tooltip>
@@ -136,7 +136,7 @@ export default function StripeSettings() {
                                             </TooltipTrigger>
                                             <TooltipContent>
                                                 <p>
-                                                    {t('Starts with')} {stripeSettings.testMode ? 'sk_test_' : 'sk_live_'}
+                                                    {translate('Starts with')} {stripeSettings.testMode ? 'sk_test_' : 'sk_live_'}
                                                 </p>
                                             </TooltipContent>
                                         </Tooltip>
@@ -168,7 +168,7 @@ export default function StripeSettings() {
                             <div className="space-y-1.5">
                                 <div className="flex items-center gap-2">
                                     <Label htmlFor="webhookSecret" className="font-medium">
-                                        {t('Webhook Signing Secret')}
+                                        {translate('Webhook Signing Secret')}
                                     </Label>
                                     <TooltipProvider>
                                         <Tooltip>
@@ -176,7 +176,7 @@ export default function StripeSettings() {
                                                 <AlertCircle className="text-muted-foreground h-4 w-4" />
                                             </TooltipTrigger>
                                             <TooltipContent>
-                                                <p>{t('Starts with whsec_')}</p>
+                                                <p>{translate('Starts with whsec_')}</p>
                                             </TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
@@ -187,7 +187,7 @@ export default function StripeSettings() {
                                         type={showWebhookSecret ? 'text' : 'password'}
                                         value={stripeSettings.webhookSecret}
                                         onChange={(e) => handleStripeSettingsChange('webhookSecret', e.target.value)}
-                                        placeholder={t('whsec_...')}
+                                        placeholder={translate('whsec_...')}
                                         className="pr-10 font-mono text-sm"
                                         disabled={!stripeSettings.enabled}
                                     />
@@ -202,20 +202,20 @@ export default function StripeSettings() {
                                         {showWebhookSecret ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                     </Button>
                                 </div>
-                                <p className="text-muted-foreground mt-1 text-xs">{t('Used to verify webhook events sent by Stripe')}</p>
+                                <p className="text-muted-foreground mt-1 text-xs">{translate('Used to verify webhook events sent by Stripe')}</p>
                             </div>
                         </div>
 
                         <div className="bg-muted/30 rounded-md border p-4">
-                            <h4 className="mb-2 text-sm font-medium">{t('Webhook Configuration')}</h4>
+                            <h4 className="mb-2 text-sm font-medium">{translate('Webhook Configuration')}</h4>
                             <p className="text-muted-foreground mb-2 text-sm">
-                                {t('Set up a webhook in your Stripe dashboard to receive event notifications')}:
+                                {translate('Set up a webhook in your Stripe dashboard to receive event notifications')}:
                             </p>
                             <div className="bg-muted mb-2 rounded border p-2 font-mono text-xs break-all">
                                 {window.location.origin}/api/webhooks/stripe
                             </div>
                             <p className="text-muted-foreground text-xs">
-                                {t('Required events: payment_intent.succeeded, payment_intent.payment_failed, checkout.session.completed')}
+                                {translate('Required events: payment_intent.succeeded, payment_intent.payment_failed, checkout.session.completed')}
                             </p>
                         </div>
                     </div>

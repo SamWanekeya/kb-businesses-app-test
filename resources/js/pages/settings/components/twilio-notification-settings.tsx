@@ -17,7 +17,7 @@ interface NotificationItem {
 }
 
 export default function TwilioNotificationSettings() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [notifications, setNotifications] = useState<Record<string, boolean>>({});
     const [availableNotifications, setAvailableNotifications] = useState<NotificationItem[]>([]);
     const [twilioSettings, setTwilioSettings] = useState({
@@ -78,7 +78,7 @@ export default function TwilioNotificationSettings() {
             ...twilioSettings,
         };
 
-        toast.loading(t('Saving twilio settings...'));
+        toast.loading(translate('Saving twilio settings...'));
 
         router.post(route('settings.twilio-notifications.update'), data, {
             preserveScroll: true,
@@ -106,13 +106,13 @@ export default function TwilioNotificationSettings() {
     const handleTestSMS = (e: React.FormEvent) => {
         e.preventDefault();
         if (!testPhone) {
-            toast.error(t('Please enter a phone number'));
+            toast.error(translate('Please enter a phone number'));
             return;
         }
 
         setIsSendingSMS(true);
         setTestSMSResult(null);
-        toast.loading(t('Sending test SMS...'));
+        toast.loading(translate('Sending test SMS...'));
 
         router.post(
             route('settings.sms.test'),
@@ -132,7 +132,7 @@ export default function TwilioNotificationSettings() {
                         toast.error(errorMessage);
                         setTestSMSResult({ success: false, message: errorMessage });
                     } else {
-                        const message = t('Test SMS sent successfully to {{phone}}', { phone: testPhone });
+                        const message = translate('Test SMS sent successfully to {{phone}}', { phone: testPhone });
                         toast.success(message);
                         setTestSMSResult({ success: true, message });
                     }
@@ -145,7 +145,7 @@ export default function TwilioNotificationSettings() {
                 onError: (errors) => {
                     setIsSendingSMS(false);
                     toast.dismiss();
-                    const errorMessage = errors.error || Object.values(errors).join(', ') || t('Failed to send test SMS');
+                    const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to send test SMS');
                     toast.error(errorMessage);
                     setTestSMSResult({ success: false, message: errorMessage });
 
@@ -160,12 +160,12 @@ export default function TwilioNotificationSettings() {
 
     return (
         <SettingsSection
-            title={t('Twilio Settings')}
-            description={t('Configure Twilio settings for SMS notifications and communications')}
+            title={translate('Twilio Settings')}
+            description={translate('Configure Twilio settings for SMS notifications and communications')}
             action={
                 <Button onClick={handleSave} disabled={processing} size="sm" className="max-[1300px]:px-2.5">
                     <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                    <span className="max-[1300px]:hidden">{processing ? t('Saving...') : t('Save Changes')}</span>
+                    <span className="max-[1300px]:hidden">{processing ? translate('Saving...') : translate('Save Changes')}</span>
                 </Button>
             }
         >
@@ -179,7 +179,7 @@ export default function TwilioNotificationSettings() {
                                 <div>
                                     <Label className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-700">
                                         <Key className="h-4 w-4" />
-                                        {t('Account SID')}
+                                        {translate('Account SID')}
                                     </Label>
                                     <Input
                                         value={twilioSettings.twilio_sid}
@@ -191,7 +191,7 @@ export default function TwilioNotificationSettings() {
                                 <div>
                                     <Label className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-700">
                                         <Key className="h-4 w-4" />
-                                        {t('Auth Token')}
+                                        {translate('Auth Token')}
                                     </Label>
                                     <Input
                                         type="password"
@@ -204,7 +204,7 @@ export default function TwilioNotificationSettings() {
                                 <div>
                                     <Label className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-700">
                                         <Phone className="h-4 w-4" />
-                                        {t('From Phone Number')}
+                                        {translate('From Phone Number')}
                                     </Label>
                                     <Input
                                         value={twilioSettings.twilio_from}
@@ -218,7 +218,7 @@ export default function TwilioNotificationSettings() {
                             {/* SMS Notification Settings */}
                             <div className="my-6 flex items-center gap-2">
                                 <Bell className="h-5 w-5 text-emerald-500" />
-                                <h3 className="font-medium text-gray-900">{t('Twilio Notification Settings')}</h3>
+                                <h3 className="font-medium text-gray-900">{translate('Twilio Notification Settings')}</h3>
                             </div>
                             {availableNotifications.length > 0 ? (
                                 <div className="grid grid-cols-1 gap-4 min-[1300px]:grid-cols-2">
@@ -236,7 +236,7 @@ export default function TwilioNotificationSettings() {
                                     ))}
                                 </div>
                             ) : (
-                                <div className="py-8 text-center text-gray-500">{t('No notification template available')}</div>
+                                <div className="py-8 text-center text-gray-500">{translate('No notification template available')}</div>
                             )}
                         </div>
                     </div>
@@ -245,11 +245,11 @@ export default function TwilioNotificationSettings() {
                     <div className="h-fit rounded-lg border border-gray-200 bg-white p-6 min-[1600px]:col-span-1">
                         <div className="mb-4 flex items-center gap-2">
                             <Send className="h-4 w-4 text-emerald-500" />
-                            <h3 className="font-medium text-gray-900">{t('Test Twilio Configuration')}</h3>
+                            <h3 className="font-medium text-gray-900">{translate('Test Twilio Configuration')}</h3>
                         </div>
                         <form onSubmit={handleTestSMS} className="space-y-4">
                             <div>
-                                <Label className="block text-sm font-medium text-gray-700">{t('Send Test To')}</Label>
+                                <Label className="block text-sm font-medium text-gray-700">{translate('Send Test To')}</Label>
                                 <Input
                                     value={testPhone}
                                     onChange={(e) => setTestPhone(e.target.value)}
@@ -258,7 +258,7 @@ export default function TwilioNotificationSettings() {
                                     required
                                 />
                                 <p className="mt-1 text-xs text-gray-500">
-                                    {t('Enter a phone number with country code')} {t('e.g., +1234567890')}
+                                    {translate('Enter a phone number with country code')} {translate('e.g., +1234567890')}
                                 </p>
                             </div>
 
@@ -270,12 +270,12 @@ export default function TwilioNotificationSettings() {
                                 {isSendingSMS ? (
                                     <>
                                         <span className="mr-2 animate-spin">◌</span>
-                                        {t('Sending...')}
+                                        {translate('Sending...')}
                                     </>
                                 ) : (
                                     <>
                                         <Send className="mr-2 h-4 w-4" />
-                                        {t('Send Test SMS')}
+                                        {translate('Send Test SMS')}
                                     </>
                                 )}
                             </Button>
@@ -284,18 +284,18 @@ export default function TwilioNotificationSettings() {
                         <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-6">
                             <div className="mb-2 flex items-center gap-2">
                                 <MessageSquare className="h-5 w-5 text-blue-600" />
-                                <h3 className="font-medium text-blue-900">{t('Twilio Setup Instructions')}</h3>
+                                <h3 className="font-medium text-blue-900">{translate('Twilio Setup Instructions')}</h3>
                             </div>
                             <ol className="space-y-2 text-xs text-blue-800">
                                 <li>
-                                    {t('1. Sign up for a Twilio account at')}{' '}
+                                    {translate('1. Sign up for a Twilio account at')}{' '}
                                     <span className="text-blue-600 underline">
                                         <a href="https://www.twilio.com">twilio.com</a>{' '}
                                     </span>
                                 </li>
-                                <li>{t('2. Get your Account SID and Auth Token from the Twilio Console')}</li>
-                                <li>{t('3. Purchase a phone number or use a trial number')}</li>
-                                <li>{t('4. Enter your credentials and admin phone number')}</li>
+                                <li>{translate('2. Get your Account SID and Auth Token from the Twilio Console')}</li>
+                                <li>{translate('3. Purchase a phone number or use a trial number')}</li>
+                                <li>{translate('4. Enter your credentials and admin phone number')}</li>
                             </ol>
                         </div>
                     </div>

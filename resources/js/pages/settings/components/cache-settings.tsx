@@ -13,7 +13,7 @@ interface CacheSettingsProps {
 }
 
 export default function CacheSettings({ cacheSize = '0.00' }: CacheSettingsProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isClearing, setIsClearing] = useState(false);
 
     // Handle cache clear
@@ -36,7 +36,7 @@ export default function CacheSettings({ cacheSize = '0.00' }: CacheSettingsProps
                     }
                 },
                 onError: (errors) => {
-                    const errorMessage = errors.error || Object.values(errors).join(', ') || t('Failed to clear cache');
+                    const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to clear cache');
                     toast.error(errorMessage);
                 },
                 onFinish: () => {
@@ -47,7 +47,7 @@ export default function CacheSettings({ cacheSize = '0.00' }: CacheSettingsProps
     };
 
     return (
-        <SettingsSection title={t('Cache Settings')} description={t('Manage application cache to improve performance')}>
+        <SettingsSection title={translate('Cache Settings')} description={translate('Manage application cache to improve performance')}>
             <Card>
                 <CardContent className="mt-6">
                     <div className="space-y-6">
@@ -60,9 +60,9 @@ export default function CacheSettings({ cacheSize = '0.00' }: CacheSettingsProps
                             <div className="flex items-center space-x-3">
                                 <HardDrive className="text-muted-foreground h-5 w-5" />
                                 <div>
-                                    <h4 className="font-medium">{t('Current Cache Size')}</h4>
+                                    <h4 className="font-medium">{translate('Current Cache Size')}</h4>
                                     <p className="text-muted-foreground text-sm">
-                                        {cacheSize} MB {t('of cached data')}
+                                        {cacheSize} MB {translate('of cached data')}
                                     </p>
                                 </div>
                             </div>
@@ -77,23 +77,23 @@ export default function CacheSettings({ cacheSize = '0.00' }: CacheSettingsProps
                                             className="max-[1300px]:px-2.5"
                                         >
                                             <Trash2 className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                                            <span className="max-[1300px]:hidden">{isClearing ? t('Clearing...') : t('Clear Cache')}</span>
+                                            <span className="max-[1300px]:hidden">{isClearing ? translate('Clearing...') : translate('Clear Cache')}</span>
                                         </Button>
                                     </TooltipTrigger>
                                     <TooltipContent>
-                                        <p>{t('Clear Cache')}</p>
+                                        <p>{translate('Clear Cache')}</p>
                                     </TooltipContent>
                                 </Tooltip>
                             </TooltipProvider>
                         </div>
 
                         <div className="text-muted-foreground text-sm">
-                            <p>{t('Clearing cache will remove')}:</p>
+                            <p>{translate('Clearing cache will remove')}:</p>
                             <ul className="mt-2 list-inside list-disc space-y-1">
-                                <li>{t('Application cache')}</li>
-                                <li>{t('Route cache')}</li>
-                                <li>{t('View cache')}</li>
-                                <li>{t('Configuration cache')}</li>
+                                <li>{translate('Application cache')}</li>
+                                <li>{translate('Route cache')}</li>
+                                <li>{translate('View cache')}</li>
+                                <li>{translate('Configuration cache')}</li>
                             </ul>
                         </div>
                     </div>

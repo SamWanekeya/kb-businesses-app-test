@@ -17,7 +17,7 @@ interface NotificationItem {
 }
 
 export default function SlackNotificationSettings() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [notifications, setNotifications] = useState<Record<string, boolean>>({});
     const [availableNotifications, setAvailableNotifications] = useState<NotificationItem[]>([]);
     const [slackWebhookUrl, setSlackWebhookUrl] = useState('');
@@ -68,7 +68,7 @@ export default function SlackNotificationSettings() {
             slack_webhook_url: slackWebhookUrl,
         };
 
-        toast.loading(t('Saving slack settings...'));
+        toast.loading(translate('Saving slack settings...'));
 
         router.post(route('settings.slack-notifications.update'), data, {
             preserveScroll: true,
@@ -100,7 +100,7 @@ export default function SlackNotificationSettings() {
 
         setIsSendingMessage(true);
         setTestMessageResult(null);
-        toast.loading(t('Sending test message...'));
+        toast.loading(translate('Sending test message...'));
 
         router.post(
             route('settings.slack.test'),
@@ -120,7 +120,7 @@ export default function SlackNotificationSettings() {
                         toast.error(errorMessage);
                         setTestMessageResult({ success: false, message: errorMessage });
                     } else {
-                        const message = t('Test message sent successfully');
+                        const message = translate('Test message sent successfully');
                         toast.success(message);
                         setTestMessageResult({ success: true, message });
                     }
@@ -132,7 +132,7 @@ export default function SlackNotificationSettings() {
                 onError: (errors) => {
                     setIsSendingMessage(false);
                     toast.dismiss();
-                    const errorMessage = errors.error || Object.values(errors).join(', ') || t('Failed to send test message');
+                    const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to send test message');
                     toast.error(errorMessage);
                     setTestMessageResult({ success: false, message: errorMessage });
 
@@ -146,12 +146,12 @@ export default function SlackNotificationSettings() {
 
     return (
         <SettingsSection
-            title={t('Slack Settings')}
-            description={t('Configure Slack settings for notifications and communications')}
+            title={translate('Slack Settings')}
+            description={translate('Configure Slack settings for notifications and communications')}
             action={
                 <Button onClick={handleSave} disabled={processing} size="sm" className="max-[1300px]:px-2.5">
                     <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                    <span className="max-[1300px]:hidden">{processing ? t('Saving...') : t('Save Changes')}</span>
+                    <span className="max-[1300px]:hidden">{processing ? translate('Saving...') : translate('Save Changes')}</span>
                 </Button>
             }
         >
@@ -165,7 +165,7 @@ export default function SlackNotificationSettings() {
                                 <div>
                                     <Label className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-700">
                                         <Link className="h-4 w-4" />
-                                        {t('Webhook URL')}
+                                        {translate('Webhook URL')}
                                     </Label>
                                     <Input
                                         value={slackWebhookUrl}
@@ -180,7 +180,7 @@ export default function SlackNotificationSettings() {
                             {/* Slack Notification Settings */}
                             <div className="my-6 flex items-center gap-2">
                                 <Bell className="h-5 w-5 text-emerald-500" />
-                                <h3 className="font-medium text-gray-900">{t('Slack Notification Settings')}</h3>
+                                <h3 className="font-medium text-gray-900">{translate('Slack Notification Settings')}</h3>
                             </div>
                             {availableNotifications.length > 0 ? (
                                 <div className="grid grid-cols-1 gap-4 min-[1300px]:grid-cols-2">
@@ -198,7 +198,7 @@ export default function SlackNotificationSettings() {
                                     ))}
                                 </div>
                             ) : (
-                                <div className="py-8 text-center text-gray-500">{t('No notification template available')}</div>
+                                <div className="py-8 text-center text-gray-500">{translate('No notification template available')}</div>
                             )}
                         </div>
                     </div>
@@ -207,10 +207,10 @@ export default function SlackNotificationSettings() {
                     <div className="h-fit rounded-lg border border-gray-200 bg-white p-6 min-[1600px]:col-span-1">
                         <div className="mb-4 flex items-center gap-2">
                             <Send className="h-4 w-4 text-emerald-500" />
-                            <h3 className="font-medium text-gray-900">{t('Test Slack Configuration')}</h3>
+                            <h3 className="font-medium text-gray-900">{translate('Test Slack Configuration')}</h3>
                         </div>
                         <form onSubmit={handleTestMessage} className="space-y-4">
-                            <p className="text-xs text-gray-600">{t('Send a test message to verify your slack webhook.')}</p>
+                            <p className="text-xs text-gray-600">{translate('Send a test message to verify your slack webhook.')}</p>
 
                             <Button
                                 type="submit"
@@ -220,12 +220,12 @@ export default function SlackNotificationSettings() {
                                 {isSendingMessage ? (
                                     <>
                                         <span className="mr-2 animate-spin">◌</span>
-                                        {t('Sending...')}
+                                        {translate('Sending...')}
                                     </>
                                 ) : (
                                     <>
                                         <Send className="mr-2 h-4 w-4" />
-                                        {t('Send Test Message')}
+                                        {translate('Send Test Message')}
                                     </>
                                 )}
                             </Button>
@@ -234,14 +234,14 @@ export default function SlackNotificationSettings() {
                         <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-6">
                             <div className="mb-2 flex items-center gap-2">
                                 <Slack className="h-4 w-4 text-blue-600" />
-                                <h3 className="text-sm font-medium text-blue-900">{t('Slack Setup Instructions')}</h3>
+                                <h3 className="text-sm font-medium text-blue-900">{translate('Slack Setup Instructions')}</h3>
                             </div>
                             <ol className="space-y-2 text-xs text-blue-800">
-                                <li>{t('1. Go to your Slack workspace')}</li>
-                                <li>{t('2. Create a new Slack app')}</li>
-                                <li>{t('3. Enable Incoming Webhooks')}</li>
-                                <li>{t('4. Add webhook to workspace')}</li>
-                                <li>{t('5. Copy the webhook URL here')}</li>
+                                <li>{translate('1. Go to your Slack workspace')}</li>
+                                <li>{translate('2. Create a new Slack app')}</li>
+                                <li>{translate('3. Enable Incoming Webhooks')}</li>
+                                <li>{translate('4. Add webhook to workspace')}</li>
+                                <li>{translate('5. Copy the webhook URL here')}</li>
                             </ol>
                         </div>
                     </div>

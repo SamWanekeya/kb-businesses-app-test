@@ -21,7 +21,7 @@ type ProductRow = {
 };
 
 export default function QuoteEdit() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const {
         quote,
         accounts = [],
@@ -66,9 +66,9 @@ export default function QuoteEdit() {
     });
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Quotes'), href: route('quotes.index') },
-        { title: t('Edit') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Quotes'), href: route('quotes.index') },
+        { title: translate('Edit') },
     ];
 
     const set = (name: string, value: string) => {
@@ -77,7 +77,7 @@ export default function QuoteEdit() {
     };
 
     const handleOpportunityChange = async (opportunityId: string) => {
-        set('opportunity_id', opportunityId);
+        setranslate('opportunity_id', opportunityId);
         if (!opportunityId) return;
         try {
             const res = await fetch(route('api.opportunities.details', opportunityId));
@@ -121,7 +121,7 @@ export default function QuoteEdit() {
             shipping_country: prev.billing_country,
         }));
         setSameAsBilling(true);
-        toast.success(t('Billing address copied to shipping'));
+        toast.success(translate('Billing address copied to shipping'));
     };
 
     const addProductRow = () =>
@@ -181,25 +181,25 @@ export default function QuoteEdit() {
         e.preventDefault();
         const errs: Record<string, string> = {};
 
-        if (!data.name) errs.name = t('Quote Name is required');
-        if (!data.opportunity_id) errs.opportunity_id = t('Opportunity is required');
-        if (!data.account_id) errs.account_id = t('Account is required');
-        if (!data.billing_contact_id) errs.billing_contact_id = t('Billing Contact is required');
-        if (!data.shipping_contact_id) errs.shipping_contact_id = t('Shipping Contact is required');
-        if (!data.shipping_provider_type_id) errs.shipping_provider_type_id = t('Shipping Provider is required');
-        if (!data.assigned_to) errs.assigned_to = t('Assign To is required');
-        if (!data.billing_address) errs.billing_address = t('Billing Address is required');
-        if (!data.billing_city) errs.billing_city = t('Billing City is required');
-        if (!data.billing_state) errs.billing_state = t('Billing State is required');
-        if (!data.billing_postal_code) errs.billing_postal_code = t('Billing Postal Code is required');
-        if (!data.billing_country) errs.billing_country = t('Billing Country is required');
+        if (!data.name) errs.name = translate('Quote Name is required');
+        if (!data.opportunity_id) errs.opportunity_id = translate('Opportunity is required');
+        if (!data.account_id) errs.account_id = translate('Account is required');
+        if (!data.billing_contact_id) errs.billing_contact_id = translate('Billing Contact is required');
+        if (!data.shipping_contact_id) errs.shipping_contact_id = translate('Shipping Contact is required');
+        if (!data.shipping_provider_type_id) errs.shipping_provider_type_id = translate('Shipping Provider is required');
+        if (!data.assigned_to) errs.assigned_to = translate('Assign To is required');
+        if (!data.billing_address) errs.billing_address = translate('Billing Address is required');
+        if (!data.billing_city) errs.billing_city = translate('Billing City is required');
+        if (!data.billing_state) errs.billing_state = translate('Billing State is required');
+        if (!data.billing_postal_code) errs.billing_postal_code = translate('Billing Postal Code is required');
+        if (!data.billing_country) errs.billing_country = translate('Billing Country is required');
 
-        if (!data.products.length || data.products.every((r: any) => !r.product_id)) errs.products = t('At least one product is required');
+        if (!data.products.length || data.products.every((r: any) => !r.product_id)) errs.products = translate('At least one product is required');
 
         data.products.forEach((row, i) => {
-            if (!row.product_id) errs[`products.${i}.product_id`] = t('Product is required');
-            if (row.product_id && (!row.quantity || parseFloat(row.quantity) < 1)) errs[`products.${i}.quantity`] = t('Min 1');
-            if (row.product_id && (row.unit_price === '' || parseFloat(row.unit_price) < 0)) errs[`products.${i}.unit_price`] = t('Required');
+            if (!row.product_id) errs[`products.${i}.product_id`] = translate('Product is required');
+            if (row.product_id && (!row.quantity || parseFloat(row.quantity) < 1)) errs[`products.${i}.quantity`] = translate('Min 1');
+            if (row.product_id && (row.unit_price === '' || parseFloat(row.unit_price) < 0)) errs[`products.${i}.unit_price`] = translate('Required');
         });
 
         if (Object.keys(errs).length > 0) {
@@ -207,7 +207,7 @@ export default function QuoteEdit() {
             return;
         }
 
-        toast.loading(t('Updating quote...'));
+        toast.loading(translate('Updating quote...'));
         put(route('quotes.update', quote.id), {
             onSuccess: () => toast.dismiss(),
             onError: () => toast.dismiss(),
@@ -216,13 +216,13 @@ export default function QuoteEdit() {
 
     return (
         <PageTemplate
-            title={t('Edit Quote')}
-            description={t('Update quote details and related information')}
+            title={translate('Edit Quote')}
+            description={translate('Update quote details and related information')}
             breadcrumbs={breadcrumbs}
             fullWidth
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => router.visit(route('quotes.index')),
@@ -234,29 +234,29 @@ export default function QuoteEdit() {
                 {/* Quote Details */}
                 <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
-                        <CardTitle className="text-base font-semibold">{t('Quote Details')}</CardTitle>
+                        <CardTitle className="text-base font-semibold">{translate('Quote Details')}</CardTitle>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-2 lg:grid-cols-3">
                         <div className="space-y-1 md:col-span-2 lg:col-span-3">
                             <Label className="text-sm font-medium" required>
-                                {t('Quote Name')}
+                                {translate('Quote Name')}
                             </Label>
                             <Input
                                 value={data.name}
-                                onChange={(e) => set('name', e.target.value)}
+                                onChange={(e) => setranslate('name', e.target.value)}
                                 className={errors.name ? 'border-red-500' : ''}
-                                placeholder={t('e.g. Annual Software License Quote')}
+                                placeholder={translate('e.g. Annual Software License Quote')}
                             />
                             {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
                         </div>
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium" required>
-                                {t('Opportunity')}
+                                {translate('Opportunity')}
                             </Label>
                             <Select value={data.opportunity_id} onValueChange={handleOpportunityChange}>
                                 <SelectTrigger className={errors.opportunity_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select opportunity')} />
+                                    <SelectValue placeholder={translate('Select opportunity')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {opportunities.map((o: any) => (
@@ -271,11 +271,11 @@ export default function QuoteEdit() {
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium" required>
-                                {t('Account')}
+                                {translate('Account')}
                             </Label>
-                            <Select value={data.account_id} onValueChange={(v) => set('account_id', v)}>
+                            <Select value={data.account_id} onValueChange={(v) => setranslate('account_id', v)}>
                                 <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select account')} />
+                                    <SelectValue placeholder={translate('Select account')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {accounts.map((a: any) => (
@@ -290,11 +290,11 @@ export default function QuoteEdit() {
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium" required>
-                                {t('Billing Contact')}
+                                {translate('Billing Contact')}
                             </Label>
-                            <Select value={data.billing_contact_id} onValueChange={(v) => set('billing_contact_id', v)}>
+                            <Select value={data.billing_contact_id} onValueChange={(v) => setranslate('billing_contact_id', v)}>
                                 <SelectTrigger className={errors.billing_contact_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select billing contact')} />
+                                    <SelectValue placeholder={translate('Select billing contact')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {contacts.map((c: any) => (
@@ -309,11 +309,11 @@ export default function QuoteEdit() {
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium" required>
-                                {t('Shipping Contact')}
+                                {translate('Shipping Contact')}
                             </Label>
-                            <Select value={data.shipping_contact_id} onValueChange={(v) => set('shipping_contact_id', v)}>
+                            <Select value={data.shipping_contact_id} onValueChange={(v) => setranslate('shipping_contact_id', v)}>
                                 <SelectTrigger className={errors.shipping_contact_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select shipping contact')} />
+                                    <SelectValue placeholder={translate('Select shipping contact')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {contacts.map((c: any) => (
@@ -328,11 +328,11 @@ export default function QuoteEdit() {
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium" required>
-                                {t('Shipping Provider')}
+                                {translate('Shipping Provider')}
                             </Label>
-                            <Select value={data.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
+                            <Select value={data.shipping_provider_type_id} onValueChange={(v) => setranslate('shipping_provider_type_id', v)}>
                                 <SelectTrigger className={errors.shipping_provider_type_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select shipping provider')} />
+                                    <SelectValue placeholder={translate('Select shipping provider')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {shippingProviderTypes.map((s: any) => (
@@ -346,23 +346,23 @@ export default function QuoteEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium">{t('Status')}</Label>
-                            <Select value={data.status} onValueChange={(v) => set('status', v)}>
+                            <Label className="text-sm font-medium">{translate('Status')}</Label>
+                            <Select value={data.status} onValueChange={(v) => setranslate('status', v)}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="draft">{t('Draft')}</SelectItem>
-                                    <SelectItem value="sent">{t('Sent')}</SelectItem>
-                                    <SelectItem value="accepted">{t('Accepted')}</SelectItem>
-                                    <SelectItem value="rejected">{t('Rejected')}</SelectItem>
-                                    <SelectItem value="expired">{t('Expired')}</SelectItem>
+                                    <SelectItem value="draft">{translate('Draft')}</SelectItem>
+                                    <SelectItem value="sent">{translate('Sent')}</SelectItem>
+                                    <SelectItem value="accepted">{translate('Accepted')}</SelectItem>
+                                    <SelectItem value="rejected">{translate('Rejected')}</SelectItem>
+                                    <SelectItem value="expired">{translate('Expired')}</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium">{t('Valid Until')}</Label>
+                            <Label className="text-sm font-medium">{translate('Valid Until')}</Label>
                             <div
                                 className="cursor-pointer"
                                 onClick={(e) => {
@@ -377,7 +377,7 @@ export default function QuoteEdit() {
                                 <Input
                                     type="date"
                                     value={data.valid_until}
-                                    onChange={(e) => set('valid_until', e.target.value)}
+                                    onChange={(e) => setranslate('valid_until', e.target.value)}
                                     className={`cursor-pointer ${errors.valid_until ? 'border-red-500' : ''}`}
                                 />
                             </div>
@@ -386,11 +386,11 @@ export default function QuoteEdit() {
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium" required>
-                                {t('Assign To')}
+                                {translate('Assign To')}
                             </Label>
-                            <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
+                            <Select value={data.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select user')} />
+                                    <SelectValue placeholder={translate('Select user')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {users.map((u: any) => (
@@ -404,12 +404,12 @@ export default function QuoteEdit() {
                         </div>
 
                         <div className="space-y-1 md:col-span-2 lg:col-span-3">
-                            <Label className="text-sm font-medium">{t('Description')}</Label>
+                            <Label className="text-sm font-medium">{translate('Description')}</Label>
                             <Textarea
                                 value={data.description}
-                                onChange={(e) => set('description', e.target.value)}
+                                onChange={(e) => setranslate('description', e.target.value)}
                                 rows={2}
-                                placeholder={t('Brief description of this quote...')}
+                                placeholder={translate('Brief description of this quote...')}
                             />
                         </div>
                     </CardContent>
@@ -420,11 +420,11 @@ export default function QuoteEdit() {
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
                         <div className="flex items-center justify-between">
                             <CardTitle className="text-base font-semibold">
-                                {t('Products')}
+                                {translate('Products')}
                                 {errors.products && <span className="ml-2 text-xs font-normal text-red-500">{errors.products}</span>}
                             </CardTitle>
                             <Button type="button" size="sm" onClick={addProductRow}>
-                                <Plus className="mr-1 h-4 w-4" /> {t('Add Product')}
+                                <Plus className="mr-1 h-4 w-4" /> {translate('Add Product')}
                             </Button>
                         </div>
                     </CardHeader>
@@ -434,18 +434,18 @@ export default function QuoteEdit() {
                                 <thead className="hidden xl:table-header-group">
                                     <tr className="border-b bg-gray-50 text-xs font-semibold text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                                         <th className="min-w-[200px] px-4 py-3 text-left">
-                                            {t('Product')} <span className="text-red-500">*</span>
+                                            {translate('Product')} <span className="text-red-500">*</span>
                                         </th>
                                         <th className="w-24 px-4 py-3 text-left">
-                                            {t('Quantity')} <span className="text-red-500">*</span>
+                                            {translate('Quantity')} <span className="text-red-500">*</span>
                                         </th>
                                         <th className="w-32 px-4 py-3 text-left">
-                                            {t('Unit Price')} <span className="text-red-500">*</span>
+                                            {translate('Unit Price')} <span className="text-red-500">*</span>
                                         </th>
-                                        <th className="w-32 px-4 py-3 text-left">{t('Discount Type')}</th>
-                                        <th className="w-28 px-4 py-3 text-left">{t('Discount Val')}</th>
-                                        <th className="w-28 px-4 py-3 text-left">{t('Tax')}</th>
-                                        <th className="w-28 px-4 py-3 text-left">{t('Total')}</th>
+                                        <th className="w-32 px-4 py-3 text-left">{translate('Discount Type')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{translate('Discount Val')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{translate('Tax')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{translate('Total')}</th>
                                         <th className="w-12 px-4 py-3"></th>
                                     </tr>
                                 </thead>
@@ -465,11 +465,11 @@ export default function QuoteEdit() {
                                             >
                                                 <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-48 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Product')} <span className="text-red-500">*</span>
+                                                        {translate('Product')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Select value={row.product_id} onValueChange={(v) => updateProductRow(row.id, 'product_id', v)}>
                                                         <SelectTrigger className={errors[`products.${i}.product_id`] ? 'border-red-500' : ''}>
-                                                            <SelectValue placeholder={t('Select product')} />
+                                                            <SelectValue placeholder={translate('Select product')} />
                                                         </SelectTrigger>
                                                         <SelectContent searchable>
                                                             {lineProductOptions.map((p: any) => (
@@ -484,16 +484,16 @@ export default function QuoteEdit() {
                                                     )}
                                                     {i === 0 && productOptions.length === 0 && (
                                                         <p className="mt-1 text-xs">
-                                                            {t('Click here to add')}{' '}
+                                                            {translate('Click here to add')}{' '}
                                                             <a href={route('products.index')} className="font-medium underline">
-                                                                {t('Products')}
+                                                                {translate('Products')}
                                                             </a>
                                                         </p>
                                                     )}
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-24 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Quantity')} <span className="text-red-500">*</span>
+                                                        {translate('Quantity')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
                                                         type="number"
@@ -508,7 +508,7 @@ export default function QuoteEdit() {
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Unit Price')} <span className="text-red-500">*</span>
+                                                        {translate('Unit Price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
                                                         type="number"
@@ -525,7 +525,7 @@ export default function QuoteEdit() {
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Discount Type')}
+                                                        {translate('Discount Type')}
                                                     </span>
                                                     <Select
                                                         value={row.discount_type}
@@ -535,15 +535,15 @@ export default function QuoteEdit() {
                                                             <SelectValue />
                                                         </SelectTrigger>
                                                         <SelectContent>
-                                                            <SelectItem value="none">{t('None')}</SelectItem>
-                                                            <SelectItem value="percentage">{t('Percentage (%)')}</SelectItem>
-                                                            <SelectItem value="fixed">{t('Fixed Amount')}</SelectItem>
+                                                            <SelectItem value="none">{translate('None')}</SelectItem>
+                                                            <SelectItem value="percentage">{translate('Percentage (%)')}</SelectItem>
+                                                            <SelectItem value="fixed">{translate('Fixed Amount')}</SelectItem>
                                                         </SelectContent>
                                                     </Select>
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Discount Val')}
+                                                        {translate('Discount Val')}
                                                     </span>
                                                     <Input
                                                         type="number"
@@ -557,18 +557,18 @@ export default function QuoteEdit() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{t('Tax')}</span>
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{translate('Tax')}</span>
                                                     {(() => {
                                                         const p = productOptions.find((p: any) => String(p.id) === row.product_id);
                                                         return (
                                                             <span className="text-muted-foreground text-sm font-medium">
-                                                                {p?.tax ? `${p.tax.name} (${parseFloat(p.tax.rate).toFixed(2)}%)` : t('No Tax')}
+                                                                {p?.tax ? `${p.tax.name} (${parseFloat(p.tax.rate).toFixed(2)}%)` : translate('No Tax')}
                                                             </span>
                                                         );
                                                     })()}
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-mono font-medium xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{t('Total')}</span>
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{translate('Total')}</span>
                                                     <span>{fmt(total)}</span>
                                                 </td>
                                                 <td className="col-span-1 block w-full border-t px-0 py-0 pt-2 text-right sm:col-span-2 xl:table-cell xl:w-12 xl:border-t-0 xl:px-4 xl:py-3 xl:pt-0 xl:text-left">
@@ -592,19 +592,19 @@ export default function QuoteEdit() {
                         <div className="flex justify-end border-t p-4">
                             <div className="w-64 space-y-2">
                                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                                    <span>{t('Subtotal')}</span>
+                                    <span>{translate('Subtotal')}</span>
                                     <span className="font-mono font-medium">{fmt(subtotal)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-red-600">
-                                    <span>{t('Discount')}</span>
+                                    <span>{translate('Discount')}</span>
                                     <span className="font-mono font-medium">-{fmt(totalDiscount)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                                    <span>{t('Tax')}</span>
+                                    <span>{translate('Tax')}</span>
                                     <span className="font-mono font-medium">{fmt(totalTax)}</span>
                                 </div>
                                 <div className="flex justify-between border-t pt-2 text-base font-bold text-gray-900 dark:text-gray-100">
-                                    <span>{t('Grand Total')}</span>
+                                    <span>{translate('Grand Total')}</span>
                                     <span className="font-mono text-lg text-green-600">{fmt(grandTotal)}</span>
                                 </div>
                             </div>
@@ -616,9 +616,9 @@ export default function QuoteEdit() {
                 <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
                         <div className="flex items-center justify-between">
-                            <CardTitle className="text-base font-semibold">{t('Billing & Shipping Address')}</CardTitle>
+                            <CardTitle className="text-base font-semibold">{translate('Billing & Shipping Address')}</CardTitle>
                             <Button type="button" variant="outline" size="sm" onClick={copyBillingToShipping} className="text-xs">
-                                <Copy className="mr-1 h-3 w-3" /> {t('Copy Billing to Shipping')}
+                                <Copy className="mr-1 h-3 w-3" /> {translate('Copy Billing to Shipping')}
                             </Button>
                         </div>
                     </CardHeader>
@@ -626,32 +626,32 @@ export default function QuoteEdit() {
                         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                             {/* Billing */}
                             <div className="space-y-4">
-                                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">{t('Billing Address')}</h3>
+                                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">{translate('Billing Address')}</h3>
                                 <div className="space-y-1">
                                     <Label className="text-sm font-medium" required>
-                                        {t('Address')}
+                                        {translate('Address')}
                                     </Label>
                                     <Textarea
                                         value={data.billing_address}
                                         onChange={(e) => {
-                                            set('billing_address', e.target.value);
+                                            setranslate('billing_address', e.target.value);
                                             if (sameAsBilling) setData('shipping_address' as any, e.target.value);
                                         }}
                                         className={errors.billing_address ? 'border-red-500' : ''}
                                         rows={2}
-                                        placeholder={t('e.g. 123 Main Street, Suite 100')}
+                                        placeholder={translate('e.g. 123 Main Street, Suite 100')}
                                     />
                                     {errors.billing_address && <p className="text-xs text-red-500">{errors.billing_address}</p>}
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
                                         <Label className="text-sm font-medium" required>
-                                            {t('City')}
+                                            {translate('City')}
                                         </Label>
                                         <Input
                                             value={data.billing_city}
                                             onChange={(e) => {
-                                                set('billing_city', e.target.value);
+                                                setranslate('billing_city', e.target.value);
                                                 if (sameAsBilling) setData('shipping_city' as any, e.target.value);
                                             }}
                                             className={errors.billing_city ? 'border-red-500' : ''}
@@ -661,12 +661,12 @@ export default function QuoteEdit() {
                                     </div>
                                     <div className="space-y-1">
                                         <Label className="text-sm font-medium" required>
-                                            {t('State')}
+                                            {translate('State')}
                                         </Label>
                                         <Input
                                             value={data.billing_state}
                                             onChange={(e) => {
-                                                set('billing_state', e.target.value);
+                                                setranslate('billing_state', e.target.value);
                                                 if (sameAsBilling) setData('shipping_state' as any, e.target.value);
                                             }}
                                             className={errors.billing_state ? 'border-red-500' : ''}
@@ -676,12 +676,12 @@ export default function QuoteEdit() {
                                     </div>
                                     <div className="space-y-1">
                                         <Label className="text-sm font-medium" required>
-                                            {t('Country')}
+                                            {translate('Country')}
                                         </Label>
                                         <Input
                                             value={data.billing_country}
                                             onChange={(e) => {
-                                                set('billing_country', e.target.value);
+                                                setranslate('billing_country', e.target.value);
                                                 if (sameAsBilling) setData('shipping_country' as any, e.target.value);
                                             }}
                                             className={errors.billing_country ? 'border-red-500' : ''}
@@ -691,12 +691,12 @@ export default function QuoteEdit() {
                                     </div>
                                     <div className="space-y-1">
                                         <Label className="text-sm font-medium" required>
-                                            {t('Postal Code')}
+                                            {translate('Postal Code')}
                                         </Label>
                                         <Input
                                             value={data.billing_postal_code}
                                             onChange={(e) => {
-                                                set('billing_postal_code', e.target.value);
+                                                setranslate('billing_postal_code', e.target.value);
                                                 if (sameAsBilling) setData('shipping_postal_code' as any, e.target.value);
                                             }}
                                             className={errors.billing_postal_code ? 'border-red-500' : ''}
@@ -709,42 +709,42 @@ export default function QuoteEdit() {
 
                             {/* Shipping */}
                             <div className="space-y-4">
-                                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">{t('Shipping Address')}</h3>
+                                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">{translate('Shipping Address')}</h3>
                                 <div className="space-y-1">
-                                    <Label className="text-sm font-medium">{t('Address')}</Label>
+                                    <Label className="text-sm font-medium">{translate('Address')}</Label>
                                     <Textarea
                                         value={data.shipping_address}
-                                        onChange={(e) => set('shipping_address', e.target.value)}
+                                        onChange={(e) => setranslate('shipping_address', e.target.value)}
                                         rows={2}
-                                        placeholder={t('e.g. 456 Elm Street')}
+                                        placeholder={translate('e.g. 456 Elm Street')}
                                     />
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-medium">{t('City')}</Label>
+                                        <Label className="text-sm font-medium">{translate('City')}</Label>
                                         <Input
                                             value={data.shipping_city}
-                                            onChange={(e) => set('shipping_city', e.target.value)}
+                                            onChange={(e) => setranslate('shipping_city', e.target.value)}
                                             placeholder="Los Angeles"
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-medium">{t('State')}</Label>
-                                        <Input value={data.shipping_state} onChange={(e) => set('shipping_state', e.target.value)} placeholder="CA" />
+                                        <Label className="text-sm font-medium">{translate('State')}</Label>
+                                        <Input value={data.shipping_state} onChange={(e) => setranslate('shipping_state', e.target.value)} placeholder="CA" />
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-medium">{t('Country')}</Label>
+                                        <Label className="text-sm font-medium">{translate('Country')}</Label>
                                         <Input
                                             value={data.shipping_country}
-                                            onChange={(e) => set('shipping_country', e.target.value)}
+                                            onChange={(e) => setranslate('shipping_country', e.target.value)}
                                             placeholder="United States"
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-sm font-medium">{t('Postal Code')}</Label>
+                                        <Label className="text-sm font-medium">{translate('Postal Code')}</Label>
                                         <Input
                                             value={data.shipping_postal_code}
-                                            onChange={(e) => set('shipping_postal_code', e.target.value)}
+                                            onChange={(e) => setranslate('shipping_postal_code', e.target.value)}
                                             placeholder="90001"
                                         />
                                     </div>
@@ -757,10 +757,10 @@ export default function QuoteEdit() {
                 {/* Actions */}
                 <div className="flex justify-end gap-3 pb-6">
                     <Button type="button" variant="outline" onClick={() => router.visit(route('quotes.index'))}>
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     <Button type="submit" disabled={processing}>
-                        {processing ? t('Updating...') : t('Save')}
+                        {processing ? translate('Updating...') : translate('Save')}
                     </Button>
                 </div>
             </form>

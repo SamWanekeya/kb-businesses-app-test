@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function ProjectKanban() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, project, kanbanData, statuses, users = [], filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
     const isOrganization = auth?.user?.type === 'organization';
@@ -99,7 +99,7 @@ export default function ProjectKanban() {
 
     const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
-            toast.loading(t('Creating task...'));
+            toast.loading(translate('Creating task...'));
 
             const taskData = {
                 ...formData,
@@ -127,11 +127,11 @@ export default function ProjectKanban() {
             });
         } else if (formMode === 'edit') {
             if (!useHasPermission('edit-project-tasks')) {
-                toast.error(t('Permission denied.'));
+                toast.error(translate('Permission denied.'));
                 return;
             }
 
-            toast.loading(t('Updating task...'));
+            toast.loading(translate('Updating task...'));
 
             // Ensure task_status_id is properly formatted
             const updateData = {
@@ -161,7 +161,7 @@ export default function ProjectKanban() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting task...'));
+        toast.loading(translate('Deleting task...'));
 
         router.delete(route('project-tasks.destroy', currentItem.id), {
             onSuccess: (page) => {
@@ -185,7 +185,7 @@ export default function ProjectKanban() {
 
     const pageActions = [
         {
-            label: t('Back'),
+            label: translate('Back'),
             icon: <ArrowLeft className="mr-2 h-4 w-4" />,
             variant: 'outline',
             onClick: () => router.get(route('projects.show', project.id)),
@@ -193,17 +193,17 @@ export default function ProjectKanban() {
     ];
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Project Management') },
-        { title: t('Projects'), href: route('projects.index') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Project Management') },
+        { title: translate('Projects'), href: route('projects.index') },
         { title: project.name, href: route('projects.show', project.id) },
-        { title: t('Kanban View') },
+        { title: translate('Kanban View') },
     ];
 
     return (
         <PageTemplate
-            title={`${project.name} - ${t('Kanban View')}`}
-            description={t('Manage project tasks using a kanban board')}
+            title={`${project.name} - ${translate('Kanban View')}`}
+            description={translate('Manage project tasks using a kanban board')}
             url={`/projects/${project.id}/kanban`}
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -219,28 +219,28 @@ export default function ProjectKanban() {
                     filters={[
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
                             searchable: true,
                             options: [
-                                { value: 'all', label: t('All Status') },
+                                { value: 'all', label: translate('All Status') },
                                 ...statuses.map((status: any) => ({ value: status.id, label: status.name })),
                             ],
                         },
                         {
                             name: 'priority',
-                            label: t('Priority'),
+                            label: translate('Priority'),
                             type: 'select',
                             value: selectedPriority,
                             onChange: setSelectedPriority,
                             options: [
-                                { value: 'all', label: t('All Priority') },
-                                { value: 'low', label: t('Low') },
-                                { value: 'medium', label: t('Medium') },
-                                { value: 'high', label: t('High') },
-                                { value: 'urgent', label: t('Urgent') },
+                                { value: 'all', label: translate('All Priority') },
+                                { value: 'low', label: translate('Low') },
+                                { value: 'medium', label: translate('Medium') },
+                                { value: 'high', label: translate('High') },
+                                { value: 'urgent', label: translate('Urgent') },
                             ],
                         },
                     ]}
@@ -272,9 +272,9 @@ export default function ProjectKanban() {
                                 <LayoutGrid className="text-primary h-10 w-10" />
                             </div>
                             <div className="space-y-1.5">
-                                <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{t('No Task Status Yet')}</h3>
+                                <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{translate('No Task Status Yet')}</h3>
                                 <p className="text-muted-foreground text-sm leading-relaxed">
-                                    {t('Set up task statuses to start organizing your work in a Kanban board.')}
+                                    {translate('Set up task statuses to start organizing your work in a Kanban board.')}
                                 </p>
                             </div>
                             {useHasPermission('manage-task-statuses') && (
@@ -283,7 +283,7 @@ export default function ProjectKanban() {
                                     className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
                                 >
                                     <Plus className="h-4 w-4" />
-                                    {t('Add Task Status')}
+                                    {translate('Add Task Status')}
                                 </button>
                             )}
                         </div>
@@ -304,14 +304,14 @@ export default function ProjectKanban() {
                                     const taskId = e.dataTransfer.getData('taskId');
                                     if (!taskId) return;
                                     if (!useHasPermission('edit-project-tasks')) {
-                                        toast.error(t('Permission denied.'));
+                                        toast.error(translate('Permission denied.'));
                                         return;
                                     }
                                     const currentTask = Object.values(kanbanData)
                                         .flatMap((column: any) => column.tasks)
                                         .find((task: any) => task.id.toString() === taskId);
                                     if (currentTask) {
-                                        toast.loading(t('Updating task status...'));
+                                        toast.loading(translate('Updating task status...'));
                                         router.put(
                                             route('project-tasks.update-status', taskId),
                                             { task_status_id: status.id },
@@ -325,7 +325,7 @@ export default function ProjectKanban() {
                                                 },
                                                 onError: () => {
                                                     toast.dismiss();
-                                                    toast.error(t('Failed to update task status'));
+                                                    toast.error(translate('Failed to update task status'));
                                                 },
                                             },
                                         );
@@ -348,7 +348,7 @@ export default function ProjectKanban() {
                                         <button
                                             onClick={() => handleAddTask(status.id)}
                                             className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-white/60 hover:text-gray-800"
-                                            title={t('Add Task')}
+                                            title={translate('Add Task')}
                                         >
                                             <Plus className="h-4 w-4" />
                                         </button>
@@ -362,7 +362,7 @@ export default function ProjectKanban() {
                                             <div className="mb-2 flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-gray-200">
                                                 <User className="h-6 w-6 text-gray-300" />
                                             </div>
-                                            <p className="text-xs text-gray-400">{t('Drop tasks here')}</p>
+                                            <p className="text-xs text-gray-400">{translate('Drop tasks here')}</p>
                                         </div>
                                     ) : (
                                         statusTasks.map((task: any) => (
@@ -407,12 +407,12 @@ export default function ProjectKanban() {
                                                                 <DropdownMenuContent align="end" className="w-32">
                                                                     <DropdownMenuItem onClick={() => handleAction('view', task)}>
                                                                         <Eye className="mr-2 h-4 w-4" />
-                                                                        {t('View')}
+                                                                        {translate('View')}
                                                                     </DropdownMenuItem>
                                                                     {useHasPermission('edit-project-tasks') && (
                                                                         <DropdownMenuItem onClick={() => handleAction('edit', task)}>
                                                                             <Edit className="mr-2 h-4 w-4" />
-                                                                            {t('Edit')}
+                                                                            {translate('Edit')}
                                                                         </DropdownMenuItem>
                                                                     )}
                                                                     {useHasPermission('delete-project-tasks') && (
@@ -423,7 +423,7 @@ export default function ProjectKanban() {
                                                                                 className="text-red-600"
                                                                             >
                                                                                 <Trash2 className="mr-2 h-4 w-4" />
-                                                                                {t('Delete')}
+                                                                                {translate('Delete')}
                                                                             </DropdownMenuItem>
                                                                         </>
                                                                     )}
@@ -439,7 +439,7 @@ export default function ProjectKanban() {
                                                         {/* Progress bar */}
                                                         <div className="mb-2.5">
                                                             <div className="mb-1 flex justify-between text-xs">
-                                                                <span className="text-gray-500">{t('Progress')}</span>
+                                                                <span className="text-gray-500">{translate('Progress')}</span>
                                                                 <span className="font-medium text-gray-700">{task.progress}%</span>
                                                             </div>
                                                             <div className="h-1.5 w-full rounded-full bg-gray-200">
@@ -473,8 +473,8 @@ export default function ProjectKanban() {
                                                                 <Calendar className="h-3 w-3" />
                                                                 <span>
                                                                     {task.due_date
-                                                                        ? `${t('Due')}: ${window.appSettings?.formatDateTime(task.due_date, false) || new Date(task.due_date).toLocaleDateString()}`
-                                                                        : t('No due date')}
+                                                                        ? `${translate('Due')}: ${window.appSettings?.formatDateTime(task.due_date, false) || new Date(task.due_date).toLocaleDateString()}`
+                                                                        : translate('No due date')}
                                                                 </span>
                                                             </div>
                                                             {task.assigned_user ? (
@@ -521,25 +521,25 @@ export default function ProjectKanban() {
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
-                        { name: 'title', label: t('Task Title'), type: 'text', required: true },
-                        { name: 'description', label: t('Description'), type: 'textarea' },
-                        { name: 'start_date', label: t('Start Date'), type: 'date' },
-                        { name: 'due_date', label: t('Due Date'), type: 'date' },
+                        { name: 'title', label: translate('Task Title'), type: 'text', required: true },
+                        { name: 'description', label: translate('Description'), type: 'textarea' },
+                        { name: 'start_date', label: translate('Start Date'), type: 'date' },
+                        { name: 'due_date', label: translate('Due Date'), type: 'date' },
                         {
                             name: 'priority',
-                            label: t('Priority'),
+                            label: translate('Priority'),
                             type: 'select',
                             options: [
-                                { value: 'low', label: t('Low') },
-                                { value: 'medium', label: t('Medium') },
-                                { value: 'high', label: t('High') },
-                                { value: 'urgent', label: t('Urgent') },
+                                { value: 'low', label: translate('Low') },
+                                { value: 'medium', label: translate('Medium') },
+                                { value: 'high', label: translate('High') },
+                                { value: 'urgent', label: translate('Urgent') },
                             ],
                             defaultValue: 'medium',
                         },
                         {
                             name: 'task_status_id',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             searchable: true,
                             options: statuses.map((status: any) => ({ value: status.id.toString(), label: status.name })),
@@ -547,17 +547,17 @@ export default function ProjectKanban() {
                                 formMode === 'create' ? (prefilledStatus ? prefilledStatus.toString() : statuses[0]?.id?.toString()) : undefined,
                             hidden: formMode === 'create' && !!prefilledStatus,
                         },
-                        { name: 'estimated_hours', label: t('Estimated Hours'), type: 'number', step: '0.5' },
-                        { name: 'progress', label: t('Progress (%)'), type: 'number', min: '0', max: '100', defaultValue: '0' },
+                        { name: 'estimated_hours', label: translate('Estimated Hours'), type: 'number', step: '0.5' },
+                        { name: 'progress', label: translate('Progress (%)'), type: 'number', min: '0', max: '100', defaultValue: '0' },
                         ...(isOrganization
                             ? [
                                   {
                                       name: 'assigned_to',
-                                      label: t('Assign To'),
+                                      label: translate('Assign To'),
                                       type: 'select',
                                       searchable: true,
                                       options: [
-                                          { value: null, label: t('Unassigned') },
+                                          { value: null, label: translate('Unassigned') },
                                           ...users.map((user: any) => ({ value: user.id, label: `${user.name} (${user.email})` })),
                                       ],
                                   },
@@ -575,7 +575,7 @@ export default function ProjectKanban() {
                           }
                         : null
                 }
-                title={formMode === 'create' ? t('Add Task') : formMode === 'edit' ? t('Edit Task') : t('View Task')}
+                title={formMode === 'create' ? translate('Add Task') : formMode === 'edit' ? translate('Edit Task') : translate('View Task')}
                 mode={formMode}
             />
 

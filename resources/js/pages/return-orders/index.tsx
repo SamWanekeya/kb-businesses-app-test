@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function ReturnOrders() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
     const { auth, returnOrders, allUsers = [], filters: pageFilters = {}, flash = {} } = usePage().props;
     const permissions = auth?.permissions || [];
@@ -96,7 +96,7 @@ export default function ReturnOrders() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting return order...'));
+        toast.loading(translate('Deleting return order...'));
         router.delete(route('return-orders.destroy', currentItem.id), {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);
@@ -105,7 +105,7 @@ export default function ReturnOrders() {
             onError: (errors) => {
                 toast.dismiss();
                 toast.error(
-                    t('Failed to delete: {{errors}}', {
+                    translate('Failed to delete: {{errors}}', {
                         errors: Object.values(errors).join(', '),
                     }),
                 );
@@ -130,36 +130,36 @@ export default function ReturnOrders() {
 
     if (useHasPermission('export-return-orders')) {
         pageActions.push({
-            label: t('Export'),
+            label: translate('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
             variant: 'outline',
             onClick: () => (window.location.href = route('return-order.export')),
             className: 'h-8 w-8 min-[500px]:h-9 min-[500px]:w-auto px-0 min-[500px]:px-4',
             labelClassName: 'hidden min-[500px]:inline',
-            tooltip: t('Export'),
+            tooltip: translate('Export'),
             tooltipClassName: 'min-[500px]:hidden',
         });
     }
 
     if (useHasPermission('create-return-orders')) {
         pageActions.push({
-            label: t('Add Return Order'),
+            label: translate('Add Return Order'),
             icon: <Plus className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
             variant: 'default',
             onClick: () => handleAddNew(),
             className: 'h-8 w-8 min-[500px]:h-9 min-[500px]:w-auto px-0 min-[500px]:px-4',
             labelClassName: 'hidden min-[500px]:inline',
-            tooltip: t('Add Return Order'),
+            tooltip: translate('Add Return Order'),
             tooltipClassName: 'min-[500px]:hidden',
         });
     }
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Return Orders') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Return Orders') }];
 
     const columns = [
         {
             key: 'return_number',
-            label: t('Return Number'),
+            label: translate('Return Number'),
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: string, item: any) => (
@@ -176,13 +176,13 @@ export default function ReturnOrders() {
         },
         {
             key: 'name',
-            label: t('Name'),
+            label: translate('Name'),
             sortable: true,
             render: (value: string) => <span className="font-medium whitespace-nowrap">{value || '-'}</span>,
         },
         {
             key: 'assigned_user',
-            label: t('Assigned To'),
+            label: translate('Assigned To'),
             className: 'whitespace-nowrap',
             render: (value: any) =>
                 value ? (
@@ -197,18 +197,18 @@ export default function ReturnOrders() {
                         </div>
                     </div>
                 ) : (
-                    <span className="whitespace-nowrap">{t('Unassigned')}</span>
+                    <span className="whitespace-nowrap">{translate('Unassigned')}</span>
                 ),
         },
         {
             key: 'sales_order',
-            label: t('Sales Order'),
+            label: translate('Sales Order'),
             className: 'whitespace-nowrap',
-            render: (value: any) => <span className="whitespace-nowrap">{value?.order_number || t('-')}</span>,
+            render: (value: any) => <span className="whitespace-nowrap">{value?.order_number || translate('-')}</span>,
         },
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             className: 'whitespace-nowrap',
             render: (value: string) => {
                 const statusColors = {
@@ -223,14 +223,14 @@ export default function ReturnOrders() {
                     <span
                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${statusColors[value as keyof typeof statusColors] || statusColors.pending}`}
                     >
-                        {t(value?.charAt(0).toUpperCase() + value?.slice(1)) || t('Pending')}
+                        {t(value?.charAt(0).toUpperCase() + value?.slice(1)) || translate('Pending')}
                     </span>
                 );
             },
         },
         {
             key: 'total_amount',
-            label: t('Total Amount'),
+            label: translate('Total Amount'),
             className: 'whitespace-nowrap',
             render: (value: any) => (
                 <span className="font-mono whitespace-nowrap">
@@ -240,7 +240,7 @@ export default function ReturnOrders() {
         },
         {
             key: 'return_date',
-            label: t('Return Date'),
+            label: translate('Return Date'),
             sortable: true,
             className: 'whitespace-nowrap',
             type: 'date',
@@ -249,21 +249,21 @@ export default function ReturnOrders() {
 
     const actions = [
         {
-            label: t('View'),
+            label: translate('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
             requiredPermission: 'view-return-orders',
         },
         {
-            label: t('Edit'),
+            label: translate('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
             requiredPermission: 'edit-return-orders',
         },
         {
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
@@ -272,19 +272,19 @@ export default function ReturnOrders() {
     ];
 
     const statusOptions = [
-        { value: 'all', label: t('All Status') },
-        { value: 'pending', label: t('Pending') },
-        { value: 'approved', label: t('Approved') },
-        { value: 'shipped', label: t('Shipped') },
-        { value: 'received', label: t('Received') },
-        { value: 'processed', label: t('Processed') },
-        { value: 'cancelled', label: t('Cancelled') },
+        { value: 'all', label: translate('All Status') },
+        { value: 'pending', label: translate('Pending') },
+        { value: 'approved', label: translate('Approved') },
+        { value: 'shipped', label: translate('Shipped') },
+        { value: 'received', label: translate('Received') },
+        { value: 'processed', label: translate('Processed') },
+        { value: 'cancelled', label: translate('Cancelled') },
     ];
 
     return (
         <PageTemplate
-            title={t('Return Orders')}
-            description={t('Manage your return orders.')}
+            title={translate('Return Orders')}
+            description={translate('Manage your return orders.')}
             url="/return-orders"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -298,7 +298,7 @@ export default function ReturnOrders() {
                     filters={[
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
@@ -306,13 +306,13 @@ export default function ReturnOrders() {
                         },
                         {
                             name: 'assigned_to',
-                            label: t('Assigned To'),
+                            label: translate('Assigned To'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: t('All Users') },
+                                { value: 'all', label: translate('All Users') },
                                 ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name })),
                             ],
                         },
@@ -349,7 +349,7 @@ export default function ReturnOrders() {
                     to={returnOrders?.to || 0}
                     total={returnOrders?.total || 0}
                     links={returnOrders?.links}
-                    entityName={t('return orders')}
+                    entityName={translate('return orders')}
                     onPageChange={(url) => router.get(url)}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
@@ -375,7 +375,7 @@ export default function ReturnOrders() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={t('return order')}
+                entityName={translate('return order')}
             />
         </PageTemplate>
     );

@@ -15,7 +15,7 @@ interface Template10Props {
 }
 
 export default function Template10({ invoice, items, taxesData, settings, color, qr_invoice, qrCodeSvg, styles: externalStyles }: Template10Props) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { logoDark } = useBrand();
     const fontColor =
         color === 'ffffff' || color === 'fbdd03' || color === 'c1d82f' || color === '46de98' || color === '40c7d0' || color === 'fac168'
@@ -67,7 +67,7 @@ export default function Template10({ invoice, items, taxesData, settings, color,
                                         margin: '0',
                                     }}
                                 >
-                                    {t('INVOICE')}
+                                    {translate('INVOICE')}
                                 </h3>
                                 <div
                                     style={{
@@ -98,7 +98,7 @@ export default function Template10({ invoice, items, taxesData, settings, color,
                         <tr style={{ verticalAlign: 'top' }}>
                             <td style={{ padding: '0', verticalAlign: 'top' }}>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
-                                    <b style={{ color: borderColor }}>{t('FROM')}:</b>
+                                    <b style={{ color: borderColor }}>{translate('FROM')}:</b>
                                     <br />
                                     {formatValue(invoice.creator?.name) && (
                                         <>
@@ -115,13 +115,13 @@ export default function Template10({ invoice, items, taxesData, settings, color,
                                         <tr>
                                             <td style={{ padding: '0', fontSize: '13px', fontWeight: '600', color: `#${color}` }}></td>
                                             <td style={{ padding: '0', textAlign: 'right', fontSize: '13px', fontWeight: '600' }}>
-                                                <b>{t('Number')}:</b> {formatValue(invoice.invoice_number)}
+                                                <b>{translate('Number')}:</b> {formatValue(invoice.invoice_number)}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td style={{ padding: '0', fontSize: '13px', fontWeight: '600', color: `#${color}` }}></td>
                                             <td style={{ padding: '0', textAlign: 'right', fontSize: '13px', fontWeight: '600' }}>
-                                                <b>{t('Valid Until')}:</b> {formatValue(invoice.due_date)}
+                                                <b>{translate('Valid Until')}:</b> {formatValue(invoice.due_date)}
                                             </td>
                                         </tr>
                                         <tr>
@@ -140,7 +140,7 @@ export default function Template10({ invoice, items, taxesData, settings, color,
                     <tbody>
                         <tr>
                             <td style={{ verticalAlign: 'top' }}>
-                                <strong style={{ marginBottom: '10px', display: 'block' }}>{t('Bill To')}:</strong>
+                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill To')}:</strong>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
                                     {formatValue(invoice.account?.name || invoice.contact?.name)}
                                     <br />
@@ -156,7 +156,7 @@ export default function Template10({ invoice, items, taxesData, settings, color,
                                 </p>
                             </td>
                             <td style={{ verticalAlign: 'top', textAlign: 'right' }}>
-                                <strong style={{ marginBottom: '10px', display: 'block' }}>{t('Ship To')}:</strong>
+                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship To')}:</strong>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
                                     {formatValue(invoice.creator?.name)}
                                     <br />
@@ -177,13 +177,13 @@ export default function Template10({ invoice, items, taxesData, settings, color,
                 >
                     <tbody>
                         <tr style={{ background: `#${color}`, color: fontColor }}>
-                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{t('Item')}</th>
-                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{t('Quantity')}</th>
-                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{t('Rate')}</th>
-                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{t('Tax')} (%)</th>
-                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{t('Discount')}</th>
+                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Item')}</th>
+                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Quantity')}</th>
+                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Rate')}</th>
+                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Tax')} (%)</th>
+                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Discount')}</th>
                             <th style={{ padding: '0.75rem', textAlign: 'left' }}>
-                                {t('Price')} <small style={{ display: 'block', fontSize: '12px' }}>{t('before tax & discount')}</small>
+                                {translate('Price')} <small style={{ display: 'block', fontSize: '12px' }}>{translate('before tax & discount')}</small>
                             </th>
                         </tr>
                         {items.length > 0 ? (
@@ -230,7 +230,7 @@ export default function Template10({ invoice, items, taxesData, settings, color,
                             </tr>
                         )}
                         <tr style={{ borderTop: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}` }}>
-                            <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>{t('Total')}</td>
+                            <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>{translate('Total')}</td>
                             <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>
                                 {items.reduce((sum, item) => sum + Number(item.quantity || 0), 0)}
                             </td>
@@ -253,7 +253,7 @@ export default function Template10({ invoice, items, taxesData, settings, color,
                                     <tbody>
                                         {invoice.total_discount > 0 && (
                                             <tr>
-                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{t('Discount')}:</td>
+                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{translate('Discount')}:</td>
                                                 <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
                                                     {formatCurrency(invoice.total_discount)}
                                                 </td>
@@ -268,20 +268,20 @@ export default function Template10({ invoice, items, taxesData, settings, color,
                                             </tr>
                                         ))}
                                         <tr>
-                                            <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{t('Paid')}:</td>
+                                            <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{translate('Paid')}:</td>
                                             <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
                                                 {formatCurrency(paidAmount)}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{t('Due')}:</td>
+                                            <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{translate('Due')}:</td>
                                             <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
                                                 {formatCurrency(dueAmount)}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>
-                                                <strong>{t('Total')}:</strong>
+                                                <strong>{translate('Total')}:</strong>
                                             </td>
                                             <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
                                                 <strong>{formatCurrency(invoice.total_amount || 0)}</strong>

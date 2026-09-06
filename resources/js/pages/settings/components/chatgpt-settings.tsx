@@ -15,7 +15,7 @@ interface ChatGptSettingsProps {
 }
 
 export default function ChatGptSettings({ settings = {} }: ChatGptSettingsProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const pageProps = usePage().props;
     const [processing, setProcessing] = useState(false);
 
@@ -80,7 +80,7 @@ export default function ChatGptSettings({ settings = {} }: ChatGptSettingsProps)
             },
             onError: (errors) => {
                 setProcessing(false);
-                const errorMessage = errors.error || Object.values(errors).join(', ') || t('Failed to update Chat GPT settings');
+                const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to update Chat GPT settings');
                 toast.error(errorMessage);
             },
         });
@@ -88,12 +88,12 @@ export default function ChatGptSettings({ settings = {} }: ChatGptSettingsProps)
 
     return (
         <SettingsSection
-            title={t('Chat GPT Settings')}
-            description={t('Configure Chat GPT integration settings for AI-powered features')}
+            title={translate('Chat GPT Settings')}
+            description={translate('Configure Chat GPT integration settings for AI-powered features')}
             action={
                 <Button type="submit" disabled={processing} form="chatgpt-settings-form" size="sm">
                     <Save className="mr-2 h-4 w-4" />
-                    {processing ? t('Saving...') : t('Save Changes')}
+                    {processing ? translate('Saving...') : translate('Save Changes')}
                 </Button>
             }
         >
@@ -103,22 +103,22 @@ export default function ChatGptSettings({ settings = {} }: ChatGptSettingsProps)
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="grid gap-2 md:col-span-2">
                                 <Label htmlFor="chatgptKey" required>
-                                    {t('Chat GPT Key')}
+                                    {translate('Chat GPT Key')}
                                 </Label>
                                 <Input
                                     id="chatgptKey"
                                     type="password"
                                     value={chatgptSettings.chatgptKey}
                                     onChange={(e) => handleSettingsChange('chatgptKey', e.target.value)}
-                                    placeholder={t('Enter your OpenAI API key')}
+                                    placeholder={translate('Enter your OpenAI API key')}
                                 />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="chatgptModel">{t('Chat GPT Model Name')}</Label>
+                                <Label htmlFor="chatgptModel">{translate('Chat GPT Model Name')}</Label>
                                 <Select value={chatgptSettings.chatgptModel} onValueChange={(value) => handleSettingsChange('chatgptModel', value)}>
                                     <SelectTrigger>
-                                        <SelectValue placeholder={t('Select Chat GPT model')} />
+                                        <SelectValue placeholder={translate('Select Chat GPT model')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="gpt-3.5-turbo">GPT-3.5 Turbo</SelectItem>

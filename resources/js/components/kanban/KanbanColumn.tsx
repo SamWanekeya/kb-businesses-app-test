@@ -43,7 +43,7 @@ interface KanbanColumnProps {
 }
 
 export const KanbanColumn: React.FC<KanbanColumnProps> = ({ status, leads, onLeadAction, permissions, isLoading }) => {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
 
     return (
         <div className="flex-shrink-0" style={{ minWidth: 'calc(20% - 16px)', width: 'calc(20% - 16px)' }}>
@@ -85,8 +85,8 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({ status, leads, onLea
                                     <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700">
                                         <User className="h-6 w-6 text-gray-400" />
                                     </div>
-                                    <p className="mb-1 text-sm font-medium">{t('No leads here')}</p>
-                                    <p className="text-xs opacity-75">{t('Drag leads here to update status')}</p>
+                                    <p className="mb-1 text-sm font-medium">{translate('No leads here')}</p>
+                                    <p className="text-xs opacity-75">{translate('Drag leads here to update status')}</p>
                                 </div>
                             )}
                         </div>

@@ -13,24 +13,24 @@ interface CrudDeleteModalProps {
 }
 
 export function CrudDeleteModal({ isOpen, onClose, onConfirm, itemName, entityName }: CrudDeleteModalProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle>
-                        {t('Delete')} {capitalize(entityName)}
+                        {translate('Delete')} {capitalize(entityName)}
                     </DialogTitle>
                 </DialogHeader>
                 <DialogDescription>
-                    {t('Are you sure you want to delete')} {itemName || `this ${entityName}`}? {t('This action cannot be undone.')}
+                    {translate('Are you sure you want to delete')} {itemName || `this ${entityName}`}? {translate('This action cannot be undone.')}
                 </DialogDescription>
                 <DialogFooter className="sm:justify-end">
                     <Button type="button" variant="outline" onClick={onClose}>
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     <Button type="button" variant="destructive" onClick={onConfirm}>
-                        {t('Delete')}
+                        {translate('Delete')}
                     </Button>
                 </DialogFooter>
             </DialogContent>

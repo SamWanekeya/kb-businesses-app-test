@@ -21,7 +21,7 @@ interface ImportModalProps {
 }
 
 export function ImportModal({ isOpen, onClose, title, importRoute, parseRoute, samplePath, importNotes, databaseFields }: ImportModalProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [file, setFile] = useState<File | null>(null);
     const [isImporting, setIsImporting] = useState(false);
     const [showMappingModal, setShowMappingModal] = useState(false);
@@ -33,7 +33,7 @@ export function ImportModal({ isOpen, onClose, title, importRoute, parseRoute, s
         e.preventDefault();
 
         if (!file) {
-            toast.error(t('Please select a file to import'));
+            toast.error(translate('Please select a file to import'));
             return;
         }
 
@@ -41,7 +41,7 @@ export function ImportModal({ isOpen, onClose, title, importRoute, parseRoute, s
         formData.append('file', file);
 
         setIsImporting(true);
-        toast.loading(t('Parsing file...'));
+        toast.loading(translate('Parsing file...'));
 
         try {
             const { data } = await axios.post(route(parseRoute), formData);
@@ -55,11 +55,11 @@ export function ImportModal({ isOpen, onClose, title, importRoute, parseRoute, s
                 setShowMappingModal(true);
             } else {
                 toast.dismiss();
-                toast.error(data.message || t('Failed to parse file'));
+                toast.error(data.message || translate('Failed to parse file'));
             }
         } catch (error) {
             toast.dismiss();
-            toast.error(t('Network error or invalid response'));
+            toast.error(translate('Network error or invalid response'));
         } finally {
             setIsImporting(false);
         }
@@ -103,21 +103,21 @@ export function ImportModal({ isOpen, onClose, title, importRoute, parseRoute, s
                                             }
                                             window.location.href = samplePath;
                                         } catch (error) {
-                                            toast.error(t('Failed to download template'));
+                                            toast.error(translate('Failed to download template'));
                                         }
                                     }}
                                     disabled={!samplePath}
                                     className="mb-4"
                                 >
                                     <Download className="mr-2 h-4 w-4" />
-                                    {t('Download Template')}
+                                    {translate('Download Template')}
                                 </Button>
                             </div>
                         )}
 
                         <div className="space-y-2">
                             <Label htmlFor="file" required>
-                                {t('Select File')}
+                                {translate('Select File')}
                             </Label>
                             <Input
                                 id="file"
@@ -130,16 +130,16 @@ export function ImportModal({ isOpen, onClose, title, importRoute, parseRoute, s
                         </div>
 
                         <div className="rounded-md border border-blue-200 bg-blue-50 p-3">
-                            <h4 className="mb-2 text-sm font-medium text-blue-800">{t('Import Notes:')}</h4>
+                            <h4 className="mb-2 text-sm font-medium text-blue-800">{translate('Import Notes:')}</h4>
                             <p className="text-xs text-blue-700">{importNotes}</p>
                         </div>
                     </div>
                     <DialogFooter>
                         <Button type="button" variant="outline" onClick={handleClose} disabled={isImporting}>
-                            {t('Cancel')}
+                            {translate('Cancel')}
                         </Button>
                         <Button type="button" onClick={handleSubmit} disabled={isImporting}>
-                            {t('Import')}
+                            {translate('Import')}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

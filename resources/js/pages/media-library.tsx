@@ -40,7 +40,7 @@ interface MediaItem {
 }
 
 export default function MediaLibraryDemo() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { csrf_token, storageSettings, auth, planLimits } = usePage().props;
     const permissions = auth?.permissions || [];
 
@@ -260,7 +260,7 @@ export default function MediaLibraryDemo() {
             if (response.ok) {
                 const blob = await response.blob();
                 const url = window.URL.createObjectURL(blob);
-                const link = document.createElement('a');
+                const link = document.createElementranslate('a');
                 link.href = url;
                 link.download = filename;
                 document.body.appendChild(link);
@@ -360,7 +360,7 @@ export default function MediaLibraryDemo() {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const currentMedia = filteredMedia.slice(startIndex, startIndex + itemsPerPage);
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: '/dashboard' }, { title: t('Media Library') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: '/dashboard' }, { title: translate('Media Library') }];
 
     const canCreate = !planLimits || planLimits.can_create;
     const pageActions = useHasPermission('create-media')
@@ -368,25 +368,25 @@ export default function MediaLibraryDemo() {
               {
                   label:
                       planLimits && !canCreate
-                          ? t('Storage Limit Reached ({{current}}/{{max}})', {
+                          ? translate('Storage Limit Reached ({{current}}/{{max}})', {
                                 current: formatFileSize(planLimits.current_storage),
                                 max: formatFileSize(planLimits.maximum_storage),
                             })
-                          : t('Upload Media'),
+                          : translate('Upload Media'),
                   icon: <Plus className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
                   variant: canCreate ? ('default' as const) : ('outline' as const),
                   onClick: canCreate
                       ? () => setIsUploadModalOpen(true)
                       : () =>
                             toast.error(
-                                t('Storage limit exceeded. Your plan allows maximum {{max}} storage. Please upgrade your plan.', {
+                                translate('Storage limit exceeded. Your plan allows maximum {{max}} storage. Please upgrade your plan.', {
                                     max: formatFileSize(planLimits.maximum_storage),
                                 }),
                             ),
                   disabled: !canCreate,
                   className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
                   labelClassName: 'hidden min-[400px]:inline',
-                  tooltip: t('Upload Media'),
+                  tooltip: translate('Upload Media'),
                   tooltipClassName: 'min-[400px]:hidden',
               },
           ]
@@ -398,10 +398,10 @@ export default function MediaLibraryDemo() {
 
     return (
         <PageTemplate
-            title={t('Media Library')}
+            title={translate('Media Library')}
             url="/media-library"
             breadcrumbs={breadcrumbs}
-            description={t('Manage all your media files in one place.')}
+            description={translate('Manage all your media files in one place.')}
             actions={pageActions}
             noPadding
         >
@@ -415,14 +415,14 @@ export default function MediaLibraryDemo() {
                                 <div className="relative max-w-sm">
                                     <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
                                     <Input
-                                        placeholder={t('Search media files...')}
+                                        placeholder={translate('Search media files...')}
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                         className="pl-10"
                                     />
                                 </div>
                                 {searchTerm && (
-                                    <p className="text-muted-foreground mt-1 text-xs">{t('Showing results for "{{term}}"', { term: searchTerm })}</p>
+                                    <p className="text-muted-foreground mt-1 text-xs">{translate('Showing results for "{{term}}"', { term: searchTerm })}</p>
                                 )}
                             </div>
 
@@ -433,7 +433,7 @@ export default function MediaLibraryDemo() {
                                         <ImageIcon className="text-primary h-4 w-4" />
                                     </div>
                                     <span className="text-sm font-semibold">
-                                        {filteredMedia.length} {t('Files')}
+                                        {filteredMedia.length} {translate('Files')}
                                     </span>
                                 </div>
 
@@ -451,7 +451,7 @@ export default function MediaLibraryDemo() {
                                         <ImageIcon className="h-4 w-4 text-blue-600" />
                                     </div>
                                     <span className="text-sm font-semibold">
-                                        {filteredMedia.filter((item) => item.mime_type.startsWith('image/')).length} {t('Images')}
+                                        {filteredMedia.filter((item) => item.mime_type.startsWith('image/')).length} {translate('Images')}
                                     </span>
                                 </div>
                             </div>
@@ -465,23 +465,23 @@ export default function MediaLibraryDemo() {
                         {loading ? (
                             <div className="py-12 text-center">
                                 <div className="border-primary mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-b-2"></div>
-                                <p className="text-muted-foreground">{t('Loading media...')}</p>
+                                <p className="text-muted-foreground">{translate('Loading media...')}</p>
                             </div>
                         ) : currentMedia.length === 0 ? (
                             <div className="py-16 text-center">
                                 <div className="bg-muted mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full">
                                     <ImageIcon className="text-muted-foreground h-10 w-10" />
                                 </div>
-                                <h3 className="mb-2 text-lg font-semibold">{t('No media files found')}</h3>
+                                <h3 className="mb-2 text-lg font-semibold">{translate('No media files found')}</h3>
                                 <p className="text-muted-foreground mb-6">
                                     {searchTerm
-                                        ? t('No results found for "{{term}}"', { term: searchTerm })
-                                        : t('Get started by uploading your first file')}
+                                        ? translate('No results found for "{{term}}"', { term: searchTerm })
+                                        : translate('Get started by uploading your first file')}
                                 </p>
                                 {!searchTerm && (
                                     <Button onClick={() => setIsUploadModalOpen(true)} size="lg">
                                         <Plus className="mr-2 h-4 w-4" />
-                                        {t('Upload Files')}
+                                        {translate('Upload Files')}
                                     </Button>
                                 )}
                             </div>
@@ -519,7 +519,7 @@ export default function MediaLibraryDemo() {
                                                     <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-200 group-hover:bg-black/40">
                                                         <div className="opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                                                             <div className="rounded-lg bg-white/90 px-4 py-2 text-sm font-medium text-gray-900 backdrop-blur-sm">
-                                                                {t('Click to view')}
+                                                                {translate('Click to view')}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -560,9 +560,9 @@ export default function MediaLibraryDemo() {
                                 {totalPages > 1 && (
                                     <div className="flex flex-col items-center justify-between gap-4 border-t pt-6 sm:flex-row">
                                         <div className="text-muted-foreground text-sm">
-                                            {t('Showing')} <span className="font-semibold">{startIndex + 1}</span> {t('to')}{' '}
+                                            {translate('Showing')} <span className="font-semibold">{startIndex + 1}</span> {translate('to')}{' '}
                                             <span className="font-semibold">{Math.min(startIndex + itemsPerPage, filteredMedia.length)}</span>{' '}
-                                            {t('of')} <span className="font-semibold">{filteredMedia.length}</span> {t('results')}
+                                            {translate('of')} <span className="font-semibold">{filteredMedia.length}</span> {translate('results')}
                                         </div>
 
                                         <div className="flex items-center gap-2">
@@ -574,7 +574,7 @@ export default function MediaLibraryDemo() {
                                                     disabled={currentPage === 1}
                                                     onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                                                 >
-                                                    {t('Previous')}
+                                                    {translate('Previous')}
                                                 </Button>
 
                                                 <div className="flex gap-1">
@@ -610,7 +610,7 @@ export default function MediaLibraryDemo() {
                                                     disabled={currentPage === totalPages}
                                                     onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                                                 >
-                                                    {t('Next')}
+                                                    {translate('Next')}
                                                 </Button>
                                             </div>
 
@@ -694,7 +694,7 @@ export default function MediaLibraryDemo() {
                         <DialogHeader>
                             <DialogTitle className="flex items-center gap-2">
                                 <Upload className="h-5 w-5" />
-                                {t('Upload Files')}
+                                {translate('Upload Files')}
                             </DialogTitle>
                         </DialogHeader>
 
@@ -712,8 +712,8 @@ export default function MediaLibraryDemo() {
                                     <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
                                         <Upload className={`h-8 w-8 transition-colors ${dragActive ? 'text-blue-500' : 'text-gray-400'}`} />
                                     </div>
-                                    <h3 className="mb-2 text-lg font-medium">{dragActive ? t('Drop files here') : t('Upload your files')}</h3>
-                                    <p className="text-muted-foreground mb-6 text-sm">{t('Drag and drop your files here, or click to browse')}</p>
+                                    <h3 className="mb-2 text-lg font-medium">{dragActive ? translate('Drop files here') : translate('Upload your files')}</h3>
+                                    <p className="text-muted-foreground mb-6 text-sm">{translate('Drag and drop your files here, or click to browse')}</p>
 
                                     <Input
                                         type="file"
@@ -732,12 +732,12 @@ export default function MediaLibraryDemo() {
                                         {uploading ? (
                                             <>
                                                 <div className="mr-2 h-4 w-4 animate-spin rounded-full border-b-2 border-white"></div>
-                                                {t('Uploading...')}
+                                                {translate('Uploading...')}
                                             </>
                                         ) : (
                                             <>
                                                 <Plus className="mr-2 h-4 w-4" />
-                                                {t('Choose Files')}
+                                                {translate('Choose Files')}
                                             </>
                                         )}
                                     </Button>
@@ -755,7 +755,7 @@ export default function MediaLibraryDemo() {
                         <DialogHeader>
                             <DialogTitle className="flex items-center gap-2">
                                 <Image className="h-5 w-5" />
-                                {t('Media Details')}
+                                {translate('Media Details')}
                             </DialogTitle>
                         </DialogHeader>
 
@@ -791,12 +791,12 @@ export default function MediaLibraryDemo() {
                                 <div className="space-y-4 lg:col-span-1">
                                     {/* File Information */}
                                     <div className="space-y-3">
-                                        <h3 className="text-foreground text-sm font-semibold">{t('File Information')}</h3>
+                                        <h3 className="text-foreground text-sm font-semibold">{translate('File Information')}</h3>
 
                                         <div className="space-y-2.5">
                                             <div className="space-y-0.5">
                                                 <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
-                                                    {t('File Name')}
+                                                    {translate('File Name')}
                                                 </span>
                                                 <p className="text-foreground text-sm leading-tight font-medium break-all">
                                                     {selectedMediaInfo.file_name}
@@ -805,7 +805,7 @@ export default function MediaLibraryDemo() {
 
                                             <div className="space-y-0.5">
                                                 <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
-                                                    {t('Display Name')}
+                                                    {translate('Display Name')}
                                                 </span>
                                                 <p className="text-foreground text-sm leading-tight font-medium break-all">
                                                     {selectedMediaInfo.name}
@@ -814,7 +814,7 @@ export default function MediaLibraryDemo() {
 
                                             <div className="space-y-0.5">
                                                 <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
-                                                    {t('File Type')}
+                                                    {translate('File Type')}
                                                 </span>
                                                 <Badge variant="secondary" className="font-mono text-xs">
                                                     {selectedMediaInfo.mime_type}
@@ -823,14 +823,14 @@ export default function MediaLibraryDemo() {
 
                                             <div className="space-y-0.5">
                                                 <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
-                                                    {t('File Size')}
+                                                    {translate('File Size')}
                                                 </span>
                                                 <p className="text-foreground text-sm font-semibold">{formatFileSize(selectedMediaInfo.size)}</p>
                                             </div>
 
                                             <div className="space-y-0.5">
                                                 <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
-                                                    {t('Uploaded')}
+                                                    {translate('Uploaded')}
                                                 </span>
                                                 <p className="text-foreground text-sm font-medium">{formatDate(selectedMediaInfo.created_at)}</p>
                                             </div>
@@ -839,7 +839,7 @@ export default function MediaLibraryDemo() {
 
                                     {/* URL Section */}
                                     <div className="space-y-1.5">
-                                        <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">{t('File URL')}</span>
+                                        <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">{translate('File URL')}</span>
                                         <div className="bg-muted/50 border-border flex items-center gap-2 rounded-lg border p-2">
                                             <code className="text-muted-foreground flex-1 font-mono text-xs leading-tight break-all">
                                                 {selectedMediaInfo.url}
@@ -852,7 +852,7 @@ export default function MediaLibraryDemo() {
                                                     handleCopyLink(selectedMediaInfo.url);
                                                 }}
                                                 className="h-7 w-7 flex-shrink-0 p-0"
-                                                title={t('Copy URL')}
+                                                title={translate('Copy URL')}
                                             >
                                                 <Copy className="h-3.5 w-3.5" />
                                             </Button>
@@ -871,7 +871,7 @@ export default function MediaLibraryDemo() {
                                                 className="w-full justify-start"
                                             >
                                                 <Eye className="mr-2 h-4 w-4" />
-                                                {t('View')}
+                                                {translate('View')}
                                             </Button>
                                         )}
                                         {useHasPermission('download-media') && (
@@ -884,7 +884,7 @@ export default function MediaLibraryDemo() {
                                                 className="w-full justify-start"
                                             >
                                                 <Download className="mr-2 h-4 w-4" />
-                                                {t('Download')}
+                                                {translate('Download')}
                                             </Button>
                                         )}
                                         {useHasPermission('delete-media') && (
@@ -894,7 +894,7 @@ export default function MediaLibraryDemo() {
                                                 className="text-destructive hover:text-destructive hover:bg-destructive/10 w-full justify-start"
                                             >
                                                 <X className="mr-2 h-4 w-4" />
-                                                {t('Delete')}
+                                                {translate('Delete')}
                                             </Button>
                                         )}
                                     </div>

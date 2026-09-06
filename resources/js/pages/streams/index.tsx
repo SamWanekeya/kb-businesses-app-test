@@ -12,7 +12,7 @@ interface StreamsIndexProps {
 }
 
 export default function Index({ modules }: StreamsIndexProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, flash } = usePage().props;
     const permissions = auth?.permissions || [];
 
@@ -42,8 +42,8 @@ export default function Index({ modules }: StreamsIndexProps) {
     };
 
     return (
-        <PageWrapper title={t('Streams')} description={t('View activity logs for various modules')} url={route('stream.index')}>
-            <Head title={t('Streams')} />
+        <PageWrapper title={translate('Streams')} description={translate('View activity logs for various modules')} url={route('stream.index')}>
+            <Head title={translate('Streams')} />
 
             {useHasPermission('manage-stream') && (
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -59,7 +59,7 @@ export default function Index({ modules }: StreamsIndexProps) {
                                     <CardContent>
                                         {useHasPermission('view-stream') && (
                                             <p className="text-sm text-gray-600">
-                                                {t('View activity logs for')} {t(title.toLowerCase())}
+                                                {translate('View activity logs for')} {t(title.toLowerCase())}
                                             </p>
                                         )}
                                     </CardContent>

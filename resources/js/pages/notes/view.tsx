@@ -7,7 +7,7 @@ interface ViewProps {
 }
 
 export default function View({ record }: ViewProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
 
     return (
         <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto p-0" onOpenAutoFocus={(e) => e.preventDefault()}>
@@ -16,7 +16,7 @@ export default function View({ record }: ViewProps) {
                     <div className="bg-primary/10 rounded-lg p-2">
                         <NotebookPen className="text-primary h-5 w-5" />
                     </div>
-                    <DialogTitle className="text-xl font-semibold">{t('Note Details')}</DialogTitle>
+                    <DialogTitle className="text-xl font-semibold">{translate('Note Details')}</DialogTitle>
                 </div>
             </DialogHeader>
 
@@ -26,14 +26,14 @@ export default function View({ record }: ViewProps) {
                     <div>
                         <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                             <NotebookPen className="h-4 w-4" />
-                            {t('Title')}
+                            {translate('Title')}
                         </label>
                         <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{record.title || '-'}</p>
                     </div>
                     <div>
                         <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                             <User className="h-4 w-4" />
-                            {t('Created By')}
+                            {translate('Created By')}
                         </label>
                         <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{record.creator?.name || '-'}</p>
                     </div>
@@ -44,7 +44,7 @@ export default function View({ record }: ViewProps) {
                     <div>
                         <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                             <Share2 className="h-4 w-4" />
-                            {t('Shared With')}
+                            {translate('Shared With')}
                         </label>
                         <div className="mt-1 flex flex-wrap gap-2">
                             {record.shared_users.map((user: any) => (
@@ -62,10 +62,10 @@ export default function View({ record }: ViewProps) {
 
                 {/* Content */}
                 <div>
-                    <label className="text-sm font-medium text-gray-500">{t('Content')}</label>
+                    <label className="text-sm font-medium text-gray-500">{translate('Content')}</label>
                     <div
                         className="prose prose-sm mt-2 max-w-none text-sm text-gray-900 dark:text-white"
-                        dangerouslySetInnerHTML={{ __html: record.content || t('No content') }}
+                        dangerouslySetInnerHTML={{ __html: record.content || translate('No content') }}
                     />
                 </div>
             </div>

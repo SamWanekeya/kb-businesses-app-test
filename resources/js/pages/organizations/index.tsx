@@ -23,7 +23,7 @@ import { useTranslation } from 'react-i18next';
 import ViewPopup from '@pages/organizations/view';
 
 export default function Organizations() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, organizations, plans, filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();
@@ -150,7 +150,7 @@ export default function Organizations() {
 
     const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
-            toast.loading(t('Creating organization...'));
+            toast.loading(translate('Creating organization...'));
 
             router.post(route('organizations.store'), formData, {
                 forceFormData: true,
@@ -173,7 +173,7 @@ export default function Organizations() {
                 },
             });
         } else if (formMode === 'edit') {
-            toast.loading(t('Updating organization...'));
+            toast.loading(translate('Updating organization...'));
 
             router.put(route('organizations.update', currentOrganization.id), formData, {
                 onSuccess: (page) => {
@@ -198,7 +198,7 @@ export default function Organizations() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting organization...'));
+        toast.loading(translate('Deleting organization...'));
 
         router.delete(route('organizations.destroy', currentOrganization.id), {
             onSuccess: (page) => {
@@ -222,7 +222,7 @@ export default function Organizations() {
     };
 
     const handleResetPasswordConfirm = (data: { password: string }) => {
-        toast.loading(t('Resetting password...'));
+        toast.loading(translate('Resetting password...'));
 
         router.put(route('organizations.reset-password', currentOrganization.id), data, {
             onSuccess: (page) => {
@@ -246,7 +246,7 @@ export default function Organizations() {
     };
 
     const handleToggleStatus = (organization: any) => {
-        toast.loading(t('Updating status...'));
+        toast.loading(translate('Updating status...'));
 
         router.put(
             route('organizations.toggle-status', organization.id),
@@ -293,7 +293,7 @@ export default function Organizations() {
         setCurrentOrganization(organization);
 
         // Fetch available plans
-        toast.loading(t('Loading plans...'));
+        toast.loading(translate('Loading plans...'));
         fetch(route('organizations.plans', organization.id))
             .then((res) => res.json())
             .then((data) => {
@@ -303,12 +303,12 @@ export default function Organizations() {
             })
             .catch((err) => {
                 toast.dismiss();
-                toast.error(t('Failed to load plans'));
+                toast.error(translate('Failed to load plans'));
             });
     };
 
     const handleUpgradePlanConfirm = (planId: number, duration: string) => {
-        toast.loading(t('Upgrading plan...'));
+        toast.loading(translate('Upgrading plan...'));
 
         // Use Inertia router to handle the request
         router.put(
@@ -349,28 +349,28 @@ export default function Organizations() {
             icon: <History className="mx-auto h-4 w-4" />,
             variant: 'outline',
             onClick: () => router.visit(route('sign-in-history.index')),
-            tooltip: t('Sign in History'),
+            tooltip: translate('Sign in History'),
         });
     }
 
     pageActions.push({
-        label: t('Add Organization'),
+        label: translate('Add Organization'),
         icon: <Plus className="mr-0 h-4 w-4 min-[480px]:mr-2" />,
         variant: 'default',
         onClick: () => handleAddNew(),
         className: 'h-8 w-8 min-[480px]:h-9 min-[480px]:w-auto px-0 min-[480px]:px-4',
         labelClassName: 'hidden min-[480px]:inline',
-        tooltip: t('Add Organization'),
+        tooltip: translate('Add Organization'),
         tooltipClassName: 'min-[480px]:hidden',
     });
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Organizations') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Organizations') }];
 
     // Define table columns
     const columns = [
         {
             key: 'name',
-            label: t('Name'),
+            label: translate('Name'),
             sortable: true,
             render: (value: any, row: any) => (
                 <div className="flex items-center gap-3">
@@ -387,7 +387,7 @@ export default function Organizations() {
         },
         {
             key: 'plan_name',
-            label: t('Plan'),
+            label: translate('Plan'),
             render: (value: string) => (
                 <span
                     className={
@@ -400,7 +400,7 @@ export default function Organizations() {
         },
         {
             key: 'created_at',
-            label: t('Created At'),
+            label: translate('Created At'),
             sortable: true,
             render: (value: string) => (
                 <div className="flex items-center gap-1.5 whitespace-nowrap text-gray-500">
@@ -413,43 +413,43 @@ export default function Organizations() {
 
     const actions = [
         {
-            label: t('Sign in as Organization'),
+            label: translate('Sign in as Organization'),
             icon: 'ArrowUpRight',
             action: 'sign-in-as',
             className: 'text-blue-500',
         },
         {
-            label: t('Organization Info'),
+            label: translate('Organization Info'),
             icon: 'Info',
             action: 'organization-info',
             className: 'text-blue-500',
         },
         {
-            label: t('Upgrade Plan'),
+            label: translate('Upgrade Plan'),
             icon: 'CreditCard',
             action: 'upgrade-plan',
             className: 'text-amber-500',
         },
         {
-            label: t('Reset Password'),
+            label: translate('Reset Password'),
             icon: 'KeyRound',
             action: 'reset-password',
             className: 'text-blue-500',
         },
         {
-            label: t('Toggle Status'),
+            label: translate('Toggle Status'),
             icon: 'Lock',
             action: 'toggle-status',
             className: 'text-amber-500',
         },
         {
-            label: t('Edit'),
+            label: translate('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
         },
         {
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
@@ -458,8 +458,8 @@ export default function Organizations() {
 
     return (
         <PageTemplate
-            title={t('Organizations')}
-            description={t('Manage and view all organizations in the system.')}
+            title={translate('Organizations')}
+            description={translate('Manage and view all organizations in the system.')}
             url="/organizations"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -474,26 +474,26 @@ export default function Organizations() {
                     filters={[
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             value: selectedStatus,
                             onChange: handleStatusFilter,
                             options: [
-                                { value: 'all', label: t('All Status') },
-                                { value: 'active', label: t('Active') },
-                                { value: 'inactive', label: t('Inactive') },
+                                { value: 'all', label: translate('All Status') },
+                                { value: 'active', label: translate('Active') },
+                                { value: 'inactive', label: translate('Inactive') },
                             ],
                         },
                         {
                             name: 'start_date',
-                            label: t('Start Date'),
+                            label: translate('Start Date'),
                             type: 'date',
                             value: startDate,
                             onChange: (date) => setStartDate(date),
                         },
                         {
                             name: 'end_date',
-                            label: t('End Date'),
+                            label: translate('End Date'),
                             type: 'date',
                             value: endDate,
                             onChange: (date) => setEndDate(date),
@@ -553,7 +553,7 @@ export default function Organizations() {
                         to={organizations?.to || 0}
                         total={organizations?.total || 0}
                         links={organizations?.links}
-                        entityName={t('organizations')}
+                        entityName={translate('organizations')}
                         onPageChange={(url) => router.get(url)}
                         currentPerPage={pageFilters.per_page?.toString() || '10'}
                         onPerPageChange={(value) => {
@@ -592,7 +592,7 @@ export default function Organizations() {
                                                 : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                                         }`}
                                     >
-                                        {organization.status === 'active' ? t('Active') : t('Inactive')}
+                                        {organization.status === 'active' ? translate('Active') : translate('Inactive')}
                                     </div>
                                 </div>
 
@@ -637,12 +637,12 @@ export default function Organizations() {
                                                 onClick={() => handleAction('upgrade-plan', organization)}
                                                 className="text-primary hover:text-primary hover:bg-primary/10 h-6 px-2 text-xs"
                                             >
-                                                {t('Upgrade')}
+                                                {translate('Upgrade')}
                                             </Button>
                                         </div>
                                         {organization.plan_expiry_date && (
                                             <div className="text-xs text-gray-500 dark:text-gray-400">
-                                                {t('Expires')}:{' '}
+                                                {translate('Expires')}:{' '}
                                                 {window.appSettings?.formatDateTime(organization.plan_expiry_date, false) ||
                                                     new Date(organization.plan_expiry_date).toLocaleDateString()}
                                             </div>
@@ -663,7 +663,7 @@ export default function Organizations() {
                                                         <ArrowUpRight className="h-4 w-4 text-gray-500" />
                                                     </Button>
                                                 </TooltipTrigger>
-                                                <TooltipContent>{t('Sign in as Organization')}</TooltipContent>
+                                                <TooltipContent>{translate('Sign in as Organization')}</TooltipContent>
                                             </Tooltip>
 
                                             <Tooltip>
@@ -677,7 +677,7 @@ export default function Organizations() {
                                                         <Info className="h-4 w-4 text-gray-500" />
                                                     </Button>
                                                 </TooltipTrigger>
-                                                <TooltipContent>{t('Organization Info')}</TooltipContent>
+                                                <TooltipContent>{translate('Organization Info')}</TooltipContent>
                                             </Tooltip>
 
                                             <Tooltip>
@@ -691,7 +691,7 @@ export default function Organizations() {
                                                         <Edit className="h-4 w-4 text-gray-500" />
                                                     </Button>
                                                 </TooltipTrigger>
-                                                <TooltipContent>{t('Edit')}</TooltipContent>
+                                                <TooltipContent>{translate('Edit')}</TooltipContent>
                                             </Tooltip>
                                         </div>
 
@@ -723,7 +723,7 @@ export default function Organizations() {
                                             <DropdownMenuContent align="end" className="z-50 w-48" sideOffset={5}>
                                                 <DropdownMenuItem onClick={() => handleAction('reset-password', organization)}>
                                                     <KeyRound className="mr-2 h-4 w-4 text-gray-500" />
-                                                    <span>{t('Reset Password')}</span>
+                                                    <span>{translate('Reset Password')}</span>
                                                 </DropdownMenuItem>
                                                 <DropdownMenuItem onClick={() => handleAction('toggle-status', organization)}>
                                                     {organization.status === 'active' ? (
@@ -731,7 +731,7 @@ export default function Organizations() {
                                                     ) : (
                                                         <Unlock className="mr-2 h-4 w-4 text-gray-500" />
                                                     )}
-                                                    <span>{organization.status === 'active' ? t('Disable Sign in') : t('Enable Sign in')}</span>
+                                                    <span>{organization.status === 'active' ? translate('Disable Sign in') : translate('Enable Sign in')}</span>
                                                 </DropdownMenuItem>
                                                 <DropdownMenuSeparator />
                                                 <DropdownMenuItem
@@ -739,7 +739,7 @@ export default function Organizations() {
                                                     className="text-red-600 focus:text-red-600"
                                                 >
                                                     <Trash2 className="mr-2 h-4 w-4 text-gray-500" />
-                                                    <span>{t('Delete')}</span>
+                                                    <span>{translate('Delete')}</span>
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
@@ -763,11 +763,11 @@ export default function Organizations() {
                                             />
                                         </svg>
                                     </div>
-                                    <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{t('No organizations found')}</h3>
-                                    <p className="mb-6 text-gray-500 dark:text-gray-400">{t('Get started by creating your first organization')}</p>
+                                    <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{translate('No organizations found')}</h3>
+                                    <p className="mb-6 text-gray-500 dark:text-gray-400">{translate('Get started by creating your first organization')}</p>
                                     <Button onClick={handleAddNew} className="inline-flex items-center">
                                         <Plus className="mr-2 h-4 w-4" />
-                                        {t('Add Organization')}
+                                        {translate('Add Organization')}
                                     </Button>
                                 </div>
                             </div>
@@ -782,7 +782,7 @@ export default function Organizations() {
                                 to={organizations?.to || 0}
                                 total={organizations?.total || 0}
                                 links={organizations?.links}
-                                entityName={t('organizations')}
+                                entityName={translate('organizations')}
                                 onPageChange={(url) => router.get(url)}
                                 perPageOptions={[12, 24, 48, 96]}
                                 currentPerPage={pageFilters.per_page?.toString() || '12'}
@@ -830,11 +830,11 @@ export default function Organizations() {
                 }}
                 formConfig={{
                     fields: [
-                        { name: 'name', label: t('Organization Name'), type: 'text', placeholder: t('eg. Acme Corp'), required: true },
-                        { name: 'email', label: t('Email'), type: 'email', placeholder: t('eg. admin@acmecorp.com'), required: true },
+                        { name: 'name', label: translate('Organization Name'), type: 'text', placeholder: translate('eg. Acme Corp'), required: true },
+                        { name: 'email', label: translate('Email'), type: 'email', placeholder: translate('eg. admin@acmecorp.com'), required: true },
                         {
                             name: 'sign_in_enabled',
-                            label: t('Enable Sign in'),
+                            label: translate('Enable Sign in'),
                             placeholder: '', // Empty placeholder to prevent duplicate label
                             type: 'switch',
                             defaultValue: true,
@@ -842,9 +842,9 @@ export default function Organizations() {
                         },
                         {
                             name: 'password',
-                            label: t('Password'),
+                            label: translate('Password'),
                             type: 'password',
-                            placeholder: t('Enter Password'),
+                            placeholder: translate('Enter Password'),
                             required: (mode) => mode === 'create',
                             conditional: (mode, data) => {
                                 return mode !== 'edit' && data?.sign_in_enabled === true;
@@ -857,7 +857,7 @@ export default function Organizations() {
                     ...currentOrganization,
                     sign_in_enabled: currentOrganization?.status === 'active',
                 }}
-                title={formMode === 'create' ? t('Add Organization') : t('Edit Organization')}
+                title={formMode === 'create' ? translate('Add Organization') : translate('Edit Organization')}
                 mode={formMode}
             />
 
@@ -876,7 +876,7 @@ export default function Organizations() {
                 onClose={() => setIsResetPasswordModalOpen(false)}
                 onSubmit={handleResetPasswordConfirm}
                 formConfig={{
-                    fields: [{ name: 'password', label: t('New Password'), type: 'password', placeholder: t('Enter New Password'), required: true }],
+                    fields: [{ name: 'password', label: translate('New Password'), type: 'password', placeholder: translate('Enter New Password'), required: true }],
                     modalSize: 'sm',
                 }}
                 initialData={{}}

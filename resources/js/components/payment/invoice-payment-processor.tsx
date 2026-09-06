@@ -34,7 +34,7 @@ interface InvoicePaymentProcessorProps {
 }
 
 export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuccess, onCancel }: InvoicePaymentProcessorProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('');
     const [showPaymentForm, setShowPaymentForm] = useState(false);
     const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
@@ -330,11 +330,11 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
 
     const handlePayNow = () => {
         if (!selectedPaymentMethod) {
-            toast.error(t('Please select a payment method'));
+            toast.error(translate('Please select a payment method'));
             return;
         }
         if (amount <= 0 || amount > dueAmount) {
-            toast.error(t('Payment amount cannot exceed due amount'));
+            toast.error(translate('Payment amount cannot exceed due amount'));
             return;
         }
         setShowPaymentForm(true);
@@ -722,9 +722,9 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         return (
             <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                    <h3 className="font-medium">{t('Complete Payment')}</h3>
+                    <h3 className="font-medium">{translate('Complete Payment')}</h3>
                     <Button variant="outline" size="sm" onClick={handlePaymentCancel}>
-                        {t('Back')}
+                        {translate('Back')}
                     </Button>
                 </div>
                 {renderPaymentForm()}
@@ -752,7 +752,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
 
             {/* Payment Amount */}
             <div className="space-y-3">
-                <Label htmlFor="amount">{t('Payment Amount')}</Label>
+                <Label htmlFor="amount">{translate('Payment Amount')}</Label>
                 <Input
                     id="amount"
                     type="number"
@@ -772,11 +772,11 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
 
             {/* Payment Methods */}
             <div className="space-y-3">
-                <Label>{t('Select Payment Method')}</Label>
+                <Label>{translate('Select Payment Method')}</Label>
                 {paymentMethods.length === 0 ? (
                     <div className="bg-muted/50 rounded-md border p-4 text-center">
-                        <p className="text-muted-foreground mb-2 text-sm">{t('No payment methods configured')}</p>
-                        <p className="text-muted-foreground text-xs">{t('Please contact the organization to set up payment methods.')}</p>
+                        <p className="text-muted-foreground mb-2 text-sm">{translate('No payment methods configured')}</p>
+                        <p className="text-muted-foreground text-xs">{translate('Please contact the organization to set up payment methods.')}</p>
                     </div>
                 ) : (
                     <div className="space-y-2">
@@ -794,7 +794,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
                                         <span className="font-medium">{method.name}</span>
                                         {selectedPaymentMethod === method.id && (
                                             <Badge variant="secondary" className="ml-auto">
-                                                {t('Selected')}
+                                                {translate('Selected')}
                                             </Badge>
                                         )}
                                     </div>
@@ -808,10 +808,10 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
             {/* Actions */}
             <div className="flex gap-3">
                 <Button variant="outline" onClick={onCancel} className="flex-1">
-                    {t('Cancel')}
+                    {translate('Cancel')}
                 </Button>
                 <Button onClick={handlePayNow} disabled={paymentMethods.length === 0 || amount <= 0 || amount > dueAmount} className="flex-1">
-                    {t('Pay')} {formatCurrency(amount)}
+                    {translate('Pay')} {formatCurrency(amount)}
                 </Button>
             </div>
         </div>

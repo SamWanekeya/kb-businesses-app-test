@@ -54,7 +54,7 @@ import { useTranslation } from 'react-i18next';
 import StorageSettings from '@pages/settings/components/storage-settings';
 
 export default function Settings() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { position } = useLayout();
     const {
         systemSettings = {},
@@ -71,75 +71,75 @@ export default function Settings() {
     // Define all possible sidebar navigation items
     const allSidebarNavItems: (NavItem & { permission?: string; role?: string })[] = [
         {
-            title: t('System Settings'),
+            title: translate('System Settings'),
             href: '#system-settings',
             icon: <SettingsIcon className="mr-2 h-4 w-4" />,
             permission: 'manage-system-settings',
         },
         {
-            title: t('Brand Settings'),
+            title: translate('Brand Settings'),
             href: '#brand-settings',
             icon: <Palette className="mr-2 h-4 w-4" />,
             permission: 'manage-brand-settings',
         },
         {
-            title: t('Currency Settings'),
+            title: translate('Currency Settings'),
             href: '#currency-settings',
             icon: <DollarSign className="mr-2 h-4 w-4" />,
             permission: 'manage-currency-settings',
         },
         {
-            title: t('Email Settings'),
+            title: translate('Email Settings'),
             href: '#email-settings',
             icon: <Mail className="mr-2 h-4 w-4" />,
             permission: 'manage-email-settings',
         },
         {
-            title: t('Email Notification Settings'),
+            title: translate('Email Notification Settings'),
             href: '#email-notification-settings',
             icon: <Bell className="mr-2 h-4 w-4" />,
             permission: 'manage-email-notifications',
         },
         {
-            title: t('Twilio Settings'),
+            title: translate('Twilio Settings'),
             href: '#twilio-notification-settings',
             icon: <MessageSquare className="mr-2 h-4 w-4" />,
             permission: 'manage-twilio-notifications',
         },
         {
-            title: t('Slack Settings'),
+            title: translate('Slack Settings'),
             href: '#slack-notification-settings',
             icon: <Slack className="mr-2 h-4 w-4" />,
             permission: 'manage-twilio-notifications',
         },
         {
-            title: t('Payment Settings'),
+            title: translate('Payment Settings'),
             href: '#payment-settings',
             icon: <CreditCard className="mr-2 h-4 w-4" />,
             permission: 'manage-payment-settings',
         },
         {
-            title: t('Payment Settings'),
+            title: translate('Payment Settings'),
             href: '#organization-payment-settings',
             icon: <CreditCard className="mr-2 h-4 w-4" />,
             permission: 'settings',
         },
         {
-            title: t('Quote Templates'),
+            title: translate('Quote Templates'),
             href: '#quote-templates',
             icon: <FileText className="mr-2 h-4 w-4" />,
             role: 'organization',
             permission: 'manage-quotes-settings',
         },
         {
-            title: t('Sales Order Templates'),
+            title: translate('Sales Order Templates'),
             href: '#sales-order-templates',
             icon: <ShoppingBag className="mr-2 h-4 w-4" />,
             role: 'organization',
             permission: 'manage-sales-orders-settings',
         },
         {
-            title: t('Invoice Templates'),
+            title: translate('Invoice Templates'),
             href: '#invoice-templates',
             icon: <FileText className="mr-2 h-4 w-4" />,
             role: 'organization',
@@ -147,43 +147,43 @@ export default function Settings() {
         },
 
         {
-            title: t('ReCaptcha Settings'),
+            title: translate('ReCaptcha Settings'),
             href: '#recaptcha-settings',
             icon: <Shield className="mr-2 h-4 w-4" />,
             permission: 'manage-recaptcha-settings',
         },
         {
-            title: t('Chat GPT Settings'),
+            title: translate('Chat GPT Settings'),
             href: '#chatgpt-settings',
             icon: <Bot className="mr-2 h-4 w-4" />,
             permission: 'manage-chatgpt-settings',
         },
         {
-            title: t('Cookie Settings'),
+            title: translate('Cookie Settings'),
             href: '#cookie-settings',
             icon: <Cookie className="mr-2 h-4 w-4" />,
             permission: 'manage-cookie-settings',
         },
         {
-            title: t('SEO Settings'),
+            title: translate('SEO Settings'),
             href: '#seo-settings',
             icon: <Search className="mr-2 h-4 w-4" />,
             permission: 'manage-seo-settings',
         },
         {
-            title: t('Storage Settings'),
+            title: translate('Storage Settings'),
             href: '#storage-settings',
             icon: <HardDrive className="mr-2 h-4 w-4" />,
             permission: 'manage-storage-settings',
         },
         {
-            title: t('Cache Settings'),
+            title: translate('Cache Settings'),
             href: '#cache-settings',
             icon: <HardDrive className="mr-2 h-4 w-4" />,
             permission: 'manage-cache-settings',
         },
         {
-            title: t('Google Calendar Settings'),
+            title: translate('Google Calendar Settings'),
             href: '#google-calendar-settings',
             icon: <Calendar className="mr-2 h-4 w-4" />,
             permission: 'settings',
@@ -192,7 +192,7 @@ export default function Settings() {
 
     if (auth?.user?.type !== 'super_admin') {
         allSidebarNavItems.push({
-            title: t('Webhook Settings'),
+            title: translate('Webhook Settings'),
             href: '#webhook-settings',
             icon: <Webhook className="mr-2 h-4 w-4" />,
             permission: 'manage-webhook-settings',
@@ -347,7 +347,7 @@ export default function Settings() {
     // Force layout recalculation on mount to fix issues where layout is stuck
     useEffect(() => {
         const triggerResize = () => {
-            window.dispatchEvent(new Event('resize'));
+            window.dispatchEvent(new Eventranslate('resize'));
         };
 
         const timers = [setTimeout(triggerResize, 0), setTimeout(triggerResize, 100), setTimeout(triggerResize, 300)];
@@ -368,10 +368,10 @@ export default function Settings() {
         }
     };
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Settings') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Settings') }];
 
     return (
-        <PageTemplate title={t('Settings')} description={t('Manage system settings.')} url="/settings" breadcrumbs={breadcrumbs}>
+        <PageTemplate title={translate('Settings')} description={translate('Manage system settings.')} url="/settings" breadcrumbs={breadcrumbs}>
             <style>{`
                 @media (min-width: 1024px) {
                     [data-slot="sidebar-inset"] {

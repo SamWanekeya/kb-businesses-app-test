@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ViewPopup from '@pages/notes/view';
 export default function Notes() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const {
         auth,
         myNotes,
@@ -99,7 +99,7 @@ export default function Notes() {
                 setIsFormModalOpen(false);
                 toast.success(t(formMode === 'create' ? 'Note created successfully.' : 'Note updated successfully.'));
             },
-            onError: () => toast.error(t('Failed to save note.')),
+            onError: () => toast.error(translate('Failed to save note.')),
         });
     };
 
@@ -107,33 +107,33 @@ export default function Notes() {
         router.delete(route('notes.destroy', currentItem.id), {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                toast.success(t('Note deleted successfully.'));
+                toast.success(translate('Note deleted successfully.'));
             },
-            onError: () => toast.error(t('Failed to delete note.')),
+            onError: () => toast.error(translate('Failed to delete note.')),
         });
     };
 
     const columns = [
-        { key: 'title', label: t('Title'), sortable: true },
-        { key: 'creator', label: t('Created By'), render: (value: any) => value?.name || '-' },
+        { key: 'title', label: translate('Title'), sortable: true },
+        { key: 'creator', label: translate('Created By'), render: (value: any) => value?.name || '-' },
         {
             key: 'shared_users',
-            label: t('Shared With'),
-            render: (value: any[]) => (value?.length ? `${value.length} users` : t('Not shared')),
+            label: translate('Shared With'),
+            render: (value: any[]) => (value?.length ? `${value.length} users` : translate('Not shared')),
         },
-        { key: 'created_at', label: t('Created At'), sortable: true, render: (value: string) => new Date(value).toLocaleDateString() },
+        { key: 'created_at', label: translate('Created At'), sortable: true, render: (value: string) => new Date(value).toLocaleDateString() },
     ];
 
     const actions = [
         {
-            label: t('View'),
+            label: translate('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
             requiredPermission: 'view-notes',
         },
         {
-            label: t('Edit'),
+            label: translate('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
@@ -141,7 +141,7 @@ export default function Notes() {
             condition: (item: any) => item.created_by === auth.user.id,
         },
         {
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
@@ -155,18 +155,18 @@ export default function Notes() {
 
     return (
         <PageTemplate
-            title={t('Notes')}
-            description={t('Manage your personal and shared notes')}
+            title={translate('Notes')}
+            description={translate('Manage your personal and shared notes')}
             actions={
                 useHasPermission('create-notes')
                     ? [
                           {
-                              label: t('Add Note'),
+                              label: translate('Add Note'),
                               variant: 'default',
                               icon: <Plus className="mr-0 h-4 w-4 min-[360px]:mr-2" />,
                               className: 'h-8 w-8 min-[360px]:h-9 min-[360px]:w-auto px-0 min-[360px]:px-4',
                               labelClassName: 'hidden min-[360px]:inline',
-                              tooltip: t('Add Note'),
+                              tooltip: translate('Add Note'),
                               tooltipClassName: 'min-[360px]:hidden',
                               onClick: () => {
                                   setCurrentItem(null);
@@ -178,13 +178,13 @@ export default function Notes() {
                     : []
             }
             noPadding
-            breadcrumbs={[{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Notes') }]}
+            breadcrumbs={[{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Notes') }]}
         >
             <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
                 <Card className="p-4">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm text-gray-500">{t('Total Notes')}</p>
+                            <p className="text-sm text-gray-500">{translate('Total Notes')}</p>
                             <p className="text-2xl font-bold">{totalPersonalNotes + totalSharedNotes}</p>
                         </div>
                         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
@@ -195,7 +195,7 @@ export default function Notes() {
                 <Card className="p-4">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm text-gray-500">{t('Personal Notes')}</p>
+                            <p className="text-sm text-gray-500">{translate('Personal Notes')}</p>
                             <p className="text-2xl font-bold">{totalPersonalNotes}</p>
                         </div>
                         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
@@ -206,7 +206,7 @@ export default function Notes() {
                 <Card className="p-4">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm text-gray-500">{t('Shared Notes')}</p>
+                            <p className="text-sm text-gray-500">{translate('Shared Notes')}</p>
                             <p className="text-2xl font-bold">{totalSharedNotes}</p>
                         </div>
                         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100">
@@ -223,13 +223,13 @@ export default function Notes() {
                     filters={[
                         {
                             name: 'created_by',
-                            label: t('Created By'),
+                            label: translate('Created By'),
                             type: 'select' as const,
                             searchable: true,
                             value: selectedCreator,
                             onChange: setSelectedCreator,
                             options: [
-                                { value: 'all', label: t('All Users') },
+                                { value: 'all', label: translate('All Users') },
                                 ...allUsers.map((user: any) => ({
                                     value: user.id.toString(),
                                     label: user.name,
@@ -273,8 +273,8 @@ export default function Notes() {
                         });
                     }}
                     viewOptions={[
-                        { value: 'grid', label: t('Grid'), icon: 'Grid3X3' },
-                        { value: 'kanban', label: t('Kanban'), icon: 'Columns' },
+                        { value: 'grid', label: translate('Grid'), icon: 'Grid3X3' },
+                        { value: 'kanban', label: translate('Kanban'), icon: 'Columns' },
                     ]}
                 />
             </div>
@@ -285,7 +285,7 @@ export default function Notes() {
                         <div className="flex h-full flex-col overflow-hidden rounded-lg bg-gray-100 p-3 md:p-4 dark:bg-gray-900">
                             <h3 className="mb-3 flex flex-shrink-0 items-center gap-2 text-sm font-semibold md:mb-4 md:text-base">
                                 <Users className="h-4 w-4 md:h-5 md:w-5" />
-                                {t('Personal Notes')} ({myNotesData.length})
+                                {translate('Personal Notes')} ({myNotesData.length})
                             </h3>
                             <div className="flex-1 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 space-y-2 overflow-y-auto pr-1 md:pr-2">
                                 {myNotesData.map((note: any) => (
@@ -302,13 +302,13 @@ export default function Notes() {
                                                     {useHasPermission('view-notes') && (
                                                         <DropdownMenuItem onClick={() => handleAction('view', note)}>
                                                             <Eye className="mr-2 h-4 w-4" />
-                                                            {t('View')}
+                                                            {translate('View')}
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('edit-notes') && note.created_by === auth.user.id && (
                                                         <DropdownMenuItem onClick={() => handleAction('edit', note)}>
                                                             <Edit className="mr-2 h-4 w-4" />
-                                                            {t('Edit')}
+                                                            {translate('Edit')}
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('delete-notes') && note.created_by === auth.user.id && (
@@ -316,7 +316,7 @@ export default function Notes() {
                                                             <DropdownMenuSeparator />
                                                             <DropdownMenuItem onClick={() => handleAction('delete', note)} className="text-red-600">
                                                                 <Trash2 className="mr-2 h-4 w-4" />
-                                                                {t('Delete')}
+                                                                {translate('Delete')}
                                                             </DropdownMenuItem>
                                                         </>
                                                     )}
@@ -325,12 +325,12 @@ export default function Notes() {
                                         </div>
                                         <div
                                             className="line-clamp-2 h-[40px] cursor-pointer overflow-hidden text-sm md:line-clamp-3 md:h-[60px]"
-                                            dangerouslySetInnerHTML={{ __html: note.content || t('No content') }}
+                                            dangerouslySetInnerHTML={{ __html: note.content || translate('No content') }}
                                         />
                                     </Card>
                                 ))}
                                 {myNotesData.length === 0 && (
-                                    <p className="py-6 text-center text-sm text-gray-400 md:py-8 md:text-base">{t('No notes yet')}</p>
+                                    <p className="py-6 text-center text-sm text-gray-400 md:py-8 md:text-base">{translate('No notes yet')}</p>
                                 )}
                             </div>
                         </div>
@@ -338,7 +338,7 @@ export default function Notes() {
                         <div className="flex h-full flex-col overflow-hidden rounded-lg bg-gray-100 p-3 md:p-4 dark:bg-gray-900">
                             <h3 className="mb-3 flex flex-shrink-0 items-center gap-2 text-sm font-semibold md:mb-4 md:text-base">
                                 <Share2 className="h-4 w-4 md:h-5 md:w-5" />
-                                {t('Shared Notes')} ({sharedNotesData.length})
+                                {translate('Shared Notes')} ({sharedNotesData.length})
                             </h3>
                             <div className="flex-1 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 space-y-2 overflow-y-auto pr-1 md:pr-2">
                                 {sharedNotesData.map((note: any) => (
@@ -355,13 +355,13 @@ export default function Notes() {
                                                     {useHasPermission('view-notes') && (
                                                         <DropdownMenuItem onClick={() => handleAction('view', note)}>
                                                             <Eye className="mr-2 h-4 w-4 text-gray-500" />
-                                                            {t('View')}
+                                                            {translate('View')}
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('edit-notes') && note.created_by === auth.user.id && (
                                                         <DropdownMenuItem onClick={() => handleAction('edit', note)}>
                                                             <Edit className="mr-2 h-4 w-4 text-gray-500" />
-                                                            {t('Edit')}
+                                                            {translate('Edit')}
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('delete-notes') && note.created_by === auth.user.id && (
@@ -369,7 +369,7 @@ export default function Notes() {
                                                             <DropdownMenuSeparator />
                                                             <DropdownMenuItem onClick={() => handleAction('delete', note)} className="text-red-600">
                                                                 <Trash2 className="mr-2 h-4 w-4 text-gray-500" />
-                                                                {t('Delete')}
+                                                                {translate('Delete')}
                                                             </DropdownMenuItem>
                                                         </>
                                                     )}
@@ -378,18 +378,18 @@ export default function Notes() {
                                         </div>
                                         <div
                                             className="line-clamp-2 h-[40px] overflow-hidden text-sm md:line-clamp-3 md:h-[60px]"
-                                            dangerouslySetInnerHTML={{ __html: note.content || t('No content') }}
+                                            dangerouslySetInnerHTML={{ __html: note.content || translate('No content') }}
                                         />
                                         <div className="mt-2 flex items-center gap-2 text-xs text-gray-400">
                                             <Users className="h-3 w-3" />
                                             <span>
-                                                {t('By')} {note.creator?.name}
+                                                {translate('By')} {note.creator?.name}
                                             </span>
                                         </div>
                                     </Card>
                                 ))}
                                 {sharedNotesData.length === 0 && (
-                                    <p className="py-6 text-center text-sm text-gray-400 md:py-8 md:text-base">{t('No shared notes')}</p>
+                                    <p className="py-6 text-center text-sm text-gray-400 md:py-8 md:text-base">{translate('No shared notes')}</p>
                                 )}
                             </div>
                         </div>
@@ -400,7 +400,7 @@ export default function Notes() {
                     <div className="mb-6">
                         <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
                             <Users className="h-5 w-5" />
-                            {t('Personal Notes')} <span className="text-gray-500">({myNotesData.length})</span>
+                            {translate('Personal Notes')} <span className="text-gray-500">({myNotesData.length})</span>
                         </h3>
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
                             {myNotesData.map((note: any) => (
@@ -417,7 +417,7 @@ export default function Notes() {
                                         </div>
                                         <p className="mb-3 flex items-center gap-2 text-xs text-gray-500">
                                             <span>
-                                                {t('By')} {note.creator?.name}
+                                                {translate('By')} {note.creator?.name}
                                             </span>
 
                                             {note.created_at ? (
@@ -432,7 +432,7 @@ export default function Notes() {
                                         </p>
                                         <div
                                             className="mb-4 line-clamp-2 h-[40px] overflow-hidden text-sm text-gray-600"
-                                            dangerouslySetInnerHTML={{ __html: note.content || t('No content') }}
+                                            dangerouslySetInnerHTML={{ __html: note.content || translate('No content') }}
                                         />
                                         <div className="flex justify-end gap-1 border-t pt-3">
                                             {useHasPermission('view-notes') && (
@@ -447,7 +447,7 @@ export default function Notes() {
                                                             <Eye className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
-                                                    <TooltipContent>{t('View')}</TooltipContent>
+                                                    <TooltipContent>{translate('View')}</TooltipContent>
                                                 </Tooltip>
                                             )}
                                             {useHasPermission('edit-notes') && note.created_by === auth.user.id && (
@@ -462,7 +462,7 @@ export default function Notes() {
                                                             <Edit className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
-                                                    <TooltipContent>{t('Edit')}</TooltipContent>
+                                                    <TooltipContent>{translate('Edit')}</TooltipContent>
                                                 </Tooltip>
                                             )}
                                             {useHasPermission('delete-notes') && note.created_by === auth.user.id && (
@@ -477,7 +477,7 @@ export default function Notes() {
                                                             <Trash2 className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
-                                                    <TooltipContent>{t('Delete')}</TooltipContent>
+                                                    <TooltipContent>{translate('Delete')}</TooltipContent>
                                                 </Tooltip>
                                             )}
                                         </div>
@@ -490,7 +490,7 @@ export default function Notes() {
                     <div>
                         <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
                             <Share2 className="h-5 w-5" />
-                            {t('Shared Notes')} <span className="text-gray-500">({sharedNotesData.length})</span>
+                            {translate('Shared Notes')} <span className="text-gray-500">({sharedNotesData.length})</span>
                         </h3>
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
                             {sharedNotesData.map((note: any) => (
@@ -507,7 +507,7 @@ export default function Notes() {
                                         </div>
                                         <p className="mb-3 flex items-center gap-2 text-xs text-gray-500">
                                             <span>
-                                                {t('By')} {note.creator?.name}
+                                                {translate('By')} {note.creator?.name}
                                             </span>
 
                                             {note.created_at ? (
@@ -522,7 +522,7 @@ export default function Notes() {
                                         </p>
                                         <div
                                             className="mb-4 line-clamp-2 h-[40px] overflow-hidden text-sm text-gray-600"
-                                            dangerouslySetInnerHTML={{ __html: note.content || t('No content') }}
+                                            dangerouslySetInnerHTML={{ __html: note.content || translate('No content') }}
                                         />
                                         <div className="flex justify-end gap-1 border-t pt-3">
                                             {useHasPermission('view-notes') && (
@@ -537,7 +537,7 @@ export default function Notes() {
                                                             <Eye className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
-                                                    <TooltipContent>{t('View')}</TooltipContent>
+                                                    <TooltipContent>{translate('View')}</TooltipContent>
                                                 </Tooltip>
                                             )}
                                             {useHasPermission('edit-notes') && note.created_by === auth.user.id && (
@@ -552,7 +552,7 @@ export default function Notes() {
                                                             <Edit className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
-                                                    <TooltipContent>{t('Edit')}</TooltipContent>
+                                                    <TooltipContent>{translate('Edit')}</TooltipContent>
                                                 </Tooltip>
                                             )}
                                             {useHasPermission('delete-notes') && note.created_by === auth.user.id && (
@@ -567,7 +567,7 @@ export default function Notes() {
                                                             <Trash2 className="h-4 w-4 text-gray-500" />
                                                         </Button>
                                                     </TooltipTrigger>
-                                                    <TooltipContent>{t('Delete')}</TooltipContent>
+                                                    <TooltipContent>{translate('Delete')}</TooltipContent>
                                                 </Tooltip>
                                             )}
                                         </div>
@@ -583,7 +583,7 @@ export default function Notes() {
                             to={myNotes?.to || 0}
                             total={myNotes?.total || 0}
                             links={myNotes?.links}
-                            entityName={t('notes')}
+                            entityName={translate('notes')}
                             onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
                         />
                     </div>
@@ -598,21 +598,21 @@ export default function Notes() {
                     fields: [
                         {
                             name: 'title',
-                            label: t('Title'),
+                            label: translate('Title'),
                             type: 'text',
                             required: true,
-                            placeholder: t('e.g. Meeting Notes, Project Ideas, Follow-up Tasks'),
+                            placeholder: translate('e.g. Meeting Notes, Project Ideas, Follow-up Tasks'),
                         },
                         {
                             name: 'content',
-                            label: t('Content'),
+                            label: translate('Content'),
                             type: 'rich-textbox',
                             required: true,
                             colSpan: 12,
                         },
                         {
                             name: 'shared_users',
-                            label: t('Share With'),
+                            label: translate('Share With'),
                             type: 'multi-select',
                             options: users.filter((u: any) => u.id !== auth.user.id).map((u: any) => ({ value: u.id, label: u.name })),
                             row: 2,
@@ -625,11 +625,11 @@ export default function Notes() {
                         ? {
                               ...currentItem,
                               shared_users: currentItem.shared_users?.map((u: any) => u.id) || [],
-                              shared_users_names: currentItem.shared_users?.map((u: any) => u.name).join(', ') || t('-'),
+                              shared_users_names: currentItem.shared_users?.map((u: any) => u.name).join(', ') || translate('-'),
                           }
                         : null
                 }
-                title={formMode === 'create' ? t('Add Note') : t('Edit Note')}
+                title={formMode === 'create' ? translate('Add Note') : translate('Edit Note')}
                 mode={formMode}
             />
 
@@ -643,7 +643,7 @@ export default function Notes() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.title || ''}
-                entityName={t('note')}
+                entityName={translate('note')}
             />
         </PageTemplate>
     );

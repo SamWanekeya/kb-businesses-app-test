@@ -42,7 +42,7 @@ interface Props {
 }
 
 export default function NotificationTemplatesIndex({ templates, filters: pageFilters = {} }: Props) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
     const [activeType, setActiveType] = useState(pageFilters.type || 'slack');
 
@@ -108,21 +108,21 @@ export default function NotificationTemplatesIndex({ templates, filters: pageFil
         );
     };
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Notification Templates') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Notification Templates') }];
 
-    const columns = [{ key: 'name', label: t('Name'), sortable: true }];
+    const columns = [{ key: 'name', label: translate('Name'), sortable: true }];
 
-    const actions = [{ label: t('View'), icon: 'Eye', action: 'view', className: 'text-blue-500' }];
+    const actions = [{ label: translate('View'), icon: 'Eye', action: 'view', className: 'text-blue-500' }];
 
     return (
         <PageTemplate
-            title={t('Notification Templates')}
-            description={t('Manage your notification templates.')}
+            title={translate('Notification Templates')}
+            description={translate('Manage your notification templates.')}
             url={route('notification-templates.index')}
             breadcrumbs={breadcrumbs}
             noPadding
         >
-            <Head title={t('Notification Templates')} />
+            <Head title={translate('Notification Templates')} />
 
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <div className="w-full p-3">
@@ -131,7 +131,7 @@ export default function NotificationTemplatesIndex({ templates, filters: pageFil
                             <div className="relative w-64">
                                 <Search className="text-muted-foreground absolute top-2 left-2.5 h-4 w-4" />
                                 <Input
-                                    placeholder={t('Search...')}
+                                    placeholder={translate('Search...')}
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                     className="h-8 w-full px-9"
@@ -188,7 +188,7 @@ export default function NotificationTemplatesIndex({ templates, filters: pageFil
                     to={templates?.to || 0}
                     total={templates?.total || 0}
                     links={templates?.links}
-                    entityName={t('templates')}
+                    entityName={translate('templates')}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
                         router.get(

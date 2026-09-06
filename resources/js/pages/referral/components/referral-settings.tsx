@@ -16,7 +16,7 @@ interface ReferralSettingsProps {
 }
 
 export default function ReferralSettings({ settings, currencySymbol, globalSettings }: ReferralSettingsProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { data, setData, post, processing, errors } = useForm({
         is_enabled: settings.is_enabled,
         commission_percentage: settings.commission_percentage,
@@ -28,7 +28,7 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
         e.preventDefault();
 
         if (!globalSettings?.is_demo) {
-            toast.loading(t('Updating referral settings...'));
+            toast.loading(translate('Updating referral settings...'));
         }
 
         post(route('referral.settings.update'), {
@@ -50,7 +50,7 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
                 if (typeof errors === 'string') {
                     toast.error(t(errors));
                 } else {
-                    toast.error(t('Failed to update referral settings: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to update referral settings: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
             },
         });
@@ -59,19 +59,19 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="text-base font-semibold">{t('Referral Program Settings')}</CardTitle>
+                <CardTitle className="text-base font-semibold">{translate('Referral Program Settings')}</CardTitle>
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="flex items-center space-x-2">
                         <Switch id="is_enabled" checked={data.is_enabled} onCheckedChange={(checked) => setData('is_enabled', checked)} />
-                        <Label htmlFor="is_enabled">{t('Enable Referral Program')}</Label>
+                        <Label htmlFor="is_enabled">{translate('Enable Referral Program')}</Label>
                     </div>
 
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div>
                             <Label htmlFor="commission_percentage" required>
-                                {t('Commission Percentage (%)')}
+                                {translate('Commission Percentage (%)')}
                             </Label>
                             <Input
                                 id="commission_percentage"
@@ -87,7 +87,7 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
 
                         <div>
                             <Label htmlFor="threshold_amount" required>
-                                {t('Minimum Threshold Amount')} {currencySymbol}
+                                {translate('Minimum Threshold Amount')} {currencySymbol}
                             </Label>
                             <Input
                                 id="threshold_amount"
@@ -103,13 +103,13 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
 
                     <div>
                         <Label htmlFor="guidelines" required>
-                            {t('Referral Guidelines')}
+                            {translate('Referral Guidelines')}
                         </Label>
                         <Textarea
                             id="guidelines"
                             value={data.guidelines}
                             onChange={(e) => setData('guidelines', e.target.value)}
-                            placeholder={t('Enter referral program guidelines and terms...')}
+                            placeholder={translate('Enter referral program guidelines and terms...')}
                             rows={6}
                         />
                         {errors.guidelines && <p className="text-sm text-red-500">{errors.guidelines}</p>}
@@ -118,7 +118,7 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
                     <div className="flex justify-end">
                         <Button type="submit" disabled={processing} size="sm">
                             <Save className="me-2 h-4 w-4" />
-                            {processing ? t('Saving...') : t('Save Settings')}
+                            {processing ? translate('Saving...') : translate('Save Settings')}
                         </Button>
                     </div>
                 </form>

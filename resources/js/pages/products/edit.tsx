@@ -19,7 +19,7 @@ const STEPS = [
 ];
 
 export default function ProductEdit() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { product, categories, brands, taxes, users, mainImage, additionalImages, existingSkus } = usePage().props;
     const [step, setStep] = useState(1);
     const [mainImageUrl, setMainImageUrl] = useState<string | null>(typeof mainImage === 'string' ? mainImage : mainImage?.url || null);
@@ -46,9 +46,9 @@ export default function ProductEdit() {
     });
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Products'), href: route('products.index') },
-        { title: t('Edit') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Products'), href: route('products.index') },
+        { title: translate('Edit') },
     ];
 
     const set = (name: string, value: any) => {
@@ -59,25 +59,25 @@ export default function ProductEdit() {
     const validateStep = (s: number) => {
         const errs: Record<string, string> = {};
         if (s === 1) {
-            if (!data.name) errs.name = t('Name is required');
-            if (!data.sku) errs.sku = t('SKU is required');
-            else if (existingSkus.map((s: string) => s.toLowerCase()).includes(data.sku.toLowerCase())) errs.sku = t('SKU already exists');
-            if (!data.category_id) errs.category_id = t('Category is required');
-            if (!data.tax_id) errs.tax_id = t('Tax is required');
-            if (!data.brand_id) errs.brand_id = t('Brand is required');
+            if (!data.name) errs.name = translate('Name is required');
+            if (!data.sku) errs.sku = translate('SKU is required');
+            else if (existingSkus.map((s: string) => s.toLowerCase()).includes(data.sku.toLowerCase())) errs.sku = translate('SKU already exists');
+            if (!data.category_id) errs.category_id = translate('Category is required');
+            if (!data.tax_id) errs.tax_id = translate('Tax is required');
+            if (!data.brand_id) errs.brand_id = translate('Brand is required');
         }
         if (s === 2) {
-            if (!data.price) errs.price = t('Price is required');
-            if (data.price && parseFloat(data.price) < 0) errs.price = t('Price must be at least 0');
-            if (!data.stock_quantity) errs.stock_quantity = t('Stock Quantity is required');
-            if (data.stock_quantity && parseFloat(data.stock_quantity) < 0) errs.stock_quantity = t('Stock Quantity must be at least 0');
+            if (!data.price) errs.price = translate('Price is required');
+            if (data.price && parseFloat(data.price) < 0) errs.price = translate('Price must be at least 0');
+            if (!data.stock_quantity) errs.stock_quantity = translate('Stock Quantity is required');
+            if (data.stock_quantity && parseFloat(data.stock_quantity) < 0) errs.stock_quantity = translate('Stock Quantity must be at least 0');
         }
         if (s === 3) {
-            if (!data.main_image_id) errs.main_image_id = t('Main Image is required');
-            if (!data.additional_image_ids?.length) errs.additional_image_ids = t('Additional Images are required');
+            if (!data.main_image_id) errs.main_image_id = translate('Main Image is required');
+            if (!data.additional_image_ids?.length) errs.additional_image_ids = translate('Additional Images are required');
         }
         if (s === 4) {
-            if (!data.assigned_to) errs.assigned_to = t('Assign To is required');
+            if (!data.assigned_to) errs.assigned_to = translate('Assign To is required');
         }
         return errs;
     };
@@ -120,7 +120,7 @@ export default function ProductEdit() {
             Object.values(allErrs).forEach((msg) => toast.error(msg));
             return;
         }
-        toast.loading(t('Updating product...'));
+        toast.loading(translate('Updating product...'));
         put(route('products.update', product.id), {
             onSuccess: () => toast.dismiss(),
             onError: (errs) => {
@@ -137,12 +137,12 @@ export default function ProductEdit() {
 
     return (
         <PageTemplate
-            title={t('Edit Product')}
+            title={translate('Edit Product')}
             url={route('products.index')}
             breadcrumbs={breadcrumbs}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="me-1 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => router.visit(route('products.index')),
@@ -203,22 +203,22 @@ export default function ProductEdit() {
                                 <div className="space-y-5">
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div className="space-y-1.5">
-                                            <Label required>{t('Name')}</Label>
+                                            <Label required>{translate('Name')}</Label>
                                             <Input
                                                 value={data.name}
-                                                onChange={(e) => set('name', e.target.value)}
+                                                onChange={(e) => setranslate('name', e.target.value)}
                                                 className={errors.name ? 'border-red-500' : ''}
-                                                placeholder={t('Enter Name')}
+                                                placeholder={translate('Enter Name')}
                                             />
                                             {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
                                         </div>
                                         <div className="space-y-1.5">
-                                            <Label required>{t('SKU')}</Label>
+                                            <Label required>{translate('SKU')}</Label>
                                             <Input
                                                 value={data.sku}
-                                                onChange={(e) => set('sku', e.target.value)}
+                                                onChange={(e) => setranslate('sku', e.target.value)}
                                                 className={errors.sku ? 'border-red-500' : ''}
-                                                placeholder={t('Enter SKU')}
+                                                placeholder={translate('Enter SKU')}
                                             />
                                             {errors.sku && <p className="text-xs text-red-500">{errors.sku}</p>}
                                         </div>
@@ -226,10 +226,10 @@ export default function ProductEdit() {
 
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div className="space-y-1.5">
-                                            <Label required>{t('Category')}</Label>
-                                            <Select value={data.category_id} onValueChange={(v) => set('category_id', v)}>
+                                            <Label required>{translate('Category')}</Label>
+                                            <Select value={data.category_id} onValueChange={(v) => setranslate('category_id', v)}>
                                                 <SelectTrigger className={errors.category_id ? 'border-red-500' : ''}>
-                                                    <SelectValue placeholder={t('Select Category')} />
+                                                    <SelectValue placeholder={translate('Select Category')} />
                                                 </SelectTrigger>
                                                 <SelectContent searchable>
                                                     {categories?.map((c: any) => (
@@ -242,10 +242,10 @@ export default function ProductEdit() {
                                             {errors.category_id && <p className="text-xs text-red-500">{errors.category_id}</p>}
                                         </div>
                                         <div className="space-y-1.5">
-                                            <Label required>{t('Brand')}</Label>
-                                            <Select value={data.brand_id} onValueChange={(v) => set('brand_id', v)}>
+                                            <Label required>{translate('Brand')}</Label>
+                                            <Select value={data.brand_id} onValueChange={(v) => setranslate('brand_id', v)}>
                                                 <SelectTrigger className={errors.brand_id ? 'border-red-500' : ''}>
-                                                    <SelectValue placeholder={t('Select Brand')} />
+                                                    <SelectValue placeholder={translate('Select Brand')} />
                                                 </SelectTrigger>
                                                 <SelectContent searchable>
                                                     {brands?.map((b: any) => (
@@ -261,10 +261,10 @@ export default function ProductEdit() {
 
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div className="space-y-1.5">
-                                            <Label required>{t('Tax')}</Label>
-                                            <Select value={data.tax_id} onValueChange={(v) => set('tax_id', v)}>
+                                            <Label required>{translate('Tax')}</Label>
+                                            <Select value={data.tax_id} onValueChange={(v) => setranslate('tax_id', v)}>
                                                 <SelectTrigger className={errors.tax_id ? 'border-red-500' : ''}>
-                                                    <SelectValue placeholder={t('Select Taxes')} />
+                                                    <SelectValue placeholder={translate('Select Taxes')} />
                                                 </SelectTrigger>
                                                 <SelectContent searchable>
                                                     {taxes?.map((tax: any) => (
@@ -279,12 +279,12 @@ export default function ProductEdit() {
                                     </div>
 
                                     <div className="space-y-1.5">
-                                        <Label>{t('Description')}</Label>
+                                        <Label>{translate('Description')}</Label>
                                         <Textarea
                                             value={data.description}
-                                            onChange={(e) => set('description', e.target.value)}
+                                            onChange={(e) => setranslate('description', e.target.value)}
                                             rows={5}
-                                            placeholder={t('Enter description...')}
+                                            placeholder={translate('Enter description...')}
                                         />
                                     </div>
                                 </div>
@@ -295,25 +295,25 @@ export default function ProductEdit() {
                                 <div className="space-y-5">
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div className="space-y-1.5">
-                                            <Label required>{t('Price')}</Label>
+                                            <Label required>{translate('Price')}</Label>
                                             <Input
                                                 type="number"
                                                 step="0.01"
                                                 value={data.price}
-                                                onChange={(e) => set('price', e.target.value)}
+                                                onChange={(e) => setranslate('price', e.target.value)}
                                                 className={errors.price ? 'border-red-500' : ''}
-                                                placeholder={t('e.g. 29.99')}
+                                                placeholder={translate('e.g. 29.99')}
                                             />
                                             {errors.price && <p className="text-xs text-red-500">{errors.price}</p>}
                                         </div>
                                         <div className="space-y-1.5">
-                                            <Label required>{t('Stock Quantity')}</Label>
+                                            <Label required>{translate('Stock Quantity')}</Label>
                                             <Input
                                                 type="number"
                                                 value={data.stock_quantity}
-                                                onChange={(e) => set('stock_quantity', e.target.value)}
+                                                onChange={(e) => setranslate('stock_quantity', e.target.value)}
                                                 className={errors.stock_quantity ? 'border-red-500' : ''}
-                                                placeholder={t('e.g. 100')}
+                                                placeholder={translate('e.g. 100')}
                                             />
                                             {errors.stock_quantity && <p className="text-xs text-red-500">{errors.stock_quantity}</p>}
                                         </div>
@@ -326,12 +326,12 @@ export default function ProductEdit() {
                                 <div className="space-y-5">
                                     <div className="space-y-2">
                                         <Label>
-                                            {t('Main Image')} <span className="text-red-500">*</span>
+                                            {translate('Main Image')} <span className="text-red-500">*</span>
                                         </Label>
                                         <MediaPicker
                                             value={data.main_image_id ?? undefined}
                                             onChange={(v) => {
-                                                set('main_image_id', v);
+                                                setranslate('main_image_id', v);
                                                 if (v) {
                                                     fetch(route('api.media.index'), {
                                                         credentials: 'same-origin',
@@ -347,7 +347,7 @@ export default function ProductEdit() {
                                                     setMainImageUrl(null);
                                                 }
                                             }}
-                                            placeholder={t('Select main image...')}
+                                            placeholder={translate('Select main image...')}
                                             showPreview={true}
                                             returnType="id"
                                         />
@@ -355,12 +355,12 @@ export default function ProductEdit() {
                                     </div>
                                     <div className="space-y-2">
                                         <Label>
-                                            {t('Additional Images')} <span className="text-red-500">*</span>
+                                            {translate('Additional Images')} <span className="text-red-500">*</span>
                                         </Label>
                                         <MediaPicker
                                             value={data.additional_image_ids || []}
-                                            onChange={(v) => set('additional_image_ids', v)}
-                                            placeholder={t('Select additional images...')}
+                                            onChange={(v) => setranslate('additional_image_ids', v)}
+                                            placeholder={translate('Select additional images...')}
                                             multiple={true}
                                             showPreview={true}
                                             returnType="id"
@@ -375,10 +375,10 @@ export default function ProductEdit() {
                                 <div className="space-y-5">
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div className="space-y-1.5">
-                                            <Label required>{t('Assign To')}</Label>
-                                            <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
+                                            <Label required>{translate('Assign To')}</Label>
+                                            <Select value={data.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
                                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                                    <SelectValue placeholder={t('Select user')} />
+                                                    <SelectValue placeholder={translate('Select user')} />
                                                 </SelectTrigger>
                                                 <SelectContent searchable>
                                                     {users?.map((u: any) => (
@@ -391,14 +391,14 @@ export default function ProductEdit() {
                                             {errors.assigned_to && <p className="text-xs text-red-500">{errors.assigned_to}</p>}
                                         </div>
                                         <div className="space-y-1.5">
-                                            <Label>{t('Status')}</Label>
-                                            <Select value={data.status} onValueChange={(v) => set('status', v)}>
+                                            <Label>{translate('Status')}</Label>
+                                            <Select value={data.status} onValueChange={(v) => setranslate('status', v)}>
                                                 <SelectTrigger>
                                                     <SelectValue />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="active">{t('Active')}</SelectItem>
-                                                    <SelectItem value="inactive">{t('Inactive')}</SelectItem>
+                                                    <SelectItem value="active">{translate('Active')}</SelectItem>
+                                                    <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                                 </SelectContent>
                                             </Select>
                                         </div>
@@ -413,15 +413,15 @@ export default function ProductEdit() {
                                     variant="outline"
                                     onClick={() => (step > 1 ? setStep((s) => s - 1) : router.visit(route('products.index')))}
                                 >
-                                    {step > 1 ? t('Previous') : t('Cancel')}
+                                    {step > 1 ? translate('Previous') : translate('Cancel')}
                                 </Button>
                                 {step < 4 ? (
                                     <Button type="button" onClick={(e) => handleNext(e)}>
-                                        {t('Next')}
+                                        {translate('Next')}
                                     </Button>
                                 ) : (
                                     <Button type="submit" disabled={processing}>
-                                        {processing ? t('Saving...') : t('Save Product')}
+                                        {processing ? translate('Saving...') : translate('Save Product')}
                                     </Button>
                                 )}
                             </div>
@@ -432,7 +432,7 @@ export default function ProductEdit() {
                     <div className="hidden w-72 shrink-0 xl:block">
                         <div className="bg-card border-border sticky top-4 overflow-hidden rounded-xl border">
                             <div className="border-border flex items-center justify-between border-b px-4 py-3">
-                                <span className="text-muted-foreground text-xs font-semibold tracking-wide">{t('Live Preview')}</span>
+                                <span className="text-muted-foreground text-xs font-semibold tracking-wide">{translate('Live Preview')}</span>
                             </div>
 
                             {/* Image area */}
@@ -442,7 +442,7 @@ export default function ProductEdit() {
                                 ) : (
                                     <div className="flex flex-col items-center gap-2">
                                         <Box className="text-muted-foreground/30 h-12 w-12" strokeWidth={1} />
-                                        <span className="text-muted-foreground text-xs">{t('No image uploaded')}</span>
+                                        <span className="text-muted-foreground text-xs">{translate('No image uploaded')}</span>
                                     </div>
                                 )}
                             </div>
@@ -450,7 +450,7 @@ export default function ProductEdit() {
                             {/* Product info */}
                             <div className="space-y-3 p-4">
                                 <div>
-                                    <p className="text-foreground text-sm font-semibold">{data.name || t('Untitled Item')}</p>
+                                    <p className="text-foreground text-sm font-semibold">{data.name || translate('Untitled Item')}</p>
                                     <p className="text-muted-foreground mt-0.5 flex items-center gap-1 text-xs">
                                         <Tag className="h-3 w-3 shrink-0" />
                                         {data.sku || 'SKU-XXXXXXXX'}
@@ -459,13 +459,13 @@ export default function ProductEdit() {
 
                                 <div className="grid grid-cols-2 gap-2">
                                     <div className="bg-muted border-border rounded-lg border p-2">
-                                        <p className="text-muted-foreground text-[10px] font-medium tracking-wide">{t('Sale Price')}</p>
+                                        <p className="text-muted-foreground text-[10px] font-medium tracking-wide">{translate('Sale Price')}</p>
                                         <p className="text-foreground mt-0.5 font-mono text-sm font-bold">
                                             {data.price ? `${currencySymbol}${parseFloat(data.price).toFixed(2)}` : `${currencySymbol}0.00`}
                                         </p>
                                     </div>
                                     <div className="rounded-lg border border-orange-200 bg-orange-50 p-2 dark:border-orange-800/40 dark:bg-orange-900/20">
-                                        <p className="text-muted-foreground text-[10px] font-medium tracking-wide">{t('Stock')}</p>
+                                        <p className="text-muted-foreground text-[10px] font-medium tracking-wide">{translate('Stock')}</p>
                                         <p className="mt-0.5 text-sm font-bold text-orange-500">{data.stock_quantity || '0'}</p>
                                     </div>
                                 </div>

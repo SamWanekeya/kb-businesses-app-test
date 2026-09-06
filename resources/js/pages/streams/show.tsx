@@ -38,7 +38,7 @@ interface StreamsShowProps {
 }
 
 export default function Show({ module, moduleTitle, streams = [] }: StreamsShowProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, flash } = usePage().props;
     const permissions = auth?.permissions || [];
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -103,18 +103,18 @@ export default function Show({ module, moduleTitle, streams = [] }: StreamsShowP
     };
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Streams'), href: route('stream.index') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Streams'), href: route('stream.index') },
         { title: t(moduleTitle) },
     ];
 
     return (
         <PageTemplate
             title={t(moduleTitle)}
-            description={t('Activity stream and related information')}
+            description={translate('Activity stream and related information')}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="me-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => router.visit(route('stream.index')),
@@ -123,7 +123,7 @@ export default function Show({ module, moduleTitle, streams = [] }: StreamsShowP
             breadcrumbs={breadcrumbs}
             noPadding
         >
-            <Head title={`${t(moduleTitle)} - ${t('Streams')}`} />
+            <Head title={`${t(moduleTitle)} - ${translate('Streams')}`} />
 
             {useHasPermission('view-stream') && (
                 <>
@@ -131,14 +131,14 @@ export default function Show({ module, moduleTitle, streams = [] }: StreamsShowP
                         <CardHeader className="border-b">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <Calendar className="text-primary me-3 h-5 w-5" />
-                                {t('Activity Stream')}
+                                {translate('Activity Stream')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
                             {(streams ?? []).length === 0 ? (
                                 <div className="text-muted-foreground flex flex-col items-center justify-center py-12">
                                     <MessageCircle className="text-muted-foreground/30 mb-3 h-10 w-10" />
-                                    <p className="text-sm">{t('No activities found')}</p>
+                                    <p className="text-sm">{translate('No activities found')}</p>
                                 </div>
                             ) : (
                                 <div className="max-h-[calc(100vh-327px)] overflow-y-auto px-3 py-4 sm:px-5 sm:py-5">
@@ -158,7 +158,7 @@ export default function Show({ module, moduleTitle, streams = [] }: StreamsShowP
                                                                 </span>
                                                             </TooltipTrigger>
                                                             <TooltipContent side="top">
-                                                                <p>{activity.user?.name || t('System')}</p>
+                                                                <p>{activity.user?.name || translate('System')}</p>
                                                             </TooltipContent>
                                                         </Tooltip>
                                                     </TooltipProvider>
@@ -173,7 +173,7 @@ export default function Show({ module, moduleTitle, streams = [] }: StreamsShowP
                                                 <div className="bg-muted/40 dark:bg-muted/20 border-border flex items-start justify-between gap-2 border-b px-3 py-2 sm:items-center sm:px-4 sm:py-2.5">
                                                     <div className="flex min-w-0 flex-wrap items-center gap-1.5 sm:gap-2">
                                                         <span className="text-foreground max-w-[100px] truncate text-xs font-semibold sm:max-w-[180px] sm:text-sm">
-                                                            {activity.user?.name || t('System')}
+                                                            {activity.user?.name || translate('System')}
                                                         </span>
                                                         <span
                                                             className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset sm:px-2 sm:py-1 ${getActivityBadgeColor(activity.activity_type)}`}
@@ -213,7 +213,7 @@ export default function Show({ module, moduleTitle, streams = [] }: StreamsShowP
                                                                     </Button>
                                                                 </TooltipTrigger>
                                                                 <TooltipContent side="top">
-                                                                    <p>{t('Delete')}</p>
+                                                                    <p>{translate('Delete')}</p>
                                                                 </TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
@@ -269,17 +269,17 @@ export default function Show({ module, moduleTitle, streams = [] }: StreamsShowP
                             if (currentActivity) {
                                 router.delete(route(`stream.delete-${module.replace(/_/g, '-')}`, currentActivity.id), {
                                     onSuccess: () => {
-                                        toast.success(t('Activity deleted successfully'));
+                                        toast.success(translate('Activity deleted successfully'));
                                         setIsDeleteModalOpen(false);
                                     },
                                     onError: () => {
-                                        toast.error(t('Failed to delete activity'));
+                                        toast.error(translate('Failed to delete activity'));
                                     },
                                 });
                             }
                         }}
-                        itemName={t('this activity')}
-                        entityName={t('activity')}
+                        itemName={translate('this activity')}
+                        entityName={translate('activity')}
                     />
                 </>
             )}

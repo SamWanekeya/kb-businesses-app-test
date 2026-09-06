@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function OrganizationPlanRequestsPage() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { flash, planRequests, filters: pageFilters = {}, auth } = usePage().props;
     const permissions = auth?.permissions || [];
 
@@ -82,7 +82,7 @@ export default function OrganizationPlanRequestsPage() {
         router.get(route('organization.plan-requests.index'), params, { preserveState: true, preserveScroll: true });
     };
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Plan Requests') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Plan Requests') }];
 
     const hasActiveFilters = () => {
         return (
@@ -93,7 +93,7 @@ export default function OrganizationPlanRequestsPage() {
     };
 
     return (
-        <PageTemplate title={t('Plan Requests')} url="/organization/plan-requests" breadcrumbs={breadcrumbs} noPadding>
+        <PageTemplate title={translate('Plan Requests')} url="/organization/plan-requests" breadcrumbs={breadcrumbs} noPadding>
             <div className="mb-4 rounded-lg bg-white p-4 shadow dark:bg-gray-900">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}
@@ -163,7 +163,7 @@ export default function OrganizationPlanRequestsPage() {
                     to={planRequests?.to || 0}
                     total={planRequests?.total || 0}
                     links={planRequests?.links}
-                    entityName={t('plan requests')}
+                    entityName={translate('plan requests')}
                     onPageChange={(url) => router.get(url)}
                 />
             </div>

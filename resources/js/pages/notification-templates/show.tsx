@@ -30,7 +30,7 @@ interface Props {
 }
 
 export default function NotificationTemplateShow({ template, languages, variables }: Props) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { flash } = usePage().props;
     const [currentLang, setCurrentLang] = useState(Object.keys(languages)[0] || 'en');
     const [templateLangs, setTemplateLangs] = useState(
@@ -71,20 +71,20 @@ export default function NotificationTemplateShow({ template, languages, variable
     }, [flash]);
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Notification Templates'), href: route('notification-templates.index') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Notification Templates'), href: route('notification-templates.index') },
         { title: template.name },
     ];
 
     return (
         <PageTemplate
             title={template.name}
-            description={t('Notification template details and related information')}
+            description={translate('Notification template details and related information')}
             url={route('notification-templates.show', template.id)}
             breadcrumbs={breadcrumbs}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => router.visit(route('notification-templates.index')),
@@ -98,13 +98,13 @@ export default function NotificationTemplateShow({ template, languages, variable
                     <Card className="w-full min-w-0">
                         <CardHeader className="p-4 sm:p-6">
                             <div className="flex items-center justify-between">
-                                <CardTitle>{t('Template Settings')}</CardTitle>
+                                <CardTitle>{translate('Template Settings')}</CardTitle>
                             </div>
                         </CardHeader>
                         <CardContent className="space-y-4 p-4 pt-0 sm:p-6">
                             <div className="grid gap-2">
-                                <Label>{t('Template Name')}</Label>
-                                <Input value={template.name} placeholder={t('Enter template name')} disabled />
+                                <Label>{translate('Template Name')}</Label>
+                                <Input value={template.name} placeholder={translate('Enter template name')} disabled />
                             </div>
                         </CardContent>
                     </Card>
@@ -113,9 +113,9 @@ export default function NotificationTemplateShow({ template, languages, variable
                         <CardHeader className="p-4 sm:p-6">
                             <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
                                 <div>
-                                    <CardTitle>{t('Notification Content')}</CardTitle>
+                                    <CardTitle>{translate('Notification Content')}</CardTitle>
                                     <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
-                                        {t('Customize notification content for different languages')}
+                                        {translate('Customize notification content for different languages')}
                                     </p>
                                 </div>
                                 <Button
@@ -133,7 +133,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                                     className="w-full shrink-0 sm:w-auto"
                                 >
                                     <Save className="mr-2 h-4 w-4" />
-                                    {t('Save Content')}
+                                    {translate('Save Content')}
                                 </Button>
                             </div>
                         </CardHeader>
@@ -163,38 +163,38 @@ export default function NotificationTemplateShow({ template, languages, variable
                                             </Badge>
                                             <div>
                                                 <span className="font-medium">{name}</span>
-                                                <p className="text-muted-foreground text-xs">{t('Edit notification content for this language')}</p>
+                                                <p className="text-muted-foreground text-xs">{translate('Edit notification content for this language')}</p>
                                             </div>
                                         </div>
 
                                         <div className="space-y-4">
                                             <div className="grid gap-3">
                                                 <Label htmlFor={`title-${code}`} className="text-sm font-medium" required>
-                                                    {t('Notification Title')}
+                                                    {translate('Notification Title')}
                                                 </Label>
                                                 <Input
                                                     id={`title-${code}`}
                                                     value={templateLangs[code]?.title || ''}
                                                     onChange={(e) => handleTitleChange(code, e.target.value)}
-                                                    placeholder={t('Enter notification title (you can use variables like {organization_name})')}
+                                                    placeholder={translate('Enter notification title (you can use variables like {organization_name})')}
                                                     className="focus:ring-primary focus:ring-2"
                                                 />
                                             </div>
 
                                             <div className="space-y-3">
                                                 <Label htmlFor={`content-${code}`} className="text-sm font-medium" required>
-                                                    {t('Notification Content')}
+                                                    {translate('Notification Content')}
                                                 </Label>
                                                 <Textarea
                                                     id={`content-${code}`}
                                                     value={templateLangs[code]?.content || ''}
                                                     onChange={(e) => handleContentChange(code, e.target.value)}
-                                                    placeholder={t('Write your notification content here. You can use variables...')}
+                                                    placeholder={translate('Write your notification content here. You can use variables...')}
                                                     className="focus:ring-primary min-h-[200px] focus:ring-2"
                                                     rows={8}
                                                 />
                                                 <p className="text-muted-foreground text-xs">
-                                                    💡 {t('Tip: Use the variables from the sidebar to personalize your notifications')}
+                                                    💡 {translate('Tip: Use the variables from the sidebar to personalize your notifications')}
                                                 </p>
                                             </div>
                                         </div>
@@ -209,13 +209,13 @@ export default function NotificationTemplateShow({ template, languages, variable
                     <Card className="w-full min-w-0">
                         <CardHeader className="p-4 sm:p-6">
                             <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                                <span>{t('Available Variables')}</span>
+                                <span>{translate('Available Variables')}</span>
                                 <Badge variant="secondary" className="text-xs">
                                     {Object.keys(variables).length}
                                 </Badge>
                             </CardTitle>
                             <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
-                                {t('Click to copy variables to use in your notification content')}
+                                {translate('Click to copy variables to use in your notification content')}
                             </p>
                         </CardHeader>
                         <CardContent className="p-4 pt-0 sm:p-6">
@@ -226,7 +226,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                                         className="group bg-muted/50 hover:bg-muted/80 cursor-pointer rounded-lg border p-3 transition-colors"
                                         onClick={() => {
                                             navigator.clipboard.writeText(variable);
-                                            toast.success(t('Variable copied to clipboard'));
+                                            toast.success(translate('Variable copied to clipboard'));
                                         }}
                                     >
                                         <div className="flex items-center justify-between">
@@ -235,7 +235,7 @@ export default function NotificationTemplateShow({ template, languages, variable
                                             </code>
                                             <div className="opacity-0 transition-opacity group-hover:opacity-100">
                                                 <Badge variant="outline" className="text-xs">
-                                                    {t('Click to copy')}
+                                                    {translate('Click to copy')}
                                                 </Badge>
                                             </div>
                                         </div>
@@ -245,8 +245,8 @@ export default function NotificationTemplateShow({ template, languages, variable
                             </div>
                             <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-3">
                                 <p className="text-xs text-blue-700">
-                                    💡 <strong>{t('Tip')}:</strong>{' '}
-                                    {t('These variables will be automatically replaced with actual values when notifications are sent.')}
+                                    💡 <strong>{translate('Tip')}:</strong>{' '}
+                                    {translate('These variables will be automatically replaced with actual values when notifications are sent.')}
                                 </p>
                             </div>
                         </CardContent>

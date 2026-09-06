@@ -53,74 +53,74 @@ export function AppSidebar() {
 
     const getSuperAdminNavItems = (): NavItem[] => [
         {
-            title: t('Dashboard'),
+            title: translate('Dashboard'),
             href: route('dashboard'),
             icon: LayoutGrid,
-            group: t('Overview'),
+            group: translate('Overview'),
         },
 
         {
-            title: t('Organizations'),
+            title: translate('Organizations'),
             href: route('organizations.index'),
             icon: Briefcase,
-            group: t('Management'),
+            group: translate('Management'),
         },
         {
-            title: t('Media Library'),
+            title: translate('Media Library'),
             href: route('media-library'),
             icon: Image,
-            group: t('Management'),
+            group: translate('Management'),
         },
 
         {
-            title: t('Plans'),
+            title: translate('Plans'),
             icon: CreditCard,
-            group: t('Management'),
+            group: translate('Management'),
             children: [
                 {
-                    title: t('Plans'),
+                    title: translate('Plans'),
                     href: route('plans.index'),
                 },
                 {
-                    title: t('Plan Request'),
+                    title: translate('Plan Request'),
                     href: route('plan-requests.index'),
                 },
                 {
-                    title: t('Plan Orders'),
+                    title: translate('Plan Orders'),
                     href: route('plan-orders.index'),
                 },
             ],
         },
         {
-            title: t('Coupons'),
+            title: translate('Coupons'),
             href: route('coupons.index'),
             icon: TicketPercent,
-            group: t('Management'),
+            group: translate('Management'),
         },
 
         {
-            title: t('Currency'),
+            title: translate('Currency'),
             href: route('currencies.index'),
             icon: DollarSign,
-            group: t('Management'),
+            group: translate('Management'),
         },
         {
-            title: t('Referral Program'),
+            title: translate('Referral Program'),
             href: route('referral.index'),
             icon: Gift,
-            group: t('Management'),
+            group: translate('Management'),
         },
         {
-            title: t('Email Templates'),
+            title: translate('Email Templates'),
             href: route('email-templates.index'),
             icon: Mail,
-            group: t('System Control'),
+            group: translate('System Control'),
         },
         {
-            title: t('Settings'),
+            title: translate('Settings'),
             href: route('settings'),
             icon: Settings,
-            group: t('System Control'),
+            group: translate('System Control'),
         },
     ];
 
@@ -130,10 +130,10 @@ export function AppSidebar() {
         // ── 1. Overview ──────────────────────────────────────────────
         if (useHasPermission('manage-dashboard')) {
             items.push({
-                title: t('Dashboard'),
+                title: translate('Dashboard'),
                 href: route('dashboard'),
                 icon: LayoutGrid,
-                group: t('Overview'),
+                group: translate('Overview'),
             });
         }
 
@@ -143,24 +143,24 @@ export function AppSidebar() {
             useHasPermission('manage-project-tasks')
         ) {
             items.push({
-                title: t('Calendar'),
+                title: translate('Calendar'),
                 href: route('calendar.index'),
                 icon: Calendar,
-                group: t('Overview'),
+                group: translate('Overview'),
             });
         }
 
         if (useHasPermission('manage-reports')) {
             items.push({
-                title: t('Reports'),
+                title: translate('Reports'),
                 icon: TrendingUp,
-                group: t('Overview'),
+                group: translate('Overview'),
                 children: [
-                    { title: t('Lead Reports'), href: route('reports.leads') },
-                    { title: t('Sales Reports'), href: route('reports.sales') },
-                    { title: t('Product Reports'), href: route('reports.product-reports') },
-                    { title: t('Contact Reports'), href: route('reports.customers') },
-                    { title: t('Project Reports'), href: route('reports.projects') },
+                    { title: translate('Lead Reports'), href: route('reports.leads') },
+                    { title: translate('Sales Reports'), href: route('reports.sales') },
+                    { title: translate('Product Reports'), href: route('reports.product-reports') },
+                    { title: translate('Contact Reports'), href: route('reports.customers') },
+                    { title: translate('Project Reports'), href: route('reports.projects') },
                 ],
             });
         }
@@ -168,225 +168,225 @@ export function AppSidebar() {
         // ── 2. CRM ───────────────────────────────────────────────────
         const leadChildren = [];
         if (useHasPermission('manage-leads')) {
-            leadChildren.push({ title: t('Leads'), href: route('leads.index') });
+            leadChildren.push({ title: translate('Leads'), href: route('leads.index') });
         }
         if (useHasPermission('manage-lead-sources')) {
-            leadChildren.push({ title: t('Lead Sources'), href: route('lead-sources.index') });
+            leadChildren.push({ title: translate('Lead Sources'), href: route('lead-sources.index') });
         }
         if (useHasPermission('manage-lead-statuses')) {
-            leadChildren.push({ title: t('Lead Status'), href: route('lead-statuses.index') });
+            leadChildren.push({ title: translate('Lead Status'), href: route('lead-statuses.index') });
         }
         if (leadChildren.length > 0) {
-            items.push({ title: t('Lead Management'), icon: Users, group: t('CRM'), children: leadChildren });
+            items.push({ title: translate('Lead Management'), icon: Users, group: translate('CRM'), children: leadChildren });
         }
 
         const opportunityChildren = [];
         if (useHasPermission('manage-opportunities')) {
-            opportunityChildren.push({ title: t('Opportunities'), href: route('opportunities.index') });
+            opportunityChildren.push({ title: translate('Opportunities'), href: route('opportunities.index') });
         }
         if (useHasPermission('manage-opportunity-sources')) {
-            opportunityChildren.push({ title: t('Opportunity Sources'), href: route('opportunity-sources.index') });
+            opportunityChildren.push({ title: translate('Opportunity Sources'), href: route('opportunity-sources.index') });
         }
         if (useHasPermission('manage-opportunity-stages')) {
-            opportunityChildren.push({ title: t('Opportunity Stages'), href: route('opportunity-stages.index') });
+            opportunityChildren.push({ title: translate('Opportunity Stages'), href: route('opportunity-stages.index') });
         }
         if (opportunityChildren.length > 0) {
-            items.push({ title: t('Opportunity Management'), icon: TrendingUp, group: t('CRM'), children: opportunityChildren });
+            items.push({ title: translate('Opportunity Management'), icon: TrendingUp, group: translate('CRM'), children: opportunityChildren });
         }
 
         const accountChildren = [];
         if (useHasPermission('manage-accounts')) {
-            accountChildren.push({ title: t('Accounts'), href: route('accounts.index') });
+            accountChildren.push({ title: translate('Accounts'), href: route('accounts.index') });
         }
         if (useHasPermission('manage-account-types')) {
-            accountChildren.push({ title: t('Account Types'), href: route('account-types.index') });
+            accountChildren.push({ title: translate('Account Types'), href: route('account-types.index') });
         }
         if (useHasPermission('manage-account-industries')) {
-            accountChildren.push({ title: t('Account Industries'), href: route('account-industries.index') });
+            accountChildren.push({ title: translate('Account Industries'), href: route('account-industries.index') });
         }
         if (accountChildren.length > 0) {
-            items.push({ title: t('Account Management'), icon: Building2, group: t('CRM'), children: accountChildren });
+            items.push({ title: translate('Account Management'), icon: Building2, group: translate('CRM'), children: accountChildren });
         }
 
         if (useHasPermission('manage-contacts')) {
-            items.push({ title: t('Contacts'), href: route('contacts.index'), icon: Users, group: t('CRM') });
+            items.push({ title: translate('Contacts'), href: route('contacts.index'), icon: Users, group: translate('CRM') });
         }
 
         const campaignChildren = [];
         if (useHasPermission('manage-campaigns')) {
-            campaignChildren.push({ title: t('Campaigns'), href: route('campaigns.index') });
+            campaignChildren.push({ title: translate('Campaigns'), href: route('campaigns.index') });
         }
         if (useHasPermission('manage-target-lists')) {
-            campaignChildren.push({ title: t('Target Lists'), href: route('target-lists.index') });
+            campaignChildren.push({ title: translate('Target Lists'), href: route('target-lists.index') });
         }
         if (useHasPermission('manage-campaign-types')) {
-            campaignChildren.push({ title: t('Campaign Types'), href: route('campaign-types.index') });
+            campaignChildren.push({ title: translate('Campaign Types'), href: route('campaign-types.index') });
         }
         if (campaignChildren.length > 0) {
-            items.push({ title: t('Campaign Management'), icon: Megaphone, group: t('CRM'), children: campaignChildren });
+            items.push({ title: translate('Campaign Management'), icon: Megaphone, group: translate('CRM'), children: campaignChildren });
         }
 
         if (useHasPermission('manage-cases')) {
-            items.push({ title: t('Cases'), href: route('cases.index'), icon: FileText, group: t('CRM') });
+            items.push({ title: translate('Cases'), href: route('cases.index'), icon: FileText, group: translate('CRM') });
         }
 
         // ── 3. Sales ─────────────────────────────────────────────────
         if (useHasPermission('manage-quotes')) {
-            items.push({ title: t('Quotes'), href: route('quotes.index'), icon: FileText, group: t('Sales') });
+            items.push({ title: translate('Quotes'), href: route('quotes.index'), icon: FileText, group: translate('Sales') });
         }
 
         if (useHasPermission('manage-sales-orders')) {
-            items.push({ title: t('Sales Orders'), href: route('sales-orders.index'), icon: ShoppingBag, group: t('Sales') });
+            items.push({ title: translate('Sales Orders'), href: route('sales-orders.index'), icon: ShoppingBag, group: translate('Sales') });
         }
 
         if (useHasPermission('manage-invoices')) {
-            items.push({ title: t('Invoices'), href: route('invoices.index'), icon: FileText, group: t('Sales') });
+            items.push({ title: translate('Invoices'), href: route('invoices.index'), icon: FileText, group: translate('Sales') });
         }
 
         if (useHasPermission('manage-receipt-orders')) {
-            items.push({ title: t('Receipt Orders'), href: route('receipt-orders.index'), icon: FileText, group: t('Sales') });
+            items.push({ title: translate('Receipt Orders'), href: route('receipt-orders.index'), icon: FileText, group: translate('Sales') });
         }
 
         // ── 4. Procurement & Fulfillment ─────────────────────────────
         if (useHasPermission('manage-purchase-orders')) {
             items.push({
-                title: t('Purchase Orders'),
+                title: translate('Purchase Orders'),
                 href: route('purchase-orders.index'),
                 icon: ShoppingBag,
-                group: t('Procurement & Fulfillment'),
+                group: translate('Procurement & Fulfillment'),
             });
         }
 
         if (useHasPermission('manage-delivery-orders')) {
-            items.push({ title: t('Delivery Orders'), href: route('delivery-orders.index'), icon: Ticket, group: t('Procurement & Fulfillment') });
+            items.push({ title: translate('Delivery Orders'), href: route('delivery-orders.index'), icon: Ticket, group: translate('Procurement & Fulfillment') });
         }
 
         if (useHasPermission('manage-return-orders')) {
-            items.push({ title: t('Return Orders'), href: route('return-orders.index'), icon: FileText, group: t('Procurement & Fulfillment') });
+            items.push({ title: translate('Return Orders'), href: route('return-orders.index'), icon: FileText, group: translate('Procurement & Fulfillment') });
         }
 
         if (useHasPermission('manage-shipping-provider-types')) {
             items.push({
-                title: t('Shipping Provider Types'),
+                title: translate('Shipping Provider Types'),
                 href: route('shipping-provider-types.index'),
                 icon: Ticket,
-                group: t('Procurement & Fulfillment'),
+                group: translate('Procurement & Fulfillment'),
             });
         }
 
         // ── 5. Catalog ───────────────────────────────────────────────
         const productSetupChildren = [];
         if (useHasPermission('manage-taxes')) {
-            productSetupChildren.push({ title: t('Taxes'), href: route('taxes.index') });
+            productSetupChildren.push({ title: translate('Taxes'), href: route('taxes.index') });
         }
         if (useHasPermission('manage-brands')) {
-            productSetupChildren.push({ title: t('Brands'), href: route('brands.index') });
+            productSetupChildren.push({ title: translate('Brands'), href: route('brands.index') });
         }
         if (useHasPermission('manage-categories')) {
-            productSetupChildren.push({ title: t('Categories'), href: route('categories.index') });
+            productSetupChildren.push({ title: translate('Categories'), href: route('categories.index') });
         }
         if (useHasPermission('manage-products')) {
-            items.push({ title: t('Products'), href: route('products.index'), icon: ShoppingBag, group: t('Catalog') });
+            items.push({ title: translate('Products'), href: route('products.index'), icon: ShoppingBag, group: translate('Catalog') });
         }
         if (productSetupChildren.length > 0) {
-            items.push({ title: t('Product Setup'), icon: Package, group: t('Catalog'), children: productSetupChildren });
+            items.push({ title: translate('Product Setup'), icon: Package, group: translate('Catalog'), children: productSetupChildren });
         }
 
         // ── 6. Collaboration ─────────────────────────────────────────
         if (useHasPermission('manage-meetings')) {
-            items.push({ title: t('Meetings'), href: route('meetings.index'), icon: CalendarDays, group: t('Collaboration') });
+            items.push({ title: translate('Meetings'), href: route('meetings.index'), icon: CalendarDays, group: translate('Collaboration') });
         }
 
         if (useHasPermission('manage-calls')) {
-            items.push({ title: t('Calls'), href: route('calls.index'), icon: Phone, group: t('Collaboration') });
+            items.push({ title: translate('Calls'), href: route('calls.index'), icon: Phone, group: translate('Collaboration') });
         }
 
         if (useHasPermission('manage-stream')) {
-            items.push({ title: t('Streams'), href: route('stream.index'), icon: Activity, group: t('Collaboration') });
+            items.push({ title: translate('Streams'), href: route('stream.index'), icon: Activity, group: translate('Collaboration') });
         }
 
         if (useHasPermission('manage-notes')) {
-            items.push({ title: t('Notes'), href: route('notes.index'), icon: NotebookPen, group: t('Collaboration') });
+            items.push({ title: translate('Notes'), href: route('notes.index'), icon: NotebookPen, group: translate('Collaboration') });
         }
 
         const announcementChildren = [];
         if (useHasPermission('manage-announcements')) {
-            announcementChildren.push({ title: t('Announcements'), href: route('announcements.index') });
+            announcementChildren.push({ title: translate('Announcements'), href: route('announcements.index') });
         }
         if (useHasPermission('manage-announcement-categories')) {
-            announcementChildren.push({ title: t('Categories'), href: route('announcement-categories.index') });
+            announcementChildren.push({ title: translate('Categories'), href: route('announcement-categories.index') });
         }
         if (announcementChildren.length > 0) {
-            items.push({ title: t('Announcements'), icon: MegaphoneIcon, group: t('Collaboration'), children: announcementChildren });
+            items.push({ title: translate('Announcements'), icon: MegaphoneIcon, group: translate('Collaboration'), children: announcementChildren });
         }
 
         // ── 7. Projects ──────────────────────────────────────────────
         const projectChildren = [];
         if (useHasPermission('manage-projects')) {
-            projectChildren.push({ title: t('Projects'), href: route('projects.index') });
+            projectChildren.push({ title: translate('Projects'), href: route('projects.index') });
         }
         if (useHasPermission('manage-project-tasks')) {
-            projectChildren.push({ title: t('Project Tasks'), href: route('project-tasks.index') });
+            projectChildren.push({ title: translate('Project Tasks'), href: route('project-tasks.index') });
         }
         if (useHasPermission('manage-task-statuses')) {
-            projectChildren.push({ title: t('Task Status'), href: route('task-statuses.index') });
+            projectChildren.push({ title: translate('Task Status'), href: route('task-statuses.index') });
         }
         if (projectChildren.length > 0) {
-            items.push({ title: t('Project Management'), icon: Briefcase, group: t('Projects'), children: projectChildren });
+            items.push({ title: translate('Project Management'), icon: Briefcase, group: translate('Projects'), children: projectChildren });
         }
 
         // ── 8. Documents ─────────────────────────────────────────────
         const documentChildren = [];
         if (useHasPermission('manage-documents')) {
-            documentChildren.push({ title: t('Documents'), href: route('documents.index') });
+            documentChildren.push({ title: translate('Documents'), href: route('documents.index') });
         }
         if (useHasPermission('manage-document-types')) {
-            documentChildren.push({ title: t('Types'), href: route('document-types.index') });
+            documentChildren.push({ title: translate('Types'), href: route('document-types.index') });
         }
         if (documentChildren.length > 0) {
-            items.push({ title: t('Document Management'), icon: Folder, group: t('Documents'), children: documentChildren });
+            items.push({ title: translate('Document Management'), icon: Folder, group: translate('Documents'), children: documentChildren });
         }
 
         if (useHasPermission('manage-media')) {
-            items.push({ title: t('Media Library'), href: route('media-library'), icon: Image, group: t('Documents') });
+            items.push({ title: translate('Media Library'), href: route('media-library'), icon: Image, group: translate('Documents') });
         }
 
         // ── 9. System Control ────────────────────────────────────────
         const staffChildren = [];
         if (useHasPermission('manage-users')) {
-            staffChildren.push({ title: t('Users'), href: route('users.index') });
+            staffChildren.push({ title: translate('Users'), href: route('users.index') });
         }
         if (useHasPermission('manage-roles')) {
-            staffChildren.push({ title: t('Roles'), href: route('roles.index') });
+            staffChildren.push({ title: translate('Roles'), href: route('roles.index') });
         }
         if (staffChildren.length > 0) {
-            items.push({ title: t('Staff'), icon: Users, group: t('System Control'), children: staffChildren });
+            items.push({ title: translate('Staff'), icon: Users, group: translate('System Control'), children: staffChildren });
         }
 
         const planChildren = [];
         if (useHasPermission('manage-plans')) {
-            planChildren.push({ title: t('Plans'), href: route('plans.index') });
+            planChildren.push({ title: translate('Plans'), href: route('plans.index') });
         }
         if (useHasPermission('manage-plan-requests')) {
-            planChildren.push({ title: t('Plan Requests'), href: route('plan-requests.index') });
+            planChildren.push({ title: translate('Plan Requests'), href: route('plan-requests.index') });
         }
         if (useHasPermission('manage-plan-orders')) {
-            planChildren.push({ title: t('Plan Orders'), href: route('plan-orders.index') });
+            planChildren.push({ title: translate('Plan Orders'), href: route('plan-orders.index') });
         }
         if (planChildren.length > 0) {
-            items.push({ title: t('Plans'), icon: CreditCard, group: t('System Control'), children: planChildren });
+            items.push({ title: translate('Plans'), icon: CreditCard, group: translate('System Control'), children: planChildren });
         }
 
         if (useHasPermission('manage-referral')) {
-            items.push({ title: t('Referral Program'), href: route('referral.index'), icon: Gift, group: t('System Control') });
+            items.push({ title: translate('Referral Program'), href: route('referral.index'), icon: Gift, group: translate('System Control') });
         }
 
         if (useHasPermission('manage-notification-templates')) {
-            items.push({ title: t('Notification Templates'), href: route('notification-templates.index'), icon: Mail, group: t('System Control') });
+            items.push({ title: translate('Notification Templates'), href: route('notification-templates.index'), icon: Mail, group: translate('System Control') });
         }
 
         if (useHasPermission('manage-settings')) {
-            items.push({ title: t('Settings'), href: route('settings'), icon: Settings, group: t('System Control') });
+            items.push({ title: translate('Settings'), href: route('settings'), icon: Settings, group: translate('System Control') });
         }
 
         return items;
@@ -523,7 +523,7 @@ export function AppSidebar() {
                             type="text"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder={t('Search menu...')}
+                            placeholder={translate('Search menu...')}
                             className="focus:border-primary focus:ring-primary w-full rounded-md border-1 border-gray-300 bg-gray-50 py-1.5 pr-7 pl-8 text-sm text-gray-700 placeholder-gray-400 transition-all outline-none focus:ring-1 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:placeholder-gray-500"
                         />
                         {searchQuery && (
@@ -562,13 +562,13 @@ export function AppSidebar() {
                         let subText = '';
 
                         if (isExpired) {
-                            subText = t('Plan expired');
+                            subText = translate('Plan expired');
                         } else if (!plan) {
-                            subText = t('No Plan');
+                            subText = translate('No Plan');
                         } else if (isTrial) {
-                            subText = daysLeft !== null ? t('Trial · {{n}} days left', { n: daysLeft }) : t('Trial');
+                            subText = daysLeft !== null ? translate('Trial · {{n}} days left', { n: daysLeft }) : translate('Trial');
                         } else if (daysLeft !== null && daysLeft <= 7) {
-                            subText = t('Expires in {{n}} days', { n: daysLeft });
+                            subText = translate('Expires in {{n}} days', { n: daysLeft });
                         } else {
                             subText = plan.name;
                         }
@@ -610,7 +610,7 @@ export function AppSidebar() {
                                                 className="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
                                             >
                                                 <Gift className="h-4 w-4 text-gray-400" />
-                                                {t('Referral Program')}
+                                                {translate('Referral Program')}
                                             </Link>
 
                                             <Link
@@ -619,7 +619,7 @@ export function AppSidebar() {
                                                 className="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
                                             >
                                                 <CreditCard className="h-4 w-4 text-gray-400" />
-                                                {t('Plans')}
+                                                {translate('Plans')}
                                             </Link>
 
                                             <Link
@@ -628,7 +628,7 @@ export function AppSidebar() {
                                                 className="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
                                             >
                                                 <Settings className="h-4 w-4 text-gray-400" />
-                                                {t('Settings')}
+                                                {translate('Settings')}
                                             </Link>
                                         </div>
 
@@ -641,7 +641,7 @@ export function AppSidebar() {
                                                 className="flex w-full cursor-pointer items-center gap-3 px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
                                             >
                                                 <LogOut className="h-4 w-4 text-gray-400" />
-                                                {t('Log out')}
+                                                {translate('Log out')}
                                             </Link>
                                         </div>
                                     </div>
@@ -684,7 +684,7 @@ export function AppSidebar() {
                                         onClick={(e) => e.stopPropagation()}
                                         className="shrink-0 rounded-lg border border-gray-300 bg-white px-2.5 py-1 text-xs font-semibold text-gray-900 hover:bg-gray-100 hover:!text-gray-900"
                                     >
-                                        {isExpired || !isActive ? t('Renew') : t('Upgrade')}
+                                        {isExpired || !isActive ? translate('Renew') : translate('Upgrade')}
                                     </Link>
                                 </button>
                             </div>

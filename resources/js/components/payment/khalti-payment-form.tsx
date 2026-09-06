@@ -28,13 +28,13 @@ export function KhaltiPaymentForm({
     onSuccess,
     onCancel,
 }: KhaltiPaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     const handlePayment = async () => {
         if (!khaltiPublicKey) {
-            setError(t('Khalti not configured'));
+            setError(translate('Khalti not configured'));
             return;
         }
 
@@ -61,10 +61,10 @@ export function KhaltiPaymentForm({
                 // Initialize Khalti checkout
                 initializeKhaltiCheckout(data);
             } else {
-                throw new Error(data.error || t('Payment creation failed'));
+                throw new Error(data.error || translate('Payment creation failed'));
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : t('Payment initialization failed'));
+            setError(err instanceof Error ? err.message : translate('Payment initialization failed'));
             setIsLoading(false);
         }
     };
@@ -72,7 +72,7 @@ export function KhaltiPaymentForm({
     const initializeKhaltiCheckout = (paymentData: any) => {
         // Load Khalti SDK if not already loaded
         if (!window.KhaltiCheckout) {
-            const script = document.createElement('script');
+            const script = document.createElementranslate('script');
             script.src = 'https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js';
             script.onload = () => {
                 createKhaltiCheckout(paymentData);
@@ -95,7 +95,7 @@ export function KhaltiPaymentForm({
                     handlePaymentSuccess(payload.token, payload.amount);
                 },
                 onError(error: any) {
-                    setError(t('Payment failed'));
+                    setError(translate('Payment failed'));
                     setIsLoading(false);
                 },
                 onClose() {
@@ -120,7 +120,7 @@ export function KhaltiPaymentForm({
             },
             {
                 onSuccess: () => {
-                    toast.success(t('Payment successful'));
+                    toast.success(translate('Payment successful'));
                     onSuccess();
                 },
                 onError: (errors) => {
@@ -132,7 +132,7 @@ export function KhaltiPaymentForm({
     };
 
     const formatPrice = (price: number) => {
-        return new Intl.NumberFormat('en-NP', {
+        return new Intl.NumberFormatranslate('en-NP', {
             style: 'currency',
             currency: currency,
         }).format(price);
@@ -143,7 +143,7 @@ export function KhaltiPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {t('Khalti Payment')}
+                    {translate('Khalti Payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -156,15 +156,15 @@ export function KhaltiPaymentForm({
 
                 <div className="bg-muted rounded-lg p-4">
                     <div className="flex items-center justify-between">
-                        <span className="font-medium">{t('Total Amount')}</span>
+                        <span className="font-medium">{translate('Total Amount')}</span>
                         <span className="text-lg font-bold">{formatPrice(planPrice)}</span>
                     </div>
                     <div className="text-muted-foreground mt-1 text-sm">
-                        {t('Billing Cycle')}: {t(billingCycle)}
+                        {translate('Billing Cycle')}: {t(billingCycle)}
                     </div>
                     {couponCode && (
                         <div className="mt-1 text-sm text-green-600">
-                            {t('Coupon Applied')}: {couponCode}
+                            {translate('Coupon Applied')}: {couponCode}
                         </div>
                     )}
                 </div>
@@ -175,7 +175,7 @@ export function KhaltiPaymentForm({
                 </Alert>
 
                 <div className="rounded-lg border border-purple-200 bg-purple-50 p-4">
-                    <h4 className="mb-2 font-medium text-purple-900">{t('Supported Payment Methods')}</h4>
+                    <h4 className="mb-2 font-medium text-purple-900">{translate('Supported Payment Methods')}</h4>
                     <ul className="space-y-1 text-sm text-purple-800">
                         <li>• Khalti Wallet</li>
                         <li>• eBanking</li>
@@ -187,18 +187,18 @@ export function KhaltiPaymentForm({
 
                 <div className="flex gap-3">
                     <Button variant="outline" onClick={onCancel} disabled={isLoading} className="flex-1">
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     <Button onClick={handlePayment} disabled={isLoading || !khaltiPublicKey} className="flex-1">
                         {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                {t('Processing...')}
+                                {translate('Processing...')}
                             </>
                         ) : (
                             <>
                                 <CreditCard className="mr-2 h-4 w-4" />
-                                {t('Pay with Khalti')}
+                                {translate('Pay with Khalti')}
                             </>
                         )}
                     </Button>

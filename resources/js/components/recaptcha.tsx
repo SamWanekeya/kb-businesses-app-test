@@ -99,7 +99,7 @@ export default function Recaptcha({ onVerify, onExpired, onError }: RecaptchaPro
             }
 
             window.onRecaptchaLoad = loadRecaptcha;
-            const script = document.createElement('script');
+            const script = document.createElementranslate('script');
             script.src = `https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=${recaptchaVersion === 'v3' ? recaptchaSiteKey : 'explicit'}`;
             script.async = true;
             script.defer = true;

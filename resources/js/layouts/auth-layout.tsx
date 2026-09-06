@@ -38,7 +38,7 @@ function hexToAdjustedRgba(hex, opacity = 1, adjust = 0) {
 
 export default function AuthLayout({ children, title, description, icon, status, statusType = 'success' }: AuthLayoutProps) {
     useFavicon();
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [mounted, setMounted] = useState(false);
     const { logoLight, logoDark, themeColor, customColor } = useBrand();
     const { appearance } = useAppearance();

@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import ViewPopup from '@pages/currencies/view';
 
 export default function Currencies() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, currencies, filters: pageFilters = {}, globalSettings } = usePage().props;
     const permissions = auth?.permissions || [];
 
@@ -104,7 +104,7 @@ export default function Currencies() {
     const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
             if (!globalSettings?.is_demo) {
-                toast.loading(t('Creating currency...'));
+                toast.loading(translate('Creating currency...'));
             }
 
             router.post(route('currencies.store'), formData, {
@@ -126,13 +126,13 @@ export default function Currencies() {
                     if (typeof errors === 'string') {
                         toast.error(t(errors));
                     } else {
-                        toast.error(t('Failed to create currency: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        toast.error(translate('Failed to create currency: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
                 },
             });
         } else if (formMode === 'edit') {
             if (!globalSettings?.is_demo) {
-                toast.loading(t('Updating currency...'));
+                toast.loading(translate('Updating currency...'));
             }
 
             router.put(route('currencies.update', currentItem.id), formData, {
@@ -154,7 +154,7 @@ export default function Currencies() {
                     if (typeof errors === 'string') {
                         toast.error(t(errors));
                     } else {
-                        toast.error(t('Failed to update currency: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        toast.error(translate('Failed to update currency: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
                 },
             });
@@ -163,7 +163,7 @@ export default function Currencies() {
 
     const handleDeleteConfirm = () => {
         if (!globalSettings?.is_demo) {
-            toast.loading(t('Deleting currency...'));
+            toast.loading(translate('Deleting currency...'));
         }
 
         router.delete(route('currencies.destroy', currentItem.id), {
@@ -185,7 +185,7 @@ export default function Currencies() {
                 if (typeof errors === 'string') {
                     toast.error(t(errors));
                 } else {
-                    toast.error(t('Failed to delete currency: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to delete currency: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
             },
         });
@@ -201,39 +201,39 @@ export default function Currencies() {
     // Add the "Add New Currency" button if user has permission
     if (useHasPermission('manage-currencies')) {
         pageActions.push({
-            label: t('Add Currency'),
+            label: translate('Add Currency'),
             icon: <Plus className="mr-0 h-4 w-4 min-[340px]:mr-2" />,
             variant: 'default',
             onClick: () => handleAddNew(),
             className: 'h-8 w-8 min-[340px]:h-9 min-[340px]:w-auto px-0 min-[340px]:px-4',
             labelClassName: 'hidden min-[340px]:inline',
-            tooltip: t('Add Currency'),
+            tooltip: translate('Add Currency'),
             tooltipClassName: 'min-[340px]:hidden',
         });
     }
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Currency') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Currency') }];
 
     // Define table columns
     const columns = [
         {
             key: 'name',
-            label: t('Name'),
+            label: translate('Name'),
             sortable: true,
         },
         {
             key: 'code',
-            label: t('Code'),
+            label: translate('Code'),
             sortable: true,
         },
         {
             key: 'symbol',
-            label: t('Symbol'),
+            label: translate('Symbol'),
             sortable: true,
         },
         {
             key: 'is_default',
-            label: t('Default'),
+            label: translate('Default'),
             render: (value: boolean) => (
                 <span
                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
@@ -242,7 +242,7 @@ export default function Currencies() {
                             : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                     }`}
                 >
-                    {value ? t('Yes') : t('No')}
+                    {value ? translate('Yes') : translate('No')}
                 </span>
             ),
         },
@@ -251,21 +251,21 @@ export default function Currencies() {
     // Define table actions
     const actions = [
         {
-            label: t('View'),
+            label: translate('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
             requiredPermission: 'manage-currencies',
         },
         {
-            label: t('Edit'),
+            label: translate('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
             requiredPermission: 'manage-currencies',
         },
         {
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
@@ -276,8 +276,8 @@ export default function Currencies() {
 
     return (
         <PageTemplate
-            title={t('Currency')}
-            description={t('Manage your currencies.')}
+            title={translate('Currency')}
+            description={translate('Manage your currencies.')}
             url="/currencies"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -323,7 +323,7 @@ export default function Currencies() {
                     to={currencies?.to || 0}
                     total={currencies?.total || 0}
                     links={currencies?.links}
-                    entityName={t('currencies')}
+                    entityName={translate('currencies')}
                     onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
@@ -355,41 +355,41 @@ export default function Currencies() {
                     fields: [
                         {
                             name: 'name',
-                            label: t('Currency Name'),
+                            label: translate('Currency Name'),
                             type: 'text',
                             required: true,
-                            placeholder: t('e.g. US Dollar, Euro, British Pound'),
+                            placeholder: translate('e.g. US Dollar, Euro, British Pound'),
                         },
                         {
                             name: 'code',
-                            label: t('Currency Code'),
+                            label: translate('Currency Code'),
                             type: 'text',
                             required: true,
-                            placeholder: t('e.g. USD, EUR, GBP'),
+                            placeholder: translate('e.g. USD, EUR, GBP'),
                         },
                         {
                             name: 'symbol',
-                            label: t('Currency Symbol'),
+                            label: translate('Currency Symbol'),
                             type: 'text',
                             required: true,
-                            placeholder: t('e.g. $, €, £'),
+                            placeholder: translate('e.g. $, €, £'),
                         },
                         {
                             name: 'description',
-                            label: t('Description'),
+                            label: translate('Description'),
                             type: 'textarea',
-                            placeholder: t('Enter currency description...'),
+                            placeholder: translate('Enter currency description...'),
                         },
                         {
                             name: 'is_default',
-                            label: t('Set as Default Currency'),
+                            label: translate('Set as Default Currency'),
                             type: 'checkbox',
                         },
                     ],
                     modalSize: 'lg',
                 }}
                 initialData={currentItem}
-                title={formMode === 'create' ? t('Add New Currency') : formMode === 'edit' ? t('Edit Currency') : t('View Currency')}
+                title={formMode === 'create' ? translate('Add New Currency') : formMode === 'edit' ? translate('Edit Currency') : translate('View Currency')}
                 mode={formMode}
             />
 

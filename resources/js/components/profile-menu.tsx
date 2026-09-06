@@ -14,7 +14,7 @@ import { ChevronDown, LogOut, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export function ProfileMenu() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth } = usePage().props;
     const user = auth?.user;
 
@@ -57,14 +57,14 @@ export function ProfileMenu() {
                     <DropdownMenuItem asChild>
                         <Link href={route('profile')}>
                             <User className="mr-2 h-4 w-4" />
-                            <span>{t('Profile')}</span>
+                            <span>{translate('Profile')}</span>
                         </Link>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
-                    <span>{t('Log out')}</span>
+                    <span>{translate('Log out')}</span>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

@@ -65,13 +65,13 @@ export default function CalendarIndex() {
                 const data = await response.json();
                 if (data.success) {
                     setGoogleEvents(data.events || []);
-                    // toast.success(t('Google Calendar synced successfully'));
+                    // toast.success(translate('Google Calendar synced successfully'));
                 } else {
-                    toast.error(data.message || t('Failed to sync Google Calendar'));
+                    toast.error(data.message || translate('Failed to sync Google Calendar'));
                     setActiveCalendar('local');
                 }
             } catch (error) {
-                toast.error(t('Failed to sync Google Calendar'));
+                toast.error(translate('Failed to sync Google Calendar'));
                 setActiveCalendar('local');
             } finally {
                 setIsSyncing(false);
@@ -201,7 +201,7 @@ export default function CalendarIndex() {
         return 'bg-gray-50 text-gray-700 ring-gray-600/20';
     };
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Calendar') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Calendar') }];
 
     const pageActions = [];
     if (isGoogleCalendarSynced && isGoogleEnabled) {
@@ -213,19 +213,19 @@ export default function CalendarIndex() {
                         <SelectValue>
                             <div className="flex items-center gap-2">
                                 {isSyncing ? <RefreshCw className="h-4 w-4 animate-spin" /> : <></>}
-                                <span>{activeCalendar === 'local' ? t('Local Calendar') : t('Google Calendar')}</span>
+                                <span>{activeCalendar === 'local' ? translate('Local Calendar') : translate('Google Calendar')}</span>
                             </div>
                         </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="local">
                             <div className="flex items-center gap-2">
-                                <span>{t('Local Calendar')}</span>
+                                <span>{translate('Local Calendar')}</span>
                             </div>
                         </SelectItem>
                         <SelectItem value="google">
                             <div className="flex items-center gap-2">
-                                <span>{t('Google Calendar')}</span>
+                                <span>{translate('Google Calendar')}</span>
                             </div>
                         </SelectItem>
                     </SelectContent>
@@ -244,7 +244,7 @@ export default function CalendarIndex() {
     })();
 
     return (
-        <PageTemplate title={t('Calendar')} description={t('Manage your calendar and events.')} breadcrumbs={breadcrumbs} actions={pageActions}>
+        <PageTemplate title={translate('Calendar')} description={translate('Manage your calendar and events.')} breadcrumbs={breadcrumbs} actions={pageActions}>
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
                 <div className="lg:col-span-3">
                     <Card className="p-4">
@@ -309,15 +309,15 @@ export default function CalendarIndex() {
                             <div className="flex flex-wrap items-center gap-4">
                                 <div className="flex items-center gap-1.5">
                                     <div className="h-3 w-3 rounded" style={{ backgroundColor: '#A12582' }}></div>
-                                    <span className="text-foreground text-xs font-medium">{t('Meetings')}</span>
+                                    <span className="text-foreground text-xs font-medium">{translate('Meetings')}</span>
                                 </div>
                                 <div className="flex items-center gap-1.5">
                                     <div className="h-3 w-3 rounded" style={{ backgroundColor: '#10b981' }}></div>
-                                    <span className="text-foreground text-xs font-medium">{t('Calls')}</span>
+                                    <span className="text-foreground text-xs font-medium">{translate('Calls')}</span>
                                 </div>
                                 <div className="flex items-center gap-1.5">
                                     <div className="h-3 w-3 rounded" style={{ backgroundColor: '#f59e0b' }}></div>
-                                    <span className="text-foreground text-xs font-medium">{t('Tasks')}</span>
+                                    <span className="text-foreground text-xs font-medium">{translate('Tasks')}</span>
                                 </div>
                             </div>
                         </div>
@@ -397,7 +397,7 @@ export default function CalendarIndex() {
                 <div className="space-y-6 lg:col-span-1">
                     <Card className="border-border flex flex-col overflow-hidden border p-0 shadow-sm dark:bg-slate-900">
                         <div className="bg-muted/30 shrink-0 border-b px-5 py-4">
-                            <h3 className="text-base font-semibold">{t('Upcoming Events')}</h3>
+                            <h3 className="text-base font-semibold">{translate('Upcoming Events')}</h3>
                         </div>
 
                         <div className="custom-scrollbar h-[360px] overflow-y-auto">
@@ -449,7 +449,7 @@ export default function CalendarIndex() {
                             ) : (
                                 <div className="flex flex-col items-center justify-center gap-3 p-8 text-center">
                                     <Calendar className="text-muted-foreground/30 h-10 w-10" />
-                                    <p className="text-muted-foreground text-sm">{t('No upcoming events this month')}</p>
+                                    <p className="text-muted-foreground text-sm">{translate('No upcoming events this month')}</p>
                                 </div>
                             )}
                         </div>
@@ -458,32 +458,32 @@ export default function CalendarIndex() {
                     <Card className="border-border overflow-hidden border p-0 shadow-sm dark:bg-slate-900">
                         {/* Header */}
                         <div className="border-border border-b px-4 py-4">
-                            <h3 className="text-foreground text-sm font-semibold">{t('This Month')}</h3>
+                            <h3 className="text-foreground text-sm font-semibold">{translate('This Month')}</h3>
                         </div>
 
                         {/* Stats */}
                         <div className="space-y-2 px-4 py-3">
                             {/* Meetings */}
                             <div className="flex items-center justify-between">
-                                <span className="text-muted-foreground text-sm">{t('Meetings')}</span>
+                                <span className="text-muted-foreground text-sm">{translate('Meetings')}</span>
                                 <span className="text-sm font-medium text-blue-600 dark:text-blue-400">{summaryStats.meetings}</span>
                             </div>
 
                             {/* Calls */}
                             <div className="flex items-center justify-between">
-                                <span className="text-muted-foreground text-sm">{t('Calls')}</span>
+                                <span className="text-muted-foreground text-sm">{translate('Calls')}</span>
                                 <span className="text-sm font-medium text-green-600 dark:text-green-400">{summaryStats.calls}</span>
                             </div>
 
                             {/* Leaves */}
                             <div className="flex items-center justify-between">
-                                <span className="text-muted-foreground text-sm">{t('Tasks')}</span>
+                                <span className="text-muted-foreground text-sm">{translate('Tasks')}</span>
                                 <span className="text-sm font-medium text-amber-600 dark:text-amber-400">{summaryStats.tasks}</span>
                             </div>
                             {/* Total */}
                             <div className="border-border -mx-4 border-t px-4 pt-2">
                                 <div className="flex items-center justify-between">
-                                    <span className="text-muted-foreground text-sm">{t('Total Events')}</span>
+                                    <span className="text-muted-foreground text-sm">{translate('Total Events')}</span>
                                     <span className="text-foreground text-sm font-semibold">{summaryStats.total}</span>
                                 </div>
                             </div>
@@ -511,7 +511,7 @@ export default function CalendarIndex() {
                                         getEventColor(selectedEvent.type || 'event')
                                     }
                                 >
-                                    {selectedEvent.type ? t(capitalize(selectedEvent.type)) : t('Event')}
+                                    {selectedEvent.type ? t(capitalize(selectedEvent.type)) : translate('Event')}
                                 </span>
                             </div>
 
@@ -521,13 +521,13 @@ export default function CalendarIndex() {
                                         <Clock className="mt-0.5 h-4 w-4 text-gray-500" />
                                         <div className="flex-1">
                                             <div className="flex items-center gap-2">
-                                                <strong className="text-gray-700">{t('Start')}:</strong>
+                                                <strong className="text-gray-700">{translate('Start')}:</strong>
                                                 <span className="text-gray-600">
                                                     {selectedEvent.start ? <>{window.appSettings?.formatDateTime(selectedEvent.start)}</> : '-'}
                                                 </span>
                                             </div>
                                             <div className="mt-1 flex items-center gap-2">
-                                                <strong className="text-gray-700">{t('End')}:</strong>
+                                                <strong className="text-gray-700">{translate('End')}:</strong>
                                                 <span className="text-gray-600">
                                                     {selectedEvent.end ? <>{window.appSettings?.formatDateTime(selectedEvent.end)}</> : '-'}
                                                 </span>
@@ -538,27 +538,27 @@ export default function CalendarIndex() {
 
                                 {selectedEvent.status && (
                                     <div className="flex items-center gap-2 text-sm">
-                                        <strong>{t('Status')}:</strong>
+                                        <strong>{translate('Status')}:</strong>
                                         <span
                                             className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${getStatusClasses(selectedEvent.status, selectedEvent.type)}`}
                                         >
                                             {selectedEvent.type === 'meeting' || selectedEvent.type === 'call'
                                                 ? selectedEvent.status === 'planned'
-                                                    ? t('Planned')
+                                                    ? translate('Planned')
                                                     : selectedEvent.status === 'held'
-                                                      ? t('Held')
+                                                      ? translate('Held')
                                                       : selectedEvent.status === 'not_held'
-                                                        ? t('Not Held')
+                                                        ? translate('Not Held')
                                                         : selectedEvent.status
                                                 : selectedEvent.type === 'task'
                                                   ? selectedEvent.status === 'to_do'
-                                                      ? t('To Do')
+                                                      ? translate('To Do')
                                                       : selectedEvent.status === 'in_progress'
-                                                        ? t('In Progress')
+                                                        ? translate('In Progress')
                                                         : selectedEvent.status === 'review'
-                                                          ? t('Review')
+                                                          ? translate('Review')
                                                           : selectedEvent.status === 'done'
-                                                            ? t('Done')
+                                                            ? translate('Done')
                                                             : selectedEvent.status
                                                   : t(capitalize(selectedEvent.status))}
                                         </span>
@@ -567,21 +567,21 @@ export default function CalendarIndex() {
 
                                 {selectedEvent.description && (
                                     <div className="text-sm">
-                                        <strong className="text-gray-700">{t('Description')}:</strong>
+                                        <strong className="text-gray-700">{translate('Description')}:</strong>
                                         <p className="mt-1 text-gray-600">{selectedEvent.description}</p>
                                     </div>
                                 )}
 
                                 {selectedEvent.location && (
                                     <div className="text-sm">
-                                        <strong className="text-gray-700">{t('Location')}:</strong>
+                                        <strong className="text-gray-700">{translate('Location')}:</strong>
                                         <span className="ml-2 text-gray-600">{selectedEvent.location}</span>
                                     </div>
                                 )}
 
                                 {selectedEvent.parent_name && (
                                     <div className="text-sm">
-                                        <strong className="text-gray-700">{t('Related to')}:</strong>
+                                        <strong className="text-gray-700">{translate('Related to')}:</strong>
                                         <span className="ml-2 text-gray-600">{selectedEvent.parent_name}</span>
                                     </div>
                                 )}
@@ -610,7 +610,7 @@ export default function CalendarIndex() {
                                             className="flex items-center gap-2"
                                         >
                                             <ExternalLink className="h-4 w-4" />
-                                            {t('View Details')}
+                                            {translate('View Details')}
                                         </Button>
                                     </div>
                                 ) : null;

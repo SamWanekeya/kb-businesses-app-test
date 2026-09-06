@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { useTranslation } from 'react-i18next';
 
 export default function DeleteUser() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
 
     const confirmUserDeletion = () => {
@@ -29,7 +29,7 @@ export default function DeleteUser() {
 
     return (
         <div className="rounded-lg border p-6">
-            <h3 className="mb-4 text-lg font-medium">{t('Delete Account')}</h3>
+            <h3 className="mb-4 text-lg font-medium">{translate('Delete Account')}</h3>
             <p className="mb-6 text-sm text-neutral-500 dark:text-neutral-400">
                 {t(
                     'Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.',
@@ -37,7 +37,7 @@ export default function DeleteUser() {
             </p>
 
             <Button variant="destructive" onClick={confirmUserDeletion}>
-                {t('Delete Account')}
+                {translate('Delete Account')}
             </Button>
 
             <Dialog open={confirmingUserDeletion} onOpenChange={setConfirmingUserDeletion}>
@@ -45,7 +45,7 @@ export default function DeleteUser() {
                     <DialogHeader>
                         <DialogTitle className="flex items-center gap-2">
                             <AlertCircle className="h-5 w-5 text-red-500" />
-                            {t('Delete Account')}
+                            {translate('Delete Account')}
                         </DialogTitle>
                         <DialogDescription>
                             {t(
@@ -56,10 +56,10 @@ export default function DeleteUser() {
 
                     <DialogFooter>
                         <Button variant="outline" onClick={closeModal}>
-                            {t('Cancel')}
+                            {translate('Cancel')}
                         </Button>
                         <Button variant="destructive" onClick={deleteUser}>
-                            {t('Delete Account')}
+                            {translate('Delete Account')}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

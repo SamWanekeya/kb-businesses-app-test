@@ -143,7 +143,7 @@ export function CrudFormModal({
     description,
     isSubmitting = false,
 }: CrudFormModalProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [formData, setFormData] = useState<Record<string, any>>({});
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [relationOptions, setRelationOptions] = useState<Record<string, any[]>>({});
@@ -674,7 +674,7 @@ export function CrudFormModal({
             }
 
             if (field.type === 'rich-textbox') {
-                return <div dangerouslySetInnerHTML={{ __html: formData.content || t('No content') }} />;
+                return <div dangerouslySetInnerHTML={{ __html: formData.content || translate('No content') }} />;
             }
 
             // For other field types
@@ -1135,12 +1135,12 @@ export function CrudFormModal({
                             <div className="mt-1 text-xs text-gray-500">
                                 {field.fileValidation.extensions && (
                                     <span>
-                                        {t('Allowed extensions')}: {field.fileValidation.extensions.join(', ')}{' '}
+                                        {translate('Allowed extensions')}: {field.fileValidation.extensions.join(', ')}{' '}
                                     </span>
                                 )}
                                 {field.fileValidation.maxSize && (
                                     <span>
-                                        {t('Max size')}: {(field.fileValidation.maxSize / (1024 * 1024)).toFixed(1)}MB
+                                        {translate('Max size')}: {(field.fileValidation.maxSize / (1024 * 1024)).toFixed(1)}MB
                                     </span>
                                 )}
                             </div>
@@ -1152,7 +1152,7 @@ export function CrudFormModal({
                                 {formData[field.name] && formData[field.name] instanceof File ? (
                                     // Preview for newly selected file
                                     <div className="mt-2">
-                                        <p className="mb-1 text-xs text-gray-500">{t('Preview')}:</p>
+                                        <p className="mb-1 text-xs text-gray-500">{translate('Preview')}:</p>
                                         <img
                                             src={URL.createObjectURL(formData[field.name])}
                                             alt="Preview"
@@ -1164,7 +1164,7 @@ export function CrudFormModal({
                                     initialData[field.name] && (
                                         // Show existing image in edit mode
                                         <div className="mt-2">
-                                            <p className="mb-1 text-xs text-gray-500">{t('Current image')}:</p>
+                                            <p className="mb-1 text-xs text-gray-500">{translate('Current image')}:</p>
                                             <img
                                                 src={
                                                     typeof initialData[field.name] === 'string' &&
@@ -1193,7 +1193,7 @@ export function CrudFormModal({
                         key={formData.id || 'create'}
                         value={formData[field.name] || ''}
                         onChange={(content) => handleChange(field.name, content)}
-                        placeholder={field.placeholder || t('Enter content...')}
+                        placeholder={field.placeholder || translate('Enter content...')}
                         className="min-h-[200px]"
                         disabled={mode == 'view' || field.disabled}
                     />
@@ -1259,18 +1259,18 @@ export function CrudFormModal({
                         {formConfig.priceSummary && (
                             <div className="mb-4 rounded-lg bg-gray-50 p-4">
                                 <div className="mb-2 flex items-center justify-between">
-                                    <span className="text-sm text-gray-600">{t('Unit Price')}:</span>
+                                    <span className="text-sm text-gray-600">{translate('Unit Price')}:</span>
                                     <span className="font-medium">${formConfig.priceSummary.unitPrice.toFixed(2)}</span>
                                 </div>
                                 <div className="mb-2 flex items-center justify-between">
-                                    <span className="text-sm text-gray-600">{t('Quantity')}:</span>
+                                    <span className="text-sm text-gray-600">{translate('Quantity')}:</span>
                                     <span className="font-medium">
                                         {formData[formConfig.priceSummary.quantityFieldName || 'quantity'] || formConfig.priceSummary.quantity || 1}
                                     </span>
                                 </div>
                                 <div className="border-t pt-2">
                                     <div className="flex items-center justify-between">
-                                        <span className="font-semibold">{t('Total Price')}:</span>
+                                        <span className="font-semibold">{translate('Total Price')}:</span>
                                         <span className="text-primary text-lg font-bold">${calculateTotal().toFixed(2)}</span>
                                     </div>
                                 </div>
@@ -1376,11 +1376,11 @@ export function CrudFormModal({
                 </div>
                 <DialogFooter className="mt-auto flex flex-col-reverse gap-2 border-t px-6 py-4 sm:flex-row sm:justify-end">
                     <Button type="button" variant="outline" onClick={onClose} className="w-full sm:w-auto">
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     {mode !== 'view' && (
                         <Button type="button" onClick={handleSubmit} disabled={isSubmitting} className="w-full sm:w-auto">
-                            {t('Save')}
+                            {translate('Save')}
                         </Button>
                     )}
                 </DialogFooter>

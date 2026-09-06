@@ -19,7 +19,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Invoices() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
     const { flash } = usePage().props;
 
@@ -144,7 +144,7 @@ export default function Invoices() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting invoice...'));
+        toast.loading(translate('Deleting invoice...'));
 
         router.delete(route('invoices.destroy', currentItem.id), {
             onSuccess: () => {
@@ -168,14 +168,14 @@ export default function Invoices() {
                 setIsStatusModalOpen(false);
             },
             onError: (errors) => {
-                toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
     };
 
     const handleToggleStatus = (invoice: any) => {
         const newStatus = invoice.status === 'draft' ? 'sent' : 'draft';
-        toast.loading(`${newStatus === 'sent' ? t('Sending') : t('Setting to draft')} invoice...`);
+        toast.loading(`${newStatus === 'sent' ? translate('Sending') : translate('Setting to draft')} invoice...`);
 
         router.put(
             route('invoices.toggle-status', invoice.id),
@@ -208,15 +208,15 @@ export default function Invoices() {
         navigator.clipboard
             .writeText(invoiceUrl)
             .then(() => {
-                toast.success(t('Invoice link copied to clipboard!'));
+                toast.success(translate('Invoice link copied to clipboard!'));
             })
             .catch(() => {
-                toast.error(t('Failed to copy invoice link'));
+                toast.error(translate('Failed to copy invoice link'));
             });
     };
 
     const handleSendReminder = (invoice: any, type: string) => {
-        toast.loading(t('Sending payment reminder...'));
+        toast.loading(translate('Sending payment reminder...'));
 
         router.post(
             route('invoices.send-reminder', invoice.id),
@@ -244,12 +244,12 @@ export default function Invoices() {
             setReminderHistory(data.reminders || []);
             setShowReminderHistoryModal(true);
         } catch (error) {
-            toast.error(t('Failed to load reminder history'));
+            toast.error(translate('Failed to load reminder history'));
         }
     };
 
     const handleApprovePayment = async (payment: any) => {
-        toast.loading(t('Approving payment...'));
+        toast.loading(translate('Approving payment...'));
         try {
             const response = await fetch(route('invoice-payments.approve', payment.id), {
                 method: 'POST',
@@ -264,19 +264,19 @@ export default function Invoices() {
                 if (data.message) {
                     toast.success(t(data.message));
                 } else {
-                    toast.success(t('Payment approved successfully'));
+                    toast.success(translate('Payment approved successfully'));
                 }
                 router.reload({ only: ['pendingPayments', 'invoices'] });
             } else {
                 if (data.message) {
                     toast.error(t(data.message));
                 } else {
-                    toast.error(t('Failed to approve payment'));
+                    toast.error(translate('Failed to approve payment'));
                 }
             }
         } catch (error) {
             toast.dismiss();
-            toast.error(t('Failed to approve payment'));
+            toast.error(translate('Failed to approve payment'));
         }
     };
 
@@ -286,7 +286,7 @@ export default function Invoices() {
     };
 
     const handleRejectConfirm = async () => {
-        toast.loading(t('Rejecting payment...'));
+        toast.loading(translate('Rejecting payment...'));
         try {
             const response = await fetch(route('invoice-payments.reject', currentPayment.id), {
                 method: 'POST',
@@ -302,7 +302,7 @@ export default function Invoices() {
                 if (data.message) {
                     toast.success(t(data.message));
                 } else {
-                    toast.success(t('Payment rejected successfully'));
+                    toast.success(translate('Payment rejected successfully'));
                 }
                 setShowRejectModal(false);
                 setRejectNotes('');
@@ -311,12 +311,12 @@ export default function Invoices() {
                 if (data.message) {
                     toast.error(t(data.message));
                 } else {
-                    toast.error(t('Failed to reject payment'));
+                    toast.error(translate('Failed to reject payment'));
                 }
             }
         } catch (error) {
             toast.dismiss();
-            toast.error(t('Failed to reject payment'));
+            toast.error(translate('Failed to reject payment'));
         }
     };
 
@@ -332,7 +332,7 @@ export default function Invoices() {
     const handleResetFilters = () => {
         setSearchTerm('');
         setSelectedStatus('all');
-        setSelectedAccount('all');
+        setSelectedAccountranslate('all');
         setSelectedAssignee('all');
         router.get(route('invoices.index'));
     };
@@ -342,36 +342,36 @@ export default function Invoices() {
     // Add export button
     if (useHasPermission('export-invoices')) {
         pageActions.push({
-            label: t('Export'),
+            label: translate('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
             variant: 'outline',
             onClick: () => (window.location.href = route('invoice.export')),
             className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
             labelClassName: 'hidden min-[400px]:inline',
-            tooltip: t('Export'),
+            tooltip: translate('Export'),
             tooltipClassName: 'min-[400px]:hidden',
         });
     }
 
     if (useHasPermission('create-invoices')) {
         pageActions.push({
-            label: t('Add Invoice'),
+            label: translate('Add Invoice'),
             icon: <Plus className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
             variant: 'default',
             onClick: () => handleAddNew(),
             className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
             labelClassName: 'hidden min-[400px]:inline',
-            tooltip: t('Add Invoice'),
+            tooltip: translate('Add Invoice'),
             tooltipClassName: 'min-[400px]:hidden',
         });
     }
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Invoices') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Invoices') }];
 
     const columns = [
         {
             key: 'invoice_number',
-            label: t('Invoice Number'),
+            label: translate('Invoice Number'),
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: string, item: any) => (
@@ -388,13 +388,13 @@ export default function Invoices() {
         },
         {
             key: 'name',
-            label: t('Name'),
+            label: translate('Name'),
             sortable: true,
             render: (value: string) => <span className="font-medium whitespace-nowrap">{value || '-'}</span>,
         },
         {
             key: 'assigned_user',
-            label: t('Assigned To'),
+            label: translate('Assigned To'),
             className: 'whitespace-nowrap',
             render: (value: any) =>
                 value ? (
@@ -409,12 +409,12 @@ export default function Invoices() {
                         </div>
                     </div>
                 ) : (
-                    <span className="whitespace-nowrap">{t('Unassigned')}</span>
+                    <span className="whitespace-nowrap">{translate('Unassigned')}</span>
                 ),
         },
         {
             key: 'total_amount',
-            label: t('Total Amount'),
+            label: translate('Total Amount'),
             className: 'whitespace-nowrap',
             render: (value: any) => (
                 <span className="font-mono whitespace-nowrap">
@@ -424,7 +424,7 @@ export default function Invoices() {
         },
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             className: 'whitespace-nowrap',
             render: (value: string) => {
                 const statusColors = {
@@ -439,21 +439,21 @@ export default function Invoices() {
                 const getStatusLabel = (status: string) => {
                     switch (status) {
                         case 'draft':
-                            return t('Draft');
+                            return translate('Draft');
                         case 'sent':
-                            return t('Sent');
+                            return translate('Sent');
                         case 'pending':
-                            return t('Pending');
+                            return translate('Pending');
                         case 'paid':
-                            return t('Paid');
+                            return translate('Paid');
                         case 'partially_paid':
-                            return t('Partially Paid');
+                            return translate('Partially Paid');
                         case 'overdue':
-                            return t('Overdue');
+                            return translate('Overdue');
                         case 'cancelled':
-                            return t('Cancelled');
+                            return translate('Cancelled');
                         default:
-                            return t('Draft');
+                            return translate('Draft');
                     }
                 };
                 return (
@@ -467,7 +467,7 @@ export default function Invoices() {
         },
         // {
         //     key: 'due_date',
-        //     label: t('Due Date'),
+        //     label: translate('Due Date'),
         //     sortable: true,
         //     className: 'whitespace-nowrap',
         //     render: (value: string, item: any) => (
@@ -478,7 +478,7 @@ export default function Invoices() {
         // }
         {
             key: 'due_date',
-            label: t('Due Date'),
+            label: translate('Due Date'),
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: string, item: any) => (
@@ -492,7 +492,7 @@ export default function Invoices() {
 
     const actions = [
         {
-            label: t('Send Reminder'),
+            label: translate('Send Reminder'),
             icon: 'Mail',
             action: 'send-reminder',
             className: 'text-purple-500',
@@ -500,42 +500,42 @@ export default function Invoices() {
             condition: (item: any) => ['pending', 'overdue', 'partially_paid'].includes(item.status),
         },
         // {
-        //     label: t('Reminder History'),
+        //     label: translate('Reminder History'),
         //     icon: 'History',
         //     action: 'reminder-history',
         //     className: 'text-indigo-500',
         //     requiredPermission: 'view-invoices'
         // },
         {
-            label: t('Copy Invoice Link'),
+            label: translate('Copy Invoice Link'),
             icon: 'Copy',
             action: 'copy-link',
             className: 'text-purple-500',
             requiredPermission: 'view-invoices',
         },
         {
-            label: t('Change Status'),
+            label: translate('Change Status'),
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
             requiredPermission: 'toggle-status-invoices',
         },
         {
-            label: t('View'),
+            label: translate('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
             requiredPermission: 'view-invoices',
         },
         {
-            label: t('Edit'),
+            label: translate('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
             requiredPermission: 'edit-invoices',
         },
         {
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
@@ -544,20 +544,20 @@ export default function Invoices() {
     ];
 
     const statusOptions = [
-        { value: 'all', label: t('All Statuses') },
-        { value: 'draft', label: t('Draft') },
-        { value: 'sent', label: t('Sent') },
-        { value: 'pending', label: t('Pending') },
-        { value: 'paid', label: t('Paid') },
-        { value: 'partially_paid', label: t('Partially Paid') },
-        { value: 'overdue', label: t('Overdue') },
-        { value: 'cancelled', label: t('Cancelled') },
+        { value: 'all', label: translate('All Statuses') },
+        { value: 'draft', label: translate('Draft') },
+        { value: 'sent', label: translate('Sent') },
+        { value: 'pending', label: translate('Pending') },
+        { value: 'paid', label: translate('Paid') },
+        { value: 'partially_paid', label: translate('Partially Paid') },
+        { value: 'overdue', label: translate('Overdue') },
+        { value: 'cancelled', label: translate('Cancelled') },
     ];
 
     return (
         <PageTemplate
-            title={t('Invoices')}
-            description={t('Manage your invoices.')}
+            title={translate('Invoices')}
+            description={translate('Manage your invoices.')}
             url="/invoices"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -571,7 +571,7 @@ export default function Invoices() {
                     filters={[
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
@@ -579,26 +579,26 @@ export default function Invoices() {
                         },
                         {
                             name: 'account_id',
-                            label: t('Account'),
+                            label: translate('Account'),
                             type: 'select',
                             searchable: true,
                             value: selectedAccount,
                             onChange: setSelectedAccount,
                             options: [
-                                { value: 'all', label: t('All Accounts') },
+                                { value: 'all', label: translate('All Accounts') },
                                 ...(allAccounts?.map((acc: any) => ({ value: acc.id.toString(), label: acc.name })) || []),
                             ],
                         },
                         {
                             name: 'assigned_to',
-                            label: t('Assigned To'),
+                            label: translate('Assigned To'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: t('All Users') },
-                                { value: 'unassigned', label: t('Unassigned') },
+                                { value: 'all', label: translate('All Users') },
+                                { value: 'unassigned', label: translate('Unassigned') },
                                 ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name })),
                             ],
                         },
@@ -612,7 +612,7 @@ export default function Invoices() {
             {/* Pending Invoice Payments Section */}
             {pendingPayments.length > 0 && (
                 <div className="mb-4 rounded-lg bg-white p-4 shadow dark:bg-gray-900">
-                    <h3 className="mb-4 text-lg font-semibold text-gray-800">{t('Pending Invoice Payments')}</h3>
+                    <h3 className="mb-4 text-lg font-semibold text-gray-800">{translate('Pending Invoice Payments')}</h3>
                     <div className="space-y-3">
                         {pendingPayments.map((payment: any) => (
                             <div key={payment.id} className="flex items-center justify-between rounded-lg border p-3">
@@ -621,7 +621,7 @@ export default function Invoices() {
                                         <div>
                                             <p className="font-medium text-gray-900">Invoice #{payment.invoice.invoice_number}</p>
                                             <p className="text-sm text-gray-500">
-                                                {payment.payment_method === 'bank' ? t('Bank Transfer') : payment.payment_method} -
+                                                {payment.payment_method === 'bank' ? translate('Bank Transfer') : payment.payment_method} -
                                                 <span className="font-mono">
                                                     {window.appSettings?.formatCurrency(Number(payment.amount)) ||
                                                         `$${Number(payment.amount).toFixed(2)}`}
@@ -635,12 +635,12 @@ export default function Invoices() {
                                                     rel="noopener noreferrer"
                                                     className="text-xs text-blue-600 hover:underline"
                                                 >
-                                                    {t('View Receipt')}
+                                                    {translate('View Receipt')}
                                                 </a>
                                             )}
                                         </div>
                                         <div className="text-sm text-gray-500">
-                                            {t('Requested')}:{' '}
+                                            {translate('Requested')}:{' '}
                                             {window.appSettings?.formatDateTime(payment.created_at, false) ||
                                                 new Date(payment.created_at).toLocaleDateString()}
                                         </div>
@@ -654,7 +654,7 @@ export default function Invoices() {
                                         onClick={() => handleApprovePayment(payment)}
                                     >
                                         <CheckCircle className="mr-1 h-4 w-4" />
-                                        {t('Approve')}
+                                        {translate('Approve')}
                                     </Button>
                                     <Button
                                         size="sm"
@@ -663,7 +663,7 @@ export default function Invoices() {
                                         onClick={() => handleRejectPayment(payment)}
                                     >
                                         <XCircle className="mr-1 h-4 w-4" />
-                                        {t('Reject')}
+                                        {translate('Reject')}
                                     </Button>
                                 </div>
                             </div>
@@ -698,7 +698,7 @@ export default function Invoices() {
                     to={invoices?.to || 0}
                     total={invoices?.total || 0}
                     links={invoices?.links}
-                    entityName={t('invoices')}
+                    entityName={translate('invoices')}
                     onPageChange={(url) => router.get(url)}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
@@ -728,24 +728,24 @@ export default function Invoices() {
                     fields: [
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             required: true,
                             options: [
-                                { value: 'draft', label: t('Draft') },
-                                { value: 'sent', label: t('Sent') },
-                                { value: 'pending', label: t('Pending') },
-                                { value: 'paid', label: t('Paid') },
-                                { value: 'partially_paid', label: t('Partially Paid') },
-                                { value: 'overdue', label: t('Overdue') },
-                                { value: 'cancelled', label: t('Cancelled') },
+                                { value: 'draft', label: translate('Draft') },
+                                { value: 'sent', label: translate('Sent') },
+                                { value: 'pending', label: translate('Pending') },
+                                { value: 'paid', label: translate('Paid') },
+                                { value: 'partially_paid', label: translate('Partially Paid') },
+                                { value: 'overdue', label: translate('Overdue') },
+                                { value: 'cancelled', label: translate('Cancelled') },
                             ],
                         },
                     ],
                     modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
-                title={t('Change Invoice Status')}
+                title={translate('Change Invoice Status')}
                 mode="edit"
             />
 
@@ -754,37 +754,37 @@ export default function Invoices() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={t('invoice')}
+                entityName={translate('invoice')}
             />
 
             {/* Reject Payment Modal */}
             <Dialog open={showRejectModal} onOpenChange={setShowRejectModal}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>{t('Reject Payment')}</DialogTitle>
+                        <DialogTitle>{translate('Reject Payment')}</DialogTitle>
                     </DialogHeader>
                     <div className="space-y-4">
                         <p className="text-sm text-gray-600">
-                            {t('Are you sure you want to reject this payment for Invoice #{{invoiceNumber}}?', {
+                            {translate('Are you sure you want to reject this payment for Invoice #{{invoiceNumber}}?', {
                                 invoiceNumber: currentPayment?.invoice?.invoice_number,
                             })}
                         </p>
                         <div>
-                            <Label htmlFor="reject-notes">{t('Rejection Notes (Optional)')}</Label>
+                            <Label htmlFor="reject-notes">{translate('Rejection Notes (Optional)')}</Label>
                             <Textarea
                                 id="reject-notes"
                                 value={rejectNotes}
                                 onChange={(e) => setRejectNotes(e.target.value)}
-                                placeholder={t('Enter reason for rejection...')}
+                                placeholder={translate('Enter reason for rejection...')}
                                 className="mt-1"
                             />
                         </div>
                         <div className="flex justify-end space-x-2">
                             <Button variant="outline" onClick={() => setShowRejectModal(false)}>
-                                {t('Cancel')}
+                                {translate('Cancel')}
                             </Button>
                             <Button variant="destructive" onClick={handleRejectConfirm}>
-                                {t('Reject Payment')}
+                                {translate('Reject Payment')}
                             </Button>
                         </div>
                     </div>
@@ -795,19 +795,19 @@ export default function Invoices() {
             <Dialog open={showReminderHistoryModal} onOpenChange={setShowReminderHistoryModal}>
                 <DialogContent className="flex max-h-[80vh] max-w-2xl flex-col overflow-hidden">
                     <DialogHeader>
-                        <DialogTitle>{t('Invoice Payment Reminder History')}</DialogTitle>
+                        <DialogTitle>{translate('Invoice Payment Reminder History')}</DialogTitle>
                     </DialogHeader>
                     <div className="mt-4 flex-1 overflow-y-auto">
                         {reminderHistory.length === 0 ? (
-                            <p className="py-4 text-center text-sm text-gray-500">{t('No reminders sent yet')}</p>
+                            <p className="py-4 text-center text-sm text-gray-500">{translate('No reminders sent yet')}</p>
                         ) : (
                             <div className="overflow-x-auto">
                                 <table className="min-w-full divide-y divide-gray-200">
                                     <thead className="sticky top-0 bg-gray-50">
                                         <tr>
-                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">{t('Sent At')}</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">{t('Type')}</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">{t('Sent By')}</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">{translate('Sent At')}</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">{translate('Type')}</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">{translate('Sent By')}</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-200 bg-white">
@@ -823,7 +823,7 @@ export default function Invoices() {
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                                                    {reminder.sent_by?.name || t('-')}
+                                                    {reminder.sent_by?.name || translate('-')}
                                                 </td>
                                             </tr>
                                         ))}

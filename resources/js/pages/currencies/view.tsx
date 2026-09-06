@@ -7,7 +7,7 @@ interface ViewProps {
 }
 
 export default function View({ record }: ViewProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
 
     return (
         <DialogContent className="max-h-[90vh] max-w-xl overflow-y-auto p-0" onOpenAutoFocus={(e) => e.preventDefault()}>
@@ -16,7 +16,7 @@ export default function View({ record }: ViewProps) {
                     <div className="bg-primary/10 rounded-lg p-2">
                         <Coins className="text-primary h-5 w-5" />
                     </div>
-                    <DialogTitle className="text-xl font-semibold">{t('Currency Details')}</DialogTitle>
+                    <DialogTitle className="text-xl font-semibold">{translate('Currency Details')}</DialogTitle>
                 </div>
             </DialogHeader>
 
@@ -26,14 +26,14 @@ export default function View({ record }: ViewProps) {
                     <div>
                         <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                             <Coins className="h-4 w-4" />
-                            {t('Currency Name')}
+                            {translate('Currency Name')}
                         </label>
                         <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{record.name || '-'}</p>
                     </div>
                     <div>
                         <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                             <Hash className="h-4 w-4" />
-                            {t('Currency Code')}
+                            {translate('Currency Code')}
                         </label>
                         <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{record.code || '-'}</p>
                     </div>
@@ -44,14 +44,14 @@ export default function View({ record }: ViewProps) {
                     <div>
                         <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                             <DollarSign className="h-4 w-4" />
-                            {t('Symbol')}
+                            {translate('Symbol')}
                         </label>
                         <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{record.symbol || '-'}</p>
                     </div>
                     <div>
                         <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                             <Star className="h-4 w-4" />
-                            {t('Default')}
+                            {translate('Default')}
                         </label>
                         <div className="mt-1">
                             <span
@@ -59,7 +59,7 @@ export default function View({ record }: ViewProps) {
                                     record.is_default ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-gray-50 text-gray-700 ring-gray-600/20'
                                 }`}
                             >
-                                {record.is_default ? t('Yes') : t('No')}
+                                {record.is_default ? translate('Yes') : translate('No')}
                             </span>
                         </div>
                     </div>
@@ -70,7 +70,7 @@ export default function View({ record }: ViewProps) {
                     <div>
                         <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                             <FileText className="h-4 w-4" />
-                            {t('Description')}
+                            {translate('Description')}
                         </label>
                         <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{record.description}</p>
                     </div>

@@ -16,7 +16,7 @@ interface ReportFiltersProps {
 import { ReactNode } from 'react';
 
 export function ReportFilters({ filters, additionalFilters }: ReportFiltersProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [dateFrom, setDateFrom] = useState(filters.dateFrom);
     const [dateTo, setDateTo] = useState(filters.dateTo);
 
@@ -44,26 +44,26 @@ export function ReportFilters({ filters, additionalFilters }: ReportFiltersProps
             <form onSubmit={handleFilterSubmit} className="flex flex-col items-stretch gap-3 p-3 min-[1070px]:flex-row min-[1070px]:items-center">
                 <div className="flex w-full flex-1 flex-col items-stretch gap-3 min-[1070px]:flex-row min-[1070px]:items-center">
                     <div className="flex flex-1 items-center gap-2">
-                        <p className="w-20 shrink-0 text-sm font-medium min-[1070px]:w-auto">{t('From Date :')}</p>
+                        <p className="w-20 shrink-0 text-sm font-medium min-[1070px]:w-auto">{translate('From Date :')}</p>
                         <div className="flex-1" style={{ minWidth: 0 }}>
                             <DatePicker
                                 id="date_from"
                                 selected={dateFrom}
                                 onChange={(e) => setDateFrom(e)}
-                                placeholder={t('From Date')}
+                                placeholder={translate('From Date')}
                                 className="!w-full"
                                 required
                             />
                         </div>
                     </div>
                     <div className="flex flex-1 items-center gap-2">
-                        <p className="w-20 shrink-0 text-sm font-medium min-[1070px]:w-auto">{t('To Date :')}</p>
+                        <p className="w-20 shrink-0 text-sm font-medium min-[1070px]:w-auto">{translate('To Date :')}</p>
                         <div className="flex-1" style={{ minWidth: 0 }}>
                             <DatePicker
                                 id="date_to"
                                 selected={dateTo}
                                 onChange={(e) => setDateTo(e)}
-                                placeholder={t('To Date')}
+                                placeholder={translate('To Date')}
                                 className="!w-full"
                                 required
                             />
@@ -73,10 +73,10 @@ export function ReportFilters({ filters, additionalFilters }: ReportFiltersProps
                 </div>
                 <div className="mt-2 flex shrink-0 items-center justify-end gap-2 min-[1070px]:mt-0">
                     <Button type="submit" size="sm" className="h-9 w-full min-[1070px]:w-auto">
-                        {t('Apply Filters')}
+                        {translate('Apply Filters')}
                     </Button>
                     <Button type="button" size="sm" className="h-9 w-full min-[1070px]:w-auto" variant="outline" onClick={handleClearFilters}>
-                        {t('Clear Filters')}
+                        {translate('Clear Filters')}
                     </Button>
                 </div>
             </form>

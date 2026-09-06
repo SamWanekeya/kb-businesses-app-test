@@ -22,7 +22,7 @@ export function InvoicePayPalPaymentForm({
     onSuccess,
     onCancel,
 }: InvoicePayPalPaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const paypalRef = useRef<HTMLDivElement>(null);
 
     const { processPayment } = usePaymentProcessor({
@@ -34,7 +34,7 @@ export function InvoicePayPalPaymentForm({
         if (!paypalClientId || !paypalRef.current) return;
 
         // Load PayPal SDK
-        const script = document.createElement('script');
+        const script = document.createElementranslate('script');
         script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=${currency.toUpperCase()}&disable-funding=credit,card`;
         script.async = true;
 
@@ -57,7 +57,7 @@ export function InvoicePayPalPaymentForm({
                         },
                         onApprove: (data: any, actions: any) => {
                             return actions.order.capture().then((details: any) => {
-                                processPayment('paypal', {
+                                processPaymentranslate('paypal', {
                                     invoiceId,
                                     amount,
                                     paymentType,
@@ -68,9 +68,9 @@ export function InvoicePayPalPaymentForm({
                         },
                         onError: (err: any) => {
                             if (err.message && err.message.includes('declined')) {
-                                toast.error(t('Payment was declined. Please try a different payment method.'));
+                                toast.error(translate('Payment was declined. Please try a different payment method.'));
                             } else {
-                                toast.error(t('Payment failed. Please try again.'));
+                                toast.error(translate('Payment failed. Please try again.'));
                             }
                         },
                         onCancel: () => {
@@ -91,7 +91,7 @@ export function InvoicePayPalPaymentForm({
     }, [paypalClientId, invoiceId, amount, paymentType, currency]);
 
     if (!paypalClientId) {
-        return <div className="p-4 text-center text-red-500">{t('PayPal not configured')}</div>;
+        return <div className="p-4 text-center text-red-500">{translate('PayPal not configured')}</div>;
     }
 
     return (

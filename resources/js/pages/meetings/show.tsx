@@ -11,26 +11,26 @@ import { ArrowLeft, Building2, Calendar, Eye, MapPin, Users } from 'lucide-react
 import { useTranslation } from 'react-i18next';
 
 export default function MeetingShow() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
     const { meeting } = usePage().props;
     const permissions = (usePage().props as any).auth?.permissions;
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Meetings'), href: route('meetings.index') },
-        { title: t('View Meeting') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Meetings'), href: route('meetings.index') },
+        { title: translate('View Meeting') },
     ];
 
     return (
         <PageTemplate
             title={meeting.title}
-            description={t('Meeting details and related information')}
+            description={translate('Meeting details and related information')}
             url={`/meetings/${meeting.id}`}
             breadcrumbs={breadcrumbs}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => window.history.back(),
@@ -44,14 +44,14 @@ export default function MeetingShow() {
                     {/* Meeting Details */}
                     <Card>
                         <div className="border-b px-6 py-4">
-                            <h2 className="text-lg font-semibold">{t('Meeting Details')}</h2>
+                            <h2 className="text-lg font-semibold">{translate('Meeting Details')}</h2>
                         </div>
                         <div className="p-6">
                             <div className="space-y-4">
                                 <div className="flex items-start gap-3">
                                     <Calendar className="mt-0.5 h-5 w-5 text-gray-500" />
                                     <div>
-                                        <p className="font-medium">{t('Date & Time')}</p>
+                                        <p className="font-medium">{translate('Date & Time')}</p>
                                         <p className="text-muted-foreground text-sm">
                                             {window.appSettings?.formatDateTime(meeting.start_date, false) ||
                                                 new Date(meeting.start_date).toLocaleDateString()}{' '}
@@ -67,7 +67,7 @@ export default function MeetingShow() {
                                     <div className="flex items-start gap-3">
                                         <MapPin className="text-muted-foreground mt-0.5 h-5 w-5" />
                                         <div>
-                                            <p className="font-medium">{t('Location')}</p>
+                                            <p className="font-medium">{translate('Location')}</p>
                                             <p className="text-muted-foreground text-sm">{meeting.location}</p>
                                         </div>
                                     </div>
@@ -75,13 +75,13 @@ export default function MeetingShow() {
 
                                 {meeting.description && (
                                     <div>
-                                        <p className="mb-2 font-medium">{t('Description')}</p>
+                                        <p className="mb-2 font-medium">{translate('Description')}</p>
                                         <p className="text-muted-foreground text-sm whitespace-pre-wrap">{meeting.description}</p>
                                     </div>
                                 )}
 
                                 <div className="flex items-center gap-2">
-                                    <span className="font-medium">{t('Status')}:</span>
+                                    <span className="font-medium">{translate('Status')}:</span>
                                     <span
                                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
                                             meeting.status === 'planned'
@@ -94,11 +94,11 @@ export default function MeetingShow() {
                                         }`}
                                     >
                                         {meeting.status === 'planned'
-                                            ? t('Planned')
+                                            ? translate('Planned')
                                             : meeting.status === 'held'
-                                              ? t('Held')
+                                              ? translate('Held')
                                               : meeting.status === 'not_held'
-                                                ? t('Not Held')
+                                                ? translate('Not Held')
                                                 : meeting.status}
                                     </span>
                                 </div>
@@ -111,7 +111,7 @@ export default function MeetingShow() {
                         <Card>
                             <div className="flex items-center gap-2 border-b px-6 py-4">
                                 <Users className="h-5 w-5" />
-                                <h2 className="text-lg font-semibold">{t('Attendees')}</h2>
+                                <h2 className="text-lg font-semibold">{translate('Attendees')}</h2>
                             </div>
                             <div className="space-y-3 p-6">
                                 {meeting.attendees.map((attendee: any, index: number) => (
@@ -134,7 +134,7 @@ export default function MeetingShow() {
                                             <UserInitials name={attendee.attendee?.name} />
                                         )}
                                         <div>
-                                            <p className="font-medium">{attendee.attendee?.name || t('Unknown')}</p>
+                                            <p className="font-medium">{attendee.attendee?.name || translate('Unknown')}</p>
                                             <p className="text-muted-foreground text-sm capitalize">
                                                 {attendee.attendee_type} {attendee.attendee?.email && `• ${attendee.attendee.email}`}
                                             </p>
@@ -151,12 +151,12 @@ export default function MeetingShow() {
                     {/* Meeting Info */}
                     <Card>
                         <div className="border-b px-6 py-4">
-                            <h3 className="font-semibold">{t('Meeting Information')}</h3>
+                            <h3 className="font-semibold">{translate('Meeting Information')}</h3>
                         </div>
                         <div className="space-y-3 p-6">
                             {meeting.assigned_user && (
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{t('Assigned To')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">{translate('Assigned To')}</p>
                                     <div className="mt-1.5 flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
                                             <AvatarImage src={meeting.assigned_user.avatar} alt={meeting.assigned_user.name} />
@@ -175,7 +175,7 @@ export default function MeetingShow() {
                             )}
 
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{t('Created At')}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{translate('Created At')}</p>
                                 <div className="mt-1 flex items-center gap-1.5">
                                     <Calendar className="h-3.5 w-3.5 text-gray-500" />
                                     <p className="text-sm">
@@ -187,7 +187,7 @@ export default function MeetingShow() {
 
                             {meeting.updated_at !== meeting.created_at && (
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{t('Last Updated')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">{translate('Last Updated')}</p>
                                     <div className="mt-1 flex items-center gap-1.5">
                                         <Calendar className="h-3.5 w-3.5 text-gray-500" />
                                         <p className="text-sm">
@@ -224,7 +224,7 @@ export default function MeetingShow() {
                                 <Card className="shadow-sm">
                                     <div className="flex items-center gap-2 border-b px-5 py-3.5">
                                         <Building2 className="text-muted-foreground h-4 w-4" />
-                                        <h3 className="text-base font-semibold">{t('Related To')}</h3>
+                                        <h3 className="text-base font-semibold">{translate('Related To')}</h3>
                                     </div>
                                     <div className="p-4">
                                         {useHasPermission(viewRoute) ? (
@@ -239,7 +239,7 @@ export default function MeetingShow() {
                                                             <Eye className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
                                                         </TooltipTrigger>
                                                         <TooltipContent side="top">
-                                                            <p>{t('View')}</p>
+                                                            <p>{translate('View')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>

@@ -5,12 +5,12 @@ import { ArrowLeft, Calendar, Mail, Shield, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function UserShow() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { user, meetings } = usePage().props;
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Users'), href: route('users.index') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Users'), href: route('users.index') },
         { title: user.name },
     ];
 
@@ -29,7 +29,7 @@ export default function UserShow() {
             breadcrumbs={breadcrumbs}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => window.history.back(),
@@ -42,25 +42,25 @@ export default function UserShow() {
                     <CardHeader className="border-b bg-gray-50 px-8 py-6">
                         <CardTitle className="flex items-center text-xl font-bold text-gray-800">
                             <User className="mr-3 h-5 w-5" />
-                            {t('User Information')}
+                            {translate('User Information')}
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="p-8">
                         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                             <div className="space-y-6">
                                 <div>
-                                    <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{t('Name')}</label>
+                                    <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{translate('Name')}</label>
                                     <p className="mt-2 text-base font-medium text-gray-800">{user.name}</p>
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{t('Email')}</label>
+                                    <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{translate('Email')}</label>
                                     <div className="mt-2 flex items-center">
                                         <Mail className="mr-2 h-4 w-4 text-gray-400" />
                                         <p className="text-base font-medium text-gray-800">{user.email}</p>
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{t('Role')}</label>
+                                    <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{translate('Role')}</label>
                                     <div className="mt-2 flex items-center">
                                         <Shield className="mr-2 h-4 w-4 text-gray-400" />
                                         <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-600/20 ring-inset">
@@ -71,7 +71,7 @@ export default function UserShow() {
                             </div>
                             <div className="space-y-6">
                                 <div>
-                                    <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{t('Status')}</label>
+                                    <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{translate('Status')}</label>
                                     <div className="mt-2">
                                         <span
                                             className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
@@ -80,16 +80,16 @@ export default function UserShow() {
                                                     : 'bg-red-50 text-red-700 ring-red-600/20'
                                             }`}
                                         >
-                                            {user.status === 'active' ? t('Active') : t('Inactive')}
+                                            {user.status === 'active' ? translate('Active') : translate('Inactive')}
                                         </span>
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{t('Created At')}</label>
+                                    <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{translate('Created At')}</label>
                                     <p className="mt-2 text-base font-medium text-gray-700">{formatDate(user.created_at)}</p>
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{t('Created By')}</label>
+                                    <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{translate('Created By')}</label>
                                     <p className="mt-2 text-base font-medium text-gray-800">{user.creator?.name || 'System'}</p>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@ export default function UserShow() {
                         <CardHeader className="border-b bg-gray-50 px-8 py-6">
                             <CardTitle className="flex items-center text-xl font-bold text-gray-800">
                                 <Calendar className="mr-3 h-5 w-5" />
-                                {t('Related Meetings')}
+                                {translate('Related Meetings')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-8">

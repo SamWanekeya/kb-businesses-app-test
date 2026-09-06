@@ -36,7 +36,7 @@ export const getSidebarSettings = (): SidebarSettings => {
 };
 
 export function SidebarStyleSettings() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { position } = useLayout();
     const [settings, setSettings] = useState<SidebarSettings>(DEFAULT_SIDEBAR_SETTINGS);
 
@@ -66,22 +66,22 @@ export function SidebarStyleSettings() {
     return (
         <div className="space-y-6 rounded-lg border p-6">
             <div>
-                <h3 className="text-lg font-medium">{t('Sidebar Style')}</h3>
-                <p className="text-sm text-neutral-500 dark:text-neutral-400">{t('Choose how your sidebar looks and behaves')}</p>
+                <h3 className="text-lg font-medium">{translate('Sidebar Style')}</h3>
+                <p className="text-sm text-neutral-500 dark:text-neutral-400">{translate('Choose how your sidebar looks and behaves')}</p>
 
                 {/* Variant Selection */}
                 <div className="mt-4">
-                    <h4 className="mb-2 text-sm font-medium">{t('Sidebar Variant')}</h4>
+                    <h4 className="mb-2 text-sm font-medium">{translate('Sidebar Variant')}</h4>
                     <div className="grid grid-cols-3 gap-2">
-                        <VariantButton variant="sidebar" isActive={settings.variant === 'sidebar'} onClick={() => updateVariant('sidebar')} />
-                        <VariantButton variant="floating" isActive={settings.variant === 'floating'} onClick={() => updateVariant('floating')} />
-                        <VariantButton variant="inset" isActive={settings.variant === 'inset'} onClick={() => updateVariant('inset')} />
+                        <VariantButton variant="sidebar" isActive={settings.variant === 'sidebar'} onClick={() => updateVariantranslate('sidebar')} />
+                        <VariantButton variant="floating" isActive={settings.variant === 'floating'} onClick={() => updateVariantranslate('floating')} />
+                        <VariantButton variant="inset" isActive={settings.variant === 'inset'} onClick={() => updateVariantranslate('inset')} />
                     </div>
                 </div>
 
                 {/* Collapsible Selection */}
                 <div className="mt-4">
-                    <h4 className="mb-2 text-sm font-medium">{t('Sidebar Collapse Mode')}</h4>
+                    <h4 className="mb-2 text-sm font-medium">{translate('Sidebar Collapse Mode')}</h4>
                     <div className="grid grid-cols-3 gap-2">
                         <CollapsibleButton
                             mode="offcanvas"
@@ -95,11 +95,11 @@ export function SidebarStyleSettings() {
 
                 {/* Preview */}
                 <div className="mt-6">
-                    <h4 className="mb-2 text-sm font-medium">{t('Preview')}</h4>
+                    <h4 className="mb-2 text-sm font-medium">{translate('Preview')}</h4>
                     <div className="bg-sidebar text-sidebar-foreground rounded-md border p-4">
                         <div className="mb-2 flex items-center gap-2">
                             <SidebarIcon className="h-4 w-4" />
-                            <span className="font-medium">{t('Sidebar Preview')}</span>
+                            <span className="font-medium">{translate('Sidebar Preview')}</span>
                         </div>
                         <div className="space-y-1">
                             <SidebarMenuSkeleton showIcon={true} />
@@ -107,7 +107,7 @@ export function SidebarStyleSettings() {
                             <SidebarMenuSkeleton showIcon={true} />
                         </div>
                     </div>
-                    <p className="mt-2 text-xs text-neutral-500">{t('Changes will take effect after page reload')}</p>
+                    <p className="mt-2 text-xs text-neutral-500">{translate('Changes will take effect after page reload')}</p>
                 </div>
             </div>
         </div>

@@ -24,7 +24,7 @@ export default function OrganizationSystemSettings({
     dateFormats = {},
     timeFormats = {},
 }: OrganizationSystemSettingsProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const pageProps = usePage().props;
     const [processing, setProcessing] = useState(false);
 
@@ -103,7 +103,7 @@ export default function OrganizationSystemSettings({
             },
             onError: (errors) => {
                 setProcessing(false);
-                const errorMessage = errors.error || Object.values(errors).join(', ') || t('Failed to update system settings');
+                const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to update system settings');
                 toast.error(errorMessage);
             },
         });
@@ -111,12 +111,12 @@ export default function OrganizationSystemSettings({
 
     return (
         <SettingsSection
-            title={t('System Settings')}
-            description={t('Configure system-wide settings for your organization')}
+            title={translate('System Settings')}
+            description={translate('Configure system-wide settings for your organization')}
             action={
                 <Button type="submit" disabled={processing} form="organization-system-settings-form" size="sm" className="max-[1300px]:px-2.5">
                     <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                    <span className="max-[1300px]:hidden">{processing ? t('Saving...') : t('Save Changes')}</span>
+                    <span className="max-[1300px]:hidden">{processing ? translate('Saving...') : translate('Save Changes')}</span>
                 </Button>
             }
         >
@@ -125,13 +125,13 @@ export default function OrganizationSystemSettings({
                     <form id="organization-system-settings-form" onSubmit={submitSystemSettings} className="space-y-6">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="grid gap-2">
-                                <Label htmlFor="defaultLanguage">{t('Default Language')}</Label>
+                                <Label htmlFor="defaultLanguage">{translate('Default Language')}</Label>
                                 <Select
                                     value={systemSettings.defaultLanguage}
                                     onValueChange={(value) => handleSystemSettingsChange('defaultLanguage', value)}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={t('Select language')}>
+                                        <SelectValue placeholder={translate('Select language')}>
                                             {systemSettings.defaultLanguage &&
                                                 (() => {
                                                     const selectedLang = languageData.find((lang) => lang.code === systemSettings.defaultLanguage);
@@ -148,7 +148,7 @@ export default function OrganizationSystemSettings({
                                                             <span>{selectedLang.name}</span>{' '}
                                                         </div>
                                                     ) : (
-                                                        t('Select language')
+                                                        translate('Select language')
                                                     );
                                                 })()}
                                         </SelectValue>
@@ -174,10 +174,10 @@ export default function OrganizationSystemSettings({
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="dateFormat">{t('Date Format')}</Label>
+                                <Label htmlFor="dateFormat">{translate('Date Format')}</Label>
                                 <Select value={systemSettings.dateFormat} onValueChange={(value) => handleSystemSettingsChange('dateFormat', value)}>
                                     <SelectTrigger>
-                                        <SelectValue placeholder={t('Select date format')} />
+                                        <SelectValue placeholder={translate('Select date format')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {Object.keys(dateFormats).length > 0 ? (
@@ -202,10 +202,10 @@ export default function OrganizationSystemSettings({
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="timeFormat">{t('Time Format')}</Label>
+                                <Label htmlFor="timeFormat">{translate('Time Format')}</Label>
                                 <Select value={systemSettings.timeFormat} onValueChange={(value) => handleSystemSettingsChange('timeFormat', value)}>
                                     <SelectTrigger>
-                                        <SelectValue placeholder={t('Select time format')} />
+                                        <SelectValue placeholder={translate('Select time format')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {Object.keys(timeFormats).length > 0 ? (
@@ -229,13 +229,13 @@ export default function OrganizationSystemSettings({
                             </div>
 
                             <div className="grid gap-2 md:col-span-2">
-                                <Label htmlFor="defaultTimezone">{t('Default Timezone')}</Label>
+                                <Label htmlFor="defaultTimezone">{translate('Default Timezone')}</Label>
                                 <Select
                                     value={systemSettings.defaultTimezone}
                                     onValueChange={(value) => handleSystemSettingsChange('defaultTimezone', value)}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={t('Select timezone')} />
+                                        <SelectValue placeholder={translate('Select timezone')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {Object.keys(timezones).length > 0 ? (

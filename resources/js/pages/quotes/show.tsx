@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function QuoteShow() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { quote, streamItems, auth } = usePage().props;
     const permissions = auth?.permissions || [];
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -36,9 +36,9 @@ export default function QuoteShow() {
     }, []);
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Quotes'), href: route('quotes.index') },
-        { title: t('View Quote') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Quotes'), href: route('quotes.index') },
+        { title: translate('View Quote') },
     ];
 
     const getStatusBadge = (status: string) => {
@@ -54,7 +54,7 @@ export default function QuoteShow() {
             <span
                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.draft}`}
             >
-                {t(status?.charAt(0).toUpperCase() + status?.slice(1)) || t('Draft')}
+                {t(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Draft')}
             </span>
         );
     };
@@ -62,7 +62,7 @@ export default function QuoteShow() {
     const formatCurrency = (amount: number) => window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     const formatDate = (dateString: string) => {
-        if (!dateString) return t('-');
+        if (!dateString) return translate('-');
         return window.appSettings?.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
@@ -90,11 +90,11 @@ export default function QuoteShow() {
     return (
         <PageTemplate
             title={quote.quote_number}
-            description={t('Quote details and related information')}
+            description={translate('Quote details and related information')}
             breadcrumbs={breadcrumbs}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="h-4 w-4 sm:me-2" />,
                     labelClassName: 'hidden sm:inline',
                     variant: 'outline',
@@ -118,60 +118,60 @@ export default function QuoteShow() {
                         <CardContent className="p-4 sm:p-5">
                             <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
                                 <div>
-                                    <p className="text-muted-foreground mb-3 text-xs font-semibold">{t('Billing Address')}</p>
+                                    <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Billing Address')}</p>
                                     <div className="space-y-2">
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{t('Address')}</p>
-                                                <p className="text-foreground text-sm font-medium">{quote.billing_address || t('-')}</p>
+                                                <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
+                                                <p className="text-foreground text-sm font-medium">{quote.billing_address || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{t('City')}</p>
-                                                <p className="text-foreground text-sm font-medium">{quote.billing_city || t('-')}</p>
+                                                <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
+                                                <p className="text-foreground text-sm font-medium">{quote.billing_city || translate('-')}</p>
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{t('State')}</p>
-                                                <p className="text-foreground text-sm font-medium">{quote.billing_state || t('-')}</p>
+                                                <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
+                                                <p className="text-foreground text-sm font-medium">{quote.billing_state || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{t('Postal Code')}</p>
-                                                <p className="text-foreground text-sm font-medium">{quote.billing_postal_code || t('-')}</p>
+                                                <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
+                                                <p className="text-foreground text-sm font-medium">{quote.billing_postal_code || translate('-')}</p>
                                             </div>
                                         </div>
                                         <div className="space-y-0.5">
-                                            <p className="text-muted-foreground text-xs font-medium">{t('Country')}</p>
-                                            <p className="text-foreground text-sm font-medium">{quote.billing_country || t('-')}</p>
+                                            <p className="text-muted-foreground text-xs font-medium">{translate('Country')}</p>
+                                            <p className="text-foreground text-sm font-medium">{quote.billing_country || translate('-')}</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="xl:border-s xl:ps-6">
-                                    <p className="text-muted-foreground mb-3 text-xs font-semibold">{t('Shipping Address')}</p>
+                                    <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Shipping Address')}</p>
                                     <div className="space-y-2">
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{t('Address')}</p>
-                                                <p className="text-foreground text-sm font-medium">{quote.shipping_address || t('-')}</p>
+                                                <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
+                                                <p className="text-foreground text-sm font-medium">{quote.shipping_address || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{t('City')}</p>
-                                                <p className="text-foreground text-sm font-medium">{quote.shipping_city || t('-')}</p>
+                                                <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
+                                                <p className="text-foreground text-sm font-medium">{quote.shipping_city || translate('-')}</p>
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{t('State')}</p>
-                                                <p className="text-foreground text-sm font-medium">{quote.shipping_state || t('-')}</p>
+                                                <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
+                                                <p className="text-foreground text-sm font-medium">{quote.shipping_state || translate('-')}</p>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{t('Postal Code')}</p>
-                                                <p className="text-foreground text-sm font-medium">{quote.shipping_postal_code || t('-')}</p>
+                                                <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
+                                                <p className="text-foreground text-sm font-medium">{quote.shipping_postal_code || translate('-')}</p>
                                             </div>
                                         </div>
                                         <div className="space-y-0.5">
-                                            <p className="text-muted-foreground text-xs font-medium">{t('Country')}</p>
-                                            <p className="text-foreground text-sm font-medium">{quote.shipping_country || t('-')}</p>
+                                            <p className="text-muted-foreground text-xs font-medium">{translate('Country')}</p>
+                                            <p className="text-foreground text-sm font-medium">{quote.shipping_country || translate('-')}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -183,7 +183,7 @@ export default function QuoteShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <Package className="text-muted-foreground me-3 h-5 w-5" />
-                                {t('Products')}
+                                {translate('Products')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
@@ -193,18 +193,18 @@ export default function QuoteShow() {
                                         <Table className="min-w-[850px]">
                                             <TableHeader>
                                                 <TableRow className="border-b bg-[#F0F0F1] hover:!bg-[#F0F0F1] dark:bg-gray-800 dark:hover:!bg-gray-800">
-                                                    <TableHead className="py-2.5 font-semibold whitespace-nowrap">{t('Product')}</TableHead>
+                                                    <TableHead className="py-2.5 font-semibold whitespace-nowrap">{translate('Product')}</TableHead>
                                                     <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
-                                                        {t('Quantity')}
+                                                        {translate('Quantity')}
                                                     </TableHead>
                                                     <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
-                                                        {t('Unit Price')}
+                                                        {translate('Unit Price')}
                                                     </TableHead>
                                                     <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
-                                                        {t('Discount')}
+                                                        {translate('Discount')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">{t('Tax')}</TableHead>
-                                                    <TableHead className="py-2.5 text-right font-semibold whitespace-nowrap">{t('Total')}</TableHead>
+                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">{translate('Tax')}</TableHead>
+                                                    <TableHead className="py-2.5 text-right font-semibold whitespace-nowrap">{translate('Total')}</TableHead>
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
@@ -311,19 +311,19 @@ export default function QuoteShow() {
                                     <div className="bg-muted/10 flex flex-col items-start justify-end gap-4 border-t px-4 py-4 sm:px-6 sm:py-5 md:flex-row md:items-end">
                                         <div className="w-full overflow-hidden rounded-xl border sm:max-w-sm">
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{t('Subtotal')}</span>
+                                                <span className="text-muted-foreground text-sm font-medium">{translate('Subtotal')}</span>
                                                 <span className="text-foreground font-mono text-sm font-semibold">{formatCurrency(subtotal)}</span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{t('Discount')}</span>
+                                                <span className="text-muted-foreground text-sm font-medium">{translate('Discount')}</span>
                                                 <span className="font-mono text-sm font-semibold text-red-500">-{formatCurrency(totalDiscount)}</span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{t('Total Tax')}</span>
+                                                <span className="text-muted-foreground text-sm font-medium">{translate('Total Tax')}</span>
                                                 <span className="text-foreground font-mono text-sm font-semibold">{formatCurrency(totalTax)}</span>
                                             </div>
                                             <div className="flex items-center justify-between px-4 py-3">
-                                                <span className="text-foreground text-sm font-bold">{t('Grand Total')}</span>
+                                                <span className="text-foreground text-sm font-bold">{translate('Grand Total')}</span>
                                                 <span className="font-mono text-lg font-bold text-emerald-600">{formatCurrency(grandTotal)}</span>
                                             </div>
                                         </div>
@@ -334,7 +334,7 @@ export default function QuoteShow() {
                                     <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
                                         <Package className="text-muted-foreground/40 h-8 w-8" />
                                     </div>
-                                    <p className="text-muted-foreground text-sm font-medium">{t('No products added to this quote')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">{translate('No products added to this quote')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -345,13 +345,13 @@ export default function QuoteShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <FileText className="text-muted-foreground me-3 h-5 w-5" />
-                                {t('Description')}
+                                {translate('Description')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
                             <div className="max-h-[150px] overflow-y-auto">
                                 <div className="px-4 py-4 sm:px-5">
-                                    <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{quote.description || t('-')}</p>
+                                    <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{quote.description || translate('-')}</p>
                                 </div>
                             </div>
                         </CardContent>
@@ -363,7 +363,7 @@ export default function QuoteShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
                                     <MessageCircle className="text-muted-foreground me-3 h-5 w-5" />
-                                    {t('Activity Stream')}
+                                    {translate('Activity Stream')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
@@ -376,7 +376,7 @@ export default function QuoteShow() {
                                                     router.post(
                                                         route('quotes.comments.store', quote.id),
                                                         { comment: newComment },
-                                                        { preserveScroll: true, onSuccess: () => setNewComment('') },
+                                                        { preserveScroll: true, onSuccess: () => setNewCommentranslate('') },
                                                     );
                                                 }
                                             }}
@@ -393,13 +393,13 @@ export default function QuoteShow() {
                                                             </Avatar>
                                                         </TooltipTrigger>
                                                         <TooltipContent side="top">
-                                                            <p>{auth?.user?.name || t('User')}</p>
+                                                            <p>{auth?.user?.name || translate('User')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
                                                 <div className="flex-1 overflow-hidden rounded-xl border shadow-sm">
                                                     <Textarea
-                                                        placeholder={t('Write a comment...')}
+                                                        placeholder={translate('Write a comment...')}
                                                         value={newComment}
                                                         onChange={(e) => setNewComment(e.target.value)}
                                                         className="resize-none border-0 bg-transparent focus-visible:ring-0"
@@ -419,7 +419,7 @@ export default function QuoteShow() {
                                                                     </Button>
                                                                 </TooltipTrigger>
                                                                 <TooltipContent side="top">
-                                                                    <p>{t('Send')}</p>
+                                                                    <p>{translate('Send')}</p>
                                                                 </TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
@@ -468,7 +468,7 @@ export default function QuoteShow() {
                                                                         </Avatar>
                                                                     </TooltipTrigger>
                                                                     <TooltipContent side="top">
-                                                                        <p>{activity.user?.name || t('System')}</p>
+                                                                        <p>{activity.user?.name || translate('System')}</p>
                                                                     </TooltipContent>
                                                                 </Tooltip>
                                                             </TooltipProvider>
@@ -484,7 +484,7 @@ export default function QuoteShow() {
                                                             >
                                                                 <div className="flex min-w-0 flex-wrap items-center gap-2">
                                                                     <span className="text-foreground truncate text-sm font-semibold">
-                                                                        {activity.user?.name || t('System')}
+                                                                        {activity.user?.name || translate('System')}
                                                                     </span>
                                                                     <span
                                                                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${badgeCls} shrink-0`}
@@ -517,7 +517,7 @@ export default function QuoteShow() {
                                                                                             </Button>
                                                                                         </TooltipTrigger>
                                                                                         <TooltipContent side="top">
-                                                                                            <p>{t('Edit')}</p>
+                                                                                            <p>{translate('Edit')}</p>
                                                                                         </TooltipContent>
                                                                                     </Tooltip>
                                                                                 </TooltipProvider>
@@ -539,7 +539,7 @@ export default function QuoteShow() {
                                                                                         </Button>
                                                                                     </TooltipTrigger>
                                                                                     <TooltipContent side="top">
-                                                                                        <p>{t('Delete')}</p>
+                                                                                        <p>{translate('Delete')}</p>
                                                                                     </TooltipContent>
                                                                                 </Tooltip>
                                                                             </TooltipProvider>
@@ -564,7 +564,7 @@ export default function QuoteShow() {
                                                                                     variant="outline"
                                                                                     onClick={() => setEditingComment(null)}
                                                                                 >
-                                                                                    {t('Cancel')}
+                                                                                    {translate('Cancel')}
                                                                                 </Button>
                                                                                 <Button
                                                                                     size="sm"
@@ -581,7 +581,7 @@ export default function QuoteShow() {
                                                                                         setEditingComment(null);
                                                                                     }}
                                                                                 >
-                                                                                    {t('Save')}
+                                                                                    {translate('Save')}
                                                                                 </Button>
                                                                             </div>
                                                                         </div>
@@ -609,7 +609,7 @@ export default function QuoteShow() {
                                     ) : (
                                         <div className="text-muted-foreground py-12 text-center">
                                             <Calendar className="text-muted-foreground/30 mx-auto mb-3 h-10 w-10" />
-                                            <p className="text-sm">{t('No activities found')}</p>
+                                            <p className="text-sm">{translate('No activities found')}</p>
                                         </div>
                                     )}
                                 </div>
@@ -626,13 +626,13 @@ export default function QuoteShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-base font-semibold">
                                 <FileText className="me-2 h-4 w-4 text-emerald-600" />
-                                {t('Summary & Actions')}
+                                {translate('Summary & Actions')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-4 sm:p-5">
                             <div className="mb-4 flex items-start justify-between">
                                 <div>
-                                    <p className="text-muted-foreground mb-1 text-xs">{t('Total Amount')}</p>
+                                    <p className="text-muted-foreground mb-1 text-xs">{translate('Total Amount')}</p>
                                     <p className="text-foreground font-mono text-2xl font-bold">{formatCurrency(quote.total_amount)}</p>
                                 </div>
                                 <div className="flex flex-col items-end gap-1.5">{getStatusBadge(quote.status)}</div>
@@ -641,7 +641,7 @@ export default function QuoteShow() {
                                 {useHasPermission('edit-quotes') && (
                                     <Button variant="outline" className="w-full" onClick={() => router.visit(route('quotes.edit', quote.id))}>
                                         <Edit className="me-2 h-4 w-4" />
-                                        {t('Edit Quote')}
+                                        {translate('Edit Quote')}
                                     </Button>
                                 )}
                             </div>
@@ -654,7 +654,7 @@ export default function QuoteShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-semibold">
                                     <User className="me-2 h-4 w-4 text-emerald-600" />
-                                    {t('Customer Info')}
+                                    {translate('Customer Info')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
@@ -663,7 +663,7 @@ export default function QuoteShow() {
                                     <div className="px-3 pt-3 pb-3 sm:px-4">
                                         <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs">
                                             <Building2 className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
-                                            {t('Account')}
+                                            {translate('Account')}
                                         </p>
                                         <div className="flex min-w-0 items-center justify-between">
                                             <div className="flex min-w-0 items-center gap-2">
@@ -684,7 +684,7 @@ export default function QuoteShow() {
                                                             </Link>
                                                         </TooltipTrigger>
                                                         <TooltipContent side="top">
-                                                            <p>{t('View')}</p>
+                                                            <p>{translate('View')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
@@ -697,7 +697,7 @@ export default function QuoteShow() {
                                     <div className="px-3 pt-3 pb-3 sm:px-4">
                                         <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs">
                                             <User className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
-                                            {t('Billing Contact')}
+                                            {translate('Billing Contact')}
                                         </p>
                                         <div className="flex min-w-0 items-center justify-between">
                                             <div className="flex min-w-0 items-center gap-2">
@@ -721,7 +721,7 @@ export default function QuoteShow() {
                                                             </Link>
                                                         </TooltipTrigger>
                                                         <TooltipContent side="top">
-                                                            <p>{t('View')}</p>
+                                                            <p>{translate('View')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
@@ -734,7 +734,7 @@ export default function QuoteShow() {
                                     <div className="px-3 pt-3 pb-3 sm:px-4">
                                         <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs">
                                             <User className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
-                                            {t('Shipping Contact')}
+                                            {translate('Shipping Contact')}
                                         </p>
                                         <div className="flex min-w-0 items-center justify-between">
                                             <div className="flex min-w-0 items-center gap-2">
@@ -758,7 +758,7 @@ export default function QuoteShow() {
                                                             </Link>
                                                         </TooltipTrigger>
                                                         <TooltipContent side="top">
-                                                            <p>{t('View')}</p>
+                                                            <p>{translate('View')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
@@ -775,34 +775,34 @@ export default function QuoteShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-base font-semibold">
                                 <FileText className="me-2 h-4 w-4 text-emerald-600" />
-                                {t('Quote Details')}
+                                {translate('Quote Details')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3 p-4 sm:p-5">
                             <div className="flex items-start gap-3">
                                 <FileText className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{t('Quote Number')}</p>
+                                    <p className="text-muted-foreground text-xs">{translate('Quote Number')}</p>
                                     <p className="text-foreground text-sm font-medium">{quote.quote_number}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{t('Quote Date')}</p>
+                                    <p className="text-muted-foreground text-xs">{translate('Quote Date')}</p>
                                     <p className="text-foreground text-sm font-medium">{formatDate(quote.quote_date || quote.created_at)}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{t('Valid Until')}</p>
+                                    <p className="text-muted-foreground text-xs">{translate('Valid Until')}</p>
                                     <p className="text-foreground text-sm font-medium">{formatDate(quote.valid_until)}</p>
                                 </div>
                             </div>
                             {quote.assigned_user && (
                                 <div className="border-t pt-3">
-                                    <p className="text-muted-foreground mb-2 text-xs">{t('Assigned To')}</p>
+                                    <p className="text-muted-foreground mb-2 text-xs">{translate('Assigned To')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={quote.assigned_user.avatar} alt={quote.assigned_user.name} />
@@ -821,7 +821,7 @@ export default function QuoteShow() {
                             )}
                             {quote.creator && (
                                 <div className="border-t pt-3">
-                                    <p className="text-muted-foreground mb-2 text-xs">{t('Created By')}</p>
+                                    <p className="text-muted-foreground mb-2 text-xs">{translate('Created By')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={quote.creator.avatar} alt={quote.creator.name} />
@@ -845,7 +845,7 @@ export default function QuoteShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-semibold">
                                     <Package className="text-muted-foreground me-2 h-4 w-4" />
-                                    {t('Related Records')}
+                                    {translate('Related Records')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2 p-4 sm:p-5">
@@ -855,7 +855,7 @@ export default function QuoteShow() {
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs">{t('Opportunity')}</p>
+                                            <p className="text-muted-foreground text-xs">{translate('Opportunity')}</p>
                                             <p className="text-foreground truncate text-sm font-medium">{quote.opportunity.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
@@ -864,7 +864,7 @@ export default function QuoteShow() {
                                                     <Eye className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top">
-                                                    <p>{t('View')}</p>
+                                                    <p>{translate('View')}</p>
                                                 </TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>
@@ -873,7 +873,7 @@ export default function QuoteShow() {
                                 {quote.opportunity && !useHasPermission('view-opportunities') && (
                                     <div className="flex items-center justify-between rounded-lg border p-2.5">
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs">{t('Opportunity')}</p>
+                                            <p className="text-muted-foreground text-xs">{translate('Opportunity')}</p>
                                             <p className="text-foreground truncate text-sm font-medium">{quote.opportunity.name}</p>
                                         </div>
                                     </div>
@@ -884,7 +884,7 @@ export default function QuoteShow() {
                                         className="hover:bg-muted/40 flex min-w-0 items-center justify-between rounded-lg border p-2.5 transition-colors"
                                     >
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs">{t('Shipping Provider')}</p>
+                                            <p className="text-muted-foreground text-xs">{translate('Shipping Provider')}</p>
                                             <p className="text-foreground truncate text-sm font-medium">{quote.shipping_provider_type.name}</p>
                                         </div>
                                         <TooltipProvider delayDuration={200}>
@@ -893,7 +893,7 @@ export default function QuoteShow() {
                                                     <Eye className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top">
-                                                    <p>{t('View')}</p>
+                                                    <p>{translate('View')}</p>
                                                 </TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>
@@ -902,7 +902,7 @@ export default function QuoteShow() {
                                 {quote.shipping_provider_type && !useHasPermission('view-shipping-provider-types') && (
                                     <div className="flex items-center justify-between rounded-lg border p-2.5">
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs">{t('Shipping Provider')}</p>
+                                            <p className="text-muted-foreground text-xs">{translate('Shipping Provider')}</p>
                                             <p className="text-foreground truncate text-sm font-medium">{quote.shipping_provider_type.name}</p>
                                         </div>
                                     </div>
@@ -925,8 +925,8 @@ export default function QuoteShow() {
                     });
                     setIsDeleteModalOpen(false);
                 }}
-                itemName={t('this activity')}
-                entityName={t('activity')}
+                itemName={translate('this activity')}
+                entityName={translate('activity')}
             />
 
             {/* Delete All Activities Modal */}
@@ -939,8 +939,8 @@ export default function QuoteShow() {
                     });
                     setIsDeleteAllModalOpen(false);
                 }}
-                itemName={t('all activities for {{name}}', { name: quote.name })}
-                entityName={t('activities')}
+                itemName={translate('all activities for {{name}}', { name: quote.name })}
+                entityName={translate('activities')}
             />
         </PageTemplate>
     );

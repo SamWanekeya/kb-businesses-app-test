@@ -15,7 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Brands() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, brands, filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
 
@@ -142,7 +142,7 @@ export default function Brands() {
                 },
                 onError: (errors) => {
                     setFormErrors(errors);
-                    toast.error(t('Failed to create brand.'));
+                    toast.error(translate('Failed to create brand.'));
                 },
             });
         } else {
@@ -155,7 +155,7 @@ export default function Brands() {
                 },
                 onError: (errors) => {
                     setFormErrors(errors);
-                    toast.error(t('Failed to update brand.'));
+                    toast.error(translate('Failed to update brand.'));
                 },
             });
         }
@@ -172,7 +172,7 @@ export default function Brands() {
             },
             onError: (errors) => {
                 setIsDeleteModalOpen(false);
-                toast.error(`${t('Failed to delete brand')}: ${Object.values(errors).join(', ')}`);
+                toast.error(`${translate('Failed to delete brand')}: ${Object.values(errors).join(', ')}`);
             },
         });
     };
@@ -189,7 +189,7 @@ export default function Brands() {
                             setFormData((prev) => ({ ...prev, status: item.status === 'active' ? 'inactive' : 'active' }));
                     } else if (page.props.flash.error) toast.error(page.props.flash.error);
                 },
-                onError: (errors) => toast.error(`${t('Failed to update brand')}: ${Object.values(errors).join(', ')}`),
+                onError: (errors) => toast.error(`${translate('Failed to update brand')}: ${Object.values(errors).join(', ')}`),
             },
         );
     };
@@ -205,12 +205,12 @@ export default function Brands() {
     const canDelete = useHasPermission('delete-brands');
     const canToggleStatus = useHasPermission('toggle-status-brands');
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Product Setup') }, { title: t('Brands') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Product Setup') }, { title: translate('Brands') }];
 
     return (
         <PageTemplate
-            title={t('Brands')}
-            description={t('Manage brands associated with your products.')}
+            title={translate('Brands')}
+            description={translate('Manage brands associated with your products.')}
             url="/brands"
             breadcrumbs={breadcrumbs}
             noPadding
@@ -221,23 +221,23 @@ export default function Brands() {
                     <div className="sticky top-4 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 p-6 dark:border-gray-700">
                             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                {formMode === 'create' ? t('Add New Brand') : t('Edit Brand')}
+                                {formMode === 'create' ? translate('Add New Brand') : translate('Edit Brand')}
                             </h2>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                {formMode === 'create' ? t('Fill in the details to create a new brand') : t('Update the brand details below')}
+                                {formMode === 'create' ? translate('Fill in the details to create a new brand') : translate('Update the brand details below')}
                             </p>
                         </div>
                         <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="name" required>
-                                    {t('Brand Name')}
+                                    {translate('Brand Name')}
                                 </Label>
                                 <Input
                                     id="name"
                                     type="text"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    placeholder={t('e.g. Nike, Apple, Samsung')}
+                                    placeholder={translate('e.g. Nike, Apple, Samsung')}
                                     className={formErrors.name ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
                                     required
@@ -245,7 +245,7 @@ export default function Brands() {
                                 {formErrors.name && <p className="text-sm text-red-500">{formErrors.name}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="website">{t('Website')}</Label>
+                                <Label htmlFor="website">{translate('Website')}</Label>
                                 <Input
                                     id="website"
                                     type="text"
@@ -258,12 +258,12 @@ export default function Brands() {
                                 {formErrors.website && <p className="text-sm text-red-500">{formErrors.website}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="description">{t('Description')}</Label>
+                                <Label htmlFor="description">{translate('Description')}</Label>
                                 <Textarea
                                     id="description"
                                     value={formData.description}
                                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                    placeholder={t('Enter brand description...')}
+                                    placeholder={translate('Enter brand description...')}
                                     rows={3}
                                     className={formErrors.description ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
@@ -271,7 +271,7 @@ export default function Brands() {
                                 {formErrors.description && <p className="text-sm text-red-500">{formErrors.description}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="status">{t('Status')}</Label>
+                                <Label htmlFor="status">{translate('Status')}</Label>
                                 <Select
                                     value={formData.status}
                                     onValueChange={(value) => setFormData({ ...formData, status: value })}
@@ -281,20 +281,20 @@ export default function Brands() {
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="active">{t('Active')}</SelectItem>
-                                        <SelectItem value="inactive">{t('Inactive')}</SelectItem>
+                                        <SelectItem value="active">{translate('Active')}</SelectItem>
+                                        <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
                             <div className="flex items-center gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
                                 {(canCreate || canEdit) && (
                                     <Button type="submit" className="flex-1">
-                                        {formMode === 'create' ? t('Add Brand') : t('Update Brand')}
+                                        {formMode === 'create' ? translate('Add Brand') : translate('Update Brand')}
                                     </Button>
                                 )}
                                 {formMode === 'edit' && (
                                     <Button type="button" variant="outline" onClick={resetForm}>
-                                        {t('Cancel')}
+                                        {translate('Cancel')}
                                     </Button>
                                 )}
                             </div>
@@ -311,7 +311,7 @@ export default function Brands() {
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
                                         type="text"
-                                        placeholder={t('Search brands...')}
+                                        placeholder={translate('Search brands...')}
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                         onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)}
@@ -319,12 +319,12 @@ export default function Brands() {
                                     />
                                 </div>
                                 <Button onClick={handleSearch} variant="default">
-                                    {t('Search')}
+                                    {translate('Search')}
                                 </Button>
                                 {hasActiveFilters() && (
                                     <Button onClick={handleResetFilters} variant="outline">
                                         <X className="mr-2 h-4 w-4" />
-                                        {t('Reset')}
+                                        {translate('Reset')}
                                     </Button>
                                 )}
                             </div>
@@ -337,12 +337,12 @@ export default function Brands() {
                                     }}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={t('All Statuses')} />
+                                        <SelectValue placeholder={translate('All Statuses')} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">{t('All Statuses')}</SelectItem>
-                                        <SelectItem value="active">{t('Active')}</SelectItem>
-                                        <SelectItem value="inactive">{t('Inactive')}</SelectItem>
+                                        <SelectItem value="all">{translate('All Statuses')}</SelectItem>
+                                        <SelectItem value="active">{translate('Active')}</SelectItem>
+                                        <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -353,8 +353,8 @@ export default function Brands() {
                         {(brands?.data || []).length > 0 ? (
                             <>
                                 {/* <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Brands')}</h3>
-                                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{t('Manage brands for your products.')}</p>
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Brands')}</h3>
+                                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{translate('Manage brands for your products.')}</p>
                                 </div> */}
                                 {/* Desktop Table */}
                                 <div className="hidden overflow-x-auto lg:block">
@@ -363,10 +363,10 @@ export default function Brands() {
                                             <tr className="border-t bg-[#F0F0F1] hover:bg-[#F0F0F1] dark:border-gray-900 dark:bg-gray-900">
                                                 <th
                                                     className="cursor-pointer px-4 py-3 text-left text-xs font-medium tracking-wider text-gray-500 select-none dark:text-gray-300"
-                                                    onClick={() => handleSort('name')}
+                                                    onClick={() => handleSortranslate('name')}
                                                 >
                                                     <div className="flex items-center gap-1">
-                                                        {t('Brand')}
+                                                        {translate('Brand')}
                                                         {pageFilters.sort_field === 'name' ? (
                                                             pageFilters.sort_direction === 'asc' ? (
                                                                 ' ↑'
@@ -379,13 +379,13 @@ export default function Brands() {
                                                     </div>
                                                 </th>
                                                 <th className="px-3 py-3 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">
-                                                    {t('Website')}
+                                                    {translate('Website')}
                                                 </th>
                                                 <th className="px-3 py-3 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">
-                                                    {t('Status')}
+                                                    {translate('Status')}
                                                 </th>
                                                 <th className="px-4 py-3 pr-[50px] text-right text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">
-                                                    {t('Actions')}
+                                                    {translate('Actions')}
                                                 </th>
                                             </tr>
                                         </thead>
@@ -419,12 +419,12 @@ export default function Brands() {
                                                                                 {expandedDescriptions.has(item.id) ? (
                                                                                     <>
                                                                                         <ChevronUp className="mr-1 h-3 w-3" />
-                                                                                        {t('Show less')}
+                                                                                        {translate('Show less')}
                                                                                     </>
                                                                                 ) : (
                                                                                     <>
                                                                                         <ChevronDown className="mr-1 h-3 w-3" />
-                                                                                        {t('Show more')}
+                                                                                        {translate('Show more')}
                                                                                     </>
                                                                                 )}
                                                                             </button>
@@ -452,7 +452,7 @@ export default function Brands() {
                                                         <span
                                                             className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${item.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
                                                         >
-                                                            {item.status === 'active' ? t('Active') : t('Inactive')}
+                                                            {item.status === 'active' ? translate('Active') : translate('Inactive')}
                                                         </span>
                                                     </td>
                                                     <td className="px-4 py-4 text-right whitespace-nowrap">
@@ -470,7 +470,7 @@ export default function Brands() {
                                                                                 <Edit className="h-4 w-4 text-gray-500" />
                                                                             </Button>
                                                                         </TooltipTrigger>
-                                                                        <TooltipContent>{t('Edit')}</TooltipContent>
+                                                                        <TooltipContent>{translate('Edit')}</TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>
                                                             )}
@@ -488,7 +488,7 @@ export default function Brands() {
                                                                             </Button>
                                                                         </TooltipTrigger>
                                                                         <TooltipContent>
-                                                                            {item.status === 'active' ? t('Deactivate') : t('Activate')}
+                                                                            {item.status === 'active' ? translate('Deactivate') : translate('Activate')}
                                                                         </TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>
@@ -506,7 +506,7 @@ export default function Brands() {
                                                                                 <Trash2 className="h-4 w-4 text-gray-500" />
                                                                             </Button>
                                                                         </TooltipTrigger>
-                                                                        <TooltipContent>{t('Delete')}</TooltipContent>
+                                                                        <TooltipContent>{translate('Delete')}</TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>
                                                             )}
@@ -550,12 +550,12 @@ export default function Brands() {
                                                                         {expandedDescriptions.has(item.id) ? (
                                                                             <>
                                                                                 <ChevronUp className="mr-1 h-3 w-3" />
-                                                                                {t('Show less')}
+                                                                                {translate('Show less')}
                                                                             </>
                                                                         ) : (
                                                                             <>
                                                                                 <ChevronDown className="mr-1 h-3 w-3" />
-                                                                                {t('Show more')}
+                                                                                {translate('Show more')}
                                                                             </>
                                                                         )}
                                                                     </button>
@@ -578,7 +578,7 @@ export default function Brands() {
                                                                         <Edit className="h-4 w-4 text-gray-500" />
                                                                     </Button>
                                                                 </TooltipTrigger>
-                                                                <TooltipContent>{t('Edit')}</TooltipContent>
+                                                                <TooltipContent>{translate('Edit')}</TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}
@@ -596,7 +596,7 @@ export default function Brands() {
                                                                     </Button>
                                                                 </TooltipTrigger>
                                                                 <TooltipContent>
-                                                                    {item.status === 'active' ? t('Deactivate') : t('Activate')}
+                                                                    {item.status === 'active' ? translate('Deactivate') : translate('Activate')}
                                                                 </TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
@@ -614,7 +614,7 @@ export default function Brands() {
                                                                         <Trash2 className="h-4 w-4 text-gray-500" />
                                                                     </Button>
                                                                 </TooltipTrigger>
-                                                                <TooltipContent>{t('Delete')}</TooltipContent>
+                                                                <TooltipContent>{translate('Delete')}</TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}
@@ -622,7 +622,7 @@ export default function Brands() {
                                             </div>
                                             <div className="mt-3 grid grid-cols-2 gap-4 border-t border-gray-100 pt-3 dark:border-gray-700">
                                                 <div>
-                                                    <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">{t('Website')}</p>
+                                                    <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">{translate('Website')}</p>
                                                     {item.website ? (
                                                         <a
                                                             href={item.website}
@@ -637,11 +637,11 @@ export default function Brands() {
                                                     )}
                                                 </div>
                                                 <div>
-                                                    <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">{t('Status')}</p>
+                                                    <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">{translate('Status')}</p>
                                                     <span
                                                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${item.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
                                                     >
-                                                        {item.status === 'active' ? t('Active') : t('Inactive')}
+                                                        {item.status === 'active' ? translate('Active') : translate('Inactive')}
                                                     </span>
                                                 </div>
                                             </div>
@@ -655,7 +655,7 @@ export default function Brands() {
                                             to={brands?.to || 0}
                                             total={brands?.total || 0}
                                             links={brands?.links}
-                                            entityName={t('brands')}
+                                            entityName={translate('brands')}
                                             hidePerPage={true}
                                             onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
                                         />
@@ -667,15 +667,15 @@ export default function Brands() {
                                 <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700">
                                     <Bookmark className="h-8 w-8 text-gray-400" />
                                 </div>
-                                <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{t('No brands found')}</h3>
+                                <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{translate('No brands found')}</h3>
                                 <p className="mx-auto mb-6 max-w-sm text-gray-500 dark:text-gray-400">
                                     {hasActiveFilters()
-                                        ? t('No brands match your search criteria. Try adjusting your filters.')
-                                        : t('Create brands to associate with your products.')}
+                                        ? translate('No brands match your search criteria. Try adjusting your filters.')
+                                        : translate('Create brands to associate with your products.')}
                                 </p>
                                 {!hasActiveFilters() && canCreate && (
                                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                                        {t('Use the form on the left to add your first brand.')}
+                                        {translate('Use the form on the left to add your first brand.')}
                                     </p>
                                 )}
                             </div>
@@ -688,7 +688,7 @@ export default function Brands() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={t('brand')}
+                entityName={translate('brand')}
             />
         </PageTemplate>
     );

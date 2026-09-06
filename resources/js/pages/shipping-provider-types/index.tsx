@@ -15,7 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function ShippingProviderTypes() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, shippingProviderTypes, filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
 
@@ -142,7 +142,7 @@ export default function ShippingProviderTypes() {
                 },
                 onError: (errors) => {
                     setFormErrors(errors);
-                    toast.error(t('Failed to create shipping provider type.'));
+                    toast.error(translate('Failed to create shipping provider type.'));
                 },
             });
         } else {
@@ -155,7 +155,7 @@ export default function ShippingProviderTypes() {
                 },
                 onError: (errors) => {
                     setFormErrors(errors);
-                    toast.error(t('Failed to update shipping provider type.'));
+                    toast.error(translate('Failed to update shipping provider type.'));
                 },
             });
         }
@@ -172,7 +172,7 @@ export default function ShippingProviderTypes() {
             },
             onError: (errors) => {
                 setIsDeleteModalOpen(false);
-                toast.error(`${t('Failed to delete shipping provider type')}: ${Object.values(errors).join(', ')}`);
+                toast.error(`${translate('Failed to delete shipping provider type')}: ${Object.values(errors).join(', ')}`);
             },
         });
     };
@@ -189,7 +189,7 @@ export default function ShippingProviderTypes() {
                             setFormData((prev) => ({ ...prev, status: item.status === 'active' ? 'inactive' : 'active' }));
                     } else if (page.props.flash.error) toast.error(page.props.flash.error);
                 },
-                onError: (errors) => toast.error(`${t('Failed to update shipping provider type')}: ${Object.values(errors).join(', ')}`),
+                onError: (errors) => toast.error(`${translate('Failed to update shipping provider type')}: ${Object.values(errors).join(', ')}`),
             },
         );
     };
@@ -205,12 +205,12 @@ export default function ShippingProviderTypes() {
     const canDelete = useHasPermission('delete-shipping-provider-types');
     const canToggleStatus = useHasPermission('toggle-status-shipping-provider-types');
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Shipping Provider Types') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Shipping Provider Types') }];
 
     return (
         <PageTemplate
-            title={t('Shipping Provider Types')}
-            description={t('Manage shipping provider types for your delivery orders.')}
+            title={translate('Shipping Provider Types')}
+            description={translate('Manage shipping provider types for your delivery orders.')}
             url="/shipping-provider-types"
             breadcrumbs={breadcrumbs}
             noPadding
@@ -221,25 +221,25 @@ export default function ShippingProviderTypes() {
                     <div className="sticky top-4 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 p-6 dark:border-gray-700">
                             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                {formMode === 'create' ? t('Add New Shipping Provider Type') : t('Edit Shipping Provider Type')}
+                                {formMode === 'create' ? translate('Add New Shipping Provider Type') : translate('Edit Shipping Provider Type')}
                             </h2>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                 {formMode === 'create'
-                                    ? t('Fill in the details to create a new shipping provider type')
-                                    : t('Update the shipping provider type details below')}
+                                    ? translate('Fill in the details to create a new shipping provider type')
+                                    : translate('Update the shipping provider type details below')}
                             </p>
                         </div>
                         <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="name" required>
-                                    {t('Name')}
+                                    {translate('Name')}
                                 </Label>
                                 <Input
                                     id="name"
                                     type="text"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    placeholder={t('e.g. FedEx, DHL, UPS, Local Courier')}
+                                    placeholder={translate('e.g. FedEx, DHL, UPS, Local Courier')}
                                     className={formErrors.name ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
                                     required
@@ -247,7 +247,7 @@ export default function ShippingProviderTypes() {
                                 {formErrors.name && <p className="text-sm text-red-500">{formErrors.name}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="color">{t('Color')}</Label>
+                                <Label htmlFor="color">{translate('Color')}</Label>
                                 <div className="flex items-center gap-2">
                                     <Input
                                         id="color"
@@ -270,12 +270,12 @@ export default function ShippingProviderTypes() {
                                 {formErrors.color && <p className="text-sm text-red-500">{formErrors.color}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="description">{t('Description')}</Label>
+                                <Label htmlFor="description">{translate('Description')}</Label>
                                 <Textarea
                                     id="description"
                                     value={formData.description}
                                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                    placeholder={t('Enter shipping provider type description...')}
+                                    placeholder={translate('Enter shipping provider type description...')}
                                     rows={3}
                                     className={formErrors.description ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
@@ -283,7 +283,7 @@ export default function ShippingProviderTypes() {
                                 {formErrors.description && <p className="text-sm text-red-500">{formErrors.description}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="status">{t('Status')}</Label>
+                                <Label htmlFor="status">{translate('Status')}</Label>
                                 <Select
                                     value={formData.status}
                                     onValueChange={(value) => setFormData({ ...formData, status: value })}
@@ -293,20 +293,20 @@ export default function ShippingProviderTypes() {
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="active">{t('Active')}</SelectItem>
-                                        <SelectItem value="inactive">{t('Inactive')}</SelectItem>
+                                        <SelectItem value="active">{translate('Active')}</SelectItem>
+                                        <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
                             <div className="flex items-center gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
                                 {(canCreate || canEdit) && (
                                     <Button type="submit" className="flex-1">
-                                        {formMode === 'create' ? t('Add Shipping Provider Type') : t('Update Shipping Provider Type')}
+                                        {formMode === 'create' ? translate('Add Shipping Provider Type') : translate('Update Shipping Provider Type')}
                                     </Button>
                                 )}
                                 {formMode === 'edit' && (
                                     <Button type="button" variant="outline" onClick={resetForm}>
-                                        {t('Cancel')}
+                                        {translate('Cancel')}
                                     </Button>
                                 )}
                             </div>
@@ -323,7 +323,7 @@ export default function ShippingProviderTypes() {
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
                                         type="text"
-                                        placeholder={t('Search shipping provider types...')}
+                                        placeholder={translate('Search shipping provider types...')}
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                         onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)}
@@ -331,12 +331,12 @@ export default function ShippingProviderTypes() {
                                     />
                                 </div>
                                 <Button onClick={handleSearch} variant="default">
-                                    {t('Search')}
+                                    {translate('Search')}
                                 </Button>
                                 {hasActiveFilters() && (
                                     <Button onClick={handleResetFilters} variant="outline">
                                         <X className="mr-2 h-4 w-4" />
-                                        {t('Reset')}
+                                        {translate('Reset')}
                                     </Button>
                                 )}
                             </div>
@@ -349,12 +349,12 @@ export default function ShippingProviderTypes() {
                                     }}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={t('All Statuses')} />
+                                        <SelectValue placeholder={translate('All Statuses')} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">{t('All Statuses')}</SelectItem>
-                                        <SelectItem value="active">{t('Active')}</SelectItem>
-                                        <SelectItem value="inactive">{t('Inactive')}</SelectItem>
+                                        <SelectItem value="all">{translate('All Statuses')}</SelectItem>
+                                        <SelectItem value="active">{translate('Active')}</SelectItem>
+                                        <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -365,8 +365,8 @@ export default function ShippingProviderTypes() {
                         {(shippingProviderTypes?.data || []).length > 0 ? (
                             <>
                                 {/* <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Shipping Provider Types')}</h3>
-                                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{t('Manage shipping provider type categories.')}</p>
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Shipping Provider Types')}</h3>
+                                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{translate('Manage shipping provider type categories.')}</p>
                                 </div> */}
                                 <div className="hidden overflow-x-auto lg:block">
                                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -374,10 +374,10 @@ export default function ShippingProviderTypes() {
                                             <tr className="border-t bg-[#F0F0F1] hover:bg-[#F0F0F1] dark:border-gray-900 dark:bg-gray-900">
                                                 <th
                                                     className="cursor-pointer px-4 py-3 text-left text-xs font-medium tracking-wider text-gray-500 select-none dark:text-gray-300"
-                                                    onClick={() => handleSort('name')}
+                                                    onClick={() => handleSortranslate('name')}
                                                 >
                                                     <div className="flex items-center gap-1">
-                                                        {t('Shipping Provider Type')}
+                                                        {translate('Shipping Provider Type')}
                                                         {pageFilters.sort_field === 'name' ? (
                                                             pageFilters.sort_direction === 'asc' ? (
                                                                 ' ↑'
@@ -390,10 +390,10 @@ export default function ShippingProviderTypes() {
                                                     </div>
                                                 </th>
                                                 <th className="px-3 py-3 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">
-                                                    {t('Status')}
+                                                    {translate('Status')}
                                                 </th>
                                                 <th className="px-4 py-3 pr-[50px] text-right text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">
-                                                    {t('Actions')}
+                                                    {translate('Actions')}
                                                 </th>
                                             </tr>
                                         </thead>
@@ -430,12 +430,12 @@ export default function ShippingProviderTypes() {
                                                                                 {expandedDescriptions.has(item.id) ? (
                                                                                     <>
                                                                                         <ChevronUp className="mr-1 h-3 w-3" />
-                                                                                        {t('Show less')}
+                                                                                        {translate('Show less')}
                                                                                     </>
                                                                                 ) : (
                                                                                     <>
                                                                                         <ChevronDown className="mr-1 h-3 w-3" />
-                                                                                        {t('Show more')}
+                                                                                        {translate('Show more')}
                                                                                     </>
                                                                                 )}
                                                                             </button>
@@ -449,7 +449,7 @@ export default function ShippingProviderTypes() {
                                                         <span
                                                             className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${item.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
                                                         >
-                                                            {item.status === 'active' ? t('Active') : t('Inactive')}
+                                                            {item.status === 'active' ? translate('Active') : translate('Inactive')}
                                                         </span>
                                                     </td>
                                                     <td className="px-4 py-4 text-right whitespace-nowrap">
@@ -467,7 +467,7 @@ export default function ShippingProviderTypes() {
                                                                                 <Edit className="h-4 w-4 text-gray-500" />
                                                                             </Button>
                                                                         </TooltipTrigger>
-                                                                        <TooltipContent>{t('Edit')}</TooltipContent>
+                                                                        <TooltipContent>{translate('Edit')}</TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>
                                                             )}
@@ -485,7 +485,7 @@ export default function ShippingProviderTypes() {
                                                                             </Button>
                                                                         </TooltipTrigger>
                                                                         <TooltipContent>
-                                                                            {item.status === 'active' ? t('Deactivate') : t('Activate')}
+                                                                            {item.status === 'active' ? translate('Deactivate') : translate('Activate')}
                                                                         </TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>
@@ -503,7 +503,7 @@ export default function ShippingProviderTypes() {
                                                                                 <Trash2 className="h-4 w-4 text-gray-500" />
                                                                             </Button>
                                                                         </TooltipTrigger>
-                                                                        <TooltipContent>{t('Delete')}</TooltipContent>
+                                                                        <TooltipContent>{translate('Delete')}</TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>
                                                             )}
@@ -549,12 +549,12 @@ export default function ShippingProviderTypes() {
                                                                         {expandedDescriptions.has(item.id) ? (
                                                                             <>
                                                                                 <ChevronUp className="mr-1 h-3 w-3" />
-                                                                                {t('Show less')}
+                                                                                {translate('Show less')}
                                                                             </>
                                                                         ) : (
                                                                             <>
                                                                                 <ChevronDown className="mr-1 h-3 w-3" />
-                                                                                {t('Show more')}
+                                                                                {translate('Show more')}
                                                                             </>
                                                                         )}
                                                                     </button>
@@ -577,7 +577,7 @@ export default function ShippingProviderTypes() {
                                                                         <Edit className="h-4 w-4 text-gray-500" />
                                                                     </Button>
                                                                 </TooltipTrigger>
-                                                                <TooltipContent>{t('Edit')}</TooltipContent>
+                                                                <TooltipContent>{translate('Edit')}</TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}
@@ -595,7 +595,7 @@ export default function ShippingProviderTypes() {
                                                                     </Button>
                                                                 </TooltipTrigger>
                                                                 <TooltipContent>
-                                                                    {item.status === 'active' ? t('Deactivate') : t('Activate')}
+                                                                    {item.status === 'active' ? translate('Deactivate') : translate('Activate')}
                                                                 </TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
@@ -613,7 +613,7 @@ export default function ShippingProviderTypes() {
                                                                         <Trash2 className="h-4 w-4 text-gray-500" />
                                                                     </Button>
                                                                 </TooltipTrigger>
-                                                                <TooltipContent>{t('Delete')}</TooltipContent>
+                                                                <TooltipContent>{translate('Delete')}</TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}
@@ -621,11 +621,11 @@ export default function ShippingProviderTypes() {
                                             </div>
                                             <div className="mt-3 grid grid-cols-2 gap-4 border-t border-gray-100 pt-3 dark:border-gray-700">
                                                 <div>
-                                                    <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">{t('Status')}</p>
+                                                    <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">{translate('Status')}</p>
                                                     <span
                                                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${item.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
                                                     >
-                                                        {item.status === 'active' ? t('Active') : t('Inactive')}
+                                                        {item.status === 'active' ? translate('Active') : translate('Inactive')}
                                                     </span>
                                                 </div>
                                             </div>
@@ -639,7 +639,7 @@ export default function ShippingProviderTypes() {
                                             to={shippingProviderTypes?.to || 0}
                                             total={shippingProviderTypes?.total || 0}
                                             links={shippingProviderTypes?.links}
-                                            entityName={t('shipping provider types')}
+                                            entityName={translate('shipping provider types')}
                                             hidePerPage={true}
                                             onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
                                         />
@@ -651,15 +651,15 @@ export default function ShippingProviderTypes() {
                                 <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700">
                                     <Truck className="h-8 w-8 text-gray-400" />
                                 </div>
-                                <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{t('No shipping provider types found')}</h3>
+                                <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{translate('No shipping provider types found')}</h3>
                                 <p className="mx-auto mb-6 max-w-sm text-gray-500 dark:text-gray-400">
                                     {hasActiveFilters()
-                                        ? t('No shipping provider types match your search criteria. Try adjusting your filters.')
-                                        : t('Create shipping provider types to categorize your shipping options.')}
+                                        ? translate('No shipping provider types match your search criteria. Try adjusting your filters.')
+                                        : translate('Create shipping provider types to categorize your shipping options.')}
                                 </p>
                                 {!hasActiveFilters() && canCreate && (
                                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                                        {t('Use the form on the left to add your first shipping provider type.')}
+                                        {translate('Use the form on the left to add your first shipping provider type.')}
                                     </p>
                                 )}
                             </div>
@@ -672,7 +672,7 @@ export default function ShippingProviderTypes() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={t('shipping provider type')}
+                entityName={translate('shipping provider type')}
             />
         </PageTemplate>
     );

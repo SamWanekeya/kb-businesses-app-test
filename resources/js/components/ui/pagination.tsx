@@ -39,7 +39,7 @@ export function Pagination({
     onPageChange,
     className = '',
 }: PaginationProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
 
     const handlePageChange = (url: string) => {
         if (onPageChange) {
@@ -52,15 +52,15 @@ export function Pagination({
     return (
         <div className={cn('flex flex-wrap items-center justify-center gap-3 border-t p-4 md:justify-center lg:justify-between', className)}>
             <div className="text-muted-foreground text-sm dark:text-gray-300">
-                {t('Showing')} <span className="font-medium dark:text-white">{from}</span> {t('to')}{' '}
-                <span className="font-medium dark:text-white">{to}</span> {t('of')} <span className="font-medium dark:text-white">{total}</span>{' '}
-                {t('results')}
+                {translate('Showing')} <span className="font-medium dark:text-white">{from}</span> {translate('to')}{' '}
+                <span className="font-medium dark:text-white">{to}</span> {translate('of')} <span className="font-medium dark:text-white">{total}</span>{' '}
+                {translate('results')}
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-3">
                 {!hidePerPage && (
                     <>
-                        <Label className="text-muted-foreground text-xs">{t('Raws per page:')}</Label>
+                        <Label className="text-muted-foreground text-xs">{translate('Raws per page:')}</Label>
                         <Select value={currentPerPage || '10'} onValueChange={onPerPageChange}>
                             <SelectTrigger className="h-8 w-16">
                                 <SelectValue />
@@ -213,7 +213,7 @@ export function Pagination({
                                 disabled={currentPage >= lastPage}
                                 onClick={() => handlePageChange(`?page=${currentPage + 1}`)}
                             >
-                                {t('Next')} <ChevronRight />
+                                {translate('Next')} <ChevronRight />
                             </Button>
                         </>
                     )}

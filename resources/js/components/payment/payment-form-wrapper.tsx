@@ -22,7 +22,7 @@ interface PaymentFormWrapperProps {
 }
 
 export function PaymentFormWrapper({ planId, planPrice, couponCode = '', billingCycle, onSuccess, onCancel }: PaymentFormWrapperProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
     const [selectedMethod, setSelectedMethod] = useState<string>('');
     const [loading, setLoading] = useState(true);
@@ -147,7 +147,7 @@ export function PaymentFormWrapper({ planId, planPrice, couponCode = '', billing
             <Card>
                 <CardContent className="flex items-center justify-center p-6">
                     <Loader2 className="mr-2 h-6 w-6 animate-spin" />
-                    {t('Loading payment methods...')}
+                    {translate('Loading payment methods...')}
                 </CardContent>
             </Card>
         );
@@ -157,9 +157,9 @@ export function PaymentFormWrapper({ planId, planPrice, couponCode = '', billing
         return (
             <Card>
                 <CardContent className="p-6 text-center">
-                    <p className="text-muted-foreground">{t('No payment methods available')}</p>
+                    <p className="text-muted-foreground">{translate('No payment methods available')}</p>
                     <Button variant="outline" onClick={onCancel} className="mt-4">
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                 </CardContent>
             </Card>
@@ -169,8 +169,8 @@ export function PaymentFormWrapper({ planId, planPrice, couponCode = '', billing
     return (
         <Card>
             <CardHeader>
-                <CardTitle>{t('Choose Payment Method')}</CardTitle>
-                <CardDescription>{t('Select your preferred payment method to complete the subscription')}</CardDescription>
+                <CardTitle>{translate('Choose Payment Method')}</CardTitle>
+                <CardDescription>{translate('Select your preferred payment method to complete the subscription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
                 {paymentMethods.length > 1 && (

@@ -62,7 +62,7 @@ function Avatar({ name, src }: { name: string; src?: string }) {
 }
 
 export default function Projects() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const {
         auth,
         projects,
@@ -139,7 +139,7 @@ export default function Projects() {
 
     const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
-            toast.loading(t('Creating project...'));
+            toast.loading(translate('Creating project...'));
             router.post(route('projects.store'), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
@@ -154,7 +154,7 @@ export default function Projects() {
                 },
             });
         } else if (formMode === 'edit') {
-            toast.loading(t('Updating project...'));
+            toast.loading(translate('Updating project...'));
             router.put(route('projects.update', currentItem.id), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
@@ -172,7 +172,7 @@ export default function Projects() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting project...'));
+        toast.loading(translate('Deleting project...'));
         router.delete(route('projects.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
@@ -199,7 +199,7 @@ export default function Projects() {
             },
             onError: (errors) => {
                 toast.dismiss();
-                toast.error(typeof errors === 'string' ? errors : t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(typeof errors === 'string' ? errors : translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
     };
@@ -213,7 +213,7 @@ export default function Projects() {
     const handleResetFilters = () => {
         setSearchTerm('');
         setSelectedPriority('all');
-        setSelectedAccount('all');
+        setSelectedAccountranslate('all');
         setSelectedAssignee('all');
         router.get(route('projects.index'), { status: selectedStatus !== 'all' ? selectedStatus : undefined });
     };
@@ -234,12 +234,12 @@ export default function Projects() {
 
     if (useHasPermission('export-projects')) {
         pageActions.push({
-            label: t('Export'),
+            label: translate('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
             variant: 'outline',
             className: 'h-8 w-8 min-[450px]:h-9 min-[450px]:w-auto px-0 min-[450px]:px-4',
             labelClassName: 'hidden min-[450px]:inline',
-            tooltip: t('Export'),
+            tooltip: translate('Export'),
             tooltipClassName: 'min-[450px]:hidden',
             onClick: () => (CrudFormModal as any).handleExport?.(),
         });
@@ -250,19 +250,19 @@ export default function Projects() {
         pageActions.push({
             label:
                 planLimits && !canCreate
-                    ? t('Project Limit Reached ({{current}}/{{max}})', { current: planLimits.current_projects, max: planLimits.maximum_projects })
-                    : t('Add Project'),
+                    ? translate('Project Limit Reached ({{current}}/{{max}})', { current: planLimits.current_projects, max: planLimits.maximum_projects })
+                    : translate('Add Project'),
             icon: <Plus className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
             variant: canCreate ? 'default' : 'outline',
             className: 'h-8 w-8 min-[450px]:h-9 min-[450px]:w-auto px-0 min-[450px]:px-4',
             labelClassName: 'hidden min-[450px]:inline',
-            tooltip: t('Add Project'),
+            tooltip: translate('Add Project'),
             tooltipClassName: 'min-[450px]:hidden',
             onClick: canCreate
                 ? handleAddNew
                 : () =>
                       toast.error(
-                          t('Project limit exceeded. Your plan allows maximum {{max}} projects. Please upgrade your plan.', {
+                          translate('Project limit exceeded. Your plan allows maximum {{max}} projects. Please upgrade your plan.', {
                               max: planLimits.maximum_projects,
                           }),
                       ),
@@ -271,52 +271,52 @@ export default function Projects() {
     }
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Project Management'), href: route('projects.index') },
-        { title: t('Projects') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Project Management'), href: route('projects.index') },
+        { title: translate('Projects') },
     ];
 
     const statCards = [
         {
-            label: t('Total Projects'),
+            label: translate('Total Projects'),
             value: stats.total ?? 0,
-            sub: t('All time'),
+            sub: translate('All time'),
             icon: <LayoutGrid className="h-6 w-6" />,
             color: 'text-blue-700',
             cardBg: 'bg-blue-50 dark:bg-blue-900/30',
             borderColor: '#bfdbfe',
         },
         {
-            label: t('Active'),
+            label: translate('Active'),
             value: stats.ongoing ?? 0,
-            sub: stats.total ? `${Math.round(((stats.ongoing ?? 0) / stats.total) * 100)}% ${t('of total')}` : '—',
+            sub: stats.total ? `${Math.round(((stats.ongoing ?? 0) / stats.total) * 100)}% ${translate('of total')}` : '—',
             icon: <Play className="h-6 w-6" />,
             color: 'text-green-700',
             cardBg: 'bg-green-50 dark:bg-green-900/30',
             borderColor: '#bbf7d0',
         },
         {
-            label: t('On Hold'),
+            label: translate('On Hold'),
             value: stats.on_hold ?? 0,
-            sub: stats.total ? `${Math.round(((stats.on_hold ?? 0) / stats.total) * 100)}% ${t('of total')}` : '—',
+            sub: stats.total ? `${Math.round(((stats.on_hold ?? 0) / stats.total) * 100)}% ${translate('of total')}` : '—',
             icon: <PauseCircle className="h-6 w-6" />,
             color: 'text-yellow-600',
             cardBg: 'bg-yellow-50 dark:bg-yellow-900/30',
             borderColor: '#fde68a',
         },
         {
-            label: t('Completed'),
+            label: translate('Completed'),
             value: stats.completed ?? 0,
-            sub: stats.total ? `${Math.round(((stats.completed ?? 0) / stats.total) * 100)}% ${t('of total')}` : '—',
+            sub: stats.total ? `${Math.round(((stats.completed ?? 0) / stats.total) * 100)}% ${translate('of total')}` : '—',
             icon: <CheckCircle2 className="h-6 w-6" />,
             color: 'text-violet-700',
             cardBg: 'bg-violet-50 dark:bg-violet-900/30',
             borderColor: '#ddd6fe',
         },
         {
-            label: t('Overdue'),
+            label: translate('Overdue'),
             value: stats.overdue ?? 0,
-            sub: stats.total ? `${Math.round(((stats.overdue ?? 0) / stats.total) * 100)}% ${t('of total')}` : '—',
+            sub: stats.total ? `${Math.round(((stats.overdue ?? 0) / stats.total) * 100)}% ${translate('of total')}` : '—',
             icon: <AlertCircle className="h-6 w-6" />,
             color: 'text-red-600',
             cardBg: 'bg-red-50 dark:bg-red-900/30',
@@ -326,8 +326,8 @@ export default function Projects() {
 
     return (
         <PageTemplate
-            title={t('Manage Projects')}
-            description={t('Manage your projects.')}
+            title={translate('Manage Projects')}
+            description={translate('Manage your projects.')}
             url="/projects"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -360,40 +360,40 @@ export default function Projects() {
                     filters={[
                         {
                             name: 'priority',
-                            label: t('Priority'),
+                            label: translate('Priority'),
                             type: 'select',
                             value: selectedPriority,
                             onChange: setSelectedPriority,
                             options: [
-                                { value: 'all', label: t('All Priorities') },
-                                { value: 'low', label: t('Low') },
-                                { value: 'medium', label: t('Medium') },
-                                { value: 'high', label: t('High') },
-                                { value: 'urgent', label: t('Urgent') },
+                                { value: 'all', label: translate('All Priorities') },
+                                { value: 'low', label: translate('Low') },
+                                { value: 'medium', label: translate('Medium') },
+                                { value: 'high', label: translate('High') },
+                                { value: 'urgent', label: translate('Urgent') },
                             ],
                         },
                         {
                             name: 'account_id',
-                            label: t('Account'),
+                            label: translate('Account'),
                             type: 'select',
                             searchable: true,
                             value: selectedAccount,
                             onChange: setSelectedAccount,
                             options: [
-                                { value: 'all', label: t('All Accounts') },
+                                { value: 'all', label: translate('All Accounts') },
                                 ...allAccounts.map((a: any) => ({ value: a.id.toString(), label: a.name })),
                             ],
                         },
                         {
                             name: 'assigned_to',
-                            label: t('Assigned To'),
+                            label: translate('Assigned To'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: t('All Users') },
-                                { value: 'unassigned', label: t('Unassigned') },
+                                { value: 'all', label: translate('All Users') },
+                                { value: 'unassigned', label: translate('Unassigned') },
                                 ...allUsers.map((u: any) => ({ value: u.id.toString(), label: u.name })),
                             ],
                         },
@@ -411,11 +411,11 @@ export default function Projects() {
                 <div className="flex items-center gap-1 overflow-x-auto border-b border-gray-200 px-4 dark:border-gray-700">
                     {(
                         [
-                            { value: 'all', label: t('All'), count: stats.total ?? 0, icon: <LayoutGrid className="h-3.5 w-3.5" /> },
-                            { value: 'active', label: t('Active'), count: stats.ongoing ?? 0, icon: <Play className="h-3.5 w-3.5" /> },
-                            { value: 'inactive', label: t('Inactive'), count: stats.inactive ?? 0, icon: <AlertCircle className="h-3.5 w-3.5" /> },
-                            { value: 'on_hold', label: t('On Hold'), count: stats.on_hold ?? 0, icon: <PauseCircle className="h-3.5 w-3.5" /> },
-                            { value: 'completed', label: t('Finished'), count: stats.completed ?? 0, icon: <CheckCircle className="h-3.5 w-3.5" /> },
+                            { value: 'all', label: translate('All'), count: stats.total ?? 0, icon: <LayoutGrid className="h-3.5 w-3.5" /> },
+                            { value: 'active', label: translate('Active'), count: stats.ongoing ?? 0, icon: <Play className="h-3.5 w-3.5" /> },
+                            { value: 'inactive', label: translate('Inactive'), count: stats.inactive ?? 0, icon: <AlertCircle className="h-3.5 w-3.5" /> },
+                            { value: 'on_hold', label: translate('On Hold'), count: stats.on_hold ?? 0, icon: <PauseCircle className="h-3.5 w-3.5" /> },
+                            { value: 'completed', label: translate('Finished'), count: stats.completed ?? 0, icon: <CheckCircle className="h-3.5 w-3.5" /> },
                         ] as const
                     ).map((tab) => (
                         <button
@@ -445,8 +445,8 @@ export default function Projects() {
                 {/* Row 4: Projects Grid */}
                 {(projects?.data?.length ?? 0) === 0 ? (
                     <div className="flex flex-col items-center justify-center py-24 text-gray-400 dark:text-gray-500">
-                        <p className="text-lg font-medium">{t('No projects found')}</p>
-                        <p className="mt-1 text-sm">{t('Try adjusting your filters or create a new project.')}</p>
+                        <p className="text-lg font-medium">{translate('No projects found')}</p>
+                        <p className="mt-1 text-sm">{translate('Try adjusting your filters or create a new project.')}</p>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 gap-5 p-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -483,23 +483,23 @@ export default function Projects() {
                                                 <DropdownMenuContent align="end" className="z-50 w-48" sideOffset={5}>
                                                     {useHasPermission('view-projects') && (
                                                         <DropdownMenuItem onClick={() => handleAction('view', project)}>
-                                                            <Eye className="mr-2 h-4 w-4" /> {t('View Project')}
+                                                            <Eye className="mr-2 h-4 w-4" /> {translate('View Project')}
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('toggle-status-projects') && (
                                                         <DropdownMenuItem onClick={() => handleAction('toggle-status', project)}>
-                                                            <RefreshCw className="mr-2 h-4 w-4" /> {t('Change Status')}
+                                                            <RefreshCw className="mr-2 h-4 w-4" /> {translate('Change Status')}
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('edit-projects') && (
                                                         <DropdownMenuItem onClick={() => handleAction('edit', project)}>
-                                                            <Edit className="mr-2 h-4 w-4" /> {t('Edit')}
+                                                            <Edit className="mr-2 h-4 w-4" /> {translate('Edit')}
                                                         </DropdownMenuItem>
                                                     )}
                                                     <DropdownMenuSeparator />
                                                     {useHasPermission('delete-projects') && (
                                                         <DropdownMenuItem onClick={() => handleAction('delete', project)} className="text-rose-600">
-                                                            <Trash2 className="mr-2 h-4 w-4" /> {t('Delete')}
+                                                            <Trash2 className="mr-2 h-4 w-4" /> {translate('Delete')}
                                                         </DropdownMenuItem>
                                                     )}
                                                 </DropdownMenuContent>
@@ -517,7 +517,7 @@ export default function Projects() {
                                                     {project.task_done ?? 0}/{total}
                                                 </span>
                                                 <span>
-                                                    ({pct}% {t('completed')})
+                                                    ({pct}% {translate('completed')})
                                                 </span>
                                             </div>
                                             <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
@@ -531,16 +531,16 @@ export default function Projects() {
                                         {/* Assigned to + Deadline */}
                                         <div className="flex items-end justify-between gap-2">
                                             <div>
-                                                <p className="mb-1 text-xs text-gray-400">{t('Assigned to')}</p>
+                                                <p className="mb-1 text-xs text-gray-400">{translate('Assigned to')}</p>
                                                 {project.assigned_user ? (
                                                     <Avatar name={project.assigned_user.name} src={project.assigned_user.avatar} />
                                                 ) : (
-                                                    <span className="text-xs text-gray-400">{t('Unassigned')}</span>
+                                                    <span className="text-xs text-gray-400">{translate('Unassigned')}</span>
                                                 )}
                                             </div>
                                             {project.end_date && (
                                                 <div className="text-right">
-                                                    <p className="mb-1 text-xs text-gray-400">{t('Deadline')}</p>
+                                                    <p className="mb-1 text-xs text-gray-400">{translate('Deadline')}</p>
                                                     <p
                                                         className={`flex items-center justify-end gap-1 text-xs font-medium ${new Date(project.end_date) < new Date() && project.status !== 'completed' ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'}`}
                                                     >
@@ -583,7 +583,7 @@ export default function Projects() {
                     to={projects?.to || 0}
                     total={projects?.total || 0}
                     links={projects?.links}
-                    entityName={t('projects')}
+                    entityName={translate('projects')}
                     onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
                     perPageOptions={[12, 24, 48, 96]}
                     currentPerPage={pageFilters.per_page?.toString() || '12'}
@@ -611,57 +611,57 @@ export default function Projects() {
                     fields: [
                         {
                             name: 'name',
-                            label: t('Project Name'),
+                            label: translate('Project Name'),
                             type: 'text',
                             required: true,
-                            placeholder: t('e.g. Website Redesign, Mobile App v2, CRM Integration'),
+                            placeholder: translate('e.g. Website Redesign, Mobile App v2, CRM Integration'),
                         },
-                        { name: 'description', label: t('Description'), type: 'textarea', placeholder: t('Enter project description...') },
+                        { name: 'description', label: translate('Description'), type: 'textarea', placeholder: translate('Enter project description...') },
                         {
                             name: formMode === 'view' ? 'account_name' : 'account_id',
-                            label: t('Account'),
+                            label: translate('Account'),
                             type: formMode === 'view' ? 'text' : 'select',
                             required: true,
                             searchable: true,
                             readOnly: formMode === 'view',
-                            emptyNote: { link: route('accounts.index'), linkText: t('Accounts') },
+                            emptyNote: { link: route('accounts.index'), linkText: translate('Accounts') },
                             options: formMode === 'view' ? [] : accounts.map((a: any) => ({ value: a.id, label: a.name })),
                         },
-                        { name: 'start_date', label: t('Start Date'), type: 'date' },
-                        { name: 'end_date', label: t('End Date'), type: 'date' },
-                        { name: 'budget', label: t('Budget'), type: 'number', step: '0.01', placeholder: t('e.g. 10000.00') },
+                        { name: 'start_date', label: translate('Start Date'), type: 'date' },
+                        { name: 'end_date', label: translate('End Date'), type: 'date' },
+                        { name: 'budget', label: translate('Budget'), type: 'number', step: '0.01', placeholder: translate('e.g. 10000.00') },
                         {
                             name: 'priority',
-                            label: t('Priority'),
+                            label: translate('Priority'),
                             type: 'select',
                             defaultValue: 'medium',
                             options: [
-                                { value: 'low', label: t('Low') },
-                                { value: 'medium', label: t('Medium') },
-                                { value: 'high', label: t('High') },
-                                { value: 'urgent', label: t('Urgent') },
+                                { value: 'low', label: translate('Low') },
+                                { value: 'medium', label: translate('Medium') },
+                                { value: 'high', label: translate('High') },
+                                { value: 'urgent', label: translate('Urgent') },
                             ],
                         },
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             defaultValue: 'active',
                             options: [
-                                { value: 'active', label: t('Active') },
-                                { value: 'inactive', label: t('Inactive') },
-                                { value: 'completed', label: t('Completed') },
-                                { value: 'on_hold', label: t('On Hold') },
+                                { value: 'active', label: translate('Active') },
+                                { value: 'inactive', label: translate('Inactive') },
+                                { value: 'completed', label: translate('Completed') },
+                                { value: 'on_hold', label: translate('On Hold') },
                             ],
                         },
                         {
                             name: formMode === 'view' ? 'assigned_user_name' : 'assigned_to',
-                            label: t('Assign To'),
+                            label: translate('Assign To'),
                             type: formMode === 'view' ? 'text' : 'select',
                             required: true,
                             searchable: true,
                             readOnly: formMode === 'view',
-                            emptyNote: { link: route('users.index'), linkText: t('Users') },
+                            emptyNote: { link: route('users.index'), linkText: translate('Users') },
                             options: formMode === 'view' ? [] : users.map((u: any) => ({ value: u.id, label: `${u.name} (${u.email})` })),
                         },
                     ],
@@ -676,7 +676,7 @@ export default function Projects() {
                           }
                         : null
                 }
-                title={formMode === 'create' ? t('Add Project') : formMode === 'edit' ? t('Edit Project') : t('View Project')}
+                title={formMode === 'create' ? translate('Add Project') : formMode === 'edit' ? translate('Edit Project') : translate('View Project')}
                 mode={formMode}
             />
 
@@ -689,21 +689,21 @@ export default function Projects() {
                     fields: [
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             required: true,
                             options: [
-                                { value: 'active', label: t('Active') },
-                                { value: 'inactive', label: t('Inactive') },
-                                { value: 'completed', label: t('Completed') },
-                                { value: 'on_hold', label: t('On Hold') },
+                                { value: 'active', label: translate('Active') },
+                                { value: 'inactive', label: translate('Inactive') },
+                                { value: 'completed', label: translate('Completed') },
+                                { value: 'on_hold', label: translate('On Hold') },
                             ],
                         },
                     ],
                     modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
-                title={t('Change Project Status')}
+                title={translate('Change Project Status')}
                 mode="edit"
             />
 

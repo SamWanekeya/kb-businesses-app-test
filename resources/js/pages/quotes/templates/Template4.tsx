@@ -15,7 +15,7 @@ interface Template4Props {
 }
 
 export default function Template4({ quote, items, taxesData, settings, color, qr_invoice, qrCodeSvg, styles: externalStyles }: Template4Props) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { logoDark } = useBrand();
     const fontColor =
         color === 'ffffff' || color === 'fbdd03' || color === 'c1d82f' || color === '46de98' || color === '40c7d0' || color === 'fac168'
@@ -60,9 +60,9 @@ export default function Template4({ quote, items, taxesData, settings, color, qr
                                         margin: '0 0 10px 0',
                                     }}
                                 >
-                                    {t('QUOTE')}
+                                    {translate('QUOTE')}
                                 </h3>
-                                <strong>{t('From')}:</strong>
+                                <strong>{translate('From')}:</strong>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
                                     {formatValue(quote.creator?.name) && (
                                         <>
@@ -100,13 +100,13 @@ export default function Template4({ quote, items, taxesData, settings, color, qr
                                         <tr>
                                             <td style={{ padding: '0', textAlign: 'right' }}></td>
                                             <td style={{ padding: '0', textAlign: 'right' }}>
-                                                {t('Number')}: {formatValue(quote.quote_number)}
+                                                {translate('Number')}: {formatValue(quote.quote_number)}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td style={{ padding: '0' }}></td>
                                             <td style={{ padding: '0', textAlign: 'right' }}>
-                                                {t('Valid Until')}: {formatValue(quote.valid_until)}
+                                                {translate('Valid Until')}: {formatValue(quote.valid_until)}
                                             </td>
                                         </tr>
                                     </tbody>
@@ -122,7 +122,7 @@ export default function Template4({ quote, items, taxesData, settings, color, qr
                     <tbody>
                         <tr>
                             <td style={{ verticalAlign: 'top' }}>
-                                <strong style={{ marginBottom: '10px', display: 'block' }}>{t('Bill To')}:</strong>
+                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill To')}:</strong>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
                                     {formatValue(quote.billing_contact?.name)}
                                     <br />
@@ -136,7 +136,7 @@ export default function Template4({ quote, items, taxesData, settings, color, qr
                                 </p>
                             </td>
                             <td style={{ verticalAlign: 'top', textAlign: 'right' }}>
-                                <strong style={{ marginBottom: '10px', display: 'block' }}>{t('Ship To')}:</strong>
+                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship To')}:</strong>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
                                     {formatValue(quote.shipping_contact?.name)}
                                     <br />
@@ -164,13 +164,13 @@ export default function Template4({ quote, items, taxesData, settings, color, qr
                 >
                     <tbody>
                         <tr style={{ background: `#${color}`, color: fontColor }}>
-                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{t('Item')}</th>
-                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{t('Quantity')}</th>
-                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{t('Rate')}</th>
-                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{t('Tax')} (%)</th>
-                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{t('Discount')}</th>
+                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Item')}</th>
+                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Quantity')}</th>
+                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Rate')}</th>
+                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Tax')} (%)</th>
+                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Discount')}</th>
                             <th style={{ padding: '0.75rem', textAlign: 'left' }}>
-                                {t('Price')} <small style={{ display: 'block', fontSize: '12px' }}>{t('before tax & discount')}</small>
+                                {translate('Price')} <small style={{ display: 'block', fontSize: '12px' }}>{translate('before tax & discount')}</small>
                             </th>
                         </tr>
                         {items.length > 0 ? (
@@ -217,7 +217,7 @@ export default function Template4({ quote, items, taxesData, settings, color, qr
                             </tr>
                         )}
                         <tr style={{ borderTop: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}` }}>
-                            <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>{t('Total')}</td>
+                            <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>{translate('Total')}</td>
                             <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>
                                 {quote.totalQuantity || 0}
                             </td>
@@ -240,7 +240,7 @@ export default function Template4({ quote, items, taxesData, settings, color, qr
                                     <tbody>
                                         {quote.total_discount > 0 && (
                                             <tr>
-                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{t('Discount')}:</td>
+                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{translate('Discount')}:</td>
                                                 <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
                                                     {formatCurrency(quote.total_discount)}
                                                 </td>
@@ -256,7 +256,7 @@ export default function Template4({ quote, items, taxesData, settings, color, qr
                                         ))}
                                         <tr>
                                             <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>
-                                                <strong>{t('Total')}:</strong>
+                                                <strong>{translate('Total')}:</strong>
                                             </td>
                                             <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
                                                 <strong>{formatCurrency(quote.total_amount || 0)}</strong>

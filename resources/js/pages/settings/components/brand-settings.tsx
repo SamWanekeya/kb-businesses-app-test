@@ -53,7 +53,7 @@ interface BrandSettingsProps {
 }
 
 export default function BrandSettings({ userSettings }: BrandSettingsProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { props } = usePage();
     const currentGlobalSettings = (props as any).globalSettings;
     const [settings, setSettings] = useState<BrandSettings>(() => getBrandSettings(currentGlobalSettings || userSettings));
@@ -263,7 +263,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                 onError: (errors) => {
                     setIsLoading(false);
                     setIsSaving(false);
-                    const errorMessage = errors.error || Object.values(errors).join(', ') || t('Failed to save brand settings');
+                    const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to save brand settings');
                     toast.error(errorMessage);
                 },
             },
@@ -272,12 +272,12 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
 
     return (
         <SettingsSection
-            title={t('Brand Settings')}
+            title={translate('Brand Settings')}
             description={t("Customize your application's branding and appearance")}
             action={
                 <Button onClick={saveSettings} disabled={isLoading} size="sm" className="max-[1300px]:px-2.5">
                     <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                    <span className="max-[1300px]:hidden">{isLoading ? t('Saving...') : t('Save Changes')}</span>
+                    <span className="max-[1300px]:hidden">{isLoading ? translate('Saving...') : translate('Save Changes')}</span>
                 </Button>
             }
         >
@@ -293,7 +293,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                     className="flex-1"
                                 >
                                     <Upload className="mr-2 h-4 w-4" />
-                                    {t('Logos')}
+                                    {translate('Logos')}
                                 </Button>
                                 <Button
                                     variant={activeSection === 'text' ? 'default' : 'outline'}
@@ -302,7 +302,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                     className="flex-1"
                                 >
                                     <FileText className="mr-2 h-4 w-4" />
-                                    {t('Text')}
+                                    {translate('Text')}
                                 </Button>
                                 <Button
                                     variant={activeSection === 'theme' ? 'default' : 'outline'}
@@ -311,7 +311,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                     className="flex-1"
                                 >
                                     <Palette className="mr-2 h-4 w-4" />
-                                    {t('Theme')}
+                                    {translate('Theme')}
                                 </Button>
                             </div>
 
@@ -320,7 +320,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                 <div className="space-y-6">
                                     <div className="grid grid-cols-1 gap-6 min-[1400px]:grid-cols-2">
                                         <div className="space-y-3">
-                                            <Label>{t('Logo Dark')}</Label>
+                                            <Label>{translate('Logo Dark')}</Label>
                                             <div className="flex flex-col gap-3">
                                                 <div className="bg-muted/30 flex h-32 items-center justify-center rounded-md border p-4 dark:bg-white">
                                                     {settings.logoDark && !logoErrors.logoDark ? (
@@ -334,7 +334,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                     ) : (
                                                         <div className="text-muted-foreground flex flex-col items-center gap-2">
                                                             <div className="bg-muted flex h-12 w-24 items-center justify-center rounded border border-dashed">
-                                                                <span className="text-muted-foreground font-semibold">{t('Logo')}</span>
+                                                                <span className="text-muted-foreground font-semibold">{translate('Logo')}</span>
                                                             </div>
                                                             <span className="text-xs">
                                                                 {logoErrors.logoDark ? 'Failed to load image' : 'No logo selected'}
@@ -345,7 +345,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                 <MediaPicker
                                                     label=""
                                                     value={convertToRelativePath(settings.logoDark)}
-                                                    onChange={(url) => handleMediaSelect('logoDark', url)}
+                                                    onChange={(url) => handleMediaSelectranslate('logoDark', url)}
                                                     placeholder="Select dark mode logo..."
                                                     showPreview={false}
                                                 />
@@ -353,7 +353,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                         </div>
 
                                         <div className="space-y-3">
-                                            <Label>{t('Logo Light')}</Label>
+                                            <Label>{translate('Logo Light')}</Label>
                                             <div className="flex flex-col gap-3">
                                                 <div className="flex h-32 items-center justify-center rounded-md border bg-black p-4">
                                                     {settings.logoLight && !logoErrors.logoLight ? (
@@ -367,7 +367,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                     ) : (
                                                         <div className="text-muted-foreground flex flex-col items-center gap-2">
                                                             <div className="bg-muted flex h-12 w-24 items-center justify-center rounded border border-dashed">
-                                                                <span className="text-muted-foreground font-semibold">{t('Logo')}</span>
+                                                                <span className="text-muted-foreground font-semibold">{translate('Logo')}</span>
                                                             </div>
                                                             <span className="text-xs">
                                                                 {logoErrors.logoLight ? 'Failed to load image' : 'No logo selected'}
@@ -378,7 +378,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                 <MediaPicker
                                                     label=""
                                                     value={convertToRelativePath(settings.logoLight)}
-                                                    onChange={(url) => handleMediaSelect('logoLight', url)}
+                                                    onChange={(url) => handleMediaSelectranslate('logoLight', url)}
                                                     placeholder="Select light mode logo..."
                                                     showPreview={false}
                                                 />
@@ -386,7 +386,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                         </div>
 
                                         <div className="space-y-3">
-                                            <Label>{t('Favicon')}</Label>
+                                            <Label>{translate('Favicon')}</Label>
                                             <div className="flex flex-col gap-3">
                                                 <div className="bg-muted/30 flex h-20 items-center justify-center rounded-md border p-4">
                                                     {settings.favicon && !logoErrors.favicon ? (
@@ -400,7 +400,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                     ) : (
                                                         <div className="text-muted-foreground flex flex-col items-center gap-1">
                                                             <div className="bg-muted flex h-10 w-10 items-center justify-center rounded border border-dashed">
-                                                                <span className="text-muted-foreground text-xs font-semibold">{t('Icon')}</span>
+                                                                <span className="text-muted-foreground text-xs font-semibold">{translate('Icon')}</span>
                                                             </div>
                                                             <span className="text-xs">
                                                                 {logoErrors.favicon ? 'Failed to load image' : 'No favicon selected'}
@@ -411,7 +411,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                 <MediaPicker
                                                     label=""
                                                     value={convertToRelativePath(settings.favicon)}
-                                                    onChange={(url) => handleMediaSelect('favicon', url)}
+                                                    onChange={(url) => handleMediaSelectranslate('favicon', url)}
                                                     placeholder="Select favicon..."
                                                     showPreview={false}
                                                 />
@@ -427,7 +427,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                     <div className="grid grid-cols-1 gap-6">
                                         <div className="space-y-3">
                                             <Label htmlFor="titleText" required>
-                                                {t('Title Text')}
+                                                {translate('Title Text')}
                                             </Label>
                                             <Input
                                                 id="titleText"
@@ -436,12 +436,12 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                 onChange={handleInputChange}
                                                 placeholder="Kakbima"
                                             />
-                                            <p className="text-muted-foreground text-xs">{t('Application title displayed in the browser tab')}</p>
+                                            <p className="text-muted-foreground text-xs">{translate('Application title displayed in the browser tab')}</p>
                                         </div>
 
                                         <div className="space-y-3">
                                             <Label htmlFor="footerText" required>
-                                                {t('Footer Text')}
+                                                {translate('Footer Text')}
                                             </Label>
                                             <Input
                                                 id="footerText"
@@ -450,7 +450,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                 onChange={handleInputChange}
                                                 placeholder="© 2026 Kakbima. All rights reserved."
                                             />
-                                            <p className="text-muted-foreground text-xs">{t('Text displayed in the footer')}</p>
+                                            <p className="text-muted-foreground text-xs">{translate('Text displayed in the footer')}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -464,7 +464,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                         <div className="space-y-4">
                                             <div className="flex items-center">
                                                 <Palette className="text-muted-foreground mr-2 h-5 w-5" />
-                                                <h3 className="text-base font-medium">{t('Theme Color')}</h3>
+                                                <h3 className="text-base font-medium">{translate('Theme Color')}</h3>
                                             </div>
                                             <Separator className="my-2" />
 
@@ -502,7 +502,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
 
                                             {settings.themeColor === 'custom' && (
                                                 <div className="mt-4 space-y-2">
-                                                    <Label htmlFor="customColor">{t('Custom Color')}</Label>
+                                                    <Label htmlFor="customColor">{translate('Custom Color')}</Label>
                                                     <div className="flex gap-2">
                                                         <div className="relative">
                                                             <Input
@@ -534,13 +534,13 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                         <div className="space-y-4">
                                             <div className="flex items-center">
                                                 <SidebarIcon className="text-muted-foreground mr-2 h-5 w-5" />
-                                                <h3 className="text-base font-medium">{t('Sidebar')}</h3>
+                                                <h3 className="text-base font-medium">{translate('Sidebar')}</h3>
                                             </div>
                                             <Separator className="my-2" />
 
                                             <div className="space-y-6">
                                                 <div>
-                                                    <Label className="mb-2 block">{t('Sidebar Variant')}</Label>
+                                                    <Label className="mb-2 block">{translate('Sidebar Variant')}</Label>
                                                     <div className="grid grid-cols-3 gap-3 max-[450px]:grid-cols-1">
                                                         {['inset', 'floating', 'minimal'].map((variant) => (
                                                             <Button
@@ -566,7 +566,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                 </div>
 
                                                 <div>
-                                                    <Label className="mb-2 block">{t('Sidebar Style')}</Label>
+                                                    <Label className="mb-2 block">{translate('Sidebar Style')}</Label>
                                                     <div className="grid grid-cols-3 gap-3 max-[450px]:grid-cols-1">
                                                         {[
                                                             { id: 'plain', name: 'Plain' },
@@ -601,12 +601,12 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                         <div className="space-y-4">
                                             <div className="flex items-center">
                                                 <Layout className="text-muted-foreground mr-2 h-5 w-5" />
-                                                <h3 className="text-base font-medium">{t('Layout')}</h3>
+                                                <h3 className="text-base font-medium">{translate('Layout')}</h3>
                                             </div>
                                             <Separator className="my-2" />
 
                                             <div className="space-y-2">
-                                                <Label className="mb-2 block">{t('Layout Direction')}</Label>
+                                                <Label className="mb-2 block">{translate('Layout Direction')}</Label>
                                                 <div className="grid grid-cols-2 gap-2">
                                                     <Button
                                                         type="button"
@@ -622,7 +622,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                         }}
                                                         onClick={() => handleLayoutDirectionChange('left')}
                                                     >
-                                                        {t('Left-to-Right')}
+                                                        {translate('Left-to-Right')}
                                                         {settings.layoutDirection === 'left' && <Check className="ml-2 h-4 w-4" />}
                                                     </Button>
                                                     <Button
@@ -639,7 +639,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                         }}
                                                         onClick={() => handleLayoutDirectionChange('right')}
                                                     >
-                                                        {t('Right-to-Left')}
+                                                        {translate('Right-to-Left')}
                                                         {settings.layoutDirection === 'right' && <Check className="ml-2 h-4 w-4" />}
                                                     </Button>
                                                 </div>
@@ -650,7 +650,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                         <div className="space-y-4">
                                             <div className="flex items-center">
                                                 <Moon className="text-muted-foreground mr-2 h-5 w-5" />
-                                                <h3 className="text-base font-medium">{t('Theme Mode')}</h3>
+                                                <h3 className="text-base font-medium">{translate('Theme Mode')}</h3>
                                             </div>
                                             <Separator className="my-2" />
 
@@ -670,7 +670,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                         }}
                                                         onClick={() => handleThemeModeChange('light')}
                                                     >
-                                                        {t('Light')}
+                                                        {translate('Light')}
                                                         {settings.themeMode === 'light' && <Check className="ml-2 h-4 w-4" />}
                                                     </Button>
                                                     <Button
@@ -687,7 +687,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                         }}
                                                         onClick={() => handleThemeModeChange('dark')}
                                                     >
-                                                        {t('Dark')}
+                                                        {translate('Dark')}
                                                         {settings.themeMode === 'dark' && <Check className="ml-2 h-4 w-4" />}
                                                     </Button>
                                                     <Button
@@ -704,7 +704,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                         }}
                                                         onClick={() => handleThemeModeChange('system')}
                                                     >
-                                                        {t('System')}
+                                                        {translate('System')}
                                                         {settings.themeMode === 'system' && <Check className="ml-2 h-4 w-4" />}
                                                     </Button>
                                                 </div>
@@ -721,7 +721,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                 <div className="rounded-md border p-4">
                                     <div className="mb-4 flex items-center gap-2">
                                         <Palette className="h-4 w-4" />
-                                        <h3 className="font-medium">{t('Live Preview')}</h3>
+                                        <h3 className="font-medium">{translate('Live Preview')}</h3>
                                     </div>
 
                                     {/* Comprehensive Theme Preview */}
@@ -730,10 +730,10 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                     {/* Text Preview */}
                                     <div className="mt-4 border-t pt-4">
                                         <div className="text-muted-foreground mb-2 text-xs">
-                                            {t('Title:')} <span className="text-foreground font-medium">{settings.titleText}</span>
+                                            {translate('Title:')} <span className="text-foreground font-medium">{settings.titleText}</span>
                                         </div>
                                         <div className="text-muted-foreground text-xs">
-                                            {t('Footer:')} <span className="text-foreground font-medium">{settings.footerText}</span>
+                                            {translate('Footer:')} <span className="text-foreground font-medium">{settings.footerText}</span>
                                         </div>
                                     </div>
                                 </div>

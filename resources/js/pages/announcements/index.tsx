@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Announcements() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, announcements, categories = [], allCategories = [], stats = {}, filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
 
@@ -131,7 +131,7 @@ export default function Announcements() {
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
-                    toast.error(t('Failed to save: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to save: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
             },
         });
@@ -141,9 +141,9 @@ export default function Announcements() {
         router.delete(route('announcements.destroy', currentItem.id), {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                toast.success(t('Announcement deleted successfully.'));
+                toast.success(translate('Announcement deleted successfully.'));
             },
-            onError: () => toast.error(t('Failed to delete announcement.')),
+            onError: () => toast.error(translate('Failed to delete announcement.')),
         });
     };
 
@@ -160,14 +160,14 @@ export default function Announcements() {
             },
             onError: (errors) => {
                 toast.dismiss();
-                toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
     };
 
     const handleToggleStatus = (item: any) => {
         const newStatus = item.is_active ? 'inactive' : 'active';
-        toast.loading(t('{{action}} announcement...', { action: newStatus === 'active' ? t('Activating') : t('Deactivating') }));
+        toast.loading(translate('{{action}} announcement...', { action: newStatus === 'active' ? translate('Activating') : translate('Deactivating') }));
 
         router.put(
             route('announcements.toggle-status', item.id),
@@ -181,7 +181,7 @@ export default function Announcements() {
                 },
                 onError: (errors) => {
                     toast.dismiss();
-                    toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 },
             },
         );
@@ -206,7 +206,7 @@ export default function Announcements() {
     const columns = [
         {
             key: 'title',
-            label: t('Title'),
+            label: translate('Title'),
             sortable: true,
             render: (value: string, row: any) => (
                 <div className="flex flex-col gap-1">
@@ -222,26 +222,26 @@ export default function Announcements() {
         },
         {
             key: 'is_featured',
-            label: t('Featured'),
+            label: translate('Featured'),
             render: (value: boolean) =>
                 value ? (
                     <span className="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700 ring-1 ring-yellow-600/20 ring-inset">
-                        {t('Yes')}
+                        {translate('Yes')}
                     </span>
                 ) : (
                     <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-700 ring-1 ring-gray-600/20 ring-inset">
-                        {t('No')}
+                        {translate('No')}
                     </span>
                 ),
         },
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             render: (value: string, row: any) => getStatusBadge(value),
         },
         {
             key: 'created_at',
-            label: t('Created At'),
+            label: translate('Created At'),
             sortable: true,
             type: 'date',
             //  render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
@@ -250,31 +250,31 @@ export default function Announcements() {
 
     const actions = [
         {
-            label: t('Change Status'),
+            label: translate('Change Status'),
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
             requiredPermission: 'toggle-status-announcements',
         },
-        { label: t('View'), icon: 'Eye', action: 'view', className: 'text-blue-500', requiredPermission: 'view-announcements' },
-        { label: t('Edit'), icon: 'Edit', action: 'edit', className: 'text-amber-500', requiredPermission: 'edit-announcements' },
-        { label: t('Delete'), icon: 'Trash2', action: 'delete', className: 'text-red-500', requiredPermission: 'delete-announcements' },
+        { label: translate('View'), icon: 'Eye', action: 'view', className: 'text-blue-500', requiredPermission: 'view-announcements' },
+        { label: translate('Edit'), icon: 'Edit', action: 'edit', className: 'text-amber-500', requiredPermission: 'edit-announcements' },
+        { label: translate('Delete'), icon: 'Trash2', action: 'delete', className: 'text-red-500', requiredPermission: 'delete-announcements' },
     ];
 
     return (
         <PageTemplate
-            title={t('Announcements')}
-            description={t('Manage announcements.')}
+            title={translate('Announcements')}
+            description={translate('Manage announcements.')}
             actions={[
                 ...(useHasPermission('manage-announcements')
                     ? [
                           {
-                              label: t('Dashboard View'),
+                              label: translate('Dashboard View'),
                               icon: <PanelsTopLeft className="mr-0 h-4 w-4 min-[550px]:mr-2" />,
                               onClick: () => router.get(route('announcements.dashboard')),
                               className: 'h-8 w-8 min-[550px]:h-9 min-[550px]:w-auto px-0 min-[550px]:px-4',
                               labelClassName: 'hidden min-[550px]:inline',
-                              tooltip: t('Dashboard View'),
+                              tooltip: translate('Dashboard View'),
                               tooltipClassName: 'min-[550px]:hidden',
                           },
                       ]
@@ -282,12 +282,12 @@ export default function Announcements() {
                 ...(useHasPermission('create-announcements')
                     ? [
                           {
-                              label: t('Add Announcement'),
+                              label: translate('Add Announcement'),
                               variant: 'default',
                               icon: <Plus className="mr-0 h-4 w-4 min-[550px]:mr-2" />,
                               className: 'h-8 w-8 min-[550px]:h-9 min-[550px]:w-auto px-0 min-[550px]:px-4',
                               labelClassName: 'hidden min-[550px]:inline',
-                              tooltip: t('Add Announcement'),
+                              tooltip: translate('Add Announcement'),
                               tooltipClassName: 'min-[550px]:hidden',
                               onClick: () => {
                                   setCurrentItem(null);
@@ -298,7 +298,7 @@ export default function Announcements() {
                       ]
                     : []),
             ]}
-            breadcrumbs={[{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Announcements') }]}
+            breadcrumbs={[{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Announcements') }]}
             noPadding
         >
             <div className="rounded-t-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-900">
@@ -309,13 +309,13 @@ export default function Announcements() {
                     filters={[
                         {
                             name: 'category',
-                            label: t('Category'),
+                            label: translate('Category'),
                             type: 'select' as const,
                             searchable: true,
                             value: selectedCategory,
                             onChange: setSelectedCategory,
                             options: [
-                                { value: 'all', label: t('All Categories') },
+                                { value: 'all', label: translate('All Categories') },
                                 ...allCategories.map((cat: any) => ({ value: cat.id.toString(), label: cat.name })),
                             ],
                         },
@@ -331,10 +331,10 @@ export default function Announcements() {
                 <div className="flex items-center gap-1 border-b border-gray-200 px-4 dark:border-gray-700">
                     {(
                         [
-                            { value: 'all', label: t('All'), count: stats.total ?? 0, icon: <LayoutGrid className="h-3.5 w-3.5" /> },
-                            { value: 'active', label: t('Active'), count: stats.active ?? 0, icon: <CheckCircle className="h-3.5 w-3.5" /> },
-                            { value: 'inactive', label: t('Inactive'), count: stats.inactive ?? 0, icon: <AlertCircle className="h-3.5 w-3.5" /> },
-                            { value: 'expired', label: t('Expired'), count: stats.expired ?? 0, icon: <Clock className="h-3.5 w-3.5" /> },
+                            { value: 'all', label: translate('All'), count: stats.total ?? 0, icon: <LayoutGrid className="h-3.5 w-3.5" /> },
+                            { value: 'active', label: translate('Active'), count: stats.active ?? 0, icon: <CheckCircle className="h-3.5 w-3.5" /> },
+                            { value: 'inactive', label: translate('Inactive'), count: stats.inactive ?? 0, icon: <AlertCircle className="h-3.5 w-3.5" /> },
+                            { value: 'expired', label: translate('Expired'), count: stats.expired ?? 0, icon: <Clock className="h-3.5 w-3.5" /> },
                         ] as const
                     ).map((tab) => (
                         <button
@@ -381,7 +381,7 @@ export default function Announcements() {
                     to={announcements?.to || 0}
                     total={announcements?.total || 0}
                     links={announcements?.links}
-                    entityName={t('announcements')}
+                    entityName={translate('announcements')}
                     onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
@@ -410,22 +410,22 @@ export default function Announcements() {
                     fields: [
                         {
                             name: 'title',
-                            label: t('Title'),
+                            label: translate('Title'),
                             type: 'text',
                             required: true,
-                            placeholder: t('eg. New Feature Release, System Maintenance'),
+                            placeholder: translate('eg. New Feature Release, System Maintenance'),
                         },
                         {
                             name: 'content',
-                            label: t('Content'),
+                            label: translate('Content'),
                             type: 'rich-textbox',
                             required: true,
                             colSpan: 12,
-                            placeholder: t('Enter announcement details...'),
+                            placeholder: translate('Enter announcement details...'),
                         },
                         {
                             name: 'announcement_category_id',
-                            label: t('Announcement Category'),
+                            label: translate('Announcement Category'),
                             type: 'select',
                             options: categories.map((cat: any) => ({ value: cat.id, label: cat.name })),
                             required: true,
@@ -434,29 +434,29 @@ export default function Announcements() {
                                 categories.length === 0
                                     ? {
                                           link: route('announcement-categories.index'),
-                                          linkText: t('Announcement Category'),
+                                          linkText: translate('Announcement Category'),
                                       }
                                     : undefined,
                         },
-                        { name: 'start_date', label: t('Start Date'), type: 'date', required: true, placeholder: t('Select start date') },
-                        { name: 'end_date', label: t('End Date'), type: 'date', placeholder: t('Select end date') },
+                        { name: 'start_date', label: translate('Start Date'), type: 'date', required: true, placeholder: translate('Select start date') },
+                        { name: 'end_date', label: translate('End Date'), type: 'date', placeholder: translate('Select end date') },
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             options: [
-                                { value: 'active', label: t('Active') },
-                                { value: 'inactive', label: t('Inactive') },
-                                { value: 'expired', label: t('Expired') },
+                                { value: 'active', label: translate('Active') },
+                                { value: 'inactive', label: translate('Inactive') },
+                                { value: 'expired', label: translate('Expired') },
                             ],
                             defaultValue: 'active',
                         },
-                        { name: 'is_featured', label: t('Featured'), type: 'checkbox' },
+                        { name: 'is_featured', label: translate('Featured'), type: 'checkbox' },
                     ],
                     modalSize: '2xl',
                 }}
                 initialData={currentItem}
-                title={formMode === 'create' ? t('Add Announcement') : formMode === 'edit' ? t('Edit Announcement') : t('View Announcement')}
+                title={formMode === 'create' ? translate('Add Announcement') : formMode === 'edit' ? translate('Edit Announcement') : translate('View Announcement')}
                 mode={formMode}
             />
 
@@ -469,20 +469,20 @@ export default function Announcements() {
                     fields: [
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             required: true,
                             options: [
-                                { value: 'active', label: t('Active') },
-                                { value: 'inactive', label: t('Inactive') },
-                                { value: 'expired', label: t('Expired') },
+                                { value: 'active', label: translate('Active') },
+                                { value: 'inactive', label: translate('Inactive') },
+                                { value: 'expired', label: translate('Expired') },
                             ],
                         },
                     ],
                     modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
-                title={t('Change Announcement Status')}
+                title={translate('Change Announcement Status')}
                 mode="edit"
             />
 
@@ -491,7 +491,7 @@ export default function Announcements() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.title || ''}
-                entityName={t('announcement')}
+                entityName={translate('announcement')}
             />
         </PageTemplate>
     );

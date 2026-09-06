@@ -4,22 +4,22 @@ import { ArrowLeft, FileIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function ShowDocumentType() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, documentType } = usePage().props;
     const permissions = auth?.permissions || [];
 
     const pageActions = [];
 
     pageActions.push({
-        label: t('Back'),
+        label: translate('Back'),
         icon: <ArrowLeft className="mr-2 h-4 w-4" />,
         variant: 'outline',
         onClick: () => router.get(route('document-types.index')),
     });
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Document Types'), href: route('document-types.index') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Document Types'), href: route('document-types.index') },
         { title: documentType.type_name },
     ];
 
@@ -32,20 +32,20 @@ export default function ShowDocumentType() {
                     </div>
                     <div>
                         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{documentType.type_name}</h1>
-                        <p className="text-gray-600 dark:text-gray-400">{t('Document Type Details')}</p>
+                        <p className="text-gray-600 dark:text-gray-400">{translate('Document Type Details')}</p>
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div>
-                        <h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">{t('Basic Information')}</h3>
+                        <h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">{translate('Basic Information')}</h3>
                         <dl className="space-y-4">
                             <div>
-                                <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('Type Name')}</dt>
+                                <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Type Name')}</dt>
                                 <dd className="mt-1 text-sm text-gray-900 dark:text-white">{documentType.type_name}</dd>
                             </div>
                             <div>
-                                <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('Status')}</dt>
+                                <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Status')}</dt>
                                 <dd className="mt-1">
                                     <span
                                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
@@ -54,7 +54,7 @@ export default function ShowDocumentType() {
                                                 : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                                         }`}
                                     >
-                                        {documentType.status === 'active' ? t('Active') : t('Inactive')}
+                                        {documentType.status === 'active' ? translate('Active') : translate('Inactive')}
                                     </span>
                                 </dd>
                             </div>
@@ -62,17 +62,17 @@ export default function ShowDocumentType() {
                     </div>
 
                     <div>
-                        <h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">{t('System Information')}</h3>
+                        <h3 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">{translate('System Information')}</h3>
                         <dl className="space-y-4">
                             <div>
-                                <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('Created At')}</dt>
+                                <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Created At')}</dt>
                                 <dd className="mt-1 text-sm text-gray-900 dark:text-white">
                                     {window.appSettings?.formatDateTime(documentType.created_at, false) ||
                                         new Date(documentType.created_at).toLocaleDateString()}
                                 </dd>
                             </div>
                             <div>
-                                <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('Updated At')}</dt>
+                                <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Updated At')}</dt>
                                 <dd className="mt-1 text-sm text-gray-900 dark:text-white">
                                     {window.appSettings?.formatDateTime(documentType.updated_at, false) ||
                                         new Date(documentType.updated_at).toLocaleDateString()}

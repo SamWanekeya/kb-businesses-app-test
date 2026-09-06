@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Accounts() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
     const {
         auth,
@@ -132,7 +132,7 @@ export default function Accounts() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting account...'));
+        toast.loading(translate('Deleting account...'));
 
         if (!currentItem?.id) {
             toast.dismiss();
@@ -149,7 +149,7 @@ export default function Accounts() {
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
-                    toast.error(t('Failed to delete account: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to delete account: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
             },
         });
@@ -157,7 +157,7 @@ export default function Accounts() {
 
     const handleToggleStatus = (account: any) => {
         const newStatus = account.status === 'active' ? 'inactive' : 'active';
-        toast.loading(`${newStatus === 'active' ? t('Activating') : t('Deactivating')} account...`);
+        toast.loading(`${newStatus === 'active' ? translate('Activating') : translate('Deactivating')} account...`);
 
         router.put(
             route('accounts.toggle-status', account.id),
@@ -169,7 +169,7 @@ export default function Accounts() {
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
-                        toast.error(t('Failed to update account status: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        toast.error(translate('Failed to update account status: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
                 },
             },
@@ -186,13 +186,13 @@ export default function Accounts() {
     // Add export button
     if (useHasPermission('export-accounts')) {
         pageActions.push({
-            label: t('Export'),
+            label: translate('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
             variant: 'outline',
             onClick: () => (window.location.href = route('account.export')),
             className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
             labelClassName: 'hidden min-[400px]:inline',
-            tooltip: t('Export'),
+            tooltip: translate('Export'),
             tooltipClassName: 'min-[400px]:hidden',
         });
     }
@@ -202,49 +202,49 @@ export default function Accounts() {
         const isDisabled = planLimits && !planLimits.can_create;
         pageActions.push({
             label: isDisabled
-                ? t('Account Limit Reached ({{current}}/{{max}})', {
+                ? translate('Account Limit Reached ({{current}}/{{max}})', {
                       current: planLimits?.current_accounts || 0,
                       max: planLimits?.maximum_accounts || 0,
                   })
-                : t('Add Account'),
+                : translate('Add Account'),
             icon: <Plus className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
             variant: isDisabled ? 'outline' : 'default',
             disabled: isDisabled,
             onClick: isDisabled
-                ? () => toast.error(t('Account limit reached. Your plan allows maximum {{max}} accounts.', { max: planLimits.maximum_accounts }))
+                ? () => toast.error(translate('Account limit reached. Your plan allows maximum {{max}} accounts.', { max: planLimits.maximum_accounts }))
                 : () => router.visit(route('accounts.create')),
             className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
             labelClassName: 'hidden min-[400px]:inline',
-            tooltip: t('Add Account'),
+            tooltip: translate('Add Account'),
             tooltipClassName: 'min-[400px]:hidden',
         });
     }
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Account Management'), href: route('accounts.index') },
-        { title: t('Accounts') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Account Management'), href: route('accounts.index') },
+        { title: translate('Accounts') },
     ];
 
     // Define table columns
     const columns = [
         {
             key: 'name',
-            label: t('Name'),
+            label: translate('Name'),
             sortable: true,
             render: (value: any, row: any) => (
                 <div className="flex items-center gap-3">
                     <UserInitials name={row.name} />
                     <div>
                         <div className="font-medium">{row.name}</div>
-                        <div className="text-muted-foreground text-sm">{row.email || t('No email')}</div>
+                        <div className="text-muted-foreground text-sm">{row.email || translate('No email')}</div>
                     </div>
                 </div>
             ),
         },
         {
             key: 'assigned_user',
-            label: t('Assigned To'),
+            label: translate('Assigned To'),
             render: (value: any) =>
                 value ? (
                     <div className="flex items-center gap-3">
@@ -258,12 +258,12 @@ export default function Accounts() {
                         </div>
                     </div>
                 ) : (
-                    <span className="text-muted-foreground">{t('Unassigned')}</span>
+                    <span className="text-muted-foreground">{translate('Unassigned')}</span>
                 ),
         },
         {
             key: 'account_type',
-            label: t('Type'),
+            label: translate('Type'),
             render: (value: any) => {
                 if (!value) return '-';
                 return (
@@ -282,7 +282,7 @@ export default function Accounts() {
         },
         {
             key: 'account_industry',
-            label: t('Industry'),
+            label: translate('Industry'),
             render: (value: any) => {
                 if (!value) return '-';
                 return (
@@ -301,7 +301,7 @@ export default function Accounts() {
         },
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             render: (value: string) => {
                 return (
                     <span
@@ -311,14 +311,14 @@ export default function Accounts() {
                                 : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                         }`}
                     >
-                        {value === 'active' ? t('Active') : t('Inactive')}
+                        {value === 'active' ? translate('Active') : translate('Inactive')}
                     </span>
                 );
             },
         },
         {
             key: 'created_at',
-            label: t('Created At'),
+            label: translate('Created At'),
             sortable: true,
             type: 'date',
         },
@@ -327,28 +327,28 @@ export default function Accounts() {
     // Define table actions
     const actions = [
         {
-            label: t('Toggle Status'),
+            label: translate('Toggle Status'),
             icon: 'Lock',
             action: 'toggle-status',
             className: 'text-amber-500',
             requiredPermission: 'toggle-status-accounts',
         },
         {
-            label: t('View'),
+            label: translate('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
             requiredPermission: 'view-accounts',
         },
         {
-            label: t('Edit'),
+            label: translate('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
             requiredPermission: 'edit-accounts',
         },
         {
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
@@ -358,8 +358,8 @@ export default function Accounts() {
 
     return (
         <PageTemplate
-            title={t('Accounts')}
-            description={t('Manage your accounts')}
+            title={translate('Accounts')}
+            description={translate('Manage your accounts')}
             url="/accounts"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -374,13 +374,13 @@ export default function Accounts() {
                     filters={[
                         {
                             name: 'account_type_id',
-                            label: t('Type'),
+                            label: translate('Type'),
                             type: 'select',
                             searchable: true,
                             value: selectedType,
                             onChange: setSelectedType,
                             options: [
-                                { value: 'all', label: t('All Types') },
+                                { value: 'all', label: translate('All Types') },
                                 ...allAccountTypes.map((type: any) => ({
                                     value: type.id.toString(),
                                     label: type.name,
@@ -389,13 +389,13 @@ export default function Accounts() {
                         },
                         {
                             name: 'account_industry_id',
-                            label: t('Industry'),
+                            label: translate('Industry'),
                             type: 'select',
                             searchable: true,
                             value: selectedIndustry,
                             onChange: setSelectedIndustry,
                             options: [
-                                { value: 'all', label: t('All Industries') },
+                                { value: 'all', label: translate('All Industries') },
                                 ...allAccountIndustries.map((industry: any) => ({
                                     value: industry.id.toString(),
                                     label: industry.name,
@@ -404,25 +404,25 @@ export default function Accounts() {
                         },
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
                             options: [
-                                { value: 'all', label: t('All Status') },
-                                { value: 'active', label: t('Active') },
-                                { value: 'inactive', label: t('Inactive') },
+                                { value: 'all', label: translate('All Status') },
+                                { value: 'active', label: translate('Active') },
+                                { value: 'inactive', label: translate('Inactive') },
                             ],
                         },
                         {
                             name: 'assigned_to',
-                            label: t('Assigned To'),
+                            label: translate('Assigned To'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: t('All Users') },
+                                { value: 'all', label: translate('All Users') },
                                 ...allUsers.map((user: any) => ({
                                     value: user.id.toString(),
                                     label: user.name,
@@ -480,7 +480,7 @@ export default function Accounts() {
                         to={accounts?.to || 0}
                         total={accounts?.total || 0}
                         links={accounts?.links}
-                        entityName={t('accounts')}
+                        entityName={translate('accounts')}
                         onPageChange={(url) => router.get(url)}
                         currentPerPage={pageFilters.per_page?.toString() || '10'}
                         onPerPageChange={(value) => {
@@ -529,26 +529,26 @@ export default function Accounts() {
                                                 {useHasPermission('view-accounts') && (
                                                     <DropdownMenuItem onClick={() => handleAction('view', account)}>
                                                         <Eye className="mr-2 h-4 w-4" />
-                                                        <span>{t('View Account')}</span>
+                                                        <span>{translate('View Account')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {useHasPermission('toggle-status-accounts') && (
                                                     <DropdownMenuItem onClick={() => handleAction('toggle-status', account)}>
                                                         <Lock className="mr-2 h-4 w-4" />
-                                                        <span>{account.status === 'active' ? t('Deactivate') : t('Activate')}</span>
+                                                        <span>{account.status === 'active' ? translate('Deactivate') : translate('Activate')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {useHasPermission('edit-accounts') && (
                                                     <DropdownMenuItem onClick={() => handleAction('edit', account)}>
                                                         <Edit className="mr-2 h-4 w-4" />
-                                                        <span>{t('Edit')}</span>
+                                                        <span>{translate('Edit')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 <DropdownMenuSeparator />
                                                 {useHasPermission('delete-accounts') && (
                                                     <DropdownMenuItem onClick={() => handleAction('delete', account)} className="text-rose-600">
                                                         <Trash2 className="mr-2 h-4 w-4" />
-                                                        <span>{t('Delete')}</span>
+                                                        <span>{translate('Delete')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                             </DropdownMenuContent>
@@ -562,7 +562,7 @@ export default function Accounts() {
                                             <h3 className="truncate text-sm font-semibold text-gray-900 dark:text-white">{account.name}</h3>
                                             <div className="mt-0.5 mb-1.5 flex items-center gap-1.5">
                                                 <Mail className="h-3 w-3 shrink-0 text-gray-500" />
-                                                <p className="truncate text-xs text-gray-600 dark:text-gray-400">{account.email || t('No email')}</p>
+                                                <p className="truncate text-xs text-gray-600 dark:text-gray-400">{account.email || translate('No email')}</p>
                                             </div>
                                             <span
                                                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
@@ -571,7 +571,7 @@ export default function Accounts() {
                                                         : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-500/20'
                                                 }`}
                                             >
-                                                {account.status === 'active' ? t('Active') : t('Inactive')}
+                                                {account.status === 'active' ? translate('Active') : translate('Inactive')}
                                             </span>
                                         </div>
                                     </div>
@@ -636,7 +636,7 @@ export default function Accounts() {
                                         </div>
                                         {account.assigned_user && (
                                             <div className="flex items-center gap-1.5">
-                                                <span className="text-xs text-gray-500 dark:text-gray-400">{t('Assigned to')}</span>
+                                                <span className="text-xs text-gray-500 dark:text-gray-400">{translate('Assigned to')}</span>
                                                 <TooltipProvider>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
@@ -667,7 +667,7 @@ export default function Accounts() {
                             to={accounts?.to || 0}
                             total={accounts?.total || 0}
                             links={accounts?.links}
-                            entityName={t('accounts')}
+                            entityName={translate('accounts')}
                             onPageChange={(url) => router.get(url)}
                             perPageOptions={[12, 24, 48, 96]}
                             currentPerPage={pageFilters.per_page?.toString() || '12'}
@@ -700,7 +700,7 @@ export default function Accounts() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={t('account')}
+                entityName={translate('account')}
             />
         </PageTemplate>
     );

@@ -13,7 +13,7 @@ interface PermissionBadgesProps {
 }
 
 export function PermissionBadges({ permissions = [], maxDisplay = 3 }: PermissionBadgesProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     if (!permissions || !Array.isArray(permissions) || permissions.length === 0) {
         return <span className="text-sm text-gray-500">-</span>;
     }
@@ -27,7 +27,7 @@ export function PermissionBadges({ permissions = [], maxDisplay = 3 }: Permissio
             ))}
             {permissions.length > maxDisplay && (
                 <span className="inline-flex items-center rounded bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-800">
-                    +{permissions.length - maxDisplay} {t('more')}
+                    +{permissions.length - maxDisplay} {translate('more')}
                 </span>
             )}
         </div>

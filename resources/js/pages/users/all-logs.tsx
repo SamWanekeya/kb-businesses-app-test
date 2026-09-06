@@ -29,18 +29,18 @@ interface Props {
 }
 
 export default function AllUserLogs({ loginHistories, filters: pageFilters = {} }: Props) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
     const [selectedLogDetails, setSelectedLogDetails] = useState<any>(null);
     const { auth } = usePage().props;
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
+        { title: translate('Dashboard'), href: route('dashboard') },
         auth?.user?.type === 'super_admin'
-            ? { title: t('Organizations'), href: route('organizations.index') }
-            : { title: t('User'), href: route('users.index') },
-        { title: t('User Logs') },
+            ? { title: translate('Organizations'), href: route('organizations.index') }
+            : { title: translate('User'), href: route('users.index') },
+        { title: translate('User Logs') },
     ];
 
     // Check if any filters are active
@@ -147,7 +147,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters = {} 
     };
 
     return (
-        <PageTemplate title={t('User Logs')} url="/users-logs" breadcrumbs={breadcrumbs} noPadding>
+        <PageTemplate title={translate('User Logs')} url="/users-logs" breadcrumbs={breadcrumbs} noPadding>
             {/* Search and filters section */}
             <div className="mb-4 rounded-lg bg-white p-4 shadow dark:bg-gray-900">
                 <SearchAndFilterBar
@@ -179,22 +179,22 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters = {} 
                         <thead className="bg-gray-50 dark:bg-gray-800">
                             <tr>
                                 <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-300">
-                                    {t('User')}
+                                    {translate('User')}
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-300">
-                                    {t('IP Address')}
+                                    {translate('IP Address')}
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-300">
-                                    {t('Location & Device')}
+                                    {translate('Location & Device')}
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-300">
-                                    {t('Role')}
+                                    {translate('Role')}
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-300">
-                                    {t('Time')}
+                                    {translate('Time')}
                                 </th>
                                 <th className="px-6 py-3 text-center text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-300">
-                                    {t('Actions')}
+                                    {translate('Actions')}
                                 </th>
                             </tr>
                         </thead>
@@ -239,7 +239,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters = {} 
 
                 {loginHistories?.data?.length === 0 && (
                     <div className="py-12 text-center">
-                        <p className="text-gray-500 dark:text-gray-400">{t('No user logs found.')}</p>
+                        <p className="text-gray-500 dark:text-gray-400">{translate('No user logs found.')}</p>
                     </div>
                 )}
 
@@ -249,7 +249,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters = {} 
                     to={loginHistories?.to || 0}
                     total={loginHistories?.total || 0}
                     links={loginHistories?.links}
-                    entityName={t('logs')}
+                    entityName={translate('logs')}
                     onPageChange={(url) => router.get(url)}
                 />
             </div>
@@ -258,7 +258,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters = {} 
             <Dialog open={isDetailsModalOpen} onOpenChange={setIsDetailsModalOpen}>
                 <DialogContent className="max-h-[80vh] max-w-2xl overflow-y-auto">
                     <DialogHeader>
-                        <DialogTitle>{t('Sign in Details')}</DialogTitle>
+                        <DialogTitle>{translate('Sign in Details')}</DialogTitle>
                     </DialogHeader>
                     <div className="space-y-4">
                         {selectedLogDetails &&

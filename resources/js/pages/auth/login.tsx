@@ -37,7 +37,7 @@ interface LoginProps {
 }
 
 export default function Login({ status, canResetPassword, demoOrganizations = [], demoUsers, demoPassword = 'password' }: LoginProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [recaptchaToken, setRecaptchaToken] = useState<string>('');
     const { themeColor, customColor } = useBrand();
     const primaryColor = themeColor === 'custom' ? customColor : THEME_COLORS[themeColor as keyof typeof THEME_COLORS];
@@ -83,7 +83,7 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
         const formData = { ...data, recaptcha_token: recaptchaToken };
         post(route('login'), {
             data: formData,
-            onFinish: () => reset('password'),
+            onFinish: () => resetranslate('password'),
         });
     };
 
@@ -116,8 +116,8 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
 
     return (
         <AuthLayout
-            title={t('Welcome back!')}
-            description={t('Sign in to continue to your account')}
+            title={translate('Welcome back!')}
+            description={translate('Sign in to continue to your account')}
             status={displayStatus}
             statusType={displayStatusType}
         >
@@ -125,7 +125,7 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
                 <div className="space-y-4">
                     <div className="relative">
                         <Label htmlFor="email" className="mb-2 block font-medium text-gray-700 dark:text-gray-300" required>
-                            {t('Email address')}
+                            {translate('Email address')}
                         </Label>
                         <div className="relative">
                             <div className="pointer-events-none absolute inset-y-0 flex items-center ltr:left-0 ltr:pl-3 rtl:right-0 rtl:pr-3">
@@ -158,7 +158,7 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
                     <div>
                         <div className="mb-2 flex items-center justify-between">
                             <Label htmlFor="password" className="font-medium text-gray-700 dark:text-gray-300" required>
-                                {t('Password')}
+                                {translate('Password')}
                             </Label>
                             {canResetPassword && (
                                 <TextLink
@@ -167,7 +167,7 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
                                     style={{ color: primaryColor }}
                                     tabIndex={5}
                                 >
-                                    {t('Forgot password?')}
+                                    {translate('Forgot password?')}
                                 </TextLink>
                             )}
                         </div>
@@ -218,7 +218,7 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
                             className="h-[14px] w-[14px] rounded border border-gray-300 dark:border-gray-600"
                         />
                         <Label htmlFor="remember" className="text-sm text-gray-600 ltr:ml-2 rtl:mr-2 dark:text-gray-400">
-                            {t('Remember me')}
+                            {translate('Remember me')}
                         </Label>
                     </div>
                 </div>
@@ -233,7 +233,7 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
                 />
 
                 {showRecaptchaError && recaptchaEnabled && !recaptchaToken && (
-                    <p className="-mt-2 text-center text-sm text-red-600 dark:text-red-400">{t('Please complete the reCAPTCHA verification')}</p>
+                    <p className="-mt-2 text-center text-sm text-red-600 dark:text-red-400">{translate('Please complete the reCAPTCHA verification')}</p>
                 )}
 
                 <AuthButton
@@ -242,13 +242,13 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
                     className="w-full transform rounded-md py-2.5 text-sm font-medium tracking-wide text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg"
                     style={{ backgroundColor: primaryColor }}
                 >
-                    {t('Sign in')}
+                    {translate('Sign in')}
                 </AuthButton>
                 <div className="text-center">
                     <p className="text-sm text-gray-500">
                         {t("Don't have an account?")}{' '}
                         <TextLink href={route('register')} className="font-medium hover:underline" style={{ color: primaryColor }} tabIndex={6}>
-                            {t('Sign up')}
+                            {translate('Sign up')}
                         </TextLink>
                     </p>
                 </div>
@@ -260,7 +260,7 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
                                 <div className="mb-2 flex items-center sm:mb-3">
                                     <Users className="h-4 w-4 ltr:mr-2 rtl:ml-2" style={{ color: primaryColor }} />
                                     <h3 className="text-xs font-semibold text-gray-900 sm:text-sm dark:text-white">
-                                        {t('Demo Sign in Credentials')}
+                                        {translate('Demo Sign in Credentials')}
                                     </h3>
                                 </div>
 
@@ -268,9 +268,9 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
                                     <table className="w-full table-fixed text-xs sm:text-[13px] ltr:text-left rtl:text-right">
                                         <thead style={{ backgroundColor: `${primaryColor}10` }}>
                                             <tr className="border-b border-gray-100 text-gray-900 dark:border-gray-700 dark:text-gray-100">
-                                                <th className="w-[35%] py-2 font-semibold ltr:pl-3 rtl:pr-3">{t('Role')}</th>
-                                                <th className="w-[35%] truncate py-2 font-semibold">{t('Email')}</th>
-                                                <th className="w-[20%] py-2 font-semibold">{t('Password')}</th>
+                                                <th className="w-[35%] py-2 font-semibold ltr:pl-3 rtl:pr-3">{translate('Role')}</th>
+                                                <th className="w-[35%] truncate py-2 font-semibold">{translate('Email')}</th>
+                                                <th className="w-[20%] py-2 font-semibold">{translate('Password')}</th>
                                                 <th className="w-[10%] py-2 ltr:pr-3 rtl:pl-3"></th>
                                             </tr>
                                         </thead>
@@ -282,7 +282,7 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
                                                             <ShieldCheck className="h-3 w-3" style={{ color: primaryColor }} />
                                                         </div>
                                                         <span className="truncate font-medium text-gray-900 dark:text-gray-100">
-                                                            {t('Super Admin')}
+                                                            {translate('Super Admin')}
                                                         </span>
                                                     </div>
                                                 </td>
@@ -311,7 +311,7 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
                                                             <Building2 className="h-3 w-3" style={{ color: primaryColor }} />
                                                         </div>
                                                         <span className="truncate font-medium text-gray-900 dark:text-gray-100">
-                                                            {t('Organization')}
+                                                            {translate('Organization')}
                                                         </span>
                                                     </div>
                                                 </td>
@@ -339,7 +339,7 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
                                                         <div className="hidden h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-blue-50 sm:flex ltr:mr-2 rtl:ml-2 dark:bg-blue-900/30">
                                                             <User className="h-3 w-3" style={{ color: primaryColor }} />
                                                         </div>
-                                                        <span className="truncate font-medium text-gray-900 dark:text-gray-100">{t('User')}</span>
+                                                        <span className="truncate font-medium text-gray-900 dark:text-gray-100">{translate('User')}</span>
                                                     </div>
                                                 </td>
                                                 <td

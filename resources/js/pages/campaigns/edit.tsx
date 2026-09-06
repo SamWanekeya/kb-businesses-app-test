@@ -11,7 +11,7 @@ import { ArrowLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function CampaignEdit() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { campaign, campaignTypes = [], targetLists = [], users = [] } = usePage().props;
 
     const { data, setData, put, processing, errors, setError, clearErrors } = useForm({
@@ -37,20 +37,20 @@ export default function CampaignEdit() {
         e.preventDefault();
         const errs: Record<string, string> = {};
 
-        if (!data.name.trim()) errs.name = t('Campaign Name is required');
-        if (!data.start_date) errs.start_date = t('Start Date is required');
-        if (!data.end_date) errs.end_date = t('End Date is required');
-        else if (data.start_date && data.end_date < data.start_date) errs.end_date = t('End Date must be after Start Date');
-        if (!data.campaign_type_id) errs.campaign_type_id = t('Campaign Type is required');
-        if (!data.target_list_id) errs.target_list_id = t('Target List is required');
-        if (!data.assigned_to) errs.assigned_to = t('Assign To is required');
+        if (!data.name.trim()) errs.name = translate('Campaign Name is required');
+        if (!data.start_date) errs.start_date = translate('Start Date is required');
+        if (!data.end_date) errs.end_date = translate('End Date is required');
+        else if (data.start_date && data.end_date < data.start_date) errs.end_date = translate('End Date must be after Start Date');
+        if (!data.campaign_type_id) errs.campaign_type_id = translate('Campaign Type is required');
+        if (!data.target_list_id) errs.target_list_id = translate('Target List is required');
+        if (!data.assigned_to) errs.assigned_to = translate('Assign To is required');
 
         if (Object.keys(errs).length > 0) {
             Object.entries(errs).forEach(([k, v]) => setError(k as any, v));
             return;
         }
 
-        toast.loading(t('Updating campaign...'));
+        toast.loading(translate('Updating campaign...'));
         put(route('campaigns.update', campaign.id), {
             onSuccess: () => toast.dismiss(),
             onError: (errs) => {
@@ -62,19 +62,19 @@ export default function CampaignEdit() {
     };
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Campaigns'), href: route('campaigns.index') },
-        { title: t('Edit') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Campaigns'), href: route('campaigns.index') },
+        { title: translate('Edit') },
     ];
 
     return (
         <PageTemplate
-            title={t('Edit Campaign')}
-            description={t('Update campaign details, related information')}
+            title={translate('Edit Campaign')}
+            description={translate('Update campaign details, related information')}
             breadcrumbs={breadcrumbs}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => router.visit(route('campaigns.index')),
@@ -86,29 +86,29 @@ export default function CampaignEdit() {
                 {/* Card 1 — Campaign Information */}
                 <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
-                        <CardTitle className="flex items-center gap-2 text-base font-semibold">{t('Campaign Information')}</CardTitle>
+                        <CardTitle className="flex items-center gap-2 text-base font-semibold">{translate('Campaign Information')}</CardTitle>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-2">
                         <div className="space-y-1 md:col-span-2">
                             <Label className="text-sm font-medium" required>
-                                {t('Campaign Name')}
+                                {translate('Campaign Name')}
                             </Label>
                             <Input
                                 value={data.name}
-                                onChange={(e) => set('name', e.target.value)}
+                                onChange={(e) => setranslate('name', e.target.value)}
                                 className={errors.name ? 'border-red-500' : ''}
-                                placeholder={t('e.g. Q1 Email Blast, Summer Promo')}
+                                placeholder={translate('e.g. Q1 Email Blast, Summer Promo')}
                             />
                             {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
                         </div>
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium" required>
-                                {t('Campaign Type')}
+                                {translate('Campaign Type')}
                             </Label>
-                            <Select value={data.campaign_type_id} onValueChange={(v) => set('campaign_type_id', v)}>
+                            <Select value={data.campaign_type_id} onValueChange={(v) => setranslate('campaign_type_id', v)}>
                                 <SelectTrigger className={errors.campaign_type_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select campaign type')} />
+                                    <SelectValue placeholder={translate('Select campaign type')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {campaignTypes.map((type: any) => (
@@ -123,11 +123,11 @@ export default function CampaignEdit() {
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium" required>
-                                {t('Target List')}
+                                {translate('Target List')}
                             </Label>
-                            <Select value={data.target_list_id} onValueChange={(v) => set('target_list_id', v)}>
+                            <Select value={data.target_list_id} onValueChange={(v) => setranslate('target_list_id', v)}>
                                 <SelectTrigger className={errors.target_list_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select target list')} />
+                                    <SelectValue placeholder={translate('Select target list')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {targetLists.map((list: any) => (
@@ -142,7 +142,7 @@ export default function CampaignEdit() {
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium" required>
-                                {t('Start Date')}
+                                {translate('Start Date')}
                             </Label>
                             <div
                                 className="cursor-pointer"
@@ -158,7 +158,7 @@ export default function CampaignEdit() {
                                 <Input
                                     type="date"
                                     value={data.start_date}
-                                    onChange={(e) => set('start_date', e.target.value)}
+                                    onChange={(e) => setranslate('start_date', e.target.value)}
                                     className={`cursor-pointer ${errors.start_date ? 'border-red-500' : ''}`}
                                 />
                             </div>
@@ -167,7 +167,7 @@ export default function CampaignEdit() {
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium" required>
-                                {t('End Date')}
+                                {translate('End Date')}
                             </Label>
                             <div
                                 className="cursor-pointer"
@@ -183,7 +183,7 @@ export default function CampaignEdit() {
                                 <Input
                                     type="date"
                                     value={data.end_date}
-                                    onChange={(e) => set('end_date', e.target.value)}
+                                    onChange={(e) => setranslate('end_date', e.target.value)}
                                     className={`cursor-pointer ${errors.end_date ? 'border-red-500' : ''}`}
                                 />
                             </div>
@@ -191,25 +191,25 @@ export default function CampaignEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium">{t('Status')}</Label>
-                            <Select value={data.status} onValueChange={(v) => set('status', v)}>
+                            <Label className="text-sm font-medium">{translate('Status')}</Label>
+                            <Select value={data.status} onValueChange={(v) => setranslate('status', v)}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="active">{t('Active')}</SelectItem>
-                                    <SelectItem value="inactive">{t('Inactive')}</SelectItem>
+                                    <SelectItem value="active">{translate('Active')}</SelectItem>
+                                    <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
 
                         <div className="space-y-1">
                             <Label className="text-sm font-medium" required>
-                                {t('Assign To')}
+                                {translate('Assign To')}
                             </Label>
-                            <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
+                            <Select value={data.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select user')} />
+                                    <SelectValue placeholder={translate('Select user')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {users.map((u: any) => (
@@ -223,12 +223,12 @@ export default function CampaignEdit() {
                         </div>
 
                         <div className="space-y-1 md:col-span-2">
-                            <Label className="text-sm font-medium">{t('Description')}</Label>
+                            <Label className="text-sm font-medium">{translate('Description')}</Label>
                             <Textarea
                                 value={data.description}
-                                onChange={(e) => set('description', e.target.value)}
+                                onChange={(e) => setranslate('description', e.target.value)}
                                 rows={3}
-                                placeholder={t('Enter campaign description...')}
+                                placeholder={translate('Enter campaign description...')}
                             />
                         </div>
                     </CardContent>
@@ -237,11 +237,11 @@ export default function CampaignEdit() {
                 {/* Card 2 — Budget & Performance */}
                 <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
-                        <CardTitle className="flex items-center gap-2 text-base font-semibold">{t('Budget & Performance')}</CardTitle>
+                        <CardTitle className="flex items-center gap-2 text-base font-semibold">{translate('Budget & Performance')}</CardTitle>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-3">
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium">{t('Budget')}</Label>
+                            <Label className="text-sm font-medium">{translate('Budget')}</Label>
                             <div className="relative">
                                 <span className="absolute top-1/2 left-3 -translate-y-1/2 text-sm text-gray-400">$</span>
                                 <Input
@@ -249,7 +249,7 @@ export default function CampaignEdit() {
                                     step="0.01"
                                     min="0"
                                     value={data.budget}
-                                    onChange={(e) => set('budget', e.target.value)}
+                                    onChange={(e) => setranslate('budget', e.target.value)}
                                     placeholder="0.00"
                                     className="pl-7"
                                 />
@@ -257,7 +257,7 @@ export default function CampaignEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium">{t('Actual Cost')}</Label>
+                            <Label className="text-sm font-medium">{translate('Actual Cost')}</Label>
                             <div className="relative">
                                 <span className="absolute top-1/2 left-3 -translate-y-1/2 text-sm text-gray-400">$</span>
                                 <Input
@@ -265,7 +265,7 @@ export default function CampaignEdit() {
                                     step="0.01"
                                     min="0"
                                     value={data.actual_cost}
-                                    onChange={(e) => set('actual_cost', e.target.value)}
+                                    onChange={(e) => setranslate('actual_cost', e.target.value)}
                                     placeholder="0.00"
                                     className="pl-7"
                                 />
@@ -273,12 +273,12 @@ export default function CampaignEdit() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label className="text-sm font-medium">{t('Expected Response')}</Label>
+                            <Label className="text-sm font-medium">{translate('Expected Response')}</Label>
                             <Input
                                 type="number"
                                 min="0"
                                 value={data.expected_response}
-                                onChange={(e) => set('expected_response', e.target.value)}
+                                onChange={(e) => setranslate('expected_response', e.target.value)}
                                 placeholder="e.g. 500"
                             />
                         </div>
@@ -288,10 +288,10 @@ export default function CampaignEdit() {
                 {/* Actions */}
                 <div className="flex justify-end gap-3 pb-6">
                     <Button type="button" variant="outline" onClick={() => router.visit(route('campaigns.index'))}>
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     <Button type="submit" disabled={processing}>
-                        {processing ? t('Saving...') : t('Save')}
+                        {processing ? translate('Saving...') : translate('Save')}
                     </Button>
                 </div>
             </form>

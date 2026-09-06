@@ -51,7 +51,7 @@ interface KanbanBoardProps {
 }
 
 export const KanbanBoard: React.FC<KanbanBoardProps> = ({ initialData, leadStatuses, onLeadAction, permissions, searchTerm = '', onDataUpdate }) => {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [kanbanData, setKanbanData] = useState<KanbanData>(initialData);
 
     useEffect(() => {
@@ -94,7 +94,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({ initialData, leadStatu
 
         // Check if user has edit permission
         if (!permissions.includes('edit-leads')) {
-            toast.error(t('Permission denied.'));
+            toast.error(translate('Permission denied.'));
             return;
         }
 
@@ -150,7 +150,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({ initialData, leadStatu
                 throw new Error(data.message || 'Failed to update lead status');
             }
 
-            toast.success(data.message || t('Lead status updated successfully'));
+            toast.success(data.message || translate('Lead status updated successfully'));
             // Update the kanban data with the new lead data
             if (onDataUpdate && data.lead) {
                 const updatedKanbanData = { ...kanbanData };
@@ -168,7 +168,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({ initialData, leadStatu
         } catch (error) {
             // Revert optimistic update on error
             setKanbanData(initialData);
-            toast.error(error instanceof Error ? error.message : t('Failed to update lead status'));
+            toast.error(error instanceof Error ? error.message : translate('Failed to update lead status'));
         } finally {
             setIsLoading(false);
         }

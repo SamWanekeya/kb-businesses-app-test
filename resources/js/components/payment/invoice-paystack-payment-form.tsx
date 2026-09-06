@@ -22,13 +22,13 @@ export function InvoicePaystackPaymentForm({
     onSuccess,
     onCancel,
 }: InvoicePaystackPaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const initialized = useRef(false);
 
     useEffect(() => {
         if (!paystackKey || initialized.current) return;
 
-        const script = document.createElement('script');
+        const script = document.createElementranslate('script');
         script.src = 'https://js.paystack.co/v1/inline.js';
         script.async = true;
 
@@ -64,7 +64,7 @@ export function InvoicePaystackPaymentForm({
                             onSuccess();
                         })
                         .catch((error) => {
-                            const errorMsg = error.response?.data?.error || t('Payment processing failed');
+                            const errorMsg = error.response?.data?.error || translate('Payment processing failed');
                             toast.error(errorMsg);
                         });
                 },
@@ -81,7 +81,7 @@ export function InvoicePaystackPaymentForm({
         };
 
         script.onerror = () => {
-            toast.error(t('Failed to load Paystack checkout. Please try again.'));
+            toast.error(translate('Failed to load Paystack checkout. Please try again.'));
         };
 
         document.head.appendChild(script);
@@ -94,12 +94,12 @@ export function InvoicePaystackPaymentForm({
     }, [paystackKey, invoiceId, amount, paymentType, currency]);
 
     if (!paystackKey) {
-        return <div className="p-4 text-center text-red-500">{t('Paystack not configured')}</div>;
+        return <div className="p-4 text-center text-red-500">{translate('Paystack not configured')}</div>;
     }
 
     return (
         <div className="p-4 text-center">
-            <p>{t('Redirecting to Paystack...')}</p>
+            <p>{translate('Redirecting to Paystack...')}</p>
         </div>
     );
 }

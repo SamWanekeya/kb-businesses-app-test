@@ -24,7 +24,7 @@ export function PaystackPaymentForm({
     onSuccess,
     onCancel,
 }: PaystackPaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const initialized = useRef(false);
 
     const { processPayment } = usePaymentProcessor({
@@ -35,7 +35,7 @@ export function PaystackPaymentForm({
     useEffect(() => {
         if (!paystackKey || initialized.current) return;
 
-        const script = document.createElement('script');
+        const script = document.createElementranslate('script');
         script.src = 'https://js.paystack.co/v1/inline.js';
         script.async = true;
 
@@ -58,7 +58,7 @@ export function PaystackPaymentForm({
                     if (modalBackdrop) {
                         (modalBackdrop as HTMLElement).style.display = '';
                     }
-                    processPayment('paystack', {
+                    processPaymentranslate('paystack', {
                         planId,
                         billingCycle,
                         couponCode,
@@ -87,12 +87,12 @@ export function PaystackPaymentForm({
     }, [paystackKey, planId, billingCycle, couponCode, currency]);
 
     if (!paystackKey) {
-        return <div className="p-4 text-center text-red-500">{t('Paystack not configured')}</div>;
+        return <div className="p-4 text-center text-red-500">{translate('Paystack not configured')}</div>;
     }
 
     return (
         <div className="p-4 text-center">
-            <p>{t('Redirecting to Paystack...')}</p>
+            <p>{translate('Redirecting to Paystack...')}</p>
         </div>
     );
 }

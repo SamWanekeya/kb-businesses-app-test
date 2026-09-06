@@ -78,7 +78,7 @@ export default function Plans({
     currency,
     currencySymbol,
 }: Props) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { flash, auth } = usePage().props;
     const [plans, setPlans] = useState<Plan[]>(initialPlans);
     const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>(initialBillingCycle);
@@ -133,7 +133,7 @@ export default function Plans({
 
     // Organization plan actions
     const handlePlanRequest = (planId: number) => {
-        toast.loading(t('Submitting plan request...'));
+        toast.loading(translate('Submitting plan request...'));
 
         router.post(
             route('plans.request'),
@@ -163,7 +163,7 @@ export default function Plans({
     };
 
     const handleStartTrial = (planId: number) => {
-        toast.loading(t('Starting trial...'));
+        toast.loading(translate('Starting trial...'));
 
         router.post(
             route('plans.trial'),
@@ -200,7 +200,7 @@ export default function Plans({
                 setSelectedPlan({ ...plan, paymentMethods });
                 setIsSubscriptionModalOpen(true);
             } catch (error) {
-                toast.error(t('Failed to load payment methods'));
+                toast.error(translate('Failed to load payment methods'));
             }
         }
     };
@@ -211,7 +211,7 @@ export default function Plans({
         if (paymentSettings?.is_bank_payment_mode_enabled === true || paymentSettings?.is_bank_payment_mode_enabled === '1') {
             methods.push({
                 id: 'bank',
-                name: t('Bank Transfer'),
+                name: translate('Bank Transfer'),
                 icon: <Banknote className="h-5 w-5" />,
                 enabled: true,
             });
@@ -220,7 +220,7 @@ export default function Plans({
         // if (paymentSettings?.is_stripe_payment_mode_enabled === true || paymentSettings?.is_stripe_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'stripe',
-        //         name: t('Stripe'),
+        //         name: translate('Stripe'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -229,7 +229,7 @@ export default function Plans({
         // if (paymentSettings?.is_paypal_payment_mode_enabled === true || paymentSettings?.is_paypal_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'paypal',
-        //         name: t('PayPal'),
+        //         name: translate('PayPal'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -238,7 +238,7 @@ export default function Plans({
         // if (paymentSettings?.is_razorpay_payment_mode_enabled === true || paymentSettings?.is_razorpay_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'razorpay',
-        //         name: t('Razorpay'),
+        //         name: translate('Razorpay'),
         //         icon: <IndianRupee className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -247,7 +247,7 @@ export default function Plans({
         // if (paymentSettings?.is_mercadopago_payment_mode_enabled === true || paymentSettings?.is_mercadopago_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'mercadopago',
-        //         name: t('MercadoPago'),
+        //         name: translate('MercadoPago'),
         //         icon: <Wallet className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -256,7 +256,7 @@ export default function Plans({
         if (paymentSettings?.is_paystack_payment_mode_enabled === true || paymentSettings?.is_paystack_payment_mode_enabled === '1') {
             methods.push({
                 id: 'paystack',
-                name: t('Paystack'),
+                name: translate('Paystack'),
                 icon: <CreditCard className="h-5 w-5" />,
                 enabled: true,
             });
@@ -265,7 +265,7 @@ export default function Plans({
         // if (paymentSettings?.is_flutterwave_payment_mode_enabled === true || paymentSettings?.is_flutterwave_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'flutterwave',
-        //         name: t('Flutterwave'),
+        //         name: translate('Flutterwave'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -274,7 +274,7 @@ export default function Plans({
         // if (paymentSettings?.is_paytabs_payment_mode_enabled === true || paymentSettings?.is_paytabs_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'paytabs',
-        //         name: t('PayTabs'),
+        //         name: translate('PayTabs'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -283,7 +283,7 @@ export default function Plans({
         // if (paymentSettings?.is_skrill_payment_mode_enabled === true || paymentSettings?.is_skrill_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'skrill',
-        //         name: t('Skrill'),
+        //         name: translate('Skrill'),
         //         icon: <Wallet className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -292,7 +292,7 @@ export default function Plans({
         // if (paymentSettings?.is_coingate_payment_mode_enabled === true || paymentSettings?.is_coingate_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'coingate',
-        //         name: t('CoinGate'),
+        //         name: translate('CoinGate'),
         //         icon: <Coins className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -301,7 +301,7 @@ export default function Plans({
         // if (paymentSettings?.is_payfast_payment_mode_enabled === true || paymentSettings?.is_payfast_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'payfast',
-        //         name: t('Payfast'),
+        //         name: translate('Payfast'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -310,7 +310,7 @@ export default function Plans({
         // if (paymentSettings?.is_tap_payment_mode_enabled === true || paymentSettings?.is_tap_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'tap',
-        //         name: t('Tap'),
+        //         name: translate('Tap'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -319,7 +319,7 @@ export default function Plans({
         // if (paymentSettings?.is_xendit_payment_mode_enabled === true || paymentSettings?.is_xendit_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'xendit',
-        //         name: t('Xendit'),
+        //         name: translate('Xendit'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -328,7 +328,7 @@ export default function Plans({
         // if (paymentSettings?.is_paytr_payment_mode_enabled === true || paymentSettings?.is_paytr_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'paytr',
-        //         name: t('PayTR'),
+        //         name: translate('PayTR'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -337,7 +337,7 @@ export default function Plans({
         // if (paymentSettings?.is_mollie_payment_mode_enabled === true || paymentSettings?.is_mollie_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'mollie',
-        //         name: t('Mollie'),
+        //         name: translate('Mollie'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -346,7 +346,7 @@ export default function Plans({
         // if (paymentSettings?.is_toyyibpay_payment_mode_enabled === true || paymentSettings?.is_toyyibpay_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'toyyibpay',
-        //         name: t('toyyibPay'),
+        //         name: translate('toyyibPay'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -355,7 +355,7 @@ export default function Plans({
         // if (paymentSettings?.is_cashfree_payment_mode_enabled === true || paymentSettings?.is_cashfree_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'cashfree',
-        //         name: t('Cashfree'),
+        //         name: translate('Cashfree'),
         //         icon: <IndianRupee className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -364,7 +364,7 @@ export default function Plans({
         // if (paymentSettings?.is_khalti_payment_mode_enabled === true || paymentSettings?.is_khalti_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'khalti',
-        //         name: t('Khalti'),
+        //         name: translate('Khalti'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -373,7 +373,7 @@ export default function Plans({
         // if (paymentSettings?.is_iyzipay_payment_mode_enabled === true || paymentSettings?.is_iyzipay_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'iyzipay',
-        //         name: t('Iyzipay'),
+        //         name: translate('Iyzipay'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -382,7 +382,7 @@ export default function Plans({
         // if (paymentSettings?.is_benefit_payment_mode_enabled === true || paymentSettings?.is_benefit_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'benefit',
-        //         name: t('Benefit'),
+        //         name: translate('Benefit'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -391,7 +391,7 @@ export default function Plans({
         // if (paymentSettings?.is_ozow_payment_mode_enabled === true || paymentSettings?.is_ozow_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'ozow',
-        //         name: t('Ozow'),
+        //         name: translate('Ozow'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -400,7 +400,7 @@ export default function Plans({
         // if (paymentSettings?.is_easebuzz_payment_mode_enabled === true || paymentSettings?.is_easebuzz_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'easebuzz',
-        //         name: t('Easebuzz'),
+        //         name: translate('Easebuzz'),
         //         icon: <IndianRupee className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -409,7 +409,7 @@ export default function Plans({
         // if (paymentSettings?.is_authorizenet_payment_mode_enabled === true || paymentSettings?.is_authorizenet_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'authorizenet',
-        //         name: t('AuthorizeNet'),
+        //         name: translate('AuthorizeNet'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -418,7 +418,7 @@ export default function Plans({
         // if (paymentSettings?.is_fedapay_payment_mode_enabled === true || paymentSettings?.is_fedapay_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'fedapay',
-        //         name: t('FedaPay'),
+        //         name: translate('FedaPay'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -427,7 +427,7 @@ export default function Plans({
         // if (paymentSettings?.is_payhere_payment_mode_enabled === true || paymentSettings?.is_payhere_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'payhere',
-        //         name: t('PayHere'),
+        //         name: translate('PayHere'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -436,7 +436,7 @@ export default function Plans({
         // if (paymentSettings?.is_cinetpay_payment_mode_enabled === true || paymentSettings?.is_cinetpay_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'cinetpay',
-        //         name: t('CinetPay'),
+        //         name: translate('CinetPay'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -445,7 +445,7 @@ export default function Plans({
         // if (paymentSettings?.is_paiement_payment_mode_enabled === true || paymentSettings?.is_paiement_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'paiement',
-        //         name: t('Paiement Pro'),
+        //         name: translate('Paiement Pro'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -454,7 +454,7 @@ export default function Plans({
         // if (paymentSettings?.is_nepalste_payment_mode_enabled === true || paymentSettings?.is_nepalste_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'nepalste',
-        //         name: t('Nepalste'),
+        //         name: translate('Nepalste'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -463,7 +463,7 @@ export default function Plans({
         // if (paymentSettings?.is_yookassa_payment_mode_enabled === true || paymentSettings?.is_yookassa_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'yookassa',
-        //         name: t('YooKassa'),
+        //         name: translate('YooKassa'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -472,7 +472,7 @@ export default function Plans({
         // if (paymentSettings?.is_aamarpay_payment_mode_enabled === true || paymentSettings?.is_aamarpay_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'aamarpay',
-        //         name: t('Aamarpay'),
+        //         name: translate('Aamarpay'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -481,7 +481,7 @@ export default function Plans({
         // if (paymentSettings?.is_midtrans_payment_mode_enabled === true || paymentSettings?.is_midtrans_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'midtrans',
-        //         name: t('Midtrans'),
+        //         name: translate('Midtrans'),
         //         icon: <CreditCard className="h-5 w-5" />,
         //         enabled: true,
         //     });
@@ -496,7 +496,7 @@ export default function Plans({
             return (
                 <Button disabled className="w-full border-green-200 bg-green-100 text-green-800">
                     <Crown className="mr-2 h-4 w-4" />
-                    {t('Already Subscribed')}
+                    {translate('Already Subscribed')}
                 </Button>
             );
         }
@@ -516,7 +516,7 @@ export default function Plans({
 
                 return (
                     <div className="w-full rounded-md border border-emerald-200 bg-emerald-50 px-4 py-2 text-center text-sm font-medium text-emerald-700 dark:border-emerald-900/30 dark:bg-emerald-950/20 dark:text-emerald-400">
-                        {t('Expires on {{date}}', {
+                        {translate('Expires on {{date}}', {
                             date: formattedDate,
                         })}
                     </div>
@@ -525,7 +525,7 @@ export default function Plans({
 
             return (
                 <div className="w-full rounded-md border border-emerald-200 bg-emerald-50 px-4 py-2 text-center text-sm font-medium text-emerald-700 dark:border-emerald-900/30 dark:bg-emerald-950/20 dark:text-emerald-400">
-                    {t('Current Plan')}
+                    {translate('Current Plan')}
                 </div>
             );
         }
@@ -535,10 +535,10 @@ export default function Plans({
                 <div className="space-y-2">
                     <Button onClick={() => handleStartTrial(plan.id)} disabled={processing} variant="outline" className="w-full">
                         <Zap className="mr-2 h-4 w-4" />
-                        {t('Start {{days}} Day Trial', { days: plan.trial_days })}
+                        {translate('Start {{days}} Day Trial', { days: plan.trial_days })}
                     </Button>
                     <Button onClick={() => handleSubscribe(plan.id)} disabled={processing} className="w-full">
-                        {t('Subscribe Now')}
+                        {translate('Subscribe Now')}
                     </Button>
                 </div>
             );
@@ -548,7 +548,7 @@ export default function Plans({
             <div className="space-y-2">
                 <Button onClick={() => handlePlanRequest(plan.id)} disabled={processing} variant="outline" className="w-full">
                     <Clock className="mr-2 h-4 w-4" />
-                    {t('Request Plan')}
+                    {translate('Request Plan')}
                 </Button>
                 <Button
                     onClick={() => handleSubscribe(plan.id)}
@@ -559,8 +559,8 @@ export default function Plans({
                     className="w-full"
                 >
                     {currentPlan && currentPlan.id === plan.id && currentPlan.expires_at && new Date(currentPlan.expires_at) > new Date()
-                        ? t('Already Subscribed')
-                        : t('Subscribe Now')}
+                        ? translate('Already Subscribed')
+                        : translate('Subscribe Now')}
                 </Button>
             </div>
         );
@@ -657,13 +657,13 @@ export default function Plans({
         storage: <HardDrive className="h-4 w-4 text-yellow-500" />,
     };
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Plans') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Plans') }];
     const isSuperAdmin = auth?.user?.type === 'super_admin';
 
     return (
         <PageTemplate
-            title={t('Plans')}
-            description={isSuperAdmin ? t('Manage subscription plans for your customers.') : t('Manage Your Subscription Plan.')}
+            title={translate('Plans')}
+            description={isSuperAdmin ? translate('Manage subscription plans for your customers.') : translate('Manage Your Subscription Plan.')}
             url="/plans"
             breadcrumbs={breadcrumbs}
         >
@@ -671,11 +671,11 @@ export default function Plans({
                 {/* Header with controls */}
                 <div className="mb-12 flex flex-col items-center text-center">
                     <div className="mx-auto mb-8 max-w-3xl">
-                        <h1 className="mb-4 text-3xl font-bold text-gray-900">{isAdmin ? t('Subscription Plans') : t('Choose Your Plan')}</h1>
+                        <h1 className="mb-4 text-3xl font-bold text-gray-900">{isAdmin ? translate('Subscription Plans') : translate('Choose Your Plan')}</h1>
                         <p className="text-lg text-gray-600">
                             {isAdmin
-                                ? t('Create and manage subscription plans to offer different service tiers to your customers.')
-                                : t('Select the perfect plan for your business needs and start growing today.')}
+                                ? translate('Create and manage subscription plans to offer different service tiers to your customers.')
+                                : translate('Select the perfect plan for your business needs and start growing today.')}
                         </p>
                     </div>
                     <div className="flex flex-col items-center gap-4 sm:flex-row">
@@ -687,14 +687,14 @@ export default function Plans({
                                         value="monthly"
                                         className="cursor-pointer rounded-md px-6 py-2 text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm"
                                     >
-                                        {t('Monthly')}
+                                        {translate('Monthly')}
                                     </TabsTrigger>
                                     <TabsTrigger
                                         value="yearly"
                                         className="relative cursor-pointer rounded-md px-6 py-2 text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm"
                                     >
-                                        {t('Yearly')}
-                                        <Badge className="ml-2 bg-green-500 px-2 py-0.5 text-xs text-white">{t('Save 20%')}</Badge>
+                                        {translate('Yearly')}
+                                        <Badge className="ml-2 bg-green-500 px-2 py-0.5 text-xs text-white">{translate('Save 20%')}</Badge>
                                     </TabsTrigger>
                                 </TabsList>
                             </Tabs>
@@ -707,7 +707,7 @@ export default function Plans({
                                 onClick={() => router.get(route('plans.create'))}
                             >
                                 <Plus className="mr-2 h-4 w-4" />
-                                {t('Add Plan')}
+                                {translate('Add Plan')}
                             </Button>
                         )}
                     </div>
@@ -728,7 +728,7 @@ export default function Plans({
                                 {/* Recommended Badge */}
                                 {plan.recommended && (
                                     <div className="absolute -top-4 left-1/2 z-10 -translate-x-1/2 transform">
-                                        <div className="bg-primary rounded-full px-4 py-1 text-sm font-semibold text-white">{t('Recommended')}</div>
+                                        <div className="bg-primary rounded-full px-4 py-1 text-sm font-semibold text-white">{translate('Recommended')}</div>
                                     </div>
                                 )}
 
@@ -738,7 +738,7 @@ export default function Plans({
                                         <>
                                             {plan.is_default && (
                                                 <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset">
-                                                    {t('Default')}
+                                                    {translate('Default')}
                                                 </span>
                                             )}
                                             <span
@@ -748,14 +748,14 @@ export default function Plans({
                                                         : 'bg-red-50 text-red-700 ring-red-600/20'
                                                 }`}
                                             >
-                                                {plan.status ? t('Active') : t('Inactive')}
+                                                {plan.status ? translate('Active') : translate('Inactive')}
                                             </span>
                                         </>
                                     )}
                                     {!isAdmin && plan.is_current && (
                                         <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset">
                                             <Crown className="mr-1 h-3 w-3" />
-                                            {t('Current')}
+                                            {translate('Current')}
                                         </span>
                                     )}
                                 </div>
@@ -776,7 +776,7 @@ export default function Plans({
                                     {plan.trial_days > 0 && plan.is_trial_available && !userTrialUsed && (
                                         <div className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset">
                                             <Zap className="h-3 w-3" />
-                                            {t('{{days}} days free trial', { days: plan.trial_days })}
+                                            {translate('{{days}} days free trial', { days: plan.trial_days })}
                                         </div>
                                     )}
                                 </div>
@@ -790,35 +790,35 @@ export default function Plans({
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-2">
                                                     {statIcons.users}
-                                                    <span className="text-sm text-gray-700">{t('Users')}</span>
+                                                    <span className="text-sm text-gray-700">{translate('Users')}</span>
                                                 </div>
                                                 <span className="text-sm font-semibold text-gray-900">{plan.stats.users}</span>
                                             </div>
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-2">
                                                     {statIcons.projects}
-                                                    <span className="text-sm text-gray-700">{t('Projects')}</span>
+                                                    <span className="text-sm text-gray-700">{translate('Projects')}</span>
                                                 </div>
                                                 <span className="text-sm font-semibold text-gray-900">{plan.stats.projects}</span>
                                             </div>
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-2">
                                                     {statIcons.contacts}
-                                                    <span className="text-sm text-gray-700">{t('Contacts')}</span>
+                                                    <span className="text-sm text-gray-700">{translate('Contacts')}</span>
                                                 </div>
                                                 <span className="text-sm font-semibold text-gray-900">{plan.stats.contacts}</span>
                                             </div>
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-2">
                                                     {statIcons.accounts}
-                                                    <span className="text-sm text-gray-700">{t('Accounts')}</span>
+                                                    <span className="text-sm text-gray-700">{translate('Accounts')}</span>
                                                 </div>
                                                 <span className="text-sm font-semibold text-gray-900">{plan.stats.accounts}</span>
                                             </div>
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-2">
                                                     {statIcons.storage}
-                                                    <span className="text-sm text-gray-700">{t('Storage')}</span>
+                                                    <span className="text-sm text-gray-700">{translate('Storage')}</span>
                                                 </div>
                                                 <span className="text-sm font-semibold text-gray-900">{plan.stats.storage}</span>
                                             </div>
@@ -827,7 +827,7 @@ export default function Plans({
 
                                     {/* Features */}
                                     <div className="mb-6 flex-1">
-                                        <h4 className="mb-3 text-sm font-semibold tracking-wide text-gray-900 uppercase">{t('Features')}</h4>
+                                        <h4 className="mb-3 text-sm font-semibold tracking-wide text-gray-900 uppercase">{translate('Features')}</h4>
                                         <ul className="space-y-2">
                                             {commonFeatures.map((feature, index) => {
                                                 const included = isFeatureIncluded(plan, feature);
@@ -859,7 +859,7 @@ export default function Plans({
                                                         onCheckedChange={() => togglePlanStatus(plan.id)}
                                                         className={plan.status ? 'data-[state=checked]:bg-primary' : ''}
                                                     />
-                                                    <span className="text-sm text-gray-700">{plan.status ? t('Active') : t('Inactive')}</span>
+                                                    <span className="text-sm text-gray-700">{plan.status ? translate('Active') : translate('Inactive')}</span>
                                                 </div>
                                                 <div className="flex items-center gap-1">
                                                     <TooltipProvider>
@@ -874,7 +874,7 @@ export default function Plans({
                                                                     <Edit className="h-4 w-4 text-gray-500" />
                                                                 </Button>
                                                             </TooltipTrigger>
-                                                            <TooltipContent>{t('Edit')}</TooltipContent>
+                                                            <TooltipContent>{translate('Edit')}</TooltipContent>
                                                         </Tooltip>
                                                     </TooltipProvider>
                                                     {!plan.is_default && (
@@ -890,7 +890,7 @@ export default function Plans({
                                                                         <Trash2 className="h-4 w-4 text-gray-500" />
                                                                     </Button>
                                                                 </TooltipTrigger>
-                                                                <TooltipContent>{t('Delete')}</TooltipContent>
+                                                                <TooltipContent>{translate('Delete')}</TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}

@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function ProductShow() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { product, mainImage, additionalImages } = usePage().props;
     const getInitials = useInitials();
     const images: any[] = additionalImages || [];
@@ -18,16 +18,16 @@ export default function ProductShow() {
     const handleNext = () => setAdIndex((i) => (i + 1) % images.length);
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Items'), href: route('products.index') },
-        { title: t('View Product') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Items'), href: route('products.index') },
+        { title: translate('View Product') },
     ];
 
     const formatCurrency = (amount: number) => window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     const pageActions = [
         {
-            label: t('Back'),
+            label: translate('Back'),
             icon: <ArrowLeft className="me-2 h-4 w-4" />,
             variant: 'outline',
             onClick: () => router.visit(route('products.index')),
@@ -37,7 +37,7 @@ export default function ProductShow() {
     return (
         <PageTemplate
             title={product.name}
-            description={t('Product details and related information')}
+            description={translate('Product details and related information')}
             noPadding
             breadcrumbs={breadcrumbs}
             actions={pageActions}
@@ -50,7 +50,7 @@ export default function ProductShow() {
                         <CardHeader className="px-4 pt-4 pb-2">
                             <CardTitle className="text-muted-foreground flex items-center gap-2 text-sm font-medium">
                                 <Package className="h-4 w-4" />
-                                {t('Product Image')}
+                                {translate('Product Image')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="px-4 pb-4">
@@ -71,7 +71,7 @@ export default function ProductShow() {
                                 <div className="flex items-center justify-between">
                                     <CardTitle className="text-muted-foreground flex items-center gap-2 text-sm font-medium">
                                         <Package className="h-4 w-4" />
-                                        {t('Additional Images')}
+                                        {translate('Additional Images')}
                                     </CardTitle>
                                     <div className="flex items-center gap-2">
                                         <span className="text-muted-foreground text-xs">
@@ -131,28 +131,28 @@ export default function ProductShow() {
                         {(
                             [
                                 {
-                                    label: t('Sale Price'),
+                                    label: translate('Sale Price'),
                                     value: formatCurrency(product.price),
                                     icon: DollarSign,
                                     iconCls: 'text-emerald-600',
                                     blobCls: 'bg-emerald-50 dark:bg-emerald-900/30',
                                 },
                                 {
-                                    label: t('Brand'),
+                                    label: translate('Brand'),
                                     value: product.brand?.name || '—',
                                     icon: Bookmark,
                                     iconCls: 'text-blue-600',
                                     blobCls: 'bg-blue-50 dark:bg-blue-900/30',
                                 },
                                 {
-                                    label: t('Stock'),
+                                    label: translate('Stock'),
                                     value: product.stock_quantity ?? '—',
                                     icon: Layers,
                                     iconCls: 'text-orange-600',
                                     blobCls: 'bg-orange-50 dark:bg-orange-900/30',
                                 },
                                 {
-                                    label: t('Category'),
+                                    label: translate('Category'),
                                     value: product.category?.name || '—',
                                     icon: Tag,
                                     iconCls: 'text-purple-600',
@@ -183,12 +183,12 @@ export default function ProductShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-semibold">
                                     <FileText className="text-muted-foreground me-2 h-4 w-4" />
-                                    {t('Basic Information')}
+                                    {translate('Basic Information')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4 p-5">
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{t('Status')}</p>
+                                    <p className="text-muted-foreground text-xs font-medium">{translate('Status')}</p>
                                     <div>
                                         <span
                                             className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
@@ -197,18 +197,18 @@ export default function ProductShow() {
                                                     : 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-900/30 dark:text-red-400'
                                             }`}
                                         >
-                                            {product.status === 'active' ? t('Active') : t('Inactive')}
+                                            {product.status === 'active' ? translate('Active') : translate('Inactive')}
                                         </span>
                                     </div>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{t('SKU')}</p>
+                                    <p className="text-muted-foreground text-xs font-medium">{translate('SKU')}</p>
                                     <p className="text-foreground font-mono text-sm font-medium">{product.sku || '—'}</p>
                                 </div>
 
                                 {product.tax && (
                                     <div className="space-y-0.5">
-                                        <p className="text-muted-foreground text-xs font-medium">{t('Tax')}</p>
+                                        <p className="text-muted-foreground text-xs font-medium">{translate('Tax')}</p>
                                         <p className="text-foreground text-sm font-medium">
                                             {product.tax.name}
                                             {product.tax.type === 'percentage' ? ` (${product.tax.rate}%)` : ` (`}
@@ -226,12 +226,12 @@ export default function ProductShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-semibold">
                                     <Users className="text-muted-foreground me-2 h-4 w-4" />
-                                    {t('Additional Information')}
+                                    {translate('Additional Information')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4 p-5">
                                 <div>
-                                    <p className="text-muted-foreground mb-2 text-xs font-medium">{t('Assigned To')}</p>
+                                    <p className="text-muted-foreground mb-2 text-xs font-medium">{translate('Assigned To')}</p>
                                     {product.assigned_user ? (
                                         <div className="flex items-center gap-2">
                                             <Avatar className="h-8 w-8 flex-shrink-0">
@@ -248,11 +248,11 @@ export default function ProductShow() {
                                             </div>
                                         </div>
                                     ) : (
-                                        <p className="text-muted-foreground text-sm">{t('Unassigned')}</p>
+                                        <p className="text-muted-foreground text-sm">{translate('Unassigned')}</p>
                                     )}
                                 </div>
                                 <div>
-                                    <p className="text-muted-foreground mb-2 text-xs font-medium">{t('Created By')}</p>
+                                    <p className="text-muted-foreground mb-2 text-xs font-medium">{translate('Created By')}</p>
                                     {product.creator ? (
                                         <div className="flex items-center gap-2">
                                             <Avatar className="h-8 w-8 flex-shrink-0">
@@ -269,7 +269,7 @@ export default function ProductShow() {
                                             </div>
                                         </div>
                                     ) : (
-                                        <p className="text-muted-foreground text-sm">{t('Unknown')}</p>
+                                        <p className="text-muted-foreground text-sm">{translate('Unknown')}</p>
                                     )}
                                 </div>
                             </CardContent>
@@ -282,7 +282,7 @@ export default function ProductShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
                                     <FileText className="text-muted-foreground me-3 h-5 w-5" />
-                                    {t('Description')}
+                                    {translate('Description')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">

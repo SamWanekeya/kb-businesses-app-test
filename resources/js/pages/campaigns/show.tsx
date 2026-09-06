@@ -11,15 +11,15 @@ import { ArrowLeft, BarChart3, Calendar, DollarSign, Eye, Tag, Target, TrendingU
 import { useTranslation } from 'react-i18next';
 
 export default function CampaignShow() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { campaign, campaignLeads } = usePage().props;
     const permissions = (usePage().props as any).auth?.permissions;
     const getInitials = useInitials();
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Campaigns'), href: route('campaigns.index') },
-        { title: t('View Campaign') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Campaigns'), href: route('campaigns.index') },
+        { title: translate('View Campaign') },
     ];
 
     const formatCurrency = (amount: number) => window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
@@ -43,7 +43,7 @@ export default function CampaignShow() {
     const calculateROI = () => {
         const actualCost = campaign.actual_cost || 0;
         const budget = campaign.budget || 0;
-        if (budget === 0) return t('-');
+        if (budget === 0) return translate('-');
         const roi = ((budget - actualCost) / budget) * 100;
         return `${roi.toFixed(1)}%`;
     };
@@ -51,11 +51,11 @@ export default function CampaignShow() {
     return (
         <PageTemplate
             title={campaign.name}
-            description={t('Campaign details and related information')}
+            description={translate('Campaign details and related information')}
             breadcrumbs={breadcrumbs}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline' as const,
                     onClick: () => router.visit(route('campaigns.index')),
@@ -75,7 +75,7 @@ export default function CampaignShow() {
                                 <span className="text-gray-300">|</span>
                                 <span className="flex items-center gap-1"><List className="h-3 w-3" />{campaign.target_list?.name || '-'}</span>
                                 <span className="text-gray-300">|</span>
-                                <span className="flex items-center gap-1"><User className="h-3 w-3" />{campaign.assigned_user?.name || t('Unassigned')}</span> */}
+                                <span className="flex items-center gap-1"><User className="h-3 w-3" />{campaign.assigned_user?.name || translate('Unassigned')}</span> */}
                             </div>
                         </div>
                         <span
@@ -85,7 +85,7 @@ export default function CampaignShow() {
                                     : 'bg-red-50 text-red-700 ring-red-600/20'
                             }`}
                         >
-                            {campaign.status === 'active' ? t('Active') : t('Inactive')}
+                            {campaign.status === 'active' ? translate('Active') : translate('Inactive')}
                         </span>
                     </div>
                 </div>
@@ -95,35 +95,35 @@ export default function CampaignShow() {
                     {(
                         [
                             {
-                                label: t('Budget'),
+                                label: translate('Budget'),
                                 value: formatCurrency(campaign.budget),
                                 icon: DollarSign,
                                 iconCls: 'text-emerald-600',
                                 blobCls: 'bg-emerald-50 dark:bg-emerald-900/30',
                             },
                             {
-                                label: t('Actual Cost'),
+                                label: translate('Actual Cost'),
                                 value: formatCurrency(campaign.actual_cost),
                                 icon: BarChart3,
                                 iconCls: 'text-blue-600',
                                 blobCls: 'bg-blue-50 dark:bg-blue-900/30',
                             },
                             {
-                                label: t('Response Rate'),
+                                label: translate('Response Rate'),
                                 value: getResponseRate(),
                                 icon: TrendingUp,
                                 iconCls: 'text-orange-600',
                                 blobCls: 'bg-orange-50 dark:bg-orange-900/30',
                             },
                             {
-                                label: t('Total Leads'),
+                                label: translate('Total Leads'),
                                 value: `${campaignLeads?.length || 0}`,
                                 icon: Users,
                                 iconCls: 'text-purple-600',
                                 blobCls: 'bg-purple-50 dark:bg-purple-900/30',
                             },
                             {
-                                label: t('ROI'),
+                                label: translate('ROI'),
                                 value: calculateROI(),
                                 icon: Target,
                                 iconCls: 'text-rose-600',
@@ -155,29 +155,29 @@ export default function CampaignShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <Tag className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Campaign Information')}
+                                {translate('Campaign Information')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4 p-6">
                             <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                                 <div>
-                                    <label className="text-muted-foreground text-xs font-medium">{t('Campaign Type')}</label>
+                                    <label className="text-muted-foreground text-xs font-medium">{translate('Campaign Type')}</label>
                                     <p className="mt-1 text-sm font-medium">{campaign.campaign_type?.name || '-'}</p>
                                 </div>
                                 <div>
-                                    <label className="text-muted-foreground text-xs font-medium">{t('Target List')}</label>
+                                    <label className="text-muted-foreground text-xs font-medium">{translate('Target List')}</label>
                                     <p className="mt-1 text-sm font-medium">{campaign.target_list?.name || '-'}</p>
                                 </div>
                                 <div>
-                                    <label className="text-muted-foreground text-xs font-medium">{t('Start Date')}</label>
+                                    <label className="text-muted-foreground text-xs font-medium">{translate('Start Date')}</label>
                                     <p className="mt-1 text-sm font-medium">{formatDate(campaign.start_date)}</p>
                                 </div>
                                 <div>
-                                    <label className="text-muted-foreground text-xs font-medium">{t('End Date')}</label>
+                                    <label className="text-muted-foreground text-xs font-medium">{translate('End Date')}</label>
                                     <p className="mt-1 text-sm font-medium">{formatDate(campaign.end_date)}</p>
                                 </div>
                                 <div>
-                                    <label className="text-muted-foreground text-xs font-medium">{t('Assigned To')}</label>
+                                    <label className="text-muted-foreground text-xs font-medium">{translate('Assigned To')}</label>
                                     <div className="mt-1 flex items-center gap-2">
                                         {campaign.assigned_user ? (
                                             <>
@@ -190,12 +190,12 @@ export default function CampaignShow() {
                                                 <span className="text-sm font-medium">{campaign.assigned_user.name}</span>
                                             </>
                                         ) : (
-                                            <span className="text-sm font-medium">{t('Unassigned')}</span>
+                                            <span className="text-sm font-medium">{translate('Unassigned')}</span>
                                         )}
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="text-muted-foreground text-xs font-medium">{t('Created By')}</label>
+                                    <label className="text-muted-foreground text-xs font-medium">{translate('Created By')}</label>
                                     <div className="mt-1 flex items-center gap-2">
                                         {campaign.creator ? (
                                             <>
@@ -211,24 +211,24 @@ export default function CampaignShow() {
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="text-muted-foreground text-xs font-medium">{t('Expected Response')}</label>
+                                    <label className="text-muted-foreground text-xs font-medium">{translate('Expected Response')}</label>
                                     <p className="mt-1 text-sm font-medium">{campaign.expected_response || 0}</p>
                                 </div>
                                 <div>
-                                    <label className="text-muted-foreground text-xs font-medium">{t('Actual Response')}</label>
+                                    <label className="text-muted-foreground text-xs font-medium">{translate('Actual Response')}</label>
                                     <p className="mt-1 text-sm font-medium">
-                                        {campaignLeads?.length || 0} {t('leads')}
+                                        {campaignLeads?.length || 0} {translate('leads')}
                                     </p>
                                 </div>
                             </div>
                             <div className="text-muted-foreground grid grid-cols-2 gap-4 border-t pt-4 text-xs">
                                 <div className="flex items-center gap-1">
-                                    <span>{t('Created')}: </span>
+                                    <span>{translate('Created')}: </span>
                                     <Calendar className="h-3 w-3" />
                                     <span className="font-medium text-gray-600">{formatDate(campaign.created_at)}</span>
                                 </div>
                                 <div className="flex items-center gap-1">
-                                    <span>{t('Updated')}: </span>
+                                    <span>{translate('Updated')}: </span>
                                     <Calendar className="h-3 w-3" />{' '}
                                     <span className="font-medium text-gray-600">{formatDate(campaign.updated_at)}</span>
                                 </div>
@@ -241,19 +241,19 @@ export default function CampaignShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <DollarSign className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Budget Analysis')}
+                                {translate('Budget Analysis')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-5 p-6">
                             <div className="grid grid-cols-3 gap-1.5 min-[450px]:gap-3">
                                 <div className="rounded-lg border border-green-200 bg-green-50 p-1.5 text-center min-[400px]:p-3">
-                                    <p className="text-muted-foreground mb-1 text-[10px] font-medium min-[400px]:text-xs">{t('Budget')}</p>
+                                    <p className="text-muted-foreground mb-1 text-[10px] font-medium min-[400px]:text-xs">{translate('Budget')}</p>
                                     <p className="truncate font-mono text-xs font-bold text-green-600 min-[400px]:text-sm sm:text-base">
                                         {formatCurrency(campaign.budget)}
                                     </p>
                                 </div>
                                 <div className="rounded-lg border border-blue-200 bg-blue-50 p-1.5 text-center min-[400px]:p-3">
-                                    <p className="text-muted-foreground mb-1 text-[10px] font-medium min-[400px]:text-xs">{t('Spent')}</p>
+                                    <p className="text-muted-foreground mb-1 text-[10px] font-medium min-[400px]:text-xs">{translate('Spent')}</p>
                                     <p className="truncate font-mono text-xs font-bold text-blue-600 min-[400px]:text-sm sm:text-base">
                                         {formatCurrency(campaign.actual_cost)}
                                     </p>
@@ -261,7 +261,7 @@ export default function CampaignShow() {
                                 <div
                                     className={`rounded-lg border p-1.5 text-center min-[400px]:p-3 ${remaining >= 0 ? 'border-purple-200 bg-purple-50' : 'border-red-200 bg-red-50'}`}
                                 >
-                                    <p className="text-muted-foreground mb-1 text-[10px] font-medium min-[400px]:text-xs">{t('Remaining')}</p>
+                                    <p className="text-muted-foreground mb-1 text-[10px] font-medium min-[400px]:text-xs">{translate('Remaining')}</p>
                                     <p
                                         className={`truncate font-mono text-xs font-bold min-[400px]:text-sm sm:text-base ${remaining >= 0 ? 'text-purple-600' : 'text-red-600'}`}
                                     >
@@ -273,7 +273,7 @@ export default function CampaignShow() {
                             {campaign.budget > 0 && (
                                 <div>
                                     <div className="text-muted-foreground mb-1.5 flex justify-between text-xs">
-                                        <span>{t('Budget Used')}</span>
+                                        <span>{translate('Budget Used')}</span>
                                         <span className="font-medium">{budgetUsedPct.toFixed(1)}%</span>
                                     </div>
                                     <div className="h-2 w-full rounded-full bg-gray-100">
@@ -285,7 +285,7 @@ export default function CampaignShow() {
                             {campaign.expected_response > 0 && (
                                 <div>
                                     <div className="text-muted-foreground mb-1.5 flex justify-between text-xs">
-                                        <span>{t('Response Progress')}</span>
+                                        <span>{translate('Response Progress')}</span>
                                         <span className="font-medium">
                                             {campaignLeads?.length || 0} / {campaign.expected_response}
                                         </span>
@@ -304,7 +304,7 @@ export default function CampaignShow() {
                     <CardHeader className="border-b px-5 py-3.5">
                         <CardTitle className="flex items-center text-lg font-semibold">
                             <Users className="text-muted-foreground mr-3 h-5 w-5" />
-                            {t('Campaign Leads')}
+                            {translate('Campaign Leads')}
                             <span className="bg-muted text-muted-foreground ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
                                 {campaignLeads?.length || 0}
                             </span>
@@ -317,11 +317,11 @@ export default function CampaignShow() {
                                     <table className="w-full text-sm">
                                         <thead>
                                             <tr className="text-muted-foreground border-b bg-[#F0F0F1] text-xs dark:bg-gray-800">
-                                                <th className="px-6 py-3 text-left font-medium">{t('Name')}</th>
-                                                <th className="px-6 py-3 text-left font-medium">{t('Assigned To')}</th>
-                                                <th className="px-6 py-3 text-left font-medium">{t('Status')}</th>
+                                                <th className="px-6 py-3 text-left font-medium">{translate('Name')}</th>
+                                                <th className="px-6 py-3 text-left font-medium">{translate('Assigned To')}</th>
+                                                <th className="px-6 py-3 text-left font-medium">{translate('Status')}</th>
                                                 {useHasPermission('view-leads') && (
-                                                    <th className="px-6 py-3 text-right font-medium">{t('Action')}</th>
+                                                    <th className="px-6 py-3 text-right font-medium">{translate('Action')}</th>
                                                 )}
                                             </tr>
                                         </thead>
@@ -354,7 +354,7 @@ export default function CampaignShow() {
                                                                 </div>
                                                             </div>
                                                         ) : (
-                                                            <span className="text-sm text-gray-500">{t('Unassigned')}</span>
+                                                            <span className="text-sm text-gray-500">{translate('Unassigned')}</span>
                                                         )}
                                                     </td>
                                                     <td className="px-6 py-3">
@@ -385,7 +385,7 @@ export default function CampaignShow() {
                                                                         </Link>
                                                                     </TooltipTrigger>
                                                                     <TooltipContent side="top">
-                                                                        <p>{t('View')}</p>
+                                                                        <p>{translate('View')}</p>
                                                                     </TooltipContent>
                                                                 </Tooltip>
                                                             </TooltipProvider>
@@ -398,14 +398,14 @@ export default function CampaignShow() {
                                 </div>
                                 {campaignLeads.length > 10 && (
                                     <div className="text-muted-foreground border-t bg-gray-50 px-6 py-3 text-center text-sm">
-                                        +{campaignLeads.length - 10} {t('more leads')}
+                                        +{campaignLeads.length - 10} {translate('more leads')}
                                     </div>
                                 )}
                             </>
                         ) : (
                             <div className="py-12 text-center">
                                 <Users className="mx-auto mb-3 h-10 w-10 text-gray-300" />
-                                <p className="text-sm text-gray-500">{t('No leads created from this campaign yet.')}</p>
+                                <p className="text-sm text-gray-500">{translate('No leads created from this campaign yet.')}</p>
                             </div>
                         )}
                     </CardContent>

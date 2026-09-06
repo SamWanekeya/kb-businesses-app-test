@@ -15,7 +15,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Meetings() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
     const isRtl = document.documentElement.dir === 'rtl';
     const {
@@ -97,7 +97,7 @@ export default function Meetings() {
         if (formData.assigned_to) formData.assigned_to = String(formData.assigned_to);
 
         if (formMode === 'create') {
-            toast.loading(t('Creating meeting...'));
+            toast.loading(translate('Creating meeting...'));
             router.post(route('meetings.store'), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
@@ -108,11 +108,11 @@ export default function Meetings() {
                 },
                 onError: (errors) => {
                     toast.dismiss();
-                    toast.error(t('Failed to create: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to create: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 },
             });
         } else if (formMode === 'edit') {
-            toast.loading(t('Updating meeting...'));
+            toast.loading(translate('Updating meeting...'));
             router.put(route('meetings.update', currentItem.id), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
@@ -123,14 +123,14 @@ export default function Meetings() {
                 },
                 onError: (errors) => {
                     toast.dismiss();
-                    toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 },
             });
         }
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting meeting...'));
+        toast.loading(translate('Deleting meeting...'));
         router.delete(route('meetings.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
@@ -141,7 +141,7 @@ export default function Meetings() {
             },
             onError: (errors) => {
                 toast.dismiss();
-                toast.error(t('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
     };
@@ -156,7 +156,7 @@ export default function Meetings() {
             },
             onError: (errors) => {
                 toast.dismiss();
-                toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
     };
@@ -195,18 +195,18 @@ export default function Meetings() {
     const pageActions = [];
     if (useHasPermission('create-meetings')) {
         pageActions.push({
-            label: t('Add Meeting'),
+            label: translate('Add Meeting'),
             icon: <Plus className="mr-0 h-4 w-4 min-[350px]:mr-2" />,
             variant: 'default',
             className: 'h-8 w-8 min-[350px]:h-9 min-[350px]:w-auto px-0 min-[350px]:px-4',
             labelClassName: 'hidden min-[350px]:inline',
-            tooltip: t('Add Meeting'),
+            tooltip: translate('Add Meeting'),
             tooltipClassName: 'min-[350px]:hidden',
             onClick: () => handleAddNew(),
         });
     }
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Meetings') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Meetings') }];
 
     const getStatusBadge = (status: string) => {
         switch (status) {
@@ -224,11 +224,11 @@ export default function Meetings() {
     const getStatusLabel = (status: string) => {
         switch (status) {
             case 'planned':
-                return t('Planned');
+                return translate('Planned');
             case 'held':
-                return t('Held');
+                return translate('Held');
             case 'not_held':
-                return t('Not Held');
+                return translate('Not Held');
             default:
                 return status;
         }
@@ -327,14 +327,14 @@ export default function Meetings() {
     const renderSummary = () => (
         <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
             <div className="flex items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-gray-700">
-                <p className="text-sm font-semibold text-gray-700 dark:text-gray-200">{t('Meeting Summary')}</p>
+                <p className="text-sm font-semibold text-gray-700 dark:text-gray-200">{translate('Meeting Summary')}</p>
                 <span className="text-muted-foreground text-xs">({formatSelectedDate(selectedDateObj)})</span>
             </div>
             <div className="space-y-2.5 p-4">
                 {[
-                    { label: t('Planned'), color: 'bg-blue-500', count: summary.planned },
-                    { label: t('Held'), color: 'bg-green-500', count: summary.held },
-                    { label: t('Not Held'), color: 'bg-red-500', count: summary.not_held },
+                    { label: translate('Planned'), color: 'bg-blue-500', count: summary.planned },
+                    { label: translate('Held'), color: 'bg-green-500', count: summary.held },
+                    { label: translate('Not Held'), color: 'bg-red-500', count: summary.not_held },
                 ].map((item) => (
                     <div key={item.label} className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -346,7 +346,7 @@ export default function Meetings() {
                 ))}
             </div>
             <div className="flex items-center justify-between border-t border-gray-200 px-4 py-3 dark:border-gray-700">
-                <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">{t('Total Meetings')}</span>
+                <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">{translate('Total Meetings')}</span>
                 <span className="text-sm font-bold text-gray-900 dark:text-gray-100">
                     {Array.isArray(meetings) ? meetings.length : (meetings?.total ?? 0)}
                 </span>
@@ -358,7 +358,7 @@ export default function Meetings() {
     const renderQuickFilters = () => (
         <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
             <div className="border-b border-gray-200 px-4 py-3 dark:border-gray-700">
-                <p className="text-sm font-semibold text-gray-700 dark:text-gray-200">{t('Quick Filters')}</p>
+                <p className="text-sm font-semibold text-gray-700 dark:text-gray-200">{translate('Quick Filters')}</p>
             </div>
             <div className="space-y-1 p-4">
                 {(['yesterday', 'today', 'tomorrow'] as const).map((f) => {
@@ -397,8 +397,8 @@ export default function Meetings() {
 
     return (
         <PageTemplate
-            title={t('Meetings')}
-            description={t('Schedule and manage meetings .')}
+            title={translate('Meetings')}
+            description={translate('Schedule and manage meetings .')}
             url="/meetings"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -420,15 +420,15 @@ export default function Meetings() {
                             <CalendarDays className="text-muted-foreground h-4 w-4" />
                             <span className="font-semibold text-gray-800 dark:text-gray-100">
                                 {formatSelectedDate(selectedDateObj)}
-                                {isToday(selectedDateObj) && <span className="ms-1 font-bold">({t('Today')})</span>}
+                                {isToday(selectedDateObj) && <span className="ms-1 font-bold">({translate('Today')})</span>}
                             </span>
                             {!isToday(selectedDateObj) && (
                                 <Button variant="outline" size="sm" onClick={() => navigateToDate(new Date())}>
-                                    {t('Today')}
+                                    {translate('Today')}
                                 </Button>
                             )}
                             <span className="bg-primary/10 text-primary ring-primary/20 ms-auto inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset">
-                                {Array.isArray(meetings) ? meetings.length : (meetings?.total ?? 0)} {t('Meetings')}
+                                {Array.isArray(meetings) ? meetings.length : (meetings?.total ?? 0)} {translate('Meetings')}
                             </span>
                         </div>
 
@@ -439,7 +439,7 @@ export default function Meetings() {
                                     <CalendarDays className="h-8 w-8 text-gray-300 dark:text-gray-600" />
                                     <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{t("That's all for today!")}</p>
                                     <p className="text-muted-foreground text-xs">
-                                        {t('You have no meetings scheduled for')}{' '}
+                                        {translate('You have no meetings scheduled for')}{' '}
                                         <span className="font-medium">{formatSelectedDate(selectedDateObj)}</span>
                                     </p>
                                 </div>
@@ -498,7 +498,7 @@ export default function Meetings() {
                                                                         <Eye className="h-4 w-4" />
                                                                     </button>
                                                                 </TooltipTrigger>
-                                                                <TooltipContent>{t('View')}</TooltipContent>
+                                                                <TooltipContent>{translate('View')}</TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}
@@ -513,7 +513,7 @@ export default function Meetings() {
                                                                         <Edit className="h-4 w-4" />
                                                                     </button>
                                                                 </TooltipTrigger>
-                                                                <TooltipContent>{t('Edit')}</TooltipContent>
+                                                                <TooltipContent>{translate('Edit')}</TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}
@@ -528,7 +528,7 @@ export default function Meetings() {
                                                                         <RefreshCw className="h-4 w-4" />
                                                                     </button>
                                                                 </TooltipTrigger>
-                                                                <TooltipContent>{t('Change Status')}</TooltipContent>
+                                                                <TooltipContent>{translate('Change Status')}</TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}
@@ -543,7 +543,7 @@ export default function Meetings() {
                                                                         <Trash2 className="h-4 w-4" />
                                                                     </button>
                                                                 </TooltipTrigger>
-                                                                <TooltipContent>{t('Delete')}</TooltipContent>
+                                                                <TooltipContent>{translate('Delete')}</TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}
@@ -653,50 +653,50 @@ export default function Meetings() {
                     fields: [
                         {
                             name: 'title',
-                            label: t('Meeting Title'),
+                            label: translate('Meeting Title'),
                             type: 'text' as const,
                             required: true,
-                            placeholder: t('e.g. Q1 Sales Review, Product Demo, Kickoff Meeting'),
+                            placeholder: translate('e.g. Q1 Sales Review, Product Demo, Kickoff Meeting'),
                         },
                         {
                             name: 'description',
-                            label: t('Description'),
+                            label: translate('Description'),
                             type: 'textarea' as const,
-                            placeholder: t('Enter meeting description or agenda...'),
+                            placeholder: translate('Enter meeting description or agenda...'),
                         },
                         {
                             name: 'location',
-                            label: t('Location'),
+                            label: translate('Location'),
                             type: 'text' as const,
                             required: true,
-                            placeholder: t('e.g. Conference Room A, Zoom, Google Meet'),
+                            placeholder: translate('e.g. Conference Room A, Zoom, Google Meet'),
                         },
-                        { name: 'start_date', label: t('Start Date'), type: 'date' as const, required: true },
-                        { name: 'end_date', label: t('End Date'), type: 'date' as const, required: true },
-                        { name: 'start_time', label: t('Start Time'), type: 'time' as const, required: true },
-                        { name: 'end_time', label: t('End Time'), type: 'time' as const, required: true },
+                        { name: 'start_date', label: translate('Start Date'), type: 'date' as const, required: true },
+                        { name: 'end_date', label: translate('End Date'), type: 'date' as const, required: true },
+                        { name: 'start_time', label: translate('Start Time'), type: 'time' as const, required: true },
+                        { name: 'end_time', label: translate('End Time'), type: 'time' as const, required: true },
                         {
                             name: 'parent_module',
-                            label: t('Related To'),
+                            label: translate('Related To'),
                             type: 'select' as const,
                             required: true,
                             options: [
-                                { value: 'lead', label: t('Lead') },
-                                { value: 'account', label: t('Account') },
-                                { value: 'contact', label: t('Contact') },
-                                { value: 'opportunity', label: t('Opportunity') },
-                                { value: 'case', label: t('Case') },
-                                { value: 'project', label: t('Project') },
+                                { value: 'lead', label: translate('Lead') },
+                                { value: 'account', label: translate('Account') },
+                                { value: 'contact', label: translate('Contact') },
+                                { value: 'opportunity', label: translate('Opportunity') },
+                                { value: 'case', label: translate('Case') },
+                                { value: 'project', label: translate('Project') },
                             ],
                         },
                         {
                             name: 'parent_id',
-                            label: t('Select Record'),
+                            label: translate('Select Record'),
                             type: 'select' as const,
                             required: true,
                             searchable: true,
                             options: [],
-                            placeholder: t('Select Record'),
+                            placeholder: translate('Select Record'),
                             emptyNote: (formData: any) => {
                                 const parentModule = formData.parent_module;
                                 if (!parentModule || parentModule === 'none') return null;
@@ -709,12 +709,12 @@ export default function Meetings() {
                                     project: route('projects.index'),
                                 };
                                 const labels: Record<string, string> = {
-                                    lead: t('Leads'),
-                                    account: t('Accounts'),
-                                    contact: t('Contacts'),
-                                    opportunity: t('Opportunities'),
-                                    case: t('Cases'),
-                                    project: t('Projects'),
+                                    lead: translate('Leads'),
+                                    account: translate('Accounts'),
+                                    contact: translate('Contacts'),
+                                    opportunity: translate('Opportunities'),
+                                    case: translate('Cases'),
+                                    project: translate('Projects'),
                                 };
                                 return { link: routes[parentModule], linkText: labels[parentModule] };
                             },
@@ -725,24 +725,24 @@ export default function Meetings() {
                         },
                         {
                             name: 'attendees',
-                            label: t('Attendees'),
+                            label: translate('Attendees'),
                             type: 'array' as const,
                             required: true,
                             fields: [
                                 {
                                     name: 'type',
-                                    label: t('Type'),
+                                    label: translate('Type'),
                                     type: 'select' as const,
                                     required: true,
                                     options: [
-                                        { value: 'user', label: t('User') },
-                                        { value: 'contact', label: t('Contact') },
-                                        { value: 'lead', label: t('Lead') },
+                                        { value: 'user', label: translate('User') },
+                                        { value: 'contact', label: translate('Contact') },
+                                        { value: 'lead', label: translate('Lead') },
                                     ],
                                 },
                                 {
                                     name: 'id',
-                                    label: t('Select Person'),
+                                    label: translate('Select Person'),
                                     type: 'select' as const,
                                     required: true,
                                     searchable: true,
@@ -758,9 +758,9 @@ export default function Meetings() {
                                             lead: route('leads.index'),
                                         };
                                         const labels: Record<string, string> = {
-                                            user: t('Users'),
-                                            contact: t('Contacts'),
-                                            lead: t('Leads'),
+                                            user: translate('Users'),
+                                            contact: translate('Contacts'),
+                                            lead: translate('Leads'),
                                         };
                                         return { link: routes[attendeeType], linkText: labels[attendeeType] };
                                     },
@@ -769,21 +769,21 @@ export default function Meetings() {
                         },
                         {
                             name: 'assigned_to',
-                            label: t('Assign To'),
+                            label: translate('Assign To'),
                             type: 'select' as const,
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('users.index'), linkText: t('Users') },
+                            emptyNote: { link: route('users.index'), linkText: translate('Users') },
                             options: [...users.map((user: any) => ({ value: user.id, label: `${user.name} (${user.email})` }))],
                         },
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select' as const,
                             options: [
-                                { value: 'planned', label: t('Planned') },
-                                { value: 'held', label: t('Held') },
-                                { value: 'not_held', label: t('Not Held') },
+                                { value: 'planned', label: translate('Planned') },
+                                { value: 'held', label: translate('Held') },
+                                { value: 'not_held', label: translate('Not Held') },
                             ],
                             defaultValue: 'planned',
                         },
@@ -791,7 +791,7 @@ export default function Meetings() {
                             ? [
                                   {
                                       name: 'sync_with_google_calendar',
-                                      label: t('Sync with Google Calendar'),
+                                      label: translate('Sync with Google Calendar'),
                                       type: 'switch' as const,
                                       defaultValue: false,
                                       conditional: (mode: string) => mode === 'create',
@@ -813,7 +813,7 @@ export default function Meetings() {
                           }
                         : {}
                 }
-                title={formMode === 'create' ? t('Add Meeting') : formMode === 'edit' ? t('Edit Meeting') : t('View Meeting')}
+                title={formMode === 'create' ? translate('Add Meeting') : formMode === 'edit' ? translate('Edit Meeting') : translate('View Meeting')}
                 mode={formMode}
             />
 
@@ -826,20 +826,20 @@ export default function Meetings() {
                     fields: [
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             required: true,
                             options: [
-                                { value: 'planned', label: t('Planned') },
-                                { value: 'held', label: t('Held') },
-                                { value: 'not_held', label: t('Not Held') },
+                                { value: 'planned', label: translate('Planned') },
+                                { value: 'held', label: translate('Held') },
+                                { value: 'not_held', label: translate('Not Held') },
                             ],
                         },
                     ],
                     modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
-                title={t('Change Meeting Status')}
+                title={translate('Change Meeting Status')}
                 mode="edit"
             />
 
@@ -848,7 +848,7 @@ export default function Meetings() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.title || ''}
-                entityName={t('meeting')}
+                entityName={translate('meeting')}
             />
         </PageTemplate>
     );

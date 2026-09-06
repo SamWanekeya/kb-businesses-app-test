@@ -69,7 +69,7 @@ function SearchSelect({
     emptyNote?: { link: string; linkText: string };
     error?: string;
 }) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [open, setOpen] = useState(false);
     const [search, setSearch] = useState('');
     const filtered = options.filter((o) => o.label.toLowerCase().includes(search.toLowerCase()));
@@ -86,7 +86,7 @@ function SearchSelect({
                 onClick={() => setOpen((p) => !p)}
                 className={`flex w-full items-center justify-between rounded-md border bg-white px-3 py-2 text-left text-sm focus:ring-1 focus:ring-gray-400 focus:outline-none ${error ? 'border-red-500' : 'border-gray-300'}`}
             >
-                <span className={selected ? 'text-gray-900' : 'text-gray-400'}>{selected?.label || placeholder || t('Select...')}</span>
+                <span className={selected ? 'text-gray-900' : 'text-gray-400'}>{selected?.label || placeholder || translate('Select...')}</span>
                 <ChevronDown className="h-4 w-4 flex-shrink-0 text-gray-400" />
             </button>
             {open && (
@@ -95,7 +95,7 @@ function SearchSelect({
                         <input
                             autoFocus
                             className="w-full rounded border border-gray-200 px-2 py-1 text-sm focus:outline-none"
-                            placeholder={t('Search...')}
+                            placeholder={translate('Search...')}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
@@ -105,13 +105,13 @@ function SearchSelect({
                             <div className="p-3 text-center text-sm text-gray-500">
                                 {emptyNote ? (
                                     <span>
-                                        {t('No records found.')}{' '}
+                                        {translate('No records found.')}{' '}
                                         <a href={emptyNote.link} className="text-gray-600 underline">
-                                            {t('Add')} {emptyNote.linkText}
+                                            {translate('Add')} {emptyNote.linkText}
                                         </a>
                                     </span>
                                 ) : (
-                                    t('No options found')
+                                    translate('No options found')
                                 )}
                             </div>
                         ) : (
@@ -149,7 +149,7 @@ function Field({ label, required, error, children }: { label: string; required?:
 }
 
 export default function SalesOrderEdit() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { salesOrder, accounts, contacts, quotes, products, shippingProviderTypes, users } = usePage().props;
 
     const toDate = (d: string) => (d ? d.split('T')[0] : '');
@@ -241,7 +241,7 @@ export default function SalesOrderEdit() {
         }));
 
     const handleQuoteChange = useCallback(async (quoteId: string) => {
-        set('quote_id', quoteId);
+        setranslate('quote_id', quoteId);
         if (!quoteId) return;
         setLoadingQuote(true);
         try {
@@ -292,7 +292,7 @@ export default function SalesOrderEdit() {
                 return n;
             });
         } catch {
-            toast.error(t('Failed to load quote details'));
+            toast.error(translate('Failed to load quote details'));
         } finally {
             setLoadingQuote(false);
         }
@@ -307,7 +307,7 @@ export default function SalesOrderEdit() {
             shipping_country: p.billing_country,
             shipping_postal_code: p.billing_postal_code,
         }));
-        toast.success(t('Billing address copied to shipping'));
+        toast.success(translate('Billing address copied to shipping'));
     };
 
     const calcLine = (l: ProductLine) => {
@@ -331,22 +331,22 @@ export default function SalesOrderEdit() {
 
     const validate = (): boolean => {
         const e: Errors = {};
-        if (!form.name.trim()) e.name = t('Name is required');
-        if (!form.quote_id) e.quote_id = t('Quote is required');
-        if (!form.account_id) e.account_id = t('Account is required');
-        if (!form.billing_contact_id) e.billing_contact_id = t('Billing contact is required');
-        if (!form.shipping_contact_id) e.shipping_contact_id = t('Shipping contact is required');
-        if (!form.shipping_provider_type_id) e.shipping_provider_type_id = t('Shipping provider is required');
-        if (!form.order_date) e.order_date = t('Order date is required');
-        if (!form.assigned_to) e.assigned_to = t('Assigned user is required');
-        if (!form.billing_address.trim()) e.billing_address = t('Billing address is required');
-        if (!form.billing_city.trim()) e.billing_city = t('Billing city is required');
-        if (!form.billing_state.trim()) e.billing_state = t('Billing state is required');
-        if (!form.billing_country.trim()) e.billing_country = t('Billing country is required');
-        if (!form.billing_postal_code.trim()) e.billing_postal_code = t('Billing postal code is required');
-        if (!form.products.length || form.products.every((l) => !l.product_id)) e.products = t('At least one product is required');
+        if (!form.name.trim()) e.name = translate('Name is required');
+        if (!form.quote_id) e.quote_id = translate('Quote is required');
+        if (!form.account_id) e.account_id = translate('Account is required');
+        if (!form.billing_contact_id) e.billing_contact_id = translate('Billing contact is required');
+        if (!form.shipping_contact_id) e.shipping_contact_id = translate('Shipping contact is required');
+        if (!form.shipping_provider_type_id) e.shipping_provider_type_id = translate('Shipping provider is required');
+        if (!form.order_date) e.order_date = translate('Order date is required');
+        if (!form.assigned_to) e.assigned_to = translate('Assigned user is required');
+        if (!form.billing_address.trim()) e.billing_address = translate('Billing address is required');
+        if (!form.billing_city.trim()) e.billing_city = translate('Billing city is required');
+        if (!form.billing_state.trim()) e.billing_state = translate('Billing state is required');
+        if (!form.billing_country.trim()) e.billing_country = translate('Billing country is required');
+        if (!form.billing_postal_code.trim()) e.billing_postal_code = translate('Billing postal code is required');
+        if (!form.products.length || form.products.every((l) => !l.product_id)) e.products = translate('At least one product is required');
         form.products.forEach((l, i) => {
-            if (!l.product_id) e[`products.${i}.product_id`] = t('Product is required');
+            if (!l.product_id) e[`products.${i}.product_id`] = translate('Product is required');
         });
         setErrors(e);
         return Object.keys(e).length === 0;
@@ -384,9 +384,9 @@ export default function SalesOrderEdit() {
     };
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Sales Orders'), href: route('sales-orders.index') },
-        { title: t('Edit') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Sales Orders'), href: route('sales-orders.index') },
+        { title: translate('Edit') },
     ];
 
     const quoteOptions = (quotes || []).map((q: any) => ({ value: String(q.id), label: `${q.quote_number} – ${q.name}` }));
@@ -401,15 +401,15 @@ export default function SalesOrderEdit() {
 
     return (
         <PageTemplate
-            title={t('Edit Sales Order')}
-            description={t('Update sales order details and related information')}
+            title={translate('Edit Sales Order')}
+            description={translate('Update sales order details and related information')}
             url="/sales-orders"
             breadcrumbs={breadcrumbs}
             fullWidth
             noPadding
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => router.visit(route('sales-orders.index', salesOrder.id)),
@@ -420,34 +420,34 @@ export default function SalesOrderEdit() {
                 {/* Basic Info */}
                 <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
-                        <CardTitle className="text-base font-semibold">{t('Order Information')}</CardTitle>
+                        <CardTitle className="text-base font-semibold">{translate('Order Information')}</CardTitle>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-2">
                         <div className="md:col-span-2">
-                            <Field label={t('Order Name')} required error={errors.name}>
+                            <Field label={translate('Order Name')} required error={errors.name}>
                                 <Input
                                     value={form.name}
-                                    onChange={(e) => set('name', e.target.value)}
-                                    placeholder={t('e.g. Annual Hardware Order 2025')}
+                                    onChange={(e) => setranslate('name', e.target.value)}
+                                    placeholder={translate('e.g. Annual Hardware Order 2025')}
                                     className={errors.name ? 'border-red-500' : ''}
                                 />
                             </Field>
                         </div>
                         <div className="md:col-span-2">
-                            <Field label={t('Description')} error={errors.description}>
+                            <Field label={translate('Description')} error={errors.description}>
                                 <Textarea
                                     value={form.description}
-                                    onChange={(e) => set('description', e.target.value)}
-                                    placeholder={t('Describe the purpose or details of this order...')}
+                                    onChange={(e) => setranslate('description', e.target.value)}
+                                    placeholder={translate('Describe the purpose or details of this order...')}
                                     rows={2}
                                 />
                             </Field>
                         </div>
-                        <Field label={t('Quote')} required error={errors.quote_id}>
+                        <Field label={translate('Quote')} required error={errors.quote_id}>
                             <div className="relative">
                                 <Select value={form.quote_id} onValueChange={handleQuoteChange}>
                                     <SelectTrigger className={errors.quote_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select a quote')} />
+                                        <SelectValue placeholder={translate('Select a quote')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {quoteOptions.map((o) => (
@@ -458,14 +458,14 @@ export default function SalesOrderEdit() {
                                     </SelectContent>
                                 </Select>
                                 {loadingQuote && (
-                                    <span className="absolute top-2.5 right-8 animate-pulse text-xs text-gray-400">{t('Loading...')}</span>
+                                    <span className="absolute top-2.5 right-8 animate-pulse text-xs text-gray-400">{translate('Loading...')}</span>
                                 )}
                             </div>
                         </Field>
-                        <Field label={t('Account')} required error={errors.account_id}>
-                            <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
+                        <Field label={translate('Account')} required error={errors.account_id}>
+                            <Select value={form.account_id} onValueChange={(v) => setranslate('account_id', v)}>
                                 <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select account')} />
+                                    <SelectValue placeholder={translate('Select account')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {accountOptions.map((o) => (
@@ -476,7 +476,7 @@ export default function SalesOrderEdit() {
                                 </SelectContent>
                             </Select>
                         </Field>
-                        <Field label={t('Order Date')} required error={errors.order_date}>
+                        <Field label={translate('Order Date')} required error={errors.order_date}>
                             <div
                                 className="cursor-pointer"
                                 onClick={(e) => {
@@ -491,12 +491,12 @@ export default function SalesOrderEdit() {
                                 <Input
                                     type="date"
                                     value={form.order_date}
-                                    onChange={(e) => set('order_date', e.target.value)}
+                                    onChange={(e) => setranslate('order_date', e.target.value)}
                                     className={`cursor-pointer ${errors.order_date ? 'border-red-500' : ''}`}
                                 />
                             </div>
                         </Field>
-                        <Field label={t('Delivery Date')} error={errors.delivery_date}>
+                        <Field label={translate('Delivery Date')} error={errors.delivery_date}>
                             <div
                                 className="cursor-pointer"
                                 onClick={(e) => {
@@ -511,24 +511,24 @@ export default function SalesOrderEdit() {
                                 <Input
                                     type="date"
                                     value={form.delivery_date}
-                                    onChange={(e) => set('delivery_date', e.target.value)}
+                                    onChange={(e) => setranslate('delivery_date', e.target.value)}
                                     className="cursor-pointer"
                                 />
                             </div>
                         </Field>
-                        <Field label={t('Status')} error={errors.status}>
-                            <Select value={form.status} onValueChange={(v) => set('status', v)}>
+                        <Field label={translate('Status')} error={errors.status}>
+                            <Select value={form.status} onValueChange={(v) => setranslate('status', v)}>
                                 <SelectTrigger className={errors.status ? 'border-red-500' : ''}>
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {[
-                                        ['draft', t('Draft')],
-                                        ['confirmed', t('Confirmed')],
-                                        ['processing', t('Processing')],
-                                        ['shipped', t('Shipped')],
-                                        ['delivered', t('Delivered')],
-                                        ['cancelled', t('Cancelled')],
+                                        ['draft', translate('Draft')],
+                                        ['confirmed', translate('Confirmed')],
+                                        ['processing', translate('Processing')],
+                                        ['shipped', translate('Shipped')],
+                                        ['delivered', translate('Delivered')],
+                                        ['cancelled', translate('Cancelled')],
                                     ].map(([v, l]) => (
                                         <SelectItem key={v} value={v}>
                                             {l}
@@ -537,10 +537,10 @@ export default function SalesOrderEdit() {
                                 </SelectContent>
                             </Select>
                         </Field>
-                        <Field label={t('Assign To')} required error={errors.assigned_to}>
-                            <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
+                        <Field label={translate('Assign To')} required error={errors.assigned_to}>
+                            <Select value={form.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select user')} />
+                                    <SelectValue placeholder={translate('Select user')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {userOptions.map((o) => (
@@ -557,13 +557,13 @@ export default function SalesOrderEdit() {
                 {/* Contacts & Shipping Provider */}
                 <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
-                        <CardTitle className="text-base font-semibold">{t('Contacts & Shipping Provider')}</CardTitle>
+                        <CardTitle className="text-base font-semibold">{translate('Contacts & Shipping Provider')}</CardTitle>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-3">
-                        <Field label={t('Billing Contact')} required error={errors.billing_contact_id}>
-                            <Select value={form.billing_contact_id} onValueChange={(v) => set('billing_contact_id', v)}>
+                        <Field label={translate('Billing Contact')} required error={errors.billing_contact_id}>
+                            <Select value={form.billing_contact_id} onValueChange={(v) => setranslate('billing_contact_id', v)}>
                                 <SelectTrigger className={errors.billing_contact_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select billing contact')} />
+                                    <SelectValue placeholder={translate('Select billing contact')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {contactOptions.map((o) => (
@@ -574,10 +574,10 @@ export default function SalesOrderEdit() {
                                 </SelectContent>
                             </Select>
                         </Field>
-                        <Field label={t('Shipping Contact')} required error={errors.shipping_contact_id}>
-                            <Select value={form.shipping_contact_id} onValueChange={(v) => set('shipping_contact_id', v)}>
+                        <Field label={translate('Shipping Contact')} required error={errors.shipping_contact_id}>
+                            <Select value={form.shipping_contact_id} onValueChange={(v) => setranslate('shipping_contact_id', v)}>
                                 <SelectTrigger className={errors.shipping_contact_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select shipping contact')} />
+                                    <SelectValue placeholder={translate('Select shipping contact')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {contactOptions.map((o) => (
@@ -588,10 +588,10 @@ export default function SalesOrderEdit() {
                                 </SelectContent>
                             </Select>
                         </Field>
-                        <Field label={t('Shipping Provider')} required error={errors.shipping_provider_type_id}>
-                            <Select value={form.shipping_provider_type_id} onValueChange={(v) => set('shipping_provider_type_id', v)}>
+                        <Field label={translate('Shipping Provider')} required error={errors.shipping_provider_type_id}>
+                            <Select value={form.shipping_provider_type_id} onValueChange={(v) => setranslate('shipping_provider_type_id', v)}>
                                 <SelectTrigger className={errors.shipping_provider_type_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select provider')} />
+                                    <SelectValue placeholder={translate('Select provider')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {providerOptions.map((o) => (
@@ -610,11 +610,11 @@ export default function SalesOrderEdit() {
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
                         <div className="flex items-center justify-between">
                             <CardTitle className="text-base font-semibold">
-                                {t('Products')}
+                                {translate('Products')}
                                 {errors.products && <span className="ml-2 text-xs font-normal text-red-500">{errors.products}</span>}
                             </CardTitle>
                             <Button type="button" size="sm" onClick={addLine}>
-                                <Plus className="mr-1 h-4 w-4" /> {t('Add Product')}
+                                <Plus className="mr-1 h-4 w-4" /> {translate('Add Product')}
                             </Button>
                         </div>
                     </CardHeader>
@@ -624,18 +624,18 @@ export default function SalesOrderEdit() {
                                 <thead className="hidden xl:table-header-group">
                                     <tr className="border-b bg-gray-50 text-xs font-semibold text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                                         <th className="min-w-[200px] px-4 py-3 text-left">
-                                            {t('Product')} <span className="text-red-500">*</span>
+                                            {translate('Product')} <span className="text-red-500">*</span>
                                         </th>
                                         <th className="w-24 px-4 py-3 text-left">
-                                            {t('Quantity')} <span className="text-red-500">*</span>
+                                            {translate('Quantity')} <span className="text-red-500">*</span>
                                         </th>
                                         <th className="w-32 px-4 py-3 text-left">
-                                            {t('Unit Price')} <span className="text-red-500">*</span>
+                                            {translate('Unit Price')} <span className="text-red-500">*</span>
                                         </th>
-                                        <th className="w-32 px-4 py-3 text-left">{t('Discount Type')}</th>
-                                        <th className="w-28 px-4 py-3 text-left">{t('Discount Val')}</th>
-                                        <th className="w-28 px-4 py-3 text-left">{t('Tax')}</th>
-                                        <th className="w-28 px-4 py-3 text-left">{t('Total')}</th>
+                                        <th className="w-32 px-4 py-3 text-left">{translate('Discount Type')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{translate('Discount Val')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{translate('Tax')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{translate('Total')}</th>
                                         <th className="w-12 px-4 py-3"></th>
                                     </tr>
                                 </thead>
@@ -653,13 +653,13 @@ export default function SalesOrderEdit() {
                                             >
                                                 <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-48 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Product')} <span className="text-red-500">*</span>
+                                                        {translate('Product')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Select value={line.product_id} onValueChange={(v) => setLine(line.id, 'product_id', v)}>
                                                         <SelectTrigger
                                                             className={errors[`products.${idx}.product_id`] ? 'w-full border-red-500' : 'w-full'}
                                                         >
-                                                            <SelectValue placeholder={t('Select product')} />
+                                                            <SelectValue placeholder={translate('Select product')} />
                                                         </SelectTrigger>
                                                         <SelectContent searchable>
                                                             {lineProductOptions.map((o) => (
@@ -674,16 +674,16 @@ export default function SalesOrderEdit() {
                                                     )}
                                                     {idx === 0 && productOptions.length === 0 && (
                                                         <p className="mt-1 text-xs">
-                                                            {t('Click here to add')}{' '}
+                                                            {translate('Click here to add')}{' '}
                                                             <a href={route('products.index')} className="font-medium underline">
-                                                                {t('Products')}
+                                                                {translate('Products')}
                                                             </a>
                                                         </p>
                                                     )}
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-24 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Quantity')} <span className="text-red-500">*</span>
+                                                        {translate('Quantity')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
                                                         type="number"
@@ -694,7 +694,7 @@ export default function SalesOrderEdit() {
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Unit Price')} <span className="text-red-500">*</span>
+                                                        {translate('Unit Price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
                                                         type="number"
@@ -707,7 +707,7 @@ export default function SalesOrderEdit() {
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Discount Type')}
+                                                        {translate('Discount Type')}
                                                     </span>
                                                     <Select
                                                         value={line.discount_type || 'none'}
@@ -716,18 +716,18 @@ export default function SalesOrderEdit() {
                                                         }
                                                     >
                                                         <SelectTrigger className="w-full">
-                                                            <SelectValue placeholder={t('None')} />
+                                                            <SelectValue placeholder={translate('None')} />
                                                         </SelectTrigger>
                                                         <SelectContent>
-                                                            <SelectItem value="none">{t('None')}</SelectItem>
-                                                            <SelectItem value="percentage">{t('Percentage (%)')}</SelectItem>
-                                                            <SelectItem value="fixed">{t('Fixed Amount')}</SelectItem>
+                                                            <SelectItem value="none">{translate('None')}</SelectItem>
+                                                            <SelectItem value="percentage">{translate('Percentage (%)')}</SelectItem>
+                                                            <SelectItem value="fixed">{translate('Fixed Amount')}</SelectItem>
                                                         </SelectContent>
                                                     </Select>
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Discount Val')}
+                                                        {translate('Discount Val')}
                                                     </span>
                                                     <Input
                                                         type="number"
@@ -741,20 +741,20 @@ export default function SalesOrderEdit() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{t('Tax')}</span>
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{translate('Tax')}</span>
                                                     {(() => {
                                                         const prod = products?.find((p: any) => String(p.id) === String(line.product_id));
                                                         return (
                                                             <span className="text-muted-foreground text-sm font-medium">
                                                                 {prod?.tax
                                                                     ? `${prod.tax.name} (${parseFloat(prod.tax.rate).toFixed(2)}%)`
-                                                                    : t('No Tax')}
+                                                                    : translate('No Tax')}
                                                             </span>
                                                         );
                                                     })()}
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-mono font-medium xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{t('Total')}</span>
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{translate('Total')}</span>
                                                     <span>{fmt(c.net + c.tax)}</span>
                                                 </td>
                                                 <td className="col-span-1 block w-full border-t px-0 py-0 pt-2 text-right sm:col-span-2 xl:table-cell xl:w-12 xl:border-t-0 xl:px-4 xl:py-3 xl:pt-0 xl:text-left">
@@ -777,19 +777,19 @@ export default function SalesOrderEdit() {
                         <div className="flex justify-end border-t p-4">
                             <div className="w-64 space-y-2">
                                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                                    <span>{t('Subtotal')}</span>
+                                    <span>{translate('Subtotal')}</span>
                                     <span className="font-mono font-medium">{fmt(totals.subtotal + totals.discount)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-red-600">
-                                    <span>{t('Discount')}</span>
+                                    <span>{translate('Discount')}</span>
                                     <span className="font-mono font-medium">-{fmt(totals.discount)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                                    <span>{t('Tax')}</span>
+                                    <span>{translate('Tax')}</span>
                                     <span className="font-mono font-medium">{fmt(totals.tax)}</span>
                                 </div>
                                 <div className="flex justify-between border-t pt-2 text-base font-bold text-gray-900 dark:text-gray-100">
-                                    <span>{t('Grand Total')}</span>
+                                    <span>{translate('Grand Total')}</span>
                                     <span className="font-mono text-lg text-green-600">{fmt(totals.subtotal + totals.tax)}</span>
                                 </div>
                             </div>
@@ -801,14 +801,14 @@ export default function SalesOrderEdit() {
                 <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
                         <div className="flex items-center justify-between">
-                            <CardTitle className="text-base font-semibold">{t('Billing & Shipping Address')}</CardTitle>
+                            <CardTitle className="text-base font-semibold">{translate('Billing & Shipping Address')}</CardTitle>
                             <button
                                 type="button"
                                 onClick={() => setShowShipping((p) => !p)}
                                 className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700"
                             >
                                 {showShipping ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-                                {showShipping ? t('Collapse') : t('Expand')}
+                                {showShipping ? translate('Collapse') : translate('Expand')}
                             </button>
                         </div>
                     </CardHeader>
@@ -818,52 +818,52 @@ export default function SalesOrderEdit() {
                                 {/* Billing */}
                                 <div>
                                     <div className="mb-4 flex items-center justify-between">
-                                        <h3 className="font-semibold text-gray-800 dark:text-gray-100">{t('Billing Address')}</h3>
+                                        <h3 className="font-semibold text-gray-800 dark:text-gray-100">{translate('Billing Address')}</h3>
                                         <Button type="button" variant="outline" size="sm" onClick={copyBillingToShipping} className="text-xs">
-                                            <Copy className="mr-1 h-3 w-3" /> {t('Copy to Shipping')}
+                                            <Copy className="mr-1 h-3 w-3" /> {translate('Copy to Shipping')}
                                         </Button>
                                     </div>
                                     <div className="space-y-3">
-                                        <Field label={t('Billing Address')} required error={errors.billing_address}>
+                                        <Field label={translate('Billing Address')} required error={errors.billing_address}>
                                             <Textarea
                                                 value={form.billing_address}
-                                                onChange={(e) => set('billing_address', e.target.value)}
-                                                placeholder={t('e.g. 123 Main St, Suite 100')}
+                                                onChange={(e) => setranslate('billing_address', e.target.value)}
+                                                placeholder={translate('e.g. 123 Main St, Suite 100')}
                                                 rows={2}
                                                 className={errors.billing_address ? 'border-red-500' : ''}
                                             />
                                         </Field>
                                         <div className="grid grid-cols-2 gap-3">
-                                            <Field label={t('City')} required error={errors.billing_city}>
+                                            <Field label={translate('City')} required error={errors.billing_city}>
                                                 <Input
                                                     value={form.billing_city}
-                                                    onChange={(e) => set('billing_city', e.target.value)}
+                                                    onChange={(e) => setranslate('billing_city', e.target.value)}
                                                     placeholder="New York"
                                                     className={errors.billing_city ? 'border-red-500' : ''}
                                                 />
                                             </Field>
-                                            <Field label={t('State')} required error={errors.billing_state}>
+                                            <Field label={translate('State')} required error={errors.billing_state}>
                                                 <Input
                                                     value={form.billing_state}
-                                                    onChange={(e) => set('billing_state', e.target.value)}
+                                                    onChange={(e) => setranslate('billing_state', e.target.value)}
                                                     placeholder="NY"
                                                     className={errors.billing_state ? 'border-red-500' : ''}
                                                 />
                                             </Field>
                                         </div>
                                         <div className="grid grid-cols-2 gap-3">
-                                            <Field label={t('Country')} required error={errors.billing_country}>
+                                            <Field label={translate('Country')} required error={errors.billing_country}>
                                                 <Input
                                                     value={form.billing_country}
-                                                    onChange={(e) => set('billing_country', e.target.value)}
+                                                    onChange={(e) => setranslate('billing_country', e.target.value)}
                                                     placeholder="United States"
                                                     className={errors.billing_country ? 'border-red-500' : ''}
                                                 />
                                             </Field>
-                                            <Field label={t('Postal Code')} required error={errors.billing_postal_code}>
+                                            <Field label={translate('Postal Code')} required error={errors.billing_postal_code}>
                                                 <Input
                                                     value={form.billing_postal_code}
-                                                    onChange={(e) => set('billing_postal_code', e.target.value)}
+                                                    onChange={(e) => setranslate('billing_postal_code', e.target.value)}
                                                     placeholder="10001"
                                                     className={errors.billing_postal_code ? 'border-red-500' : ''}
                                                 />
@@ -874,44 +874,44 @@ export default function SalesOrderEdit() {
 
                                 {/* Shipping */}
                                 <div>
-                                    <h3 className="mb-4 font-semibold text-gray-800 dark:text-gray-100">{t('Shipping Address')}</h3>
+                                    <h3 className="mb-4 font-semibold text-gray-800 dark:text-gray-100">{translate('Shipping Address')}</h3>
                                     <div className="space-y-3">
-                                        <Field label={t('Shipping Address')} error={errors.shipping_address}>
+                                        <Field label={translate('Shipping Address')} error={errors.shipping_address}>
                                             <Textarea
                                                 value={form.shipping_address}
-                                                onChange={(e) => set('shipping_address', e.target.value)}
-                                                placeholder={t('e.g. 456 Elm St, Warehouse B')}
+                                                onChange={(e) => setranslate('shipping_address', e.target.value)}
+                                                placeholder={translate('e.g. 456 Elm St, Warehouse B')}
                                                 rows={2}
                                             />
                                         </Field>
                                         <div className="grid grid-cols-2 gap-3">
-                                            <Field label={t('City')} error={errors.shipping_city}>
+                                            <Field label={translate('City')} error={errors.shipping_city}>
                                                 <Input
                                                     value={form.shipping_city}
-                                                    onChange={(e) => set('shipping_city', e.target.value)}
+                                                    onChange={(e) => setranslate('shipping_city', e.target.value)}
                                                     placeholder="Los Angeles"
                                                 />
                                             </Field>
-                                            <Field label={t('State')} error={errors.shipping_state}>
+                                            <Field label={translate('State')} error={errors.shipping_state}>
                                                 <Input
                                                     value={form.shipping_state}
-                                                    onChange={(e) => set('shipping_state', e.target.value)}
+                                                    onChange={(e) => setranslate('shipping_state', e.target.value)}
                                                     placeholder="CA"
                                                 />
                                             </Field>
                                         </div>
                                         <div className="grid grid-cols-2 gap-3">
-                                            <Field label={t('Country')} error={errors.shipping_country}>
+                                            <Field label={translate('Country')} error={errors.shipping_country}>
                                                 <Input
                                                     value={form.shipping_country}
-                                                    onChange={(e) => set('shipping_country', e.target.value)}
+                                                    onChange={(e) => setranslate('shipping_country', e.target.value)}
                                                     placeholder="United States"
                                                 />
                                             </Field>
-                                            <Field label={t('Postal Code')} error={errors.shipping_postal_code}>
+                                            <Field label={translate('Postal Code')} error={errors.shipping_postal_code}>
                                                 <Input
                                                     value={form.shipping_postal_code}
-                                                    onChange={(e) => set('shipping_postal_code', e.target.value)}
+                                                    onChange={(e) => setranslate('shipping_postal_code', e.target.value)}
                                                     placeholder="90001"
                                                 />
                                             </Field>
@@ -926,10 +926,10 @@ export default function SalesOrderEdit() {
                 {/* Submit */}
                 <div className="flex items-center justify-end gap-3 pb-6">
                     <Button type="button" variant="outline" onClick={() => router.visit(route('sales-orders.show', salesOrder.id))}>
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     <Button type="submit" disabled={submitting}>
-                        {submitting ? t('Saving...') : t('Save')}
+                        {submitting ? translate('Saving...') : translate('Save')}
                     </Button>
                 </div>
             </form>

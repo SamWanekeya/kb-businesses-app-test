@@ -12,7 +12,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function ContactShow() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { contact, meetings, auth } = usePage().props;
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();
@@ -21,10 +21,10 @@ export default function ContactShow() {
     const filteredCalls = useMemo(() => meetings?.filter((m: any) => m.type === 'call') || [], [meetings]);
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Contact Management') },
-        { title: t('Contacts'), href: route('contacts.index') },
-        { title: t('View Contact') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Contact Management') },
+        { title: translate('Contacts'), href: route('contacts.index') },
+        { title: translate('View Contact') },
     ];
 
     const getStatusBadge = (status: string) => {
@@ -42,18 +42,18 @@ export default function ContactShow() {
     };
 
     const formatDate = (dateString: string) => {
-        if (!dateString) return t('-');
+        if (!dateString) return translate('-');
         return window.appSettings?.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
     return (
         <PageTemplate
             title={contact.name}
-            description={t('Contact details and related information')}
+            description={translate('Contact details and related information')}
             breadcrumbs={breadcrumbs}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => router.visit(route('contacts.index')),
@@ -67,28 +67,28 @@ export default function ContactShow() {
                     {(
                         [
                             {
-                                label: t('Position'),
+                                label: translate('Position'),
                                 value: contact.position || '—',
                                 icon: Briefcase,
                                 iconCls: 'text-blue-600',
                                 blobCls: 'bg-blue-50 dark:bg-blue-900/30',
                             },
                             {
-                                label: t('Account'),
+                                label: translate('Account'),
                                 value: contact.account?.name || '—',
                                 icon: Building,
                                 iconCls: 'text-orange-600',
                                 blobCls: 'bg-orange-50 dark:bg-orange-900/30',
                             },
                             {
-                                label: t('Quotes'),
+                                label: translate('Quotes'),
                                 value: `${contact.quotes?.length || 0} `,
                                 icon: FileText,
                                 iconCls: 'text-purple-600',
                                 blobCls: 'bg-purple-50 dark:bg-purple-900/30',
                             },
                             {
-                                label: t('Created'),
+                                label: translate('Created'),
                                 value: formatDate(contact.created_at),
                                 icon: Clock,
                                 iconCls: 'text-emerald-600',
@@ -120,22 +120,22 @@ export default function ContactShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <FileText className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Contact Summary')}
+                                {translate('Contact Summary')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
                             <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{t('Status')}</p>
+                                    <p className="text-muted-foreground text-xs font-medium">{translate('Status')}</p>
                                     <div>{getStatusBadge(contact.status)}</div>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{t('Position')}</p>
+                                    <p className="text-muted-foreground text-xs font-medium">{translate('Position')}</p>
                                     <p className="text-foreground text-sm font-medium">{contact.position || '—'}</p>
                                 </div>
                             </div>
                             <div className="border-border mt-4 border-t pt-4">
-                                <p className="text-muted-foreground mb-1.5 text-xs font-medium">{t('Assigned To')}</p>
+                                <p className="text-muted-foreground mb-1.5 text-xs font-medium">{translate('Assigned To')}</p>
                                 {contact.assigned_user ? (
                                     <div className="flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
@@ -152,7 +152,7 @@ export default function ContactShow() {
                                         </div>
                                     </div>
                                 ) : (
-                                    <p className="text-muted-foreground text-sm">{t('Unassigned')}</p>
+                                    <p className="text-muted-foreground text-sm">{translate('Unassigned')}</p>
                                 )}
                             </div>
                         </CardContent>
@@ -163,17 +163,17 @@ export default function ContactShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <User className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Contact Info')}
+                                {translate('Contact Info')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
                             <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{t('Email')}</p>
+                                    <p className="text-muted-foreground text-xs font-medium">{translate('Email')}</p>
                                     <p className="text-foreground truncate text-sm font-medium">{contact.email || '—'}</p>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{t('Phone')}</p>
+                                    <p className="text-muted-foreground text-xs font-medium">{translate('Phone')}</p>
                                     <p className="text-foreground text-sm font-medium">{contact.phone || '—'}</p>
                                 </div>
                             </div>
@@ -188,7 +188,7 @@ export default function ContactShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <MapPin className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Address')}
+                                {translate('Address')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
@@ -198,7 +198,7 @@ export default function ContactShow() {
                                 ) : (
                                     <div className="flex h-full flex-col items-center justify-center text-center">
                                         <MapPin className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                        <p className="text-muted-foreground text-sm">{t('No address')}</p>
+                                        <p className="text-muted-foreground text-sm">{translate('No address')}</p>
                                     </div>
                                 )}
                             </div>
@@ -210,7 +210,7 @@ export default function ContactShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <Building className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Related Account')}
+                                {translate('Related Account')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="flex items-center justify-center p-5" style={{ minHeight: '130px' }}>
@@ -219,7 +219,7 @@ export default function ContactShow() {
                                     <div className="flex min-w-0 items-center gap-2.5">
                                         <UserInitials name={contact.account.name} />
                                         <div className="min-w-0">
-                                            <p className="text-muted-foreground text-xs font-medium">{t('Account')}</p>
+                                            <p className="text-muted-foreground text-xs font-medium">{translate('Account')}</p>
                                             <p className="text-foreground truncate text-sm font-semibold">{contact.account.name}</p>
                                             {contact.account.email && (
                                                 <p className="text-muted-foreground truncate text-xs">{contact.account.email}</p>
@@ -235,7 +235,7 @@ export default function ContactShow() {
                                                     </Link>
                                                 </TooltipTrigger>
                                                 <TooltipContent side="top">
-                                                    <p>{t('View')}</p>
+                                                    <p>{translate('View')}</p>
                                                 </TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>
@@ -244,7 +244,7 @@ export default function ContactShow() {
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-8 text-center">
                                     <Building className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                    <p className="text-muted-foreground text-sm">{t('No account linked')}</p>
+                                    <p className="text-muted-foreground text-sm">{translate('No account linked')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -258,7 +258,7 @@ export default function ContactShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <FileText className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Quotes')}
+                                {translate('Quotes')}
                                 {contact.quotes?.length > 0 && (
                                     <span className="bg-muted text-muted-foreground ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
                                         {contact.quotes.length}
@@ -293,7 +293,7 @@ export default function ContactShow() {
                                                             </Link>
                                                         </TooltipTrigger>
                                                         <TooltipContent side="top">
-                                                            <p>{t('View')}</p>
+                                                            <p>{translate('View')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
@@ -304,7 +304,7 @@ export default function ContactShow() {
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-12 text-center">
                                     <FileText className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                    <p className="text-muted-foreground text-sm">{t('No quotes linked')}</p>
+                                    <p className="text-muted-foreground text-sm">{translate('No quotes linked')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -315,7 +315,7 @@ export default function ContactShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <Tag className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Cases')}
+                                {translate('Cases')}
                                 {contact.cases?.length > 0 && (
                                     <span className="bg-muted text-muted-foreground ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
                                         {contact.cases.length}
@@ -350,7 +350,7 @@ export default function ContactShow() {
                                                             </Link>
                                                         </TooltipTrigger>
                                                         <TooltipContent side="top">
-                                                            <p>{t('View')}</p>
+                                                            <p>{translate('View')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
@@ -361,7 +361,7 @@ export default function ContactShow() {
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-12 text-center">
                                     <Tag className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                    <p className="text-muted-foreground text-sm">{t('No cases linked')}</p>
+                                    <p className="text-muted-foreground text-sm">{translate('No cases linked')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -376,7 +376,7 @@ export default function ContactShow() {
                                 <CardHeader className="border-b px-5 py-3.5">
                                     <CardTitle className="flex items-center text-lg font-semibold">
                                         <Calendar className="text-muted-foreground mr-3 h-5 w-5" />
-                                        {t('Meetings & Calls')}
+                                        {translate('Meetings & Calls')}
                                         <span className="bg-muted text-muted-foreground ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
                                             {meetings.length}
                                         </span>
@@ -389,7 +389,7 @@ export default function ContactShow() {
                                                 <CardTitle className="text-muted-foreground flex items-center justify-between text-sm font-semibold">
                                                     <div className="flex items-center gap-2">
                                                         <UserCheck className="h-3.5 w-3.5" />
-                                                        {t('Meetings')}
+                                                        {translate('Meetings')}
                                                     </div>
                                                     <span className="bg-muted text-muted-foreground inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium">
                                                         {filteredMeetings.length}
@@ -398,7 +398,7 @@ export default function ContactShow() {
                                             </CardHeader>
                                             <CardContent className="p-0">
                                                 {filteredMeetings.length === 0 ? (
-                                                    <p className="text-muted-foreground py-6 text-center text-sm">{t('No meetings found')}</p>
+                                                    <p className="text-muted-foreground py-6 text-center text-sm">{translate('No meetings found')}</p>
                                                 ) : (
                                                     <div
                                                         className="space-y-2 overflow-y-auto p-3"
@@ -457,7 +457,7 @@ export default function ContactShow() {
                                                                                 </Link>
                                                                             </TooltipTrigger>
                                                                             <TooltipContent side="top">
-                                                                                <p>{t('View')}</p>
+                                                                                <p>{translate('View')}</p>
                                                                             </TooltipContent>
                                                                         </Tooltip>
                                                                     </TooltipProvider>
@@ -474,7 +474,7 @@ export default function ContactShow() {
                                                 <CardTitle className="text-muted-foreground flex items-center justify-between text-sm font-semibold">
                                                     <div className="flex items-center gap-2">
                                                         <Phone className="h-3.5 w-3.5" />
-                                                        {t('Calls')}
+                                                        {translate('Calls')}
                                                     </div>
                                                     <span className="bg-muted text-muted-foreground inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium">
                                                         {filteredCalls.length}
@@ -483,7 +483,7 @@ export default function ContactShow() {
                                             </CardHeader>
                                             <CardContent className="p-0">
                                                 {filteredCalls.length === 0 ? (
-                                                    <p className="text-muted-foreground py-6 text-center text-sm">{t('No calls found')}</p>
+                                                    <p className="text-muted-foreground py-6 text-center text-sm">{translate('No calls found')}</p>
                                                 ) : (
                                                     <div
                                                         className="space-y-2 overflow-y-auto p-3"
@@ -537,7 +537,7 @@ export default function ContactShow() {
                                                                                 </Link>
                                                                             </TooltipTrigger>
                                                                             <TooltipContent side="top">
-                                                                                <p>{t('View')}</p>
+                                                                                <p>{translate('View')}</p>
                                                                             </TooltipContent>
                                                                         </Tooltip>
                                                                     </TooltipProvider>

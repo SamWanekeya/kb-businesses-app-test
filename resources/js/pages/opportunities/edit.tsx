@@ -10,7 +10,7 @@ import { ArrowLeft, PackagePlus, Plus, Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function OpportunityEdit() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const {
         opportunity,
         accounts = [],
@@ -40,10 +40,10 @@ export default function OpportunityEdit() {
     });
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Opportunity Management') },
-        { title: t('Opportunities'), href: route('opportunities.index') },
-        { title: t('Edit') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Opportunity Management') },
+        { title: translate('Opportunities'), href: route('opportunities.index') },
+        { title: translate('Edit') },
     ];
 
     const handleInputChange = (name: string, value: string) => {
@@ -94,12 +94,12 @@ export default function OpportunityEdit() {
     const fmt = (v: number) => window.appSettings?.formatCurrency(v) || `$${v.toFixed(2)}`;
 
     const requiredFields: { name: keyof typeof data; label: string }[] = [
-        { name: 'name', label: t('Opportunity Name') },
-        { name: 'account_id', label: t('Account') },
-        { name: 'contact_id', label: t('Contact') },
-        { name: 'opportunity_stage_id', label: t('Stage') },
-        { name: 'opportunity_source_id', label: t('Source') },
-        { name: 'assigned_to', label: t('Assign To') },
+        { name: 'name', label: translate('Opportunity Name') },
+        { name: 'account_id', label: translate('Account') },
+        { name: 'contact_id', label: translate('Contact') },
+        { name: 'opportunity_stage_id', label: translate('Stage') },
+        { name: 'opportunity_source_id', label: translate('Source') },
+        { name: 'assigned_to', label: translate('Assign To') },
     ];
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -111,12 +111,12 @@ export default function OpportunityEdit() {
         });
 
         if (data.products.length === 0) {
-            clientErrors['products'] = t('At least one product is required');
+            clientErrors['products'] = translate('At least one product is required');
         } else {
             data.products.forEach((row, i) => {
-                if (!row.product_id) clientErrors[`products.${i}.product_id`] = t('Product is required');
-                if (!row.quantity || parseFloat(row.quantity) < 1) clientErrors[`products.${i}.quantity`] = t('Min 1');
-                if (row.unit_price === '' || parseFloat(row.unit_price) < 0) clientErrors[`products.${i}.unit_price`] = t('Required');
+                if (!row.product_id) clientErrors[`products.${i}.product_id`] = translate('Product is required');
+                if (!row.quantity || parseFloat(row.quantity) < 1) clientErrors[`products.${i}.quantity`] = translate('Min 1');
+                if (row.unit_price === '' || parseFloat(row.unit_price) < 0) clientErrors[`products.${i}.unit_price`] = translate('Required');
             });
         }
 
@@ -125,7 +125,7 @@ export default function OpportunityEdit() {
             return;
         }
 
-        toast.loading(t('Updating opportunity...'));
+        toast.loading(translate('Updating opportunity...'));
         put(route('opportunities.update', opportunity.id), {
             onSuccess: () => toast.dismiss(),
             onError: () => toast.dismiss(),
@@ -134,12 +134,12 @@ export default function OpportunityEdit() {
 
     return (
         <PageTemplate
-            title={t('Edit Opportunity')}
-            description={t('Edit opportunity details and related information')}
+            title={translate('Edit Opportunity')}
+            description={translate('Edit opportunity details and related information')}
             breadcrumbs={breadcrumbs}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => router.visit(route('opportunities.index')),
@@ -153,26 +153,26 @@ export default function OpportunityEdit() {
                     {/* Basic Information */}
                     <div className="flex h-full flex-col rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
-                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Basic Information')}</h2>
+                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Basic Information')}</h2>
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="name" className="text-sm font-medium" required>
-                                    {t('Opportunity Name')}
+                                    {translate('Opportunity Name')}
                                 </Label>
                                 <Input
                                     id="name"
                                     value={data.name}
                                     onChange={(e) => handleInputChange('name', e.target.value)}
                                     className={errors.name ? 'border-red-500' : ''}
-                                    placeholder={t('eg. Enterprise Software Deal')}
+                                    placeholder={translate('eg. Enterprise Software Deal')}
                                 />
                                 {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
                             </div>
 
                             <div className="space-y-2">
                                 <Label htmlFor="description" className="text-sm font-medium">
-                                    {t('Description')}
+                                    {translate('Description')}
                                 </Label>
                                 <Textarea
                                     id="description"
@@ -180,7 +180,7 @@ export default function OpportunityEdit() {
                                     onChange={(e) => handleInputChange('description', e.target.value)}
                                     className={errors.description ? 'border-red-500' : ''}
                                     rows={3}
-                                    placeholder={t('Enter opportunity description...')}
+                                    placeholder={translate('Enter opportunity description...')}
                                 />
                                 {errors.description && <p className="text-xs text-red-500">{errors.description}</p>}
                             </div>
@@ -188,7 +188,7 @@ export default function OpportunityEdit() {
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
                                     <Label htmlFor="close_date" className="text-sm font-medium">
-                                        {t('Close Date')}
+                                        {translate('Close Date')}
                                     </Label>
                                     <div
                                         className="cursor-pointer"
@@ -213,14 +213,14 @@ export default function OpportunityEdit() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label className="text-sm font-medium">{t('Status')}</Label>
+                                    <Label className="text-sm font-medium">{translate('Status')}</Label>
                                     <Select value={data.status} onValueChange={(v) => handleInputChange('status', v)}>
                                         <SelectTrigger className={errors.status ? 'border-red-500' : ''}>
                                             <SelectValue />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="active">{t('Active')}</SelectItem>
-                                            <SelectItem value="inactive">{t('Inactive')}</SelectItem>
+                                            <SelectItem value="active">{translate('Active')}</SelectItem>
+                                            <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                         </SelectContent>
                                     </Select>
                                     {errors.status && <p className="text-xs text-red-500">{errors.status}</p>}
@@ -229,7 +229,7 @@ export default function OpportunityEdit() {
 
                             <div className="space-y-2">
                                 <Label htmlFor="notes" className="text-sm font-medium">
-                                    {t('Notes')}
+                                    {translate('Notes')}
                                 </Label>
                                 <Textarea
                                     id="notes"
@@ -237,7 +237,7 @@ export default function OpportunityEdit() {
                                     onChange={(e) => handleInputChange('notes', e.target.value)}
                                     className={errors.notes ? 'border-red-500' : ''}
                                     rows={3}
-                                    placeholder={t('Enter any additional notes...')}
+                                    placeholder={translate('Enter any additional notes...')}
                                 />
                                 {errors.notes && <p className="text-xs text-red-500">{errors.notes}</p>}
                             </div>
@@ -247,16 +247,16 @@ export default function OpportunityEdit() {
                     {/* Classification */}
                     <div className="flex h-full flex-col rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
-                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Classification')}</h2>
+                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Classification')}</h2>
                         </div>
                         <div className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label className="text-sm font-medium" required>
-                                    {t('Account')}
+                                    {translate('Account')}
                                 </Label>
                                 <Select value={data.account_id} onValueChange={(v) => handleInputChange('account_id', v)}>
                                     <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select account')} />
+                                        <SelectValue placeholder={translate('Select account')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {accounts.map((a: any) => (
@@ -269,9 +269,9 @@ export default function OpportunityEdit() {
                                 {errors.account_id && <p className="text-xs text-red-500">{errors.account_id}</p>}
                                 {accounts.length === 0 && (
                                     <p className="mt-1 text-xs">
-                                        {t('Click here to add')}{' '}
+                                        {translate('Click here to add')}{' '}
                                         <a href={route('accounts.index')} className="font-medium underline">
-                                            {t('Accounts')}
+                                            {translate('Accounts')}
                                         </a>
                                     </p>
                                 )}
@@ -279,11 +279,11 @@ export default function OpportunityEdit() {
 
                             <div className="space-y-2">
                                 <Label className="text-sm font-medium" required>
-                                    {t('Contact')}
+                                    {translate('Contact')}
                                 </Label>
                                 <Select value={data.contact_id} onValueChange={(v) => handleInputChange('contact_id', v)}>
                                     <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select contact')} />
+                                        <SelectValue placeholder={translate('Select contact')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {contacts.map((c: any) => (
@@ -296,9 +296,9 @@ export default function OpportunityEdit() {
                                 {errors.contact_id && <p className="text-xs text-red-500">{errors.contact_id}</p>}
                                 {contacts.length === 0 && (
                                     <p className="mt-1 text-xs">
-                                        {t('Click here to add')}{' '}
+                                        {translate('Click here to add')}{' '}
                                         <a href={route('contacts.index')} className="font-medium underline">
-                                            {t('Contacts')}
+                                            {translate('Contacts')}
                                         </a>
                                     </p>
                                 )}
@@ -306,11 +306,11 @@ export default function OpportunityEdit() {
 
                             <div className="space-y-2">
                                 <Label className="text-sm font-medium" required>
-                                    {t('Stage')}
+                                    {translate('Stage')}
                                 </Label>
                                 <Select value={data.opportunity_stage_id} onValueChange={(v) => handleInputChange('opportunity_stage_id', v)}>
                                     <SelectTrigger className={errors.opportunity_stage_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select stage')} />
+                                        <SelectValue placeholder={translate('Select stage')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {opportunityStages.map((s: any) => (
@@ -323,9 +323,9 @@ export default function OpportunityEdit() {
                                 {errors.opportunity_stage_id && <p className="text-xs text-red-500">{errors.opportunity_stage_id}</p>}
                                 {opportunityStages.length === 0 && (
                                     <p className="mt-1 text-xs">
-                                        {t('Click here to add')}{' '}
+                                        {translate('Click here to add')}{' '}
                                         <a href={route('opportunity-stages.index')} className="font-medium underline">
-                                            {t('Opportunity Stages')}
+                                            {translate('Opportunity Stages')}
                                         </a>
                                     </p>
                                 )}
@@ -333,11 +333,11 @@ export default function OpportunityEdit() {
 
                             <div className="space-y-2">
                                 <Label className="text-sm font-medium" required>
-                                    {t('Source')}
+                                    {translate('Source')}
                                 </Label>
                                 <Select value={data.opportunity_source_id} onValueChange={(v) => handleInputChange('opportunity_source_id', v)}>
                                     <SelectTrigger className={errors.opportunity_source_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select source')} />
+                                        <SelectValue placeholder={translate('Select source')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {opportunitySources.map((s: any) => (
@@ -350,9 +350,9 @@ export default function OpportunityEdit() {
                                 {errors.opportunity_source_id && <p className="text-xs text-red-500">{errors.opportunity_source_id}</p>}
                                 {opportunitySources.length === 0 && (
                                     <p className="mt-1 text-xs">
-                                        {t('Click here to add')}{' '}
+                                        {translate('Click here to add')}{' '}
                                         <a href={route('opportunity-sources.index')} className="font-medium underline">
-                                            {t('Opportunity Sources')}
+                                            {translate('Opportunity Sources')}
                                         </a>
                                     </p>
                                 )}
@@ -364,10 +364,10 @@ export default function OpportunityEdit() {
                 {/* ROW 2 — Products */}
                 <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                     <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
-                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Products')}</h2>
+                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Products')}</h2>
                         <Button type="button" size="sm" onClick={addProductRow}>
                             <Plus className="mr-1 h-4 w-4" />
-                            {t('Add Product')}
+                            {translate('Add Product')}
                         </Button>
                     </div>
                     <div className="p-6">
@@ -381,8 +381,8 @@ export default function OpportunityEdit() {
                                 <div className="bg-primary/10 group-hover:bg-primary/20 mb-4 flex h-14 w-14 items-center justify-center rounded-full transition-colors">
                                     <PackagePlus className="text-primary h-7 w-7" />
                                 </div>
-                                <p className="text-foreground text-sm font-semibold">{t('No products added yet')}</p>
-                                <p className="text-muted-foreground mt-1 text-xs">{t('Click here or use the Add Product button above')}</p>
+                                <p className="text-foreground text-sm font-semibold">{translate('No products added yet')}</p>
+                                <p className="text-muted-foreground mt-1 text-xs">{translate('Click here or use the Add Product button above')}</p>
                             </div>
                         ) : (
                             <>
@@ -392,16 +392,16 @@ export default function OpportunityEdit() {
                                         <thead>
                                             <tr className="border-t border-b border-gray-200 bg-gray-50 text-xs font-semibold text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">
                                                 <th className="px-3 py-2 text-left">
-                                                    {t('Product')} <span className="text-red-500">*</span>
+                                                    {translate('Product')} <span className="text-red-500">*</span>
                                                 </th>
                                                 <th className="w-16 px-3 py-2 text-left">
-                                                    {t('Quantity')} <span className="text-red-500">*</span>
+                                                    {translate('Quantity')} <span className="text-red-500">*</span>
                                                 </th>
                                                 <th className="w-20 px-3 py-2 text-left">
-                                                    {t('Unit Price')} <span className="text-red-500">*</span>
+                                                    {translate('Unit Price')} <span className="text-red-500">*</span>
                                                 </th>
-                                                <th className="w-40 px-3 py-2 text-left">{t('Tax')}</th>
-                                                <th className="w-32 px-3 py-2 text-left">{t('Line Total')}</th>
+                                                <th className="w-40 px-3 py-2 text-left">{translate('Tax')}</th>
+                                                <th className="w-32 px-3 py-2 text-left">{translate('Line Total')}</th>
                                                 <th className="w-10 px-3 py-2"></th>
                                             </tr>
                                         </thead>
@@ -418,7 +418,7 @@ export default function OpportunityEdit() {
                                                                 onValueChange={(v) => updateProductRow(i, 'product_id', v)}
                                                             >
                                                                 <SelectTrigger className={errors[`products.${i}.product_id`] ? 'border-red-500' : ''}>
-                                                                    <SelectValue placeholder={t('Select product')} />
+                                                                    <SelectValue placeholder={translate('Select product')} />
                                                                 </SelectTrigger>
                                                                 <SelectContent searchable>
                                                                     {productOptions
@@ -440,9 +440,9 @@ export default function OpportunityEdit() {
                                                             )}
                                                             {i === 0 && productOptions.length === 0 && (
                                                                 <p className="mt-1 text-xs">
-                                                                    {t('Click here to add')}{' '}
+                                                                    {translate('Click here to add')}{' '}
                                                                     <a href={route('products.index')} className="font-medium underline">
-                                                                        {t('Products')}
+                                                                        {translate('Products')}
                                                                     </a>
                                                                 </p>
                                                             )}
@@ -476,7 +476,7 @@ export default function OpportunityEdit() {
                                                         </td>
                                                         <td className="px-3 py-2 text-left">
                                                             <span className="text-muted-foreground text-sm font-medium">
-                                                                {tax ? `${tax.name} (${parseFloat(tax.rate).toFixed(2)}%)` : t('No Tax')}
+                                                                {tax ? `${tax.name} (${parseFloat(tax.rate).toFixed(2)}%)` : translate('No Tax')}
                                                             </span>
                                                         </td>
                                                         <td className="px-3 py-2 text-left">
@@ -514,7 +514,7 @@ export default function OpportunityEdit() {
                                             >
                                                 <div className="flex items-center justify-between border-b pb-2">
                                                     <span className="text-muted-foreground text-xs font-semibold">
-                                                        {t('Product #{{index}}', { index: i + 1 })}
+                                                        {translate('Product #{{index}}', { index: i + 1 })}
                                                     </span>
                                                     <button
                                                         type="button"
@@ -528,13 +528,13 @@ export default function OpportunityEdit() {
                                                 <div className="space-y-2">
                                                     <div>
                                                         <label className="text-muted-foreground mb-1 block text-xs font-medium">
-                                                            {t('Product')} *
+                                                            {translate('Product')} *
                                                         </label>
                                                         <Select value={row.product_id} onValueChange={(v) => updateProductRow(i, 'product_id', v)}>
                                                             <SelectTrigger
                                                                 className={errors[`products.${i}.product_id`] ? 'w-full border-red-500' : 'w-full'}
                                                             >
-                                                                <SelectValue placeholder={t('Select product')} />
+                                                                <SelectValue placeholder={translate('Select product')} />
                                                             </SelectTrigger>
                                                             <SelectContent searchable>
                                                                 {productOptions
@@ -556,9 +556,9 @@ export default function OpportunityEdit() {
                                                         )}
                                                         {i === 0 && productOptions.length === 0 && (
                                                             <p className="mt-1 text-xs">
-                                                                {t('Click here to add')}{' '}
+                                                                {translate('Click here to add')}{' '}
                                                                 <a href={route('products.index')} className="font-medium underline">
-                                                                    {t('Products')}
+                                                                    {translate('Products')}
                                                                 </a>
                                                             </p>
                                                         )}
@@ -566,7 +566,7 @@ export default function OpportunityEdit() {
                                                     <div className="grid grid-cols-2 gap-3">
                                                         <div>
                                                             <label className="text-muted-foreground mb-1 block text-xs font-medium">
-                                                                {t('Quantity')} *
+                                                                {translate('Quantity')} *
                                                             </label>
                                                             <Input
                                                                 type="number"
@@ -582,7 +582,7 @@ export default function OpportunityEdit() {
                                                         </div>
                                                         <div>
                                                             <label className="text-muted-foreground mb-1 block text-xs font-medium">
-                                                                {t('Unit Price')} *
+                                                                {translate('Unit Price')} *
                                                             </label>
                                                             <Input
                                                                 type="number"
@@ -600,10 +600,10 @@ export default function OpportunityEdit() {
                                                     </div>
                                                     <div className="mt-2 flex items-center justify-between border-t pt-2 text-xs">
                                                         <span className="text-muted-foreground">
-                                                            {t('Tax')}: {tax ? `${tax.name} (${parseFloat(tax.rate).toFixed(2)}%)` : t('No Tax')}
+                                                            {translate('Tax')}: {tax ? `${tax.name} (${parseFloat(tax.rate).toFixed(2)}%)` : translate('No Tax')}
                                                         </span>
                                                         <span className="text-foreground font-mono font-semibold">
-                                                            {t('Total')}: {fmt(lineTotal + taxAmt)}
+                                                            {translate('Total')}: {fmt(lineTotal + taxAmt)}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -620,15 +620,15 @@ export default function OpportunityEdit() {
                         <div className="flex justify-end border-t border-gray-200 px-6 py-4 dark:border-gray-700">
                             <div className="w-72 space-y-2">
                                 <div className="flex items-center justify-between">
-                                    <span className="text-sm text-gray-500 dark:text-gray-400">{t('Subtotal')}</span>
+                                    <span className="text-sm text-gray-500 dark:text-gray-400">{translate('Subtotal')}</span>
                                     <span className="font-mono text-sm font-medium text-gray-900 dark:text-white">{fmt(subtotal)}</span>
                                 </div>
                                 <div className="flex items-center justify-between">
-                                    <span className="text-sm text-gray-500 dark:text-gray-400">{t('Tax')}</span>
+                                    <span className="text-sm text-gray-500 dark:text-gray-400">{translate('Tax')}</span>
                                     <span className="font-mono text-sm font-medium text-gray-900 dark:text-white">{fmt(totalTax)}</span>
                                 </div>
                                 <div className="flex items-center justify-between border-t border-gray-200 pt-2 dark:border-gray-600">
-                                    <span className="text-sm font-bold text-gray-900 dark:text-white">{t('Grand Total')}</span>
+                                    <span className="text-sm font-bold text-gray-900 dark:text-white">{translate('Grand Total')}</span>
                                     <span className="font-mono text-base font-bold text-green-600 dark:text-green-400">{fmt(grandTotal)}</span>
                                 </div>
                             </div>
@@ -639,17 +639,17 @@ export default function OpportunityEdit() {
                 {/* ROW 3 — Assignment */}
                 <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                     <div className="border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700">
-                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Assignment')}</h2>
+                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Assignment')}</h2>
                     </div>
                     <div className="space-y-4 p-6">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-2">
                                 <Label className="text-sm font-medium" required>
-                                    {t('Assign To')}
+                                    {translate('Assign To')}
                                 </Label>
                                 <Select value={data.assigned_to} onValueChange={(v) => handleInputChange('assigned_to', v)}>
                                     <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select user')} />
+                                        <SelectValue placeholder={translate('Select user')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {users.map((u: any) => (
@@ -662,9 +662,9 @@ export default function OpportunityEdit() {
                                 {errors.assigned_to && <p className="text-xs text-red-500">{errors.assigned_to}</p>}
                                 {users.length === 0 && (
                                     <p className="mt-1 text-xs">
-                                        {t('Click here to add')}{' '}
+                                        {translate('Click here to add')}{' '}
                                         <a href={route('users.index')} className="font-medium underline">
-                                            {t('Users')}
+                                            {translate('Users')}
                                         </a>
                                     </p>
                                 )}
@@ -676,10 +676,10 @@ export default function OpportunityEdit() {
                 {/* Actions */}
                 <div className="mt-6 flex flex-col-reverse justify-end gap-3 sm:flex-row sm:gap-4">
                     <Button type="button" variant="outline" onClick={() => router.visit(route('opportunities.index'))} className="w-full sm:w-auto">
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     <Button type="submit" disabled={processing} className="w-full sm:w-auto">
-                        {processing ? t('Saving...') : t('Save')}
+                        {processing ? translate('Saving...') : translate('Save')}
                     </Button>
                 </div>
             </form>

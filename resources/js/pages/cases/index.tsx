@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Cases() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
     const { auth, cases, accounts, allAccounts = [], contacts, users, allUsers = [], filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
@@ -141,7 +141,7 @@ export default function Cases() {
 
     const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
-            toast.loading(t('Creating case...'));
+            toast.loading(translate('Creating case...'));
 
             router.post(route('cases.store'), formData, {
                 onSuccess: (page) => {
@@ -160,12 +160,12 @@ export default function Cases() {
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
-                        toast.error(t('Failed to create case: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        toast.error(translate('Failed to create case: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
                 },
             });
         } else if (formMode === 'edit') {
-            toast.loading(t('Updating case...'));
+            toast.loading(translate('Updating case...'));
 
             router.put(route('cases.update', currentItem.id), formData, {
                 onSuccess: (page) => {
@@ -184,7 +184,7 @@ export default function Cases() {
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
-                        toast.error(t('Failed to update case: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        toast.error(translate('Failed to update case: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
                 },
             });
@@ -192,7 +192,7 @@ export default function Cases() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting case...'));
+        toast.loading(translate('Deleting case...'));
 
         router.delete(route('cases.destroy', currentItem.id), {
             onSuccess: (page) => {
@@ -211,7 +211,7 @@ export default function Cases() {
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
-                    toast.error(t('Failed to delete case: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to delete case: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
             },
         });
@@ -233,7 +233,7 @@ export default function Cases() {
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
-                    toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
             },
         });
@@ -241,7 +241,7 @@ export default function Cases() {
 
     const handleToggleStatus = (caseItem: any) => {
         const newStatus = caseItem.status === 'new' ? 'closed' : 'new';
-        toast.loading(`${newStatus === 'new' ? t('Opening') : t('Closing')} case...`);
+        toast.loading(`${newStatus === 'new' ? translate('Opening') : translate('Closing')} case...`);
 
         router.put(
             route('cases.toggle-status', caseItem.id),
@@ -260,7 +260,7 @@ export default function Cases() {
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
-                        toast.error(t('Failed to update case status: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        toast.error(translate('Failed to update case status: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
                 },
             },
@@ -276,13 +276,13 @@ export default function Cases() {
 
     if (useHasPermission('export-cases')) {
         pageActions.push({
-            label: t('Export'),
+            label: translate('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[360px]:mr-2" />,
             variant: 'outline',
             onClick: () => (window.location.href = route('case.export')),
             className: 'h-8 w-8 min-[360px]:h-9 min-[360px]:w-auto px-0 min-[360px]:px-4',
             labelClassName: 'hidden min-[360px]:inline',
-            tooltip: t('Export'),
+            tooltip: translate('Export'),
             tooltipClassName: 'min-[360px]:hidden',
         });
     }
@@ -290,24 +290,24 @@ export default function Cases() {
     // Add the "Add Case" button if user has permission
     if (useHasPermission('create-cases')) {
         pageActions.push({
-            label: t('Add Case'),
+            label: translate('Add Case'),
             icon: <Plus className="mr-0 h-4 w-4 min-[360px]:mr-2" />,
             variant: 'default',
             onClick: () => handleAddNew(),
             className: 'h-8 w-8 min-[360px]:h-9 min-[360px]:w-auto px-0 min-[360px]:px-4',
             labelClassName: 'hidden min-[360px]:inline',
-            tooltip: t('Add Case'),
+            tooltip: translate('Add Case'),
             tooltipClassName: 'min-[360px]:hidden',
         });
     }
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Cases') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Cases') }];
 
     // Define table columns
     const columns = [
         {
             key: 'subject',
-            label: t('Subject'),
+            label: translate('Subject'),
             sortable: true,
             render: (value: any, row: any) => {
                 return (
@@ -324,7 +324,7 @@ export default function Cases() {
         },
         {
             key: 'assigned_user',
-            label: t('Assigned To'),
+            label: translate('Assigned To'),
             className: 'whitespace-nowrap',
             render: (value: any) =>
                 value ? (
@@ -339,18 +339,18 @@ export default function Cases() {
                         </div>
                     </div>
                 ) : (
-                    <span className="text-muted-foreground whitespace-nowrap">{t('Unassigned')}</span>
+                    <span className="text-muted-foreground whitespace-nowrap">{translate('Unassigned')}</span>
                 ),
         },
         {
             key: 'account',
-            label: t('Account'),
+            label: translate('Account'),
             className: 'whitespace-nowrap',
             render: (value: any) => <span className="whitespace-nowrap">{value?.name || '-'}</span>,
         },
         {
             key: 'priority',
-            label: t('Priority'),
+            label: translate('Priority'),
             render: (value: string) => {
                 const colors = {
                     low: 'bg-gray-50 text-gray-700 ring-gray-600/20',
@@ -369,7 +369,7 @@ export default function Cases() {
         },
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             className: 'whitespace-nowrap',
             render: (value: string) => {
                 const colors = {
@@ -390,13 +390,13 @@ export default function Cases() {
         },
         // {
         //     key: 'case_type',
-        //     label: t('Type'),
+        //     label: translate('Type'),
         //     className: 'whitespace-nowrap',
         //     render: (value: string) => <span className="whitespace-nowrap">{value.replace('_', ' ').charAt(0).toUpperCase() + value.replace('_', ' ').slice(1)}</span>
         // },
         {
             key: 'created_at',
-            label: t('Created At'),
+            label: translate('Created At'),
             sortable: true,
             className: 'whitespace-nowrap',
             type: 'date',
@@ -406,28 +406,28 @@ export default function Cases() {
     // Define table actions
     const actions = [
         {
-            label: t('Change Status'),
+            label: translate('Change Status'),
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
             requiredPermission: 'toggle-status-cases',
         },
         {
-            label: t('View'),
+            label: translate('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
             requiredPermission: 'view-cases',
         },
         {
-            label: t('Edit'),
+            label: translate('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
             requiredPermission: 'edit-cases',
         },
         {
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
@@ -437,7 +437,7 @@ export default function Cases() {
 
     // Prepare filter options
     const accountOptions = [
-        { value: 'all', label: t('All Accounts') },
+        { value: 'all', label: translate('All Accounts') },
         ...allAccounts.map((account: any) => ({
             value: account.id.toString(),
             label: account.name,
@@ -445,33 +445,33 @@ export default function Cases() {
     ];
 
     const priorityOptions = [
-        { value: 'all', label: t('All Priorities') },
-        { value: 'low', label: t('Low') },
-        { value: 'medium', label: t('Medium') },
-        { value: 'high', label: t('High') },
-        { value: 'urgent', label: t('Urgent') },
+        { value: 'all', label: translate('All Priorities') },
+        { value: 'low', label: translate('Low') },
+        { value: 'medium', label: translate('Medium') },
+        { value: 'high', label: translate('High') },
+        { value: 'urgent', label: translate('Urgent') },
     ];
 
     const statusOptions = [
-        { value: 'all', label: t('All Statuses') },
-        { value: 'new', label: t('New') },
-        { value: 'in_progress', label: t('In Progress') },
-        { value: 'pending', label: t('Pending') },
-        { value: 'resolved', label: t('Resolved') },
-        { value: 'closed', label: t('Closed') },
+        { value: 'all', label: translate('All Statuses') },
+        { value: 'new', label: translate('New') },
+        { value: 'in_progress', label: translate('In Progress') },
+        { value: 'pending', label: translate('Pending') },
+        { value: 'resolved', label: translate('Resolved') },
+        { value: 'closed', label: translate('Closed') },
     ];
 
     const caseTypeOptions = [
-        { value: 'all', label: t('All Types') },
-        { value: 'support', label: t('Support') },
-        { value: 'bug', label: t('Bug') },
-        { value: 'feature_request', label: t('Feature Request') },
-        { value: 'complaint', label: t('Complaint') },
-        { value: 'inquiry', label: t('Inquiry') },
+        { value: 'all', label: translate('All Types') },
+        { value: 'support', label: translate('Support') },
+        { value: 'bug', label: translate('Bug') },
+        { value: 'feature_request', label: translate('Feature Request') },
+        { value: 'complaint', label: translate('Complaint') },
+        { value: 'inquiry', label: translate('Inquiry') },
     ];
 
     return (
-        <PageTemplate title={t('Cases')} description={t('Manage your cases.')} url="/cases" actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
+        <PageTemplate title={translate('Cases')} description={translate('Manage your cases.')} url="/cases" actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
             {/* Search and filters section */}
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
@@ -481,7 +481,7 @@ export default function Cases() {
                     filters={[
                         {
                             name: 'account_id',
-                            label: t('Account'),
+                            label: translate('Account'),
                             type: 'select',
                             searchable: true,
                             value: selectedAccount,
@@ -490,7 +490,7 @@ export default function Cases() {
                         },
                         {
                             name: 'priority',
-                            label: t('Priority'),
+                            label: translate('Priority'),
                             type: 'select',
                             value: selectedPriority,
                             onChange: setSelectedPriority,
@@ -498,7 +498,7 @@ export default function Cases() {
                         },
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
@@ -506,7 +506,7 @@ export default function Cases() {
                         },
                         {
                             name: 'case_type',
-                            label: t('Type'),
+                            label: translate('Type'),
                             type: 'select',
                             value: selectedCaseType,
                             onChange: setSelectedCaseType,
@@ -514,14 +514,14 @@ export default function Cases() {
                         },
                         {
                             name: 'assigned_to',
-                            label: t('Assigned To'),
+                            label: translate('Assigned To'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: t('All Users') },
-                                { value: 'unassigned', label: t('Unassigned') },
+                                { value: 'all', label: translate('All Users') },
+                                { value: 'unassigned', label: translate('Unassigned') },
                                 ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name })),
                             ],
                         },
@@ -579,7 +579,7 @@ export default function Cases() {
                         to={cases?.to || 0}
                         total={cases?.total || 0}
                         links={cases?.links}
-                        entityName={t('cases')}
+                        entityName={translate('cases')}
                         onPageChange={(url) => router.get(url)}
                         currentPerPage={pageFilters.per_page?.toString() || '10'}
                         onPerPageChange={(value) => {
@@ -653,26 +653,26 @@ export default function Cases() {
                                                     {useHasPermission('view-cases') && (
                                                         <DropdownMenuItem onClick={() => handleAction('view', caseItem)}>
                                                             <Eye className="mr-2 h-4 w-4" />
-                                                            <span>{t('View Case')}</span>
+                                                            <span>{translate('View Case')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('toggle-status-cases') && (
                                                         <DropdownMenuItem onClick={() => handleAction('toggle-status', caseItem)}>
                                                             <RefreshCw className="mr-2 h-4 w-4" />
-                                                            <span>{t('Change Status')}</span>
+                                                            <span>{translate('Change Status')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('edit-cases') && (
                                                         <DropdownMenuItem onClick={() => handleAction('edit', caseItem)}>
                                                             <Edit className="mr-2 h-4 w-4" />
-                                                            <span>{t('Edit')}</span>
+                                                            <span>{translate('Edit')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     <DropdownMenuSeparator />
                                                     {useHasPermission('delete-cases') && (
                                                         <DropdownMenuItem onClick={() => handleAction('delete', caseItem)} className="text-rose-600">
                                                             <Trash2 className="mr-2 h-4 w-4" />
-                                                            <span>{t('Delete')}</span>
+                                                            <span>{translate('Delete')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                 </DropdownMenuContent>
@@ -689,7 +689,7 @@ export default function Cases() {
 
                                             {/* Row 1: Status only */}
                                             <div className="mt-2 flex items-center gap-2">
-                                                <span className="w-12 shrink-0 text-xs text-gray-500 dark:text-gray-400">{t('Status')}:</span>
+                                                <span className="w-12 shrink-0 text-xs text-gray-500 dark:text-gray-400">{translate('Status')}:</span>
                                                 <span
                                                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${sc.cls}`}
                                                 >
@@ -699,7 +699,7 @@ export default function Cases() {
                                             {/* Row 2: Priority left | Type right */}
                                             <div className="mt-1.5 flex items-center justify-between">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="w-12 shrink-0 text-xs text-gray-500 dark:text-gray-400">{t('Priority')}:</span>
+                                                    <span className="w-12 shrink-0 text-xs text-gray-500 dark:text-gray-400">{translate('Priority')}:</span>
                                                     <span
                                                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${priorityColors[caseItem.priority] ?? priorityColors.medium}`}
                                                     >
@@ -707,7 +707,7 @@ export default function Cases() {
                                                     </span>
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-xs text-gray-500 dark:text-gray-400">{t('Type')}:</span>
+                                                    <span className="text-xs text-gray-500 dark:text-gray-400">{translate('Type')}:</span>
                                                     <span
                                                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${typeColors[caseItem.case_type] ?? 'bg-purple-50 text-purple-700 ring-purple-600/20'}`}
                                                     >
@@ -721,12 +721,12 @@ export default function Cases() {
                                         <div className="mb-3 space-y-1.5">
                                             <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                                                 <Building2 className="h-3.5 w-3.5 shrink-0 text-gray-400" />
-                                                <span className="shrink-0">{t('Account')}:</span>
+                                                <span className="shrink-0">{translate('Account')}:</span>
                                                 <span className="truncate">{caseItem.account?.name || '-'}</span>
                                             </div>
                                             <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                                                 <User className="h-3.5 w-3.5 shrink-0 text-gray-400" />
-                                                <span className="shrink-0">{t('Contact')}:</span>
+                                                <span className="shrink-0">{translate('Contact')}:</span>
                                                 <span className="truncate">{caseItem.contact?.name || '-'}</span>
                                             </div>
                                         </div>
@@ -742,7 +742,7 @@ export default function Cases() {
                                             </div>
                                             {caseItem.assigned_user && (
                                                 <div className="flex items-center gap-1.5">
-                                                    <span className="text-xs text-gray-500 dark:text-gray-400">{t('Assigned to')}</span>
+                                                    <span className="text-xs text-gray-500 dark:text-gray-400">{translate('Assigned to')}</span>
                                                     <TooltipProvider>
                                                         <Tooltip>
                                                             <TooltipTrigger asChild>
@@ -777,7 +777,7 @@ export default function Cases() {
                             to={cases?.to || 0}
                             total={cases?.total || 0}
                             links={cases?.links}
-                            entityName={t('cases')}
+                            entityName={translate('cases')}
                             onPageChange={(url) => router.get(url)}
                             perPageOptions={[12, 24, 48, 96]}
                             currentPerPage={pageFilters.per_page?.toString() || '12'}
@@ -814,19 +814,19 @@ export default function Cases() {
                     fields: [
                         {
                             name: 'subject',
-                            label: t('Subject'),
+                            label: translate('Subject'),
                             type: 'text',
                             required: true,
-                            placeholder: t('e.g. Sign in page not loading, Billing issue'),
+                            placeholder: translate('e.g. Sign in page not loading, Billing issue'),
                         },
-                        { name: 'description', label: t('Description'), type: 'textarea', placeholder: t('Describe the issue in detail...') },
+                        { name: 'description', label: translate('Description'), type: 'textarea', placeholder: translate('Describe the issue in detail...') },
                         {
                             name: 'account_id',
-                            label: t('Account'),
+                            label: translate('Account'),
                             type: 'select',
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('accounts.index'), linkText: t('Accounts') },
+                            emptyNote: { link: route('accounts.index'), linkText: translate('Accounts') },
                             options: (accounts || []).map((account: any) => ({
                                 value: account.id.toString(),
                                 label: account.name,
@@ -834,11 +834,11 @@ export default function Cases() {
                         },
                         {
                             name: 'contact_id',
-                            label: t('Contact'),
+                            label: translate('Contact'),
                             type: 'select',
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('contacts.index'), linkText: t('Contacts') },
+                            emptyNote: { link: route('contacts.index'), linkText: translate('Contacts') },
                             options: (contacts || []).map((contact: any) => ({
                                 value: contact.id.toString(),
                                 label: `${contact.name} (${contact.account?.name || 'No Account'})`,
@@ -846,51 +846,51 @@ export default function Cases() {
                         },
                         {
                             name: 'priority',
-                            label: t('Priority'),
+                            label: translate('Priority'),
                             type: 'select',
                             required: true,
                             options: [
-                                { value: 'low', label: t('Low') },
-                                { value: 'medium', label: t('Medium') },
-                                { value: 'high', label: t('High') },
-                                { value: 'urgent', label: t('Urgent') },
+                                { value: 'low', label: translate('Low') },
+                                { value: 'medium', label: translate('Medium') },
+                                { value: 'high', label: translate('High') },
+                                { value: 'urgent', label: translate('Urgent') },
                             ],
                             defaultValue: 'medium',
                         },
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             options: [
-                                { value: 'new', label: t('New') },
-                                { value: 'in_progress', label: t('In Progress') },
-                                { value: 'pending', label: t('Pending') },
-                                { value: 'resolved', label: t('Resolved') },
-                                { value: 'closed', label: t('Closed') },
+                                { value: 'new', label: translate('New') },
+                                { value: 'in_progress', label: translate('In Progress') },
+                                { value: 'pending', label: translate('Pending') },
+                                { value: 'resolved', label: translate('Resolved') },
+                                { value: 'closed', label: translate('Closed') },
                             ],
                             defaultValue: 'new',
                         },
                         {
                             name: 'case_type',
-                            label: t('Case Type'),
+                            label: translate('Case Type'),
                             type: 'select',
                             required: true,
                             options: [
-                                { value: 'support', label: t('Support') },
-                                { value: 'bug', label: t('Bug') },
-                                { value: 'feature_request', label: t('Feature Request') },
-                                { value: 'complaint', label: t('Complaint') },
-                                { value: 'inquiry', label: t('Inquiry') },
+                                { value: 'support', label: translate('Support') },
+                                { value: 'bug', label: translate('Bug') },
+                                { value: 'feature_request', label: translate('Feature Request') },
+                                { value: 'complaint', label: translate('Complaint') },
+                                { value: 'inquiry', label: translate('Inquiry') },
                             ],
                             defaultValue: 'support',
                         },
                         {
                             name: formMode === 'view' ? 'assigned_user_name' : 'assigned_to',
-                            label: t('Assign To'),
+                            label: translate('Assign To'),
                             type: formMode === 'view' ? 'text' : 'select',
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('users.index'), linkText: t('Users') },
+                            emptyNote: { link: route('users.index'), linkText: translate('Users') },
                             options:
                                 formMode === 'view'
                                     ? []
@@ -904,11 +904,11 @@ export default function Cases() {
                     currentItem
                         ? {
                               ...currentItem,
-                              assigned_user_name: currentItem.assigned_user?.name || t('Unassigned'),
+                              assigned_user_name: currentItem.assigned_user?.name || translate('Unassigned'),
                           }
                         : null
                 }
-                title={formMode === 'create' ? t('Add Case') : formMode === 'edit' ? t('Edit Case') : t('View Case')}
+                title={formMode === 'create' ? translate('Add Case') : formMode === 'edit' ? translate('Edit Case') : translate('View Case')}
                 mode={formMode}
             />
 
@@ -921,22 +921,22 @@ export default function Cases() {
                     fields: [
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             required: true,
                             options: [
-                                { value: 'new', label: t('New') },
-                                { value: 'in_progress', label: t('In Progress') },
-                                { value: 'pending', label: t('Pending') },
-                                { value: 'resolved', label: t('Resolved') },
-                                { value: 'closed', label: t('Closed') },
+                                { value: 'new', label: translate('New') },
+                                { value: 'in_progress', label: translate('In Progress') },
+                                { value: 'pending', label: translate('Pending') },
+                                { value: 'resolved', label: translate('Resolved') },
+                                { value: 'closed', label: translate('Closed') },
                             ],
                         },
                     ],
                     modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
-                title={t('Change Case Status')}
+                title={translate('Change Case Status')}
                 mode="edit"
             />
 
@@ -946,7 +946,7 @@ export default function Cases() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.subject || ''}
-                entityName={t('case')}
+                entityName={translate('case')}
             />
         </PageTemplate>
     );

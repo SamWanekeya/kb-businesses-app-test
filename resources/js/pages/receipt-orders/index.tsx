@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function ReceiptOrders() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
     const {
         auth,
@@ -119,7 +119,7 @@ export default function ReceiptOrders() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting receipt order...'));
+        toast.loading(translate('Deleting receipt order...'));
 
         router.delete(route('receipt-orders.destroy', currentItem.id), {
             onSuccess: () => {
@@ -128,7 +128,7 @@ export default function ReceiptOrders() {
             },
             onError: (errors) => {
                 toast.dismiss();
-                toast.error(t('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
     };
@@ -140,14 +140,14 @@ export default function ReceiptOrders() {
             },
             onError: (errors) => {
                 toast.dismiss();
-                toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
     };
 
     const handleToggleStatus = (receiptOrder: any) => {
         const newStatus = receiptOrder.status === 'pending' ? 'received' : 'pending';
-        toast.loading(t('{{action}} receipt order...', { action: newStatus === 'received' ? t('Marking as received') : t('Setting to pending') }));
+        toast.loading(translate('{{action}} receipt order...', { action: newStatus === 'received' ? translate('Marking as received') : translate('Setting to pending') }));
 
         router.put(
             route('receipt-orders.toggle-status', receiptOrder.id),
@@ -161,7 +161,7 @@ export default function ReceiptOrders() {
                 },
                 onError: (errors) => {
                     toast.dismiss();
-                    toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 },
             },
         );
@@ -179,7 +179,7 @@ export default function ReceiptOrders() {
     const handleResetFilters = () => {
         setSearchTerm('');
         setSelectedStatus('all');
-        setSelectedAccount('all');
+        setSelectedAccountranslate('all');
         setSelectedAssignee('all');
         router.get(route('receipt-orders.index'));
     };
@@ -188,36 +188,36 @@ export default function ReceiptOrders() {
 
     if (useHasPermission('export-receipt-orders')) {
         pageActions.push({
-            label: t('Export'),
+            label: translate('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[470px]:mr-2" />,
             variant: 'outline',
             onClick: () => (window.location.href = route('receipt-order.export')),
             className: 'h-8 w-8 min-[470px]:h-9 min-[470px]:w-auto px-0 min-[470px]:px-4',
             labelClassName: 'hidden min-[470px]:inline',
-            tooltip: t('Export'),
+            tooltip: translate('Export'),
             tooltipClassName: 'min-[470px]:hidden',
         });
     }
 
     if (useHasPermission('create-receipt-orders')) {
         pageActions.push({
-            label: t('Add Receipt Order'),
+            label: translate('Add Receipt Order'),
             icon: <Plus className="mr-0 h-4 w-4 min-[470px]:mr-2" />,
             variant: 'default',
             onClick: () => handleAddNew(),
             className: 'h-8 w-8 min-[470px]:h-9 min-[470px]:w-auto px-0 min-[470px]:px-4',
             labelClassName: 'hidden min-[470px]:inline',
-            tooltip: t('Add Receipt Order'),
+            tooltip: translate('Add Receipt Order'),
             tooltipClassName: 'min-[470px]:hidden',
         });
     }
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Receipt Orders') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Receipt Orders') }];
 
     const columns = [
         {
             key: 'receipt_number',
-            label: t('Receipt Number'),
+            label: translate('Receipt Number'),
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: string, item: any) => (
@@ -234,7 +234,7 @@ export default function ReceiptOrders() {
         },
         {
             key: 'assigned_user',
-            label: t('Assigned To'),
+            label: translate('Assigned To'),
             className: 'whitespace-nowrap',
             render: (value: any) =>
                 value ? (
@@ -249,25 +249,25 @@ export default function ReceiptOrders() {
                         </div>
                     </div>
                 ) : (
-                    <span className="whitespace-nowrap">{t('Unassigned')}</span>
+                    <span className="whitespace-nowrap">{translate('Unassigned')}</span>
                 ),
         },
         {
             key: 'account',
-            label: t('Account'),
+            label: translate('Account'),
             className: 'whitespace-nowrap',
-            render: (value: any) => <span className="whitespace-nowrap">{value?.name || t('-')}</span>,
+            render: (value: any) => <span className="whitespace-nowrap">{value?.name || translate('-')}</span>,
         },
         {
             key: 'receipt_date',
-            label: t('Receipt Date'),
+            label: translate('Receipt Date'),
             sortable: true,
             className: 'whitespace-nowrap',
             type: 'date',
         },
         {
             key: 'total_amount',
-            label: t('Total Amount'),
+            label: translate('Total Amount'),
             className: 'whitespace-nowrap',
             render: (value: any) => (
                 <span className="font-mono whitespace-nowrap">
@@ -277,7 +277,7 @@ export default function ReceiptOrders() {
         },
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             className: 'whitespace-nowrap',
             render: (value: string) => {
                 const statusColors = {
@@ -300,28 +300,28 @@ export default function ReceiptOrders() {
 
     const actions = [
         {
-            label: t('Change Status'),
+            label: translate('Change Status'),
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
             requiredPermission: 'toggle-status-receipt-orders',
         },
         {
-            label: t('View'),
+            label: translate('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
             requiredPermission: 'view-receipt-orders',
         },
         {
-            label: t('Edit'),
+            label: translate('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
             requiredPermission: 'edit-receipt-orders',
         },
         {
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
@@ -330,23 +330,23 @@ export default function ReceiptOrders() {
     ];
 
     const statusOptions = [
-        { value: 'all', label: t('All Statuses') },
-        { value: 'pending', label: t('Pending') },
-        { value: 'received', label: t('Received') },
-        { value: 'partial', label: t('Partial') },
-        { value: 'completed', label: t('Completed') },
-        { value: 'cancelled', label: t('Cancelled') },
+        { value: 'all', label: translate('All Statuses') },
+        { value: 'pending', label: translate('Pending') },
+        { value: 'received', label: translate('Received') },
+        { value: 'partial', label: translate('Partial') },
+        { value: 'completed', label: translate('Completed') },
+        { value: 'cancelled', label: translate('Cancelled') },
     ];
 
     const accountOptions = [
-        { value: 'all', label: t('All Accounts') },
+        { value: 'all', label: translate('All Accounts') },
         ...allAccounts.map((account: any) => ({ value: account.id.toString(), label: account.name })),
     ];
 
     return (
         <PageTemplate
-            title={t('Receipt Orders')}
-            description={t('Manage your receipt orders.')}
+            title={translate('Receipt Orders')}
+            description={translate('Manage your receipt orders.')}
             url="/receipt-orders"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -360,7 +360,7 @@ export default function ReceiptOrders() {
                     filters={[
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
@@ -368,7 +368,7 @@ export default function ReceiptOrders() {
                         },
                         {
                             name: 'account_id',
-                            label: t('Account'),
+                            label: translate('Account'),
                             type: 'select',
                             searchable: true,
                             value: selectedAccount,
@@ -377,14 +377,14 @@ export default function ReceiptOrders() {
                         },
                         {
                             name: 'assigned_to',
-                            label: t('Assigned To'),
+                            label: translate('Assigned To'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: t('All Users') },
-                                { value: 'unassigned', label: t('Unassigned') },
+                                { value: 'all', label: translate('All Users') },
+                                { value: 'unassigned', label: translate('Unassigned') },
                                 ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name })),
                             ],
                         },
@@ -421,7 +421,7 @@ export default function ReceiptOrders() {
                     to={receiptOrders?.to || 0}
                     total={receiptOrders?.total || 0}
                     links={receiptOrders?.links}
-                    entityName={t('receipt orders')}
+                    entityName={translate('receipt orders')}
                     onPageChange={(url) => router.get(url)}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
@@ -451,22 +451,22 @@ export default function ReceiptOrders() {
                     fields: [
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             required: true,
                             options: [
-                                { value: 'pending', label: t('Pending') },
-                                { value: 'received', label: t('Received') },
-                                { value: 'partial', label: t('Partial') },
-                                { value: 'completed', label: t('Completed') },
-                                { value: 'cancelled', label: t('Cancelled') },
+                                { value: 'pending', label: translate('Pending') },
+                                { value: 'received', label: translate('Received') },
+                                { value: 'partial', label: translate('Partial') },
+                                { value: 'completed', label: translate('Completed') },
+                                { value: 'cancelled', label: translate('Cancelled') },
                             ],
                         },
                     ],
                     modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
-                title={t('Change Receipt Order Status')}
+                title={translate('Change Receipt Order Status')}
                 mode="edit"
             />
 
@@ -475,7 +475,7 @@ export default function ReceiptOrders() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={t('receipt order')}
+                entityName={translate('receipt order')}
             />
         </PageTemplate>
     );

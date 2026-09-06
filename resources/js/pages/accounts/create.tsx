@@ -26,7 +26,7 @@ function SectionTitle({ title, extra }: { title: string; extra?: React.ReactNode
 }
 
 export default function AccountCreate() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { accountTypes = [], accountIndustries = [], users = [] } = usePage().props;
 
     const { data, setData, setError, clearErrors, post, processing, errors } = useForm({
@@ -51,10 +51,10 @@ export default function AccountCreate() {
     });
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Account Management') },
-        { title: t('Accounts'), href: route('accounts.index') },
-        { title: t('Create') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Account Management') },
+        { title: translate('Accounts'), href: route('accounts.index') },
+        { title: translate('Create') },
     ];
 
     const set = (name: string, value: string) => {
@@ -71,40 +71,40 @@ export default function AccountCreate() {
             shipping_postal_code: prev.billing_postal_code,
             shipping_country: prev.billing_country,
         }));
-        toast.success(t('Billing address copied to shipping'));
+        toast.success(translate('Billing address copied to shipping'));
     };
 
     const requiredFields: { name: keyof typeof data; label: string }[] = [
-        { name: 'name', label: t('Account Name') },
-        { name: 'email', label: t('Email') },
-        { name: 'phone', label: t('Phone') },
-        { name: 'account_type_id', label: t('Account Type') },
-        { name: 'account_industry_id', label: t('Industry') },
-        { name: 'assigned_to', label: t('Assign To') },
-        { name: 'billing_address', label: t('Street Address') },
-        { name: 'billing_city', label: t('City') },
-        { name: 'billing_state', label: t('State / Province') },
-        { name: 'billing_postal_code', label: t('Postal Code') },
-        { name: 'billing_country', label: t('Country') },
+        { name: 'name', label: translate('Account Name') },
+        { name: 'email', label: translate('Email') },
+        { name: 'phone', label: translate('Phone') },
+        { name: 'account_type_id', label: translate('Account Type') },
+        { name: 'account_industry_id', label: translate('Industry') },
+        { name: 'assigned_to', label: translate('Assign To') },
+        { name: 'billing_address', label: translate('Street Address') },
+        { name: 'billing_city', label: translate('City') },
+        { name: 'billing_state', label: translate('State / Province') },
+        { name: 'billing_postal_code', label: translate('Postal Code') },
+        { name: 'billing_country', label: translate('Country') },
     ];
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const clientErrors: Record<string, string> = {};
         requiredFields.forEach(({ name, label }) => {
-            if (!data[name]) clientErrors[name] = `${label} ${t('is required')}`;
+            if (!data[name]) clientErrors[name] = `${label} ${translate('is required')}`;
         });
         if (data.phone && !/^[+\d\s\-().]+$/.test(data.phone)) {
-            clientErrors['phone'] = t('Phone number can only contain digits, spaces, +, -, (, )');
+            clientErrors['phone'] = translate('Phone number can only contain digits, spaces, +, -, (, )');
         }
         if (data.website && !/^https?:\/\/.+/.test(data.website)) {
-            clientErrors['website'] = t('Website must start with http:// or https://');
+            clientErrors['website'] = translate('Website must start with http:// or https://');
         }
         if (Object.keys(clientErrors).length > 0) {
             Object.entries(clientErrors).forEach(([k, v]) => setError(k as any, v));
             return;
         }
-        toast.loading(t('Creating account...'));
+        toast.loading(translate('Creating account...'));
         post(route('accounts.store'), {
             onSuccess: () => toast.dismiss(),
             onError: () => toast.dismiss(),
@@ -113,12 +113,12 @@ export default function AccountCreate() {
 
     return (
         <PageTemplate
-            title={t('Create Account')}
-            description={t('Fill in the details to create a new account')}
+            title={translate('Create Account')}
+            description={translate('Fill in the details to create a new account')}
             breadcrumbs={breadcrumbs}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => window.history.back(),
@@ -132,57 +132,57 @@ export default function AccountCreate() {
             >
                 {/* ── 1. Basic Information ── */}
                 <div>
-                    <SectionTitle title={t('Basic Information')} />
+                    <SectionTitle title={translate('Basic Information')} />
                     <div className="grid grid-cols-1 gap-x-6 gap-y-5 md:grid-cols-2">
                         <div className="space-y-1.5">
                             <Label htmlFor="name" required>
-                                {t('Account Name')}
+                                {translate('Account Name')}
                             </Label>
                             <Input
                                 id="name"
                                 value={data.name}
-                                onChange={(e) => set('name', e.target.value)}
+                                onChange={(e) => setranslate('name', e.target.value)}
                                 className={errors.name ? 'border-red-500' : ''}
-                                placeholder={t('e.g. Acme Corporation')}
+                                placeholder={translate('e.g. Acme Corporation')}
                             />
                             <FieldError message={errors.name} />
                         </div>
 
                         <div className="space-y-1.5">
                             <Label htmlFor="email" required>
-                                {t('Email')}
+                                {translate('Email')}
                             </Label>
                             <Input
                                 id="email"
                                 type="email"
                                 value={data.email}
-                                onChange={(e) => set('email', e.target.value)}
+                                onChange={(e) => setranslate('email', e.target.value)}
                                 className={errors.email ? 'border-red-500' : ''}
-                                placeholder={t('e.g. contact@acmecorp.com')}
+                                placeholder={translate('e.g. contact@acmecorp.com')}
                             />
                             <FieldError message={errors.email} />
                         </div>
 
                         <div className="space-y-1.5">
                             <Label htmlFor="phone" required>
-                                {t('Phone')}
+                                {translate('Phone')}
                             </Label>
                             <Input
                                 id="phone"
                                 value={data.phone}
-                                onChange={(e) => set('phone', e.target.value)}
+                                onChange={(e) => setranslate('phone', e.target.value)}
                                 className={errors.phone ? 'border-red-500' : ''}
-                                placeholder={t('e.g. +1 234 567 8900')}
+                                placeholder={translate('e.g. +1 234 567 8900')}
                             />
                             <FieldError message={errors.phone} />
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="website">{t('Website')}</Label>
+                            <Label htmlFor="website">{translate('Website')}</Label>
                             <Input
                                 id="website"
                                 value={data.website}
-                                onChange={(e) => set('website', e.target.value)}
+                                onChange={(e) => setranslate('website', e.target.value)}
                                 className={errors.website ? 'border-red-500' : ''}
                                 placeholder="e.g. https://acmecorp.com"
                             />
@@ -195,13 +195,13 @@ export default function AccountCreate() {
 
                 {/* ── 2. Classification & Assignment ── */}
                 <div>
-                    <SectionTitle title={t('Classification & Assignment')} />
+                    <SectionTitle title={translate('Classification & Assignment')} />
                     <div className="grid grid-cols-1 gap-x-6 gap-y-5 md:grid-cols-2">
                         <div className="space-y-1.5">
-                            <Label required>{t('Account Type')}</Label>
-                            <Select value={data.account_type_id} onValueChange={(v) => set('account_type_id', v)}>
+                            <Label required>{translate('Account Type')}</Label>
+                            <Select value={data.account_type_id} onValueChange={(v) => setranslate('account_type_id', v)}>
                                 <SelectTrigger className={errors.account_type_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select account type')} />
+                                    <SelectValue placeholder={translate('Select account type')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {accountTypes.map((item: any) => (
@@ -214,19 +214,19 @@ export default function AccountCreate() {
                             <FieldError message={errors.account_type_id} />
                             {accountTypes.length === 0 && (
                                 <p className="mt-1 text-xs">
-                                    {t('Click here to add')}{' '}
+                                    {translate('Click here to add')}{' '}
                                     <a href={route('account-types.index')} className="font-medium underline">
-                                        {t('Account Types')}
+                                        {translate('Account Types')}
                                     </a>
                                 </p>
                             )}
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label required>{t('Assign To')}</Label>
-                            <Select value={data.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
+                            <Label required>{translate('Assign To')}</Label>
+                            <Select value={data.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select user')} />
+                                    <SelectValue placeholder={translate('Select user')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {users.map((u: any) => (
@@ -239,19 +239,19 @@ export default function AccountCreate() {
                             <FieldError message={errors.assigned_to} />
                             {users.length === 0 && (
                                 <p className="mt-1 text-xs">
-                                    {t('Click here to add')}{' '}
+                                    {translate('Click here to add')}{' '}
                                     <a href={route('users.index')} className="font-medium underline">
-                                        {t('Users')}
+                                        {translate('Users')}
                                     </a>
                                 </p>
                             )}
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label required>{t('Industry')}</Label>
-                            <Select value={data.account_industry_id} onValueChange={(v) => set('account_industry_id', v)}>
+                            <Label required>{translate('Industry')}</Label>
+                            <Select value={data.account_industry_id} onValueChange={(v) => setranslate('account_industry_id', v)}>
                                 <SelectTrigger className={errors.account_industry_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select industry')} />
+                                    <SelectValue placeholder={translate('Select industry')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {accountIndustries.map((item: any) => (
@@ -264,23 +264,23 @@ export default function AccountCreate() {
                             <FieldError message={errors.account_industry_id} />
                             {accountIndustries.length === 0 && (
                                 <p className="mt-1 text-xs">
-                                    {t('Click here to add')}{' '}
+                                    {translate('Click here to add')}{' '}
                                     <a href={route('account-industries.index')} className="font-medium underline">
-                                        {t('Industries')}
+                                        {translate('Industries')}
                                     </a>
                                 </p>
                             )}
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label>{t('Status')}</Label>
-                            <Select value={data.status} onValueChange={(v) => set('status', v)}>
+                            <Label>{translate('Status')}</Label>
+                            <Select value={data.status} onValueChange={(v) => setranslate('status', v)}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="active">{t('Active')}</SelectItem>
-                                    <SelectItem value="inactive">{t('Inactive')}</SelectItem>
+                                    <SelectItem value="active">{translate('Active')}</SelectItem>
+                                    <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -293,72 +293,72 @@ export default function AccountCreate() {
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                     {/* Billing */}
                     <div>
-                        <SectionTitle title={t('Billing Address')} />
+                        <SectionTitle title={translate('Billing Address')} />
                         <div className="space-y-4">
                             <div className="space-y-1.5">
                                 <Label htmlFor="billing_address" required>
-                                    {t('Billing Address')}
+                                    {translate('Billing Address')}
                                 </Label>
                                 <Textarea
                                     id="billing_address"
                                     value={data.billing_address}
-                                    onChange={(e) => set('billing_address', e.target.value)}
+                                    onChange={(e) => setranslate('billing_address', e.target.value)}
                                     className={errors.billing_address ? 'border-red-500' : ''}
                                     rows={2}
-                                    placeholder={t('e.g. 123 Main Street, Suite 100')}
+                                    placeholder={translate('e.g. 123 Main Street, Suite 100')}
                                 />
                                 <FieldError message={errors.billing_address} />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1.5">
                                     <Label htmlFor="billing_city" required>
-                                        {t('Billing City')}
+                                        {translate('Billing City')}
                                     </Label>
                                     <Input
                                         id="billing_city"
                                         value={data.billing_city}
-                                        onChange={(e) => set('billing_city', e.target.value)}
+                                        onChange={(e) => setranslate('billing_city', e.target.value)}
                                         className={errors.billing_city ? 'border-red-500' : ''}
-                                        placeholder={t('e.g. New York')}
+                                        placeholder={translate('e.g. New York')}
                                     />
                                     <FieldError message={errors.billing_city} />
                                 </div>
                                 <div className="space-y-1.5">
                                     <Label htmlFor="billing_state" required>
-                                        {t('State')}
+                                        {translate('State')}
                                     </Label>
                                     <Input
                                         id="billing_state"
                                         value={data.billing_state}
-                                        onChange={(e) => set('billing_state', e.target.value)}
+                                        onChange={(e) => setranslate('billing_state', e.target.value)}
                                         className={errors.billing_state ? 'border-red-500' : ''}
-                                        placeholder={t('e.g. NY')}
+                                        placeholder={translate('e.g. NY')}
                                     />
                                     <FieldError message={errors.billing_state} />
                                 </div>
                                 <div className="space-y-1.5">
                                     <Label htmlFor="billing_country" required>
-                                        {t('Billing Country')}
+                                        {translate('Billing Country')}
                                     </Label>
                                     <Input
                                         id="billing_country"
                                         value={data.billing_country}
-                                        onChange={(e) => set('billing_country', e.target.value)}
+                                        onChange={(e) => setranslate('billing_country', e.target.value)}
                                         className={errors.billing_country ? 'border-red-500' : ''}
-                                        placeholder={t('e.g. United States')}
+                                        placeholder={translate('e.g. United States')}
                                     />
                                     <FieldError message={errors.billing_country} />
                                 </div>
                                 <div className="space-y-1.5">
                                     <Label htmlFor="billing_postal_code" required>
-                                        {t('Billing Postal Code')}
+                                        {translate('Billing Postal Code')}
                                     </Label>
                                     <Input
                                         id="billing_postal_code"
                                         value={data.billing_postal_code}
-                                        onChange={(e) => set('billing_postal_code', e.target.value)}
+                                        onChange={(e) => setranslate('billing_postal_code', e.target.value)}
                                         className={errors.billing_postal_code ? 'border-red-500' : ''}
-                                        placeholder={t('e.g. 10001')}
+                                        placeholder={translate('e.g. 10001')}
                                     />
                                     <FieldError message={errors.billing_postal_code} />
                                 </div>
@@ -372,8 +372,8 @@ export default function AccountCreate() {
                             title={
                                 (
                                     <span className="flex items-center gap-2">
-                                        {t('Shipping Address')}
-                                        <span className="text-sm font-normal text-gray-400">({t('Optional')})</span>
+                                        {translate('Shipping Address')}
+                                        <span className="text-sm font-normal text-gray-400">({translate('Optional')})</span>
                                     </span>
                                 ) as any
                             }
@@ -389,11 +389,11 @@ export default function AccountCreate() {
                                                 className="flex items-center justify-center p-2 text-xs sm:gap-1 sm:px-3 sm:py-1.5"
                                             >
                                                 <Copy className="h-3 w-3" />
-                                                <span className="hidden sm:inline">{t('Copy to Shipping')}</span>
+                                                <span className="hidden sm:inline">{translate('Copy to Shipping')}</span>
                                             </Button>
                                         </TooltipTrigger>
                                         <TooltipContent>
-                                            <p>{t('Copy Billing to Shipping Address')}</p>
+                                            <p>{translate('Copy Billing to Shipping Address')}</p>
                                         </TooltipContent>
                                     </Tooltip>
                                 </TooltipProvider>
@@ -401,50 +401,50 @@ export default function AccountCreate() {
                         />
                         <div className="space-y-4">
                             <div className="space-y-1.5">
-                                <Label htmlFor="shipping_address">{t('Shipping Address')}</Label>
+                                <Label htmlFor="shipping_address">{translate('Shipping Address')}</Label>
                                 <Textarea
                                     id="shipping_address"
                                     value={data.shipping_address}
-                                    onChange={(e) => set('shipping_address', e.target.value)}
+                                    onChange={(e) => setranslate('shipping_address', e.target.value)}
                                     rows={2}
-                                    placeholder={t('e.g. 456 Elm Street')}
+                                    placeholder={translate('e.g. 456 Elm Street')}
                                 />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="shipping_city">{t('Shipping City')}</Label>
+                                    <Label htmlFor="shipping_city">{translate('Shipping City')}</Label>
                                     <Input
                                         id="shipping_city"
                                         value={data.shipping_city}
-                                        onChange={(e) => set('shipping_city', e.target.value)}
-                                        placeholder={t('e.g. Los Angeles')}
+                                        onChange={(e) => setranslate('shipping_city', e.target.value)}
+                                        placeholder={translate('e.g. Los Angeles')}
                                     />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="shipping_state">{t('Shipping State')}</Label>
+                                    <Label htmlFor="shipping_state">{translate('Shipping State')}</Label>
                                     <Input
                                         id="shipping_state"
                                         value={data.shipping_state}
-                                        onChange={(e) => set('shipping_state', e.target.value)}
-                                        placeholder={t('e.g. CA')}
+                                        onChange={(e) => setranslate('shipping_state', e.target.value)}
+                                        placeholder={translate('e.g. CA')}
                                     />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="shipping_country">{t('Shipping Country')}</Label>
+                                    <Label htmlFor="shipping_country">{translate('Shipping Country')}</Label>
                                     <Input
                                         id="shipping_country"
                                         value={data.shipping_country}
-                                        onChange={(e) => set('shipping_country', e.target.value)}
-                                        placeholder={t('e.g. United States')}
+                                        onChange={(e) => setranslate('shipping_country', e.target.value)}
+                                        placeholder={translate('e.g. United States')}
                                     />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="shipping_postal_code">{t('Shipping Postal Code')}</Label>
+                                    <Label htmlFor="shipping_postal_code">{translate('Shipping Postal Code')}</Label>
                                     <Input
                                         id="shipping_postal_code"
                                         value={data.shipping_postal_code}
-                                        onChange={(e) => set('shipping_postal_code', e.target.value)}
-                                        placeholder={t('e.g. 90001')}
+                                        onChange={(e) => setranslate('shipping_postal_code', e.target.value)}
+                                        placeholder={translate('e.g. 90001')}
                                     />
                                 </div>
                             </div>
@@ -455,10 +455,10 @@ export default function AccountCreate() {
                 {/* ── Actions ── */}
                 <div className="flex justify-end gap-3 pt-1">
                     <Button type="button" variant="outline" onClick={() => window.history.back()}>
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     <Button type="submit" disabled={processing}>
-                        {processing ? t('Saving...') : t('Save')}
+                        {processing ? translate('Saving...') : translate('Save')}
                     </Button>
                 </div>
             </form>

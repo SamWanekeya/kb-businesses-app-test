@@ -7,22 +7,22 @@ import { ArrowLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function RolesShow() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, role, permissions: allPermissions } = usePage().props;
     const userPermissions = auth?.permissions || [];
 
     const assignedPermissionNames: string[] = role.permissions?.map((p: any) => p.name) || [];
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Staff'), href: route('users.index') },
-        { title: t('Roles'), href: route('roles.index') },
-        { title: role.label || t('View Role') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Staff'), href: route('users.index') },
+        { title: translate('Roles'), href: route('roles.index') },
+        { title: role.label || translate('View Role') },
     ];
 
     const pageActions = [
         {
-            label: t('Back'),
+            label: translate('Back'),
             icon: <ArrowLeft className="mr-2 h-4 w-4" />,
             variant: 'outline' as const,
             onClick: () => router.get(route('roles.index')),
@@ -31,8 +31,8 @@ export default function RolesShow() {
 
     return (
         <PageTemplate
-            title={role.label || t('View Role')}
-            description={t('Role details and related information')}
+            title={role.label || translate('View Role')}
+            description={translate('Role details and related information')}
             url={`/roles/${role.id}`}
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -41,25 +41,25 @@ export default function RolesShow() {
                 {/* Basic Info */}
                 <Card>
                     <CardHeader className="pb-3">
-                        <CardTitle className="text-base font-semibold">{t('Role Information')}</CardTitle>
+                        <CardTitle className="text-base font-semibold">{translate('Role Information')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
                             <div>
-                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('Role Name')}</p>
+                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Role Name')}</p>
                                 <p className="mt-1 text-sm font-semibold text-gray-900 dark:text-white">{role.label || '-'}</p>
                             </div>
                             <div>
-                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('Slug')}</p>
+                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Slug')}</p>
                                 <p className="mt-1 font-mono text-sm text-gray-600 dark:text-gray-400">{role.name || '-'}</p>
                             </div>
                             <div>
-                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('Total Permissions')}</p>
+                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Total Permissions')}</p>
                                 <p className="mt-1 text-sm font-semibold text-gray-900 dark:text-white">{assignedPermissionNames.length}</p>
                             </div>
                             {role.description && (
                                 <div className="sm:col-span-2 md:col-span-3">
-                                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('Description')}</p>
+                                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Description')}</p>
                                     <p className="mt-1 text-sm leading-relaxed text-gray-700 dark:text-gray-300">{role.description}</p>
                                 </div>
                             )}
@@ -70,12 +70,12 @@ export default function RolesShow() {
                 {/* Permissions grouped by module */}
                 <Card>
                     <CardHeader className="pb-3">
-                        <CardTitle className="text-base font-semibold">{t('Assigned Permissions')}</CardTitle>
-                        <CardDescription>{t('Permissions assigned to this role, grouped by module.')}</CardDescription>
+                        <CardTitle className="text-base font-semibold">{translate('Assigned Permissions')}</CardTitle>
+                        <CardDescription>{translate('Permissions assigned to this role, grouped by module.')}</CardDescription>
                     </CardHeader>
                     <CardContent>
                         {assignedPermissionNames.length === 0 ? (
-                            <p className="py-4 text-center text-sm text-gray-500 dark:text-gray-400">{t('No permissions assigned to this role.')}</p>
+                            <p className="py-4 text-center text-sm text-gray-500 dark:text-gray-400">{translate('No permissions assigned to this role.')}</p>
                         ) : (
                             <div className="space-y-3">
                                 {Object.entries(allPermissions as Record<string, any[]>).map(([module, modulePermissions]) => {

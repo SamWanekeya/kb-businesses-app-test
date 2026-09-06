@@ -8,7 +8,7 @@ interface UseChatGptOptions {
 }
 
 export function useChatGpt(options: UseChatGptOptions = {}) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -17,7 +17,7 @@ export function useChatGpt(options: UseChatGptOptions = {}) {
 
     const generateContent = async (prompt: string): Promise<string | null> => {
         if (!prompt.trim()) {
-            toast.error(t('Please enter a prompt'));
+            toast.error(translate('Please enter a prompt'));
             return null;
         }
 
@@ -38,13 +38,13 @@ export function useChatGpt(options: UseChatGptOptions = {}) {
                 options.onSuccess?.(data.content);
                 return data.content;
             } else {
-                const errorMessage = data.message || t('Failed to generate content');
+                const errorMessage = data.message || translate('Failed to generate content');
                 toast.error(errorMessage);
                 options.onError?.(errorMessage);
                 return null;
             }
         } catch (error) {
-            const errorMessage = t('Error connecting to AI service');
+            const errorMessage = translate('Error connecting to AI service');
             toast.error(errorMessage);
             options.onError?.(errorMessage);
             return null;

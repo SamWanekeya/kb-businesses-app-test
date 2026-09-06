@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function CookieConsentBanner() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { props } = usePage();
     const [isVisible, setIsVisible] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -150,7 +150,7 @@ export default function CookieConsentBanner() {
         //   marketing: true
         // };
 
-        // await saveCookieConsent('accept_all', preferences);
+        // await saveCookieConsentranslate('accept_all', preferences);
         // setIsVisible(false);
         // setIsLoading(false);
 
@@ -161,10 +161,10 @@ export default function CookieConsentBanner() {
                 marketing: true,
             };
 
-            await saveCookieConsent('accept_all', preferences);
+            await saveCookieConsentranslate('accept_all', preferences);
             setIsVisible(false);
         } catch (error) {
-            toast.error(t('Failed to save cookie preferences'));
+            toast.error(translate('Failed to save cookie preferences'));
         } finally {
             setIsLoading(false);
         }
@@ -180,7 +180,7 @@ export default function CookieConsentBanner() {
             marketing: false,
         };
 
-        await saveCookieConsent('necessary_only', preferences);
+        await saveCookieConsentranslate('necessary_only', preferences);
         setIsVisible(false);
         setIsLoading(false);
     };
@@ -193,14 +193,14 @@ export default function CookieConsentBanner() {
             <div className="fixed bottom-4 left-1/2 z-50 w-full max-w-md -translate-x-1/2 transform">
                 <Card className="border p-4 shadow-lg">
                     <div className="mb-3 flex items-start justify-between">
-                        <h3 className="text-sm font-semibold">{settings.cookieTitle || t('Cookie Consent')}</h3>
+                        <h3 className="text-sm font-semibold">{settings.cookieTitle || translate('Cookie Consent')}</h3>
                         <Button variant="ghost" size="sm" onClick={() => setIsVisible(false)} className="h-6 w-6 p-0">
                             <X className="h-4 w-4" />
                         </Button>
                     </div>
 
                     <p className="text-muted-foreground mb-4 text-sm">
-                        {settings.cookieDescription || t('We use cookies to enhance your browsing experience and provide personalized content.')}
+                        {settings.cookieDescription || translate('We use cookies to enhance your browsing experience and provide personalized content.')}
                     </p>
 
                     <div className="flex flex-col gap-2">
@@ -212,7 +212,7 @@ export default function CookieConsentBanner() {
                                 style={{ backgroundColor: primaryColor }}
                                 disabled={isLoading}
                             >
-                                {isLoading ? t('Saving...') : t('Accept All')}
+                                {isLoading ? translate('Saving...') : translate('Accept All')}
                             </Button>
                             <Button
                                 onClick={acceptNecessary}
@@ -222,19 +222,19 @@ export default function CookieConsentBanner() {
                                 style={{ borderColor: primaryColor, color: primaryColor }}
                                 disabled={isLoading}
                             >
-                                {isLoading ? t('Saving...') : t('Necessary Only')}
+                                {isLoading ? translate('Saving...') : translate('Necessary Only')}
                             </Button>
                         </div>
                         <Button onClick={() => setShowModal(true)} variant="ghost" size="sm" className="text-sm underline">
-                            {t('Let me choose')}
+                            {translate('Let me choose')}
                         </Button>
                     </div>
 
                     {settings.contactUsUrl && (
                         <p className="text-muted-foreground mt-2 text-xs">
-                            {settings.contactUsDescription || t('Questions about our cookie policy?')}{' '}
+                            {settings.contactUsDescription || translate('Questions about our cookie policy?')}{' '}
                             <a href={settings.contactUsUrl} className="underline">
-                                {t('Contact us')}
+                                {translate('Contact us')}
                             </a>
                         </p>
                     )}
@@ -247,7 +247,7 @@ export default function CookieConsentBanner() {
                     <Card className="max-h-[80vh] w-full max-w-md overflow-y-auto">
                         <div className="p-6">
                             <div className="mb-4 flex items-center justify-between">
-                                <h3 className="text-lg font-semibold">{settings.cookieTitle || t('Cookie Preferences')}</h3>
+                                <h3 className="text-lg font-semibold">{settings.cookieTitle || translate('Cookie Preferences')}</h3>
                                 <Button variant="ghost" size="sm" onClick={() => setShowModal(false)} className="h-6 w-6 p-0">
                                     <X className="h-4 w-4" />
                                 </Button>
@@ -257,10 +257,10 @@ export default function CookieConsentBanner() {
                                 {/* Strictly Necessary Cookies */}
                                 <div className="flex items-center justify-between">
                                     <div className="flex-1">
-                                        <h4 className="text-sm font-medium">{settings.strictlyCookieTitle || t('Strictly Necessary Cookies')}</h4>
+                                        <h4 className="text-sm font-medium">{settings.strictlyCookieTitle || translate('Strictly Necessary Cookies')}</h4>
                                         <p className="text-muted-foreground mt-1 text-xs">
                                             {settings.strictlyCookieDescription ||
-                                                t('These cookies are essential for the website to function properly.')}
+                                                translate('These cookies are essential for the website to function properly.')}
                                         </p>
                                     </div>
                                     <Switch checked={true} disabled={true} />
@@ -279,7 +279,7 @@ export default function CookieConsentBanner() {
                                     style={{ borderColor: primaryColor, color: primaryColor }}
                                     disabled={isLoading}
                                 >
-                                    {isLoading ? t('Saving...') : t('Save Preferences')}
+                                    {isLoading ? translate('Saving...') : translate('Save Preferences')}
                                 </Button>
                                 <Button
                                     onClick={async () => {
@@ -291,7 +291,7 @@ export default function CookieConsentBanner() {
                                     style={{ backgroundColor: primaryColor }}
                                     disabled={isLoading}
                                 >
-                                    {isLoading ? t('Saving...') : t('Accept All')}
+                                    {isLoading ? translate('Saving...') : translate('Accept All')}
                                 </Button>
                             </div>
                         </div>

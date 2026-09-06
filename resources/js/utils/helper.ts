@@ -1,4 +1,4 @@
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 const getBaseUrl = (): string => {
     return window.appSettings?.baseUrl || window.location.origin;
@@ -42,29 +42,30 @@ const getDisplayUrl = (path: string, pageProps?: any): string => {
 };
 
 const formatRelativeTime = (dateString: string) => {
+    const { t: translate } = useTranslation();
     const date = new Date(dateString);
     const now = new Date();
     const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
 
-    if (diffInMinutes < 1) return t('Just now');
+    if (diffInMinutes < 1) return translate('Just now');
     if (diffInMinutes < 60)
-        return t('{{count}} {{unit}} ago', {
+        return translate('{{count}} {{unit}} ago', {
             count: diffInMinutes,
-            unit: diffInMinutes === 1 ? t('minute') : t('minutes'),
+            unit: diffInMinutes === 1 ? translate('minute') : translate('minutes'),
         });
 
     const diffInHours = Math.floor(diffInMinutes / 60);
     if (diffInHours < 24)
-        return t('{{count}} {{unit}} ago', {
+        return translate('{{count}} {{unit}} ago', {
             count: diffInHours,
-            unit: diffInHours === 1 ? t('hour') : t('hours'),
+            unit: diffInHours === 1 ? translate('hour') : translate('hours'),
         });
 
     const diffInDays = Math.floor(diffInHours / 24);
     if (diffInDays < 7)
-        return t('{{count}} {{unit}} ago', {
+        return translate('{{count}} {{unit}} ago', {
             count: diffInDays,
-            unit: diffInDays === 1 ? t('day') : t('days'),
+            unit: diffInDays === 1 ? translate('day') : translate('days'),
         });
 
     return window?.appSettings?.formatDateTime(date, false);

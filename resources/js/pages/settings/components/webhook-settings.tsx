@@ -27,7 +27,7 @@ interface WebhookSettingsProps {
 }
 
 export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [webhookList, setWebhookList] = useState<Webhook[]>(webhooks);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [editingWebhook, setEditingWebhook] = useState<Webhook | null>(null);
@@ -75,7 +75,7 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
             setIsDialogOpen(false);
             resetForm();
         } catch (error: any) {
-            const errorMessage = error.response?.data?.message || t('An error occurred');
+            const errorMessage = error.response?.data?.message || translate('An error occurred');
             toast.error(errorMessage);
         }
     };
@@ -93,7 +93,7 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
             setWebhookList((prev) => prev.filter((w) => w.id !== webhookToDelete.id));
             toast.success(response.data.message);
         } catch (error: any) {
-            const errorMessage = error.response?.data?.message || t('An error occurred');
+            const errorMessage = error.response?.data?.message || translate('An error occurred');
             toast.error(errorMessage);
         } finally {
             setDeleteModalOpen(false);
@@ -108,12 +108,12 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
 
     return (
         <SettingsSection
-            title={t('Webhook Settings')}
-            description={t('Manage webhooks for external integrations')}
+            title={translate('Webhook Settings')}
+            description={translate('Manage webhooks for external integrations')}
             action={
                 <Button onClick={handleCreate} size="sm" className="max-[1300px]:px-2.5">
                     <Plus className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                    <span className="max-[1300px]:hidden">{t('Add Webhook')}</span>
+                    <span className="max-[1300px]:hidden">{translate('Add Webhook')}</span>
                 </Button>
             }
         >
@@ -123,17 +123,17 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                         <Table>
                             <TableHeader>
                                 <TableRow className="border-b bg-[#F0F0F1] hover:!bg-[#F0F0F1] dark:bg-gray-800 dark:hover:!bg-gray-800">
-                                    <TableHead className="py-2.5 font-semibold">{t('Module')}</TableHead>
-                                    <TableHead className="py-2.5 font-semibold">{t('Method')}</TableHead>
-                                    <TableHead className="py-2.5 font-semibold">{t('URL')}</TableHead>
-                                    <TableHead className="w-24 py-2.5 text-right font-semibold">{t('Actions')}</TableHead>
+                                    <TableHead className="py-2.5 font-semibold">{translate('Module')}</TableHead>
+                                    <TableHead className="py-2.5 font-semibold">{translate('Method')}</TableHead>
+                                    <TableHead className="py-2.5 font-semibold">{translate('URL')}</TableHead>
+                                    <TableHead className="w-24 py-2.5 text-right font-semibold">{translate('Actions')}</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {webhookList.length === 0 ? (
                                     <TableRow>
                                         <TableCell colSpan={4} className="text-muted-foreground h-24 text-center dark:text-gray-400">
-                                            {t('No webhooks configured')}
+                                            {translate('No webhooks configured')}
                                         </TableCell>
                                     </TableRow>
                                 ) : (
@@ -179,7 +179,7 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                                                                 </Button>
                                                             </TooltipTrigger>
                                                             <TooltipContent>
-                                                                <p>{t('Edit')}</p>
+                                                                <p>{translate('Edit')}</p>
                                                             </TooltipContent>
                                                         </Tooltip>
                                                     </TooltipProvider>
@@ -196,7 +196,7 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                                                                 </Button>
                                                             </TooltipTrigger>
                                                             <TooltipContent>
-                                                                <p>{t('Delete')}</p>
+                                                                <p>{translate('Delete')}</p>
                                                             </TooltipContent>
                                                         </Tooltip>
                                                     </TooltipProvider>
@@ -211,40 +211,40 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                             <DialogContent>
                                 <DialogHeader>
-                                    <DialogTitle>{editingWebhook ? t('Edit Webhook') : t('Add Webhook')}</DialogTitle>
+                                    <DialogTitle>{editingWebhook ? translate('Edit Webhook') : translate('Add Webhook')}</DialogTitle>
                                 </DialogHeader>
                                 <form onSubmit={handleSubmit} className="space-y-4">
                                     <div className="grid gap-2">
                                         <Label htmlFor="module" required>
-                                            {t('Module')}
+                                            {translate('Module')}
                                         </Label>
                                         <Select
                                             value={formData.module}
                                             onValueChange={(value) => setFormData((prev) => ({ ...prev, module: value }))}
                                         >
                                             <SelectTrigger>
-                                                <SelectValue placeholder={t('Select module')} />
+                                                <SelectValue placeholder={translate('Select module')} />
                                             </SelectTrigger>
                                             <SelectContent className="z-[60000]">
-                                                <SelectItem value="New User">{t('New User')}</SelectItem>
-                                                <SelectItem value="Lead Assigned">{t('Lead Create')}</SelectItem>
-                                                <SelectItem value="Case Created">{t('Case Create')}</SelectItem>
-                                                <SelectItem value="Meeting Invitation">{t('Meeting Invitation')}</SelectItem>
-                                                <SelectItem value="Opportunity Created">{t('Opportunity Create')}</SelectItem>
-                                                <SelectItem value="Quote Created">{t('Quote Create')}</SelectItem>
-                                                <SelectItem value="Task Assigned">{t('Task Create')}</SelectItem>
+                                                <SelectItem value="New User">{translate('New User')}</SelectItem>
+                                                <SelectItem value="Lead Assigned">{translate('Lead Create')}</SelectItem>
+                                                <SelectItem value="Case Created">{translate('Case Create')}</SelectItem>
+                                                <SelectItem value="Meeting Invitation">{translate('Meeting Invitation')}</SelectItem>
+                                                <SelectItem value="Opportunity Created">{translate('Opportunity Create')}</SelectItem>
+                                                <SelectItem value="Quote Created">{translate('Quote Create')}</SelectItem>
+                                                <SelectItem value="Task Assigned">{translate('Task Create')}</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="method">{t('Method')}</Label>
+                                        <Label htmlFor="method">{translate('Method')}</Label>
                                         <Select
                                             value={formData.method}
                                             onValueChange={(value) => setFormData((prev) => ({ ...prev, method: value }))}
                                         >
                                             <SelectTrigger>
-                                                <SelectValue placeholder={t('Select method')} />
+                                                <SelectValue placeholder={translate('Select method')} />
                                             </SelectTrigger>
                                             <SelectContent className="z-[60000]">
                                                 <SelectItem value="GET">GET</SelectItem>
@@ -255,7 +255,7 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="url" required>
-                                            {t('URL')}
+                                            {translate('URL')}
                                         </Label>
                                         <Input
                                             id="url"
@@ -267,9 +267,9 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
 
                                     <div className="flex justify-end gap-2">
                                         <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                                            {t('Cancel')}
+                                            {translate('Cancel')}
                                         </Button>
-                                        <Button type="submit">{t('Save')}</Button>
+                                        <Button type="submit">{translate('Save')}</Button>
                                     </div>
                                 </form>
                             </DialogContent>
@@ -280,7 +280,7 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                             onClose={handleDeleteCancel}
                             onConfirm={handleDeleteConfirm}
                             itemName={webhookToDelete?.module || ''}
-                            entityName={t('Webhook')}
+                            entityName={translate('Webhook')}
                         />
                     </div>
                 </CardContent>

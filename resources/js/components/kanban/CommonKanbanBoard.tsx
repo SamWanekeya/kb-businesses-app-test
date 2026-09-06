@@ -63,7 +63,7 @@ export const CommonKanbanBoard: React.FC<CommonKanbanBoardProps> = ({
     onDataUpdate,
     type,
 }) => {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
     const [kanbanData, setKanbanData] = useState<KanbanData>(initialData);
     const [isLoading, setIsLoading] = useState(false);
@@ -179,7 +179,7 @@ export const CommonKanbanBoard: React.FC<CommonKanbanBoardProps> = ({
                 {useHasPermission(editPermission) && (
                     <DropdownMenuItem onClick={() => onItemAction('edit', item)}>
                         <Edit className="mr-2 h-4 w-4" />
-                        <span>{t('Edit')}</span>
+                        <span>{translate('Edit')}</span>
                     </DropdownMenuItem>
                 )}
                 {type === 'lead' && useHasPermission('convert-leads') && !item.is_converted && (
@@ -187,11 +187,11 @@ export const CommonKanbanBoard: React.FC<CommonKanbanBoardProps> = ({
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={() => onItemAction('convert-to-account', item)} className="text-green-600">
                             <Building2 className="mr-2 h-4 w-4" />
-                            <span>{t('Convert to Account')}</span>
+                            <span>{translate('Convert to Account')}</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => onItemAction('convert-to-contact', item)} className="text-blue-600">
                             <Users className="mr-2 h-4 w-4" />
-                            <span>{t('Convert to Contact')}</span>
+                            <span>{translate('Convert to Contact')}</span>
                         </DropdownMenuItem>
                     </>
                 )}
@@ -199,7 +199,7 @@ export const CommonKanbanBoard: React.FC<CommonKanbanBoardProps> = ({
                 {useHasPermission(deletePermission) && (
                     <DropdownMenuItem onClick={() => onItemAction('delete', item)} className="text-red-600">
                         <Trash2 className="mr-2 h-4 w-4" />
-                        <span>{t('Delete')}</span>
+                        <span>{translate('Delete')}</span>
                     </DropdownMenuItem>
                 )}
             </DropdownMenuContent>
@@ -268,7 +268,7 @@ export const CommonKanbanBoard: React.FC<CommonKanbanBoardProps> = ({
                                                                             </h4>
                                                                             <p className="mt-0.5 truncate text-xs text-gray-500">
                                                                                 {type === 'lead'
-                                                                                    ? item.email || t('No email')
+                                                                                    ? item.email || translate('No email')
                                                                                     : item.account?.name || 'No account'}
                                                                             </p>
                                                                         </div>
@@ -301,7 +301,7 @@ export const CommonKanbanBoard: React.FC<CommonKanbanBoardProps> = ({
                                                                     {(item.value || item.amount) && (
                                                                         <div className="flex items-center justify-between rounded-md bg-green-50 px-2 py-1">
                                                                             <span className="text-xs font-medium text-green-700">
-                                                                                {type === 'lead' ? t('Value') : t('Amount')}:
+                                                                                {type === 'lead' ? translate('Value') : translate('Amount')}:
                                                                             </span>
                                                                             <span className="text-xs font-bold text-green-800">
                                                                                 ${parseFloat(item.value || item.amount || '0').toFixed(2)}

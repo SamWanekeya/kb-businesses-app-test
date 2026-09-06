@@ -2,7 +2,7 @@
 import { toast } from '@/components/custom-toast';
 import { Switch } from '@/components/ui/switch';
 import { CrudConfig } from '@/types/crud';
-import { t } from '@/utils/i18n';
+import { useTranslation } from 'react-i18next';
 import React from 'react';
 
 export const couponsConfig: CrudConfig = {
@@ -19,46 +19,46 @@ export const couponsConfig: CrudConfig = {
     modalSize: '4xl',
     table: {
         columns: [
-            { key: 'name', label: t('Name'), sortable: true },
+            { key: 'name', label: translate('Name'), sortable: true },
             {
                 key: 'type',
-                label: t('Type'),
+                label: translate('Type'),
                 sortable: true,
                 render: (value) => {
                     const className = value === 'percentage' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800';
-                    return value === 'percentage' ? t('Percentage') : t('Flat Amount');
+                    return value === 'percentage' ? translate('Percentage') : translate('Flat Amount');
                 },
             },
             {
                 key: 'minimum_spend',
-                label: t('Min Spend'),
+                label: translate('Min Spend'),
                 render: (value) => (value ? window.appSettings?.formatCurrency(value) || `$${parseFloat(value).toFixed(2)}` : '-'),
             },
             {
                 key: 'maximum_spend',
-                label: t('Max Spend'),
+                label: translate('Max Spend'),
                 render: (value) => (value ? window.appSettings?.formatCurrency(value) || `$${parseFloat(value).toFixed(2)}` : '-'),
             },
             {
                 key: 'discount_amount',
-                label: t('Discount'),
+                label: translate('Discount'),
                 render: (value, row) => {
                     const amount = parseFloat(value);
                     return row.type === 'percentage' ? `${amount}%` : window.appSettings?.formatCurrency(amount) || `$${amount.toFixed(2)}`;
                 },
             },
-            { key: 'use_limit_per_coupon', label: t('Coupon Limit'), render: (value) => value || t('Unlimited') },
-            { key: 'use_limit_per_user', label: t('User Limit'), render: (value) => value || t('Unlimited') },
+            { key: 'use_limit_per_coupon', label: translate('Coupon Limit'), render: (value) => value || translate('Unlimited') },
+            { key: 'use_limit_per_user', label: translate('User Limit'), render: (value) => value || translate('Unlimited') },
             {
                 key: 'expiry_date',
-                label: t('Expiry Date'),
+                label: translate('Expiry Date'),
                 sortable: true,
                 render: (value) => window.appSettings.formatDateTime(value, false) || '-',
             },
-            { key: 'code', label: t('Code'), sortable: true },
+            { key: 'code', label: translate('Code'), sortable: true },
             {
                 key: 'status',
-                label: t('Status'),
+                label: translate('Status'),
                 type: 'custom',
                 render: (value, row) => {
                     const StatusSwitch = () => {
@@ -109,20 +109,20 @@ export const couponsConfig: CrudConfig = {
         ],
         actions: [
             {
-                label: t('View Details'),
+                label: translate('View Details'),
                 icon: 'Eye',
                 action: 'view-details',
                 href: (row: any) => route('coupons.show', row.id),
                 className: 'text-blue-500',
             },
             {
-                label: t('Edit'),
+                label: translate('Edit'),
                 icon: 'Edit',
                 action: 'edit',
                 className: 'text-amber-500',
             },
             {
-                label: t('Delete'),
+                label: translate('Delete'),
                 icon: 'Trash2',
                 action: 'delete',
                 className: 'text-red-500',
@@ -131,28 +131,28 @@ export const couponsConfig: CrudConfig = {
     },
     search: {
         enabled: true,
-        placeholder: t('Search coupons...'),
+        placeholder: translate('Search coupons...'),
         fields: ['name', 'code'],
     },
     filters: [
         {
             key: 'type',
-            label: t('Type'),
+            label: translate('Type'),
             type: 'select',
             options: [
-                { value: 'all', label: t('All Types') },
-                { value: 'percentage', label: t('Percentage') },
-                { value: 'flat', label: t('Flat Amount') },
+                { value: 'all', label: translate('All Types') },
+                { value: 'percentage', label: translate('Percentage') },
+                { value: 'flat', label: translate('Flat Amount') },
             ],
         },
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             type: 'select',
             options: [
-                { value: 'all', label: t('All Status') },
-                { value: '1', label: t('Active') },
-                { value: '0', label: t('Inactive') },
+                { value: 'all', label: translate('All Status') },
+                { value: '1', label: translate('Active') },
+                { value: '0', label: translate('Inactive') },
             ],
         },
     ],
@@ -160,49 +160,49 @@ export const couponsConfig: CrudConfig = {
         fields: [
             {
                 name: 'name',
-                label: t('Coupon Name'),
+                label: translate('Coupon Name'),
                 type: 'text',
                 required: true,
                 colSpan: 12,
-                placeholder: t('Enter coupon name'),
+                placeholder: translate('Enter coupon name'),
             },
             {
                 name: 'type',
-                label: t('Discount Type'),
+                label: translate('Discount Type'),
                 type: 'select',
                 required: true,
                 colSpan: 6,
                 options: [
-                    { value: 'percentage', label: t('Percentage (%)') },
-                    { value: 'flat', label: t('Fixed Amount ($)') },
+                    { value: 'percentage', label: translate('Percentage (%)') },
+                    { value: 'flat', label: translate('Fixed Amount ($)') },
                 ],
             },
             {
                 name: 'discount_amount',
-                label: t('Discount Value'),
+                label: translate('Discount Value'),
                 type: 'number',
                 required: true,
                 colSpan: 6,
                 min: 0,
                 max: 99,
                 step: 0.01,
-                placeholder: t('Enter value'),
+                placeholder: translate('Enter value'),
             },
             {
                 name: 'code_type',
-                label: t('Code Generation'),
+                label: translate('Code Generation'),
                 type: 'radio',
                 required: true,
                 colSpan: 12,
                 options: [
-                    { value: 'manual', label: t('Manual Entry') },
-                    { value: 'auto', label: t('Auto Generate') },
+                    { value: 'manual', label: translate('Manual Entry') },
+                    { value: 'auto', label: translate('Auto Generate') },
                 ],
                 defaultValue: 'manual',
             },
             {
                 name: 'code',
-                label: t('Coupon Code'),
+                label: translate('Coupon Code'),
                 type: 'custom',
                 required: true,
                 colSpan: 12,
@@ -220,7 +220,7 @@ export const couponsConfig: CrudConfig = {
                     const hasError = errors?.code;
                     const inputClass = `px-3 py-2 border rounded-md${hasError ? ' border-red-500' : ''}`;
 
-                    return React.createElement('div', { className: 'space-y-2' }, [
+                    return React.createElementranslate('div', { className: 'space-y-2' }, [
                         React.createElement(
                             'div',
                             {
@@ -229,12 +229,12 @@ export const couponsConfig: CrudConfig = {
                             },
                             isAuto
                                 ? [
-                                      React.createElement('input', {
+                                      React.createElementranslate('input', {
                                           key: 'code-input',
                                           type: 'text',
                                           value: formData.code || '',
                                           onChange: (e: any) => onChange('code', e.target.value.toUpperCase()),
-                                          placeholder: t('Click generate to create code'),
+                                          placeholder: translate('Click generate to create code'),
                                           className: `flex-1 ${inputClass}`,
                                       }),
                                       React.createElement(
@@ -245,16 +245,16 @@ export const couponsConfig: CrudConfig = {
                                               onClick: generateCode,
                                               className: 'px-4 py-2 bg-primary text-white rounded-md hover:bg-primary',
                                           },
-                                          t('Generate'),
+                                          translate('Generate'),
                                       ),
                                   ]
                                 : [
-                                      React.createElement('input', {
+                                      React.createElementranslate('input', {
                                           key: 'code-input-manual',
                                           type: 'text',
                                           value: formData.code || '',
                                           onChange: (e: any) => onChange('code', e.target.value.toUpperCase()),
-                                          placeholder: t('Enter coupon code'),
+                                          placeholder: translate('Enter coupon code'),
                                           className: `w-full ${inputClass}`,
                                       }),
                                   ],
@@ -264,51 +264,51 @@ export const couponsConfig: CrudConfig = {
             },
             {
                 name: 'minimum_spend',
-                label: t('Minimum Spend ($)'),
+                label: translate('Minimum Spend ($)'),
                 type: 'number',
                 colSpan: 6,
                 min: 0,
                 step: 0.01,
-                placeholder: t('Optional'),
+                placeholder: translate('Optional'),
             },
             {
                 name: 'maximum_spend',
-                label: t('Maximum Spend ($)'),
+                label: translate('Maximum Spend ($)'),
                 type: 'number',
                 colSpan: 6,
                 min: 0,
                 step: 0.01,
-                placeholder: t('Optional'),
+                placeholder: translate('Optional'),
             },
             {
                 name: 'use_limit_per_coupon',
-                label: t('Total Usage Limit'),
+                label: translate('Total Usage Limit'),
                 type: 'number',
                 colSpan: 6,
                 min: 1,
-                placeholder: t('Leave empty for unlimited'),
+                placeholder: translate('Leave empty for unlimited'),
             },
             {
                 name: 'use_limit_per_user',
-                label: t('Usage Limit Per User'),
+                label: translate('Usage Limit Per User'),
                 type: 'number',
                 colSpan: 6,
                 min: 1,
-                placeholder: t('Leave empty for unlimited'),
+                placeholder: translate('Leave empty for unlimited'),
             },
             {
                 name: 'expiry_date',
-                label: t('Expiry Date'),
+                label: translate('Expiry Date'),
                 type: 'date',
                 colSpan: 6,
             },
             {
                 name: 'status',
-                label: t('Status'),
+                label: translate('Status'),
                 type: 'switch',
                 // colSpan: 6,
                 defaultValue: true,
-                // placeholder: t('Enable or disable this coupon')
+                // placeholder: translate('Enable or disable this coupon')
             },
         ],
     },

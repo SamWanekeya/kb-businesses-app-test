@@ -29,7 +29,7 @@ export function PayTRPaymentForm({
     onSuccess,
     onCancel,
 }: PayTRPaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isProcessing, setIsProcessing] = useState(false);
     const [showIframe, setShowIframe] = useState(false);
     const [iframeUrl, setIframeUrl] = useState('');
@@ -51,7 +51,7 @@ export function PayTRPaymentForm({
                 onSuccess();
             } else if (event.data === 'fail') {
                 setShowIframe(false);
-                toast.error(t('Payment failed'));
+                toast.error(translate('Payment failed'));
             }
         };
 
@@ -63,7 +63,7 @@ export function PayTRPaymentForm({
         e.preventDefault();
 
         if (!customerDetails.name || !customerDetails.email || !customerDetails.phone) {
-            toast.error(t('Please fill in required customer details'));
+            toast.error(translate('Please fill in required customer details'));
             return;
         }
 
@@ -87,7 +87,7 @@ export function PayTRPaymentForm({
                 throw new Error(response.data.error || 'Token creation failed');
             }
         } catch (error: any) {
-            toast.error(error.response?.data?.error || t('Payment failed. Please try again.'));
+            toast.error(error.response?.data?.error || translate('Payment failed. Please try again.'));
         } finally {
             setIsProcessing(false);
         }
@@ -100,10 +100,10 @@ export function PayTRPaymentForm({
                     <CardTitle className="flex items-center justify-between">
                         <span className="flex items-center gap-2">
                             <CreditCard className="h-5 w-5" />
-                            {t('PayTR Payment')}
+                            {translate('PayTR Payment')}
                         </span>
                         <Button variant="outline" size="sm" onClick={() => setShowIframe(false)}>
-                            {t('Back')}
+                            {translate('Back')}
                         </Button>
                     </CardTitle>
                 </CardHeader>
@@ -111,7 +111,7 @@ export function PayTRPaymentForm({
                     <div className="h-[600px] w-full overflow-hidden rounded-lg border">
                         <iframe ref={iframeRef} src={iframeUrl} width="100%" height="100%" frameBorder="0" scrolling="auto" title="PayTR Payment" />
                     </div>
-                    <p className="text-muted-foreground mt-2 text-center text-xs">{t('Complete your payment in the secure PayTR iframe above')}</p>
+                    <p className="text-muted-foreground mt-2 text-center text-xs">{translate('Complete your payment in the secure PayTR iframe above')}</p>
                 </CardContent>
             </Card>
         );
@@ -122,36 +122,36 @@ export function PayTRPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {t('PayTR Payment')}
+                    {translate('PayTR Payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-2">
-                        <Label htmlFor="name">{t('Full Name')} *</Label>
+                        <Label htmlFor="name">{translate('Full Name')} *</Label>
                         <Input
                             id="name"
                             value={customerDetails.name}
                             onChange={(e) => setCustomerDetails((prev) => ({ ...prev, name: e.target.value }))}
-                            placeholder={t('Enter full name')}
+                            placeholder={translate('Enter full name')}
                             required
                         />
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="email">{t('Email Address')} *</Label>
+                        <Label htmlFor="email">{translate('Email Address')} *</Label>
                         <Input
                             id="email"
                             type="email"
                             value={customerDetails.email}
                             onChange={(e) => setCustomerDetails((prev) => ({ ...prev, email: e.target.value }))}
-                            placeholder={t('Enter email address')}
+                            placeholder={translate('Enter email address')}
                             required
                         />
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="phone">{t('Phone Number')} *</Label>
+                        <Label htmlFor="phone">{translate('Phone Number')} *</Label>
                         <Input
                             id="phone"
                             value={customerDetails.phone}
@@ -159,36 +159,36 @@ export function PayTRPaymentForm({
                             placeholder="+905xxxxxxxxx"
                             required
                         />
-                        <p className="text-muted-foreground text-xs">{t('Turkish phone number format: +905xxxxxxxxx')}</p>
+                        <p className="text-muted-foreground text-xs">{translate('Turkish phone number format: +905xxxxxxxxx')}</p>
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="address">{t('Address')}</Label>
+                        <Label htmlFor="address">{translate('Address')}</Label>
                         <Input
                             id="address"
                             value={customerDetails.address}
                             onChange={(e) => setCustomerDetails((prev) => ({ ...prev, address: e.target.value }))}
-                            placeholder={t('Enter address (optional)')}
+                            placeholder={translate('Enter address (optional)')}
                         />
                     </div>
 
                     <div className="bg-muted rounded-lg p-3">
-                        <p className="text-sm font-medium">{t('Secure Payment via PayTR')}</p>
-                        <p className="text-muted-foreground mt-1 text-xs">{t('Credit Card, Debit Card - Real-time payment processing')}</p>
+                        <p className="text-sm font-medium">{translate('Secure Payment via PayTR')}</p>
+                        <p className="text-muted-foreground mt-1 text-xs">{translate('Credit Card, Debit Card - Real-time payment processing')}</p>
                     </div>
 
                     <div className="flex gap-3 pt-4">
                         <Button type="button" variant="outline" onClick={onCancel} className="flex-1">
-                            {t('Cancel')}
+                            {translate('Cancel')}
                         </Button>
                         <Button type="submit" disabled={isProcessing} className="flex-1">
                             {isProcessing ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    {t('Processing...')}
+                                    {translate('Processing...')}
                                 </>
                             ) : (
-                                t('Pay {{amount}}', { amount: `${planPrice} ${currency}` })
+                                translate('Pay {{amount}}', { amount: `${planPrice} ${currency}` })
                             )}
                         </Button>
                     </div>

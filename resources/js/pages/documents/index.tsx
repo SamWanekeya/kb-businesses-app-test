@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Documents() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { themeColor, customColor } = useBrand();
     const color = themeColor === 'custom' ? customColor : THEME_COLORS[themeColor as keyof typeof THEME_COLORS];
     const { auth, rootFolders = [], parentFolders = [], filters: pageFilters = {} } = usePage().props;
@@ -41,7 +41,7 @@ export default function Documents() {
         if (formData.parent_folder_id === 'null') formData.parent_folder_id = null;
         delete formData.status;
         if (folderFormMode === 'create') {
-            toast.loading(t('Creating folder...'));
+            toast.loading(translate('Creating folder...'));
             router.post(route('document-folders.store'), formData, {
                 preserveState: false,
                 onSuccess: (page) => {
@@ -53,11 +53,11 @@ export default function Documents() {
                 },
                 onError: (errors) => {
                     toast.dismiss();
-                    toast.error(t('Failed to create: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to create: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 },
             });
         } else {
-            toast.loading(t('Updating folder...'));
+            toast.loading(translate('Updating folder...'));
             router.put(route('document-folders.update', currentFolder.id), formData, {
                 preserveState: false,
                 onSuccess: (page) => {
@@ -69,14 +69,14 @@ export default function Documents() {
                 },
                 onError: (errors) => {
                     toast.dismiss();
-                    toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 },
             });
         }
     };
 
     const handleFolderDeleteConfirm = () => {
-        toast.loading(t('Deleting folder...'));
+        toast.loading(translate('Deleting folder...'));
         router.delete(route('document-folders.destroy', currentFolder.id), {
             onSuccess: (page) => {
                 setIsFolderDeleteModalOpen(false);
@@ -87,7 +87,7 @@ export default function Documents() {
             },
             onError: (errors) => {
                 toast.dismiss();
-                toast.error(t('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
     };
@@ -95,12 +95,12 @@ export default function Documents() {
     const pageActions: any[] = [];
     if (useHasPermission('create-document-folders')) {
         pageActions.push({
-            label: t('Create Folder'),
+            label: translate('Create Folder'),
             icon: <FolderPlus className="mr-0 h-4 w-4 min-[790px]:mr-2" />,
             variant: 'default',
             className: 'h-8 w-8 min-[790px]:h-9 min-[790px]:w-auto px-0 min-[790px]:px-4',
             labelClassName: 'hidden min-[790px]:inline',
-            tooltip: t('Create Folder'),
+            tooltip: translate('Create Folder'),
             tooltipClassName: 'min-[790px]:hidden',
             onClick: () => {
                 setCurrentFolder(null);
@@ -110,29 +110,29 @@ export default function Documents() {
         });
     }
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Document Management') }, { title: t('Documents') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Document Management') }, { title: translate('Documents') }];
 
     const folderFormFields = [
-        { name: 'name', label: t('Folder Name'), type: 'text', required: true, placeholder: t('e.g. Contracts, HR Documents') },
+        { name: 'name', label: translate('Folder Name'), type: 'text', required: true, placeholder: translate('e.g. Contracts, HR Documents') },
         {
             name: 'parent_folder_id',
-            label: t('Parent Folder'),
+            label: translate('Parent Folder'),
             type: 'select',
             searchable: true,
             options: [
-                { value: 'null', label: t('Root Folder') },
+                { value: 'null', label: translate('Root Folder') },
                 ...parentFolders.map((f: any) => ({ value: f.id, label: f.display_name || f.name })),
             ],
         },
-        { name: 'description', label: t('Description'), type: 'textarea', placeholder: t('Enter folder description...') },
+        { name: 'description', label: translate('Description'), type: 'textarea', placeholder: translate('Enter folder description...') },
     ];
 
     const folders = rootFolders?.data || rootFolders || [];
 
     return (
         <PageTemplate
-            title={t('Documents')}
-            description={t('Manage your documents and organizing them into folders.')}
+            title={translate('Documents')}
+            description={translate('Manage your documents and organizing them into folders.')}
             url="/documents"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -170,7 +170,7 @@ export default function Documents() {
                                         onClick={() =>
                                             useHasPermission('view-documents')
                                                 ? router.get(route('documents.folder', folder.id))
-                                                : toast.error(t('Permission denied.'))
+                                                : toast.error(translate('Permission denied.'))
                                         }
                                     >
                                         <Folder className="mb-3 h-14 w-14" style={{ color }} strokeWidth={1.8} />
@@ -203,7 +203,7 @@ export default function Documents() {
                                                             }}
                                                         >
                                                             <Edit className="mr-2 h-4 w-4" />
-                                                            {t('Edit')}
+                                                            {translate('Edit')}
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('edit-document-folders') &&
@@ -217,7 +217,7 @@ export default function Documents() {
                                                             }}
                                                         >
                                                             <Trash2 className="mr-2 h-4 w-4" />
-                                                            {t('Delete')}
+                                                            {translate('Delete')}
                                                         </DropdownMenuItem>
                                                     )}
                                                 </DropdownMenuContent>
@@ -227,7 +227,7 @@ export default function Documents() {
                                                 variant="ghost"
                                                 size="sm"
                                                 className="border-none bg-transparent p-0 text-gray-400 opacity-0 shadow-none transition-opacity group-hover:opacity-100 hover:bg-transparent hover:text-gray-700 dark:hover:text-gray-200"
-                                                onClick={() => toast.error(t('Permission denied.'))}
+                                                onClick={() => toast.error(translate('Permission denied.'))}
                                             >
                                                 <MoreHorizontal className="h-4 w-4" />
                                             </Button>
@@ -242,10 +242,10 @@ export default function Documents() {
                                 <Folder className="h-8 w-8 text-gray-400" />
                             </div>
                             <h3 className="mb-1 text-base font-medium text-gray-900 dark:text-white">
-                                {searchTerm ? t('No folders match your search') : t('No folders yet')}
+                                {searchTerm ? translate('No folders match your search') : translate('No folders yet')}
                             </h3>
                             <p className="text-sm text-gray-500 dark:text-gray-400">
-                                {searchTerm ? t('Try a different search term.') : t('Create a folder to start organizing your documents.')}
+                                {searchTerm ? translate('Try a different search term.') : translate('Create a folder to start organizing your documents.')}
                             </p>
                         </div>
                     )}
@@ -257,7 +257,7 @@ export default function Documents() {
                     to={rootFolders?.to || 0}
                     total={rootFolders?.total || 0}
                     links={rootFolders?.links || []}
-                    entityName={t('documents')}
+                    entityName={translate('documents')}
                     onPageChange={(url) => router.get(url)}
                     perPageOptions={[24, 48, 96]}
                     currentPerPage={pageFilters.per_page?.toString() || '24'}
@@ -289,7 +289,7 @@ export default function Documents() {
                           }
                         : { parent_folder_id: 'null' }
                 }
-                title={folderFormMode === 'create' ? t('Create Folder') : t('Edit Folder')}
+                title={folderFormMode === 'create' ? translate('Create Folder') : translate('Edit Folder')}
                 mode={folderFormMode}
             />
 
@@ -299,7 +299,7 @@ export default function Documents() {
                 onClose={() => setIsFolderDeleteModalOpen(false)}
                 onConfirm={handleFolderDeleteConfirm}
                 itemName={currentFolder?.name || ''}
-                entityName={t('folder')}
+                entityName={translate('folder')}
             />
         </PageTemplate>
     );

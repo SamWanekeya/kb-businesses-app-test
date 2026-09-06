@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function RolesPage() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, roles, filters: pageFilters = {}, globalSettings } = usePage().props;
     const permissions = auth?.permissions || [];
 
@@ -86,7 +86,7 @@ export default function RolesPage() {
     };
 
     const handleDeleteConfirm = () => {
-        if (!globalSettings?.is_demo) toast.loading(t('Deleting role...'));
+        if (!globalSettings?.is_demo) toast.loading(translate('Deleting role...'));
 
         router.delete(route('roles.destroy', currentItem.id), {
             onSuccess: (page) => {
@@ -98,28 +98,28 @@ export default function RolesPage() {
             onError: (errors) => {
                 if (!globalSettings?.is_demo) toast.dismiss();
                 toast.error(
-                    typeof errors === 'string' ? t(errors) : t('Failed to delete role: {{errors}}', { errors: Object.values(errors).join(', ') }),
+                    typeof errors === 'string' ? t(errors) : translate('Failed to delete role: {{errors}}', { errors: Object.values(errors).join(', ') }),
                 );
             },
         });
     };
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Staff'), href: route('roles.index') },
-        { title: t('Roles') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Staff'), href: route('roles.index') },
+        { title: translate('Roles') },
     ];
 
     const pageActions = [];
     if (useHasPermission('create-roles')) {
         pageActions.push({
-            label: t('Add Role'),
+            label: translate('Add Role'),
             icon: <Plus className="mr-0 h-4 w-4 min-[420px]:mr-2" />,
             variant: 'default' as const,
             onClick: () => router.get(route('roles.create')),
             className: 'h-8 w-8 min-[420px]:h-9 min-[420px]:w-auto px-0 min-[420px]:px-4',
             labelClassName: 'hidden min-[420px]:inline',
-            tooltip: t('Add Role'),
+            tooltip: translate('Add Role'),
             tooltipClassName: 'min-[420px]:hidden',
         });
     }
@@ -127,18 +127,18 @@ export default function RolesPage() {
     const columns = [
         {
             key: 'label',
-            label: t('Name'),
+            label: translate('Name'),
             sortable: true,
             render: (value: string) => value || '-',
         },
         {
             key: 'permissions',
-            label: t('Permissions'),
+            label: translate('Permissions'),
             render: (value: any[]) => <PermissionBadges permissions={value || []} />,
         },
         {
             key: 'created_at',
-            label: t('Created At'),
+            label: translate('Created At'),
             sortable: true,
             type: 'date',
             // render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
@@ -147,21 +147,21 @@ export default function RolesPage() {
 
     const actions = [
         {
-            label: t('View'),
+            label: translate('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
             requiredPermission: 'view-roles',
         },
         {
-            label: t('Edit'),
+            label: translate('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
             requiredPermission: 'edit-roles',
         },
         {
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
@@ -172,8 +172,8 @@ export default function RolesPage() {
 
     return (
         <PageTemplate
-            title={t('Roles')}
-            description={t('Manage your roles and their associated permissions.')}
+            title={translate('Roles')}
+            description={translate('Manage your roles and their associated permissions.')}
             url="/roles"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -225,7 +225,7 @@ export default function RolesPage() {
                     to={roles?.to || 0}
                     total={roles?.total || 0}
                     links={roles?.links}
-                    entityName={t('roles')}
+                    entityName={translate('roles')}
                     onPageChange={(url) => router.get(url)}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {

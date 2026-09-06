@@ -27,7 +27,7 @@ interface Props {
 }
 
 const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const stripe = useStripe();
     const elements = useElements();
     const [cardholderName, setCardholderName] = useState('');
@@ -37,7 +37,7 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
         event.preventDefault();
 
         if (!stripe || !elements || !cardholderName.trim()) {
-            toast.error(t('Please fill in all required fields'));
+            toast.error(translate('Please fill in all required fields'));
             return;
         }
 
@@ -55,18 +55,18 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
         });
 
         if (error) {
-            toast.error(error.message || t('Payment failed'));
+            toast.error(error.message || translate('Payment failed'));
             setProcessing(false);
             return;
         }
 
-        const form = document.createElement('form');
+        const form = document.createElementranslate('form');
         form.method = 'POST';
         form.action = route('invoice.stripe.payment');
 
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
         if (csrfToken) {
-            const csrfInput = document.createElement('input');
+            const csrfInput = document.createElementranslate('input');
             csrfInput.type = 'hidden';
             csrfInput.name = '_token';
             csrfInput.value = csrfToken;
@@ -82,7 +82,7 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
         };
 
         Object.entries(fields).forEach(([key, value]) => {
-            const input = document.createElement('input');
+            const input = document.createElementranslate('input');
             input.type = 'hidden';
             input.name = key;
             input.value = value.toString();
@@ -96,19 +96,19 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-                <Label htmlFor="cardholder-name">{t('Name on card')}</Label>
+                <Label htmlFor="cardholder-name">{translate('Name on card')}</Label>
                 <Input
                     id="cardholder-name"
                     type="text"
                     value={cardholderName}
                     onChange={(e) => setCardholderName(e.target.value)}
-                    placeholder={t('Enter cardholder name')}
+                    placeholder={translate('Enter cardholder name')}
                     required
                 />
             </div>
 
             <div className="space-y-2">
-                <Label>{t('Card details')}</Label>
+                <Label>{translate('Card details')}</Label>
                 <div className="rounded-md border p-3">
                     <CardElement />
                 </div>
@@ -122,16 +122,16 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
                     disabled={processing}
                     className="flex-1"
                 >
-                    {t('Cancel')}
+                    {translate('Cancel')}
                 </Button>
                 <Button type="submit" disabled={!stripe || processing} className="flex-1">
                     {processing ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            {t('Processing...')}
+                            {translate('Processing...')}
                         </>
                     ) : (
-                        t('Pay {{amount}}', {
+                        translate('Pay {{amount}}', {
                             amount: window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`,
                         })
                     )}
@@ -142,7 +142,7 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
 };
 
 export default function InvoicePayment({ invoice, paymentMethod, amount, paymentType, paymentSettings, currency }: Props) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [stripePromise, setStripePromise] = useState<any>(null);
 
     useEffect(() => {
@@ -157,7 +157,7 @@ export default function InvoicePayment({ invoice, paymentMethod, amount, payment
 
     return (
         <>
-            <Head title={t('Pay Invoice {{invoiceNumber}}', { invoiceNumber: invoice.invoice_number })} />
+            <Head title={translate('Pay Invoice {{invoiceNumber}}', { invoiceNumber: invoice.invoice_number })} />
 
             <div className="min-h-screen bg-gray-50 py-8">
                 <div className="mx-auto max-w-2xl px-4">
@@ -168,7 +168,7 @@ export default function InvoicePayment({ invoice, paymentMethod, amount, payment
                             className="flex items-center gap-2"
                         >
                             <ArrowLeft className="h-4 w-4" />
-                            {t('Back')}
+                            {translate('Back')}
                         </Button>
                     </div>
 
@@ -180,7 +180,7 @@ export default function InvoicePayment({ invoice, paymentMethod, amount, payment
                                 </div>
                                 <div>
                                     <h1 className="text-2xl font-bold">
-                                        {t('Payment for Invoice #{{invoiceNumber}}', { invoiceNumber: invoice.invoice_number })}
+                                        {translate('Payment for Invoice #{{invoiceNumber}}', { invoiceNumber: invoice.invoice_number })}
                                     </h1>
                                     <p className="text-gray-600">{invoice.name}</p>
                                 </div>
@@ -188,15 +188,15 @@ export default function InvoicePayment({ invoice, paymentMethod, amount, payment
 
                             <div className="grid grid-cols-1 gap-4 rounded-lg bg-gray-50 p-4 md:grid-cols-3">
                                 <div>
-                                    <p className="text-sm text-gray-600">{t('Payment Type')}</p>
-                                    <p className="font-semibold capitalize">{t('{{paymentType}} Payment', { paymentType })}</p>
+                                    <p className="text-sm text-gray-600">{translate('Payment Type')}</p>
+                                    <p className="font-semibold capitalize">{translate('{{paymentType}} Payment', { paymentType })}</p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-gray-600">{t('Amount')}</p>
+                                    <p className="text-sm text-gray-600">{translate('Amount')}</p>
                                     <p className="font-semibold">{formatCurrency(amount)}</p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-gray-600">{t('Total Invoice')}</p>
+                                    <p className="text-sm text-gray-600">{translate('Total Invoice')}</p>
                                     <p className="font-semibold">{formatCurrency(invoice.total_amount)}</p>
                                 </div>
                             </div>
@@ -207,7 +207,7 @@ export default function InvoicePayment({ invoice, paymentMethod, amount, payment
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <CreditCard className="h-5 w-5" />
-                                {t('Payment Details')}
+                                {translate('Payment Details')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
@@ -216,7 +216,7 @@ export default function InvoicePayment({ invoice, paymentMethod, amount, payment
                                     <StripeCheckoutForm invoice={invoice} amount={amount} paymentType={paymentType} />
                                 </Elements>
                             ) : (
-                                <div className="p-4 text-center text-red-500">{t('Payment method not configured')}</div>
+                                <div className="p-4 text-center text-red-500">{translate('Payment method not configured')}</div>
                             )}
                         </CardContent>
                     </Card>

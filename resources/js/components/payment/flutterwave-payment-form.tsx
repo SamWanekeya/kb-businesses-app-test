@@ -24,7 +24,7 @@ export function FlutterwavePaymentForm({
     onSuccess,
     onCancel,
 }: FlutterwavePaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const initialized = useRef(false);
 
     const { processPayment } = usePaymentProcessor({
@@ -35,7 +35,7 @@ export function FlutterwavePaymentForm({
     useEffect(() => {
         if (!flutterwaveKey || initialized.current) return;
 
-        const script = document.createElement('script');
+        const script = document.createElementranslate('script');
         script.src = 'https://checkout.flutterwave.com/v3.js';
         script.async = true;
 
@@ -60,7 +60,7 @@ export function FlutterwavePaymentForm({
                 },
                 callback: function (data: any) {
                     if (data.status === 'successful') {
-                        processPayment('flutterwave', {
+                        processPaymentranslate('flutterwave', {
                             planId,
                             billingCycle,
                             couponCode,
@@ -68,7 +68,7 @@ export function FlutterwavePaymentForm({
                             tx_ref: data.tx_ref,
                         });
                     } else {
-                        toast.error(t('Payment was not completed'));
+                        toast.error(translate('Payment was not completed'));
                         onCancel();
                     }
                 },
@@ -88,12 +88,12 @@ export function FlutterwavePaymentForm({
     }, [flutterwaveKey, planId, billingCycle, couponCode, currency]);
 
     if (!flutterwaveKey) {
-        return <div className="p-4 text-center text-red-500">{t('Flutterwave not configured')}</div>;
+        return <div className="p-4 text-center text-red-500">{translate('Flutterwave not configured')}</div>;
     }
 
     return (
         <div className="p-4 text-center">
-            <p>{t('Redirecting to Flutterwave...')}</p>
+            <p>{translate('Redirecting to Flutterwave...')}</p>
         </div>
     );
 }

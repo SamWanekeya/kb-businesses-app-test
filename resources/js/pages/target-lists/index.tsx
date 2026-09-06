@@ -15,7 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function TargetLists() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, targetLists, filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
 
@@ -142,7 +142,7 @@ export default function TargetLists() {
                 },
                 onError: (errors) => {
                     setFormErrors(errors);
-                    toast.error(t('Failed to create target list.'));
+                    toast.error(translate('Failed to create target list.'));
                 },
             });
         } else {
@@ -155,7 +155,7 @@ export default function TargetLists() {
                 },
                 onError: (errors) => {
                     setFormErrors(errors);
-                    toast.error(t('Failed to update target list.'));
+                    toast.error(translate('Failed to update target list.'));
                 },
             });
         }
@@ -172,7 +172,7 @@ export default function TargetLists() {
             },
             onError: (errors) => {
                 setIsDeleteModalOpen(false);
-                toast.error(`${t('Failed to delete target list')}: ${Object.values(errors).join(', ')}`);
+                toast.error(`${translate('Failed to delete target list')}: ${Object.values(errors).join(', ')}`);
             },
         });
     };
@@ -189,7 +189,7 @@ export default function TargetLists() {
                             setFormData((prev) => ({ ...prev, status: item.status === 'active' ? 'inactive' : 'active' }));
                     } else if (page.props.flash.error) toast.error(page.props.flash.error);
                 },
-                onError: (errors) => toast.error(`${t('Failed to update target list')}: ${Object.values(errors).join(', ')}`),
+                onError: (errors) => toast.error(`${translate('Failed to update target list')}: ${Object.values(errors).join(', ')}`),
             },
         );
     };
@@ -205,12 +205,12 @@ export default function TargetLists() {
     const canDelete = useHasPermission('delete-target-lists');
     const canToggleStatus = useHasPermission('toggle-status-target-lists');
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Campaign Management') }, { title: t('Target Lists') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Campaign Management') }, { title: translate('Target Lists') }];
 
     return (
         <PageTemplate
-            title={t('Target Lists')}
-            description={t('Manage target lists for your campaigns.')}
+            title={translate('Target Lists')}
+            description={translate('Manage target lists for your campaigns.')}
             url="/target-lists"
             breadcrumbs={breadcrumbs}
             noPadding
@@ -221,25 +221,25 @@ export default function TargetLists() {
                     <div className="sticky top-4 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
                         <div className="border-b border-gray-200 p-6 dark:border-gray-700">
                             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                {formMode === 'create' ? t('Add New Target List') : t('Edit Target List')}
+                                {formMode === 'create' ? translate('Add New Target List') : translate('Edit Target List')}
                             </h2>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                 {formMode === 'create'
-                                    ? t('Fill in the details to create a new target list')
-                                    : t('Update the target list details below')}
+                                    ? translate('Fill in the details to create a new target list')
+                                    : translate('Update the target list details below')}
                             </p>
                         </div>
                         <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
                             <div className="space-y-2">
                                 <Label htmlFor="name" required>
-                                    {t('Name')}
+                                    {translate('Name')}
                                 </Label>
                                 <Input
                                     id="name"
                                     type="text"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    placeholder={t('e.g. Q1 Prospects, Enterprise Leads, Newsletter Subscribers')}
+                                    placeholder={translate('e.g. Q1 Prospects, Enterprise Leads, Newsletter Subscribers')}
                                     className={formErrors.name ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
                                     required
@@ -247,12 +247,12 @@ export default function TargetLists() {
                                 {formErrors.name && <p className="text-sm text-red-500">{formErrors.name}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="description">{t('Description')}</Label>
+                                <Label htmlFor="description">{translate('Description')}</Label>
                                 <Textarea
                                     id="description"
                                     value={formData.description}
                                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                    placeholder={t('Enter target list description...')}
+                                    placeholder={translate('Enter target list description...')}
                                     rows={3}
                                     className={formErrors.description ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
@@ -260,7 +260,7 @@ export default function TargetLists() {
                                 {formErrors.description && <p className="text-sm text-red-500">{formErrors.description}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="status">{t('Status')}</Label>
+                                <Label htmlFor="status">{translate('Status')}</Label>
                                 <Select
                                     value={formData.status}
                                     onValueChange={(value) => setFormData({ ...formData, status: value })}
@@ -270,20 +270,20 @@ export default function TargetLists() {
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="active">{t('Active')}</SelectItem>
-                                        <SelectItem value="inactive">{t('Inactive')}</SelectItem>
+                                        <SelectItem value="active">{translate('Active')}</SelectItem>
+                                        <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
                             <div className="flex items-center gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
                                 {(canCreate || canEdit) && (
                                     <Button type="submit" className="flex-1">
-                                        {formMode === 'create' ? t('Add Target List') : t('Update Target List')}
+                                        {formMode === 'create' ? translate('Add Target List') : translate('Update Target List')}
                                     </Button>
                                 )}
                                 {formMode === 'edit' && (
                                     <Button type="button" variant="outline" onClick={resetForm}>
-                                        {t('Cancel')}
+                                        {translate('Cancel')}
                                     </Button>
                                 )}
                             </div>
@@ -300,7 +300,7 @@ export default function TargetLists() {
                                     <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <Input
                                         type="text"
-                                        placeholder={t('Search target lists...')}
+                                        placeholder={translate('Search target lists...')}
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                         onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)}
@@ -308,12 +308,12 @@ export default function TargetLists() {
                                     />
                                 </div>
                                 <Button onClick={handleSearch} variant="default">
-                                    {t('Search')}
+                                    {translate('Search')}
                                 </Button>
                                 {hasActiveFilters() && (
                                     <Button onClick={handleResetFilters} variant="outline">
                                         <X className="mr-2 h-4 w-4" />
-                                        {t('Reset')}
+                                        {translate('Reset')}
                                     </Button>
                                 )}
                             </div>
@@ -326,12 +326,12 @@ export default function TargetLists() {
                                     }}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={t('All Statuses')} />
+                                        <SelectValue placeholder={translate('All Statuses')} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">{t('All Statuses')}</SelectItem>
-                                        <SelectItem value="active">{t('Active')}</SelectItem>
-                                        <SelectItem value="inactive">{t('Inactive')}</SelectItem>
+                                        <SelectItem value="all">{translate('All Statuses')}</SelectItem>
+                                        <SelectItem value="active">{translate('Active')}</SelectItem>
+                                        <SelectItem value="inactive">{translate('Inactive')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -342,8 +342,8 @@ export default function TargetLists() {
                         {(targetLists?.data || []).length > 0 ? (
                             <>
                                 {/* <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Target Lists')}</h3>
-                                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{t('Manage target lists for your campaigns.')}</p>
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Target Lists')}</h3>
+                                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{translate('Manage target lists for your campaigns.')}</p>
                                 </div> */}
                                 {/* Desktop Table */}
                                 <div className="hidden overflow-x-auto lg:block">
@@ -352,10 +352,10 @@ export default function TargetLists() {
                                             <tr className="border-t bg-[#F0F0F1] hover:bg-[#F0F0F1] dark:border-gray-900 dark:bg-gray-900">
                                                 <th
                                                     className="cursor-pointer px-4 py-3 text-left text-xs font-medium tracking-wider text-gray-500 select-none dark:text-gray-300"
-                                                    onClick={() => handleSort('name')}
+                                                    onClick={() => handleSortranslate('name')}
                                                 >
                                                     <div className="flex items-center gap-1">
-                                                        {t('Target List')}
+                                                        {translate('Target List')}
                                                         {pageFilters.sort_field === 'name' ? (
                                                             pageFilters.sort_direction === 'asc' ? (
                                                                 ' ↑'
@@ -368,10 +368,10 @@ export default function TargetLists() {
                                                     </div>
                                                 </th>
                                                 <th className="px-3 py-3 text-left text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">
-                                                    {t('Status')}
+                                                    {translate('Status')}
                                                 </th>
                                                 <th className="px-4 py-3 pr-[50px] text-right text-xs font-medium tracking-wider text-gray-500 dark:text-gray-300">
-                                                    {t('Actions')}
+                                                    {translate('Actions')}
                                                 </th>
                                             </tr>
                                         </thead>
@@ -405,12 +405,12 @@ export default function TargetLists() {
                                                                                 {expandedDescriptions.has(item.id) ? (
                                                                                     <>
                                                                                         <ChevronUp className="mr-1 h-3 w-3" />
-                                                                                        {t('Show less')}
+                                                                                        {translate('Show less')}
                                                                                     </>
                                                                                 ) : (
                                                                                     <>
                                                                                         <ChevronDown className="mr-1 h-3 w-3" />
-                                                                                        {t('Show more')}
+                                                                                        {translate('Show more')}
                                                                                     </>
                                                                                 )}
                                                                             </button>
@@ -424,7 +424,7 @@ export default function TargetLists() {
                                                         <span
                                                             className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${item.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
                                                         >
-                                                            {item.status === 'active' ? t('Active') : t('Inactive')}
+                                                            {item.status === 'active' ? translate('Active') : translate('Inactive')}
                                                         </span>
                                                     </td>
                                                     <td className="px-4 py-4 text-right whitespace-nowrap">
@@ -442,7 +442,7 @@ export default function TargetLists() {
                                                                                 <Edit className="h-4 w-4 text-gray-500" />
                                                                             </Button>
                                                                         </TooltipTrigger>
-                                                                        <TooltipContent>{t('Edit')}</TooltipContent>
+                                                                        <TooltipContent>{translate('Edit')}</TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>
                                                             )}
@@ -460,7 +460,7 @@ export default function TargetLists() {
                                                                             </Button>
                                                                         </TooltipTrigger>
                                                                         <TooltipContent>
-                                                                            {item.status === 'active' ? t('Deactivate') : t('Activate')}
+                                                                            {item.status === 'active' ? translate('Deactivate') : translate('Activate')}
                                                                         </TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>
@@ -478,7 +478,7 @@ export default function TargetLists() {
                                                                                 <Trash2 className="h-4 w-4 text-gray-500" />
                                                                             </Button>
                                                                         </TooltipTrigger>
-                                                                        <TooltipContent>{t('Delete')}</TooltipContent>
+                                                                        <TooltipContent>{translate('Delete')}</TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>
                                                             )}
@@ -522,12 +522,12 @@ export default function TargetLists() {
                                                                         {expandedDescriptions.has(item.id) ? (
                                                                             <>
                                                                                 <ChevronUp className="mr-1 h-3 w-3" />
-                                                                                {t('Show less')}
+                                                                                {translate('Show less')}
                                                                             </>
                                                                         ) : (
                                                                             <>
                                                                                 <ChevronDown className="mr-1 h-3 w-3" />
-                                                                                {t('Show more')}
+                                                                                {translate('Show more')}
                                                                             </>
                                                                         )}
                                                                     </button>
@@ -550,7 +550,7 @@ export default function TargetLists() {
                                                                         <Edit className="h-4 w-4 text-gray-500" />
                                                                     </Button>
                                                                 </TooltipTrigger>
-                                                                <TooltipContent>{t('Edit')}</TooltipContent>
+                                                                <TooltipContent>{translate('Edit')}</TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}
@@ -568,7 +568,7 @@ export default function TargetLists() {
                                                                     </Button>
                                                                 </TooltipTrigger>
                                                                 <TooltipContent>
-                                                                    {item.status === 'active' ? t('Deactivate') : t('Activate')}
+                                                                    {item.status === 'active' ? translate('Deactivate') : translate('Activate')}
                                                                 </TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
@@ -586,7 +586,7 @@ export default function TargetLists() {
                                                                         <Trash2 className="h-4 w-4 text-gray-500" />
                                                                     </Button>
                                                                 </TooltipTrigger>
-                                                                <TooltipContent>{t('Delete')}</TooltipContent>
+                                                                <TooltipContent>{translate('Delete')}</TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}
@@ -594,11 +594,11 @@ export default function TargetLists() {
                                             </div>
                                             <div className="mt-3 grid grid-cols-2 gap-4 border-t border-gray-100 pt-3 dark:border-gray-700">
                                                 <div>
-                                                    <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">{t('Status')}</p>
+                                                    <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">{translate('Status')}</p>
                                                     <span
                                                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${item.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
                                                     >
-                                                        {item.status === 'active' ? t('Active') : t('Inactive')}
+                                                        {item.status === 'active' ? translate('Active') : translate('Inactive')}
                                                     </span>
                                                 </div>
                                             </div>
@@ -612,7 +612,7 @@ export default function TargetLists() {
                                             to={targetLists?.to || 0}
                                             total={targetLists?.total || 0}
                                             links={targetLists?.links}
-                                            entityName={t('target lists')}
+                                            entityName={translate('target lists')}
                                             hidePerPage={true}
                                             onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
                                         />
@@ -624,15 +624,15 @@ export default function TargetLists() {
                                 <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700">
                                     <ListChecks className="h-8 w-8 text-gray-400" />
                                 </div>
-                                <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{t('No target lists found')}</h3>
+                                <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{translate('No target lists found')}</h3>
                                 <p className="mx-auto mb-6 max-w-sm text-gray-500 dark:text-gray-400">
                                     {hasActiveFilters()
-                                        ? t('No target lists match your search criteria. Try adjusting your filters.')
-                                        : t('Create target lists to organize your campaign recipients.')}
+                                        ? translate('No target lists match your search criteria. Try adjusting your filters.')
+                                        : translate('Create target lists to organize your campaign recipients.')}
                                 </p>
                                 {!hasActiveFilters() && canCreate && (
                                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                                        {t('Use the form on the left to add your first target list.')}
+                                        {translate('Use the form on the left to add your first target list.')}
                                     </p>
                                 )}
                             </div>
@@ -645,7 +645,7 @@ export default function TargetLists() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={t('target list')}
+                entityName={translate('target list')}
             />
         </PageTemplate>
     );

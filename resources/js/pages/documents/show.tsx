@@ -31,7 +31,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function DocumentShow() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, document, users = [], accounts = [], folders = [], types = [], opportunities = [] } = usePage().props;
     const permissions = auth?.permissions || [];
     const flash = (usePage().props as any).flash || {};
@@ -41,7 +41,7 @@ export default function DocumentShow() {
         if (flash.success_title) toast.success(t(flash.success_title));
         if (flash.success) toast.success(t(flash.success));
         if (!useHasPermission('view-documents')) {
-            toast.error(t('Permission denied.'));
+            toast.error(translate('Permission denied.'));
             router.get(document.folder?.id ? route('documents.folder', document.folder.id) : route('documents.index'));
         }
     }, []);
@@ -95,7 +95,7 @@ export default function DocumentShow() {
     };
 
     const handleFormSubmit = (formData: any) => {
-        toast.loading(t('Updating document...'));
+        toast.loading(translate('Updating document...'));
         router.put(route('documents.update', document.id), formData, {
             onSuccess: (page) => {
                 setIsFormModalOpen(false);
@@ -106,13 +106,13 @@ export default function DocumentShow() {
             },
             onError: (errors) => {
                 toast.dismiss();
-                toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting document...'));
+        toast.loading(translate('Deleting document...'));
         router.delete(route('documents.destroy', document.id), {
             onSuccess: (page) => {
                 toast.dismiss();
@@ -123,13 +123,13 @@ export default function DocumentShow() {
             },
             onError: (errors) => {
                 toast.dismiss();
-                toast.error(t('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
     };
 
     const handleDownload = () => {
-        const link = window.document.createElement('a');
+        const link = window.document.createElementranslate('a');
         link.href = route('documents.download', document.id);
         link.download = document.name;
         window.document.body.appendChild(link);
@@ -139,7 +139,7 @@ export default function DocumentShow() {
 
     const pageActions = [
         {
-            label: t('Back'),
+            label: translate('Back'),
             icon: <ArrowLeft className="mr-2 h-4 w-4" />,
             variant: 'outline',
             onClick: () => (document.folder?.id ? router.get(route('documents.folder', document.folder.id)) : router.get(route('documents.index'))),
@@ -147,56 +147,56 @@ export default function DocumentShow() {
     ];
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Document Management') },
-        { title: t('Documents'), href: route('documents.index') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Document Management') },
+        { title: translate('Documents'), href: route('documents.index') },
         ...(document.folder ? [{ title: document.folder.name, href: route('documents.folder', document.folder.id) }] : []),
         { title: document.name },
     ];
 
     const formFields = [
-        { name: 'name', label: t('Document Name'), type: 'text', required: true },
+        { name: 'name', label: translate('Document Name'), type: 'text', required: true },
         {
             name: 'account_id',
-            label: t('Account'),
+            label: translate('Account'),
             type: 'select',
-            options: [{ value: 'null', label: t('No Account') }, ...accounts.map((a: any) => ({ value: a.id, label: a.name }))],
+            options: [{ value: 'null', label: translate('No Account') }, ...accounts.map((a: any) => ({ value: a.id, label: a.name }))],
         },
         {
             name: 'folder_id',
-            label: t('Folder'),
+            label: translate('Folder'),
             type: 'select',
-            options: [{ value: 'null', label: t('No Folder') }, ...folders.map((f: any) => ({ value: f.id, label: f.name }))],
+            options: [{ value: 'null', label: translate('No Folder') }, ...folders.map((f: any) => ({ value: f.id, label: f.name }))],
         },
         {
             name: 'type_id',
-            label: t('Type'),
+            label: translate('Type'),
             type: 'select',
-            options: [{ value: 'null', label: t('No Type') }, ...types.map((type: any) => ({ value: type.id, label: type.type_name }))],
+            options: [{ value: 'null', label: translate('No Type') }, ...types.map((type: any) => ({ value: type.id, label: type.type_name }))],
         },
         {
             name: 'opportunity_id',
-            label: t('Opportunity'),
+            label: translate('Opportunity'),
             type: 'select',
-            options: [{ value: 'null', label: t('No Opportunity') }, ...opportunities.map((o: any) => ({ value: o.id, label: o.name }))],
+            options: [{ value: 'null', label: translate('No Opportunity') }, ...opportunities.map((o: any) => ({ value: o.id, label: o.name }))],
         },
-        { name: 'publish_date', label: t('Publish Date'), type: 'date' },
-        { name: 'expiration_date', label: t('Expiration Date'), type: 'date' },
-        { name: 'attachment', label: t('Attachment'), type: 'media-picker', returnType: 'id', placeholder: t('Select file...') },
+        { name: 'publish_date', label: translate('Publish Date'), type: 'date' },
+        { name: 'expiration_date', label: translate('Expiration Date'), type: 'date' },
+        { name: 'attachment', label: translate('Attachment'), type: 'media-picker', returnType: 'id', placeholder: translate('Select file...') },
         {
             name: 'assigned_to',
-            label: t('Assign To'),
+            label: translate('Assign To'),
             type: 'select',
-            options: [{ value: 'null', label: t('Unassigned') }, ...users.map((u: any) => ({ value: u.id, label: `${u.name} (${u.email})` }))],
+            options: [{ value: 'null', label: translate('Unassigned') }, ...users.map((u: any) => ({ value: u.id, label: `${u.name} (${u.email})` }))],
         },
-        { name: 'description', label: t('Description'), type: 'textarea' },
+        { name: 'description', label: translate('Description'), type: 'textarea' },
         {
             name: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             type: 'select',
             options: [
-                { value: 'active', label: t('Active') },
-                { value: 'inactive', label: t('Inactive') },
+                { value: 'active', label: translate('Active') },
+                { value: 'inactive', label: translate('Inactive') },
             ],
         },
     ];
@@ -209,7 +209,7 @@ export default function DocumentShow() {
     const Icon = cfg.icon;
 
     const handleToggleStatus = () => {
-        toast.loading(t('Updating status...'));
+        toast.loading(translate('Updating status...'));
         router.put(
             route('documents.toggle-status', document.id),
             {},
@@ -221,7 +221,7 @@ export default function DocumentShow() {
                 },
                 onError: () => {
                     toast.dismiss();
-                    toast.error(t('Failed to update status'));
+                    toast.error(translate('Failed to update status'));
                 },
             },
         );
@@ -230,7 +230,7 @@ export default function DocumentShow() {
     return (
         <PageTemplate
             title={document.name}
-            description={t('Document details and related information')}
+            description={translate('Document details and related information')}
             url={`/documents/${document.id}`}
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -284,7 +284,7 @@ export default function DocumentShow() {
                                 return (
                                     <div className="flex flex-col items-center gap-3 py-20 text-gray-400">
                                         <FileText className="h-20 w-20" strokeWidth={1} />
-                                        <p className="text-sm">{t('No file attached')}</p>
+                                        <p className="text-sm">{translate('No file attached')}</p>
                                     </div>
                                 );
                             }
@@ -319,7 +319,7 @@ export default function DocumentShow() {
                         <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3 dark:border-gray-700">
                             <div className="flex items-center gap-2 text-sm font-bold text-gray-800 dark:text-gray-100">
                                 <FileText className="h-4 w-4 text-gray-500" />
-                                {t('Document Details')}
+                                {translate('Document Details')}
                             </div>
                             <div className="flex items-center gap-1.5">
                                 {useHasPermission('view-documents') && document.attachment_url && (
@@ -332,7 +332,7 @@ export default function DocumentShow() {
                                                     </button>
                                                 </a>
                                             </TooltipTrigger>
-                                            <TooltipContent>{t('Open in new tab')}</TooltipContent>
+                                            <TooltipContent>{translate('Open in new tab')}</TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
                                 )}
@@ -347,7 +347,7 @@ export default function DocumentShow() {
                                                     <Download className="h-4 w-4 text-gray-500" />
                                                 </button>
                                             </TooltipTrigger>
-                                            <TooltipContent>{t('Download')}</TooltipContent>
+                                            <TooltipContent>{translate('Download')}</TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
                                 )}
@@ -366,7 +366,7 @@ export default function DocumentShow() {
                                                     )}
                                                 </button>
                                             </TooltipTrigger>
-                                            <TooltipContent>{isInactive ? t('Activate') : t('Toggle Status')}</TooltipContent>
+                                            <TooltipContent>{isInactive ? translate('Activate') : translate('Toggle Status')}</TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
                                 )}
@@ -381,7 +381,7 @@ export default function DocumentShow() {
                                                     <Edit className="h-4 w-4 text-gray-500" />
                                                 </button>
                                             </TooltipTrigger>
-                                            <TooltipContent>{t('Edit')}</TooltipContent>
+                                            <TooltipContent>{translate('Edit')}</TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
                                 )}
@@ -396,7 +396,7 @@ export default function DocumentShow() {
                                                     <Trash2 className="h-4 w-4 text-gray-500" />
                                                 </button>
                                             </TooltipTrigger>
-                                            <TooltipContent>{t('Delete')}</TooltipContent>
+                                            <TooltipContent>{translate('Delete')}</TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
                                 )}
@@ -404,23 +404,23 @@ export default function DocumentShow() {
                         </div>
                         {/* Rows */}
                         <div>
-                            <DetailRow label={t('Folder')} value={document.folder?.name} />
-                            <DetailRow label={t('Type')} value={document.type?.type_name} badge />
+                            <DetailRow label={translate('Folder')} value={document.folder?.name} />
+                            <DetailRow label={translate('Type')} value={document.type?.type_name} badge />
                             <DetailRow
-                                label={t('Status')}
-                                value={document.status === 'active' ? t('Active') : t('Inactive')}
+                                label={translate('Status')}
+                                value={document.status === 'active' ? translate('Active') : translate('Inactive')}
                                 badgeColor={document.status === 'active' ? 'green' : 'red'}
                                 badge
                             />
                             <DetailRow
-                                label={t('Document Status')}
-                                value={document.expiration_date && new Date(document.expiration_date) < new Date() ? t('Expired') : t('Valid')}
+                                label={translate('Document Status')}
+                                value={document.expiration_date && new Date(document.expiration_date) < new Date() ? translate('Expired') : translate('Valid')}
                                 badgeColor={document.expiration_date && new Date(document.expiration_date) < new Date() ? 'red' : 'green'}
                                 badge
                             />
                             {document.publish_date && (
                                 <DetailRow
-                                    label={t('Publish Date')}
+                                    label={translate('Publish Date')}
                                     value={
                                         <div className="flex items-center gap-2 whitespace-nowrap">
                                             {document.publish_date && <LucidIcons.Calendar className="h-4 w-4" />}
@@ -434,12 +434,12 @@ export default function DocumentShow() {
                             )}
                             {document.expiration_date && (
                                 // <DetailRow
-                                //     label={t('Expiration Date')}
+                                //     label={translate('Expiration Date')}
                                 //     value={window.appSettings?.formatDateTime(document.expiration_date, false) || new Date(document.expiration_date).toLocaleDateString()}
                                 //     expired={isExpired}
                                 // />
                                 <DetailRow
-                                    label={t('Expiration Date')}
+                                    label={translate('Expiration Date')}
                                     value={
                                         <div className="flex items-center gap-2 whitespace-nowrap">
                                             <LucidIcons.Calendar className={`h-4 w-4 ${isExpired ? 'text-red-500' : 'text-gray-500'}`} />
@@ -453,7 +453,7 @@ export default function DocumentShow() {
                                 />
                             )}
                             <DetailRow
-                                label={t('Created At')}
+                                label={translate('Created At')}
                                 value={
                                     <div className="flex items-center gap-2 whitespace-nowrap">
                                         {document.created_at && <LucidIcons.Calendar className="h-4 w-4" />}
@@ -467,7 +467,7 @@ export default function DocumentShow() {
                         </div>
                         {document.description && (
                             <div className="border-t border-gray-200 py-3 pr-3 pl-4 dark:border-gray-700">
-                                <p className="mb-1 text-sm font-bold text-gray-800 dark:text-gray-100">{t('Description')}</p>
+                                <p className="mb-1 text-sm font-bold text-gray-800 dark:text-gray-100">{translate('Description')}</p>
                                 <p className="text-sm leading-relaxed break-words whitespace-pre-wrap text-gray-500 dark:text-gray-400">
                                     {document.description}
                                 </p>
@@ -475,13 +475,13 @@ export default function DocumentShow() {
                         )}
                         {document.opportunity?.name && (
                             <div className="border-t border-gray-200 py-3 pr-3 pl-4 dark:border-gray-700">
-                                <p className="mb-1 text-sm font-bold text-gray-800 dark:text-gray-100">{t('Opportunity')}</p>
+                                <p className="mb-1 text-sm font-bold text-gray-800 dark:text-gray-100">{translate('Opportunity')}</p>
                                 <p className="text-sm leading-relaxed break-words text-gray-500 dark:text-gray-400">{document.opportunity.name}</p>
                             </div>
                         )}
                         {document.account ? (
                             <div className="border-t border-gray-200 py-3 pr-3 pl-4 dark:border-gray-700">
-                                <p className="text-muted-foreground mb-1.5 text-xs font-medium">{t('Account')}</p>
+                                <p className="text-muted-foreground mb-1.5 text-xs font-medium">{translate('Account')}</p>
                                 <div className="flex items-center gap-2">
                                     <Avatar className="h-7 w-7 flex-shrink-0">
                                         <AvatarImage src={document.account.avatar} alt={document.account.name} />
@@ -498,7 +498,7 @@ export default function DocumentShow() {
                         ) : null}
                         {document.assigned_user ? (
                             <div className="border-t border-gray-200 py-3 pr-3 pl-4 dark:border-gray-700">
-                                <p className="text-muted-foreground mb-1.5 text-xs font-medium">{t('Assigned To')}</p>
+                                <p className="text-muted-foreground mb-1.5 text-xs font-medium">{translate('Assigned To')}</p>
                                 <div className="flex items-center gap-2">
                                     <Avatar className="h-7 w-7 flex-shrink-0">
                                         <AvatarImage src={document.assigned_user.avatar} alt={document.assigned_user.name} />
@@ -537,7 +537,7 @@ export default function DocumentShow() {
                     description: document.description || '',
                     status: document.status || 'active',
                 }}
-                title={t('Edit Document')}
+                title={translate('Edit Document')}
                 mode="edit"
             />
 
@@ -546,7 +546,7 @@ export default function DocumentShow() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={document.name || ''}
-                entityName={t('document')}
+                entityName={translate('document')}
             />
         </PageTemplate>
     );
@@ -565,7 +565,7 @@ function DetailRow({
     badgeColor?: string;
     expired?: boolean;
 }) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     if (!value) return null;
 
     const badgeColors: Record<string, string> = {

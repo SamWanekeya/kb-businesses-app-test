@@ -13,32 +13,32 @@ import ReferralSettings from '@pages/referral/components/referral-settings';
 import ReferredUsersSection from '@pages/referral/components/referred-users-section';
 
 export default function Referral() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { props } = usePage();
     const { userType, settings, stats, payoutRequests, referralLink, usersWithPlans, currencySymbol, globalSettings } = props as any;
     const [activeSection, setActiveSection] = useState('dashboard');
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Referral Program') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Referral Program') }];
     const sidebarNavItems: NavItem[] = [
         {
-            title: t('Dashboard'),
+            title: translate('Dashboard'),
             href: '#dashboard',
             icon: <BarChart3 className="me-2 h-4 w-4" />,
         },
         {
-            title: t('Referred Users'),
+            title: translate('Referred Users'),
             href: '#referred-users',
             icon: <Users className="me-2 h-4 w-4" />,
         },
         {
-            title: t('Payout Requests'),
+            title: translate('Payout Requests'),
             href: '#payout-requests',
             icon: <DollarSign className="me-2 h-4 w-4" />,
         },
         ...(userType === 'super_admin'
             ? [
                   {
-                      title: t('Settings'),
+                      title: translate('Settings'),
                       href: '#settings',
                       icon: <SettingsIcon className="me-2 h-4 w-4" />,
                   },
@@ -91,7 +91,7 @@ export default function Referral() {
     // from another module leaves responsive components (like tables) stuck at the previous size.
     useEffect(() => {
         const triggerResize = () => {
-            window.dispatchEvent(new Event('resize'));
+            window.dispatchEvent(new Eventranslate('resize'));
         };
 
         const timers = [setTimeout(triggerResize, 0), setTimeout(triggerResize, 100), setTimeout(triggerResize, 300)];
@@ -111,7 +111,7 @@ export default function Referral() {
     };
 
     return (
-        <PageTemplate breadcrumbs={breadcrumbs} title={t('Referral Program')} url="/referral" description={t('Manage your referral program.')}>
+        <PageTemplate breadcrumbs={breadcrumbs} title={translate('Referral Program')} url="/referral" description={translate('Manage your referral program.')}>
             <style>{`
         @media (min-width: 1280px) {
           [data-slot="sidebar-inset"] {
@@ -142,7 +142,7 @@ export default function Referral() {
 
                 <div className="min-w-0 flex-1">
                     <section id="dashboard" ref={dashboardRef} className="mb-8">
-                        <h2 className="mb-4 text-xl font-semibold">{t('Dashboard')}</h2>
+                        <h2 className="mb-4 text-xl font-semibold">{translate('Dashboard')}</h2>
                         <ReferralDashboard
                             userType={userType}
                             stats={stats}
@@ -153,7 +153,7 @@ export default function Referral() {
                     </section>
 
                     <section id="referred-users" ref={referredUsersRef} className="mb-8">
-                        <h2 className="mb-4 text-xl font-semibold">{t('Referred Users')}</h2>
+                        <h2 className="mb-4 text-xl font-semibold">{translate('Referred Users')}</h2>
                         <ReferredUsersSection
                             referredUsers={props.referredUsers}
                             usersWithPlans={props.usersWithPlans}
@@ -164,7 +164,7 @@ export default function Referral() {
                     </section>
 
                     <section id="payout-requests" ref={payoutRequestsRef} className="mb-8">
-                        <h2 className="mb-4 text-xl font-semibold">{t('Payout Requests')}</h2>
+                        <h2 className="mb-4 text-xl font-semibold">{translate('Payout Requests')}</h2>
                         <PayoutRequests
                             userType={userType}
                             payoutRequests={payoutRequests}
@@ -176,7 +176,7 @@ export default function Referral() {
 
                     {userType === 'super_admin' && (
                         <section id="settings" ref={settingsRef} className="mb-8">
-                            <h2 className="mb-4 text-xl font-semibold">{t('Settings')}</h2>
+                            <h2 className="mb-4 text-xl font-semibold">{translate('Settings')}</h2>
                             <ReferralSettings settings={settings} currencySymbol={currencySymbol} globalSettings={globalSettings} />
                         </section>
                     )}

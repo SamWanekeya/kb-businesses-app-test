@@ -32,7 +32,7 @@ interface UpgradePlanModalProps {
 }
 
 export function UpgradePlanModal({ isOpen, onClose, onConfirm, plans, currentPlanId, organizationName }: UpgradePlanModalProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
     const [isYearly, setIsYearly] = useState(false);
 
@@ -78,18 +78,18 @@ export function UpgradePlanModal({ isOpen, onClose, onConfirm, plans, currentPla
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="flex max-h-[90vh] flex-col overflow-hidden sm:max-w-2xl">
                 <DialogHeader>
-                    <DialogTitle className="text-lg font-semibold text-gray-900">{t('Upgrade Plan for Organization')}</DialogTitle>
-                    <DialogDescription className="text-sm text-gray-600">{t('Select a new plan for this organization')}</DialogDescription>
+                    <DialogTitle className="text-lg font-semibold text-gray-900">{translate('Upgrade Plan for Organization')}</DialogTitle>
+                    <DialogDescription className="text-sm text-gray-600">{translate('Select a new plan for this organization')}</DialogDescription>
                 </DialogHeader>
 
                 {/* Billing Period Toggle */}
                 <div className="flex items-center justify-center gap-3 rounded-lg bg-gray-50 px-4 py-2">
-                    <span className={`text-sm font-medium transition-colors ${!isYearly ? 'text-primary' : 'text-gray-600'}`}>{t('Monthly')}</span>
+                    <span className={`text-sm font-medium transition-colors ${!isYearly ? 'text-primary' : 'text-gray-600'}`}>{translate('Monthly')}</span>
                     <Switch checked={isYearly} onCheckedChange={setIsYearly} className="data-[state=checked]:bg-primary" />
-                    <span className={`text-sm font-medium transition-colors ${isYearly ? 'text-primary' : 'text-gray-600'}`}>{t('Yearly')}</span>
+                    <span className={`text-sm font-medium transition-colors ${isYearly ? 'text-primary' : 'text-gray-600'}`}>{translate('Yearly')}</span>
                     {isYearly && (
                         <Badge variant="secondary" className="ml-2 border-0 bg-green-100 text-xs font-medium text-green-700">
-                            {t('Save up to 20%')}
+                            {translate('Save up to 20%')}
                         </Badge>
                     )}
                 </div>
@@ -126,7 +126,7 @@ export function UpgradePlanModal({ isOpen, onClose, onConfirm, plans, currentPla
                                                             variant="secondary"
                                                             className="border-0 bg-blue-100 px-2 py-0 text-xs leading-tight font-medium text-blue-700"
                                                         >
-                                                            {t('Current')}
+                                                            {translate('Current')}
                                                         </Badge>
                                                     )}
                                                 </div>
@@ -174,7 +174,7 @@ export function UpgradePlanModal({ isOpen, onClose, onConfirm, plans, currentPla
                         ) : (
                             <div className="py-8 text-center text-gray-500">
                                 <p className="text-sm">
-                                    {t('No plans available for')} {isYearly ? t('yearly') : t('monthly')} {t('billing')}
+                                    {translate('No plans available for')} {isYearly ? translate('yearly') : translate('monthly')} {translate('billing')}
                                 </p>
                             </div>
                         )}
@@ -183,14 +183,14 @@ export function UpgradePlanModal({ isOpen, onClose, onConfirm, plans, currentPla
 
                 <DialogFooter className="border-t pt-3">
                     <Button variant="outline" onClick={onClose} className="text-sm font-medium">
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     <Button
                         onClick={handleConfirm}
                         disabled={!selectedPlanId || filteredPlans.length === 0}
                         className="bg-primary hover:bg-primary/90 text-sm font-medium"
                     >
-                        {t('Upgrade Plan')}
+                        {translate('Upgrade Plan')}
                     </Button>
                 </DialogFooter>
             </DialogContent>

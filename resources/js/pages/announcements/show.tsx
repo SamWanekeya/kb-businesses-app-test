@@ -10,13 +10,13 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function AnnouncementShow() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, announcement } = usePage().props;
     const permissions = auth?.permissions || [];
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting announcement...'));
+        toast.loading(translate('Deleting announcement...'));
 
         router.delete(route('announcements.destroy', announcement.id), {
             onSuccess: (page) => {
@@ -31,15 +31,15 @@ export default function AnnouncementShow() {
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
-                    toast.error(t('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
             },
         });
     };
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Announcements'), href: route('announcements.index') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Announcements'), href: route('announcements.index') },
         { title: announcement.title },
     ];
 
@@ -47,7 +47,7 @@ export default function AnnouncementShow() {
 
     if (useHasPermission('delete-announcements')) {
         pageActions.push({
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: <Trash2 className="mr-2 h-4 w-4" />,
             variant: 'destructive',
             onClick: () => setIsDeleteModalOpen(true),
@@ -55,7 +55,7 @@ export default function AnnouncementShow() {
     }
 
     pageActions.push({
-        label: t('Back'),
+        label: translate('Back'),
         icon: <ArrowLeft className="h-4 w-4" />,
         variant: 'outline',
         onClick: () => window.history.back(),
@@ -70,7 +70,7 @@ export default function AnnouncementShow() {
 
         return (
             <Badge className={statusColors[status as keyof typeof statusColors] || statusColors.inactive}>
-                {t(status?.charAt(0).toUpperCase() + status?.slice(1)) || t('Inactive')}
+                {t(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Inactive')}
             </Badge>
         );
     };
@@ -78,7 +78,7 @@ export default function AnnouncementShow() {
     return (
         <PageTemplate
             title={announcement.title}
-            description={t('View announcement details and content')}
+            description={translate('View announcement details and content')}
             actions={pageActions}
             breadcrumbs={breadcrumbs}
             noPadding
@@ -100,7 +100,7 @@ export default function AnnouncementShow() {
                                 {announcement.is_featured && (
                                     <Badge className="flex items-center gap-1 bg-yellow-100 text-yellow-800 ring-1 ring-purple-600/20 ring-inset">
                                         <Star className="h-3 w-3" />
-                                        {t('Featured')}
+                                        {translate('Featured')}
                                     </Badge>
                                 )}
                             </div>
@@ -108,13 +108,13 @@ export default function AnnouncementShow() {
                         <div className="text-muted-foreground mt-4 flex items-center gap-6 text-sm">
                             {announcement.start_date && (
                                 <div className="flex items-center gap-2">
-                                    <CalendarDays className="h-4 w-4" /> <span className="font-bold">{t('Start Date')}:</span>{' '}
+                                    <CalendarDays className="h-4 w-4" /> <span className="font-bold">{translate('Start Date')}:</span>{' '}
                                     {window.appSettings?.formatDateTime(announcement.start_date, false) || '-'}
                                 </div>
                             )}
                             {announcement.end_date && (
                                 <div className="flex items-center gap-2">
-                                    <CalendarDays className="h-4 w-4" /> <span className="font-bold">{t('End Date')}:</span>{' '}
+                                    <CalendarDays className="h-4 w-4" /> <span className="font-bold">{translate('End Date')}:</span>{' '}
                                     {window.appSettings?.formatDateTime(announcement.end_date, false) || '-'}
                                 </div>
                             )}
@@ -123,7 +123,7 @@ export default function AnnouncementShow() {
                 </Card>
                 <Card>
                     <CardHeader>
-                        <div dangerouslySetInnerHTML={{ __html: announcement.content || t('No content') }} />
+                        <div dangerouslySetInnerHTML={{ __html: announcement.content || translate('No content') }} />
                     </CardHeader>
                 </Card>
             </div>
@@ -133,7 +133,7 @@ export default function AnnouncementShow() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={announcement.title || ''}
-                entityName={t('announcement')}
+                entityName={translate('announcement')}
             />
         </PageTemplate>
     );

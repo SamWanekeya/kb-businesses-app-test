@@ -27,7 +27,7 @@ type RegisterForm = {
 };
 
 export default function Register({ referralCode, planId }: { referralCode?: string; planId?: string }) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [recaptchaToken, setRecaptchaToken] = useState<string>('');
     const { themeColor, customColor } = useBrand();
     const primaryColor = themeColor === 'custom' ? customColor : THEME_COLORS[themeColor as keyof typeof THEME_COLORS];
@@ -45,17 +45,17 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
         e.preventDefault();
         post(route('register'), {
             data: { ...data, recaptcha_token: recaptchaToken },
-            onFinish: () => reset('password', 'password_confirmation'),
+            onFinish: () => resetranslate('password', 'password_confirmation'),
         });
     };
 
     return (
-        <AuthLayout title={t('Create your account')} description={t('Enter your details below to get started')}>
+        <AuthLayout title={translate('Create your account')} description={translate('Enter your details below to get started')}>
             <form className="space-y-5" onSubmit={submit}>
                 <div className="space-y-4">
                     <div className="relative">
                         <Label htmlFor="name" className="mb-2 block font-medium text-gray-700 dark:text-gray-300" required>
-                            {t('Full name')}
+                            {translate('Full name')}
                         </Label>
                         <div className="relative">
                             <Input
@@ -67,7 +67,7 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
                                 autoComplete="name"
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
-                                placeholder={t('Enter your full name')}
+                                placeholder={translate('Enter your full name')}
                                 className="h-11 w-full rounded-lg border-gray-300 bg-white text-gray-900 transition-all duration-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 style={{ '--tw-ring-color': primaryColor } as React.CSSProperties}
                             />
@@ -77,7 +77,7 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
 
                     <div className="relative">
                         <Label htmlFor="email" className="mb-2 block font-medium text-gray-700 dark:text-gray-300" required>
-                            {t('Email address')}
+                            {translate('Email address')}
                         </Label>
                         <div className="relative">
                             <Input
@@ -88,7 +88,7 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
                                 autoComplete="email"
                                 value={data.email}
                                 onChange={(e) => setData('email', e.target.value)}
-                                placeholder={t('Enter your email')}
+                                placeholder={translate('Enter your email')}
                                 className="h-11 w-full rounded-lg border-gray-300 bg-white text-gray-900 transition-all duration-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 style={{ '--tw-ring-color': primaryColor } as React.CSSProperties}
                             />
@@ -98,7 +98,7 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
 
                     <div>
                         <Label htmlFor="password" className="mb-2 block font-medium text-gray-700 dark:text-gray-300" required>
-                            {t('Password')}
+                            {translate('Password')}
                         </Label>
                         <div className="relative">
                             <Input
@@ -109,7 +109,7 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
                                 autoComplete="new-password"
                                 value={data.password}
                                 onChange={(e) => setData('password', e.target.value)}
-                                placeholder={t('Enter your password')}
+                                placeholder={translate('Enter your password')}
                                 className="h-11 w-full rounded-lg border-gray-300 bg-white text-gray-900 transition-all duration-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 style={{ '--tw-ring-color': primaryColor } as React.CSSProperties}
                             />
@@ -119,7 +119,7 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
 
                     <div>
                         <Label htmlFor="password_confirmation" className="mb-2 block font-medium text-gray-700 dark:text-gray-300" required>
-                            {t('Confirm password')}
+                            {translate('Confirm password')}
                         </Label>
                         <div className="relative">
                             <Input
@@ -130,7 +130,7 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
                                 autoComplete="new-password"
                                 value={data.password_confirmation}
                                 onChange={(e) => setData('password_confirmation', e.target.value)}
-                                placeholder={t('Confirm your password')}
+                                placeholder={translate('Confirm your password')}
                                 className="h-11 w-full rounded-lg border-gray-300 bg-white text-gray-900 transition-all duration-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                                 style={{ '--tw-ring-color': primaryColor } as React.CSSProperties}
                             />
@@ -147,14 +147,14 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
                             className="h-[14px] w-[14px] rounded border border-gray-300 dark:border-gray-600"
                         />
                         <Label htmlFor="terms" className="text-sm text-gray-600 ltr:ml-2 rtl:mr-2 dark:text-gray-400" required>
-                            {t('I agree to the')}{' '}
+                            {translate('I agree to the')}{' '}
                             <a
                                 href={isDemoMode() ? route('home') : getTermsAndConditionsUrl() || route('home')}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 style={{ color: primaryColor }}
                             >
-                                {t('Terms and Conditions')}
+                                {translate('Terms and Conditions')}
                             </a>
                         </Label>
                     </div>
@@ -169,14 +169,14 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
                     className="w-full transform rounded-md py-2.5 text-sm font-medium tracking-wide text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg"
                     style={{ backgroundColor: primaryColor }}
                 >
-                    {t('Create Account')}
+                    {translate('Create Account')}
                 </AuthButton>
 
                 <div className="text-center">
                     <p className="text-sm text-gray-500">
-                        {t('Already have an account?')}{' '}
+                        {translate('Already have an account?')}{' '}
                         <TextLink href={route('login')} className="font-medium hover:underline" style={{ color: primaryColor }} tabIndex={7}>
-                            {t('Sign in')}
+                            {translate('Sign in')}
                         </TextLink>
                     </p>
                 </div>

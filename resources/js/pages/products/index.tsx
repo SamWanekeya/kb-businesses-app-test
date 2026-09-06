@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 // import { ProductBarcode } from '@/components/Barcode';
 
 export default function Products() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
     const {
         auth,
@@ -136,7 +136,7 @@ export default function Products() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting product...'));
+        toast.loading(translate('Deleting product...'));
 
         router.delete(route('products.destroy', currentItem.id), {
             onSuccess: () => {
@@ -148,7 +148,7 @@ export default function Products() {
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
-                    toast.error(t('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
             },
         });
@@ -164,7 +164,7 @@ export default function Products() {
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
-                        toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
                 },
             },
@@ -190,12 +190,12 @@ export default function Products() {
     // Add export button
     if (useHasPermission('export-products')) {
         pageActions.push({
-            label: t('Export'),
+            label: translate('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
             variant: 'outline',
             className: 'h-8 w-8 min-[500px]:h-9 min-[500px]:w-auto px-0 min-[500px]:px-4',
             labelClassName: 'hidden min-[500px]:inline',
-            tooltip: t('Export'),
+            tooltip: translate('Export'),
             tooltipClassName: 'min-[500px]:hidden',
             onClick: () => {
                 window.location.href = route('product.export');
@@ -206,12 +206,12 @@ export default function Products() {
     // Add import button
     if (useHasPermission('import-products')) {
         pageActions.push({
-            label: t('Import'),
+            label: translate('Import'),
             icon: <FileUp className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
             variant: 'outline',
             className: 'h-8 w-8 min-[500px]:h-9 min-[500px]:w-auto px-0 min-[500px]:px-4',
             labelClassName: 'hidden min-[500px]:inline',
-            tooltip: t('Import'),
+            tooltip: translate('Import'),
             tooltipClassName: 'min-[500px]:hidden',
             onClick: () => setIsImportModalOpen(true),
         });
@@ -220,24 +220,24 @@ export default function Products() {
     // Add the "Add Product" button if user has permission
     if (useHasPermission('create-products')) {
         pageActions.push({
-            label: t('Add Product'),
+            label: translate('Add Product'),
             icon: <Plus className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
             variant: 'default',
             className: 'h-8 w-8 min-[500px]:h-9 min-[500px]:w-auto px-0 min-[500px]:px-4',
             labelClassName: 'hidden min-[500px]:inline',
-            tooltip: t('Add Product'),
+            tooltip: translate('Add Product'),
             tooltipClassName: 'min-[500px]:hidden',
             onClick: () => router.visit(route('products.create')),
         });
     }
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Products') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Products') }];
 
     // Define table columns
     const columns = [
         {
             key: 'name',
-            label: t('Name'),
+            label: translate('Name'),
             sortable: true,
             render: (value: any, row: any) => {
                 const mainImage = row.media?.find((m: any) => m.collection_name === 'main');
@@ -274,7 +274,7 @@ export default function Products() {
         },
         {
             key: 'price',
-            label: t('Price'),
+            label: translate('Price'),
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: any) => (
@@ -285,7 +285,7 @@ export default function Products() {
         },
         {
             key: 'stock_quantity',
-            label: t('Stock'),
+            label: translate('Stock'),
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: any) => (
@@ -298,13 +298,13 @@ export default function Products() {
                               : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                     }`}
                 >
-                    {value} {value === 1 ? t('unit') : t('units')}
+                    {value} {value === 1 ? translate('unit') : translate('units')}
                 </span>
             ),
         },
         // {
         //     key: 'assigned_user',
-        //     label: t('Assigned To'),
+        //     label: translate('Assigned To'),
         //     className: 'whitespace-nowrap',
         //     render: (value: any) => value ? (
         //         <div className="flex items-center gap-2">
@@ -317,11 +317,11 @@ export default function Products() {
         //                 <div className="text-sm text-muted-foreground whitespace-nowrap">{value.email}</div>
         //             </div>
         //         </div>
-        //     ) : <span className="whitespace-nowrap">{t('Unassigned')}</span>
+        //     ) : <span className="whitespace-nowrap">{translate('Unassigned')}</span>
         // },
         {
             key: 'category',
-            label: t('Category'),
+            label: translate('Category'),
             className: 'whitespace-nowrap',
             render: (value: any) =>
                 value?.name ? (
@@ -329,18 +329,18 @@ export default function Products() {
                         {value.name}
                     </span>
                 ) : (
-                    <span className="whitespace-nowrap">{t('-')}</span>
+                    <span className="whitespace-nowrap">{translate('-')}</span>
                 ),
         },
         {
             key: 'brand',
-            label: t('Brand'),
+            label: translate('Brand'),
             className: 'whitespace-nowrap',
-            render: (value: any) => <span className="whitespace-nowrap">{value?.name || t('-')}</span>,
+            render: (value: any) => <span className="whitespace-nowrap">{value?.name || translate('-')}</span>,
         },
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             className: 'whitespace-nowrap',
             render: (value: string) => (
                 <span
@@ -350,7 +350,7 @@ export default function Products() {
                             : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                     }`}
                 >
-                    {value === 'active' ? t('Active') : t('Inactive')}
+                    {value === 'active' ? translate('Active') : translate('Inactive')}
                 </span>
             ),
         },
@@ -359,28 +359,28 @@ export default function Products() {
     // Define table actions
     const actions = [
         {
-            label: t('Toggle Status'),
+            label: translate('Toggle Status'),
             icon: 'Lock',
             action: 'toggle-status',
             className: 'text-amber-500',
             requiredPermission: 'toggle-status-products',
         },
         {
-            label: t('View'),
+            label: translate('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
             requiredPermission: 'view-products',
         },
         {
-            label: t('Edit'),
+            label: translate('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
             requiredPermission: 'edit-products',
         },
         {
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
@@ -390,7 +390,7 @@ export default function Products() {
 
     // Prepare filter options
     const categoryOptions = [
-        { value: 'all', label: t('All Categories') },
+        { value: 'all', label: translate('All Categories') },
         ...(allCategories || []).map((category: any) => ({
             value: category.id.toString(),
             label: category.name,
@@ -398,7 +398,7 @@ export default function Products() {
     ];
 
     const brandOptions = [
-        { value: 'all', label: t('All Brands') },
+        { value: 'all', label: translate('All Brands') },
         ...(allBrands || []).map((brand: any) => ({
             value: brand.id.toString(),
             label: brand.name,
@@ -406,15 +406,15 @@ export default function Products() {
     ];
 
     const statusOptions = [
-        { value: 'all', label: t('All Statuses') },
-        { value: 'active', label: t('Active') },
-        { value: 'inactive', label: t('Inactive') },
+        { value: 'all', label: translate('All Statuses') },
+        { value: 'active', label: translate('Active') },
+        { value: 'inactive', label: translate('Inactive') },
     ];
 
     return (
         <PageTemplate
-            title={t('Products')}
-            description={t('Manage your products.')}
+            title={translate('Products')}
+            description={translate('Manage your products.')}
             url="/products"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -429,7 +429,7 @@ export default function Products() {
                     filters={[
                         {
                             name: 'category',
-                            label: t('Category'),
+                            label: translate('Category'),
                             type: 'select',
                             searchable: true,
                             value: selectedCategory,
@@ -438,7 +438,7 @@ export default function Products() {
                         },
                         {
                             name: 'brand',
-                            label: t('Brand'),
+                            label: translate('Brand'),
                             type: 'select',
                             searchable: true,
                             value: selectedBrand,
@@ -447,7 +447,7 @@ export default function Products() {
                         },
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
@@ -455,14 +455,14 @@ export default function Products() {
                         },
                         {
                             name: 'assigned_to',
-                            label: t('Assigned To'),
+                            label: translate('Assigned To'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: t('All Users') },
-                                { value: 'unassigned', label: t('Unassigned') },
+                                { value: 'all', label: translate('All Users') },
+                                { value: 'unassigned', label: translate('Unassigned') },
                                 ...allUsers.map((user: any) => ({
                                     value: user.id.toString(),
                                     label: user.name,
@@ -522,7 +522,7 @@ export default function Products() {
                         to={products?.to || 0}
                         total={products?.total || 0}
                         links={products?.links}
-                        entityName={t('products')}
+                        entityName={translate('products')}
                         onPageChange={(url) => router.get(url)}
                         currentPerPage={pageFilters.per_page?.toString() || '10'}
                         onPerPageChange={(value) => {
@@ -592,14 +592,14 @@ export default function Products() {
                                                         : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                                                 }`}
                                             >
-                                                {product.status === 'active' ? t('Active') : t('Inactive')}
+                                                {product.status === 'active' ? translate('Active') : translate('Inactive')}
                                             </span>
                                         </div>
                                         {/* Out of stock badge */}
                                         {product.stock_quantity === 0 && (
                                             <div className="absolute bottom-3 left-3">
                                                 <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/20 ring-inset">
-                                                    {t('Out of Stock')}
+                                                    {translate('Out of Stock')}
                                                 </span>
                                             </div>
                                         )}
@@ -616,7 +616,7 @@ export default function Products() {
                                                 <p className="font-mono text-[11px] tracking-wide text-gray-400 dark:text-gray-500">#{product.sku}</p>
                                                 {product.tax && (
                                                     <span className="text-[11px] text-gray-500 dark:text-gray-400">
-                                                        {t('Tax')}: {product.tax.rate != null ? `${product.tax.rate}%` : product.tax.name}
+                                                        {translate('Tax')}: {product.tax.rate != null ? `${product.tax.rate}%` : product.tax.name}
                                                     </span>
                                                 )}
                                             </div>
@@ -640,16 +640,16 @@ export default function Products() {
                                         <div>
                                             <div className="grid grid-cols-2 gap-2">
                                                 <div className="rounded-md border border-green-200 bg-green-50 px-3 py-2 dark:border-green-700 dark:bg-green-900/20">
-                                                    <p className="mb-0.5 text-[11px] text-gray-500 dark:text-gray-400">{t('Price')}</p>
+                                                    <p className="mb-0.5 text-[11px] text-gray-500 dark:text-gray-400">{translate('Price')}</p>
                                                     <p className="font-mono text-sm font-bold text-green-600">
                                                         {window.appSettings?.formatCurrency(parseFloat(product.price || 0)) ||
                                                             `$${parseFloat(product.price || 0).toFixed(2)}`}
                                                     </p>
                                                 </div>
                                                 <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 dark:border-red-700 dark:bg-red-900/20">
-                                                    <p className="mb-0.5 text-[11px] text-gray-500 dark:text-gray-400">{t('In Stock')}</p>
+                                                    <p className="mb-0.5 text-[11px] text-gray-500 dark:text-gray-400">{translate('In Stock')}</p>
                                                     <p className="text-sm font-bold text-orange-500">
-                                                        {product.stock_quantity} {t('units')}
+                                                        {product.stock_quantity} {translate('units')}
                                                     </p>
                                                 </div>
                                             </div>
@@ -674,7 +674,7 @@ export default function Products() {
                                                             </Button>
                                                         </TooltipTrigger>
                                                         <TooltipContent>
-                                                            <p>{t('View')}</p>
+                                                            <p>{translate('View')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 )}
@@ -694,7 +694,7 @@ export default function Products() {
                                                             </Button>
                                                         </TooltipTrigger>
                                                         <TooltipContent>
-                                                            <p>{t('Edit')}</p>
+                                                            <p>{translate('Edit')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 )}
@@ -714,7 +714,7 @@ export default function Products() {
                                                             </Button>
                                                         </TooltipTrigger>
                                                         <TooltipContent>
-                                                            <p>{product.status === 'active' ? t('Deactivate') : t('Activate')}</p>
+                                                            <p>{product.status === 'active' ? translate('Deactivate') : translate('Activate')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 )}
@@ -734,7 +734,7 @@ export default function Products() {
                                                             </Button>
                                                         </TooltipTrigger>
                                                         <TooltipContent>
-                                                            <p>{t('Delete')}</p>
+                                                            <p>{translate('Delete')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 )}
@@ -753,7 +753,7 @@ export default function Products() {
                             to={products?.to || 0}
                             total={products?.total || 0}
                             links={products?.links}
-                            entityName={t('products')}
+                            entityName={translate('products')}
                             onPageChange={(url) => router.get(url)}
                             currentPerPage={pageFilters.per_page?.toString() || '10'}
                             onPerPageChange={(value) => {
@@ -785,18 +785,18 @@ export default function Products() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={t('product')}
+                entityName={translate('product')}
             />
 
             {/* Import Modal */}
             <ImportModal
                 isOpen={isImportModalOpen}
                 onClose={() => setIsImportModalOpen(false)}
-                title={t('Import Products from CSV/Excel')}
+                title={translate('Import Products from CSV/Excel')}
                 importRoute="product.import"
                 parseRoute="product.parse"
                 samplePath={samplePath}
-                importNotes={t('Ensure that the values entered for Category, Brand, Tax match the existing records in your system.')}
+                importNotes={translate('Ensure that the values entered for Category, Brand, Tax match the existing records in your system.')}
                 databaseFields={[
                     { key: 'name', required: true },
                     { key: 'sku', required: true },

@@ -80,12 +80,12 @@ export const LanguageSwitcher: React.FC = () => {
                 }
 
                 window.dispatchEvent(
-                    new CustomEvent('languageChanged', {
+                    new CustomEventranslate('languageChanged', {
                         detail: { language: languageCode, direction: newDirection },
                     }),
                 );
 
-                window.dispatchEvent(new Event('resize'));
+                window.dispatchEvent(new Eventranslate('resize'));
             } catch (error) {}
         }
     };
@@ -145,12 +145,12 @@ export const LanguageSwitcher: React.FC = () => {
                             className="text-primary cursor-pointer justify-start font-semibold"
                         >
                             <Plus className="mr-2 h-4 w-4" />
-                            {t('Create Language')}
+                            {translate('Create Language')}
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild className="text-primary cursor-pointer justify-start font-semibold">
                             <a href={route('manage-language')} rel="noopener noreferrer">
                                 <Settings className="mr-2 h-4 w-4" />
-                                {t('Manage Language')}
+                                {translate('Manage Language')}
                             </a>
                         </DropdownMenuItem>
                     </>

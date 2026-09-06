@@ -24,13 +24,13 @@ export function InvoiceYooKassaPaymentForm({
     onSuccess,
     onCancel,
 }: InvoiceYooKassaPaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     const handlePayment = async () => {
         if (!yookassaShopId) {
-            setError(t('YooKassa not configured'));
+            setError(translate('YooKassa not configured'));
             return;
         }
 
@@ -56,16 +56,16 @@ export function InvoiceYooKassaPaymentForm({
             if (data.success) {
                 window.location.href = data.payment_url;
             } else {
-                throw new Error(data.error || t('Payment creation failed'));
+                throw new Error(data.error || translate('Payment creation failed'));
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : t('Payment initialization failed'));
+            setError(err instanceof Error ? err.message : translate('Payment initialization failed'));
             setIsLoading(false);
         }
     };
 
     const formatPrice = (price: number) => {
-        return new Intl.NumberFormat('ru-RU', {
+        return new Intl.NumberFormatranslate('ru-RU', {
             style: 'currency',
             currency: currency,
         }).format(price);
@@ -76,7 +76,7 @@ export function InvoiceYooKassaPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {t('YooKassa Payment')}
+                    {translate('YooKassa Payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -89,16 +89,16 @@ export function InvoiceYooKassaPaymentForm({
 
                 <div className="bg-muted rounded-lg p-4">
                     <div className="flex items-center justify-between">
-                        <span className="font-medium">{t('Payment Amount')}</span>
+                        <span className="font-medium">{translate('Payment Amount')}</span>
                         <span className="text-lg font-bold">{formatPrice(amount)}</span>
                     </div>
                     <div className="text-muted-foreground mt-1 text-sm">
-                        {t('Payment Type')}: {t(paymentType)}
+                        {translate('Payment Type')}: {t(paymentType)}
                     </div>
                 </div>
 
                 <div className="rounded-lg border border-purple-200 bg-purple-50 p-4">
-                    <h4 className="mb-2 font-medium text-purple-900">{t('Supported Payment Methods')}</h4>
+                    <h4 className="mb-2 font-medium text-purple-900">{translate('Supported Payment Methods')}</h4>
                     <ul className="space-y-1 text-sm text-purple-800">
                         <li>• Bank Cards</li>
                         <li>• YooMoney</li>
@@ -110,18 +110,18 @@ export function InvoiceYooKassaPaymentForm({
 
                 <div className="flex gap-3">
                     <Button variant="outline" onClick={onCancel} disabled={isLoading} className="flex-1">
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     <Button onClick={handlePayment} disabled={isLoading || !yookassaShopId} className="flex-1">
                         {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                {t('Redirecting...')}
+                                {translate('Redirecting...')}
                             </>
                         ) : (
                             <>
                                 <ExternalLink className="mr-2 h-4 w-4" />
-                                {t('Pay with YooKassa')}
+                                {translate('Pay with YooKassa')}
                             </>
                         )}
                     </Button>

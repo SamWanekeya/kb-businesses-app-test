@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function PlanRequestsPage() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { planRequests, filters: pageFilters = {}, auth, globalSettings } = usePage().props;
     const permissions = auth?.permissions || [];
 
@@ -67,7 +67,7 @@ export default function PlanRequestsPage() {
     const handleAction = (action: string, item: any) => {
         if (action === 'approve') {
             if (!globalSettings?.is_demo) {
-                toast.loading(t('Approving plan request...'));
+                toast.loading(translate('Approving plan request...'));
             }
 
             router.post(
@@ -91,14 +91,14 @@ export default function PlanRequestsPage() {
                         if (typeof errors === 'string') {
                             toast.error(t(errors));
                         } else {
-                            toast.error(t('Failed to approve plan request: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                            toast.error(translate('Failed to approve plan request: {{errors}}', { errors: Object.values(errors).join(', ') }));
                         }
                     },
                 },
             );
         } else if (action === 'reject') {
             if (!globalSettings?.is_demo) {
-                toast.loading(t('Rejecting plan request...'));
+                toast.loading(translate('Rejecting plan request...'));
             }
 
             router.post(
@@ -122,7 +122,7 @@ export default function PlanRequestsPage() {
                         if (typeof errors === 'string') {
                             toast.error(t(errors));
                         } else {
-                            toast.error(t('Failed to reject plan request: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                            toast.error(translate('Failed to reject plan request: {{errors}}', { errors: Object.values(errors).join(', ') }));
                         }
                     },
                 },
@@ -143,16 +143,16 @@ export default function PlanRequestsPage() {
     };
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Plans'), href: route('plans.index') },
-        { title: t('Plan Requests') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Plans'), href: route('plans.index') },
+        { title: translate('Plan Requests') },
     ];
 
     // Define table columns
     const columns = [
         {
             key: 'user.name',
-            label: t('Organization'),
+            label: translate('Organization'),
             render: (_, row) => {
                 const avatarUrl = row.user?.avatar ? getDisplayUrl(row.user.avatar) : getDisplayUrl('media/avatars/avatar.png');
                 return (
@@ -176,7 +176,7 @@ export default function PlanRequestsPage() {
         },
         {
             key: 'plan.name',
-            label: t('Plan'),
+            label: translate('Plan'),
             render: (_, row) => {
                 const planName = row.plan?.name;
                 if (!planName) return '-';
@@ -193,16 +193,16 @@ export default function PlanRequestsPage() {
         },
         {
             key: 'plan.duration',
-            label: t('Duration'),
+            label: translate('Duration'),
             render: (_, row) => {
                 const duration = row.duration;
                 if (!duration) return '-';
-                return duration === 'monthly' ? t('Monthly') : t('Yearly');
+                return duration === 'monthly' ? translate('Monthly') : translate('Yearly');
             },
         },
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             render: (value) => {
                 const statusColors: Record<string, string> = {
                     pending: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20',
@@ -220,7 +220,7 @@ export default function PlanRequestsPage() {
         },
         {
             key: 'created_at',
-            label: t('Request Date'),
+            label: translate('Request Date'),
             sortable: true,
             type: 'date',
             // render: (value) => window.appSettings?.formatDateTime(value, false) || '-'
@@ -232,7 +232,7 @@ export default function PlanRequestsPage() {
     const actions = isSuperAdmin
         ? [
               {
-                  label: t('Approve'),
+                  label: translate('Approve'),
                   icon: 'Check',
                   action: 'approve',
                   className: 'text-green-500',
@@ -240,7 +240,7 @@ export default function PlanRequestsPage() {
                   condition: (row) => row.status === 'pending',
               },
               {
-                  label: t('Reject'),
+                  label: translate('Reject'),
                   icon: 'X',
                   action: 'reject',
                   className: 'text-red-500',
@@ -252,19 +252,19 @@ export default function PlanRequestsPage() {
 
     // Prepare status options for filter
     const statusOptions = [
-        { value: 'all', label: t('All Status') },
-        { value: 'pending', label: t('Pending') },
-        { value: 'approved', label: t('Approved') },
-        { value: 'rejected', label: t('Rejected') },
+        { value: 'all', label: translate('All Status') },
+        { value: 'pending', label: translate('Pending') },
+        { value: 'approved', label: translate('Approved') },
+        { value: 'rejected', label: translate('Rejected') },
     ];
 
     return (
         <PageTemplate
-            title={t('Plan Requests')}
+            title={translate('Plan Requests')}
             url="/plan-requests"
             breadcrumbs={breadcrumbs}
-            // description={t('View and manage all plan requests from organizations.')}
-            description={isSuperAdmin ? t('View and manage all plan requests from organizations.') : t('View your plan requests.')}
+            // description={translate('View and manage all plan requests from organizations.')}
+            description={isSuperAdmin ? translate('View and manage all plan requests from organizations.') : translate('View your plan requests.')}
             noPadding
         >
             {/* Search and filters section */}
@@ -276,7 +276,7 @@ export default function PlanRequestsPage() {
                     filters={[
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
@@ -309,7 +309,7 @@ export default function PlanRequestsPage() {
                     to={planRequests?.to || 0}
                     total={planRequests?.total || 0}
                     links={planRequests?.links}
-                    entityName={t('plan requests')}
+                    entityName={translate('plan requests')}
                     onPageChange={(url) => router.get(url)}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {

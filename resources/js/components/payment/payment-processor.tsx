@@ -38,7 +38,7 @@ interface PaymentProcessorProps {
 }
 
 export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencySymbol = '$', onSuccess, onCancel }: PaymentProcessorProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('');
     const [couponCode, setCouponCode] = useState('');
     const [appliedCoupon, setAppliedCoupon] = useState<any>(null);
@@ -62,7 +62,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
 
     const handleApplyCoupon = async () => {
         if (!couponCode.trim()) {
-            toast.error(t('Please enter a coupon code'));
+            toast.error(translate('Please enter a coupon code'));
             return;
         }
 
@@ -82,7 +82,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
                 setAppliedCoupon(null);
             }
         } catch (error: any) {
-            toast.error(t('Failed to validate coupon'));
+            toast.error(translate('Failed to validate coupon'));
             setAppliedCoupon(null);
         } finally {
             setCouponLoading(false);
@@ -100,7 +100,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
             return;
         }
         if (!selectedPaymentMethod) {
-            toast.error(t('Please select a payment method'));
+            toast.error(translate('Please select a payment method'));
             return;
         }
         setShowPaymentForm(true);
@@ -126,11 +126,11 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
             },
             {
                 onSuccess: () => {
-                    toast.success(t('Payment request submitted successfully'));
+                    toast.success(translate('Payment request submitted successfully'));
                     onSuccess();
                 },
                 onError: () => {
-                    toast.error(t('Failed to submit payment request'));
+                    toast.error(translate('Failed to submit payment request'));
                 },
                 onFinish: () => {
                     setProcessing(false);
@@ -427,9 +427,9 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
         return (
             <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                    <h3 className="font-medium">{t('Complete Payment')}</h3>
+                    <h3 className="font-medium">{translate('Complete Payment')}</h3>
                     <Button variant="outline" size="sm" onClick={handlePaymentCancel}>
-                        {t('Back')}
+                        {translate('Back')}
                     </Button>
                 </div>
                 {renderPaymentForm()}
@@ -445,7 +445,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
                         <div>
                             <h3 className="font-medium">{plan.name}</h3>
                             <p className="text-muted-foreground text-sm">
-                                {t(billingCycle)} {t('subscription')}
+                                {t(billingCycle)} {translate('subscription')}
                             </p>
                         </div>
                         <div className="text-right">
@@ -460,9 +460,9 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
 
             {/* Payment Methods */}
             <div className="space-y-3">
-                {finalPrice != 0 && <Label>{t('Select Payment Method')}</Label>}
+                {finalPrice != 0 && <Label>{translate('Select Payment Method')}</Label>}
                 {enabledPaymentMethods.length === 0 ? (
-                    <p className="text-muted-foreground text-sm">{t('No payment methods available')}</p>
+                    <p className="text-muted-foreground text-sm">{translate('No payment methods available')}</p>
                 ) : (
                     finalPrice != 0 && (
                         <div className="space-y-2">
@@ -480,7 +480,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
                                             <span className="font-medium">{method.name}</span>
                                             {selectedPaymentMethod === method.id && (
                                                 <Badge variant="secondary" className="ml-auto">
-                                                    {t('Selected')}
+                                                    {translate('Selected')}
                                                 </Badge>
                                             )}
                                         </div>
@@ -497,7 +497,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
                 {plan.price != 0 && (
                     <>
                         <Label htmlFor="coupon">
-                            {t('Coupon Code')} ({t('Optional')})
+                            {translate('Coupon Code')} ({translate('Optional')})
                         </Label>
                         <div className="flex gap-2">
                             <div className="relative flex-1">
@@ -505,7 +505,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
                                     id="coupon"
                                     value={couponCode}
                                     onChange={(e) => setCouponCode(e.target.value)}
-                                    placeholder={t('Enter coupon code')}
+                                    placeholder={translate('Enter coupon code')}
                                     className="pr-10"
                                     disabled={!!appliedCoupon}
                                 />
@@ -513,11 +513,11 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
                             </div>
                             {!appliedCoupon ? (
                                 <Button type="button" variant="outline" onClick={handleApplyCoupon} disabled={!couponCode.trim() || couponLoading}>
-                                    {couponLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : t('Apply')}
+                                    {couponLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : translate('Apply')}
                                 </Button>
                             ) : (
                                 <Button type="button" variant="outline" onClick={handleRemoveCoupon}>
-                                    {t('Remove')}
+                                    {translate('Remove')}
                                 </Button>
                             )}
                         </div>
@@ -528,7 +528,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
                     <div className="rounded-lg border border-green-200 bg-green-50 p-3">
                         <div className="flex items-center justify-between text-sm">
                             <span className="font-medium text-green-700">
-                                {t('Coupon Applied')}: {appliedCoupon.code}
+                                {translate('Coupon Applied')}: {appliedCoupon.code}
                             </span>
                             <span className="text-green-600">
                                 -{appliedCoupon.type === 'percentage' ? `${appliedCoupon.value}%` : `${currencySymbol}${appliedCoupon.value}`}
@@ -543,7 +543,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
                 <CardContent className="p-4">
                     <div className="space-y-2">
                         <div className="flex justify-between text-sm">
-                            <span>{t('Subtotal')}</span>
+                            <span>{translate('Subtotal')}</span>
                             <span>
                                 {currencySymbol}
                                 {originalPrice}
@@ -551,7 +551,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
                         </div>
                         {appliedCoupon && (
                             <div className="flex justify-between text-sm text-green-600">
-                                <span>{t('Discount')}</span>
+                                <span>{translate('Discount')}</span>
                                 <span>
                                     -{currencySymbol}
                                     {discountAmount}
@@ -560,7 +560,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
                         )}
                         <div className="border-t pt-2">
                             <div className="flex justify-between font-medium">
-                                <span>{t('Total')}</span>
+                                <span>{translate('Total')}</span>
                                 <span>
                                     {currencySymbol}
                                     {finalPrice.toFixed(2)}
@@ -574,10 +574,10 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
             {/* Actions */}
             <div className="flex gap-3">
                 <Button variant="outline" onClick={onCancel} className="flex-1">
-                    {t('Cancel')}
+                    {translate('Cancel')}
                 </Button>
                 <Button onClick={handlePayNow} disabled={enabledPaymentMethods.length === 0 || processing} className="flex-1">
-                    {t('Pay')} {currencySymbol} {finalPrice}
+                    {translate('Pay')} {currencySymbol} {finalPrice}
                 </Button>
             </div>
         </div>

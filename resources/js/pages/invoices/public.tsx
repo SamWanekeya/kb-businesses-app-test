@@ -121,7 +121,7 @@ export default function PublicInvoice({
     themeColor = 'blue',
     customColor = null,
 }: Props) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { props } = usePage<any>();
     const globalSettings = props.globalSettings;
     const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -162,7 +162,7 @@ export default function PublicInvoice({
     };
 
     const formatDate = (dateString: string) => {
-        if (!dateString) return t('-');
+        if (!dateString) return translate('-');
         return window.appSettings?.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
@@ -257,7 +257,7 @@ export default function PublicInvoice({
 
     return (
         <>
-            <Head title={t('Invoice {{invoiceNumber}}', { invoiceNumber: invoice.invoice_number })}>
+            <Head title={translate('Invoice {{invoiceNumber}}', { invoiceNumber: invoice.invoice_number })}>
                 {settings?.favicon && <link rel="icon" href={getDisplayUrl(settings.favicon, props.globalSettings)} />}
             </Head>
 
@@ -266,8 +266,8 @@ export default function PublicInvoice({
                     {/* Action Bar */}
                     <div className="mb-8 flex flex-col items-start justify-between sm:flex-row sm:items-center print:hidden">
                         <div className="mb-4 sm:mb-0">
-                            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('Invoice Details')}</h1>
-                            <p className="mt-1 text-gray-600 dark:text-gray-400">{t('View and manage your invoice')}</p>
+                            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{translate('Invoice Details')}</h1>
+                            <p className="mt-1 text-gray-600 dark:text-gray-400">{translate('View and manage your invoice')}</p>
                         </div>
                         <div className="flex flex-wrap gap-3">
                             {useHasPermission('view-invoices') && (
@@ -276,7 +276,7 @@ export default function PublicInvoice({
                                     className="inline-flex cursor-pointer items-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-gray-500 dark:hover:bg-gray-700"
                                 >
                                     {copied ? <Check className="mr-2 h-4 w-4 text-green-600" /> : <Copy className="mr-2 h-4 w-4" />}
-                                    {copied ? t('Copied!') : t('Copy Link')}
+                                    {copied ? translate('Copied!') : translate('Copy Link')}
                                 </button>
                             )}
                             <button
@@ -288,7 +288,7 @@ export default function PublicInvoice({
                                 }}
                             >
                                 <Printer className="mr-2 h-4 w-4" />
-                                {t('Print Invoice')}
+                                {translate('Print Invoice')}
                             </button>
                             {invoice.status !== 'paid' && (
                                 <button
@@ -300,7 +300,7 @@ export default function PublicInvoice({
                                     }}
                                 >
                                     <CreditCard className="mr-2 h-4 w-4" />
-                                    {invoice.status === 'partially_paid' ? t('Pay Remaining') : t('Pay Invoice')}
+                                    {invoice.status === 'partially_paid' ? translate('Pay Remaining') : translate('Pay Invoice')}
                                 </button>
                             )}
                         </div>
@@ -327,7 +327,7 @@ export default function PublicInvoice({
                                 <div className="flex-1">
                                     <h1 className="text-2xl leading-tight font-bold text-gray-900">{invoice.name}</h1>
                                     <p className="mt-2 max-w-3xl text-base leading-relaxed text-gray-600">
-                                        {invoice.description || t('No description provided')}
+                                        {invoice.description || translate('No description provided')}
                                     </p>
                                 </div>
                                 <div className="ml-6 text-right">
@@ -347,7 +347,7 @@ export default function PublicInvoice({
                                         }`}
                                     >
                                         {invoice.status === 'partially_paid'
-                                            ? t('Partially Paid')
+                                            ? translate('Partially Paid')
                                             : invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)}
                                     </span>
                                     <p className="mt-2 font-mono text-sm font-medium text-gray-700">{invoice.invoice_number}</p>
@@ -361,7 +361,7 @@ export default function PublicInvoice({
                                 <div className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-sm font-bold text-gray-500">{t('Total Amount')}</p>
+                                            <p className="text-sm font-bold text-gray-500">{translate('Total Amount')}</p>
                                             <h3 className="mt-2 text-2xl leading-none font-bold" style={{ color: template.primary }}>
                                                 {formatCurrency(invoice.total_amount)}
                                             </h3>
@@ -377,7 +377,7 @@ export default function PublicInvoice({
                                 <div className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-sm font-bold text-gray-500">{t('Paid Amount')}</p>
+                                            <p className="text-sm font-bold text-gray-500">{translate('Paid Amount')}</p>
                                             <h3 className="mt-2 text-2xl leading-none font-bold" style={{ color: template.secondary }}>
                                                 {formatCurrency(paidAmount)}
                                             </h3>
@@ -393,7 +393,7 @@ export default function PublicInvoice({
                                 <div className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-sm font-bold text-gray-500">{t('Due Amount')}</p>
+                                            <p className="text-sm font-bold text-gray-500">{translate('Due Amount')}</p>
                                             <h3 className="mt-2 text-2xl leading-none font-bold text-red-600">{formatCurrency(dueAmount)}</h3>
                                         </div>
                                         <div className="rounded-full bg-red-100 p-4">
@@ -410,7 +410,7 @@ export default function PublicInvoice({
                                 <div className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-sm font-bold text-gray-500">{t('Products')}</p>
+                                            <p className="text-sm font-bold text-gray-500">{translate('Products')}</p>
                                             <h3 className="mt-2 text-2xl leading-none font-bold" style={{ color: template.primary }}>
                                                 {invoice.products?.length || 0}
                                             </h3>
@@ -426,7 +426,7 @@ export default function PublicInvoice({
                                 <div className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-sm font-bold text-gray-500">{t('Invoice Date')}</p>
+                                            <p className="text-sm font-bold text-gray-500">{translate('Invoice Date')}</p>
                                             <h3 className="mt-2 text-lg leading-tight font-bold" style={{ color: template.secondary }}>
                                                 {formatDate(invoice.invoice_date)}
                                             </h3>
@@ -442,7 +442,7 @@ export default function PublicInvoice({
                                 <div className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-sm font-bold text-gray-500">{t('Due Date')}</p>
+                                            <p className="text-sm font-bold text-gray-500">{translate('Due Date')}</p>
                                             <h3 className="mt-2 text-lg leading-tight font-bold text-amber-600">{formatDate(invoice.due_date)}</h3>
                                         </div>
                                         <div className="rounded-full bg-amber-100 p-4">
@@ -458,7 +458,7 @@ export default function PublicInvoice({
                             <div className="border-b px-8 py-6" style={{ backgroundColor: `${template.primary}25` }}>
                                 <h3 className="flex items-center text-xl font-bold text-gray-800">
                                     <User className="mr-3 h-5 w-5" />
-                                    {t('Billing Details')}
+                                    {translate('Billing Details')}
                                 </h3>
                             </div>
                             <div className="p-8">
@@ -466,7 +466,7 @@ export default function PublicInvoice({
                                     <div>
                                         <h4 className="mb-4 flex items-center text-lg font-bold text-gray-900 dark:text-gray-100">
                                             <MapPin className="mr-2 h-5 w-5" style={{ color: template.primary }} />
-                                            {t('Bill To')}
+                                            {translate('Bill To')}
                                         </h4>
                                         {invoice.account && (
                                             <div className="space-y-2">
@@ -499,24 +499,24 @@ export default function PublicInvoice({
                                     <div>
                                         <h4 className="mb-4 flex items-center text-lg font-bold text-gray-900 dark:text-gray-100">
                                             <Calendar className="mr-2 h-5 w-5" style={{ color: template.primary }} />
-                                            {t('Invoice Details')}
+                                            {translate('Invoice Details')}
                                         </h4>
                                         <div className="space-y-3">
                                             <div className="flex items-center justify-between border-b border-gray-200 py-2 dark:border-gray-600">
-                                                <span className="font-medium text-gray-600 dark:text-gray-300">{t('Invoice Date')}:</span>
+                                                <span className="font-medium text-gray-600 dark:text-gray-300">{translate('Invoice Date')}:</span>
                                                 <span className="font-semibold text-gray-900 dark:text-gray-100">
                                                     {formatDate(invoice.invoice_date)}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between border-b border-gray-200 py-2 dark:border-gray-600">
-                                                <span className="font-medium text-gray-600 dark:text-gray-300">{t('Due Date')}:</span>
+                                                <span className="font-medium text-gray-600 dark:text-gray-300">{translate('Due Date')}:</span>
                                                 <span className="font-semibold text-gray-900 dark:text-gray-100">{formatDate(invoice.due_date)}</span>
                                             </div>
                                             {invoice.payment_method && (
                                                 <div className="flex items-center justify-between py-2">
                                                     <span className="flex items-center font-medium text-gray-600 dark:text-gray-300">
                                                         <CreditCard className="mr-1 h-4 w-4" />
-                                                        {t('Payment Method')}:
+                                                        {translate('Payment Method')}:
                                                     </span>
                                                     <span className="font-semibold text-gray-900 capitalize dark:text-gray-100">
                                                         {invoice.payment_method}
@@ -534,7 +534,7 @@ export default function PublicInvoice({
                             <div className="border-b bg-gray-50 px-8 py-6">
                                 <h3 className="flex items-center text-xl font-bold text-gray-800">
                                     <Package className="mr-3 h-5 w-5" />
-                                    {t('Products')}
+                                    {translate('Products')}
                                 </h3>
                             </div>
                             <div className="p-0">
@@ -543,12 +543,12 @@ export default function PublicInvoice({
                                         <table className="min-w-full">
                                             <thead>
                                                 <tr style={{ backgroundColor: template.primary }}>
-                                                    <th className="w-1/3 px-6 py-4 text-left text-base font-bold text-white">{t('Product')}</th>
-                                                    <th className="px-4 py-4 text-right text-base font-bold text-white">{t('Quantity')}</th>
-                                                    <th className="px-4 py-4 text-right text-base font-bold text-white">{t('Unit Price')}</th>
-                                                    <th className="px-4 py-4 text-right text-base font-bold text-white">{t('Discount')}</th>
-                                                    <th className="px-4 py-4 text-right text-base font-bold text-white">{t('Tax')}</th>
-                                                    <th className="w-1/6 px-4 py-4 text-right text-base font-bold text-white">{t('Total')}</th>
+                                                    <th className="w-1/3 px-6 py-4 text-left text-base font-bold text-white">{translate('Product')}</th>
+                                                    <th className="px-4 py-4 text-right text-base font-bold text-white">{translate('Quantity')}</th>
+                                                    <th className="px-4 py-4 text-right text-base font-bold text-white">{translate('Unit Price')}</th>
+                                                    <th className="px-4 py-4 text-right text-base font-bold text-white">{translate('Discount')}</th>
+                                                    <th className="px-4 py-4 text-right text-base font-bold text-white">{translate('Tax')}</th>
+                                                    <th className="w-1/6 px-4 py-4 text-right text-base font-bold text-white">{translate('Total')}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -593,7 +593,7 @@ export default function PublicInvoice({
                                                                         </div>
                                                                     </div>
                                                                 ) : (
-                                                                    <span className="font-medium text-gray-500">{t('No Tax')}</span>
+                                                                    <span className="font-medium text-gray-500">{translate('No Tax')}</span>
                                                                 )}
                                                             </td>
                                                             <td className="px-4 py-4 text-right text-base font-bold">
@@ -616,7 +616,7 @@ export default function PublicInvoice({
                                                 <tr style={{ backgroundColor: `${template.primary}10` }}>
                                                     <td colSpan={4} className="px-4 py-3"></td>
                                                     <td className="px-4 py-3 text-right text-base font-semibold" style={{ color: template.primary }}>
-                                                        {t('Discount')}:
+                                                        {translate('Discount')}:
                                                     </td>
                                                     <td className="px-4 py-3 text-right text-base font-semibold" style={{ color: template.primary }}>
                                                         -{formatCurrency(totalDiscount)}
@@ -625,7 +625,7 @@ export default function PublicInvoice({
                                                 <tr style={{ backgroundColor: `${template.primary}10` }}>
                                                     <td colSpan={4} className="px-4 py-3"></td>
                                                     <td className="px-4 py-3 text-right text-base font-semibold" style={{ color: template.primary }}>
-                                                        {t('Subtotal')}:
+                                                        {translate('Subtotal')}:
                                                     </td>
                                                     <td className="px-4 py-3 text-right text-base font-semibold" style={{ color: template.primary }}>
                                                         {formatCurrency(invoice.subtotal)}
@@ -634,7 +634,7 @@ export default function PublicInvoice({
                                                 <tr style={{ backgroundColor: `${template.primary}10` }}>
                                                     <td colSpan={4} className="px-4 py-3"></td>
                                                     <td className="px-4 py-3 text-right text-base font-semibold" style={{ color: template.primary }}>
-                                                        {t('Tax')}:
+                                                        {translate('Tax')}:
                                                     </td>
                                                     <td className="px-4 py-3 text-right text-base font-semibold" style={{ color: template.primary }}>
                                                         {formatCurrency(invoice.tax_amount)}
@@ -646,7 +646,7 @@ export default function PublicInvoice({
                                                 >
                                                     <td colSpan={4} className="px-4 py-4"></td>
                                                     <td className="px-4 py-4 text-right text-lg font-bold" style={{ color: template.primary }}>
-                                                        {t('Grand Total')}:
+                                                        {translate('Grand Total')}:
                                                     </td>
                                                     <td className="px-4 py-4 text-right">
                                                         <span className="text-xl font-bold" style={{ color: template.primary }}>
@@ -660,7 +660,7 @@ export default function PublicInvoice({
                                 ) : (
                                     <div className="py-16 text-center text-gray-500">
                                         <Package className="mx-auto mb-6 h-16 w-16 text-gray-300" />
-                                        <p className="text-lg font-medium">{t('No products added to this invoice')}</p>
+                                        <p className="text-lg font-medium">{translate('No products added to this invoice')}</p>
                                     </div>
                                 )}
                             </div>
@@ -670,19 +670,19 @@ export default function PublicInvoice({
                         {(invoice.notes || invoice.terms) && (
                             <div className="rounded-lg border bg-white shadow-sm">
                                 <div className="border-b px-8 py-6" style={{ backgroundColor: `${template.primary}25` }}>
-                                    <h3 className="text-xl font-bold text-gray-800">{t('Additional Information')}</h3>
+                                    <h3 className="text-xl font-bold text-gray-800">{translate('Additional Information')}</h3>
                                 </div>
                                 <div className="p-8">
                                     <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                                         {invoice.notes && (
                                             <div>
-                                                <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{t('Notes')}</label>
+                                                <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{translate('Notes')}</label>
                                                 <p className="mt-2 text-base leading-relaxed text-gray-700">{invoice.notes}</p>
                                             </div>
                                         )}
                                         {invoice.terms && (
                                             <div>
-                                                <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{t('Terms')}</label>
+                                                <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{translate('Terms')}</label>
                                                 <p className="mt-2 text-base leading-relaxed text-gray-700">{invoice.terms}</p>
                                             </div>
                                         )}
@@ -697,17 +697,17 @@ export default function PublicInvoice({
                                 <div className="border-b bg-gray-50 px-8 py-6">
                                     <h3 className="flex items-center text-xl font-bold text-gray-800">
                                         <DollarSign className="mr-3 h-5 w-5" />
-                                        {t('Payment History')}
+                                        {translate('Payment History')}
                                     </h3>
                                 </div>
                                 <div className="p-0">
                                     <table className="min-w-full">
                                         <thead>
                                             <tr style={{ backgroundColor: template.primary }}>
-                                                <th className="w-1/4 px-6 py-4 text-left text-base font-bold text-white">{t('Date')}</th>
-                                                <th className="w-1/4 px-4 py-4 text-left text-base font-bold text-white">{t('Method')}</th>
-                                                <th className="w-1/4 px-4 py-4 text-right text-base font-bold text-white">{t('Amount')}</th>
-                                                <th className="w-1/4 px-4 py-4 text-left text-base font-bold text-white">{t('Status')}</th>
+                                                <th className="w-1/4 px-6 py-4 text-left text-base font-bold text-white">{translate('Date')}</th>
+                                                <th className="w-1/4 px-4 py-4 text-left text-base font-bold text-white">{translate('Method')}</th>
+                                                <th className="w-1/4 px-4 py-4 text-right text-base font-bold text-white">{translate('Amount')}</th>
+                                                <th className="w-1/4 px-4 py-4 text-left text-base font-bold text-white">{translate('Status')}</th>
                                             </tr>
                                         </thead>
                                         <tbody>

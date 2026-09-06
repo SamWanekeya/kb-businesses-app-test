@@ -20,7 +20,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Leads() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const {
         auth,
         leads,
@@ -191,7 +191,7 @@ export default function Leads() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting lead...'));
+        toast.loading(translate('Deleting lead...'));
 
         router.delete(route('leads.destroy', currentItem.id), {
             onSuccess: () => {
@@ -206,7 +206,7 @@ export default function Leads() {
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
-                    toast.error(t('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
             },
         });
@@ -214,12 +214,12 @@ export default function Leads() {
 
     const handleToggleStatus = (lead: any) => {
         if (!useHasPermission('toggle-status-leads')) {
-            toast.error(t('Permission denied.'));
+            toast.error(translate('Permission denied.'));
             return;
         }
 
         const newStatus = lead.status === 'active' ? 'inactive' : 'active';
-        toast.loading(`${newStatus === 'active' ? t('Activating') : t('Deactivating')} lead...`);
+        toast.loading(`${newStatus === 'active' ? translate('Activating') : translate('Deactivating')} lead...`);
 
         router.put(
             route('leads.toggle-status', lead.id),
@@ -236,7 +236,7 @@ export default function Leads() {
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
-                        toast.error(t('Failed to update status: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        toast.error(translate('Failed to update status: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
                 },
             },
@@ -261,7 +261,7 @@ export default function Leads() {
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
-                    toast.error(t('Failed to convert: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to convert: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
             },
         });
@@ -322,13 +322,13 @@ export default function Leads() {
     // Add export button
     if (useHasPermission('export-leads')) {
         pageActions.push({
-            label: t('Export'),
+            label: translate('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
             variant: 'outline',
             onClick: () => handleExport(),
             className: 'h-8 w-8 min-[450px]:h-9 min-[450px]:w-auto px-0 min-[450px]:px-4',
             labelClassName: 'hidden min-[450px]:inline',
-            tooltip: t('Export'),
+            tooltip: translate('Export'),
             tooltipClassName: 'min-[450px]:hidden',
         });
     }
@@ -336,13 +336,13 @@ export default function Leads() {
     // Add import button
     if (useHasPermission('import-leads')) {
         pageActions.push({
-            label: t('Import'),
+            label: translate('Import'),
             icon: <FileUp className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
             variant: 'outline',
             onClick: () => setIsImportModalOpen(true),
             className: 'h-8 w-8 min-[450px]:h-9 min-[450px]:w-auto px-0 min-[450px]:px-4',
             labelClassName: 'hidden min-[450px]:inline',
-            tooltip: t('Import'),
+            tooltip: translate('Import'),
             tooltipClassName: 'min-[450px]:hidden',
         });
     }
@@ -350,24 +350,24 @@ export default function Leads() {
     // Add the "Add Lead" button if user has permission
     if (useHasPermission('create-leads')) {
         pageActions.push({
-            label: t('Add Lead'),
+            label: translate('Add Lead'),
             icon: <Plus className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
             variant: 'default',
             onClick: () => handleAddNew(),
             disabled: hasEmptyDropdowns,
             className: 'h-8 w-8 min-[450px]:h-9 min-[450px]:w-auto px-0 min-[450px]:px-4',
             labelClassName: 'hidden min-[450px]:inline',
-            tooltip: t('Add Lead'),
+            tooltip: translate('Add Lead'),
             tooltipClassName: 'min-[450px]:hidden',
         });
     }
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Lead Management') }, { title: t('Leads') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Lead Management') }, { title: translate('Leads') }];
 
     // Define table columns
     const columns = [
         {
             key: 'name',
-            label: t('Name'),
+            label: translate('Name'),
             sortable: true,
             render: (value: any, row: any) => {
                 return (
@@ -375,7 +375,7 @@ export default function Leads() {
                         <UserInitials name={row.name} />
                         <div>
                             <div className="font-medium">{row.name}</div>
-                            <div className="text-muted-foreground text-sm">{row.email || t('No email')}</div>
+                            <div className="text-muted-foreground text-sm">{row.email || translate('No email')}</div>
                         </div>
                     </div>
                 );
@@ -383,7 +383,7 @@ export default function Leads() {
         },
         {
             key: 'assigned_user',
-            label: t('Assigned To'),
+            label: translate('Assigned To'),
             render: (value: any) =>
                 value ? (
                     <div className="flex items-center gap-3">
@@ -397,23 +397,23 @@ export default function Leads() {
                         </div>
                     </div>
                 ) : (
-                    <span className="text-muted-foreground">{t('Unassigned')}</span>
+                    <span className="text-muted-foreground">{translate('Unassigned')}</span>
                 ),
         },
         {
             key: 'value',
-            label: t('Value'),
+            label: translate('Value'),
             sortable: true,
             render: (value: any) =>
                 value ? (
                     <span className="font-mono">{window.appSettings?.formatCurrency(parseFloat(value)) || `$${parseFloat(value).toFixed(2)}`}</span>
                 ) : (
-                    t('-')
+                    translate('-')
                 ),
         },
         {
             key: 'lead_status',
-            label: t('Progress'),
+            label: translate('Progress'),
             render: (value: any) =>
                 value ? (
                     <span
@@ -423,12 +423,12 @@ export default function Leads() {
                         {value.name}
                     </span>
                 ) : (
-                    t('-')
+                    translate('-')
                 ),
         },
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             render: (value: string) => (
                 <span
                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
@@ -437,13 +437,13 @@ export default function Leads() {
                             : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                     }`}
                 >
-                    {value === 'active' ? t('Active') : t('Inactive')}
+                    {value === 'active' ? translate('Active') : translate('Inactive')}
                 </span>
             ),
         },
         {
             key: 'is_converted',
-            label: t('Converted'),
+            label: translate('Converted'),
             render: (value: boolean) => (
                 <span
                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
@@ -452,13 +452,13 @@ export default function Leads() {
                             : 'bg-gray-50 text-gray-700 ring-1 ring-gray-600/20 ring-inset'
                     }`}
                 >
-                    {value ? t('Yes') : t('No')}
+                    {value ? translate('Yes') : translate('No')}
                 </span>
             ),
         },
         {
             key: 'created_at',
-            label: t('Created At'),
+            label: translate('Created At'),
             sortable: true,
             type: 'date',
         },
@@ -467,7 +467,7 @@ export default function Leads() {
     // Define table actions
     const actions = [
         {
-            label: t('Convert to Account'),
+            label: translate('Convert to Account'),
             icon: 'Building2',
             action: 'convert-to-account',
             className: 'text-green-500',
@@ -475,7 +475,7 @@ export default function Leads() {
             condition: (item: any) => !item.is_converted,
         },
         {
-            label: t('Convert to Contact'),
+            label: translate('Convert to Contact'),
             icon: 'Users',
             action: 'convert-to-contact',
             className: 'text-blue-500',
@@ -483,28 +483,28 @@ export default function Leads() {
             condition: (item: any) => !item.is_converted,
         },
         {
-            label: t('Toggle Status'),
+            label: translate('Toggle Status'),
             icon: 'Lock',
             action: 'toggle-status',
             className: 'text-amber-500',
             requiredPermission: 'toggle-status-leads',
         },
         {
-            label: t('View'),
+            label: translate('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
             requiredPermission: 'view-leads',
         },
         {
-            label: t('Edit'),
+            label: translate('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
             requiredPermission: 'edit-leads',
         },
         {
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
@@ -514,8 +514,8 @@ export default function Leads() {
 
     return (
         <PageTemplate
-            title={t('Leads')}
-            description={t('Manage your leads')}
+            title={translate('Leads')}
+            description={translate('Manage your leads')}
             url="/leads"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -532,13 +532,13 @@ export default function Leads() {
                     filters={[
                         {
                             name: 'lead_status_id',
-                            label: t('Lead Status'),
+                            label: translate('Lead Status'),
                             type: 'select' as const,
                             searchable: true,
                             value: selectedLeadStatus,
                             onChange: setSelectedLeadStatus,
                             options: [
-                                { value: 'all', label: t('All Statuses') },
+                                { value: 'all', label: translate('All Statuses') },
                                 ...allLeadStatuses.map((status: any) => ({
                                     value: status.id.toString(),
                                     label: status.name,
@@ -547,13 +547,13 @@ export default function Leads() {
                         },
                         {
                             name: 'lead_source_id',
-                            label: t('Lead Source'),
+                            label: translate('Lead Source'),
                             type: 'select' as const,
                             searchable: true,
                             value: selectedLeadSource,
                             onChange: setSelectedLeadSource,
                             options: [
-                                { value: 'all', label: t('All Sources') },
+                                { value: 'all', label: translate('All Sources') },
                                 ...allLeadSources.map((source: any) => ({
                                     value: source.id.toString(),
                                     label: source.name,
@@ -562,37 +562,37 @@ export default function Leads() {
                         },
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select' as const,
                             value: selectedStatus,
                             onChange: setSelectedStatus,
                             options: [
-                                { value: 'all', label: t('All Status') },
-                                { value: 'active', label: t('Active') },
-                                { value: 'inactive', label: t('Inactive') },
+                                { value: 'all', label: translate('All Status') },
+                                { value: 'active', label: translate('Active') },
+                                { value: 'inactive', label: translate('Inactive') },
                             ],
                         },
                         {
                             name: 'is_converted',
-                            label: t('Conversion Status'),
+                            label: translate('Conversion Status'),
                             type: 'select' as const,
                             value: selectedConverted,
                             onChange: setSelectedConverted,
                             options: [
-                                { value: 'all', label: t('All Leads') },
-                                { value: '1', label: t('Converted') },
-                                { value: '0', label: t('Not Converted') },
+                                { value: 'all', label: translate('All Leads') },
+                                { value: '1', label: translate('Converted') },
+                                { value: '0', label: translate('Not Converted') },
                             ],
                         },
                         {
                             name: 'assigned_to',
-                            label: t('Assigned To'),
+                            label: translate('Assigned To'),
                             type: 'select' as const,
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: t('All Users') },
+                                { value: 'all', label: translate('All Users') },
                                 ...allUsers.map((user: any) => ({
                                     value: user.id.toString(),
                                     label: user.name,
@@ -630,9 +630,9 @@ export default function Leads() {
                         );
                     }}
                     viewOptions={[
-                        { value: 'list', label: t('List View'), icon: 'List' },
-                        { value: 'kanban', label: t('Kanban View'), icon: 'Columns' },
-                        // { value: 'grid', label: t('Grid View'), icon: 'Grid3X3' }
+                        { value: 'list', label: translate('List View'), icon: 'List' },
+                        { value: 'kanban', label: translate('Kanban View'), icon: 'Columns' },
+                        // { value: 'grid', label: translate('Grid View'), icon: 'Grid3X3' }
                     ]}
                 />
             </div>
@@ -664,7 +664,7 @@ export default function Leads() {
                         to={leads?.to || leads?.data?.length || 0}
                         total={leads?.total || leads?.data?.length || 0}
                         links={leads?.links}
-                        entityName={t('leads')}
+                        entityName={translate('leads')}
                         onPageChange={(url) => router.get(url)}
                         //  {...(activeView !== 'kanban' && {
                         currentPerPage={pageFilters.per_page?.toString() || '10'}
@@ -711,9 +711,9 @@ export default function Leads() {
                                         <LucidIcons.LayoutGrid className="text-primary h-10 w-10" />
                                     </div>
                                     <div className="space-y-1.5">
-                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{t('No Lead Status Yet')}</h3>
+                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{translate('No Lead Status Yet')}</h3>
                                         <p className="text-muted-foreground text-sm leading-relaxed">
-                                            {t('Set up lead statuses to start organizing your work in a Kanban board.')}
+                                            {translate('Set up lead statuses to start organizing your work in a Kanban board.')}
                                         </p>
                                     </div>
                                     {useHasPermission('manage-lead-statuses') && (
@@ -722,7 +722,7 @@ export default function Leads() {
                                             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
                                         >
                                             <Plus className="h-4 w-4" />
-                                            {t('Add Lead Status')}
+                                            {translate('Add Lead Status')}
                                         </button>
                                     )}
                                 </div>
@@ -743,14 +743,14 @@ export default function Leads() {
                                             const leadId = e.dataTransfer.getData('leadId');
                                             if (!leadId) return;
                                             if (!useHasPermission('edit-leads')) {
-                                                toast.error(t('Permission denied.'));
+                                                toast.error(translate('Permission denied.'));
                                                 return;
                                             }
                                             const currentLead = Object.values(kanbanData)
                                                 .flatMap((c: any) => c.items)
                                                 .find((l: any) => l.id.toString() === leadId);
                                             if (currentLead) {
-                                                toast.loading(t('Updating...'));
+                                                toast.loading(translate('Updating...'));
                                                 router.put(
                                                     route('leads.update', leadId),
                                                     { ...(currentLead as any), lead_status_id: status.id },
@@ -761,7 +761,7 @@ export default function Leads() {
                                                         },
                                                         onError: () => {
                                                             toast.dismiss();
-                                                            toast.error(t('Failed to update lead status'));
+                                                            toast.error(translate('Failed to update lead status'));
                                                         },
                                                     },
                                                 );
@@ -787,7 +787,7 @@ export default function Leads() {
                                                 <button
                                                     onClick={() => handleAddLead(status.id.toString())}
                                                     className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-white/60 hover:text-gray-800"
-                                                    title={t('Add Lead')}
+                                                    title={translate('Add Lead')}
                                                 >
                                                     <Plus className="h-4 w-4" />
                                                 </button>
@@ -801,7 +801,7 @@ export default function Leads() {
                                                     <div className="mb-2 flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-gray-200">
                                                         <User className="h-6 w-6 text-gray-300" />
                                                     </div>
-                                                    <p className="text-xs text-gray-400">{t('Drop leads here')}</p>
+                                                    <p className="text-xs text-gray-400">{translate('Drop leads here')}</p>
                                                 </div>
                                             ) : (
                                                 statusLeads.map((lead: any) => (
@@ -834,7 +834,7 @@ export default function Leads() {
                                                                             {lead.name}
                                                                         </h4>
                                                                         <p className="mt-0.5 truncate text-xs text-gray-500">
-                                                                            {lead.email || t('No email')}
+                                                                            {lead.email || translate('No email')}
                                                                         </p>
                                                                     </div>
                                                                     {(useHasPermission('view-leads') ||
@@ -855,13 +855,13 @@ export default function Leads() {
                                                                                 {useHasPermission('view-leads') && (
                                                                                     <DropdownMenuItem onClick={() => handleAction('view', lead)}>
                                                                                         <Eye className="tex mr-2 h-4 w-4" />
-                                                                                        {t('View')}
+                                                                                        {translate('View')}
                                                                                     </DropdownMenuItem>
                                                                                 )}
                                                                                 {useHasPermission('edit-leads') && (
                                                                                     <DropdownMenuItem onClick={() => handleAction('edit', lead)}>
                                                                                         <Edit className="mr-2 h-4 w-4" />
-                                                                                        {t('Edit')}
+                                                                                        {translate('Edit')}
                                                                                     </DropdownMenuItem>
                                                                                 )}
                                                                                 {useHasPermission('convert-leads') &&
@@ -875,7 +875,7 @@ export default function Leads() {
                                                                                                 className="text-green-600"
                                                                                             >
                                                                                                 <Building2 className="mr-2 h-4 w-4" />
-                                                                                                {t('To Account')}
+                                                                                                {translate('To Account')}
                                                                                             </DropdownMenuItem>
                                                                                             <DropdownMenuItem
                                                                                                 onClick={() =>
@@ -884,7 +884,7 @@ export default function Leads() {
                                                                                                 className="text-blue-600"
                                                                                             >
                                                                                                 <Users className="mr-2 h-4 w-4" />
-                                                                                                {t('To Contact')}
+                                                                                                {translate('To Contact')}
                                                                                             </DropdownMenuItem>
                                                                                         </>
                                                                                     )}
@@ -896,7 +896,7 @@ export default function Leads() {
                                                                                             className="text-red-600"
                                                                                         >
                                                                                             <Trash2 className="mr-2 h-4 w-4" />
-                                                                                            {t('Delete')}
+                                                                                            {translate('Delete')}
                                                                                         </DropdownMenuItem>
                                                                                     </>
                                                                                 )}
@@ -934,7 +934,7 @@ export default function Leads() {
                                                                         )}
                                                                         {lead.is_converted && (
                                                                             <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset">
-                                                                                {t('Converted')}
+                                                                                {translate('Converted')}
                                                                             </span>
                                                                         )}
                                                                     </div>
@@ -1001,12 +1001,12 @@ export default function Leads() {
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{lead.name}</h3>
-                                                <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">{lead.email || t('No email')}</p>
+                                                <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">{lead.email || translate('No email')}</p>
                                                 <div className="flex items-center">
                                                     <div className={`h-2 w-2 rounded-full mr-2 ${lead.status === 'active' ? 'bg-green-500' : 'bg-gray-400'
                                                         }`}></div>
                                                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                                        {lead.status === 'active' ? t('Active') : t('Inactive')}
+                                                        {lead.status === 'active' ? translate('Active') : translate('Inactive')}
                                                     </span>
                                                 </div>
                                             </div>
@@ -1066,12 +1066,12 @@ export default function Leads() {
                     {/* <div className="border border-gray-200 dark:border-gray-700 rounded-md p-3 mb-4">
                                         <div className="mb-2">
                                             <span className="text-sm text-gray-600 dark:text-gray-400">
-                                                {t('Organization')}: {lead.organization || t('-')}
+                                                {translate('Organization')}: {lead.organization || translate('-')}
                                             </span>
                                         </div>
                                         <div className="mb-2">
                                             <span className="text-sm text-gray-600 dark:text-gray-400">
-                                                {t('Value')}: {lead.value ? (window.appSettings?.formatCurrency(parseFloat(lead.value)) || `$${parseFloat(lead.value).toFixed(2)}`) : t('-')}
+                                                {translate('Value')}: {lead.value ? (window.appSettings?.formatCurrency(parseFloat(lead.value)) || `$${parseFloat(lead.value).toFixed(2)}`) : translate('-')}
                                             </span>
                                         </div>
                                         <div className="flex flex-wrap gap-1">
@@ -1086,7 +1086,7 @@ export default function Leads() {
                                             )}
                                             {lead.is_converted && (
                                                 <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset bg-green-50 text-green-700 ring-green-600/20">
-                                                    {t('Converted')}
+                                                    {translate('Converted')}
                                                 </span>
                                             )}
                                         </div>
@@ -1157,7 +1157,7 @@ export default function Leads() {
                             to={leads?.to || leads?.data?.length || 0}
                             total={leads?.total || leads?.data?.length || 0}
                             links={leads?.links}
-                            entityName={t('leads')}
+                            entityName={translate('leads')}
                             onPageChange={(url) => router.get(url)}
                             perPageOptions={[12, 24, 48, 96]}
                             currentPerPage={pageFilters.per_page?.toString() || '12'}
@@ -1207,7 +1207,7 @@ export default function Leads() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={t('lead')}
+                entityName={translate('lead')}
             />
 
             {/* Convert Modal */}
@@ -1221,7 +1221,7 @@ export default function Leads() {
                             ? [
                                   {
                                       name: 'account_type_id',
-                                      label: t('Account Type'),
+                                      label: translate('Account Type'),
                                       type: 'select',
                                       required: true,
                                       searchable: true,
@@ -1233,13 +1233,13 @@ export default function Leads() {
                                           accountTypes.length === 0
                                               ? {
                                                     link: route('account-types.index'),
-                                                    linkText: t('Account Types'),
+                                                    linkText: translate('Account Types'),
                                                 }
                                               : undefined,
                                   },
                                   {
                                       name: 'account_industry_id',
-                                      label: t('Account Industry'),
+                                      label: translate('Account Industry'),
                                       type: 'select',
                                       required: true,
                                       searchable: true,
@@ -1251,34 +1251,34 @@ export default function Leads() {
                                           accountIndustries.length === 0
                                               ? {
                                                     link: route('account-industries.index'),
-                                                    linkText: t('Account Industries'),
+                                                    linkText: translate('Account Industries'),
                                                 }
                                               : undefined,
                                   },
-                                  { name: 'website', label: t('Website'), type: 'text', colSpan: 2, placeholder: 'eg. https://kakbima.dev' },
+                                  { name: 'website', label: translate('Website'), type: 'text', colSpan: 2, placeholder: 'eg. https://kakbima.dev' },
                                   {
                                       name: 'billing_address',
-                                      label: t('Billing Address'),
+                                      label: translate('Billing Address'),
                                       type: 'textarea',
                                       required: true,
                                       colSpan: 2,
-                                      placeholder: t('eg. 123 Main St'),
+                                      placeholder: translate('eg. 123 Main St'),
                                   },
-                                  { name: 'billing_city', label: t('Billing City'), type: 'text', required: true, placeholder: t('eg. New York') },
-                                  { name: 'billing_state', label: t('Billing State'), type: 'text', required: true, placeholder: t('eg. NY') },
+                                  { name: 'billing_city', label: translate('Billing City'), type: 'text', required: true, placeholder: translate('eg. New York') },
+                                  { name: 'billing_state', label: translate('Billing State'), type: 'text', required: true, placeholder: translate('eg. NY') },
                                   {
                                       name: 'billing_postal_code',
-                                      label: t('Billing Postal Code'),
+                                      label: translate('Billing Postal Code'),
                                       type: 'text',
                                       required: true,
-                                      placeholder: t('eg. 10001'),
+                                      placeholder: translate('eg. 10001'),
                                   },
                                   {
                                       name: 'billing_country',
-                                      label: t('Billing Country'),
+                                      label: translate('Billing Country'),
                                       type: 'text',
                                       required: true,
-                                      placeholder: t('eg. United States'),
+                                      placeholder: translate('eg. United States'),
                                   },
                                   {
                                       name: 'billing_shipping_section',
@@ -1299,8 +1299,8 @@ export default function Leads() {
                                                                   'value',
                                                               ).set;
                                                               nativeTextareaSetter.call(shippingTextarea, formData.billing_address);
-                                                              shippingTextarea.dispatchEvent(new Event('input', { bubbles: true }));
-                                                              shippingTextarea.dispatchEvent(new Event('change', { bubbles: true }));
+                                                              shippingTextarea.dispatchEvent(new Eventranslate('input', { bubbles: true }));
+                                                              shippingTextarea.dispatchEvent(new Eventranslate('change', { bubbles: true }));
                                                           }
                                                       }, 10);
 
@@ -1325,8 +1325,8 @@ export default function Leads() {
                                                                           'value',
                                                                       ).set;
                                                                       nativeInputValueSetter.call(input, billingValues[index]);
-                                                                      input.dispatchEvent(new Event('input', { bubbles: true }));
-                                                                      input.dispatchEvent(new Event('change', { bubbles: true }));
+                                                                      input.dispatchEvent(new Eventranslate('input', { bubbles: true }));
+                                                                      input.dispatchEvent(new Eventranslate('change', { bubbles: true }));
                                                                   }
                                                               }, index * 20);
                                                           });
@@ -1334,27 +1334,27 @@ export default function Leads() {
                                                   }}
                                                   className="w-full"
                                               >
-                                                  {t('Copy Billing to Shipping Address')}
+                                                  {translate('Copy Billing to Shipping Address')}
                                               </Button>
                                           </div>
                                       ),
                                   },
                                   {
                                       name: 'shipping_address',
-                                      label: t('Shipping Address'),
+                                      label: translate('Shipping Address'),
                                       type: 'textarea',
                                       colSpan: 2,
-                                      placeholder: t('eg. 456 Elm St'),
+                                      placeholder: translate('eg. 456 Elm St'),
                                   },
-                                  { name: 'shipping_city', label: t('Shipping City'), type: 'text', placeholder: t('eg. Los Angeles') },
-                                  { name: 'shipping_state', label: t('Shipping State'), type: 'text', placeholder: t('eg. CA') },
-                                  { name: 'shipping_postal_code', label: t('Shipping Postal Code'), type: 'text', placeholder: t('eg. 90001') },
-                                  { name: 'shipping_country', label: t('Shipping Country'), type: 'text', placeholder: t('eg. United States') },
+                                  { name: 'shipping_city', label: translate('Shipping City'), type: 'text', placeholder: translate('eg. Los Angeles') },
+                                  { name: 'shipping_state', label: translate('Shipping State'), type: 'text', placeholder: translate('eg. CA') },
+                                  { name: 'shipping_postal_code', label: translate('Shipping Postal Code'), type: 'text', placeholder: translate('eg. 90001') },
+                                  { name: 'shipping_country', label: translate('Shipping Country'), type: 'text', placeholder: translate('eg. United States') },
                               ]
                             : [
                                   {
                                       name: 'account_id',
-                                      label: t('Account'),
+                                      label: translate('Account'),
                                       type: 'select',
                                       required: true,
                                       searchable: true,
@@ -1367,18 +1367,18 @@ export default function Leads() {
                                           accounts.length === 0
                                               ? {
                                                     link: route('accounts.index'),
-                                                    linkText: t('Accounts'),
+                                                    linkText: translate('Accounts'),
                                                 }
                                               : undefined,
                                   },
-                                  { name: 'position', label: t('Position'), type: 'text', colSpan: 2, placeholder: t('eg. CEO, Manager, Developer') },
+                                  { name: 'position', label: translate('Position'), type: 'text', colSpan: 2, placeholder: translate('eg. CEO, Manager, Developer') },
                                   {
                                       name: 'address',
-                                      label: t('Address'),
+                                      label: translate('Address'),
                                       type: 'textarea',
                                       required: true,
                                       colSpan: 2,
-                                      placeholder: t('eg. 123 Main St, City, Country'),
+                                      placeholder: translate('eg. 123 Main St, City, Country'),
                                   },
                               ],
                     modalSize: 'xl',
@@ -1404,7 +1404,7 @@ export default function Leads() {
                     importingRef.current = true;
                     setIsImportModalOpen(false);
                 }}
-                title={t('Import Leads from CSV/Excel')}
+                title={translate('Import Leads from CSV/Excel')}
                 importRoute="lead.import"
                 parseRoute="lead.parse"
                 samplePath={samplePath}

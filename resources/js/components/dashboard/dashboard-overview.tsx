@@ -9,36 +9,36 @@ interface DashboardOverviewProps {
 }
 
 export function DashboardOverview({ userType, stats }: DashboardOverviewProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
 
     const superAdminFeatures = [
         {
-            title: t('Organization Management'),
-            description: t('Manage all registered organizations and their subscriptions'),
+            title: translate('Organization Management'),
+            description: translate('Manage all registered organizations and their subscriptions'),
             icon: Building2,
             color: 'blue',
             href: route('organizations.index'),
             count: stats?.totalOrganizations || 0,
         },
         {
-            title: t('Plan Management'),
-            description: t('Create and manage subscription plans'),
+            title: translate('Plan Management'),
+            description: translate('Create and manage subscription plans'),
             icon: CreditCard,
             color: 'purple',
             href: route('plans.index'),
             count: stats?.activePlans || 0,
         },
         {
-            title: t('Subscription Management'),
-            description: t('Monitor and manage all system subscriptions'),
+            title: translate('Subscription Management'),
+            description: translate('Monitor and manage all system subscriptions'),
             icon: Wallet,
             color: 'green',
             href: route('plan-orders.index'),
             count: stats?.totalSubscriptions || 0,
         },
         {
-            title: t('Coupon Management'),
-            description: t('Manage all coupons'),
+            title: translate('Coupon Management'),
+            description: translate('Manage all coupons'),
             icon: TicketPercent,
             color: 'orange',
             href: route('coupons.index'),
@@ -48,32 +48,32 @@ export function DashboardOverview({ userType, stats }: DashboardOverviewProps) {
 
     const organizationFeatures = [
         {
-            title: t('Lead Management'),
-            description: t('Track and manage your sales leads'),
+            title: translate('Lead Management'),
+            description: translate('Track and manage your sales leads'),
             icon: Target,
             color: 'green',
             href: route('leads.index'),
             count: stats?.totalLeads || 0,
         },
         {
-            title: t('Sales Tracking'),
-            description: t('Monitor your sales performance'),
+            title: translate('Sales Tracking'),
+            description: translate('Monitor your sales performance'),
             icon: TrendingUp,
             color: 'purple',
             href: route('sales-orders.index'),
             count: stats?.totalSales || 0,
         },
         {
-            title: t('Customer Base'),
-            description: t('Manage your customer relationships'),
+            title: translate('Customer Base'),
+            description: translate('Manage your customer relationships'),
             icon: Building2,
             color: 'orange',
             href: route('accounts.index'),
             count: stats?.totalCustomers || 0,
         },
         {
-            title: t('Project Portfolio'),
-            description: t('Track your active projects'),
+            title: translate('Project Portfolio'),
+            description: translate('Track your active projects'),
             icon: Briefcase,
             color: 'blue',
             href: route('projects.index'),
@@ -98,12 +98,12 @@ export function DashboardOverview({ userType, stats }: DashboardOverviewProps) {
             <CardHeader className="pb-4 text-center">
                 <div className="mb-2 flex items-center justify-center gap-2">
                     <Sparkles className="text-primary h-5 w-5" />
-                    <CardTitle className="text-xl font-semibold">{t('Features')}</CardTitle>
+                    <CardTitle className="text-xl font-semibold">{translate('Features')}</CardTitle>
                 </div>
                 <p className="text-muted-foreground text-base">
                     {userType === 'super_admin'
-                        ? t('Comprehensive system management and oversight tools')
-                        : t('Everything you need to manage your digital organization presence')}
+                        ? translate('Comprehensive system management and oversight tools')
+                        : translate('Everything you need to manage your digital organization presence')}
                 </p>
             </CardHeader>
             <CardContent>
@@ -125,7 +125,7 @@ export function DashboardOverview({ userType, stats }: DashboardOverviewProps) {
                                         <h3 className="group-hover:text-primary mb-1 text-base font-semibold transition-colors">{feature.title}</h3>
                                         <p className="text-muted-foreground mb-3 text-sm">{feature.description}</p>
                                         <div className="text-muted-foreground group-hover:text-primary flex items-center justify-between text-sm transition-colors">
-                                            <span>{t('Explore')}</span>
+                                            <span>{translate('Explore')}</span>
                                             <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
                                         </div>
                                     </CardContent>
@@ -141,8 +141,8 @@ export function DashboardOverview({ userType, stats }: DashboardOverviewProps) {
                         <TrendingUp className="h-3.5 w-3.5" />
                         <span className="text-sm font-medium">
                             {userType === 'super_admin'
-                                ? t('System growing at {{growth}}% monthly', { growth: stats?.monthlyGrowth || 0 })
-                                : t('Your organization growing at {{growth}}% monthly', { growth: stats?.monthlyGrowth || 0 })}
+                                ? translate('System growing at {{growth}}% monthly', { growth: stats?.monthlyGrowth || 0 })
+                                : translate('Your organization growing at {{growth}}% monthly', { growth: stats?.monthlyGrowth || 0 })}
                         </span>
                     </div>
                 </div>

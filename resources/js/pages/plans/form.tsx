@@ -37,7 +37,7 @@ interface Props {
 }
 
 export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPlanExists = false }: Props) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
 
     const isEdit = !!plan;
 
@@ -88,13 +88,13 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
             description={t(isEdit ? 'Update subscription plan details' : 'Add a new subscription plan')}
             url={isEdit ? route('plans.update', plan.id) : '/plans/create'}
             breadcrumbs={[
-                { title: t('Dashboard'), href: route('dashboard') },
-                { title: t('Plans'), href: route('plans.index') },
+                { title: translate('Dashboard'), href: route('dashboard') },
+                { title: translate('Plans'), href: route('plans.index') },
                 { title: t(isEdit ? 'Edit Plan' : 'Create Plan') },
             ]}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => router.visit(route('plans.index')),
@@ -107,7 +107,7 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                         <div className="space-y-4">
                             <div>
                                 <Label htmlFor="name" required>
-                                    {t('Plan Name')}
+                                    {translate('Plan Name')}
                                 </Label>
                                 <Input
                                     id="name"
@@ -122,7 +122,7 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
 
                             <div>
                                 <Label htmlFor="price" required>
-                                    {t('Monthly Price')}
+                                    {translate('Monthly Price')}
                                 </Label>
                                 <Input
                                     id="price"
@@ -139,7 +139,7 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
 
                             <div>
                                 <Label htmlFor="yearly_price">
-                                    {t('Yearly Price')} <span className="text-muted-foreground text-sm">({t('Optional')})</span>
+                                    {translate('Yearly Price')} <span className="text-muted-foreground text-sm">({translate('Optional')})</span>
                                 </Label>
                                 <Input
                                     id="yearly_price"
@@ -148,23 +148,23 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                     step="0.01"
                                     value={data.yearly_price}
                                     onChange={handleChange}
-                                    placeholder={t('Leave empty for 20% discount')}
+                                    placeholder={translate('Leave empty for 20% discount')}
                                     className={errors.yearly_price ? 'border-red-500' : ''}
                                 />
                                 <p className="text-muted-foreground mt-1 text-xs">
-                                    {t('If left empty, yearly price will be calculated as 80% of monthly price × 12')}
+                                    {translate('If left empty, yearly price will be calculated as 80% of monthly price × 12')}
                                 </p>
                                 <InputError message={errors.yearly_price} />
                             </div>
 
                             <div>
-                                <Label htmlFor="description">{t('Description')}</Label>
+                                <Label htmlFor="description">{translate('Description')}</Label>
                                 <Textarea
                                     id="description"
                                     name="description"
                                     value={data.description}
                                     onChange={handleChange}
-                                    placeholder={t('Enter plan description...')}
+                                    placeholder={translate('Enter plan description...')}
                                     rows={3}
                                     className={errors.description ? 'border-red-500' : ''}
                                 />
@@ -175,7 +175,7 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                         <div className="space-y-4">
                             <div>
                                 <Label htmlFor="maximum_users" required>
-                                    {t('Maximum Users')}
+                                    {translate('Maximum Users')}
                                 </Label>
                                 <Input
                                     id="maximum_users"
@@ -191,7 +191,7 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
 
                             <div>
                                 <Label htmlFor="maximum_projects" required>
-                                    {t('Maximum Projects')}
+                                    {translate('Maximum Projects')}
                                 </Label>
                                 <Input
                                     id="maximum_projects"
@@ -207,7 +207,7 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
 
                             <div>
                                 <Label htmlFor="maximum_contacts" required>
-                                    {t('Maximum Contacts')}
+                                    {translate('Maximum Contacts')}
                                 </Label>
                                 <Input
                                     id="maximum_contacts"
@@ -223,7 +223,7 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
 
                             <div>
                                 <Label htmlFor="maximum_accounts" required>
-                                    {t('Maximum Accounts')}
+                                    {translate('Maximum Accounts')}
                                 </Label>
                                 <Input
                                     id="maximum_accounts"
@@ -239,7 +239,7 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
 
                             <div>
                                 <Label htmlFor="storage_limit" required>
-                                    {t('Storage Limit (GB)')}
+                                    {translate('Storage Limit (GB)')}
                                 </Label>
                                 <Input
                                     id="storage_limit"
@@ -255,7 +255,7 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                             </div>
 
                             <div>
-                                <Label htmlFor="trial_days">{t('Trial Days')}</Label>
+                                <Label htmlFor="trial_days">{translate('Trial Days')}</Label>
                                 <Input
                                     id="trial_days"
                                     name="trial_days"
@@ -271,11 +271,11 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                     </div>
 
                     <div className="space-y-4 rounded-lg border p-4">
-                        <h3 className="font-medium">{t('Features')}</h3>
+                        <h3 className="font-medium">{translate('Features')}</h3>
 
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="flex items-center justify-between">
-                                <Label htmlFor="enable_kakbima_intelligence">{t('Kakbima Intelligence')}</Label>
+                                <Label htmlFor="enable_kakbima_intelligence">{translate('Kakbima Intelligence')}</Label>
                                 <Switch
                                     id="enable_kakbima_intelligence"
                                     checked={data.enable_kakbima_intelligence === 'on'}
@@ -284,7 +284,7 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                             </div>
 
                             <div className="flex items-center justify-between">
-                                <Label htmlFor="is_trial">{t('Enable Trial')}</Label>
+                                <Label htmlFor="is_trial">{translate('Enable Trial')}</Label>
                                 <Switch
                                     id="is_trial"
                                     checked={data.is_trial === 'on'}
@@ -295,11 +295,11 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                     </div>
 
                     <div className="space-y-4 rounded-lg border p-4">
-                        <h3 className="font-medium">{t('Settings')}</h3>
+                        <h3 className="font-medium">{translate('Settings')}</h3>
 
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="flex items-center justify-between">
-                                <Label htmlFor="is_plan_enabled">{t('Active')}</Label>
+                                <Label htmlFor="is_plan_enabled">{translate('Active')}</Label>
                                 <Switch
                                     id="is_plan_enabled"
                                     checked={data.is_plan_enabled === 'on'}
@@ -309,10 +309,10 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
 
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <Label htmlFor="is_default">{t('Default Plan')}</Label>
+                                    <Label htmlFor="is_default">{translate('Default Plan')}</Label>
                                     {(isEdit ? !plan?.is_default : hasDefaultPlan) && (
                                         <p className="mt-1 text-xs text-amber-600">
-                                            {t('Setting this as default will remove default status from the current default plan.')}
+                                            {translate('Setting this as default will remove default status from the current default plan.')}
                                         </p>
                                     )}
                                 </div>
@@ -323,10 +323,10 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
 
                     <div className="flex justify-end gap-3">
                         <Button type="button" variant="outline" onClick={() => router.get(route('plans.index'))}>
-                            {t('Cancel')}
+                            {translate('Cancel')}
                         </Button>
                         <Button type="submit" disabled={processing}>
-                            {processing ? t('Saving...') : t('Save')}
+                            {processing ? translate('Saving...') : translate('Save')}
                         </Button>
                     </div>
                 </form>

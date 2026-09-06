@@ -11,7 +11,7 @@ interface SettingsSectionProps {
 }
 
 export function SettingsSection({ title, description, children, action }: SettingsSectionProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     return (
         <Card className="mb-6">
             <CardHeader className="pb-3">
@@ -30,7 +30,7 @@ export function SettingsSection({ title, description, children, action }: Settin
                                         </div>
                                     </TooltipTrigger>
                                     <TooltipContent className="min-[1300px]:hidden">
-                                        <p>{t('Save Changes')}</p>
+                                        <p>{translate('Save Changes')}</p>
                                     </TooltipContent>
                                 </Tooltip>
                             </TooltipProvider>

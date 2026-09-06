@@ -104,7 +104,7 @@ export default function PublicSalesOrder({
     themeColor = 'blue',
     customColor = null,
 }: Props) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { props } = usePage<any>();
     const globalSettings = props.globalSettings;
     const [copied, setCopied] = useState(false);
@@ -131,7 +131,7 @@ export default function PublicSalesOrder({
     };
 
     const formatDate = (dateString: string) => {
-        if (!dateString) return t('-');
+        if (!dateString) return translate('-');
         return window.appSettings?.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
@@ -239,14 +239,14 @@ export default function PublicSalesOrder({
             <span
                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.draft}`}
             >
-                {t(status?.charAt(0).toUpperCase() + status?.slice(1)) || t('Draft')}
+                {t(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Draft')}
             </span>
         );
     };
 
     return (
         <>
-            <Head title={t('Sales Order {{orderNumber}}', { orderNumber: salesOrder.order_number })}>
+            <Head title={translate('Sales Order {{orderNumber}}', { orderNumber: salesOrder.order_number })}>
                 {settings?.favicon && <link rel="icon" href={getDisplayUrl(settings.favicon, globalSettings)} />}
             </Head>
 
@@ -255,9 +255,9 @@ export default function PublicSalesOrder({
                     <div className="mb-8 flex flex-col items-start justify-between sm:flex-row sm:items-center print:hidden">
                         <div className="mb-4 sm:mb-0">
                             <h1 className="text-2xl font-bold text-gray-900">
-                                {t('Sales Order Details')} - {salesOrder.order_number}
+                                {translate('Sales Order Details')} - {salesOrder.order_number}
                             </h1>
-                            <p className="mt-1 text-gray-600">{t('View your sales order')}</p>
+                            <p className="mt-1 text-gray-600">{translate('View your sales order')}</p>
                         </div>
                         <div className="flex flex-wrap gap-3">
                             {useHasPermission('view-sales-orders') && (
@@ -266,7 +266,7 @@ export default function PublicSalesOrder({
                                     className="inline-flex cursor-pointer items-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-md"
                                 >
                                     {copied ? <Check className="mr-2 h-4 w-4 text-green-600" /> : <Copy className="mr-2 h-4 w-4" />}
-                                    {copied ? t('Copied!') : t('Copy Link')}
+                                    {copied ? translate('Copied!') : translate('Copy Link')}
                                 </button>
                             )}
                             <button
@@ -278,7 +278,7 @@ export default function PublicSalesOrder({
                                 }}
                             >
                                 <Printer className="mr-2 h-4 w-4" />
-                                {t('Print Sales Order')}
+                                {translate('Print Sales Order')}
                             </button>
                         </div>
                     </div>
@@ -304,7 +304,7 @@ export default function PublicSalesOrder({
                                 <div className="flex-1">
                                     <h1 className="text-lg leading-tight font-bold text-gray-900">{salesOrder.name}</h1>
                                     <p className="mt-2 max-w-3xl text-base leading-relaxed text-gray-600">
-                                        {salesOrder.description || t('No description provided')}
+                                        {salesOrder.description || translate('No description provided')}
                                     </p>
                                 </div>
                                 <div className="ml-6 text-right">
@@ -319,28 +319,28 @@ export default function PublicSalesOrder({
                             {(
                                 [
                                     {
-                                        label: t('Total Amount'),
+                                        label: translate('Total Amount'),
                                         value: <span className="font-mono">{formatCurrency(salesOrder.total_amount)}</span>,
                                         icon: DollarSign,
                                         iconCls: 'text-emerald-600',
                                         blobCls: 'bg-emerald-50',
                                     },
                                     {
-                                        label: t('Products'),
+                                        label: translate('Products'),
                                         value: salesOrder.products?.length || 0,
                                         icon: Package,
                                         iconCls: 'text-blue-600',
                                         blobCls: 'bg-blue-50',
                                     },
                                     {
-                                        label: t('Order Date'),
+                                        label: translate('Order Date'),
                                         value: formatDate(salesOrder.order_date),
                                         icon: Calendar,
                                         iconCls: 'text-orange-600',
                                         blobCls: 'bg-orange-50',
                                     },
                                     {
-                                        label: t('Delivery Date'),
+                                        label: translate('Delivery Date'),
                                         value: formatDate(salesOrder.delivery_date),
                                         icon: Clock,
                                         iconCls: 'text-purple-600',
@@ -371,21 +371,21 @@ export default function PublicSalesOrder({
                         {/* Sales Order Information */}
                         <div className="rounded-lg border bg-white shadow-sm">
                             <div className="border-b px-6 py-4">
-                                <h3 className="text-lg font-semibold">{t('Sales Order Information')}</h3>
+                                <h3 className="text-lg font-semibold">{translate('Sales Order Information')}</h3>
                             </div>
                             <div className="p-6">
                                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                     <div className="space-y-6">
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{t('Order Number')}</label>
+                                            <label className="text-muted-foreground text-sm font-medium">{translate('Order Number')}</label>
                                             <p className="mt-1 text-sm">{salesOrder.order_number}</p>
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{t('Status')}</label>
+                                            <label className="text-muted-foreground text-sm font-medium">{translate('Status')}</label>
                                             <div className="mt-1">{getStatusBadge(salesOrder.status)}</div>
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{t('Created By')}</label>
+                                            <label className="text-muted-foreground text-sm font-medium">{translate('Created By')}</label>
                                             {salesOrder.creator ? (
                                                 <div className="mt-2 flex items-center gap-2">
                                                     <Avatar className="h-8 w-8 flex-shrink-0">
@@ -402,11 +402,11 @@ export default function PublicSalesOrder({
                                                     </div>
                                                 </div>
                                             ) : (
-                                                <p className="mt-1 text-sm text-gray-500">{t('-')}</p>
+                                                <p className="mt-1 text-sm text-gray-500">{translate('-')}</p>
                                             )}
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{t('Assigned To')}</label>
+                                            <label className="text-muted-foreground text-sm font-medium">{translate('Assigned To')}</label>
                                             {salesOrder.assigned_user ? (
                                                 <div className="mt-2 flex items-center gap-2">
                                                     <Avatar className="h-8 w-8 flex-shrink-0">
@@ -423,35 +423,35 @@ export default function PublicSalesOrder({
                                                     </div>
                                                 </div>
                                             ) : (
-                                                <p className="mt-1 text-sm text-gray-500">{t('-')}</p>
+                                                <p className="mt-1 text-sm text-gray-500">{translate('-')}</p>
                                             )}
                                         </div>
                                     </div>
                                     <div className="space-y-6">
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{t('Subtotal')}</label>
+                                            <label className="text-muted-foreground text-sm font-medium">{translate('Subtotal')}</label>
                                             <p className="mt-1 text-sm">{formatCurrency(salesOrder.subtotal)}</p>
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{t('Discount Amount')}</label>
+                                            <label className="text-muted-foreground text-sm font-medium">{translate('Discount Amount')}</label>
                                             <p className="mt-1 text-sm">-{formatCurrency(totalDiscount)}</p>
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{t('Order Date')}</label>
+                                            <label className="text-muted-foreground text-sm font-medium">{translate('Order Date')}</label>
                                             <div className="mt-1 flex items-center gap-2">
                                                 <Calendar className="h-4 w-4 flex-shrink-0 text-gray-400" />
                                                 <p className="text-sm">{formatDate(salesOrder.order_date)}</p>
                                             </div>
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{t('Delivery Date')}</label>
+                                            <label className="text-muted-foreground text-sm font-medium">{translate('Delivery Date')}</label>
                                             <div className="mt-1 flex items-center gap-2">
                                                 <Calendar className="h-4 w-4 flex-shrink-0 text-gray-400" />
                                                 <p className="text-sm">{formatDate(salesOrder.delivery_date)}</p>
                                             </div>
                                         </div>
                                         <div>
-                                            <label className="text-muted-foreground text-sm font-medium">{t('Created At')}</label>
+                                            <label className="text-muted-foreground text-sm font-medium">{translate('Created At')}</label>
                                             <div className="mt-1 flex items-center gap-2">
                                                 <Calendar className="h-4 w-4 flex-shrink-0 text-gray-400" />
                                                 <p className="text-sm">{formatDate(salesOrder.created_at)}</p>
@@ -468,14 +468,14 @@ export default function PublicSalesOrder({
                                 <div className="border-b px-6 py-4">
                                     <h3 className="flex items-center text-lg font-semibold">
                                         <User className="mr-3 h-5 w-5 text-gray-400" />
-                                        {t('Related Data')}
+                                        {translate('Related Data')}
                                     </h3>
                                 </div>
                                 <div className="p-6">
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                                         {salesOrder.account && (
                                             <div className="rounded-xl border border-gray-200 p-4 transition-shadow hover:shadow-md">
-                                                <p className="mb-3 text-xs font-medium text-gray-500">{t('Account')}</p>
+                                                <p className="mb-3 text-xs font-medium text-gray-500">{translate('Account')}</p>
                                                 <div className="flex items-center gap-2">
                                                     <UserInitials name={salesOrder.account.name} />
                                                     <div className="min-w-0">
@@ -489,7 +489,7 @@ export default function PublicSalesOrder({
                                         )}
                                         {salesOrder.quote && (
                                             <div className="rounded-xl border border-gray-200 p-4 transition-shadow hover:shadow-md">
-                                                <p className="mb-3 text-xs font-medium text-gray-500">{t('Quote')}</p>
+                                                <p className="mb-3 text-xs font-medium text-gray-500">{translate('Quote')}</p>
                                                 <div className="flex items-center gap-2">
                                                     <div className="min-w-0">
                                                         <p className="truncate text-sm font-semibold text-gray-900">{salesOrder.quote.name}</p>
@@ -499,7 +499,7 @@ export default function PublicSalesOrder({
                                         )}
                                         {salesOrder.shipping_provider_type && (
                                             <div className="rounded-xl border border-gray-200 p-4 transition-shadow hover:shadow-md">
-                                                <p className="mb-3 text-xs font-medium text-gray-500">{t('Shipping Provider')}</p>
+                                                <p className="mb-3 text-xs font-medium text-gray-500">{translate('Shipping Provider')}</p>
                                                 <div className="flex items-center gap-2">
                                                     <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-orange-50">
                                                         <Truck className="h-4 w-4 text-orange-500" />
@@ -529,14 +529,14 @@ export default function PublicSalesOrder({
                                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                                         />
                                     </svg>
-                                    {t('Billing & Shipping Details')}
+                                    {translate('Billing & Shipping Details')}
                                 </h3>
                             </div>
                             <div className="p-6">
                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     {/* Billing */}
                                     <div>
-                                        <p className="text-muted-foreground mb-3 text-xs font-semibold">{t('Billing Address')}</p>
+                                        <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Billing Address')}</p>
                                         {salesOrder.billing_contact && (
                                             <div className="mb-3 flex items-center gap-2">
                                                 <UserInitials name={salesOrder.billing_contact.name} />
@@ -551,33 +551,33 @@ export default function PublicSalesOrder({
                                         <div className="space-y-2">
                                             <div className="grid grid-cols-2 gap-2">
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{t('Address')}</p>
-                                                    <p className="text-foreground text-sm font-medium">{salesOrder.billing_address || t('-')}</p>
+                                                    <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
+                                                    <p className="text-foreground text-sm font-medium">{salesOrder.billing_address || translate('-')}</p>
                                                 </div>
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{t('City')}</p>
-                                                    <p className="text-foreground text-sm font-medium">{salesOrder.billing_city || t('-')}</p>
+                                                    <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
+                                                    <p className="text-foreground text-sm font-medium">{salesOrder.billing_city || translate('-')}</p>
                                                 </div>
                                             </div>
                                             <div className="grid grid-cols-2 gap-2">
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{t('State')}</p>
-                                                    <p className="text-foreground text-sm font-medium">{salesOrder.billing_state || t('-')}</p>
+                                                    <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
+                                                    <p className="text-foreground text-sm font-medium">{salesOrder.billing_state || translate('-')}</p>
                                                 </div>
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{t('Postal Code')}</p>
-                                                    <p className="text-foreground text-sm font-medium">{salesOrder.billing_postal_code || t('-')}</p>
+                                                    <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
+                                                    <p className="text-foreground text-sm font-medium">{salesOrder.billing_postal_code || translate('-')}</p>
                                                 </div>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{t('Country')}</p>
-                                                <p className="text-foreground text-sm font-medium">{salesOrder.billing_country || t('-')}</p>
+                                                <p className="text-muted-foreground text-xs font-medium">{translate('Country')}</p>
+                                                <p className="text-foreground text-sm font-medium">{salesOrder.billing_country || translate('-')}</p>
                                             </div>
                                         </div>
                                     </div>
                                     {/* Shipping */}
                                     <div className="sm:border-s sm:ps-6">
-                                        <p className="text-muted-foreground mb-3 text-xs font-semibold">{t('Shipping Address')}</p>
+                                        <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Shipping Address')}</p>
                                         {salesOrder.shipping_contact && (
                                             <div className="mb-3 flex items-center gap-2">
                                                 <UserInitials name={salesOrder.shipping_contact.name} />
@@ -592,27 +592,27 @@ export default function PublicSalesOrder({
                                         <div className="space-y-2">
                                             <div className="grid grid-cols-2 gap-2">
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{t('Address')}</p>
-                                                    <p className="text-foreground text-sm font-medium">{salesOrder.shipping_address || t('-')}</p>
+                                                    <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
+                                                    <p className="text-foreground text-sm font-medium">{salesOrder.shipping_address || translate('-')}</p>
                                                 </div>
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{t('City')}</p>
-                                                    <p className="text-foreground text-sm font-medium">{salesOrder.shipping_city || t('-')}</p>
+                                                    <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
+                                                    <p className="text-foreground text-sm font-medium">{salesOrder.shipping_city || translate('-')}</p>
                                                 </div>
                                             </div>
                                             <div className="grid grid-cols-2 gap-2">
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{t('State')}</p>
-                                                    <p className="text-foreground text-sm font-medium">{salesOrder.shipping_state || t('-')}</p>
+                                                    <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
+                                                    <p className="text-foreground text-sm font-medium">{salesOrder.shipping_state || translate('-')}</p>
                                                 </div>
                                                 <div className="space-y-0.5">
-                                                    <p className="text-muted-foreground text-xs font-medium">{t('Postal Code')}</p>
-                                                    <p className="text-foreground text-sm font-medium">{salesOrder.shipping_postal_code || t('-')}</p>
+                                                    <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
+                                                    <p className="text-foreground text-sm font-medium">{salesOrder.shipping_postal_code || translate('-')}</p>
                                                 </div>
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="text-muted-foreground text-xs font-medium">{t('Country')}</p>
-                                                <p className="text-foreground text-sm font-medium">{salesOrder.shipping_country || t('-')}</p>
+                                                <p className="text-muted-foreground text-xs font-medium">{translate('Country')}</p>
+                                                <p className="text-foreground text-sm font-medium">{salesOrder.shipping_country || translate('-')}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -625,7 +625,7 @@ export default function PublicSalesOrder({
                             <div className="border-b px-6 py-4">
                                 <h3 className="flex items-center text-lg font-semibold">
                                     <Package className="mr-3 h-5 w-5 text-gray-400" />
-                                    {t('Products')}
+                                    {translate('Products')}
                                 </h3>
                             </div>
                             <div className="p-0">
@@ -635,12 +635,12 @@ export default function PublicSalesOrder({
                                             <Table>
                                                 <TableHeader>
                                                     <TableRow className="border-b bg-[#F0F0F1] hover:!bg-[#F0F0F1]">
-                                                        <TableHead className="py-2.5 font-semibold">{t('Product')}</TableHead>
-                                                        <TableHead className="py-2.5 text-center font-semibold">{t('Quantity')}</TableHead>
-                                                        <TableHead className="py-2.5 text-center font-semibold">{t('Unit Price')}</TableHead>
-                                                        <TableHead className="py-2.5 text-center font-semibold">{t('Discount')}</TableHead>
-                                                        <TableHead className="py-2.5 text-center font-semibold">{t('Tax')}</TableHead>
-                                                        <TableHead className="py-2.5 text-right font-semibold">{t('Total')}</TableHead>
+                                                        <TableHead className="py-2.5 font-semibold">{translate('Product')}</TableHead>
+                                                        <TableHead className="py-2.5 text-center font-semibold">{translate('Quantity')}</TableHead>
+                                                        <TableHead className="py-2.5 text-center font-semibold">{translate('Unit Price')}</TableHead>
+                                                        <TableHead className="py-2.5 text-center font-semibold">{translate('Discount')}</TableHead>
+                                                        <TableHead className="py-2.5 text-center font-semibold">{translate('Tax')}</TableHead>
+                                                        <TableHead className="py-2.5 text-right font-semibold">{translate('Total')}</TableHead>
                                                     </TableRow>
                                                 </TableHeader>
                                                 <TableBody>
@@ -744,21 +744,21 @@ export default function PublicSalesOrder({
                                         <div className="flex justify-end border-t bg-gray-50/50 px-6 py-5">
                                             <div className="w-full max-w-sm overflow-hidden rounded-xl border">
                                                 <div className="flex items-center justify-between border-b px-4 py-3">
-                                                    <span className="text-sm font-medium text-gray-500">{t('Subtotal')}</span>
+                                                    <span className="text-sm font-medium text-gray-500">{translate('Subtotal')}</span>
                                                     <span className="font-mono text-sm font-semibold text-gray-900">{formatCurrency(subtotal)}</span>
                                                 </div>
                                                 <div className="flex items-center justify-between border-b px-4 py-3">
-                                                    <span className="text-sm font-medium text-gray-500">{t('Discount')}</span>
+                                                    <span className="text-sm font-medium text-gray-500">{translate('Discount')}</span>
                                                     <span className="font-mono text-sm font-semibold text-red-500">
                                                         -{formatCurrency(totalDiscount)}
                                                     </span>
                                                 </div>
                                                 <div className="flex items-center justify-between border-b px-4 py-3">
-                                                    <span className="text-sm font-medium text-gray-500">{t('Total Tax')}</span>
+                                                    <span className="text-sm font-medium text-gray-500">{translate('Total Tax')}</span>
                                                     <span className="font-mono text-sm font-semibold text-gray-900">{formatCurrency(totalTax)}</span>
                                                 </div>
                                                 <div className="flex items-center justify-between px-4 py-3">
-                                                    <span className="text-sm font-bold text-gray-900">{t('Grand Total')}</span>
+                                                    <span className="text-sm font-bold text-gray-900">{translate('Grand Total')}</span>
                                                     <span className="font-mono text-lg font-bold text-emerald-600">{formatCurrency(grandTotal)}</span>
                                                 </div>
                                             </div>
@@ -769,7 +769,7 @@ export default function PublicSalesOrder({
                                         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-100">
                                             <Package className="h-8 w-8 text-gray-300" />
                                         </div>
-                                        <p className="text-lg font-medium">{t('No products added to this sales order')}</p>
+                                        <p className="text-lg font-medium">{translate('No products added to this sales order')}</p>
                                     </div>
                                 )}
                             </div>
@@ -778,7 +778,7 @@ export default function PublicSalesOrder({
                         {/* Notes */}
                         {salesOrder.notes && (
                             <div className="rounded-lg border bg-white p-6 shadow-sm">
-                                <h3 className="mb-3 text-lg font-semibold text-gray-900">{t('Notes')}</h3>
+                                <h3 className="mb-3 text-lg font-semibold text-gray-900">{translate('Notes')}</h3>
                                 <p className="whitespace-pre-wrap text-gray-700">{salesOrder.notes}</p>
                             </div>
                         )}
@@ -789,7 +789,7 @@ export default function PublicSalesOrder({
                                 <div className="border-b px-6 py-4">
                                     <h3 className="flex items-center text-lg font-semibold">
                                         <MessageCircle className="mr-3 h-5 w-5 text-gray-400" />
-                                        {t('Activity Stream')}
+                                        {translate('Activity Stream')}
                                     </h3>
                                 </div>
                                 <div className="max-h-[520px] overflow-y-auto p-6">
@@ -826,7 +826,7 @@ export default function PublicSalesOrder({
                                                                     </Avatar>
                                                                 </TooltipTrigger>
                                                                 <TooltipContent side="top">
-                                                                    <p>{activity.user?.name || t('System')}</p>
+                                                                    <p>{activity.user?.name || translate('System')}</p>
                                                                 </TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
@@ -838,7 +838,7 @@ export default function PublicSalesOrder({
                                                         <div className="flex items-center justify-between gap-2 border-b px-4 py-2.5">
                                                             <div className="flex flex-wrap items-center gap-2">
                                                                 <span className="text-sm font-semibold text-gray-900">
-                                                                    {activity.user?.name || t('System')}
+                                                                    {activity.user?.name || translate('System')}
                                                                 </span>
                                                                 <span
                                                                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${badgeCls}`}

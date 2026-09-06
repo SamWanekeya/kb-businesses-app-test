@@ -1,6 +1,6 @@
 import { CrudConfig } from '@/types/crud';
 import { columnRenderers } from '@/utils/ColumnRenderers';
-import { t } from '@/utils/i18n';
+import { useTranslation } from 'react-i18next';
 
 export const organizationPlanRequestsConfig: CrudConfig = {
     entity: {
@@ -14,25 +14,25 @@ export const organizationPlanRequestsConfig: CrudConfig = {
         },
     },
     modalSize: '4xl',
-    description: t('View plan upgrade requests from your team members'),
+    description: translate('View plan upgrade requests from your team members'),
     table: {
         columns: [
-            { key: 'user.name', label: t('Name'), sortable: true },
-            { key: 'user.email', label: t('Email'), sortable: true },
-            { key: 'plan.name', label: t('Plan Name'), sortable: true },
+            { key: 'user.name', label: translate('Name'), sortable: true },
+            { key: 'user.email', label: translate('Email'), sortable: true },
+            { key: 'plan.name', label: translate('Plan Name'), sortable: true },
             {
                 key: 'plan.duration',
-                label: t('Plan Duration'),
-                render: (value) => (value === 'monthly' ? t('Monthly') : t('Yearly')),
+                label: translate('Plan Duration'),
+                render: (value) => (value === 'monthly' ? translate('Monthly') : translate('Yearly')),
             },
             {
                 key: 'status',
-                label: t('Status'),
+                label: translate('Status'),
                 render: columnRenderers.status(),
             },
             {
                 key: 'created_at',
-                label: t('Requested At'),
+                label: translate('Requested At'),
                 sortable: true,
                 render: (value) => `${window.appSettings?.formatDateTime(value, false) || '-'}`,
             },
@@ -41,19 +41,19 @@ export const organizationPlanRequestsConfig: CrudConfig = {
     },
     search: {
         enabled: true,
-        placeholder: t('Search plan requests...'),
+        placeholder: translate('Search plan requests...'),
         fields: ['user.name', 'user.email', 'plan.name'],
     },
     filters: [
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             type: 'select',
             options: [
-                { value: 'all', label: t('All Status') },
-                { value: 'pending', label: t('Pending') },
-                { value: 'approved', label: t('Approved') },
-                { value: 'rejected', label: t('Rejected') },
+                { value: 'all', label: translate('All Status') },
+                { value: 'pending', label: translate('Pending') },
+                { value: 'approved', label: translate('Approved') },
+                { value: 'rejected', label: translate('Rejected') },
             ],
         },
     ],

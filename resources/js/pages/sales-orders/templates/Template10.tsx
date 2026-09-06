@@ -25,7 +25,7 @@ export default function Template10({
     styles: externalStyles,
 }: Template10Props) {
     const { logoDark } = useBrand();
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const fontColor =
         color === 'ffffff' || color === 'fbdd03' || color === 'c1d82f' || color === '46de98' || color === '40c7d0' || color === 'fac168'
             ? '#000000'
@@ -70,7 +70,7 @@ export default function Template10({
                                         margin: '0',
                                     }}
                                 >
-                                    {t('SALES ORDER')}
+                                    {translate('SALES ORDER')}
                                 </h3>
                                 <div
                                     style={{
@@ -101,7 +101,7 @@ export default function Template10({
                         <tr style={{ verticalAlign: 'top' }}>
                             <td style={{ padding: '0', verticalAlign: 'top' }}>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
-                                    <b style={{ color: borderColor }}>{t('FROM')}:</b>
+                                    <b style={{ color: borderColor }}>{translate('FROM')}:</b>
                                     <br />
                                     {formatValue(salesOrder.creator?.name) && (
                                         <>
@@ -118,13 +118,13 @@ export default function Template10({
                                         <tr>
                                             <td style={{ padding: '0', fontSize: '13px', fontWeight: '600', color: `#${color}` }}></td>
                                             <td style={{ padding: '0', textAlign: 'right', fontSize: '13px', fontWeight: '600' }}>
-                                                <b>{t('Number')}:</b> {formatValue(salesOrder.sales_order_number)}
+                                                <b>{translate('Number')}:</b> {formatValue(salesOrder.sales_order_number)}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td style={{ padding: '0', fontSize: '13px', fontWeight: '600', color: `#${color}` }}></td>
                                             <td style={{ padding: '0', textAlign: 'right', fontSize: '13px', fontWeight: '600' }}>
-                                                <b>{t('Valid Until')}:</b> {formatValue(salesOrder.delivery_date)}
+                                                <b>{translate('Valid Until')}:</b> {formatValue(salesOrder.delivery_date)}
                                             </td>
                                         </tr>
                                         <tr>
@@ -143,7 +143,7 @@ export default function Template10({
                     <tbody>
                         <tr>
                             <td style={{ verticalAlign: 'top' }}>
-                                <strong style={{ marginBottom: '10px', display: 'block' }}>{t('Bill To')}:</strong>
+                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill To')}:</strong>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
                                     {formatValue(salesOrder.billing_contact?.name)}
                                     <br />
@@ -160,7 +160,7 @@ export default function Template10({
                                 </p>
                             </td>
                             <td style={{ verticalAlign: 'top', textAlign: 'right' }}>
-                                <strong style={{ marginBottom: '10px', display: 'block' }}>{t('Ship To')}:</strong>
+                                <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Ship To')}:</strong>
                                 <p style={{ margin: '0', lineHeight: '1.5' }}>
                                     {formatValue(salesOrder.shipping_contact?.name)}
                                     <br />
@@ -189,13 +189,13 @@ export default function Template10({
                 >
                     <tbody>
                         <tr style={{ background: `#${color}`, color: fontColor }}>
-                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{t('Item')}</th>
-                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{t('Quantity')}</th>
-                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{t('Rate')}</th>
-                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{t('Tax')} (%)</th>
-                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{t('Discount')}</th>
+                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Item')}</th>
+                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Quantity')}</th>
+                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Rate')}</th>
+                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Tax')} (%)</th>
+                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Discount')}</th>
                             <th style={{ padding: '0.75rem', textAlign: 'left' }}>
-                                {t('Price')} <small style={{ display: 'block', fontSize: '12px' }}>{t('before tax & discount')}</small>
+                                {translate('Price')} <small style={{ display: 'block', fontSize: '12px' }}>{translate('before tax & discount')}</small>
                             </th>
                         </tr>
                         {items.length > 0 ? (
@@ -242,7 +242,7 @@ export default function Template10({
                             </tr>
                         )}
                         <tr style={{ borderTop: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}` }}>
-                            <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>{t('Total')}</td>
+                            <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>{translate('Total')}</td>
                             <td style={{ padding: '0.75rem', textAlign: 'left', borderTop: `1px solid ${borderColor}` }}>
                                 {items.reduce((sum, item) => sum + Number(item.quantity || 0), 0)}
                             </td>
@@ -265,7 +265,7 @@ export default function Template10({
                                     <tbody>
                                         {salesOrder.total_discount > 0 && (
                                             <tr>
-                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{t('Discount')}:</td>
+                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{translate('Discount')}:</td>
                                                 <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
                                                     {formatCurrency(salesOrder.total_discount)}
                                                 </td>
@@ -281,7 +281,7 @@ export default function Template10({
                                         ))}
                                         <tr>
                                             <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>
-                                                <strong>{t('Total')}:</strong>
+                                                <strong>{translate('Total')}:</strong>
                                             </td>
                                             <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
                                                 <strong>{formatCurrency(salesOrder.total_amount || 0)}</strong>

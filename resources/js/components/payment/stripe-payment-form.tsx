@@ -32,7 +32,7 @@ const CheckoutForm = ({
     onSuccess,
     onCancel,
 }: Omit<StripePaymentFormProps, 'stripeKey'>) => {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const stripe = useStripe();
     const elements = useElements();
     const [cardholderName, setCardholderName] = useState('');
@@ -46,7 +46,7 @@ const CheckoutForm = ({
         event.preventDefault();
 
         if (!stripe || !elements || !cardholderName.trim()) {
-            toast.error(t('Please fill in all required fields'));
+            toast.error(translate('Please fill in all required fields'));
             return;
         }
 
@@ -62,13 +62,13 @@ const CheckoutForm = ({
         });
 
         if (error) {
-            toast.error(error.message || t('Payment failed'));
+            toast.error(error.message || translate('Payment failed'));
             return;
         }
 
         if (invoiceId && amount && paymentType) {
             // Invoice payment
-            processPayment('stripe', {
+            processPaymentranslate('stripe', {
                 invoiceId,
                 amount,
                 paymentType,
@@ -77,7 +77,7 @@ const CheckoutForm = ({
             });
         } else {
             // Plan payment
-            processPayment('stripe', {
+            processPaymentranslate('stripe', {
                 planId,
                 billingCycle,
                 couponCode,
@@ -105,19 +105,19 @@ const CheckoutForm = ({
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-                <Label htmlFor="cardholder-name">{t('Name on card')}</Label>
+                <Label htmlFor="cardholder-name">{translate('Name on card')}</Label>
                 <Input
                     id="cardholder-name"
                     type="text"
                     value={cardholderName}
                     onChange={(e) => setCardholderName(e.target.value)}
-                    placeholder={t('Enter cardholder name')}
+                    placeholder={translate('Enter cardholder name')}
                     required
                 />
             </div>
 
             <div className="space-y-2">
-                <Label>{t('Card details')}</Label>
+                <Label>{translate('Card details')}</Label>
                 <div className="rounded-md border p-3">
                     <CardElement options={cardElementOptions} />
                 </div>
@@ -125,16 +125,16 @@ const CheckoutForm = ({
 
             <div className="flex gap-3 pt-4">
                 <Button type="button" variant="outline" onClick={onCancel} disabled={processing} className="flex-1">
-                    {t('Cancel')}
+                    {translate('Cancel')}
                 </Button>
                 <Button type="submit" disabled={!stripe || processing} className="flex-1">
                     {processing ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            {t('Processing...')}
+                            {translate('Processing...')}
                         </>
                     ) : (
-                        t('Pay Now')
+                        translate('Pay Now')
                     )}
                 </Button>
             </div>
@@ -153,7 +153,7 @@ export function StripePaymentForm({
     amount,
     paymentType,
 }: StripePaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [stripePromise, setStripePromise] = useState<any>(null);
 
     useEffect(() => {
@@ -165,8 +165,8 @@ export function StripePaymentForm({
     if (!stripeKey) {
         return (
             <div className="bg-muted/50 rounded-md border p-4 text-center">
-                <p className="text-muted-foreground mb-2 text-sm">{t('Stripe not configured')}</p>
-                <p className="text-muted-foreground text-xs">{t('Please contact the organization to configure Stripe payment settings.')}</p>
+                <p className="text-muted-foreground mb-2 text-sm">{translate('Stripe not configured')}</p>
+                <p className="text-muted-foreground text-xs">{translate('Please contact the organization to configure Stripe payment settings.')}</p>
             </div>
         );
     }
@@ -174,8 +174,8 @@ export function StripePaymentForm({
     if (!stripeKey.startsWith('pk_')) {
         return (
             <div className="bg-destructive/10 rounded-md border p-4 text-center">
-                <p className="text-destructive mb-2 text-sm">{t('Invalid Stripe configuration')}</p>
-                <p className="text-muted-foreground text-xs">{t('Stripe publishable key must start with "pk_".')}</p>
+                <p className="text-destructive mb-2 text-sm">{translate('Invalid Stripe configuration')}</p>
+                <p className="text-muted-foreground text-xs">{translate('Stripe publishable key must start with "pk_".')}</p>
             </div>
         );
     }
@@ -183,7 +183,7 @@ export function StripePaymentForm({
     if (!stripePromise) {
         return (
             <div className="p-4 text-center">
-                <p className="text-muted-foreground text-sm">{t('Loading Stripe...')}</p>
+                <p className="text-muted-foreground text-sm">{translate('Loading Stripe...')}</p>
             </div>
         );
     }

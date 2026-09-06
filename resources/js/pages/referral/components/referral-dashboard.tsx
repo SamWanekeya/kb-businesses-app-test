@@ -17,7 +17,7 @@ interface ReferralDashboardProps {
 }
 
 export default function ReferralDashboard({ userType, stats, referralLink, recentReferredUsers, currencySymbol }: ReferralDashboardProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
 
     const [copied, setCopied] = useState(false);
@@ -26,7 +26,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
         if (referralLink) {
             await navigator.clipboard.writeText(referralLink);
             setCopied(true);
-            toast.success(t('Referral link copied to clipboard'));
+            toast.success(translate('Referral link copied to clipboard'));
             setTimeout(() => setCopied(false), 2000);
         }
     };
@@ -40,9 +40,9 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                         <CardContent className="p-5">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{t('Total Referral Users')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">{translate('Total Referral Users')}</p>
                                     <h3 className="mt-1 text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.totalReferralUsers}</h3>
-                                    <p className="text-muted-foreground mt-1 text-xs">{t('Registered users')}</p>
+                                    <p className="text-muted-foreground mt-1 text-xs">{translate('Registered users')}</p>
                                 </div>
                                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
                                     <Users className="h-5 w-5 text-blue-600 dark:text-blue-400" />
@@ -55,9 +55,9 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                         <CardContent className="p-5">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{t('Pending Payouts')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">{translate('Pending Payouts')}</p>
                                     <h3 className="mt-1 text-2xl font-bold text-amber-600 dark:text-amber-400">{stats.pendingPayouts}</h3>
-                                    <p className="text-muted-foreground mt-1 text-xs">{t('Awaiting approval')}</p>
+                                    <p className="text-muted-foreground mt-1 text-xs">{translate('Awaiting approval')}</p>
                                 </div>
                                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/30">
                                     <Clock className="h-5 w-5 text-amber-600 dark:text-amber-400" />
@@ -70,12 +70,12 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                         <CardContent className="p-5">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{t('Total Commission Paid')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">{translate('Total Commission Paid')}</p>
                                     <h3 className="mt-1 font-mono text-2xl font-bold text-green-600 dark:text-green-400">
                                         {currencySymbol}
                                         {stats.totalCommissionPaid}
                                     </h3>
-                                    <p className="text-muted-foreground mt-1 text-xs">{t('Total payouts')}</p>
+                                    <p className="text-muted-foreground mt-1 text-xs">{translate('Total payouts')}</p>
                                 </div>
                                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
                                     <DollarSign className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -88,11 +88,11 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                         <CardContent className="p-5">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-muted-foreground text-sm font-medium">{t('Active Organizations')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">{translate('Active Organizations')}</p>
                                     <h3 className="mt-1 text-2xl font-bold text-purple-600 dark:text-purple-400">
                                         {stats.topOrganizations?.length || 0}
                                     </h3>
-                                    <p className="text-muted-foreground mt-1 text-xs">{t('Referring organizations')}</p>
+                                    <p className="text-muted-foreground mt-1 text-xs">{translate('Referring organizations')}</p>
                                 </div>
                                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900/30">
                                     <TrendingUp className="h-5 w-5 text-purple-600 dark:text-purple-400" />
@@ -111,8 +111,8 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                                     <Award className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                                 </div>
                                 <div>
-                                    <CardTitle className="text-base font-semibold">{t('Top Referring Organizations')}</CardTitle>
-                                    <CardDescription className="text-xs">{t('Organizations with most referrals')}</CardDescription>
+                                    <CardTitle className="text-base font-semibold">{translate('Top Referring Organizations')}</CardTitle>
+                                    <CardDescription className="text-xs">{translate('Organizations with most referrals')}</CardDescription>
                                 </div>
                             </div>
                         </CardHeader>
@@ -154,7 +154,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                             ) : (
                                 <div className="py-6 text-center">
                                     <Award className="text-muted-foreground mx-auto mb-2 h-10 w-10 opacity-50" />
-                                    <p className="text-muted-foreground text-sm font-medium">{t('No organizations yet')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">{translate('No organizations yet')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -167,8 +167,8 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                                     <TrendingUp className="h-4 w-4 text-green-600 dark:text-green-400" />
                                 </div>
                                 <div>
-                                    <CardTitle className="text-base font-semibold">{t('Monthly Performance')}</CardTitle>
-                                    <CardDescription className="text-xs">{t('This year statistics')}</CardDescription>
+                                    <CardTitle className="text-base font-semibold">{translate('Monthly Performance')}</CardTitle>
+                                    <CardDescription className="text-xs">{translate('This year statistics')}</CardDescription>
                                 </div>
                             </div>
                         </CardHeader>
@@ -176,7 +176,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                             <div className="space-y-3">
                                 <div className="rounded-lg border border-blue-200 bg-gradient-to-br from-blue-50 to-blue-100 p-3 dark:border-blue-800 dark:from-blue-950/30 dark:to-blue-900/20">
                                     <div className="mb-1 flex items-center justify-between">
-                                        <p className="text-sm font-medium text-blue-900 dark:text-blue-100">{t('Referral Signups')}</p>
+                                        <p className="text-sm font-medium text-blue-900 dark:text-blue-100">{translate('Referral Signups')}</p>
                                         <Users className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                                     </div>
                                     <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
@@ -186,12 +186,12 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                                     </p>
                                     <p className="mt-1 flex items-center gap-1 text-xs text-blue-700 dark:text-blue-300">
                                         <Calendar className="h-3 w-3" />
-                                        {t('Total this year')}
+                                        {translate('Total this year')}
                                     </p>
                                 </div>
                                 <div className="rounded-lg border border-green-200 bg-gradient-to-br from-green-50 to-green-100 p-3 dark:border-green-800 dark:from-green-950/30 dark:to-green-900/20">
                                     <div className="mb-1 flex items-center justify-between">
-                                        <p className="text-sm font-medium text-green-900 dark:text-green-100">{t('Payouts Processed')}</p>
+                                        <p className="text-sm font-medium text-green-900 dark:text-green-100">{translate('Payouts Processed')}</p>
                                         <DollarSign className="h-4 w-4 text-green-600 dark:text-green-400" />
                                     </div>
                                     <p className="font-mono text-2xl font-bold text-green-600 dark:text-green-400">
@@ -202,7 +202,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                                     </p>
                                     <p className="mt-1 flex items-center gap-1 text-xs text-green-700 dark:text-green-300">
                                         <Calendar className="h-3 w-3" />
-                                        {t('Total this year')}
+                                        {translate('Total this year')}
                                     </p>
                                 </div>
                             </div>
@@ -221,9 +221,9 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                     <CardContent className="p-5">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{t('Total Referrals')}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{translate('Total Referrals')}</p>
                                 <h3 className="mt-1 text-2xl font-bold text-green-600 dark:text-green-400">{stats.totalReferrals}</h3>
-                                <p className="text-muted-foreground mt-1 text-xs">{t('All referrals')}</p>
+                                <p className="text-muted-foreground mt-1 text-xs">{translate('All referrals')}</p>
                             </div>
                             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
                                 <Users className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -236,9 +236,9 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                     <CardContent className="p-5">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{t('Referred Users')}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{translate('Referred Users')}</p>
                                 <h3 className="mt-1 text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.referredUsersCount || 0}</h3>
-                                <p className="text-muted-foreground mt-1 text-xs">{t('Active users')}</p>
+                                <p className="text-muted-foreground mt-1 text-xs">{translate('Active users')}</p>
                             </div>
                             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
                                 <Users className="h-5 w-5 text-blue-600 dark:text-blue-400" />
@@ -251,12 +251,12 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                     <CardContent className="p-5">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{t('Total Earned')}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{translate('Total Earned')}</p>
                                 <h3 className="mt-1 font-mono text-2xl font-bold text-amber-600 dark:text-amber-400">
                                     {currencySymbol}
                                     {stats.totalEarned}
                                 </h3>
-                                <p className="text-muted-foreground mt-1 text-xs">{t('Commission earned')}</p>
+                                <p className="text-muted-foreground mt-1 text-xs">{translate('Commission earned')}</p>
                             </div>
                             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/30">
                                 <DollarSign className="h-5 w-5 text-amber-600 dark:text-amber-400" />
@@ -269,12 +269,12 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                     <CardContent className="p-5">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-muted-foreground text-sm font-medium">{t('Available Balance')}</p>
+                                <p className="text-muted-foreground text-sm font-medium">{translate('Available Balance')}</p>
                                 <h3 className="mt-1 font-mono text-2xl font-bold text-purple-600 dark:text-purple-400">
                                     {currencySymbol}
                                     {stats.availableBalance.toFixed(2)}
                                 </h3>
-                                <p className="text-muted-foreground mt-1 text-xs">{t('Ready to withdraw')}</p>
+                                <p className="text-muted-foreground mt-1 text-xs">{translate('Ready to withdraw')}</p>
                             </div>
                             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900/30">
                                 <Award className="h-5 w-5 text-purple-600 dark:text-purple-400" />
@@ -293,8 +293,8 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                                 <Copy className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                             </div>
                             <div>
-                                <CardTitle className="text-base font-semibold">{t('Your Referral Link')}</CardTitle>
-                                <CardDescription className="text-xs">{t('Share and earn commissions')}</CardDescription>
+                                <CardTitle className="text-base font-semibold">{translate('Your Referral Link')}</CardTitle>
+                                <CardDescription className="text-xs">{translate('Share and earn commissions')}</CardDescription>
                             </div>
                         </div>
                     </CardHeader>
@@ -306,7 +306,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                             </Button>
                         </div>
                         <p className="text-muted-foreground bg-muted/50 mt-2 rounded-lg p-2 text-xs">
-                            {t('Share this link to earn commissions when users sign up and purchase plans')}
+                            {translate('Share this link to earn commissions when users sign up and purchase plans')}
                         </p>
                     </CardContent>
                 </Card>
@@ -318,8 +318,8 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                                 <Users className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                             </div>
                             <div>
-                                <CardTitle className="text-base font-semibold">{t('Recent Referred Users')}</CardTitle>
-                                <CardDescription className="text-xs">{t('Latest referrals')}</CardDescription>
+                                <CardTitle className="text-base font-semibold">{translate('Recent Referred Users')}</CardTitle>
+                                <CardDescription className="text-xs">{translate('Latest referrals')}</CardDescription>
                             </div>
                         </div>
                     </CardHeader>
@@ -352,7 +352,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                                         </div>
                                         <div className="ms-3 shrink-0 text-end">
                                             <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset">
-                                                {user?.plan?.name || t('No Plan')}
+                                                {user?.plan?.name || translate('No Plan')}
                                             </span>
                                         </div>
                                     </div>
@@ -361,8 +361,8 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                         ) : (
                             <div className="py-6 text-center">
                                 <Users className="text-muted-foreground mx-auto mb-2 h-10 w-10 opacity-50" />
-                                <p className="text-muted-foreground mb-1 text-sm font-medium">{t('No referred users yet')}</p>
-                                <p className="text-muted-foreground text-xs">{t('Share your link to get started')}</p>
+                                <p className="text-muted-foreground mb-1 text-sm font-medium">{translate('No referred users yet')}</p>
+                                <p className="text-muted-foreground text-xs">{translate('Share your link to get started')}</p>
                             </div>
                         )}
                     </CardContent>

@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function EmailTemplatesIndex() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { templates, filters: pageFilters = {} } = usePage().props;
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
@@ -64,19 +64,19 @@ export default function EmailTemplatesIndex() {
         router.get(route('email-templates.index'), { page: 1 }, { preserveState: true, preserveScroll: true });
     };
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Email Templates') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Email Templates') }];
 
     const columns = [
         {
             key: 'name',
-            label: t('Name'),
+            label: translate('Name'),
             sortable: true,
         },
     ];
 
     const actions = [
         {
-            label: t('View'),
+            label: translate('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
@@ -85,8 +85,8 @@ export default function EmailTemplatesIndex() {
 
     return (
         <PageTemplate
-            title={t('Email Templates')}
-            description={t('Manage your email templates.')}
+            title={translate('Email Templates')}
+            description={translate('Manage your email templates.')}
             url={route('email-templates.index')}
             breadcrumbs={breadcrumbs}
             noPadding
@@ -133,7 +133,7 @@ export default function EmailTemplatesIndex() {
                     to={templates?.to || 0}
                     total={templates?.total || 0}
                     links={templates?.links}
-                    entityName={t('templates')}
+                    entityName={translate('templates')}
                     onPageChange={(url) => router.get(url)}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {

@@ -8,7 +8,7 @@ import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 
 export function FloatingChatGpt() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth } = usePage().props;
     const { position } = useLayout();
     const [isOpen, setIsOpen] = useState(false);
@@ -87,8 +87,8 @@ export function FloatingChatGpt() {
                 isOpen={isOpen}
                 onClose={handleModalClose}
                 onGenerate={handleGenerate}
-                title={t('AI Assistant')}
-                placeholder={t('What would you like me to help you generate?')}
+                title={translate('AI Assistant')}
+                placeholder={translate('What would you like me to help you generate?')}
             />
         </>,
         document.body,

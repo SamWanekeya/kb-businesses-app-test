@@ -73,7 +73,7 @@ function Field({ label, required, error, children }: { label: string; required?:
 }
 
 export default function InvoiceCreate() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { accounts, contacts, salesOrders, quotes, opportunities, products, users, globalSettings } = usePage().props;
 
     const [form, setForm] = useState<FormData>({
@@ -132,7 +132,7 @@ export default function InvoiceCreate() {
         setForm((p) => ({ ...p, products: p.products.length <= 1 ? p.products : p.products.filter((l) => l.id !== id) }));
 
     const handleSalesOrderChange = useCallback(async (soId: string) => {
-        set('sales_order_id', soId);
+        setranslate('sales_order_id', soId);
         if (!soId) return;
         setLoadingSalesOrder(true);
         try {
@@ -162,14 +162,14 @@ export default function InvoiceCreate() {
             }));
             setErrors({});
         } catch {
-            toast.error(t('Failed to load sales order details'));
+            toast.error(translate('Failed to load sales order details'));
         } finally {
             setLoadingSalesOrder(false);
         }
     }, []);
 
     const handleQuoteChange = useCallback(async (quoteId: string) => {
-        set('quote_id', quoteId);
+        setranslate('quote_id', quoteId);
         if (!quoteId) return;
         setLoadingQuote(true);
         try {
@@ -196,14 +196,14 @@ export default function InvoiceCreate() {
                     : p.products,
             }));
         } catch {
-            toast.error(t('Failed to load quote details'));
+            toast.error(translate('Failed to load quote details'));
         } finally {
             setLoadingQuote(false);
         }
     }, []);
 
     const handleOpportunityChange = useCallback(async (opportunityId: string) => {
-        set('opportunity_id', opportunityId);
+        setranslate('opportunity_id', opportunityId);
         if (!opportunityId) return;
         setLoadingOpportunity(true);
         try {
@@ -225,7 +225,7 @@ export default function InvoiceCreate() {
                     : p.products,
             }));
         } catch {
-            toast.error(t('Failed to load opportunity details'));
+            toast.error(translate('Failed to load opportunity details'));
         } finally {
             setLoadingOpportunity(false);
         }
@@ -252,19 +252,19 @@ export default function InvoiceCreate() {
 
     const validate = (): boolean => {
         const e: Errors = {};
-        if (!form.name.trim()) e.name = t('Name is required');
-        if (!form.sales_order_id) e.sales_order_id = t('Sales Order is required');
-        if (!form.account_id) e.account_id = t('Account is required');
-        if (!form.contact_id) e.contact_id = t('Contact is required');
-        if (!form.invoice_date) e.invoice_date = t('Invoice date is required');
-        if (!form.due_date) e.due_date = t('Due date is required');
-        if (!form.assigned_to) e.assigned_to = t('Assigned user is required');
-        if (!form.billing_address.trim()) e.billing_address = t('Billing address is required');
-        if (!form.billing_city.trim()) e.billing_city = t('Billing city is required');
-        if (!form.billing_state.trim()) e.billing_state = t('Billing state is required');
-        if (!form.billing_country.trim()) e.billing_country = t('Billing country is required');
-        if (!form.billing_postal_code.trim()) e.billing_postal_code = t('Billing postal code is required');
-        if (!form.products.length || form.products.every((l) => !l.product_id)) e.products = t('At least one product is required');
+        if (!form.name.trim()) e.name = translate('Name is required');
+        if (!form.sales_order_id) e.sales_order_id = translate('Sales Order is required');
+        if (!form.account_id) e.account_id = translate('Account is required');
+        if (!form.contact_id) e.contact_id = translate('Contact is required');
+        if (!form.invoice_date) e.invoice_date = translate('Invoice date is required');
+        if (!form.due_date) e.due_date = translate('Due date is required');
+        if (!form.assigned_to) e.assigned_to = translate('Assigned user is required');
+        if (!form.billing_address.trim()) e.billing_address = translate('Billing address is required');
+        if (!form.billing_city.trim()) e.billing_city = translate('Billing city is required');
+        if (!form.billing_state.trim()) e.billing_state = translate('Billing state is required');
+        if (!form.billing_country.trim()) e.billing_country = translate('Billing country is required');
+        if (!form.billing_postal_code.trim()) e.billing_postal_code = translate('Billing postal code is required');
+        if (!form.products.length || form.products.every((l) => !l.product_id)) e.products = translate('At least one product is required');
         setErrors(e);
         return Object.keys(e).length === 0;
     };
@@ -273,7 +273,7 @@ export default function InvoiceCreate() {
         e.preventDefault();
         if (!validate()) return;
         setSubmitting(true);
-        toast.loading(t('Creating invoice...'));
+        toast.loading(translate('Creating invoice...'));
         const payload = {
             ...form,
             products: form.products
@@ -298,9 +298,9 @@ export default function InvoiceCreate() {
     };
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Invoices'), href: route('invoices.index') },
-        { title: t('Create') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Invoices'), href: route('invoices.index') },
+        { title: translate('Create') },
     ];
 
     const salesOrderOptions = salesOrders || [];
@@ -313,15 +313,15 @@ export default function InvoiceCreate() {
 
     return (
         <PageTemplate
-            title={t('Create Invoice')}
-            description={t('Fill in the details to create a new invoice')}
+            title={translate('Create Invoice')}
+            description={translate('Fill in the details to create a new invoice')}
             url="/invoices"
             breadcrumbs={breadcrumbs}
             fullWidth
             noPadding
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => router.visit(route('invoices.index')),
@@ -333,26 +333,26 @@ export default function InvoiceCreate() {
                 <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
                         <div className="flex items-center gap-2">
-                            <CardTitle className="text-base font-semibold">{t('Invoice Details')}</CardTitle>
+                            <CardTitle className="text-base font-semibold">{translate('Invoice Details')}</CardTitle>
                         </div>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-5 p-6 md:grid-cols-2 lg:grid-cols-4">
                         {/* Row 1: Invoice Name, Sales Order */}
                         <div className="md:col-span-1 lg:col-span-2">
-                            <Field label={t('Invoice Name')} required error={errors.name}>
+                            <Field label={translate('Invoice Name')} required error={errors.name}>
                                 <Input
                                     value={form.name}
-                                    onChange={(e) => set('name', e.target.value)}
-                                    placeholder={t('e.g. Annual Software License Invoice')}
+                                    onChange={(e) => setranslate('name', e.target.value)}
+                                    placeholder={translate('e.g. Annual Software License Invoice')}
                                     className={errors.name ? 'border-red-500' : ''}
                                 />
                             </Field>
                         </div>
                         <div className="relative md:col-span-1 lg:col-span-2">
-                            <Field label={t('Sales Order')} required error={errors.sales_order_id}>
+                            <Field label={translate('Sales Order')} required error={errors.sales_order_id}>
                                 <Select value={form.sales_order_id} onValueChange={handleSalesOrderChange}>
                                     <SelectTrigger className={errors.sales_order_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select Sales Order')} />
+                                        <SelectValue placeholder={translate('Select Sales Order')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {salesOrderOptions.map((s: any) => (
@@ -363,13 +363,13 @@ export default function InvoiceCreate() {
                                     </SelectContent>
                                 </Select>
                                 {loadingSalesOrder && (
-                                    <span className="absolute top-7 right-2 animate-pulse text-xs text-gray-400">{t('Loading...')}</span>
+                                    <span className="absolute top-7 right-2 animate-pulse text-xs text-gray-400">{translate('Loading...')}</span>
                                 )}
                                 {salesOrders.length === 0 && (
                                     <p className="mt-1 text-xs">
-                                        {t('Click here to add')}{' '}
+                                        {translate('Click here to add')}{' '}
                                         <a href={route('sales-orders.index')} className="font-medium underline">
-                                            {t('Sales Orders')}
+                                            {translate('Sales Orders')}
                                         </a>
                                     </p>
                                 )}
@@ -378,10 +378,10 @@ export default function InvoiceCreate() {
 
                         {/* Row 2: Quote, Opportunity, Customer, Contact */}
                         <div className="relative">
-                            <Field label={t('Quote')} error={errors.quote_id}>
+                            <Field label={translate('Quote')} error={errors.quote_id}>
                                 <Select value={form.quote_id} onValueChange={handleQuoteChange}>
                                     <SelectTrigger className={errors.quote_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select Quote')} />
+                                        <SelectValue placeholder={translate('Select Quote')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {quoteOptions.map((q: any) => (
@@ -392,23 +392,23 @@ export default function InvoiceCreate() {
                                     </SelectContent>
                                 </Select>
                                 {loadingQuote && (
-                                    <span className="absolute top-7 right-2 animate-pulse text-xs text-gray-400">{t('Loading...')}</span>
+                                    <span className="absolute top-7 right-2 animate-pulse text-xs text-gray-400">{translate('Loading...')}</span>
                                 )}
                                 {quotes.length === 0 && (
                                     <p className="mt-1 text-xs">
-                                        {t('Click here to add')}{' '}
+                                        {translate('Click here to add')}{' '}
                                         <a href={route('quotes.index')} className="font-medium underline">
-                                            {t('Quotes')}
+                                            {translate('Quotes')}
                                         </a>
                                     </p>
                                 )}
                             </Field>
                         </div>
                         <div className="relative">
-                            <Field label={t('Opportunity')} error={errors.opportunity_id}>
+                            <Field label={translate('Opportunity')} error={errors.opportunity_id}>
                                 <Select value={form.opportunity_id} onValueChange={handleOpportunityChange}>
                                     <SelectTrigger className={errors.opportunity_id ? 'border-red-500' : ''}>
-                                        <SelectValue placeholder={t('Select Opportunity')} />
+                                        <SelectValue placeholder={translate('Select Opportunity')} />
                                     </SelectTrigger>
                                     <SelectContent searchable>
                                         {opportunityOptions.map((o: any) => (
@@ -419,22 +419,22 @@ export default function InvoiceCreate() {
                                     </SelectContent>
                                 </Select>
                                 {loadingOpportunity && (
-                                    <span className="absolute top-7 right-2 animate-pulse text-xs text-gray-400">{t('Loading...')}</span>
+                                    <span className="absolute top-7 right-2 animate-pulse text-xs text-gray-400">{translate('Loading...')}</span>
                                 )}
                                 {opportunities.length === 0 && (
                                     <p className="mt-1 text-xs">
-                                        {t('Click here to add')}{' '}
+                                        {translate('Click here to add')}{' '}
                                         <a href={route('opportunities.index')} className="font-medium underline">
-                                            {t('Opportunities')}
+                                            {translate('Opportunities')}
                                         </a>
                                     </p>
                                 )}
                             </Field>
                         </div>
-                        <Field label={t('Account')} required error={errors.account_id}>
-                            <Select value={form.account_id} onValueChange={(v) => set('account_id', v)}>
+                        <Field label={translate('Account')} required error={errors.account_id}>
+                            <Select value={form.account_id} onValueChange={(v) => setranslate('account_id', v)}>
                                 <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select Account')} />
+                                    <SelectValue placeholder={translate('Select Account')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {accountOptions.map((a: any) => (
@@ -446,17 +446,17 @@ export default function InvoiceCreate() {
                             </Select>
                             {accounts.length === 0 && (
                                 <p className="mt-1 text-xs">
-                                    {t('Click here to add')}{' '}
+                                    {translate('Click here to add')}{' '}
                                     <a href={route('accounts.index')} className="font-medium underline">
-                                        {t('Accounts')}
+                                        {translate('Accounts')}
                                     </a>
                                 </p>
                             )}
                         </Field>
-                        <Field label={t('Contact')} required error={errors.contact_id}>
-                            <Select value={form.contact_id} onValueChange={(v) => set('contact_id', v)}>
+                        <Field label={translate('Contact')} required error={errors.contact_id}>
+                            <Select value={form.contact_id} onValueChange={(v) => setranslate('contact_id', v)}>
                                 <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select Contact')} />
+                                    <SelectValue placeholder={translate('Select Contact')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {contactOptions.map((c: any) => (
@@ -468,16 +468,16 @@ export default function InvoiceCreate() {
                             </Select>
                             {contacts.length === 0 && (
                                 <p className="mt-1 text-xs">
-                                    {t('Click here to add')}{' '}
+                                    {translate('Click here to add')}{' '}
                                     <a href={route('contacts.index')} className="font-medium underline">
-                                        {t('Contacts')}
+                                        {translate('Contacts')}
                                     </a>
                                 </p>
                             )}
                         </Field>
 
                         {/* Row 3: Invoice Date, Due Date, Status, Assign To */}
-                        <Field label={t('Invoice Date')} required error={errors.invoice_date}>
+                        <Field label={translate('Invoice Date')} required error={errors.invoice_date}>
                             <div
                                 className="cursor-pointer"
                                 onClick={(e) => {
@@ -492,12 +492,12 @@ export default function InvoiceCreate() {
                                 <Input
                                     type="date"
                                     value={form.invoice_date}
-                                    onChange={(e) => set('invoice_date', e.target.value)}
+                                    onChange={(e) => setranslate('invoice_date', e.target.value)}
                                     className={`cursor-pointer ${errors.invoice_date ? 'border-red-500' : ''}`}
                                 />
                             </div>
                         </Field>
-                        <Field label={t('Due Date')} required error={errors.due_date}>
+                        <Field label={translate('Due Date')} required error={errors.due_date}>
                             <div
                                 className="cursor-pointer"
                                 onClick={(e) => {
@@ -512,21 +512,21 @@ export default function InvoiceCreate() {
                                 <Input
                                     type="date"
                                     value={form.due_date}
-                                    onChange={(e) => set('due_date', e.target.value)}
+                                    onChange={(e) => setranslate('due_date', e.target.value)}
                                     className={`cursor-pointer ${errors.due_date ? 'border-red-500' : ''}`}
                                 />
                             </div>
                         </Field>
-                        <Field label={t('Status')} error={errors.status}>
-                            <Select value={form.status} onValueChange={(v) => set('status', v)}>
+                        <Field label={translate('Status')} error={errors.status}>
+                            <Select value={form.status} onValueChange={(v) => setranslate('status', v)}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {[
-                                        ['draft', t('Draft')],
-                                        ['sent', t('Sent')],
-                                        ['pending', t('Pending')],
+                                        ['draft', translate('Draft')],
+                                        ['sent', translate('Sent')],
+                                        ['pending', translate('Pending')],
                                     ].map(([v, l]) => (
                                         <SelectItem key={v} value={v}>
                                             {l}
@@ -535,10 +535,10 @@ export default function InvoiceCreate() {
                                 </SelectContent>
                             </Select>
                         </Field>
-                        <Field label={t('Assign To')} required error={errors.assigned_to}>
-                            <Select value={form.assigned_to} onValueChange={(v) => set('assigned_to', v)}>
+                        <Field label={translate('Assign To')} required error={errors.assigned_to}>
+                            <Select value={form.assigned_to} onValueChange={(v) => setranslate('assigned_to', v)}>
                                 <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
-                                    <SelectValue placeholder={t('Select User')} />
+                                    <SelectValue placeholder={translate('Select User')} />
                                 </SelectTrigger>
                                 <SelectContent searchable>
                                     {userOptions.map((u: any) => (
@@ -550,9 +550,9 @@ export default function InvoiceCreate() {
                             </Select>
                             {users.length === 0 && (
                                 <p className="mt-1 text-xs">
-                                    {t('Click here to add')}{' '}
+                                    {translate('Click here to add')}{' '}
                                     <a href={route('users.index')} className="font-medium underline">
-                                        {t('Users')}
+                                        {translate('Users')}
                                     </a>
                                 </p>
                             )}
@@ -560,21 +560,21 @@ export default function InvoiceCreate() {
 
                         {/* Row 4 & 5: Notes + Description in one row */}
                         <div className="md:col-span-1 lg:col-span-2">
-                            <Field label={t('Description')} error={errors.description}>
+                            <Field label={translate('Description')} error={errors.description}>
                                 <Textarea
                                     value={form.description}
-                                    onChange={(e) => set('description', e.target.value)}
-                                    placeholder={t('Enter invoice description...')}
+                                    onChange={(e) => setranslate('description', e.target.value)}
+                                    placeholder={translate('Enter invoice description...')}
                                     rows={2}
                                 />
                             </Field>
                         </div>
                         <div className="md:col-span-1 lg:col-span-2">
-                            <Field label={t('Notes')} error={errors.notes}>
+                            <Field label={translate('Notes')} error={errors.notes}>
                                 <Textarea
                                     value={form.notes}
-                                    onChange={(e) => set('notes', e.target.value)}
-                                    placeholder={t('Additional notes...')}
+                                    onChange={(e) => setranslate('notes', e.target.value)}
+                                    placeholder={translate('Additional notes...')}
                                     rows={2}
                                 />
                             </Field>
@@ -585,57 +585,57 @@ export default function InvoiceCreate() {
                 {/* Billing Information */}
                 <Card className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
-                        <CardTitle className="text-base font-semibold">{t('Billing Information')}</CardTitle>
+                        <CardTitle className="text-base font-semibold">{translate('Billing Information')}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4 p-6">
-                        <Field label={t('Billing Address')} required error={errors.billing_address}>
+                        <Field label={translate('Billing Address')} required error={errors.billing_address}>
                             <Textarea
                                 value={form.billing_address}
-                                onChange={(e) => set('billing_address', e.target.value)}
-                                placeholder={t('e.g. 123 Main St, Suite 100')}
+                                onChange={(e) => setranslate('billing_address', e.target.value)}
+                                placeholder={translate('e.g. 123 Main St, Suite 100')}
                                 rows={2}
                                 className={errors.billing_address ? 'border-red-500' : ''}
                             />
                         </Field>
                         <div className="grid grid-cols-2 gap-4">
-                            <Field label={t('City')} required error={errors.billing_city}>
+                            <Field label={translate('City')} required error={errors.billing_city}>
                                 <Input
                                     value={form.billing_city}
-                                    onChange={(e) => set('billing_city', e.target.value)}
+                                    onChange={(e) => setranslate('billing_city', e.target.value)}
                                     placeholder="New York"
                                     className={errors.billing_city ? 'border-red-500' : ''}
                                 />
                             </Field>
-                            <Field label={t('State')} required error={errors.billing_state}>
+                            <Field label={translate('State')} required error={errors.billing_state}>
                                 <Input
                                     value={form.billing_state}
-                                    onChange={(e) => set('billing_state', e.target.value)}
+                                    onChange={(e) => setranslate('billing_state', e.target.value)}
                                     placeholder="NY"
                                     className={errors.billing_state ? 'border-red-500' : ''}
                                 />
                             </Field>
-                            <Field label={t('Country')} required error={errors.billing_country}>
+                            <Field label={translate('Country')} required error={errors.billing_country}>
                                 <Input
                                     value={form.billing_country}
-                                    onChange={(e) => set('billing_country', e.target.value)}
+                                    onChange={(e) => setranslate('billing_country', e.target.value)}
                                     placeholder="United States"
                                     className={errors.billing_country ? 'border-red-500' : ''}
                                 />
                             </Field>
-                            <Field label={t('Postal Code')} required error={errors.billing_postal_code}>
+                            <Field label={translate('Postal Code')} required error={errors.billing_postal_code}>
                                 <Input
                                     value={form.billing_postal_code}
-                                    onChange={(e) => set('billing_postal_code', e.target.value)}
+                                    onChange={(e) => setranslate('billing_postal_code', e.target.value)}
                                     placeholder="10001"
                                     className={errors.billing_postal_code ? 'border-red-500' : ''}
                                 />
                             </Field>
                         </div>
-                        <Field label={t('Terms')} error={errors.terms}>
+                        <Field label={translate('Terms')} error={errors.terms}>
                             <Textarea
                                 value={form.terms}
-                                onChange={(e) => set('terms', e.target.value)}
-                                placeholder={t('Payment terms and conditions...')}
+                                onChange={(e) => setranslate('terms', e.target.value)}
+                                placeholder={translate('Payment terms and conditions...')}
                                 rows={2}
                             />
                         </Field>
@@ -647,11 +647,11 @@ export default function InvoiceCreate() {
                     <CardHeader className="border-b bg-gray-50 pb-3 dark:bg-gray-800">
                         <div className="flex items-center justify-between">
                             <CardTitle className="text-base font-semibold">
-                                {t('Invoice Product')}
+                                {translate('Invoice Product')}
                                 {errors.products && <span className="ml-2 text-xs font-normal text-red-500">{errors.products}</span>}
                             </CardTitle>
                             <Button type="button" size="sm" onClick={addLine}>
-                                <Plus className="mr-1 h-4 w-4" /> {t('Add Product')}
+                                <Plus className="mr-1 h-4 w-4" /> {translate('Add Product')}
                             </Button>
                         </div>
                     </CardHeader>
@@ -661,19 +661,19 @@ export default function InvoiceCreate() {
                                 <thead className="hidden xl:table-header-group">
                                     <tr className="border-b bg-gray-50 text-xs font-semibold tracking-wide text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                                         <th className="min-w-[200px] px-4 py-3 text-left">
-                                            {t('Product')} <span className="text-red-500">*</span>
+                                            {translate('Product')} <span className="text-red-500">*</span>
                                         </th>
                                         <th className="w-24 px-4 py-3 text-left">
-                                            {t('Quantity')} <span className="text-red-500">*</span>
+                                            {translate('Quantity')} <span className="text-red-500">*</span>
                                         </th>
                                         <th className="w-32 px-4 py-3 text-left">
-                                            {t('Unit Price')} <span className="text-red-500">*</span>
+                                            {translate('Unit Price')} <span className="text-red-500">*</span>
                                         </th>
-                                        <th className="w-32 px-4 py-3 text-left">{t('Discount Type')}</th>
-                                        <th className="w-28 px-4 py-3 text-left">{t('Discount Value')}</th>
-                                        <th className="w-36 px-4 py-3 text-left">{t('Tax')}</th>
-                                        <th className="w-28 px-4 py-3 text-left">{t('Total')}</th>
-                                        <th className="w-12 px-4 py-3">{t('Action')}</th>
+                                        <th className="w-32 px-4 py-3 text-left">{translate('Discount Type')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{translate('Discount Value')}</th>
+                                        <th className="w-36 px-4 py-3 text-left">{translate('Tax')}</th>
+                                        <th className="w-28 px-4 py-3 text-left">{translate('Total')}</th>
+                                        <th className="w-12 px-4 py-3">{translate('Action')}</th>
                                     </tr>
                                 </thead>
                                 <tbody className="block space-y-4 divide-y divide-gray-200 xl:table-row-group xl:space-y-0 xl:divide-y-0">
@@ -691,11 +691,11 @@ export default function InvoiceCreate() {
                                             >
                                                 <td className="col-span-1 block w-full px-0 py-0 sm:col-span-2 xl:table-cell xl:w-[200px] xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Product')} <span className="text-red-500">*</span>
+                                                        {translate('Product')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Select value={line.product_id} onValueChange={(v) => setLine(line.id, 'product_id', v)}>
                                                         <SelectTrigger>
-                                                            <SelectValue placeholder={t('Select product')} />
+                                                            <SelectValue placeholder={translate('Select product')} />
                                                         </SelectTrigger>
                                                         <SelectContent searchable>
                                                             {lineProductOptions.map((o: any) => (
@@ -707,16 +707,16 @@ export default function InvoiceCreate() {
                                                     </Select>
                                                     {form.products.indexOf(line) === 0 && productOptions.length === 0 && (
                                                         <p className="mt-1 text-xs">
-                                                            {t('Click here to add')}{' '}
+                                                            {translate('Click here to add')}{' '}
                                                             <a href={route('products.index')} className="font-medium underline">
-                                                                {t('Products')}
+                                                                {translate('Products')}
                                                             </a>
                                                         </p>
                                                     )}
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-24 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Quantity')} <span className="text-red-500">*</span>
+                                                        {translate('Quantity')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
                                                         type="number"
@@ -727,7 +727,7 @@ export default function InvoiceCreate() {
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Unit Price')} <span className="text-red-500">*</span>
+                                                        {translate('Unit Price')} <span className="text-red-500">*</span>
                                                     </span>
                                                     <Input
                                                         type="number"
@@ -740,7 +740,7 @@ export default function InvoiceCreate() {
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Discount Type')}
+                                                        {translate('Discount Type')}
                                                     </span>
                                                     <Select
                                                         value={line.discount_type || 'none'}
@@ -750,15 +750,15 @@ export default function InvoiceCreate() {
                                                             <SelectValue />
                                                         </SelectTrigger>
                                                         <SelectContent>
-                                                            <SelectItem value="none">{t('None')}</SelectItem>
-                                                            <SelectItem value="percentage">{t('Percentage (%)')}</SelectItem>
-                                                            <SelectItem value="fixed">{t('Fixed Amount')}</SelectItem>
+                                                            <SelectItem value="none">{translate('None')}</SelectItem>
+                                                            <SelectItem value="percentage">{translate('Percentage (%)')}</SelectItem>
+                                                            <SelectItem value="fixed">{translate('Fixed Amount')}</SelectItem>
                                                         </SelectContent>
                                                     </Select>
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-28 xl:px-4 xl:py-3">
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
-                                                        {t('Discount Value')}
+                                                        {translate('Discount Value')}
                                                     </span>
                                                     <Input
                                                         type="number"
@@ -772,13 +772,13 @@ export default function InvoiceCreate() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-36 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{t('Tax')}</span>
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{translate('Tax')}</span>
                                                     <span className="text-muted-foreground text-sm font-medium">
-                                                        {prod?.tax ? `${prod.tax.name} (${parseFloat(prod.tax.rate).toFixed(2)}%)` : t('No Tax')}
+                                                        {prod?.tax ? `${prod.tax.name} (${parseFloat(prod.tax.rate).toFixed(2)}%)` : translate('No Tax')}
                                                     </span>
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-semibold xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{t('Total')}</span>
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{translate('Total')}</span>
                                                     <span className="font-mono">{fmt(c.total)}</span>
                                                 </td>
                                                 <td className="col-span-1 block w-full border-t px-0 py-0 pt-2 text-right sm:col-span-2 xl:table-cell xl:w-12 xl:border-t-0 xl:px-4 xl:py-3 xl:pt-0 xl:text-left">
@@ -801,21 +801,21 @@ export default function InvoiceCreate() {
                         {/* Invoice Summary */}
                         <div className="flex justify-end border-t p-4">
                             <div className="w-64 space-y-2">
-                                <h4 className="mb-3 font-semibold text-gray-800 dark:text-gray-200">{t('Invoice Summary')}</h4>
+                                <h4 className="mb-3 font-semibold text-gray-800 dark:text-gray-200">{translate('Invoice Summary')}</h4>
                                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                                    <span>{t('Subtotal')}</span>
+                                    <span>{translate('Subtotal')}</span>
                                     <span className="font-mono">{fmt(totals.subtotal + totals.discount)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-red-600">
-                                    <span>{t('Discount')}</span>
+                                    <span>{translate('Discount')}</span>
                                     <span className="font-mono">-{fmt(totals.discount)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                                    <span>{t('Tax')}</span>
+                                    <span>{translate('Tax')}</span>
                                     <span className="font-mono">{fmt(totals.tax)}</span>
                                 </div>
                                 <div className="flex justify-between border-t pt-2 text-base font-bold text-gray-900 dark:text-gray-100">
-                                    <span>{t('Total')}</span>
+                                    <span>{translate('Total')}</span>
                                     <span className="font-mono">{fmt(totals.subtotal + totals.tax)}</span>
                                 </div>
                             </div>
@@ -826,14 +826,14 @@ export default function InvoiceCreate() {
                 {/* Footer */}
                 <div className="flex items-center justify-between pb-6">
                     <span className="text-sm text-gray-500">
-                        {form.products.filter((l) => l.product_id).length} {t('Product added')}
+                        {form.products.filter((l) => l.product_id).length} {translate('Product added')}
                     </span>
                     <div className="flex items-center gap-3">
                         <Button type="button" variant="outline" onClick={() => router.visit(route('invoices.index'))}>
-                            {t('Cancel')}
+                            {translate('Cancel')}
                         </Button>
                         <Button type="submit" disabled={submitting}>
-                            {submitting ? t('Creating...') : t('Save')}
+                            {submitting ? translate('Creating...') : translate('Save')}
                         </Button>
                     </div>
                 </div>

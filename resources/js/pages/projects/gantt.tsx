@@ -126,7 +126,7 @@ const getTimeScaleUnit = (timeScale: string) => {
 };
 
 const GanttChart = ({ tasks, timeScale, onTaskClick }: { tasks: any[]; timeScale: string; onTaskClick: (task: any) => void }) => {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const config = getTimelineConfig(timeScale);
     const today = new Date();
     const timelineStart = new Date(today.getTime() + config.startOffset * config.unitDuration);
@@ -256,7 +256,7 @@ const GanttChart = ({ tasks, timeScale, onTaskClick }: { tasks: any[]; timeScale
 };
 
 export default function ProjectGantt() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, project, tasks = [], taskStatuses = [], users = [], filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
     const isOrganization = auth?.user?.type === 'organization';
@@ -321,7 +321,7 @@ export default function ProjectGantt() {
 
     const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
-            toast.loading(t('Creating task...'));
+            toast.loading(translate('Creating task...'));
 
             const taskData = {
                 ...formData,
@@ -351,7 +351,7 @@ export default function ProjectGantt() {
 
     const pageActions = [
         {
-            label: t('Back'),
+            label: translate('Back'),
             icon: <ArrowLeft className="mr-2 h-4 w-4" />,
             variant: 'outline',
             onClick: () => router.get(route('projects.show', project.id)),
@@ -360,29 +360,29 @@ export default function ProjectGantt() {
 
     if (useHasPermission('create-project-tasks')) {
         pageActions.unshift({
-            label: t('Add Task'),
+            label: translate('Add Task'),
             icon: <Plus className="mr-0 h-4 w-4 min-[1090px]:mr-2" />,
             variant: 'default',
             className: 'h-8 w-8 min-[1090px]:h-9 min-[1090px]:w-auto px-0 min-[1090px]:px-4',
             labelClassName: 'hidden min-[1090px]:inline',
-            tooltip: t('Add Task'),
+            tooltip: translate('Add Task'),
             tooltipClassName: 'min-[1090px]:hidden',
             onClick: handleAddTask,
         });
     }
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Project Management') },
-        { title: t('Projects'), href: route('projects.index') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Project Management') },
+        { title: translate('Projects'), href: route('projects.index') },
         { title: project.name, href: route('projects.show', project.id) },
-        { title: t('Gantt View') },
+        { title: translate('Gantt View') },
     ];
 
     return (
         <PageTemplate
-            title={`${project.name} - ${t('Gantt View')}`}
-            description={t('Visualize project timeline and task dependencies')}
+            title={`${project.name} - ${translate('Gantt View')}`}
+            description={translate('Visualize project timeline and task dependencies')}
             url={`/projects/${project.id}/gantt`}
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -414,28 +414,28 @@ export default function ProjectGantt() {
                     filters={[
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
                             searchable: true,
                             options: [
-                                { value: 'all', label: t('All Status') },
+                                { value: 'all', label: translate('All Status') },
                                 ...taskStatuses.map((status: any) => ({ value: status.id, label: status.name })),
                             ],
                         },
                         {
                             name: 'priority',
-                            label: t('Priority'),
+                            label: translate('Priority'),
                             type: 'select',
                             value: selectedPriority,
                             onChange: setSelectedPriority,
                             options: [
-                                { value: 'all', label: t('All Priority') },
-                                { value: 'low', label: t('Low') },
-                                { value: 'medium', label: t('Medium') },
-                                { value: 'high', label: t('High') },
-                                { value: 'urgent', label: t('Urgent') },
+                                { value: 'all', label: translate('All Priority') },
+                                { value: 'low', label: translate('Low') },
+                                { value: 'medium', label: translate('Medium') },
+                                { value: 'high', label: translate('High') },
+                                { value: 'urgent', label: translate('Urgent') },
                             ],
                         },
                     ]}
@@ -453,14 +453,14 @@ export default function ProjectGantt() {
             <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                 <div className="border-b border-gray-200 p-4">
                     <div className="flex items-center justify-between">
-                        <h6 className="text-lg font-semibold text-gray-900 dark:text-white">{t('Gantt Chart')}</h6>
+                        <h6 className="text-lg font-semibold text-gray-900 dark:text-white">{translate('Gantt Chart')}</h6>
                         <div className="flex gap-1">
                             {[
-                                { value: 'quarter-day', label: t('Quarter Day') },
-                                { value: 'half-day', label: t('Half Day') },
-                                { value: 'day', label: t('Day') },
-                                { value: 'week', label: t('Week') },
-                                { value: 'month', label: t('Month') },
+                                { value: 'quarter-day', label: translate('Quarter Day') },
+                                { value: 'half-day', label: translate('Half Day') },
+                                { value: 'day', label: translate('Day') },
+                                { value: 'week', label: translate('Week') },
+                                { value: 'month', label: translate('Month') },
                             ].map((scale) => (
                                 <button
                                     key={scale.value}
@@ -490,58 +490,58 @@ export default function ProjectGantt() {
                     fields: [
                         {
                             name: 'title',
-                            label: t('Task Title'),
+                            label: translate('Task Title'),
                             type: 'text',
                             required: true,
-                            placeholder: t('e.g. Design homepage mockup, Fix sign in bug'),
+                            placeholder: translate('e.g. Design homepage mockup, Fix sign in bug'),
                         },
-                        { name: 'description', label: t('Description'), type: 'textarea', placeholder: t('Enter task description...') },
-                        { name: 'start_date', label: t('Start Date'), type: 'date' },
-                        { name: 'due_date', label: t('Due Date'), type: 'date' },
+                        { name: 'description', label: translate('Description'), type: 'textarea', placeholder: translate('Enter task description...') },
+                        { name: 'start_date', label: translate('Start Date'), type: 'date' },
+                        { name: 'due_date', label: translate('Due Date'), type: 'date' },
                         {
                             name: 'priority',
-                            label: t('Priority'),
+                            label: translate('Priority'),
                             type: 'select',
                             options: [
-                                { value: 'low', label: t('Low') },
-                                { value: 'medium', label: t('Medium') },
-                                { value: 'high', label: t('High') },
-                                { value: 'urgent', label: t('Urgent') },
+                                { value: 'low', label: translate('Low') },
+                                { value: 'medium', label: translate('Medium') },
+                                { value: 'high', label: translate('High') },
+                                { value: 'urgent', label: translate('Urgent') },
                             ],
                             defaultValue: 'medium',
                         },
                         {
                             name: 'task_status_id',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('task-statuses.index'), linkText: t('Task Statuses') },
+                            emptyNote: { link: route('task-statuses.index'), linkText: translate('Task Statuses') },
                             options: taskStatuses.map((status: any) => ({
                                 value: status.id,
                                 label: status.name,
                             })),
                             defaultValue: taskStatuses.find((s: any) => s.name === 'To Do')?.id || taskStatuses[0]?.id,
                         },
-                        { name: 'estimated_hours', label: t('Estimated Hours'), type: 'number', step: '0.5', placeholder: t('e.g. 8') },
+                        { name: 'estimated_hours', label: translate('Estimated Hours'), type: 'number', step: '0.5', placeholder: translate('e.g. 8') },
                         {
                             name: 'progress',
-                            label: t('Progress (%)'),
+                            label: translate('Progress (%)'),
                             type: 'number',
                             min: '0',
                             max: '100',
                             defaultValue: '0',
-                            placeholder: t('e.g. 50'),
+                            placeholder: translate('e.g. 50'),
                         },
                         ...(isOrganization
                             ? [
                                   {
                                       name: 'assigned_to',
-                                      label: t('Assign To'),
+                                      label: translate('Assign To'),
                                       type: 'select',
                                       required: true,
                                       searchable: true,
-                                      emptyNote: { link: route('users.index'), linkText: t('Users') },
+                                      emptyNote: { link: route('users.index'), linkText: translate('Users') },
                                       options: [...users.map((user: any) => ({ value: user.id, label: `${user.name} (${user.email})` }))],
                                   },
                               ]
@@ -550,7 +550,7 @@ export default function ProjectGantt() {
                     modalSize: 'lg',
                 }}
                 initialData={null}
-                title={t('Add Task')}
+                title={translate('Add Task')}
                 mode={formMode}
             />
 
@@ -574,7 +574,7 @@ export default function ProjectGantt() {
 
                         <div className="space-y-3 text-sm">
                             <div className="flex justify-between">
-                                <span className="text-gray-600 dark:text-gray-400">{t('Status')}:</span>
+                                <span className="text-gray-600 dark:text-gray-400">{translate('Status')}:</span>
                                 <span
                                     className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
                                     style={{
@@ -588,7 +588,7 @@ export default function ProjectGantt() {
                             </div>
 
                             <div className="flex justify-between">
-                                <span className="text-gray-600 dark:text-gray-400">{t('Priority')}:</span>
+                                <span className="text-gray-600 dark:text-gray-400">{translate('Priority')}:</span>
                                 <span
                                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
                                         selectedTask.priority === 'urgent'
@@ -606,13 +606,13 @@ export default function ProjectGantt() {
 
                             {selectedTask.assigned_user && (
                                 <div className="flex justify-between">
-                                    <span className="text-gray-600 dark:text-gray-400">{t('Assigned To')}:</span>
+                                    <span className="text-gray-600 dark:text-gray-400">{translate('Assigned To')}:</span>
                                     <span className="text-gray-900 dark:text-white">{selectedTask.assigned_user.name}</span>
                                 </div>
                             )}
 
                             <div className="flex justify-between">
-                                <span className="text-gray-600 dark:text-gray-400">{t('Progress')}:</span>
+                                <span className="text-gray-600 dark:text-gray-400">{translate('Progress')}:</span>
                                 <div className="flex items-center gap-2">
                                     <div className="h-2 w-20 rounded-full bg-gray-200">
                                         <div className="bg-primary h-2 rounded-full" style={{ width: `${selectedTask.progress || 0}%` }}></div>
@@ -623,7 +623,7 @@ export default function ProjectGantt() {
 
                             {selectedTask.start_date && (
                                 <div className="flex justify-between">
-                                    <span className="text-gray-600 dark:text-gray-400">{t('Start Date')}:</span>
+                                    <span className="text-gray-600 dark:text-gray-400">{translate('Start Date')}:</span>
                                     <span className="text-gray-900 dark:text-white">
                                         {window.appSettings?.formatDateTime(selectedTask.start_date, false) ||
                                             new Date(selectedTask.start_date).toLocaleDateString()}
@@ -633,7 +633,7 @@ export default function ProjectGantt() {
 
                             {selectedTask.due_date && (
                                 <div className="flex justify-between">
-                                    <span className="text-gray-600 dark:text-gray-400">{t('Due Date')}:</span>
+                                    <span className="text-gray-600 dark:text-gray-400">{translate('Due Date')}:</span>
                                     <span className="text-gray-900 dark:text-white">
                                         {window.appSettings?.formatDateTime(selectedTask.due_date, false) ||
                                             new Date(selectedTask.due_date).toLocaleDateString()}
@@ -643,7 +643,7 @@ export default function ProjectGantt() {
 
                             {selectedTask.description && (
                                 <div>
-                                    <span className="text-gray-600 dark:text-gray-400">{t('Description')}:</span>
+                                    <span className="text-gray-600 dark:text-gray-400">{translate('Description')}:</span>
                                     <p className="mt-1 text-gray-900 dark:text-white">{selectedTask.description}</p>
                                 </div>
                             )}

@@ -11,7 +11,7 @@ interface UserMenuContentProps {
 }
 
 export function UserMenuContent({ user }: UserMenuContentProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const cleanup = useMobileNavigation();
 
     return (
@@ -26,7 +26,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                 <DropdownMenuItem asChild>
                     <Link className="block w-full" href={route('profile')} as="button" prefetch onClick={cleanup}>
                         <Settings className="mr-2" />
-                        {t('Profile')}
+                        {translate('Profile')}
                     </Link>
                 </DropdownMenuItem>
             </DropdownMenuGroup>
@@ -34,7 +34,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
             <DropdownMenuItem asChild>
                 <Link className="block w-full" method="post" href={route('logout')} as="button" onClick={cleanup}>
                     <LogOut className="mr-2" />
-                    {t('Log out')}
+                    {translate('Log out')}
                 </Link>
             </DropdownMenuItem>
         </>

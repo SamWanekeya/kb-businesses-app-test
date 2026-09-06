@@ -11,7 +11,7 @@ interface ChatGptButtonProps {
 }
 
 export function ChatGptButton({ onClick, text = 'Auto Generate', variant = 'outline', size = 'sm', className = '' }: ChatGptButtonProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
 
     return (
         <Button type="button" variant={variant} size={size} onClick={onClick} className={`flex items-center gap-2 ${className}`}>

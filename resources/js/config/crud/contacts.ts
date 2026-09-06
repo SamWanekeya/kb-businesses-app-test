@@ -1,7 +1,7 @@
 // config/crud/contacts.ts
 import { CrudConfig } from '@/types/crud';
 import { columnRenderers } from '@/utils/ColumnRenderers';
-import { t } from '@/utils/i18n';
+import { useTranslation } from 'react-i18next';
 
 export const contactsConfig: CrudConfig = {
     entity: {
@@ -16,14 +16,14 @@ export const contactsConfig: CrudConfig = {
     },
     table: {
         columns: [
-            { key: 'organization.name', label: t('Organization Name'), sortable: false },
-            { key: 'name', label: t('Name'), sortable: true },
-            { key: 'email', label: t('Email'), sortable: true },
-            { key: 'phone', label: t('Phone') },
-            { key: 'message', label: t('Message') },
+            { key: 'organization.name', label: translate('Organization Name'), sortable: false },
+            { key: 'name', label: translate('Name'), sortable: true },
+            { key: 'email', label: translate('Email'), sortable: true },
+            { key: 'phone', label: translate('Phone') },
+            { key: 'message', label: translate('Message') },
             {
                 key: 'status',
-                label: t('Status'),
+                label: translate('Status'),
                 sortable: true,
                 render: columnRenderers.status({
                     new: 'bg-blue-100 text-blue-800',
@@ -36,14 +36,14 @@ export const contactsConfig: CrudConfig = {
         ],
         actions: [
             {
-                label: t('Reply'),
+                label: translate('Reply'),
                 icon: 'MessageSquare',
                 action: 'reply',
                 className: 'text-blue-500',
                 requiredPermission: 'edit-contacts',
             },
             {
-                label: t('Delete'),
+                label: translate('Delete'),
                 icon: 'Trash2',
                 action: 'delete',
                 className: 'text-red-500',
@@ -54,38 +54,38 @@ export const contactsConfig: CrudConfig = {
     filters: [
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             type: 'select',
             options: [
-                { value: 'new', label: t('New') },
-                { value: 'contacted', label: t('Contacted') },
-                { value: 'qualified', label: t('Qualified') },
-                { value: 'converted', label: t('Converted') },
-                { value: 'closed', label: t('Closed') },
+                { value: 'new', label: translate('New') },
+                { value: 'contacted', label: translate('Contacted') },
+                { value: 'qualified', label: translate('Qualified') },
+                { value: 'converted', label: translate('Converted') },
+                { value: 'closed', label: translate('Closed') },
             ],
         },
     ],
     form: {
         fields: [
-            { name: 'business_id', label: t('Business'), type: 'select', required: true },
-            { name: 'name', label: t('Name'), type: 'text', required: true },
-            { name: 'email', label: t('Email'), type: 'email' },
-            { name: 'phone', label: t('Phone'), type: 'text' },
-            { name: 'message', label: t('Message'), type: 'textarea' },
+            { name: 'business_id', label: translate('Business'), type: 'select', required: true },
+            { name: 'name', label: translate('Name'), type: 'text', required: true },
+            { name: 'email', label: translate('Email'), type: 'email' },
+            { name: 'phone', label: translate('Phone'), type: 'text' },
+            { name: 'message', label: translate('Message'), type: 'textarea' },
             {
                 name: 'status',
-                label: t('Status'),
+                label: translate('Status'),
                 type: 'select',
                 required: true,
                 options: [
-                    { value: 'new', label: t('New') },
-                    { value: 'contacted', label: t('Contacted') },
-                    { value: 'qualified', label: t('Qualified') },
-                    { value: 'converted', label: t('Converted') },
-                    { value: 'closed', label: t('Closed') },
+                    { value: 'new', label: translate('New') },
+                    { value: 'contacted', label: translate('Contacted') },
+                    { value: 'qualified', label: translate('Qualified') },
+                    { value: 'converted', label: translate('Converted') },
+                    { value: 'closed', label: translate('Closed') },
                 ],
             },
-            { name: 'notes', label: t('Notes'), type: 'textarea' },
+            { name: 'notes', label: translate('Notes'), type: 'textarea' },
         ],
     },
 };

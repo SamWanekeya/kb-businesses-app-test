@@ -23,7 +23,7 @@ interface CurrencyProps {
 }
 
 export default function CurrencySettings() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { currencies = [], systemSettings = {} } = usePage().props;
 
     // Currency Settings form state
@@ -121,7 +121,7 @@ export default function CurrencySettings() {
     const submitCurrencySettings = (e: React.FormEvent) => {
         e.preventDefault();
 
-        toast.loading(t('Saving currency settings...'));
+        toast.loading(translate('Saving currency settings...'));
         setProcessing(true);
 
         router.post(route('settings.currency.update'), currencySettings, {
@@ -137,13 +137,13 @@ export default function CurrencySettings() {
                 } else if (errorMessage) {
                     toast.error(errorMessage);
                 } else {
-                    toast.success(t('Currency settings updated successfully'));
+                    toast.success(translate('Currency settings updated successfully'));
                 }
             },
             onError: (errors) => {
                 setProcessing(false);
                 toast.dismiss();
-                const errorMessage = errors.error || Object.values(errors).join(', ') || t('Failed to update currency settings');
+                const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to update currency settings');
                 toast.error(errorMessage);
             },
         });
@@ -151,12 +151,12 @@ export default function CurrencySettings() {
 
     return (
         <SettingsSection
-            title={t('Currency Settings')}
-            description={t('Configure how currency values are displayed throughout the application')}
+            title={translate('Currency Settings')}
+            description={translate('Configure how currency values are displayed throughout the application')}
             action={
                 <Button type="submit" disabled={processing} form="currency-settings-form" size="sm">
                     <Save className="mr-2 h-4 w-4" />
-                    {processing ? t('Saving...') : t('Save Changes')}
+                    {processing ? translate('Saving...') : translate('Save Changes')}
                 </Button>
             }
         >
@@ -169,7 +169,7 @@ export default function CurrencySettings() {
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center space-x-2">
                                         <DollarSign className="text-primary h-5 w-5" />
-                                        <h3 className="text-base font-medium">{t('Format Options')}</h3>
+                                        <h3 className="text-base font-medium">{translate('Format Options')}</h3>
                                     </div>
                                 </div>
                             </CardHeader>
@@ -210,7 +210,7 @@ export default function CurrencySettings() {
                                         <div className="min-w-0 space-y-3">
                                             <div className="flex items-center justify-between">
                                                 <Label htmlFor="defaultCurrency" className="font-medium">
-                                                    {t('Default Currency')}
+                                                    {translate('Default Currency')}
                                                 </Label>
                                                 <Badge variant="outline" className="font-mono">
                                                     {currencySettings.defaultCurrency}
@@ -218,7 +218,7 @@ export default function CurrencySettings() {
                                             </div>
                                             <Select value={currencySettings.defaultCurrency} onValueChange={handleCurrencyChange}>
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder={t('Select currency')} />
+                                                    <SelectValue placeholder={translate('Select currency')} />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <div className="max-h-[300px] overflow-y-auto">
@@ -237,7 +237,7 @@ export default function CurrencySettings() {
                                                                 </SelectItem>
                                                             ))
                                                         ) : (
-                                                            <div className="text-muted-foreground p-2 text-center">{t('No currencies found')}</div>
+                                                            <div className="text-muted-foreground p-2 text-center">{translate('No currencies found')}</div>
                                                         )}
                                                     </div>
                                                 </SelectContent>
@@ -247,7 +247,7 @@ export default function CurrencySettings() {
                                         <div className="min-w-0 space-y-3">
                                             <div className="flex items-center justify-between">
                                                 <Label htmlFor="decimalFormat" className="font-medium">
-                                                    {t('Decimal Places')}
+                                                    {translate('Decimal Places')}
                                                 </Label>
                                                 <TooltipProvider>
                                                     <Tooltip>
@@ -255,7 +255,7 @@ export default function CurrencySettings() {
                                                             <Info className="text-muted-foreground h-4 w-4" />
                                                         </TooltipTrigger>
                                                         <TooltipContent>
-                                                            <p>{t('Number of digits after decimal point')}</p>
+                                                            <p>{translate('Number of digits after decimal point')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
@@ -280,7 +280,7 @@ export default function CurrencySettings() {
                                         <div className="space-y-3">
                                             <div className="flex items-center justify-between">
                                                 <Label htmlFor="currencySymbolPosition" className="font-medium">
-                                                    {t('Symbol Position')}
+                                                    {translate('Symbol Position')}
                                                 </Label>
                                                 <TooltipProvider>
                                                     <Tooltip>
@@ -288,7 +288,7 @@ export default function CurrencySettings() {
                                                             <Info className="text-muted-foreground h-4 w-4" />
                                                         </TooltipTrigger>
                                                         <TooltipContent>
-                                                            <p>{t('Where to place the currency symbol')}</p>
+                                                            <p>{translate('Where to place the currency symbol')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
@@ -318,7 +318,7 @@ export default function CurrencySettings() {
                                         <div className="space-y-3">
                                             <div className="flex items-center justify-between">
                                                 <Label htmlFor="decimalSeparator" className="font-medium">
-                                                    {t('Decimal Separator')}
+                                                    {translate('Decimal Separator')}
                                                 </Label>
                                                 <TooltipProvider>
                                                     <Tooltip>
@@ -326,7 +326,7 @@ export default function CurrencySettings() {
                                                             <Info className="text-muted-foreground h-4 w-4" />
                                                         </TooltipTrigger>
                                                         <TooltipContent>
-                                                            <p>{t('Character used to separate decimal places')}</p>
+                                                            <p>{translate('Character used to separate decimal places')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
@@ -338,7 +338,7 @@ export default function CurrencySettings() {
                                                     className="justify-center"
                                                     onClick={() => handleCurrencySettingsChange('decimalSeparator', '.')}
                                                 >
-                                                    {t('Dot')} (123.45)
+                                                    {translate('Dot')} (123.45)
                                                     {currencySettings.decimalSeparator === '.' && <Check className="ml-2 h-4 w-4" />}
                                                 </Button>
                                                 <Button
@@ -347,7 +347,7 @@ export default function CurrencySettings() {
                                                     className="justify-center"
                                                     onClick={() => handleCurrencySettingsChange('decimalSeparator', ',')}
                                                 >
-                                                    {t('Comma')} (123,45)
+                                                    {translate('Comma')} (123,45)
                                                     {currencySettings.decimalSeparator === ',' && <Check className="ml-2 h-4 w-4" />}
                                                 </Button>
                                             </div>
@@ -356,7 +356,7 @@ export default function CurrencySettings() {
                                         <div className="space-y-3">
                                             <div className="flex items-center justify-between">
                                                 <Label htmlFor="thousandsSeparator" className="font-medium">
-                                                    {t('Thousands Separator')}
+                                                    {translate('Thousands Separator')}
                                                 </Label>
                                                 <TooltipProvider>
                                                     <Tooltip>
@@ -364,7 +364,7 @@ export default function CurrencySettings() {
                                                             <Info className="text-muted-foreground h-4 w-4" />
                                                         </TooltipTrigger>
                                                         <TooltipContent>
-                                                            <p>{t('Character used to group thousands')}</p>
+                                                            <p>{translate('Character used to group thousands')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
@@ -374,7 +374,7 @@ export default function CurrencySettings() {
                                                 onValueChange={(value) => handleCurrencySettingsChange('thousandsSeparator', value)}
                                             >
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder={t('Select thousands separator')} />
+                                                    <SelectValue placeholder={translate('Select thousands separator')} />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectItem value=",">Comma (1,234.56)</SelectItem>
@@ -389,9 +389,9 @@ export default function CurrencySettings() {
                                             <div className="flex items-center justify-between">
                                                 <div>
                                                     <Label htmlFor="floatNumber" className="font-medium">
-                                                        {t('Show Decimals')}
+                                                        {translate('Show Decimals')}
                                                     </Label>
-                                                    <p className="text-muted-foreground mt-1 text-xs">{t('Display decimal places in amounts')}</p>
+                                                    <p className="text-muted-foreground mt-1 text-xs">{translate('Display decimal places in amounts')}</p>
                                                 </div>
                                                 <Switch
                                                     id="floatNumber"
@@ -405,9 +405,9 @@ export default function CurrencySettings() {
                                             <div className="flex items-center justify-between">
                                                 <div>
                                                     <Label htmlFor="currencySymbolSpace" className="font-medium">
-                                                        {t('Add Space')}
+                                                        {translate('Add Space')}
                                                     </Label>
-                                                    <p className="text-muted-foreground mt-1 text-xs">{t('Space between amount and symbol')}</p>
+                                                    <p className="text-muted-foreground mt-1 text-xs">{translate('Space between amount and symbol')}</p>
                                                 </div>
                                                 <Switch
                                                     id="currencySymbolSpace"

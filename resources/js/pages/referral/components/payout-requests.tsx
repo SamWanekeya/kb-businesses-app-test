@@ -20,7 +20,7 @@ interface PayoutRequestsProps {
 }
 
 export default function PayoutRequests({ userType, payoutRequests, settings, stats, currencySymbol }: PayoutRequestsProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
 
     const [showCreateDialog, setShowCreateDialog] = useState(false);
     const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
@@ -104,7 +104,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
             ? [
                   {
                       key: 'organization.name',
-                      label: t('Organization'),
+                      label: translate('Organization'),
                       render: (_, row) => (
                           <div>
                               <p className="text-sm font-semibold">{row.organization?.name}</p>
@@ -116,7 +116,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
             : []),
         {
             key: 'amount',
-            label: t('Amount'),
+            label: translate('Amount'),
             render: (value) => (
                 <span className="font-mono">
                     {currencySymbol}
@@ -126,7 +126,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
         },
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             render: (value) => {
                 const statusColors: Record<string, string> = {
                     pending: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20',
@@ -144,7 +144,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
         },
         {
             key: 'created_at',
-            label: t('Date'),
+            label: translate('Date'),
             type: 'date',
             // render: (value) => window.appSettings?.formatDateTime(value, false) || new Date(value).toLocaleDateString()
         },
@@ -155,14 +155,14 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
         userType === 'super_admin'
             ? [
                   {
-                      label: t('Approve'),
+                      label: translate('Approve'),
                       icon: 'Check',
                       action: 'approve',
                       className: 'text-green-500',
                       condition: (row) => row.status === 'pending',
                   },
                   {
-                      label: t('Reject'),
+                      label: translate('Reject'),
                       icon: 'X',
                       action: 'reject',
                       className: 'text-red-500',
@@ -176,21 +176,21 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
             {userType === 'organization' && (
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between">
-                        <CardTitle className="text-base font-semibold">{t('Create Payout Request')}</CardTitle>
+                        <CardTitle className="text-base font-semibold">{translate('Create Payout Request')}</CardTitle>
                         <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
                             <DialogTrigger asChild>
                                 <Button disabled={stats.availableBalance < settings.threshold_amount}>
                                     <Plus className="me-2 h-4 w-4" />
-                                    {t('Request Payout')}
+                                    {translate('Request Payout')}
                                 </Button>
                             </DialogTrigger>
                             <DialogContent>
                                 <DialogHeader>
-                                    <DialogTitle>{t('Create Payout Request')}</DialogTitle>
+                                    <DialogTitle>{translate('Create Payout Request')}</DialogTitle>
                                 </DialogHeader>
                                 <form onSubmit={handleCreatePayout} className="space-y-4">
                                     <div>
-                                        <Label htmlFor="amount">{t('Amount')}</Label>
+                                        <Label htmlFor="amount">{translate('Amount')}</Label>
                                         <Input
                                             id="amount"
                                             type="number"
@@ -205,14 +205,14 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                                     </div>
                                     <div className="text-muted-foreground text-sm">
                                         <p>
-                                            {t('Available Balance')}:{' '}
+                                            {translate('Available Balance')}:{' '}
                                             <span className="font-mono">
                                                 {currencySymbol}
                                                 {stats.availableBalance}
                                             </span>
                                         </p>
                                         <p>
-                                            {t('Minimum Amount')}:{' '}
+                                            {translate('Minimum Amount')}:{' '}
                                             <span className="font-mono">
                                                 {currencySymbol}
                                                 {settings.threshold_amount}
@@ -221,10 +221,10 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                                     </div>
                                     <DialogFooter>
                                         <Button type="button" variant="outline" onClick={() => setShowCreateDialog(false)}>
-                                            {t('Cancel')}
+                                            {translate('Cancel')}
                                         </Button>
                                         <Button type="submit" disabled={processing}>
-                                            {t('Submit Request')}
+                                            {translate('Submit Request')}
                                         </Button>
                                     </DialogFooter>
                                 </form>
@@ -234,8 +234,8 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                     <CardContent>
                         <p className="text-muted-foreground text-sm">
                             {stats.availableBalance < settings.threshold_amount
-                                ? t('You need at least {{amount}} to request a payout', { amount: `${currencySymbol}${settings.threshold_amount}` })
-                                : t('You can request up to {{amount}} for payout', { amount: `${currencySymbol}${stats.availableBalance}` })}
+                                ? translate('You need at least {{amount}} to request a payout', { amount: `${currencySymbol}${settings.threshold_amount}` })
+                                : translate('You can request up to {{amount}} for payout', { amount: `${currencySymbol}${stats.availableBalance}` })}
                         </p>
                     </CardContent>
                 </Card>
@@ -244,7 +244,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
             <Card>
                 <CardHeader>
                     <CardTitle className="text-base font-semibold">
-                        {userType === 'super_admin' ? t('All Payout Requests') : t('Your Payout Requests')}
+                        {userType === 'super_admin' ? translate('All Payout Requests') : translate('Your Payout Requests')}
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -265,28 +265,28 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
             <Dialog open={isRejectModalOpen} onOpenChange={setIsRejectModalOpen}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>{t('Reject Payout Request')}</DialogTitle>
+                        <DialogTitle>{translate('Reject Payout Request')}</DialogTitle>
                     </DialogHeader>
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
                             const formData = new FormData(e.currentTarget);
-                            const notes = formData.get('notes') as string;
+                            const notes = formData.getranslate('notes') as string;
                             handleRejectConfirm(notes);
                         }}
                     >
                         <div className="space-y-4">
                             <div>
-                                <Label htmlFor="notes">{t('Rejection Reason (Optional)')}</Label>
-                                <Textarea id="notes" name="notes" placeholder={t('Enter rejection reason...')} className="mt-1" />
+                                <Label htmlFor="notes">{translate('Rejection Reason (Optional)')}</Label>
+                                <Textarea id="notes" name="notes" placeholder={translate('Enter rejection reason...')} className="mt-1" />
                             </div>
                         </div>
                         <DialogFooter>
                             <Button type="button" variant="outline" onClick={() => setIsRejectModalOpen(false)}>
-                                {t('Cancel')}
+                                {translate('Cancel')}
                             </Button>
                             <Button type="submit" variant="destructive">
-                                {t('Reject')}
+                                {translate('Reject')}
                             </Button>
                         </DialogFooter>
                     </form>

@@ -21,7 +21,7 @@ interface UsePaymentProcessorOptions {
 }
 
 export function usePaymentProcessor(options: UsePaymentProcessorOptions = {}) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [processing, setProcessing] = useState(false);
 
     const processPayment = async (paymentMethod: string, data: PaymentData) => {
@@ -43,7 +43,7 @@ export function usePaymentProcessor(options: UsePaymentProcessorOptions = {}) {
         const routeName = routes[paymentMethod as keyof typeof routes];
 
         if (!routeName) {
-            toast.error(t('Invalid payment method'));
+            toast.error(translate('Invalid payment method'));
             setProcessing(false);
             return;
         }
@@ -56,12 +56,12 @@ export function usePaymentProcessor(options: UsePaymentProcessorOptions = {}) {
                 if (page.props?.flash?.success) {
                     toast.success(t(page.props.flash.success));
                 } else {
-                    toast.success(t('Payment successful'));
+                    toast.success(translate('Payment successful'));
                 }
                 options.onSuccess?.();
             },
             onError: (errors) => {
-                const errorMessage = errors?.message || errors?.error || t('Payment failed');
+                const errorMessage = errors?.message || errors?.error || translate('Payment failed');
                 toast.error(errorMessage);
                 options.onError?.(errorMessage);
             },

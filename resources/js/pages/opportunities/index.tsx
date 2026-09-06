@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Opportunities() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const {
         auth,
         opportunities,
@@ -162,7 +162,7 @@ export default function Opportunities() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting opportunity...'));
+        toast.loading(translate('Deleting opportunity...'));
 
         router.delete(route('opportunities.destroy', currentItem.id), {
             onSuccess: () => {
@@ -177,7 +177,7 @@ export default function Opportunities() {
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
-                    toast.error(t('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
             },
         });
@@ -185,12 +185,12 @@ export default function Opportunities() {
 
     const handleToggleStatus = (opportunity: any) => {
         if (!useHasPermission('toggle-status-opportunities')) {
-            toast.error(t('Permission denied.'));
+            toast.error(translate('Permission denied.'));
             return;
         }
 
         const newStatus = opportunity.status === 'active' ? 'inactive' : 'active';
-        toast.loading(t('{{action}} opportunity...', { action: newStatus === 'active' ? t('Activating') : t('Deactivating') }));
+        toast.loading(translate('{{action}} opportunity...', { action: newStatus === 'active' ? translate('Activating') : translate('Deactivating') }));
 
         router.put(
             route('opportunities.toggle-status', opportunity.id),
@@ -207,7 +207,7 @@ export default function Opportunities() {
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
-                        toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
                 },
             },
@@ -264,13 +264,13 @@ export default function Opportunities() {
     // Add export button
     if (useHasPermission('export-opportunities')) {
         pageActions.push({
-            label: t('Export'),
+            label: translate('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
             variant: 'outline',
             onClick: () => (window.location.href = route('opportunity.export')),
             className: 'h-8 w-8 min-[450px]:h-9 min-[450px]:w-auto px-0 min-[450px]:px-4',
             labelClassName: 'hidden min-[450px]:inline',
-            tooltip: t('Export'),
+            tooltip: translate('Export'),
             tooltipClassName: 'min-[450px]:hidden',
         });
     }
@@ -278,37 +278,37 @@ export default function Opportunities() {
     // Add the "Add Opportunity" button if user has permission
     if (useHasPermission('create-opportunities')) {
         pageActions.push({
-            label: t('Add Opportunity'),
+            label: translate('Add Opportunity'),
             icon: <Plus className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
             variant: 'default',
             onClick: () => handleAddNew(),
             className: 'h-8 w-8 min-[450px]:h-9 min-[450px]:w-auto px-0 min-[450px]:px-4',
             labelClassName: 'hidden min-[450px]:inline',
-            tooltip: t('Add Opportunity'),
+            tooltip: translate('Add Opportunity'),
             tooltipClassName: 'min-[450px]:hidden',
         });
     }
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Opportunity Management') }, { title: t('Opportunities') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Opportunity Management') }, { title: translate('Opportunities') }];
 
     // Define table columns
     const columns = [
         {
             key: 'name',
-            label: t('Name'),
+            label: translate('Name'),
             sortable: true,
             render: (value: any, row: any) => (
                 <div className="flex min-w-0 items-center gap-3">
                     <div className="min-w-0">
                         <div className="font-medium">{row.name}</div>
-                        <div className="text-muted-foreground text-sm">{row.account?.name || t('No account')}</div>
+                        <div className="text-muted-foreground text-sm">{row.account?.name || translate('No account')}</div>
                     </div>
                 </div>
             ),
         },
         {
             key: 'assigned_user',
-            label: t('Assigned To'),
+            label: translate('Assigned To'),
             render: (value: any) =>
                 value ? (
                     <div className="flex items-center gap-3">
@@ -322,12 +322,12 @@ export default function Opportunities() {
                         </div>
                     </div>
                 ) : (
-                    <span className="text-muted-foreground">{t('Unassigned')}</span>
+                    <span className="text-muted-foreground">{translate('Unassigned')}</span>
                 ),
         },
         {
             key: 'opportunity_stage',
-            label: t('Stage'),
+            label: translate('Stage'),
             render: (value: any) =>
                 value ? (
                     <span
@@ -341,17 +341,17 @@ export default function Opportunities() {
                         {value.name}
                     </span>
                 ) : (
-                    t('-')
+                    translate('-')
                 ),
         },
         {
             key: 'opportunity_source',
-            label: t('Source'),
-            render: (value: any) => <span>{value?.name || t('-')}</span>,
+            label: translate('Source'),
+            render: (value: any) => <span>{value?.name || translate('-')}</span>,
         },
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             render: (value: string) => (
                 <span
                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
@@ -360,20 +360,20 @@ export default function Opportunities() {
                             : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                     }`}
                 >
-                    {value === 'active' ? t('Active') : t('Inactive')}
+                    {value === 'active' ? translate('Active') : translate('Inactive')}
                 </span>
             ),
         },
         {
             key: 'close_date',
-            label: t('Close Date'),
+            label: translate('Close Date'),
             sortable: true,
             type: 'date',
-            // render: (value: string) => <span className="whitespace-nowrap">{value ? (window.appSettings?.formatDateTime(value, false) || '-') : t('-')}</span>
+            // render: (value: string) => <span className="whitespace-nowrap">{value ? (window.appSettings?.formatDateTime(value, false) || '-') : translate('-')}</span>
         },
         // {
         //     key: 'created_at',
-        //     label: t('Created At'),
+        //     label: translate('Created At'),
         //     sortable: true,
         //     type: 'date',
         // }
@@ -382,28 +382,28 @@ export default function Opportunities() {
     // Define table actions
     const actions = [
         {
-            label: t('Toggle Status'),
+            label: translate('Toggle Status'),
             icon: 'Lock',
             action: 'toggle-status',
             className: 'text-amber-500',
             requiredPermission: 'toggle-status-opportunities',
         },
         {
-            label: t('View'),
+            label: translate('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
             requiredPermission: 'view-opportunities',
         },
         {
-            label: t('Edit'),
+            label: translate('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
             requiredPermission: 'edit-opportunities',
         },
         {
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
@@ -413,8 +413,8 @@ export default function Opportunities() {
 
     return (
         <PageTemplate
-            title={t('Opportunities')}
-            description={t('Manage your opportunities')}
+            title={translate('Opportunities')}
+            description={translate('Manage your opportunities')}
             url="/opportunities"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -430,13 +430,13 @@ export default function Opportunities() {
                     filters={[
                         {
                             name: 'account_id',
-                            label: t('Account'),
+                            label: translate('Account'),
                             type: 'select',
                             searchable: true,
                             value: selectedAccount,
                             onChange: setSelectedAccount,
                             options: [
-                                { value: 'all', label: t('All Accounts') },
+                                { value: 'all', label: translate('All Accounts') },
                                 ...allAccounts.map((account: any) => ({
                                     value: account.id.toString(),
                                     label: account.name,
@@ -445,13 +445,13 @@ export default function Opportunities() {
                         },
                         {
                             name: 'opportunity_stage_id',
-                            label: t('Stage'),
+                            label: translate('Stage'),
                             type: 'select',
                             searchable: true,
                             value: selectedStage,
                             onChange: setSelectedStage,
                             options: [
-                                { value: 'all', label: t('All Stages') },
+                                { value: 'all', label: translate('All Stages') },
                                 ...allOpportunityStages.map((stage: any) => ({
                                     value: stage.id.toString(),
                                     label: stage.name,
@@ -460,13 +460,13 @@ export default function Opportunities() {
                         },
                         {
                             name: 'opportunity_source_id',
-                            label: t('Source'),
+                            label: translate('Source'),
                             type: 'select',
                             searchable: true,
                             value: selectedSource,
                             onChange: setSelectedSource,
                             options: [
-                                { value: 'all', label: t('All Sources') },
+                                { value: 'all', label: translate('All Sources') },
                                 ...allOpportunitySources.map((source: any) => ({
                                     value: source.id.toString(),
                                     label: source.name,
@@ -475,25 +475,25 @@ export default function Opportunities() {
                         },
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
                             options: [
-                                { value: 'all', label: t('All Status') },
-                                { value: 'active', label: t('Active') },
-                                { value: 'inactive', label: t('Inactive') },
+                                { value: 'all', label: translate('All Status') },
+                                { value: 'active', label: translate('Active') },
+                                { value: 'inactive', label: translate('Inactive') },
                             ],
                         },
                         {
                             name: 'assigned_to',
-                            label: t('Assigned To'),
+                            label: translate('Assigned To'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: t('All Users') },
+                                { value: 'all', label: translate('All Users') },
                                 ...allUsers.map((user: any) => ({
                                     value: user.id.toString(),
                                     label: user.name,
@@ -548,9 +548,9 @@ export default function Opportunities() {
                         );
                     }}
                     viewOptions={[
-                        { value: 'list', label: t('List View'), icon: 'List' },
-                        { value: 'kanban', label: t('Kanban View'), icon: 'Columns' },
-                        // { value: 'grid', label: t('Grid View'), icon: 'Grid3X3' }
+                        { value: 'list', label: translate('List View'), icon: 'List' },
+                        { value: 'kanban', label: translate('Kanban View'), icon: 'Columns' },
+                        // { value: 'grid', label: translate('Grid View'), icon: 'Grid3X3' }
                     ]}
                 />
             </div>
@@ -582,7 +582,7 @@ export default function Opportunities() {
                         to={opportunities?.to || opportunities?.data?.length || 0}
                         total={opportunities?.total || opportunities?.data?.length || 0}
                         links={opportunities?.links}
-                        entityName={t('opportunities')}
+                        entityName={translate('opportunities')}
                         onPageChange={(url) => router.get(url)}
                         {...(activeView !== 'kanban' && {
                             currentPerPage: pageFilters.per_page?.toString() || '10',
@@ -630,9 +630,9 @@ export default function Opportunities() {
                                         <LucidIcons.LayoutGrid className="text-primary h-10 w-10" />
                                     </div>
                                     <div className="space-y-1.5">
-                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{t('No Opportunity Stage Yet')}</h3>
+                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{translate('No Opportunity Stage Yet')}</h3>
                                         <p className="text-muted-foreground text-sm leading-relaxed">
-                                            {t('Set up opportunity stages to start organizing your work in a Kanban board.')}
+                                            {translate('Set up opportunity stages to start organizing your work in a Kanban board.')}
                                         </p>
                                     </div>
                                     {useHasPermission('manage-opportunity-stages') && (
@@ -641,7 +641,7 @@ export default function Opportunities() {
                                             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
                                         >
                                             <Plus className="h-4 w-4" />
-                                            {t('Add Opportunity Stage')}
+                                            {translate('Add Opportunity Stage')}
                                         </button>
                                     )}
                                 </div>
@@ -678,7 +678,7 @@ export default function Opportunities() {
                                             const opportunityId = e.dataTransfer.getData('opportunityId');
                                             if (!opportunityId) return;
                                             if (!useHasPermission('edit-opportunities')) {
-                                                toast.error(t('Permission denied.'));
+                                                toast.error(translate('Permission denied.'));
                                                 return;
                                             }
                                             const allItems = Object.values(kanbanData).flatMap((c: any) => c.items);
@@ -709,7 +709,7 @@ export default function Opportunities() {
                                                     },
                                                     onError: () => {
                                                         toast.dismiss();
-                                                        toast.error(t('Failed to update opportunity stage'));
+                                                        toast.error(translate('Failed to update opportunity stage'));
                                                         setKanbanData(kanbanDataRef);
                                                     },
                                                 },
@@ -735,7 +735,7 @@ export default function Opportunities() {
                                                 <button
                                                     onClick={() => handleAddOpportunity(stage.id.toString())}
                                                     className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-white/60 hover:text-gray-800"
-                                                    title={t('Add Opportunity')}
+                                                    title={translate('Add Opportunity')}
                                                 >
                                                     <Plus className="h-4 w-4" />
                                                 </button>
@@ -749,7 +749,7 @@ export default function Opportunities() {
                                                     <div className="mb-2 flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-gray-200">
                                                         <Building2 className="h-6 w-6 text-gray-300" />
                                                     </div>
-                                                    <p className="text-xs text-gray-400">{t('Drop opportunities here')}</p>
+                                                    <p className="text-xs text-gray-400">{translate('Drop opportunities here')}</p>
                                                 </div>
                                             ) : (
                                                 stageOpportunities.map((opportunity: any) => (
@@ -812,7 +812,7 @@ export default function Opportunities() {
                                                                                         onClick={() => handleAction('view', opportunity)}
                                                                                     >
                                                                                         <Eye className="mr-2 h-4 w-4" />
-                                                                                        {t('View')}
+                                                                                        {translate('View')}
                                                                                     </DropdownMenuItem>
                                                                                 )}
                                                                                 {useHasPermission('edit-opportunities') && (
@@ -820,7 +820,7 @@ export default function Opportunities() {
                                                                                         onClick={() => handleAction('edit', opportunity)}
                                                                                     >
                                                                                         <Edit className="mr-2 h-4 w-4" />
-                                                                                        {t('Edit')}
+                                                                                        {translate('Edit')}
                                                                                     </DropdownMenuItem>
                                                                                 )}
                                                                                 {useHasPermission('delete-opportunities') && (
@@ -831,7 +831,7 @@ export default function Opportunities() {
                                                                                             className="text-red-600"
                                                                                         >
                                                                                             <Trash2 className="mr-2 h-4 w-4" />
-                                                                                            {t('Delete')}
+                                                                                            {translate('Delete')}
                                                                                         </DropdownMenuItem>
                                                                                     </>
                                                                                 )}
@@ -952,13 +952,13 @@ export default function Opportunities() {
                                             <div className="min-w-0 flex-1">
                                                 <h3 className="mb-2 text-lg font-bold text-gray-900 dark:text-white">{opportunity.name}</h3>
                                                 <p className="mb-3 text-sm text-gray-600 dark:text-gray-300">
-                                                    {opportunity.account?.name || t('No account')}
+                                                    {opportunity.account?.name || translate('No account')}
                                                 </p>
                                                 <div className="flex items-center">
                                                     <span
                                                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${opportunity.status === 'active' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20'}`}
                                                     >
-                                                        {opportunity.status === 'active' ? t('Active') : t('Inactive')}
+                                                        {opportunity.status === 'active' ? translate('Active') : translate('Inactive')}
                                                     </span>
                                                 </div>
                                             </div>
@@ -979,26 +979,26 @@ export default function Opportunities() {
                                                 {useHasPermission('view-opportunities') && (
                                                     <DropdownMenuItem onClick={() => handleAction('view', opportunity)}>
                                                         <Eye className="mr-2 h-4 w-4" />
-                                                        <span>{t('View Opportunity')}</span>
+                                                        <span>{translate('View Opportunity')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {useHasPermission('toggle-status-opportunities') && (
                                                     <DropdownMenuItem onClick={() => handleAction('toggle-status', opportunity)}>
                                                         <Lock className="mr-2 h-4 w-4" />
-                                                        <span>{opportunity.status === 'active' ? t('Deactivate') : t('Activate')}</span>
+                                                        <span>{opportunity.status === 'active' ? translate('Deactivate') : translate('Activate')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 <DropdownMenuSeparator />
                                                 {useHasPermission('edit-opportunities') && (
                                                     <DropdownMenuItem onClick={() => handleAction('edit', opportunity)} className="text-amber-600">
                                                         <Edit className="mr-2 h-4 w-4" />
-                                                        <span>{t('Edit')}</span>
+                                                        <span>{translate('Edit')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {useHasPermission('delete-opportunities') && (
                                                     <DropdownMenuItem onClick={() => handleAction('delete', opportunity)} className="text-rose-600">
                                                         <Trash2 className="mr-2 h-4 w-4" />
-                                                        <span>{t('Delete')}</span>
+                                                        <span>{translate('Delete')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                             </DropdownMenuContent>
@@ -1009,12 +1009,12 @@ export default function Opportunities() {
                                     <div className="mb-4 flex-1 rounded-md border border-gray-200 p-3 dark:border-gray-700">
                                         <div className="mb-2">
                                             <span className="text-sm text-gray-600 dark:text-gray-400">
-                                                {t('Amount')}:{' '}
+                                                {translate('Amount')}:{' '}
                                                 <span className="font-mono">
                                                     {opportunity.amount
                                                         ? window.appSettings?.formatCurrency(parseFloat(opportunity.amount)) ||
                                                           `$${parseFloat(opportunity.amount).toFixed(2)}`
-                                                        : t('-')}
+                                                        : translate('-')}
                                                 </span>
                                             </span>
                                         </div>
@@ -1023,13 +1023,13 @@ export default function Opportunities() {
                                                 <Calendar className="h-4 w-4 text-gray-500" />
 
                                                 <span>
-                                                    {t('Close Date')}:{' '}
+                                                    {translate('Close Date')}:{' '}
                                                     {opportunity.close_date || opportunity.created_at
                                                         ? window.appSettings?.formatDateTime(
                                                               opportunity.close_date || opportunity.created_at,
                                                               false,
                                                           ) || new Date(opportunity.close_date || opportunity.created_at).toLocaleDateString()
-                                                        : t('-')}
+                                                        : translate('-')}
                                                 </span>
                                             </span>
                                         </div>
@@ -1059,7 +1059,7 @@ export default function Opportunities() {
                                         <Calendar className="h-4 w-4 text-gray-500" />
 
                                         <span>
-                                            {t('Created:')}{' '}
+                                            {translate('Created:')}{' '}
                                             {window.appSettings?.formatDateTime(opportunity.created_at, false) ||
                                                 new Date(opportunity.created_at).toLocaleDateString()}
                                         </span>
@@ -1075,7 +1075,7 @@ export default function Opportunities() {
                                                 className="h-9 flex-1 border-gray-300 text-sm dark:border-gray-600 dark:text-gray-200"
                                             >
                                                 <Edit className="mr-2 h-4 w-4 text-gray-500" />
-                                                {t('Edit')}
+                                                {translate('Edit')}
                                             </Button>
                                         )}
 
@@ -1087,7 +1087,7 @@ export default function Opportunities() {
                                                 className="h-9 flex-1 border-gray-300 text-sm dark:border-gray-600 dark:text-gray-200"
                                             >
                                                 <Eye className="mr-2 h-4 w-4 text-gray-500" />
-                                                {t('View')}
+                                                {translate('View')}
                                             </Button>
                                         )}
 
@@ -1099,7 +1099,7 @@ export default function Opportunities() {
                                                 className="h-9 flex-1 border-gray-300 text-sm dark:border-gray-600 dark:text-gray-200"
                                             >
                                                 <Trash2 className="mr-2 h-4 w-4 text-gray-500" />
-                                                {t('Delete')}
+                                                {translate('Delete')}
                                             </Button>
                                         )}
                                     </div>
@@ -1115,7 +1115,7 @@ export default function Opportunities() {
                             to={opportunities?.to || opportunities?.data?.length || 0}
                             total={opportunities?.total || opportunities?.data?.length || 0}
                             links={opportunities?.links}
-                            entityName={t('opportunities')}
+                            entityName={translate('opportunities')}
                             onPageChange={(url) => router.get(url)}
                             perPageOptions={[12, 24, 48, 96]}
                             currentPerPage={pageFilters.per_page?.toString() || '12'}
@@ -1149,7 +1149,7 @@ export default function Opportunities() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={t('opportunity')}
+                entityName={translate('opportunity')}
             />
         </PageTemplate>
     );

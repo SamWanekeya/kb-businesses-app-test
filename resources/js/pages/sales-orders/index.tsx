@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function SalesOrders() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const getInitials = useInitials();
     const {
         auth,
@@ -113,7 +113,7 @@ export default function SalesOrders() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting sales order...'));
+        toast.loading(translate('Deleting sales order...'));
 
         router.delete(route('sales-orders.destroy', currentItem.id), {
             onSuccess: () => {
@@ -122,7 +122,7 @@ export default function SalesOrders() {
             },
             onError: (errors) => {
                 toast.dismiss();
-                toast.error(t('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
     };
@@ -133,7 +133,7 @@ export default function SalesOrders() {
                 setIsStatusModalOpen(false);
             },
             onError: (errors) => {
-                toast.error(t('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
     };
@@ -145,10 +145,10 @@ export default function SalesOrders() {
         navigator.clipboard
             .writeText(salesOrderUrl)
             .then(() => {
-                toast.success(t('Sales order link copied to clipboard!'));
+                toast.success(translate('Sales order link copied to clipboard!'));
             })
             .catch(() => {
-                toast.error(t('Failed to copy sales order link'));
+                toast.error(translate('Failed to copy sales order link'));
             });
     };
 
@@ -164,7 +164,7 @@ export default function SalesOrders() {
     const handleResetFilters = () => {
         setSearchTerm('');
         setSelectedStatus('all');
-        setSelectedAccount('all');
+        setSelectedAccountranslate('all');
         setSelectedAssignee('all');
         router.get(route('sales-orders.index'));
     };
@@ -174,12 +174,12 @@ export default function SalesOrders() {
     // Add export button
     if (useHasPermission('export-sales-orders')) {
         pageActions.push({
-            label: t('Export'),
+            label: translate('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
             variant: 'outline',
             className: 'h-8 w-8 min-[450px]:h-9 min-[450px]:w-auto px-0 min-[450px]:px-4',
             labelClassName: 'hidden min-[450px]:inline',
-            tooltip: t('Export'),
+            tooltip: translate('Export'),
             tooltipClassName: 'min-[450px]:hidden',
             onClick: () => {
                 window.location.href = route('sales-order.export');
@@ -189,23 +189,23 @@ export default function SalesOrders() {
 
     if (useHasPermission('create-sales-orders')) {
         pageActions.push({
-            label: t('Add Sales Order'),
+            label: translate('Add Sales Order'),
             icon: <Plus className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
             variant: 'default',
             onClick: () => router.visit(route('sales-orders.create')),
             className: 'h-8 w-8 min-[450px]:h-9 min-[450px]:w-auto px-0 min-[450px]:px-4',
             labelClassName: 'hidden min-[450px]:inline',
-            tooltip: t('Add Sales Order'),
+            tooltip: translate('Add Sales Order'),
             tooltipClassName: 'min-[450px]:hidden',
         });
     }
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Sales Orders') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Sales Orders') }];
 
     const columns = [
         {
             key: 'order_number',
-            label: t('Order Number'),
+            label: translate('Order Number'),
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value: string, item: any) => (
@@ -222,13 +222,13 @@ export default function SalesOrders() {
         },
         {
             key: 'name',
-            label: t('Name'),
+            label: translate('Name'),
             sortable: true,
             render: (value: string) => <span className="font-medium whitespace-nowrap">{value || '-'}</span>,
         },
         {
             key: 'assigned_user',
-            label: t('Assigned To'),
+            label: translate('Assigned To'),
             className: 'whitespace-nowrap',
             render: (value: any) =>
                 value ? (
@@ -243,19 +243,19 @@ export default function SalesOrders() {
                         </div>
                     </div>
                 ) : (
-                    <span className="whitespace-nowrap">{t('Unassigned')}</span>
+                    <span className="whitespace-nowrap">{translate('Unassigned')}</span>
                 ),
         },
         {
             key: 'order_date',
-            label: t('Order Date'),
+            label: translate('Order Date'),
             sortable: true,
             className: 'whitespace-nowrap',
             type: 'date',
         },
         {
             key: 'total_amount',
-            label: t('Total Amount'),
+            label: translate('Total Amount'),
             className: 'whitespace-nowrap',
             render: (value: any) => (
                 <span className="font-mono whitespace-nowrap">
@@ -265,7 +265,7 @@ export default function SalesOrders() {
         },
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             className: 'whitespace-nowrap',
             render: (value: string) => {
                 const statusColors = {
@@ -287,7 +287,7 @@ export default function SalesOrders() {
         },
         // {
         //     key: 'created_at',
-        //     label: t('Created At'),
+        //     label: translate('Created At'),
         //     sortable: true,
         //     className: 'whitespace-nowrap',
         //     type: 'date'
@@ -296,34 +296,34 @@ export default function SalesOrders() {
 
     const actions = [
         {
-            label: t('Copy Sales Order Link'),
+            label: translate('Copy Sales Order Link'),
             icon: 'Copy',
             action: 'copy-link',
             className: 'text-purple-500',
         },
         {
-            label: t('Change Status'),
+            label: translate('Change Status'),
             icon: 'RefreshCw',
             action: 'toggle-status',
             className: 'text-amber-500',
             requiredPermission: 'toggle-status-sales-orders',
         },
         {
-            label: t('View'),
+            label: translate('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
             requiredPermission: 'view-sales-orders',
         },
         {
-            label: t('Edit'),
+            label: translate('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
             requiredPermission: 'edit-sales-orders',
         },
         {
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
@@ -332,30 +332,30 @@ export default function SalesOrders() {
     ];
 
     const statusOptions = [
-        { value: 'all', label: t('All Statuses') },
-        { value: 'draft', label: t('Draft') },
-        { value: 'confirmed', label: t('Confirmed') },
-        { value: 'processing', label: t('Processing') },
-        { value: 'shipped', label: t('Shipped') },
-        { value: 'delivered', label: t('Delivered') },
-        { value: 'cancelled', label: t('Cancelled') },
+        { value: 'all', label: translate('All Statuses') },
+        { value: 'draft', label: translate('Draft') },
+        { value: 'confirmed', label: translate('Confirmed') },
+        { value: 'processing', label: translate('Processing') },
+        { value: 'shipped', label: translate('Shipped') },
+        { value: 'delivered', label: translate('Delivered') },
+        { value: 'cancelled', label: translate('Cancelled') },
     ];
 
     const accountOptions = [
-        { value: 'all', label: t('All Accounts') },
+        { value: 'all', label: translate('All Accounts') },
         ...allAccounts.map((account: any) => ({ value: account.id.toString(), label: account.name })),
     ];
 
     const assigneeOptions = [
-        { value: 'all', label: t('All Users') },
-        { value: 'unassigned', label: t('Unassigned') },
+        { value: 'all', label: translate('All Users') },
+        { value: 'unassigned', label: translate('Unassigned') },
         ...allUsers.map((user: any) => ({ value: user.id.toString(), label: user.name })),
     ];
 
     return (
         <PageTemplate
-            title={t('Sales Orders')}
-            description={t('Manage your sales orders.')}
+            title={translate('Sales Orders')}
+            description={translate('Manage your sales orders.')}
             url="/sales-orders"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -369,7 +369,7 @@ export default function SalesOrders() {
                     filters={[
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
@@ -377,7 +377,7 @@ export default function SalesOrders() {
                         },
                         {
                             name: 'account_id',
-                            label: t('Account'),
+                            label: translate('Account'),
                             type: 'select',
                             searchable: true,
                             value: selectedAccount,
@@ -386,7 +386,7 @@ export default function SalesOrders() {
                         },
                         {
                             name: 'assigned_to',
-                            label: t('Assigned To'),
+                            label: translate('Assigned To'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
@@ -426,7 +426,7 @@ export default function SalesOrders() {
                     to={salesOrders?.to || 0}
                     total={salesOrders?.total || 0}
                     links={salesOrders?.links}
-                    entityName={t('sales orders')}
+                    entityName={translate('sales orders')}
                     onPageChange={(url) => router.get(url)}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
@@ -456,23 +456,23 @@ export default function SalesOrders() {
                     fields: [
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             required: true,
                             options: [
-                                { value: 'draft', label: t('Draft') },
-                                { value: 'confirmed', label: t('Confirmed') },
-                                { value: 'processing', label: t('Processing') },
-                                { value: 'shipped', label: t('Shipped') },
-                                { value: 'delivered', label: t('Delivered') },
-                                { value: 'cancelled', label: t('Cancelled') },
+                                { value: 'draft', label: translate('Draft') },
+                                { value: 'confirmed', label: translate('Confirmed') },
+                                { value: 'processing', label: translate('Processing') },
+                                { value: 'shipped', label: translate('Shipped') },
+                                { value: 'delivered', label: translate('Delivered') },
+                                { value: 'cancelled', label: translate('Cancelled') },
                             ],
                         },
                     ],
                     modalSize: 'sm',
                 }}
                 initialData={currentItem ? { status: currentItem.status } : null}
-                title={t('Change Sales Order Status')}
+                title={translate('Change Sales Order Status')}
                 mode="edit"
             />
 
@@ -481,7 +481,7 @@ export default function SalesOrders() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={t('sales order')}
+                entityName={translate('sales order')}
             />
         </PageTemplate>
     );

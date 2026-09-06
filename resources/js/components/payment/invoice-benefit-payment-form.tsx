@@ -24,18 +24,18 @@ export function InvoiceBenefitPaymentForm({
     onSuccess,
     onCancel,
 }: InvoiceBenefitPaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     const handlePayment = async () => {
         if (!benefitSecretKey) {
-            setError(t('Benefit payment not configured'));
+            setError(translate('Benefit payment not configured'));
             return;
         }
 
         if (amount <= 0) {
-            setError(t('Invalid payment amount'));
+            setError(translate('Invalid payment amount'));
             return;
         }
 
@@ -62,10 +62,10 @@ export function InvoiceBenefitPaymentForm({
                 // Redirect to Benefit payment page
                 window.location.href = data.redirect_url;
             } else {
-                throw new Error(data.message || t('Failed to create payment session'));
+                throw new Error(data.message || translate('Failed to create payment session'));
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : t('Payment initialization failed'));
+            setError(err instanceof Error ? err.message : translate('Payment initialization failed'));
             setIsLoading(false);
         }
     };
@@ -73,7 +73,7 @@ export function InvoiceBenefitPaymentForm({
     const formatCurrency = (amount: number) => {
         return (
             window.appSettings?.formatCurrency(Number(amount || 0)) ||
-            new Intl.NumberFormat('en-BH', {
+            new Intl.NumberFormatranslate('en-BH', {
                 style: 'currency',
                 currency: currency,
                 minimumFractionDigits: 3,
@@ -86,7 +86,7 @@ export function InvoiceBenefitPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {t('Benefit Payment')}
+                    {translate('Benefit Payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -99,45 +99,45 @@ export function InvoiceBenefitPaymentForm({
 
                 <div className="bg-muted rounded-lg p-4">
                     <div className="flex items-center justify-between">
-                        <span className="font-medium">{t('Payment Amount')}</span>
+                        <span className="font-medium">{translate('Payment Amount')}</span>
                         <span className="text-lg font-bold">{formatCurrency(amount)}</span>
                     </div>
                     <div className="text-muted-foreground mt-1 text-sm">
-                        {t('Payment Type')}: {t(paymentType)}
+                        {translate('Payment Type')}: {t(paymentType)}
                     </div>
                 </div>
 
                 <Alert>
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription>
-                        {t('You will be redirected to Benefit to complete your payment securely. Benefit is the leading payment gateway in Bahrain.')}
+                        {translate('You will be redirected to Benefit to complete your payment securely. Benefit is the leading payment gateway in Bahrain.')}
                     </AlertDescription>
                 </Alert>
 
                 <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-                    <h4 className="mb-2 font-medium text-blue-900">{t('Supported Payment Methods')}</h4>
+                    <h4 className="mb-2 font-medium text-blue-900">{translate('Supported Payment Methods')}</h4>
                     <ul className="space-y-1 text-sm text-blue-800">
-                        <li>• {t('Benefit Debit Cards')}</li>
-                        <li>• {t('Visa Credit/Debit Cards')}</li>
-                        <li>• {t('Mastercard Credit/Debit Cards')}</li>
-                        <li>• {t('Benefit Pay Mobile Wallet')}</li>
+                        <li>• {translate('Benefit Debit Cards')}</li>
+                        <li>• {translate('Visa Credit/Debit Cards')}</li>
+                        <li>• {translate('Mastercard Credit/Debit Cards')}</li>
+                        <li>• {translate('Benefit Pay Mobile Wallet')}</li>
                     </ul>
                 </div>
 
                 <div className="flex gap-3">
                     <Button variant="outline" onClick={onCancel} disabled={isLoading} className="flex-1">
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     <Button onClick={handlePayment} disabled={isLoading || !benefitSecretKey || amount <= 0} className="flex-1">
                         {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                {t('Redirecting...')}
+                                {translate('Redirecting...')}
                             </>
                         ) : (
                             <>
                                 <ExternalLink className="mr-2 h-4 w-4" />
-                                {t('Pay with Benefit')}
+                                {translate('Pay with Benefit')}
                             </>
                         )}
                     </Button>

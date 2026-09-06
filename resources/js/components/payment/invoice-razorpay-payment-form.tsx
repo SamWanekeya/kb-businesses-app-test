@@ -23,7 +23,7 @@ export function InvoiceRazorpayPaymentForm({
     onSuccess,
     onCancel,
 }: InvoiceRazorpayPaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isRazorpayLoaded, setIsRazorpayLoaded] = useState(false);
 
     useEffect(() => {
@@ -34,14 +34,14 @@ export function InvoiceRazorpayPaymentForm({
         }
 
         // Load Razorpay script
-        const script = document.createElement('script');
+        const script = document.createElementranslate('script');
         script.src = 'https://checkout.razorpay.com/v1/checkout.js';
         script.async = true;
         script.onload = () => {
             setIsRazorpayLoaded(true);
         };
         script.onerror = () => {
-            toast.error(t('Failed to load Razorpay checkout. Please try again.'));
+            toast.error(translate('Failed to load Razorpay checkout. Please try again.'));
         };
         document.body.appendChild(script);
 
@@ -70,7 +70,7 @@ export function InvoiceRazorpayPaymentForm({
             const { order_id, amount: orderAmount } = response.data;
 
             if (!order_id || !orderAmount) {
-                toast.error(t('Invalid response from server'));
+                toast.error(translate('Invalid response from server'));
                 return;
             }
 
@@ -96,7 +96,7 @@ export function InvoiceRazorpayPaymentForm({
                             onSuccess();
                         })
                         .catch((error) => {
-                            const errorMsg = error.response?.data?.error || t('Payment processing failed');
+                            const errorMsg = error.response?.data?.error || translate('Payment processing failed');
                             toast.error(errorMsg);
                         });
                 },
@@ -116,21 +116,21 @@ export function InvoiceRazorpayPaymentForm({
             const razorpay = new (window as any).Razorpay(options);
             razorpay.open();
         } catch (error: any) {
-            const errorMsg = error.response?.data?.error || t('Failed to initialize payment');
+            const errorMsg = error.response?.data?.error || translate('Failed to initialize payment');
             toast.error(errorMsg);
         }
     };
 
     return (
         <div className="space-y-4">
-            <p className="text-muted-foreground text-sm">{t('You will be redirected to Razorpay to complete your payment.')}</p>
+            <p className="text-muted-foreground text-sm">{translate('You will be redirected to Razorpay to complete your payment.')}</p>
 
             <div className="flex gap-3">
                 <Button variant="outline" onClick={onCancel} className="flex-1">
-                    {t('Cancel')}
+                    {translate('Cancel')}
                 </Button>
                 <Button onClick={handlePayment} disabled={!isRazorpayLoaded} className="flex-1">
-                    {isRazorpayLoaded ? t('Pay with Razorpay') : t('Loading...')}
+                    {isRazorpayLoaded ? translate('Pay with Razorpay') : translate('Loading...')}
                 </Button>
             </div>
         </div>

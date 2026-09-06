@@ -13,7 +13,7 @@ import { Button } from '@components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/ui/tooltip';
 
 export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: BreadcrumbItemType[] }) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { position } = useLayout();
     const { globalSettings } = usePage().props;
     const isDemo = globalSettings?.is_demo || false;
@@ -97,7 +97,7 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
                                 onClick={() => router.post(route('impersonate.leave'))}
                                 className="cursor-pointer rounded bg-red-500 px-2 py-1 text-xs text-white hover:bg-red-600"
                             >
-                                {t('Return Back')}
+                                {translate('Return Back')}
                             </button>
                         )}
                         {/* Dark/Light Mode Toggle */}
@@ -113,7 +113,7 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
                                     </Button>
                                 </TooltipTrigger>
                                 <TooltipContent>
-                                    <p>{isDark ? t('Switch to Light Mode') : t('Switch to Dark Mode')}</p>
+                                    <p>{isDark ? translate('Switch to Light Mode') : translate('Switch to Dark Mode')}</p>
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>

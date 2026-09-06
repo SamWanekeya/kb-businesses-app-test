@@ -26,13 +26,13 @@ export function OzowPaymentForm({
     onSuccess,
     onCancel,
 }: OzowPaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     const handlePayment = async () => {
         if (!ozowSiteKey) {
-            setError(t('Ozow not configured'));
+            setError(translate('Ozow not configured'));
             return;
         }
 
@@ -58,16 +58,16 @@ export function OzowPaymentForm({
             if (data.success) {
                 window.location.href = data.payment_url;
             } else {
-                throw new Error(data.error || t('Payment creation failed'));
+                throw new Error(data.error || translate('Payment creation failed'));
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : t('Payment initialization failed'));
+            setError(err instanceof Error ? err.message : translate('Payment initialization failed'));
             setIsLoading(false);
         }
     };
 
     const formatPrice = (price: number) => {
-        return new Intl.NumberFormat('en-ZA', {
+        return new Intl.NumberFormatranslate('en-ZA', {
             style: 'currency',
             currency: currency,
         }).format(price);
@@ -78,7 +78,7 @@ export function OzowPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
-                    {t('Ozow Payment')}
+                    {translate('Ozow Payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -91,15 +91,15 @@ export function OzowPaymentForm({
 
                 <div className="bg-muted rounded-lg p-4">
                     <div className="flex items-center justify-between">
-                        <span className="font-medium">{t('Total Amount')}</span>
+                        <span className="font-medium">{translate('Total Amount')}</span>
                         <span className="text-lg font-bold">{formatPrice(planPrice)}</span>
                     </div>
                     <div className="text-muted-foreground mt-1 text-sm">
-                        {t('Billing Cycle')}: {t(billingCycle)}
+                        {translate('Billing Cycle')}: {t(billingCycle)}
                     </div>
                     {couponCode && (
                         <div className="mt-1 text-sm text-green-600">
-                            {t('Coupon Applied')}: {couponCode}
+                            {translate('Coupon Applied')}: {couponCode}
                         </div>
                     )}
                 </div>
@@ -114,7 +114,7 @@ export function OzowPaymentForm({
                 </Alert>
 
                 <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-                    <h4 className="mb-2 font-medium text-blue-900">{t('Supported Banks')}</h4>
+                    <h4 className="mb-2 font-medium text-blue-900">{translate('Supported Banks')}</h4>
                     <ul className="space-y-1 text-sm text-blue-800">
                         <li>• Standard Bank</li>
                         <li>• FNB</li>
@@ -127,18 +127,18 @@ export function OzowPaymentForm({
 
                 <div className="flex gap-3">
                     <Button variant="outline" onClick={onCancel} disabled={isLoading} className="flex-1">
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     <Button onClick={handlePayment} disabled={isLoading || !ozowSiteKey} className="flex-1">
                         {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                {t('Redirecting...')}
+                                {translate('Redirecting...')}
                             </>
                         ) : (
                             <>
                                 <ExternalLink className="mr-2 h-4 w-4" />
-                                {t('Pay with Ozow')}
+                                {translate('Pay with Ozow')}
                             </>
                         )}
                     </Button>

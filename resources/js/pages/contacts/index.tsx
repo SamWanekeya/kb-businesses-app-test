@@ -19,7 +19,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Contacts() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const {
         auth,
         contacts,
@@ -124,7 +124,7 @@ export default function Contacts() {
 
     const handleAddNew = () => {
         if (planLimits && !planLimits.can_create) {
-            toast.error(t('Contact limit reached. Your plan allows maximum {{max}} contacts.', { max: planLimits.maximum_contacts }));
+            toast.error(translate('Contact limit reached. Your plan allows maximum {{max}} contacts.', { max: planLimits.maximum_contacts }));
             return;
         }
 
@@ -135,7 +135,7 @@ export default function Contacts() {
 
     const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
-            toast.loading(t('Creating contact...'));
+            toast.loading(translate('Creating contact...'));
 
             router.post(route('contacts.store'), formData, {
                 onSuccess: (page) => {
@@ -152,12 +152,12 @@ export default function Contacts() {
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
-                        toast.error(t('Failed to create contact: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        toast.error(translate('Failed to create contact: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
                 },
             });
         } else if (formMode === 'edit') {
-            toast.loading(t('Updating contact...'));
+            toast.loading(translate('Updating contact...'));
 
             router.put(route('contacts.update', currentItem.id), formData, {
                 onSuccess: (page) => {
@@ -174,7 +174,7 @@ export default function Contacts() {
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
-                        toast.error(t('Failed to update contact: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        toast.error(translate('Failed to update contact: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
                 },
             });
@@ -182,7 +182,7 @@ export default function Contacts() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(t('Deleting contact...'));
+        toast.loading(translate('Deleting contact...'));
 
         router.delete(route('contacts.destroy', currentItem.id), {
             onSuccess: (page) => {
@@ -199,7 +199,7 @@ export default function Contacts() {
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
-                    toast.error(t('Failed to delete contact: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                    toast.error(translate('Failed to delete contact: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
             },
         });
@@ -207,7 +207,7 @@ export default function Contacts() {
 
     const handleToggleStatus = (contact: any) => {
         const newStatus = contact.status === 'active' ? 'inactive' : 'active';
-        toast.loading(`${newStatus === 'active' ? t('Activating') : t('Deactivating')} contact...`);
+        toast.loading(`${newStatus === 'active' ? translate('Activating') : translate('Deactivating')} contact...`);
 
         router.put(
             route('contacts.toggle-status', contact.id),
@@ -226,7 +226,7 @@ export default function Contacts() {
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
-                        toast.error(t('Failed to update contact status: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        toast.error(translate('Failed to update contact status: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
                 },
             },
@@ -243,13 +243,13 @@ export default function Contacts() {
     // Add export button
     if (useHasPermission('export-contacts')) {
         pageActions.push({
-            label: t('Export'),
+            label: translate('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
             variant: 'outline',
             onClick: () => (window.location.href = route('contact.export')),
             className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
             labelClassName: 'hidden min-[400px]:inline',
-            tooltip: t('Export'),
+            tooltip: translate('Export'),
             tooltipClassName: 'min-[400px]:hidden',
         });
     }
@@ -259,11 +259,11 @@ export default function Contacts() {
         const isDisabled = planLimits && !planLimits.can_create;
         pageActions.push({
             label: isDisabled
-                ? t('Contact Limit Reached ({{current}}/{{max}})', {
+                ? translate('Contact Limit Reached ({{current}}/{{max}})', {
                       current: planLimits?.current_contacts || 0,
                       max: planLimits?.maximum_contacts || 0,
                   })
-                : t('Add Contact'),
+                : translate('Add Contact'),
             icon: <Plus className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
             variant: isDisabled ? 'outline' : 'default',
             disabled: isDisabled,
@@ -271,22 +271,22 @@ export default function Contacts() {
             className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
             labelClassName: 'hidden min-[400px]:inline',
             tooltip: isDisabled
-                ? t('Contact Limit Reached ({{current}}/{{max}})', {
+                ? translate('Contact Limit Reached ({{current}}/{{max}})', {
                       current: planLimits?.current_contacts || 0,
                       max: planLimits?.maximum_contacts || 0,
                   })
-                : t('Add Contact'),
+                : translate('Add Contact'),
             tooltipClassName: 'min-[400px]:hidden',
         });
     }
 
-    const breadcrumbs = [{ title: t('Dashboard'), href: route('dashboard') }, { title: t('Contacts') }];
+    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Contacts') }];
 
     // Define table columns
     const columns = [
         {
             key: 'name',
-            label: t('Name'),
+            label: translate('Name'),
             sortable: true,
             render: (value: any, row: any) => {
                 return (
@@ -294,7 +294,7 @@ export default function Contacts() {
                         <UserInitials name={row.name} />
                         <div>
                             <div className="font-medium">{row.name}</div>
-                            <div className="text-muted-foreground text-sm">{row.email || t('No email')}</div>
+                            <div className="text-muted-foreground text-sm">{row.email || translate('No email')}</div>
                         </div>
                     </div>
                 );
@@ -302,17 +302,17 @@ export default function Contacts() {
         },
         {
             key: 'phone',
-            label: t('Phone'),
+            label: translate('Phone'),
             render: (value: string) => value || '-',
         },
         {
             key: 'position',
-            label: t('Position'),
+            label: translate('Position'),
             render: (value: string) => value || '-',
         },
         {
             key: 'account',
-            label: t('Account'),
+            label: translate('Account'),
             render: (value: any) =>
                 value?.name ? (
                     <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-600/20 ring-inset">
@@ -324,7 +324,7 @@ export default function Contacts() {
         },
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             render: (value: string) => {
                 return (
                     <span
@@ -334,14 +334,14 @@ export default function Contacts() {
                                 : 'bg-red-50 text-red-700 ring-1 ring-red-600/20 ring-inset'
                         }`}
                     >
-                        {value === 'active' ? t('Active') : t('Inactive')}
+                        {value === 'active' ? translate('Active') : translate('Inactive')}
                     </span>
                 );
             },
         },
         {
             key: 'created_at',
-            label: t('Created At'),
+            label: translate('Created At'),
             sortable: true,
             type: 'date',
             // render: (value: string) => window.appSettings?.formatDateTime(value, false) || '-'
@@ -351,28 +351,28 @@ export default function Contacts() {
     // Define table actions
     const actions = [
         {
-            label: t('Toggle Status'),
+            label: translate('Toggle Status'),
             icon: 'Lock',
             action: 'toggle-status',
             className: 'text-amber-500',
             requiredPermission: 'toggle-status-contacts',
         },
         {
-            label: t('View'),
+            label: translate('View'),
             icon: 'Eye',
             action: 'view',
             className: 'text-blue-500',
             requiredPermission: 'view-contacts',
         },
         {
-            label: t('Edit'),
+            label: translate('Edit'),
             icon: 'Edit',
             action: 'edit',
             className: 'text-amber-500',
             requiredPermission: 'edit-contacts',
         },
         {
-            label: t('Delete'),
+            label: translate('Delete'),
             icon: 'Trash2',
             action: 'delete',
             className: 'text-red-500',
@@ -382,8 +382,8 @@ export default function Contacts() {
 
     return (
         <PageTemplate
-            title={t('Contacts')}
-            description={t('Manage your contacts.')}
+            title={translate('Contacts')}
+            description={translate('Manage your contacts.')}
             url="/contacts"
             actions={pageActions}
             breadcrumbs={breadcrumbs}
@@ -398,13 +398,13 @@ export default function Contacts() {
                     filters={[
                         {
                             name: 'account_id',
-                            label: t('Account'),
+                            label: translate('Account'),
                             type: 'select',
                             searchable: true,
                             value: selectedAccount,
                             onChange: setSelectedAccount,
                             options: [
-                                { value: 'all', label: t('All Accounts') },
+                                { value: 'all', label: translate('All Accounts') },
                                 ...allAccounts.map((account: any) => ({
                                     value: account.id.toString(),
                                     label: account.name,
@@ -413,25 +413,25 @@ export default function Contacts() {
                         },
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
                             options: [
-                                { value: 'all', label: t('All Status') },
-                                { value: 'active', label: t('Active') },
-                                { value: 'inactive', label: t('Inactive') },
+                                { value: 'all', label: translate('All Status') },
+                                { value: 'active', label: translate('Active') },
+                                { value: 'inactive', label: translate('Inactive') },
                             ],
                         },
                         {
                             name: 'assigned_to',
-                            label: t('Assigned To'),
+                            label: translate('Assigned To'),
                             type: 'select',
                             searchable: true,
                             value: selectedAssignee,
                             onChange: setSelectedAssignee,
                             options: [
-                                { value: 'all', label: t('All Users') },
+                                { value: 'all', label: translate('All Users') },
                                 ...allUsers.map((user: any) => ({
                                     value: user.id.toString(),
                                     label: user.name,
@@ -488,7 +488,7 @@ export default function Contacts() {
                         to={contacts?.to || 0}
                         total={contacts?.total || 0}
                         links={contacts?.links}
-                        entityName={t('contacts')}
+                        entityName={translate('contacts')}
                         onPageChange={(url) => router.get(url)}
                         currentPerPage={pageFilters.per_page?.toString() || '10'}
                         onPerPageChange={(value) => {
@@ -536,26 +536,26 @@ export default function Contacts() {
                                                 {useHasPermission('view-contacts') && (
                                                     <DropdownMenuItem onClick={() => handleAction('view', contact)}>
                                                         <Eye className="mr-2 h-4 w-4" />
-                                                        <span>{t('View Contact')}</span>
+                                                        <span>{translate('View Contact')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {useHasPermission('toggle-status-contacts') && (
                                                     <DropdownMenuItem onClick={() => handleAction('toggle-status', contact)}>
                                                         <Lock className="mr-2 h-4 w-4" />
-                                                        <span>{contact.status === 'active' ? t('Deactivate') : t('Activate')}</span>
+                                                        <span>{contact.status === 'active' ? translate('Deactivate') : translate('Activate')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {useHasPermission('edit-contacts') && (
                                                     <DropdownMenuItem onClick={() => handleAction('edit', contact)}>
                                                         <Edit className="mr-2 h-4 w-4" />
-                                                        <span>{t('Edit')}</span>
+                                                        <span>{translate('Edit')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 <DropdownMenuSeparator />
                                                 {useHasPermission('delete-contacts') && (
                                                     <DropdownMenuItem onClick={() => handleAction('delete', contact)} className="text-rose-600">
                                                         <Trash2 className="mr-2 h-4 w-4" />
-                                                        <span>{t('Delete')}</span>
+                                                        <span>{translate('Delete')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                             </DropdownMenuContent>
@@ -569,7 +569,7 @@ export default function Contacts() {
                                             <h3 className="truncate text-sm font-semibold text-gray-900 dark:text-white">{contact.name}</h3>
                                             <div className="mt-0.5 mb-1.5 flex items-center gap-1.5">
                                                 <Mail className="h-3 w-3 shrink-0 text-gray-500" />
-                                                <p className="truncate text-xs text-gray-600 dark:text-gray-400">{contact.email || t('No email')}</p>
+                                                <p className="truncate text-xs text-gray-600 dark:text-gray-400">{contact.email || translate('No email')}</p>
                                             </div>
                                             <span
                                                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
@@ -578,7 +578,7 @@ export default function Contacts() {
                                                         : 'bg-red-50 text-red-700 ring-red-600/20'
                                                 }`}
                                             >
-                                                {contact.status === 'active' ? t('Active') : t('Inactive')}
+                                                {contact.status === 'active' ? translate('Active') : translate('Inactive')}
                                             </span>
                                         </div>
                                     </div>
@@ -614,7 +614,7 @@ export default function Contacts() {
                                         </div>
                                         {contact.assigned_user && (
                                             <div className="flex items-center gap-1.5">
-                                                <span className="text-xs text-gray-500 dark:text-gray-400">{t('Assigned to')}</span>
+                                                <span className="text-xs text-gray-500 dark:text-gray-400">{translate('Assigned to')}</span>
                                                 <TooltipProvider>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
@@ -645,7 +645,7 @@ export default function Contacts() {
                             to={contacts?.to || 0}
                             total={contacts?.total || 0}
                             links={contacts?.links}
-                            entityName={t('contacts')}
+                            entityName={translate('contacts')}
                             onPageChange={(url) => router.get(url)}
                             perPageOptions={[12, 24, 48, 96]}
                             currentPerPage={pageFilters.per_page?.toString() || '12'}
@@ -678,13 +678,13 @@ export default function Contacts() {
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
-                        { name: 'name', label: t('Contact Name'), type: 'text', required: true, placeholder: t('eg. John Smith') },
-                        { name: 'email', label: t('Email'), type: 'email', required: true, placeholder: t('eg. john@kakbima.dev') },
-                        { name: 'phone', label: t('Phone'), type: 'text', placeholder: t('eg. +1 234 567 8900') },
-                        { name: 'position', label: t('Position'), type: 'text', placeholder: t('eg. CEO, Manager, Developer') },
+                        { name: 'name', label: translate('Contact Name'), type: 'text', required: true, placeholder: translate('eg. John Smith') },
+                        { name: 'email', label: translate('Email'), type: 'email', required: true, placeholder: translate('eg. john@kakbima.dev') },
+                        { name: 'phone', label: translate('Phone'), type: 'text', placeholder: translate('eg. +1 234 567 8900') },
+                        { name: 'position', label: translate('Position'), type: 'text', placeholder: translate('eg. CEO, Manager, Developer') },
                         {
                             name: formMode === 'view' ? 'account_name' : 'account_id',
-                            label: t('Account'),
+                            label: translate('Account'),
                             type: formMode === 'view' ? 'text' : 'select',
                             required: true,
                             searchable: true,
@@ -700,14 +700,14 @@ export default function Contacts() {
                                 accounts.length === 0
                                     ? {
                                           link: route('accounts.index'),
-                                          linkText: t('Accounts'),
+                                          linkText: translate('Accounts'),
                                       }
                                     : undefined,
                         },
-                        { name: 'address', label: t('Address'), type: 'textarea', required: true, placeholder: t('eg. 123 Main St, City, Country') },
+                        { name: 'address', label: translate('Address'), type: 'textarea', required: true, placeholder: translate('eg. 123 Main St, City, Country') },
                         {
                             name: formMode === 'view' ? 'assigned_user_name' : 'assigned_to',
-                            label: t('Assign To'),
+                            label: translate('Assign To'),
                             type: formMode === 'view' ? 'text' : 'select',
                             required: true,
                             searchable: true,
@@ -718,17 +718,17 @@ export default function Contacts() {
                                 users.length === 0
                                     ? {
                                           link: route('users.index'),
-                                          linkText: t('Users'),
+                                          linkText: translate('Users'),
                                       }
                                     : undefined,
                         },
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             options: [
-                                { value: 'active', label: t('Active') },
-                                { value: 'inactive', label: t('Inactive') },
+                                { value: 'active', label: translate('Active') },
+                                { value: 'inactive', label: translate('Inactive') },
                             ],
                             defaultValue: 'active',
                         },
@@ -739,12 +739,12 @@ export default function Contacts() {
                     currentItem
                         ? {
                               ...currentItem,
-                              assigned_user_name: currentItem.assigned_user?.name || t('Unassigned'),
-                              account_name: currentItem.account?.name || t('No Account'),
+                              assigned_user_name: currentItem.assigned_user?.name || translate('Unassigned'),
+                              account_name: currentItem.account?.name || translate('No Account'),
                           }
                         : null
                 }
-                title={formMode === 'create' ? t('Add Contact') : formMode === 'edit' ? t('Edit Contact') : t('View Contact')}
+                title={formMode === 'create' ? translate('Add Contact') : formMode === 'edit' ? translate('Edit Contact') : translate('View Contact')}
                 mode={formMode}
             />
 
@@ -754,7 +754,7 @@ export default function Contacts() {
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
-                entityName={t('contact')}
+                entityName={translate('contact')}
             />
         </PageTemplate>
     );

@@ -26,7 +26,7 @@ export function MercadoPagoPaymentForm({
     onSuccess,
     onCancel,
 }: MercadoPagoPaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
 
     // Payment method using redirect flow
@@ -54,11 +54,11 @@ export function MercadoPagoPaymentForm({
                 // Redirect to MercadoPago checkout
                 window.location.href = response.data.redirect_url;
             } else {
-                toast.error(t('Failed to create payment preference'));
+                toast.error(translate('Failed to create payment preference'));
                 setIsLoading(false);
             }
         } catch (error: any) {
-            const errorMsg = error.response?.data?.error || error.message || t('Failed to create payment preference');
+            const errorMsg = error.response?.data?.error || error.message || translate('Failed to create payment preference');
             toast.error(errorMsg);
             setIsLoading(false);
         }
@@ -66,20 +66,20 @@ export function MercadoPagoPaymentForm({
 
     return (
         <div className="space-y-4">
-            <p className="text-muted-foreground text-sm">{t('You will be redirected to MercadoPago to complete your payment.')}</p>
+            <p className="text-muted-foreground text-sm">{translate('You will be redirected to MercadoPago to complete your payment.')}</p>
 
             <div className="mt-4 flex gap-3">
                 <Button variant="outline" onClick={onCancel} className="flex-1" disabled={isLoading}>
-                    {t('Cancel')}
+                    {translate('Cancel')}
                 </Button>
                 <Button onClick={handlePayment} className="flex-1" disabled={isLoading}>
                     {isLoading ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            {t('Processing...')}
+                            {translate('Processing...')}
                         </>
                     ) : (
-                        t('Pay with MercadoPago')
+                        translate('Pay with MercadoPago')
                     )}
                 </Button>
             </div>

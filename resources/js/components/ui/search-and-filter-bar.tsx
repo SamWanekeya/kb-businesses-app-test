@@ -56,7 +56,7 @@ export function SearchAndFilterBar({
         { value: 'grid', label: 'Grid View', icon: 'Grid3X3' },
     ],
 }: SearchAndFiltersProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
 
     // Build active filter pills from non-empty filter values
     const activeFilters = filters.filter((f) => {
@@ -104,7 +104,7 @@ export function SearchAndFilterBar({
                         <div className="relative w-full min-w-0 sm:w-64">
                             <Search className="text-muted-foreground absolute top-2 left-2.5 h-4 w-4" />
                             <Input
-                                placeholder={searchPlaceholder || t('Search...')}
+                                placeholder={searchPlaceholder || translate('Search...')}
                                 value={searchTerm}
                                 onChange={(e) => onSearchChange(e.target.value)}
                                 className="h-8 w-full min-w-0 px-9"
@@ -156,11 +156,11 @@ export function SearchAndFilterBar({
                                 hidden={!hasActiveFilters()}
                             >
                                 <RefreshCcw />
-                                {t('Clear Filters')}
+                                {translate('Clear Filters')}
                             </Button>
                             <Button variant={hasActiveFilters() ? 'default' : 'outline'} size="sm" className="h-8 cursor-default px-2 py-1">
                                 <Filter className="mr-1.5 h-4 w-4" />
-                                {t('Filters')}
+                                {translate('Filters')}
                                 {hasActiveFilters() && (
                                     <span className="bg-primary-foreground text-primary ml-1 flex h-5 w-5 items-center justify-center rounded-full text-xs">
                                         {activeFilterCount()}

@@ -32,7 +32,7 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function CaseShow() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { case: caseData, meetings } = usePage().props;
     const permissions = (usePage().props as any).auth?.permissions || [];
     const getInitials = useInitials();
@@ -41,9 +41,9 @@ export default function CaseShow() {
     const filteredCalls = useMemo(() => meetings?.filter((m: any) => m.type === 'call') || [], [meetings]);
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Cases'), href: route('cases.index') },
-        { title: t('View Case') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Cases'), href: route('cases.index') },
+        { title: translate('View Case') },
     ];
 
     const statusSteps = ['new', 'in_progress', 'pending', 'resolved', 'closed'];
@@ -51,7 +51,7 @@ export default function CaseShow() {
 
     const statusConfig: Record<string, { label: string; icon: React.ElementType; color: string; bg: string; ring: string; dot: string }> = {
         new: {
-            label: t('New'),
+            label: translate('New'),
             icon: Zap,
             color: 'text-blue-600',
             bg: 'bg-blue-50 dark:bg-blue-900/20',
@@ -59,7 +59,7 @@ export default function CaseShow() {
             dot: 'bg-blue-500',
         },
         in_progress: {
-            label: t('In Progress'),
+            label: translate('In Progress'),
             icon: Loader,
             color: 'text-yellow-600',
             bg: 'bg-yellow-50 dark:bg-yellow-900/20',
@@ -67,7 +67,7 @@ export default function CaseShow() {
             dot: 'bg-yellow-500',
         },
         pending: {
-            label: t('Pending'),
+            label: translate('Pending'),
             icon: PauseCircle,
             color: 'text-orange-600',
             bg: 'bg-orange-50 dark:bg-orange-900/20',
@@ -75,7 +75,7 @@ export default function CaseShow() {
             dot: 'bg-orange-500',
         },
         resolved: {
-            label: t('Resolved'),
+            label: translate('Resolved'),
             icon: CheckCircle,
             color: 'text-green-600',
             bg: 'bg-green-50 dark:bg-green-900/20',
@@ -83,7 +83,7 @@ export default function CaseShow() {
             dot: 'bg-green-500',
         },
         closed: {
-            label: t('Closed'),
+            label: translate('Closed'),
             icon: XCircle,
             color: 'text-gray-500',
             bg: 'bg-gray-50 dark:bg-gray-800/40',
@@ -93,18 +93,18 @@ export default function CaseShow() {
     };
 
     const priorityConfig: Record<string, { label: string; color: string; bg: string; ring: string }> = {
-        low: { label: t('Low'), color: 'text-gray-600', bg: 'bg-gray-50', ring: 'ring-gray-600/20' },
-        medium: { label: t('Medium'), color: 'text-blue-600', bg: 'bg-blue-50', ring: 'ring-blue-600/20' },
-        high: { label: t('High'), color: 'text-orange-600', bg: 'bg-orange-50', ring: 'ring-orange-600/20' },
-        urgent: { label: t('Urgent'), color: 'text-red-600', bg: 'bg-red-50', ring: 'ring-red-600/20' },
+        low: { label: translate('Low'), color: 'text-gray-600', bg: 'bg-gray-50', ring: 'ring-gray-600/20' },
+        medium: { label: translate('Medium'), color: 'text-blue-600', bg: 'bg-blue-50', ring: 'ring-blue-600/20' },
+        high: { label: translate('High'), color: 'text-orange-600', bg: 'bg-orange-50', ring: 'ring-orange-600/20' },
+        urgent: { label: translate('Urgent'), color: 'text-red-600', bg: 'bg-red-50', ring: 'ring-red-600/20' },
     };
 
     const caseTypeConfig: Record<string, { label: string; icon: React.ElementType; color: string; bg: string }> = {
-        support: { label: t('Support'), icon: ShieldAlert, color: 'text-blue-600', bg: 'bg-blue-50 dark:bg-blue-900/20' },
-        bug: { label: t('Bug Report'), icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-50 dark:bg-red-900/20' },
-        feature_request: { label: t('Feature Request'), icon: Layers, color: 'text-purple-600', bg: 'bg-purple-50 dark:bg-purple-900/20' },
-        complaint: { label: t('Complaint'), icon: MessageSquare, color: 'text-orange-600', bg: 'bg-orange-50 dark:bg-orange-900/20' },
-        inquiry: { label: t('Inquiry'), icon: FileText, color: 'text-teal-600', bg: 'bg-teal-50 dark:bg-teal-900/20' },
+        support: { label: translate('Support'), icon: ShieldAlert, color: 'text-blue-600', bg: 'bg-blue-50 dark:bg-blue-900/20' },
+        bug: { label: translate('Bug Report'), icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-50 dark:bg-red-900/20' },
+        feature_request: { label: translate('Feature Request'), icon: Layers, color: 'text-purple-600', bg: 'bg-purple-50 dark:bg-purple-900/20' },
+        complaint: { label: translate('Complaint'), icon: MessageSquare, color: 'text-orange-600', bg: 'bg-orange-50 dark:bg-orange-900/20' },
+        inquiry: { label: translate('Inquiry'), icon: FileText, color: 'text-teal-600', bg: 'bg-teal-50 dark:bg-teal-900/20' },
     };
 
     const status = statusConfig[caseData.status] || statusConfig.new;
@@ -161,7 +161,7 @@ export default function CaseShow() {
                             </Link>
                         </TooltipTrigger>
                         <TooltipContent side="top">
-                            <p>{t('View')}</p>
+                            <p>{translate('View')}</p>
                         </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
@@ -172,11 +172,11 @@ export default function CaseShow() {
     return (
         <PageTemplate
             title={caseData.subject}
-            description={t('Case details and related information')}
+            description={translate('Case details and related information')}
             breadcrumbs={breadcrumbs}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => router.visit(route('cases.index')),
@@ -190,21 +190,21 @@ export default function CaseShow() {
                     {(
                         [
                             {
-                                label: t('Priority'),
+                                label: translate('Priority'),
                                 value: priority.label,
                                 icon: AlertTriangle,
                                 iconCls: 'text-orange-600',
                                 blobCls: 'bg-orange-50 dark:bg-orange-900/30',
                             },
                             {
-                                label: t('Case Type'),
+                                label: translate('Case Type'),
                                 value: caseType.label,
                                 icon: Tag,
                                 iconCls: 'text-purple-600',
                                 blobCls: 'bg-purple-50 dark:bg-purple-900/30',
                             },
                             {
-                                label: t('Created'),
+                                label: translate('Created'),
                                 value:
                                     window.appSettings?.formatDateTime(caseData.created_at, false) ||
                                     new Date(caseData.created_at).toLocaleDateString(),
@@ -236,7 +236,7 @@ export default function CaseShow() {
                     <CardHeader className="border-b px-5 py-3.5">
                         <CardTitle className="flex items-center text-lg font-semibold">
                             <Loader className="text-muted-foreground mr-3 h-5 w-5" />
-                            {t('Case Progress')}
+                            {translate('Case Progress')}
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="overflow-x-auto px-6 py-5">
@@ -284,12 +284,12 @@ export default function CaseShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <UserCheck className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Assignment')}
+                                {translate('Assignment')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="flex items-center justify-center p-5" style={{ minHeight: '100px' }}>
                             <div className="w-full">
-                                <p className="text-muted-foreground mb-1.5 text-xs font-medium">{t('Assigned To')}</p>
+                                <p className="text-muted-foreground mb-1.5 text-xs font-medium">{translate('Assigned To')}</p>
                                 {caseData.assigned_user ? (
                                     <div className="flex items-center gap-2">
                                         <Avatar className="h-7 w-7 flex-shrink-0">
@@ -306,7 +306,7 @@ export default function CaseShow() {
                                         </div>
                                     </div>
                                 ) : (
-                                    <p className="text-muted-foreground text-sm">{t('Unassigned')}</p>
+                                    <p className="text-muted-foreground text-sm">{translate('Unassigned')}</p>
                                 )}
                             </div>
                         </CardContent>
@@ -317,7 +317,7 @@ export default function CaseShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <FileText className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Description')}
+                                {translate('Description')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
@@ -328,7 +328,7 @@ export default function CaseShow() {
                                     ) : (
                                         <div className="flex flex-col items-center justify-center py-6 text-center">
                                             <FileText className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                            <p className="text-muted-foreground text-sm">{t('No description provided')}</p>
+                                            <p className="text-muted-foreground text-sm">{translate('No description provided')}</p>
                                         </div>
                                     )}
                                 </div>
@@ -344,7 +344,7 @@ export default function CaseShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <Building className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Related Account')}
+                                {translate('Related Account')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
@@ -369,7 +369,7 @@ export default function CaseShow() {
                                                         </Link>
                                                     </TooltipTrigger>
                                                     <TooltipContent side="top">
-                                                        <p>{t('View')}</p>
+                                                        <p>{translate('View')}</p>
                                                     </TooltipContent>
                                                 </Tooltip>
                                             </TooltipProvider>
@@ -379,7 +379,7 @@ export default function CaseShow() {
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-12 text-center">
                                     <Building className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                    <p className="text-muted-foreground text-sm">{t('No account linked')}</p>
+                                    <p className="text-muted-foreground text-sm">{translate('No account linked')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -390,7 +390,7 @@ export default function CaseShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <User className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Related Contact')}
+                                {translate('Related Contact')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
@@ -415,7 +415,7 @@ export default function CaseShow() {
                                                         </Link>
                                                     </TooltipTrigger>
                                                     <TooltipContent side="top">
-                                                        <p>{t('View')}</p>
+                                                        <p>{translate('View')}</p>
                                                     </TooltipContent>
                                                 </Tooltip>
                                             </TooltipProvider>
@@ -425,7 +425,7 @@ export default function CaseShow() {
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-12 text-center">
                                     <User className="text-muted-foreground/20 mb-2 h-8 w-8" />
-                                    <p className="text-muted-foreground text-sm">{t('No contact linked')}</p>
+                                    <p className="text-muted-foreground text-sm">{translate('No contact linked')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -438,7 +438,7 @@ export default function CaseShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <Calendar className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Meetings & Calls')}
+                                {translate('Meetings & Calls')}
                                 <span className="bg-muted text-muted-foreground ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold">
                                     {meetings.length}
                                 </span>
@@ -451,7 +451,7 @@ export default function CaseShow() {
                                         <CardTitle className="text-muted-foreground flex items-center justify-between text-sm font-semibold">
                                             <div className="flex items-center gap-2">
                                                 <UserCheck className="h-3.5 w-3.5" />
-                                                {t('Meetings')}
+                                                {translate('Meetings')}
                                             </div>
                                             <span className="bg-muted text-muted-foreground inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium">
                                                 {filteredMeetings.length}
@@ -460,7 +460,7 @@ export default function CaseShow() {
                                     </CardHeader>
                                     <CardContent className="p-0">
                                         {filteredMeetings.length === 0 ? (
-                                            <p className="text-muted-foreground py-6 text-center text-sm">{t('No meetings found')}</p>
+                                            <p className="text-muted-foreground py-6 text-center text-sm">{translate('No meetings found')}</p>
                                         ) : (
                                             <div
                                                 className="space-y-2 overflow-y-auto p-3"
@@ -485,7 +485,7 @@ export default function CaseShow() {
                                         <CardTitle className="text-muted-foreground flex items-center justify-between text-sm font-semibold">
                                             <div className="flex items-center gap-2">
                                                 <Phone className="h-3.5 w-3.5" />
-                                                {t('Calls')}
+                                                {translate('Calls')}
                                             </div>
                                             <span className="bg-muted text-muted-foreground inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium">
                                                 {filteredCalls.length}
@@ -494,7 +494,7 @@ export default function CaseShow() {
                                     </CardHeader>
                                     <CardContent className="p-0">
                                         {filteredCalls.length === 0 ? (
-                                            <p className="text-muted-foreground py-6 text-center text-sm">{t('No calls found')}</p>
+                                            <p className="text-muted-foreground py-6 text-center text-sm">{translate('No calls found')}</p>
                                         ) : (
                                             <div
                                                 className="space-y-2 overflow-y-auto p-3"

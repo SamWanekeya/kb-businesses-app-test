@@ -5,12 +5,12 @@ import { ArrowLeft, Palette, Truck, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function ShippingProviderTypeShow() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { shippingProviderType } = usePage().props;
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Shipping Provider Types'), href: route('shipping-provider-types.index') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Shipping Provider Types'), href: route('shipping-provider-types.index') },
         { title: shippingProviderType.name },
     ];
 
@@ -24,7 +24,7 @@ export default function ShippingProviderTypeShow() {
             <span
                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.active}`}
             >
-                {t(status?.charAt(0).toUpperCase() + status?.slice(1)) || t('Active')}
+                {t(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Active')}
             </span>
         );
     };
@@ -44,7 +44,7 @@ export default function ShippingProviderTypeShow() {
             breadcrumbs={breadcrumbs}
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
                     onClick: () => window.history.back(),
@@ -60,7 +60,7 @@ export default function ShippingProviderTypeShow() {
                                 <Truck className="text-muted-foreground mr-2 h-5 w-5" />
                                 {shippingProviderType.name}
                             </h1>
-                            <p className="mt-2 text-sm">{shippingProviderType.description || t('No description provided')}</p>
+                            <p className="mt-2 text-sm">{shippingProviderType.description || translate('No description provided')}</p>
                         </div>
                         <div className="text-right">{getStatusBadge(shippingProviderType.status)}</div>
                     </div>
@@ -69,23 +69,23 @@ export default function ShippingProviderTypeShow() {
                 {/* Shipping Provider Type Information */}
                 <Card className="shadow-sm">
                     <CardHeader className="border-b bg-gray-50">
-                        <CardTitle className="text-lg font-semibold">{t('Shipping Provider Type Information')}</CardTitle>
+                        <CardTitle className="text-lg font-semibold">{translate('Shipping Provider Type Information')}</CardTitle>
                     </CardHeader>
                     <CardContent className="p-6">
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <div className="space-y-6">
                                 <div>
-                                    <label className="text-muted-foreground text-sm font-medium">{t('Name')}</label>
+                                    <label className="text-muted-foreground text-sm font-medium">{translate('Name')}</label>
                                     <p className="mt-1 text-sm">{shippingProviderType.name}</p>
                                 </div>
                                 <div>
-                                    <label className="text-muted-foreground text-sm font-medium">{t('Description')}</label>
-                                    <p className="mt-1 text-sm">{shippingProviderType.description || t('-')}</p>
+                                    <label className="text-muted-foreground text-sm font-medium">{translate('Description')}</label>
+                                    <p className="mt-1 text-sm">{shippingProviderType.description || translate('-')}</p>
                                 </div>
                                 <div className="flex items-center space-x-3">
                                     <Palette className="text-muted-foreground h-4 w-4" />
                                     <div>
-                                        <label className="text-muted-foreground text-sm font-medium">{t('Color')}</label>
+                                        <label className="text-muted-foreground text-sm font-medium">{translate('Color')}</label>
                                         <div className="mt-1 flex items-center space-x-2">
                                             <div
                                                 className="h-6 w-6 rounded border border-gray-300"
@@ -98,14 +98,14 @@ export default function ShippingProviderTypeShow() {
                             </div>
                             <div className="space-y-6">
                                 <div>
-                                    <label className="text-muted-foreground text-sm font-medium">{t('Status')}</label>
+                                    <label className="text-muted-foreground text-sm font-medium">{translate('Status')}</label>
                                     <div className="mt-1">{getStatusBadge(shippingProviderType.status)}</div>
                                 </div>
                                 <div className="flex items-center space-x-3">
                                     <User className="text-muted-foreground h-4 w-4" />
                                     <div>
-                                        <label className="text-muted-foreground text-sm font-medium">{t('Created By')}</label>
-                                        <p className="mt-1 text-sm">{shippingProviderType.creator?.name || t('-')}</p>
+                                        <label className="text-muted-foreground text-sm font-medium">{translate('Created By')}</label>
+                                        <p className="mt-1 text-sm">{shippingProviderType.creator?.name || translate('-')}</p>
                                     </div>
                                 </div>
                             </div>
@@ -116,19 +116,19 @@ export default function ShippingProviderTypeShow() {
                 {/* Timestamps */}
                 <Card className="shadow-sm">
                     <CardHeader className="border-b bg-gray-50">
-                        <CardTitle className="text-lg font-semibold">{t('Record Information')}</CardTitle>
+                        <CardTitle className="text-lg font-semibold">{translate('Record Information')}</CardTitle>
                     </CardHeader>
                     <CardContent className="p-6">
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <div>
-                                <label className="text-muted-foreground text-sm font-medium">{t('Created At')}</label>
+                                <label className="text-muted-foreground text-sm font-medium">{translate('Created At')}</label>
                                 <p className="mt-1 text-sm">
                                     {window.appSettings?.formatDateTime(shippingProviderType.created_at, false) ||
                                         new Date(shippingProviderType.created_at).toLocaleDateString()}
                                 </p>
                             </div>
                             <div>
-                                <label className="text-muted-foreground text-sm font-medium">{t('Updated At')}</label>
+                                <label className="text-muted-foreground text-sm font-medium">{translate('Updated At')}</label>
                                 <p className="mt-1 text-sm">
                                     {window.appSettings?.formatDateTime(shippingProviderType.updated_at, false) ||
                                         new Date(shippingProviderType.updated_at).toLocaleDateString()}

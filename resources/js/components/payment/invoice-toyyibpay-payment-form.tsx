@@ -26,7 +26,7 @@ export function InvoiceToyyibPayPaymentForm({
     onSuccess,
     onCancel,
 }: InvoiceToyyibPayPaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isProcessing, setIsProcessing] = useState(false);
     const [customerDetails, setCustomerDetails] = useState({
         billName: '',
@@ -39,7 +39,7 @@ export function InvoiceToyyibPayPaymentForm({
         e.preventDefault();
 
         if (!customerDetails.billName || !customerDetails.billTo || !customerDetails.billEmail || !customerDetails.billPhone) {
-            toast.error(t('Please fill in all required fields'));
+            toast.error(translate('Please fill in all required fields'));
             return;
         }
 
@@ -68,7 +68,7 @@ export function InvoiceToyyibPayPaymentForm({
             );
 
             if (response.data.success && response.data.redirect_url) {
-                toast.success(t('Redirecting to ToyyibPay payment page...'));
+                toast.success(translate('Redirecting to ToyyibPay payment page...'));
                 setTimeout(() => {
                     window.location.href = response.data.redirect_url;
                 }, 1000);
@@ -76,7 +76,7 @@ export function InvoiceToyyibPayPaymentForm({
                 throw new Error(response.data.message || 'Payment initialization failed');
             }
         } catch (error: any) {
-            toast.error(error.response?.data?.message || t('Payment failed. Please try again.'));
+            toast.error(error.response?.data?.message || translate('Payment failed. Please try again.'));
             setIsProcessing(false);
         }
     };
@@ -87,9 +87,9 @@ export function InvoiceToyyibPayPaymentForm({
                 <div className="flex items-start gap-3">
                     <ExternalLink className="mt-0.5 h-5 w-5 text-blue-600" />
                     <div>
-                        <h4 className="mb-1 font-medium text-blue-900">{t('Secure Payment with ToyyibPay')}</h4>
+                        <h4 className="mb-1 font-medium text-blue-900">{translate('Secure Payment with ToyyibPay')}</h4>
                         <p className="text-sm text-blue-700">
-                            {t('You will be redirected to ToyyibPay secure payment page to complete your transaction.')}
+                            {translate('You will be redirected to ToyyibPay secure payment page to complete your transaction.')}
                         </p>
                     </div>
                 </div>
@@ -97,11 +97,11 @@ export function InvoiceToyyibPayPaymentForm({
 
             <div className="rounded-lg border bg-gray-50 p-4">
                 <div className="mb-2 flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-600">{t('Payment Type')}:</span>
+                    <span className="text-sm font-medium text-gray-600">{translate('Payment Type')}:</span>
                     <span className="text-sm text-gray-900 capitalize">{paymentType}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-600">{t('Amount')}:</span>
+                    <span className="text-sm font-medium text-gray-600">{translate('Amount')}:</span>
                     <span className="text-lg font-bold text-gray-900">
                         {currency} {amount}
                     </span>
@@ -110,41 +110,41 @@ export function InvoiceToyyibPayPaymentForm({
 
             <form onSubmit={handlePayment} className="space-y-4">
                 <div className="space-y-2">
-                    <Label htmlFor="billName">{t('Bill Name')} *</Label>
+                    <Label htmlFor="billName">{translate('Bill Name')} *</Label>
                     <Input
                         id="billName"
                         value={customerDetails.billName}
                         onChange={(e) => setCustomerDetails((prev) => ({ ...prev, billName: e.target.value }))}
-                        placeholder={t('Enter bill name')}
+                        placeholder={translate('Enter bill name')}
                         required
                     />
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="billTo">{t('Bill To (Name)')} *</Label>
+                    <Label htmlFor="billTo">{translate('Bill To (Name)')} *</Label>
                     <Input
                         id="billTo"
                         value={customerDetails.billTo}
                         onChange={(e) => setCustomerDetails((prev) => ({ ...prev, billTo: e.target.value }))}
-                        placeholder={t('Enter customer name')}
+                        placeholder={translate('Enter customer name')}
                         required
                     />
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="billEmail">{t('Email Address')} *</Label>
+                    <Label htmlFor="billEmail">{translate('Email Address')} *</Label>
                     <Input
                         id="billEmail"
                         type="email"
                         value={customerDetails.billEmail}
                         onChange={(e) => setCustomerDetails((prev) => ({ ...prev, billEmail: e.target.value }))}
-                        placeholder={t('Enter email address')}
+                        placeholder={translate('Enter email address')}
                         required
                     />
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="billPhone">{t('Phone Number')} *</Label>
+                    <Label htmlFor="billPhone">{translate('Phone Number')} *</Label>
                     <Input
                         id="billPhone"
                         value={customerDetails.billPhone}
@@ -152,23 +152,23 @@ export function InvoiceToyyibPayPaymentForm({
                         placeholder="60123456789"
                         required
                     />
-                    <p className="text-muted-foreground text-xs">{t('Malaysian phone number format: 60123456789')}</p>
+                    <p className="text-muted-foreground text-xs">{translate('Malaysian phone number format: 60123456789')}</p>
                 </div>
 
                 <div className="flex gap-3 pt-4">
                     <Button type="button" variant="outline" onClick={onCancel} className="flex-1" disabled={isProcessing}>
-                        {t('Cancel')}
+                        {translate('Cancel')}
                     </Button>
                     <Button type="submit" disabled={isProcessing} className="flex-1">
                         {isProcessing ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                {t('Redirecting...')}
+                                {translate('Redirecting...')}
                             </>
                         ) : (
                             <>
                                 <ExternalLink className="mr-2 h-4 w-4" />
-                                {t('Pay with ToyyibPay')}
+                                {translate('Pay with ToyyibPay')}
                             </>
                         )}
                     </Button>

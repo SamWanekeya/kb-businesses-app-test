@@ -156,7 +156,7 @@ const colors = [
 ];
 
 export default function SalesOrderTemplateSettings() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { settings } = usePage().props;
 
     const [saving, setSaving] = useState(false);
@@ -262,7 +262,7 @@ export default function SalesOrderTemplateSettings() {
 
             if (result.success) {
                 toast.success(result.success);
-                reset('salesOrderLogo');
+                resetranslate('salesOrderLogo');
             } else if (result.error) {
                 toast.error(result.error);
             } else {
@@ -277,12 +277,12 @@ export default function SalesOrderTemplateSettings() {
 
     return (
         <SettingsSection
-            title={t('Sales Order Templates')}
-            description={t('Configure sales orders template, colors, and display options')}
+            title={translate('Sales Order Templates')}
+            description={translate('Configure sales orders template, colors, and display options')}
             action={
                 <Button type="submit" disabled={saving} form="sales-orders-template-settings-form" size="sm" className="max-[1300px]:px-2.5">
                     <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                    <span className="max-[1300px]:hidden">{saving ? t('Saving...') : t('Save Changes')}</span>
+                    <span className="max-[1300px]:hidden">{saving ? translate('Saving...') : translate('Save Changes')}</span>
                 </Button>
             }
         >
@@ -292,10 +292,10 @@ export default function SalesOrderTemplateSettings() {
                         <div className="grid grid-cols-1 gap-6 min-[1300px]:grid-cols-[320px_1fr] min-[1300px]:items-start">
                             <div ref={settingsRef} className="space-y-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="sales_order_template">{t('Sales Order Template')}</Label>
+                                    <Label htmlFor="sales_order_template">{translate('Sales Order Template')}</Label>
                                     <Select value={data.salesOrderTemplate} onValueChange={(value) => setData('salesOrderTemplate', value)}>
                                         <SelectTrigger>
-                                            <SelectValue placeholder={t('Select template')} />
+                                            <SelectValue placeholder={translate('Select template')} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {Object.entries(templates).map(([key, name]) => (
@@ -310,7 +310,7 @@ export default function SalesOrderTemplateSettings() {
 
                                 <div className="flex items-center justify-between">
                                     <Label htmlFor="sales_order_qr_enabled" className="text-sm font-medium">
-                                        {t('QR Display?')}
+                                        {translate('QR Display?')}
                                     </Label>
                                     <Switch
                                         id="sales_order_qr_enabled"
@@ -320,7 +320,7 @@ export default function SalesOrderTemplateSettings() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label>{t('Color Input')}</Label>
+                                    <Label>{translate('Color Input')}</Label>
                                     <div className="grid w-50 grid-cols-6 gap-1">
                                         {colors.map((color) => (
                                             <label key={color} className="cursor-pointer">
@@ -344,22 +344,22 @@ export default function SalesOrderTemplateSettings() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="salesOrderLogo">{t('Sales Order Logo')}</Label>
+                                    <Label htmlFor="salesOrderLogo">{translate('Sales Order Logo')}</Label>
                                     <MediaPicker
                                         label=""
                                         value={data.salesOrderLogoId || ''}
                                         onChange={handleLogoSelect}
-                                        placeholder={t('Select sales order logo...')}
+                                        placeholder={translate('Select sales order logo...')}
                                         showPreview={true}
                                         returnType="id"
                                     />
                                     {errors.salesOrderLogo && <p className="text-sm text-red-600">{errors.salesOrderLogo}</p>}
-                                    <p className="text-xs text-gray-500">{t('Select a logo for sales orders')}</p>
+                                    <p className="text-xs text-gray-500">{translate('Select a logo for sales orders')}</p>
                                 </div>
                             </div>
 
                             <div className="space-y-2">
-                                <Label>{t('Preview')}</Label>
+                                <Label>{translate('Preview')}</Label>
                                 <div
                                     className="overflow-x-auto overflow-y-auto rounded-lg border bg-white lg:sticky lg:top-6"
                                     style={{ height: settingsHeight - 25 || 'auto' }}

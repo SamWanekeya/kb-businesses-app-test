@@ -38,7 +38,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function InvoiceShow() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { invoice, streamItems, pendingPayments, invoiceReminders, availableSalesOrders, auth, flash } = usePage().props;
     const isOrganization = auth?.user?.type === 'organization';
     const permissions = auth?.permissions || [];
@@ -94,11 +94,11 @@ export default function InvoiceShow() {
                     } else if (page.props.flash.error) {
                         toast.error(t(page.props.flash.error));
                     } else {
-                        toast.success(t('Payment rejected successfully'));
+                        toast.success(translate('Payment rejected successfully'));
                     }
                 },
                 onError: (errors) => {
-                    toast.error(typeof errors === 'string' ? errors : t('Failed to reject payment'));
+                    toast.error(typeof errors === 'string' ? errors : translate('Failed to reject payment'));
                 },
             },
         );
@@ -107,11 +107,11 @@ export default function InvoiceShow() {
     const handleAssignSalesOrder = (formData?: any) => {
         const salesOrderId = formData?.sales_order_id || selectedSalesOrderId;
         if (!salesOrderId || salesOrderId === 'empty') {
-            toast.error(t('Please select a sales order'));
+            toast.error(translate('Please select a sales order'));
             return;
         }
 
-        toast.loading(t('Assigning sales order...'));
+        toast.loading(translate('Assigning sales order...'));
 
         router.put(
             route('invoices.add-sales-order', invoice.id),
@@ -142,9 +142,9 @@ export default function InvoiceShow() {
     };
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Invoices'), href: route('invoices.index') },
-        { title: t('View Invoice') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Invoices'), href: route('invoices.index') },
+        { title: translate('View Invoice') },
     ];
 
     const getStatusBadge = (status: string) => {
@@ -161,7 +161,7 @@ export default function InvoiceShow() {
             <span
                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.draft}`}
             >
-                {status === 'partially_paid' ? t('Partially Paid') : status?.charAt(0).toUpperCase() + status?.slice(1) || t('Draft')}
+                {status === 'partially_paid' ? translate('Partially Paid') : status?.charAt(0).toUpperCase() + status?.slice(1) || translate('Draft')}
             </span>
         );
     };
@@ -169,12 +169,12 @@ export default function InvoiceShow() {
     const formatCurrency = (amount: number) => window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
 
     const formatDate = (dateString: string) => {
-        if (!dateString) return t('-');
+        if (!dateString) return translate('-');
         return window.appSettings?.formatDateTime(dateString, false) || new Date(dateString).toLocaleDateString();
     };
 
     const handleSendReminder = () => {
-        toast.loading(t('Sending payment reminder...'));
+        toast.loading(translate('Sending payment reminder...'));
         router.post(
             route('invoices.send-reminder', invoice.id),
             { type: 'email' },
@@ -228,12 +228,12 @@ export default function InvoiceShow() {
     return (
         <PageTemplate
             title={invoice.invoice_number}
-            description={t('Invoice details and related information')}
+            description={translate('Invoice details and related information')}
             breadcrumbs={breadcrumbs}
             noPadding
             actions={[
                 {
-                    label: t('Back'),
+                    label: translate('Back'),
 
                     labelClassName: 'hidden sm:inline',
                     icon: <ArrowLeft className="h-4 w-4 sm:mr-2" />,
@@ -243,7 +243,7 @@ export default function InvoiceShow() {
                 ...(!invoice.sales_order
                     ? [
                           {
-                              label: t('Assign Sales Order'),
+                              label: translate('Assign Sales Order'),
                               icon: <Plus className="mr-2 h-4 w-4" />,
                               variant: 'default',
                               onClick: () => setIsAssignSalesOrderModalOpen(true),
@@ -262,33 +262,33 @@ export default function InvoiceShow() {
                                 <div>
                                     <CardTitle className="text-lg font-bold">{invoice.name}</CardTitle>
                                     <p className="text-muted-foreground mt-1.5 text-sm leading-relaxed">
-                                        {invoice.description || t('No description provided')}
+                                        {invoice.description || translate('No description provided')}
                                     </p>
                                 </div>
                             </div>
                         </CardHeader>
                         <CardContent className="p-4 sm:p-5">
-                            <p className="text-muted-foreground mb-3 text-xs font-semibold">{t('Billing Address')}</p>
+                            <p className="text-muted-foreground mb-3 text-xs font-semibold">{translate('Billing Address')}</p>
                             <div className="grid grid-cols-1 gap-x-2 gap-y-2 xl:grid-cols-2">
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{t('Address')}</p>
-                                    <p className="text-foreground text-sm font-medium">{invoice.billing_address || t('-')}</p>
+                                    <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
+                                    <p className="text-foreground text-sm font-medium">{invoice.billing_address || translate('-')}</p>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{t('City')}</p>
-                                    <p className="text-foreground text-sm font-medium">{invoice.billing_city || t('-')}</p>
+                                    <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
+                                    <p className="text-foreground text-sm font-medium">{invoice.billing_city || translate('-')}</p>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{t('State')}</p>
-                                    <p className="text-foreground text-sm font-medium">{invoice.billing_state || t('-')}</p>
+                                    <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
+                                    <p className="text-foreground text-sm font-medium">{invoice.billing_state || translate('-')}</p>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{t('Postal Code')}</p>
-                                    <p className="text-foreground text-sm font-medium">{invoice.billing_postal_code || t('-')}</p>
+                                    <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
+                                    <p className="text-foreground text-sm font-medium">{invoice.billing_postal_code || translate('-')}</p>
                                 </div>
                                 <div className="space-y-0.5">
-                                    <p className="text-muted-foreground text-xs font-medium">{t('Country')}</p>
-                                    <p className="text-foreground text-sm font-medium">{invoice.billing_country || t('-')}</p>
+                                    <p className="text-muted-foreground text-xs font-medium">{translate('Country')}</p>
+                                    <p className="text-foreground text-sm font-medium">{invoice.billing_country || translate('-')}</p>
                                 </div>
                             </div>
                         </CardContent>
@@ -299,7 +299,7 @@ export default function InvoiceShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-lg font-semibold">
                                 <ShoppingCart className="text-muted-foreground mr-3 h-5 w-5" />
-                                {t('Products')}
+                                {translate('Products')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
@@ -309,18 +309,18 @@ export default function InvoiceShow() {
                                         <Table className="min-w-[850px]">
                                             <TableHeader>
                                                 <TableRow className="border-b bg-[#F0F0F1] hover:!bg-[#F0F0F1] dark:bg-gray-800 dark:hover:!bg-gray-800">
-                                                    <TableHead className="py-2.5 font-semibold whitespace-nowrap">{t('Product')}</TableHead>
+                                                    <TableHead className="py-2.5 font-semibold whitespace-nowrap">{translate('Product')}</TableHead>
                                                     <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
-                                                        {t('Quantity')}
+                                                        {translate('Quantity')}
                                                     </TableHead>
                                                     <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
-                                                        {t('Unit Price')}
+                                                        {translate('Unit Price')}
                                                     </TableHead>
                                                     <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
-                                                        {t('Discount')}
+                                                        {translate('Discount')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">{t('Tax')}</TableHead>
-                                                    <TableHead className="py-2.5 text-right font-semibold whitespace-nowrap">{t('Total')}</TableHead>
+                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">{translate('Tax')}</TableHead>
+                                                    <TableHead className="py-2.5 text-right font-semibold whitespace-nowrap">{translate('Total')}</TableHead>
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
@@ -437,21 +437,21 @@ export default function InvoiceShow() {
                                     <div className="bg-muted/10 flex flex-col items-start justify-end gap-4 border-t px-6 py-5 md:flex-row md:items-end">
                                         <div className="w-full overflow-hidden rounded-xl border sm:max-w-sm">
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{t('Subtotal')}</span>
+                                                <span className="text-muted-foreground text-sm font-medium">{translate('Subtotal')}</span>
                                                 <span className="text-foreground font-mono text-sm font-semibold">
                                                     {formatCurrency(subtotal + totalDiscount)}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{t('Discount')}</span>
+                                                <span className="text-muted-foreground text-sm font-medium">{translate('Discount')}</span>
                                                 <span className="font-mono text-sm font-semibold text-red-500">-{formatCurrency(totalDiscount)}</span>
                                             </div>
                                             <div className="flex items-center justify-between border-b px-4 py-3">
-                                                <span className="text-muted-foreground text-sm font-medium">{t('Total Tax')}</span>
+                                                <span className="text-muted-foreground text-sm font-medium">{translate('Total Tax')}</span>
                                                 <span className="text-foreground font-mono text-sm font-semibold">{formatCurrency(totalTax)}</span>
                                             </div>
                                             <div className="flex items-center justify-between px-4 py-3">
-                                                <span className="text-foreground text-sm font-bold">{t('Grand Total')}</span>
+                                                <span className="text-foreground text-sm font-bold">{translate('Grand Total')}</span>
                                                 <span className="font-mono text-lg font-bold text-emerald-600">{formatCurrency(grandTotal)}</span>
                                             </div>
                                         </div>
@@ -462,7 +462,7 @@ export default function InvoiceShow() {
                                     <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
                                         <Package className="text-muted-foreground/40 h-8 w-8" />
                                     </div>
-                                    <p className="text-muted-foreground text-sm font-medium">{t('No products added to this invoice')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">{translate('No products added to this invoice')}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -473,13 +473,13 @@ export default function InvoiceShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
                                     <FileText className="text-muted-foreground mr-3 h-5 w-5" />
-                                    {t('Notes')}
+                                    {translate('Notes')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
                                 <div className="max-h-[150px] overflow-y-auto">
                                     <div className="px-5 py-4">
-                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{invoice.notes || t('-')}</p>
+                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{invoice.notes || translate('-')}</p>
                                     </div>
                                 </div>
                             </CardContent>
@@ -488,13 +488,13 @@ export default function InvoiceShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
                                     <FileText className="text-muted-foreground mr-3 h-5 w-5" />
-                                    {t('Terms')}
+                                    {translate('Terms')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
                                 <div className="max-h-[150px] overflow-y-auto">
                                     <div className="px-5 py-4">
-                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{invoice.terms || t('-')}</p>
+                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{invoice.terms || translate('-')}</p>
                                     </div>
                                 </div>
                             </CardContent>
@@ -507,19 +507,19 @@ export default function InvoiceShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
                                     <DollarSign className="mr-3 h-5 w-5 text-gray-500" />
-                                    {t('Pending Payments')} ({pendingPayments.length})
+                                    {translate('Pending Payments')} ({pendingPayments.length})
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
                                 <Table>
                                     <TableHeader>
                                         <TableRow className="border-b bg-[#F0F0F1] hover:!bg-[#F0F0F1] dark:bg-gray-800 dark:hover:!bg-gray-800">
-                                            <TableHead className="py-2.5 font-semibold">{t('Date')}</TableHead>
-                                            <TableHead className="py-2.5 font-semibold">{t('Method')}</TableHead>
-                                            <TableHead className="py-2.5 font-semibold">{t('Type')}</TableHead>
-                                            <TableHead className="py-2.5 text-right font-semibold">{t('Amount')}</TableHead>
-                                            <TableHead className="py-2.5 font-semibold">{t('Payment ID')}</TableHead>
-                                            <TableHead className="py-2.5 text-center font-semibold">{t('Actions')}</TableHead>
+                                            <TableHead className="py-2.5 font-semibold">{translate('Date')}</TableHead>
+                                            <TableHead className="py-2.5 font-semibold">{translate('Method')}</TableHead>
+                                            <TableHead className="py-2.5 font-semibold">{translate('Type')}</TableHead>
+                                            <TableHead className="py-2.5 text-right font-semibold">{translate('Amount')}</TableHead>
+                                            <TableHead className="py-2.5 font-semibold">{translate('Payment ID')}</TableHead>
+                                            <TableHead className="py-2.5 text-center font-semibold">{translate('Actions')}</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -548,7 +548,7 @@ export default function InvoiceShow() {
                                                                         </Button>
                                                                     </TooltipTrigger>
                                                                     <TooltipContent side="top">
-                                                                        <p>{t('View Receipt')}</p>
+                                                                        <p>{translate('View Receipt')}</p>
                                                                     </TooltipContent>
                                                                 </Tooltip>
                                                             </TooltipProvider>
@@ -572,7 +572,7 @@ export default function InvoiceShow() {
                                                                                         if (page.props.flash.error)
                                                                                             toast.error(t(page.props.flash.error));
                                                                                     },
-                                                                                    onError: () => toast.error(t('Failed to approve payment')),
+                                                                                    onError: () => toast.error(translate('Failed to approve payment')),
                                                                                 },
                                                                             );
                                                                         }}
@@ -581,7 +581,7 @@ export default function InvoiceShow() {
                                                                     </Button>
                                                                 </TooltipTrigger>
                                                                 <TooltipContent side="top">
-                                                                    <p>{t('Approve')}</p>
+                                                                    <p>{translate('Approve')}</p>
                                                                 </TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
@@ -601,7 +601,7 @@ export default function InvoiceShow() {
                                                                     </Button>
                                                                 </TooltipTrigger>
                                                                 <TooltipContent side="top">
-                                                                    <p>{t('Reject')}</p>
+                                                                    <p>{translate('Reject')}</p>
                                                                 </TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
@@ -621,7 +621,7 @@ export default function InvoiceShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
                                     <Bell className="text-muted-foreground mr-3 h-5 w-5" />
-                                    {t('Reminder History')} ({reminderHistory.length})
+                                    {translate('Reminder History')} ({reminderHistory.length})
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
@@ -630,13 +630,13 @@ export default function InvoiceShow() {
                                         <thead className="[&_tr]:border-b">
                                             <tr className="border-b bg-[#F0F0F1] hover:!bg-[#F0F0F1] dark:bg-gray-800 dark:hover:!bg-gray-800">
                                                 <th className="text-muted-foreground sticky top-0 z-10 bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
-                                                    {t('Sent By')}
+                                                    {translate('Sent By')}
                                                 </th>
                                                 <th className="text-muted-foreground sticky top-0 z-10 bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
-                                                    {t('Type')}
+                                                    {translate('Type')}
                                                 </th>
                                                 <th className="text-muted-foreground sticky top-0 z-10 bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
-                                                    {t('Date')}
+                                                    {translate('Date')}
                                                 </th>
                                             </tr>
                                         </thead>
@@ -647,7 +647,7 @@ export default function InvoiceShow() {
                                                     className="hover:bg-muted/50 border-b transition-colors dark:border-gray-700 dark:bg-gray-900"
                                                 >
                                                     <td className="text-foreground px-4 py-3 align-middle text-sm font-medium">
-                                                        {reminder.sent_by?.name || t('-')}
+                                                        {reminder.sent_by?.name || translate('-')}
                                                     </td>
                                                     <td className="px-4 py-3 align-middle capitalize">
                                                         <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-600/20 ring-inset dark:bg-blue-900/20 dark:text-blue-400">
@@ -676,7 +676,7 @@ export default function InvoiceShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
                                     <DollarSign className="text-muted-foreground mr-3 h-5 w-5" />
-                                    {t('Payment History')}
+                                    {translate('Payment History')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
@@ -685,25 +685,25 @@ export default function InvoiceShow() {
                                         <thead>
                                             <tr className="border-b bg-[#F0F0F1] hover:!bg-[#F0F0F1] dark:bg-gray-800 dark:hover:!bg-gray-800">
                                                 <th className="text-muted-foreground sticky top-0 z-10 w-[170px] bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
-                                                    {t('Date')}
+                                                    {translate('Date')}
                                                 </th>
                                                 <th className="text-muted-foreground sticky top-0 z-10 w-[130px] bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
-                                                    {t('Method')}
+                                                    {translate('Method')}
                                                 </th>
                                                 <th className="text-muted-foreground sticky top-0 z-10 w-[110px] bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
-                                                    {t('Type')}
+                                                    {translate('Type')}
                                                 </th>
                                                 <th className="text-muted-foreground sticky top-0 z-10 w-[140px] bg-[#F0F0F1] px-4 py-2.5 pr-6 text-right font-semibold dark:bg-gray-800 dark:text-gray-300">
-                                                    {t('Amount')}
+                                                    {translate('Amount')}
                                                 </th>
                                                 <th className="text-muted-foreground sticky top-0 z-10 w-[130px] bg-[#F0F0F1] px-4 py-2.5 pl-6 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
-                                                    {t('Status')}
+                                                    {translate('Status')}
                                                 </th>
                                                 <th className="text-muted-foreground sticky top-0 z-10 w-[200px] bg-[#F0F0F1] px-4 py-2.5 text-left font-semibold dark:bg-gray-800 dark:text-gray-300">
-                                                    {t('Payment ID')}
+                                                    {translate('Payment ID')}
                                                 </th>
                                                 <th className="text-muted-foreground sticky top-0 z-10 w-[80px] bg-[#F0F0F1] px-4 py-2.5 text-center font-semibold dark:bg-gray-800 dark:text-gray-300">
-                                                    {t('Receipt')}
+                                                    {translate('Receipt')}
                                                 </th>
                                             </tr>
                                         </thead>
@@ -756,7 +756,7 @@ export default function InvoiceShow() {
                                                             {payment.status.charAt(0).toUpperCase() + payment.status.slice(1)}
                                                         </span>
                                                     </td>
-                                                    <td className="px-4 py-3 align-middle font-mono text-sm">{payment.payment_id || t('-')}</td>
+                                                    <td className="px-4 py-3 align-middle font-mono text-sm">{payment.payment_id || translate('-')}</td>
                                                     <td className="px-4 py-3 text-center align-middle">
                                                         {payment.receipt_path ? (
                                                             <TooltipProvider>
@@ -774,7 +774,7 @@ export default function InvoiceShow() {
                                                                         </Button>
                                                                     </TooltipTrigger>
                                                                     <TooltipContent>
-                                                                        <p>{t('View Receipt')}</p>
+                                                                        <p>{translate('View Receipt')}</p>
                                                                     </TooltipContent>
                                                                 </Tooltip>
                                                             </TooltipProvider>
@@ -797,7 +797,7 @@ export default function InvoiceShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-lg font-semibold">
                                     <MessageCircle className="text-muted-foreground mr-3 h-5 w-5" />
-                                    {t('Activity Stream')}
+                                    {translate('Activity Stream')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
@@ -810,7 +810,7 @@ export default function InvoiceShow() {
                                                     router.post(
                                                         route('invoices.comments.store', invoice.id),
                                                         { comment: newComment },
-                                                        { preserveScroll: true, onSuccess: () => setNewComment('') },
+                                                        { preserveScroll: true, onSuccess: () => setNewCommentranslate('') },
                                                     );
                                                 }
                                             }}
@@ -827,13 +827,13 @@ export default function InvoiceShow() {
                                                             </Avatar>
                                                         </TooltipTrigger>
                                                         <TooltipContent side="top">
-                                                            <p>{auth?.user?.name || t('User')}</p>
+                                                            <p>{auth?.user?.name || translate('User')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
                                                 <div className="flex-1 overflow-hidden rounded-xl border shadow-sm">
                                                     <Textarea
-                                                        placeholder={t('Write a comment...')}
+                                                        placeholder={translate('Write a comment...')}
                                                         value={newComment}
                                                         onChange={(e) => setNewComment(e.target.value)}
                                                         className="resize-none border-0 bg-transparent focus-visible:ring-0"
@@ -853,7 +853,7 @@ export default function InvoiceShow() {
                                                                     </Button>
                                                                 </TooltipTrigger>
                                                                 <TooltipContent side="top">
-                                                                    <p>{t('Send')}</p>
+                                                                    <p>{translate('Send')}</p>
                                                                 </TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
@@ -902,7 +902,7 @@ export default function InvoiceShow() {
                                                                         </Avatar>
                                                                     </TooltipTrigger>
                                                                     <TooltipContent side="top">
-                                                                        <p>{activity.user?.name || t('System')}</p>
+                                                                        <p>{activity.user?.name || translate('System')}</p>
                                                                     </TooltipContent>
                                                                 </Tooltip>
                                                             </TooltipProvider>
@@ -918,7 +918,7 @@ export default function InvoiceShow() {
                                                             >
                                                                 <div className="flex flex-wrap items-center gap-2">
                                                                     <span className="text-foreground text-sm font-semibold">
-                                                                        {activity.user?.name || t('System')}
+                                                                        {activity.user?.name || translate('System')}
                                                                     </span>
                                                                     <span
                                                                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${badgeCls}`}
@@ -951,7 +951,7 @@ export default function InvoiceShow() {
                                                                                             </Button>
                                                                                         </TooltipTrigger>
                                                                                         <TooltipContent side="top">
-                                                                                            <p>{t('Edit')}</p>
+                                                                                            <p>{translate('Edit')}</p>
                                                                                         </TooltipContent>
                                                                                     </Tooltip>
                                                                                 </TooltipProvider>
@@ -973,7 +973,7 @@ export default function InvoiceShow() {
                                                                                         </Button>
                                                                                     </TooltipTrigger>
                                                                                     <TooltipContent side="top">
-                                                                                        <p>{t('Delete')}</p>
+                                                                                        <p>{translate('Delete')}</p>
                                                                                     </TooltipContent>
                                                                                 </Tooltip>
                                                                             </TooltipProvider>
@@ -998,7 +998,7 @@ export default function InvoiceShow() {
                                                                                     variant="outline"
                                                                                     onClick={() => setEditingComment(null)}
                                                                                 >
-                                                                                    {t('Cancel')}
+                                                                                    {translate('Cancel')}
                                                                                 </Button>
                                                                                 <Button
                                                                                     size="sm"
@@ -1015,7 +1015,7 @@ export default function InvoiceShow() {
                                                                                         setEditingComment(null);
                                                                                     }}
                                                                                 >
-                                                                                    {t('Save')}
+                                                                                    {translate('Save')}
                                                                                 </Button>
                                                                             </div>
                                                                         </div>
@@ -1043,7 +1043,7 @@ export default function InvoiceShow() {
                                     ) : (
                                         <div className="text-muted-foreground py-12 text-center">
                                             <Calendar className="text-muted-foreground/30 mx-auto mb-3 h-10 w-10" />
-                                            <p className="text-sm">{t('No activities found')}</p>
+                                            <p className="text-sm">{translate('No activities found')}</p>
                                         </div>
                                     )}
                                 </div>
@@ -1060,13 +1060,13 @@ export default function InvoiceShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-base font-semibold">
                                 <FileText className="mr-2 h-4 w-4 text-emerald-600" />
-                                {t('Summary & Actions')}
+                                {translate('Summary & Actions')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
                             <div className="mb-4 flex items-start justify-between">
                                 <div>
-                                    <p className="text-muted-foreground mb-1 text-xs">{t('Balance Due')}</p>
+                                    <p className="text-muted-foreground mb-1 text-xs">{translate('Balance Due')}</p>
                                     <p className="text-foreground font-mono text-2xl font-bold">{formatCurrency(dueAmount)}</p>
                                 </div>
                                 <div className="flex flex-col items-end gap-1.5">{getStatusBadge(invoice.status)}</div>
@@ -1076,7 +1076,7 @@ export default function InvoiceShow() {
                                 <div className="mb-4">
                                     <div className="text-muted-foreground mb-1 flex justify-between text-xs">
                                         <span>
-                                            {t('Paid')}: <span className="font-mono">{formatCurrency(paidAmount)}</span>
+                                            {translate('Paid')}: <span className="font-mono">{formatCurrency(paidAmount)}</span>
                                         </span>
                                         <span>{Math.round((paidAmount / parseFloat(invoice.total_amount)) * 100)}%</span>
                                     </div>
@@ -1087,7 +1087,7 @@ export default function InvoiceShow() {
                                         />
                                     </div>
                                     <p className="text-muted-foreground mt-1 text-xs">
-                                        {t('of')} <span className="font-mono">{formatCurrency(invoice.total_amount)}</span>
+                                        {translate('of')} <span className="font-mono">{formatCurrency(invoice.total_amount)}</span>
                                     </p>
                                 </div>
                             )}
@@ -1096,13 +1096,13 @@ export default function InvoiceShow() {
                                     useHasPermission('send-reminder-invoices') && (
                                         <Button variant="default" size="sm" className="w-full cursor-pointer" onClick={handleSendReminder}>
                                             <Bell className="mr-2 h-4 w-4" />
-                                            {t('Send Reminder')}
+                                            {translate('Send Reminder')}
                                         </Button>
                                     )}
                                 {useHasPermission('edit-invoices') && (
                                     <Button variant="outline" className="w-full" onClick={() => router.visit(route('invoices.edit', invoice.id))}>
                                         <Edit className="mr-2 h-4 w-4" />
-                                        {t('Edit Invoice')}
+                                        {translate('Edit Invoice')}
                                     </Button>
                                 )}
                             </div>
@@ -1115,7 +1115,7 @@ export default function InvoiceShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-semibold">
                                     <User className="mr-2 h-4 w-4 text-emerald-600" />
-                                    {t('Customer Info')}
+                                    {translate('Customer Info')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
@@ -1123,7 +1123,7 @@ export default function InvoiceShow() {
                                     <div className="px-4 pt-3 pb-3">
                                         <p className="text-muted-foreground mb-2 flex items-center gap-1 text-xs text-[10px]">
                                             <User className="h-3.5 w-3.5 shrink-0 text-gray-500" />
-                                            {t('Contact')}
+                                            {translate('Contact')}
                                         </p>
                                         <div className="flex min-w-0 items-center justify-between">
                                             <div className="flex min-w-0 items-center gap-2">
@@ -1144,7 +1144,7 @@ export default function InvoiceShow() {
                                                             </Link>
                                                         </TooltipTrigger>
                                                         <TooltipContent side="top">
-                                                            <p>{t('View')}</p>
+                                                            <p>{translate('View')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
@@ -1157,7 +1157,7 @@ export default function InvoiceShow() {
                                     <div className="px-4 pt-3 pb-3">
                                         <p className="mb-2 flex items-center gap-1 text-[10px] text-gray-600">
                                             <Building2 className="h-3.5 w-3.5 shrink-0 text-gray-500" />
-                                            {t('Account')}
+                                            {translate('Account')}
                                         </p>
                                         <div className="flex min-w-0 items-center justify-between">
                                             <div className="flex min-w-0 items-center gap-2">
@@ -1178,7 +1178,7 @@ export default function InvoiceShow() {
                                                             </Link>
                                                         </TooltipTrigger>
                                                         <TooltipContent side="top">
-                                                            <p>{t('View')}</p>
+                                                            <p>{translate('View')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
@@ -1195,14 +1195,14 @@ export default function InvoiceShow() {
                         <CardHeader className="border-b px-5 py-3.5">
                             <CardTitle className="flex items-center text-base font-semibold">
                                 <FileText className="mr-2 h-4 w-4 text-emerald-600" />
-                                {t('Invoice Details')}
+                                {translate('Invoice Details')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3 p-5">
                             <div className="flex items-start gap-3">
                                 <FileText className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div className="min-w-0 flex-1">
-                                    <p className="text-muted-foreground text-xs">{t('Invoice Number')}</p>
+                                    <p className="text-muted-foreground text-xs">{translate('Invoice Number')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <p className="text-foreground text-sm font-medium">{invoice.invoice_number}</p>
                                     </div>
@@ -1211,21 +1211,21 @@ export default function InvoiceShow() {
                             <div className="flex items-start gap-3">
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{t('Invoice Date')}</p>
+                                    <p className="text-muted-foreground text-xs">{translate('Invoice Date')}</p>
                                     <p className="text-foreground text-sm font-medium">{formatDate(invoice.invoice_date)}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
-                                    <p className="text-muted-foreground text-xs">{t('Due Date')}</p>
+                                    <p className="text-muted-foreground text-xs">{translate('Due Date')}</p>
                                     <p className="text-foreground text-sm font-medium">{formatDate(invoice.due_date)}</p>
                                 </div>
                             </div>
 
                             {invoice.assigned_user && (
                                 <div className="border-t pt-3">
-                                    <p className="text-muted-foreground mb-2 text-xs">{t('Assigned To')}</p>
+                                    <p className="text-muted-foreground mb-2 text-xs">{translate('Assigned To')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={invoice.assigned_user.avatar} alt={invoice.assigned_user.name} />
@@ -1244,7 +1244,7 @@ export default function InvoiceShow() {
                             )}
                             {invoice.creator && (
                                 <div className="border-t pt-3">
-                                    <p className="text-muted-foreground mb-2 text-xs">{t('Created By')}</p>
+                                    <p className="text-muted-foreground mb-2 text-xs">{translate('Created By')}</p>
                                     <div className="flex min-w-0 items-center gap-2">
                                         <Avatar className="h-8 w-8 flex-shrink-0">
                                             <AvatarImage src={invoice.creator.avatar} alt={invoice.creator.name} />
@@ -1270,7 +1270,7 @@ export default function InvoiceShow() {
                             <CardHeader className="border-b px-5 py-3.5">
                                 <CardTitle className="flex items-center text-base font-semibold">
                                     <Package className="mr-2 h-4 w-4 text-gray-600" />
-                                    {t('Related Records')}
+                                    {translate('Related Records')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2 p-5">
@@ -1281,7 +1281,7 @@ export default function InvoiceShow() {
                                     >
                                         <div className="flex min-w-0 items-center gap-2">
                                             <div className="min-w-0">
-                                                <p className="text-muted-foreground text-xs">{t('Sales Order')}</p>
+                                                <p className="text-muted-foreground text-xs">{translate('Sales Order')}</p>
                                                 <p className="text-foreground truncate text-sm font-medium">{invoice.sales_order.name}</p>
                                             </div>
                                         </div>
@@ -1295,7 +1295,7 @@ export default function InvoiceShow() {
                                     >
                                         <div className="flex min-w-0 items-center gap-2">
                                             <div className="min-w-0">
-                                                <p className="text-muted-foreground text-xs">{t('Quote')}</p>
+                                                <p className="text-muted-foreground text-xs">{translate('Quote')}</p>
                                                 <p className="text-foreground truncate text-sm font-medium">{invoice.quote.name}</p>
                                             </div>
                                         </div>
@@ -1324,11 +1324,11 @@ export default function InvoiceShow() {
                     fields: [
                         {
                             name: 'sales_order_id',
-                            label: t('Select Sales Order'),
+                            label: translate('Select Sales Order'),
                             type: 'select',
                             required: true,
                             options: [
-                                { value: 'empty', label: t('Select Sales Order') },
+                                { value: 'empty', label: translate('Select Sales Order') },
                                 ...(availableSalesOrders?.map((so: any) => ({
                                     value: so.id.toString(),
                                     label: `${so.order_number} - ${so.name}`,
@@ -1338,7 +1338,7 @@ export default function InvoiceShow() {
                     ],
                 }}
                 initialData={{ sales_order_id: selectedSalesOrderId || 'empty' }}
-                title={t('Assign Sales Order to Invoice')}
+                title={translate('Assign Sales Order to Invoice')}
                 mode="create"
                 onFieldChange={(field, value) => {
                     if (field === 'sales_order_id') {
@@ -1357,8 +1357,8 @@ export default function InvoiceShow() {
                     });
                     setIsDeleteModalOpen(false);
                 }}
-                itemName={t('this activity')}
-                entityName={t('activity')}
+                itemName={translate('this activity')}
+                entityName={translate('activity')}
             />
 
             {/* Delete All Activities Modal */}
@@ -1371,35 +1371,35 @@ export default function InvoiceShow() {
                     });
                     setIsDeleteAllModalOpen(false);
                 }}
-                itemName={t('all activities for {{invoiceName}}', { invoiceName: invoice.name })}
-                entityName={t('activities')}
+                itemName={translate('all activities for {{invoiceName}}', { invoiceName: invoice.name })}
+                entityName={translate('activities')}
             />
 
             {/* Reject Payment Modal */}
             <Dialog open={isRejectPaymentModalOpen} onOpenChange={setIsRejectPaymentModalOpen}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>{t('Reject Payment')}</DialogTitle>
+                        <DialogTitle>{translate('Reject Payment')}</DialogTitle>
                     </DialogHeader>
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
                             const formData = new FormData(e.currentTarget);
-                            handleRejectPaymentConfirm((formData.get('reason') as string) || '');
+                            handleRejectPaymentConfirm((formData.getranslate('reason') as string) || '');
                         }}
                     >
                         <div className="space-y-4">
                             <div>
-                                <Label htmlFor="reason">{t('Rejection Reason (Optional)')}</Label>
-                                <Textarea id="reason" name="reason" placeholder={t('Enter rejection reason...')} className="mt-1" />
+                                <Label htmlFor="reason">{translate('Rejection Reason (Optional)')}</Label>
+                                <Textarea id="reason" name="reason" placeholder={translate('Enter rejection reason...')} className="mt-1" />
                             </div>
                         </div>
                         <DialogFooter className="mt-6">
                             <Button type="button" variant="outline" onClick={() => setIsRejectPaymentModalOpen(false)}>
-                                {t('Cancel')}
+                                {translate('Cancel')}
                             </Button>
                             <Button type="submit" variant="destructive">
-                                {t('Reject')}
+                                {translate('Reject')}
                             </Button>
                         </DialogFooter>
                     </form>

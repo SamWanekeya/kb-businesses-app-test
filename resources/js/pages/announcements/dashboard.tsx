@@ -7,11 +7,11 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function AnnouncementDashboard() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { auth, announcements = [] } = usePage().props;
     const permissions = auth?.permissions || [];
     const initialTab = (() => {
-        const p = new URLSearchParams(window.location.search).get('tab');
+        const p = new URLSearchParams(window.location.search).getranslate('tab');
         return ['all', 'featured', 'upcoming', 'expired'].includes(p ?? '') ? p : 'all';
     })() as 'all' | 'featured' | 'upcoming' | 'expired';
     const [activeTab, setActiveTab] = useState<'all' | 'featured' | 'upcoming' | 'expired'>(initialTab);
@@ -19,7 +19,7 @@ export default function AnnouncementDashboard() {
     const handleTabChange = (tab: 'all' | 'featured' | 'upcoming' | 'expired') => {
         setActiveTab(tab);
         const url = new URL(window.location.href);
-        tab === 'all' ? url.searchParams.delete('tab') : url.searchParams.set('tab', tab);
+        tab === 'all' ? url.searchParams.delete('tab') : url.searchParams.setranslate('tab', tab);
         window.history.replaceState(null, '', url.toString());
     };
 
@@ -32,16 +32,16 @@ export default function AnnouncementDashboard() {
 
     const categoryMap: Record<string, number> = {};
     announcements.forEach((a: any) => {
-        const name = a.category?.name || t('Uncategorized');
+        const name = a.category?.name || translate('Uncategorized');
         categoryMap[name] = (categoryMap[name] || 0) + 1;
     });
     const categoryBreakdown = Object.entries(categoryMap).sort((a, b) => b[1] - a[1]);
 
     const tabData = [
-        { value: 'all', label: t('All'), list: announcements, icon: <Megaphone className="h-3.5 w-3.5" /> },
-        { value: 'featured', label: t('Featured'), list: featured, icon: <Star className="h-3.5 w-3.5" /> },
-        { value: 'upcoming', label: t('Upcoming'), list: upcoming, icon: <Clock className="h-3.5 w-3.5" /> },
-        { value: 'expired', label: t('Expired'), list: expired, icon: <XCircle className="h-3.5 w-3.5" /> },
+        { value: 'all', label: translate('All'), list: announcements, icon: <Megaphone className="h-3.5 w-3.5" /> },
+        { value: 'featured', label: translate('Featured'), list: featured, icon: <Star className="h-3.5 w-3.5" /> },
+        { value: 'upcoming', label: translate('Upcoming'), list: upcoming, icon: <Clock className="h-3.5 w-3.5" /> },
+        { value: 'expired', label: translate('Expired'), list: expired, icon: <XCircle className="h-3.5 w-3.5" /> },
     ];
 
     const displayed = tabData.find((tab) => tab.value === activeTab)?.list ?? announcements;
@@ -67,18 +67,18 @@ export default function AnnouncementDashboard() {
 
     return (
         <PageTemplate
-            title={t('Announcement Dashboard')}
-            description={t('Organization-wide announcements and notices')}
+            title={translate('Announcement Dashboard')}
+            description={translate('Organization-wide announcements and notices')}
             actions={[
                 ...(useHasPermission('manage-announcements')
                     ? [
                           {
-                              label: t('List View'),
+                              label: translate('List View'),
                               icon: <List className="me-0 h-4 w-4 min-[400px]:me-2" />,
                               variant: 'outline',
                               className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
                               labelClassName: 'hidden min-[400px]:inline',
-                              tooltip: t('List View'),
+                              tooltip: translate('List View'),
                               tooltipClassName: 'min-[400px]:hidden',
                               onClick: () => router.get(route('announcements.index')),
                           },
@@ -86,9 +86,9 @@ export default function AnnouncementDashboard() {
                     : []),
             ]}
             breadcrumbs={[
-                { title: t('Dashboard'), href: route('dashboard') },
-                { title: t('Announcements'), href: route('announcements.index') },
-                { title: t('Dashboard') },
+                { title: translate('Dashboard'), href: route('dashboard') },
+                { title: translate('Announcements'), href: route('announcements.index') },
+                { title: translate('Dashboard') },
             ]}
             noPadding
         >
@@ -128,7 +128,7 @@ export default function AnnouncementDashboard() {
                                 {sorted.length === 0 ? (
                                     <div className="flex flex-col items-center py-14 text-center">
                                         <Megaphone className="mb-2 h-10 w-10 text-gray-200 dark:text-gray-700" />
-                                        <p className="text-muted-foreground text-sm">{t('No announcements')}</p>
+                                        <p className="text-muted-foreground text-sm">{translate('No announcements')}</p>
                                     </div>
                                 ) : (
                                     sorted.map((a: any) => (
@@ -148,7 +148,7 @@ export default function AnnouncementDashboard() {
                                                         {a.is_featured && (
                                                             <span className="inline-flex items-center gap-0.5 rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700 ring-1 ring-yellow-600/20 ring-inset">
                                                                 <Star className="h-3 w-3 fill-yellow-500 text-yellow-500" />
-                                                                {t('Featured')}
+                                                                {translate('Featured')}
                                                             </span>
                                                         )}
                                                         {a.category?.name && (
@@ -169,7 +169,7 @@ export default function AnnouncementDashboard() {
                                                                         <Eye className="h-4 w-4" />
                                                                     </button>
                                                                 </TooltipTrigger>
-                                                                <TooltipContent>{t('View')}</TooltipContent>
+                                                                <TooltipContent>{translate('View')}</TooltipContent>
                                                             </Tooltip>
                                                         </TooltipProvider>
                                                     )}
@@ -228,15 +228,15 @@ export default function AnnouncementDashboard() {
                     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                         <div className="flex items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-gray-700">
                             <BarChart2 className="text-muted-foreground h-4 w-4" />
-                            <span className="text-sm font-semibold">{t('Overview')}</span>
+                            <span className="text-sm font-semibold">{translate('Overview')}</span>
                         </div>
                         <div className="space-y-3 p-4">
                             {[
-                                { label: t('Total'), count: announcements.length, color: 'bg-blue-500' },
-                                { label: t('Active'), count: active.length, color: 'bg-green-500' },
-                                { label: t('Featured'), count: featured.length, color: 'bg-yellow-500' },
-                                { label: t('Upcoming'), count: upcoming.length, color: 'bg-purple-500' },
-                                { label: t('Expired'), count: expired.length, color: 'bg-gray-400' },
+                                { label: translate('Total'), count: announcements.length, color: 'bg-blue-500' },
+                                { label: translate('Active'), count: active.length, color: 'bg-green-500' },
+                                { label: translate('Featured'), count: featured.length, color: 'bg-yellow-500' },
+                                { label: translate('Upcoming'), count: upcoming.length, color: 'bg-purple-500' },
+                                { label: translate('Expired'), count: expired.length, color: 'bg-gray-400' },
                             ].map((s) => (
                                 <div key={s.label} className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
@@ -254,7 +254,7 @@ export default function AnnouncementDashboard() {
                         <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                             <div className="flex items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-gray-700">
                                 <TrendingUp className="text-muted-foreground h-4 w-4" />
-                                <span className="text-sm font-semibold">{t('By Category')}</span>
+                                <span className="text-sm font-semibold">{translate('By Category')}</span>
                             </div>
                             <div className="overflow-y-auto" style={{ maxHeight: categoryBreakdown.length > 5 ? '205px' : 'none' }}>
                                 <div className="space-y-2.5 px-4 pt-4 pb-3">

@@ -144,7 +144,7 @@ const colors = [
 ];
 
 export default function InvoiceTemplateSettings() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { settings } = usePage().props;
 
     const [saving, setSaving] = useState(false);
@@ -266,12 +266,12 @@ export default function InvoiceTemplateSettings() {
 
     return (
         <SettingsSection
-            title={t('Invoice Templates')}
-            description={t('Configure invoice template, colors, and display options')}
+            title={translate('Invoice Templates')}
+            description={translate('Configure invoice template, colors, and display options')}
             action={
                 <Button type="submit" disabled={saving} form="invoice-template-settings-form" size="sm" className="max-[1300px]:px-2.5">
                     <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                    <span className="max-[1300px]:hidden">{saving ? t('Saving...') : t('Save Changes')}</span>
+                    <span className="max-[1300px]:hidden">{saving ? translate('Saving...') : translate('Save Changes')}</span>
                 </Button>
             }
         >
@@ -281,10 +281,10 @@ export default function InvoiceTemplateSettings() {
                         <div className="grid grid-cols-1 gap-6 min-[1300px]:grid-cols-[320px_1fr] min-[1300px]:items-start">
                             <div ref={settingsRef} className="space-y-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="invoice_template">{t('Invoice Template')}</Label>
+                                    <Label htmlFor="invoice_template">{translate('Invoice Template')}</Label>
                                     <Select value={data.invoiceTemplate} onValueChange={(value) => setData('invoiceTemplate', value)}>
                                         <SelectTrigger>
-                                            <SelectValue placeholder={t('Select template')} />
+                                            <SelectValue placeholder={translate('Select template')} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {Object.entries(templates).map(([key, name]) => (
@@ -299,7 +299,7 @@ export default function InvoiceTemplateSettings() {
 
                                 <div className="flex items-center justify-between">
                                     <Label htmlFor="invoice_qr_enabled" className="text-sm font-medium">
-                                        {t('QR Display?')}
+                                        {translate('QR Display?')}
                                     </Label>
                                     <Switch
                                         id="invoice_qr_enabled"
@@ -309,7 +309,7 @@ export default function InvoiceTemplateSettings() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label>{t('Color Input')}</Label>
+                                    <Label>{translate('Color Input')}</Label>
                                     <div className="grid w-50 grid-cols-6 gap-1">
                                         {colors.map((color) => (
                                             <label key={color} className="cursor-pointer">
@@ -333,22 +333,22 @@ export default function InvoiceTemplateSettings() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="invoiceLogo">{t('Invoice Logo')}</Label>
+                                    <Label htmlFor="invoiceLogo">{translate('Invoice Logo')}</Label>
                                     <MediaPicker
                                         label=""
                                         value={data.invoiceLogoId || ''}
                                         onChange={handleLogoSelect}
-                                        placeholder={t('Select invoice logo...')}
+                                        placeholder={translate('Select invoice logo...')}
                                         showPreview={true}
                                         returnType="id"
                                     />
                                     {errors.invoiceLogo && <p className="text-sm text-red-600">{errors.invoiceLogo}</p>}
-                                    <p className="text-xs text-gray-500">{t('Select a logo for invoices')}</p>
+                                    <p className="text-xs text-gray-500">{translate('Select a logo for invoices')}</p>
                                 </div>
                             </div>
 
                             <div className="space-y-2">
-                                <Label>{t('Preview')}</Label>
+                                <Label>{translate('Preview')}</Label>
                                 <div
                                     className="overflow-x-auto overflow-y-auto rounded-lg border bg-white lg:sticky lg:top-6"
                                     style={{ height: settingsHeight - 25 || 'auto' }}

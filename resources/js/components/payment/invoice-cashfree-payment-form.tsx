@@ -26,18 +26,18 @@ export function InvoiceCashfreePaymentForm({
     onSuccess,
     onCancel,
 }: InvoiceCashfreePaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
 
     useEffect(() => {
         if (window && (window as any).Cashfree) {
             return;
         }
 
-        const script = document.createElement('script');
+        const script = document.createElementranslate('script');
         script.src = 'https://sdk.cashfree.com/js/v3/cashfree.js';
         script.async = true;
         script.onerror = () => {
-            toast.error(t('Failed to load Cashfree SDK. Please try again.'));
+            toast.error(translate('Failed to load Cashfree SDK. Please try again.'));
         };
         document.body.appendChild(script);
 
@@ -65,17 +65,17 @@ export function InvoiceCashfreePaymentForm({
             const { payment_session_id, order_id, amount: orderAmount, mode: serverMode } = response.data;
 
             if (!payment_session_id || !order_id) {
-                toast.error(t('Invalid response from server'));
+                toast.error(translate('Invalid response from server'));
                 return;
             }
 
             if (!serverMode) {
-                toast.error(t('Payment mode not configured'));
+                toast.error(translate('Payment mode not configured'));
                 return;
             }
 
             if (!(window as any).Cashfree) {
-                toast.error(t('Cashfree SDK not loaded'));
+                toast.error(translate('Cashfree SDK not loaded'));
                 return;
             }
 
@@ -108,7 +108,7 @@ export function InvoiceCashfreePaymentForm({
                 .checkout(checkoutOptions)
                 .then((result: any) => {
                     if (result.error) {
-                        toast.error(result.error.message || t('Payment failed'));
+                        toast.error(result.error.message || translate('Payment failed'));
                         return;
                     }
 
@@ -122,36 +122,36 @@ export function InvoiceCashfreePaymentForm({
                                 _token: document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
                             })
                             .then((response) => {
-                                toast.success(t('Payment successful'));
+                                toast.success(translate('Payment successful'));
                                 onSuccess();
                             })
                             .catch((error) => {
-                                const errorMsg = error.response?.data?.error || t('Payment verification failed');
+                                const errorMsg = error.response?.data?.error || translate('Payment verification failed');
                                 toast.error(errorMsg);
                             });
                     } else {
-                        toast.error(t('Payment status unclear'));
+                        toast.error(translate('Payment status unclear'));
                     }
                 })
                 .catch((error: any) => {
-                    toast.error(error.message || t('Payment initialization failed'));
+                    toast.error(error.message || translate('Payment initialization failed'));
                 });
         } catch (error: any) {
-            const errorMsg = error.response?.data?.error || t('Failed to initialize payment');
+            const errorMsg = error.response?.data?.error || translate('Failed to initialize payment');
             toast.error(errorMsg);
         }
     };
 
     return (
         <div className="space-y-4">
-            <p className="text-muted-foreground text-sm">{t('You will be redirected to Cashfree to complete your payment.')}</p>
+            <p className="text-muted-foreground text-sm">{translate('You will be redirected to Cashfree to complete your payment.')}</p>
 
             <div className="flex gap-3">
                 <Button variant="outline" onClick={onCancel} className="flex-1">
-                    {t('Cancel')}
+                    {translate('Cancel')}
                 </Button>
                 <Button onClick={handlePayment} className="flex-1">
-                    {t('Pay with Cashfree')}
+                    {translate('Pay with Cashfree')}
                 </Button>
             </div>
         </div>

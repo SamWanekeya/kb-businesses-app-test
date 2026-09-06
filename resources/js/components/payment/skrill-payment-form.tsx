@@ -29,7 +29,7 @@ export function SkrillPaymentForm({
     onSuccess,
     onCancel,
 }: SkrillPaymentFormProps) {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const [isProcessing, setIsProcessing] = useState(false);
     const [email, setEmail] = useState('');
 
@@ -37,7 +37,7 @@ export function SkrillPaymentForm({
         e.preventDefault();
 
         if (!email) {
-            toast.error(t('Please enter your email address'));
+            toast.error(translate('Please enter your email address'));
             return;
         }
 
@@ -56,18 +56,18 @@ export function SkrillPaymentForm({
 
             router.post(route('skrill.payment'), paymentData, {
                 onSuccess: () => {
-                    toast.success(t('Payment successful!'));
+                    toast.success(translate('Payment successful!'));
                     onSuccess();
                 },
                 onError: (errors) => {
-                    toast.error(t('Payment failed. Please try again.'));
+                    toast.error(translate('Payment failed. Please try again.'));
                 },
                 onFinish: () => {
                     setIsProcessing(false);
                 },
             });
         } catch (error) {
-            toast.error(t('Payment failed. Please try again.'));
+            toast.error(translate('Payment failed. Please try again.'));
             setIsProcessing(false);
         }
     };
@@ -77,36 +77,36 @@ export function SkrillPaymentForm({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <Wallet className="h-5 w-5" />
-                    {t('Skrill Payment')}
+                    {translate('Skrill Payment')}
                 </CardTitle>
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-2">
-                        <Label htmlFor="email">{t('Email Address')}</Label>
+                        <Label htmlFor="email">{translate('Email Address')}</Label>
                         <Input
                             id="email"
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            placeholder={t('Enter your email address')}
+                            placeholder={translate('Enter your email address')}
                             required
                         />
-                        <p className="text-muted-foreground text-xs">{t('You will be redirected to Skrill to complete the payment')}</p>
+                        <p className="text-muted-foreground text-xs">{translate('You will be redirected to Skrill to complete the payment')}</p>
                     </div>
 
                     <div className="flex gap-3 pt-4">
                         <Button type="button" variant="outline" onClick={onCancel} className="flex-1">
-                            {t('Cancel')}
+                            {translate('Cancel')}
                         </Button>
                         <Button type="submit" disabled={isProcessing} className="flex-1">
                             {isProcessing ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    {t('Processing...')}
+                                    {translate('Processing...')}
                                 </>
                             ) : (
-                                t('Pay {{amount}}', { amount: `${currency} ${planPrice}` })
+                                translate('Pay {{amount}}', { amount: `${currency} ${planPrice}` })
                             )}
                         </Button>
                     </div>

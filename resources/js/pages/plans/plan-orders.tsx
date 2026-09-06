@@ -17,7 +17,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function PlanOrdersPage() {
-    const { t } = useTranslation();
+    const { t: translate } = useTranslation();
     const { planOrders, filters: pageFilters = {}, auth, globalSettings } = usePage().props;
     const permissions = auth?.permissions || [];
 
@@ -83,7 +83,7 @@ export default function PlanOrdersPage() {
     const handleAction = (action: string, item: any) => {
         if (action === 'approve') {
             if (!globalSettings?.is_demo) {
-                toast.loading(t('Approving plan order...'));
+                toast.loading(translate('Approving plan order...'));
             }
 
             router.post(
@@ -107,7 +107,7 @@ export default function PlanOrdersPage() {
                         if (typeof errors === 'string') {
                             toast.error(t(errors));
                         } else {
-                            toast.error(t('Failed to approve plan order: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                            toast.error(translate('Failed to approve plan order: {{errors}}', { errors: Object.values(errors).join(', ') }));
                         }
                     },
                 },
@@ -123,7 +123,7 @@ export default function PlanOrdersPage() {
 
     const handleRejectConfirm = (notes: string) => {
         if (!globalSettings?.is_demo) {
-            toast.loading(t('Rejecting plan order...'));
+            toast.loading(translate('Rejecting plan order...'));
         }
 
         router.post(
@@ -148,7 +148,7 @@ export default function PlanOrdersPage() {
                     if (typeof errors === 'string') {
                         toast.error(t(errors));
                     } else {
-                        toast.error(t('Failed to reject plan order: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                        toast.error(translate('Failed to reject plan order: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
                 },
             },
@@ -173,9 +173,9 @@ export default function PlanOrdersPage() {
     };
 
     const breadcrumbs = [
-        { title: t('Dashboard'), href: route('dashboard') },
-        { title: t('Plans'), href: route('plans.index') },
-        { title: t('Plan Orders') },
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Plans'), href: route('plans.index') },
+        { title: translate('Plan Orders') },
     ];
 
     // Define table columns
@@ -189,13 +189,13 @@ export default function PlanOrdersPage() {
     const columns = [
         {
             key: 'order_number',
-            label: t('Order Number'),
+            label: translate('Order Number'),
             className: 'whitespace-nowrap',
             render: (value) => <span className="whitespace-nowrap">{value || '-'}</span>,
         },
         {
             key: 'user.name',
-            label: t('Ordered By'),
+            label: translate('Ordered By'),
             className: 'whitespace-nowrap',
             render: (_, row) => {
                 const avatarUrl = row.user?.avatar ? getDisplayUrl(row.user.avatar) : getDisplayUrl('avatars/avatar.png');
@@ -215,7 +215,7 @@ export default function PlanOrdersPage() {
         },
         {
             key: 'plan.name',
-            label: t('Plan'),
+            label: translate('Plan'),
             className: 'whitespace-nowrap',
             render: (_, row) => {
                 const planName = row.plan?.name;
@@ -229,13 +229,13 @@ export default function PlanOrdersPage() {
         },
         {
             key: 'original_price',
-            label: t('Original Price'),
+            label: translate('Original Price'),
             className: 'whitespace-nowrap',
             render: (value) => <span className="font-mono whitespace-nowrap">{window.appSettings.formatCurrency(value) || '0'}</span>,
         },
         {
             key: 'discount_amount',
-            label: t('Discount'),
+            label: translate('Discount'),
             className: 'whitespace-nowrap',
             render: (value) => (
                 <span className="font-mono whitespace-nowrap">{value > 0 ? `-${window.appSettings.formatCurrency(value)}` : '-'}</span>
@@ -243,14 +243,14 @@ export default function PlanOrdersPage() {
         },
         {
             key: 'final_price',
-            label: t('Final Price'),
+            label: translate('Final Price'),
             sortable: true,
             className: 'whitespace-nowrap',
             render: (value) => <span className="font-mono whitespace-nowrap">{window.appSettings.formatCurrency(value) || '0'}</span>,
         },
         {
             key: 'status',
-            label: t('Status'),
+            label: translate('Status'),
             className: 'whitespace-nowrap',
             render: (value) => (
                 <span
@@ -262,7 +262,7 @@ export default function PlanOrdersPage() {
         },
         {
             key: 'receipt_path',
-            label: t('Receipt'),
+            label: translate('Receipt'),
             className: 'whitespace-nowrap',
             render: (value) =>
                 value ? (
@@ -271,7 +271,7 @@ export default function PlanOrdersPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        title={t('View Receipt')}
+                        title={translate('View Receipt')}
                     >
                         <FileText className="h-4 w-4 text-green-600 hover:text-green-800" />
                     </a>
@@ -281,7 +281,7 @@ export default function PlanOrdersPage() {
         },
         {
             key: 'ordered_at',
-            label: t('Order Date'),
+            label: translate('Order Date'),
             sortable: true,
             className: 'whitespace-nowrap',
             type: 'date',
@@ -294,7 +294,7 @@ export default function PlanOrdersPage() {
     const actions = isSuperAdmin
         ? [
               {
-                  label: t('View'),
+                  label: translate('View'),
                   icon: 'Eye',
                   action: 'view',
                   className: 'text-blue-500',
@@ -302,7 +302,7 @@ export default function PlanOrdersPage() {
                   // condition: (row) => row.payment_method === 'bank'
               },
               {
-                  label: t('Approve'),
+                  label: translate('Approve'),
                   icon: 'Check',
                   action: 'approve',
                   className: 'text-green-500',
@@ -310,7 +310,7 @@ export default function PlanOrdersPage() {
                   condition: (row) => row.status === 'pending',
               },
               {
-                  label: t('Reject'),
+                  label: translate('Reject'),
                   icon: 'X',
                   action: 'reject',
                   className: 'text-red-500',
@@ -322,19 +322,19 @@ export default function PlanOrdersPage() {
 
     // Prepare status options for filter
     const statusOptions = [
-        { value: 'all', label: t('All Status') },
-        { value: 'pending', label: t('Pending') },
-        { value: 'approved', label: t('Approved') },
-        { value: 'rejected', label: t('Rejected') },
-        { value: 'completed', label: t('Completed') },
+        { value: 'all', label: translate('All Status') },
+        { value: 'pending', label: translate('Pending') },
+        { value: 'approved', label: translate('Approved') },
+        { value: 'rejected', label: translate('Rejected') },
+        { value: 'completed', label: translate('Completed') },
     ];
 
     return (
         <PageTemplate
-            title={t('Plan Orders')}
+            title={translate('Plan Orders')}
             url="/plan-orders"
             breadcrumbs={breadcrumbs}
-            description={isSuperAdmin ? t('View and manage all plan orders from organizations.') : t('View your plan orders.')}
+            description={isSuperAdmin ? translate('View and manage all plan orders from organizations.') : translate('View your plan orders.')}
             noPadding
         >
             {/* Search and filters section */}
@@ -346,7 +346,7 @@ export default function PlanOrdersPage() {
                     filters={[
                         {
                             name: 'status',
-                            label: t('Status'),
+                            label: translate('Status'),
                             type: 'select',
                             value: selectedStatus,
                             onChange: setSelectedStatus,
@@ -354,14 +354,14 @@ export default function PlanOrdersPage() {
                         },
                         {
                             name: 'date_from',
-                            label: t('Date From'),
+                            label: translate('Date From'),
                             type: 'date',
                             value: dateFrom,
                             onChange: setDateFrom,
                         },
                         {
                             name: 'date_to',
-                            label: t('Date To'),
+                            label: translate('Date To'),
                             type: 'date',
                             value: dateTo,
                             onChange: setDateTo,
@@ -395,7 +395,7 @@ export default function PlanOrdersPage() {
                     to={planOrders?.to || 0}
                     total={planOrders?.total || 0}
                     links={planOrders?.links}
-                    entityName={t('plan orders')}
+                    entityName={translate('plan orders')}
                     onPageChange={(url) => router.get(url)}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
@@ -424,7 +424,7 @@ export default function PlanOrdersPage() {
                             <div className="bg-primary/10 rounded-lg p-2">
                                 <ShoppingCart className="text-primary h-5 w-5" />
                             </div>
-                            <DialogTitle className="text-xl font-semibold">{t('Plan Order Details')}</DialogTitle>
+                            <DialogTitle className="text-xl font-semibold">{translate('Plan Order Details')}</DialogTitle>
                         </div>
                     </DialogHeader>
 
@@ -435,14 +435,14 @@ export default function PlanOrdersPage() {
                                 <div>
                                     <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         <ShoppingCart className="h-4 w-4" />
-                                        {t('Order Number')}
+                                        {translate('Order Number')}
                                     </label>
                                     <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{currentItem.order_number || '-'}</p>
                                 </div>
                                 <div>
                                     <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         <Calendar className="h-4 w-4" />
-                                        {t('Order Date')}
+                                        {translate('Order Date')}
                                     </label>
                                     <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">
                                         {window.appSettings?.formatDateTime(currentItem.ordered_at, false) || '-'}
@@ -455,7 +455,7 @@ export default function PlanOrdersPage() {
                                 <div>
                                     <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         <CheckCircle className="h-4 w-4" />
-                                        {t('Status')}
+                                        {translate('Status')}
                                     </label>
                                     <div className="mt-1">
                                         <span
@@ -468,7 +468,7 @@ export default function PlanOrdersPage() {
                                 <div>
                                     <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         <CreditCard className="h-4 w-4" />
-                                        {t('Payment Method')}
+                                        {translate('Payment Method')}
                                     </label>
                                     <p className="mt-1 text-sm font-medium text-gray-900 capitalize dark:text-white">
                                         {currentItem.payment_method || '-'}
@@ -481,7 +481,7 @@ export default function PlanOrdersPage() {
                                 <div>
                                     <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         <User className="h-4 w-4" />
-                                        {t('User')}
+                                        {translate('User')}
                                     </label>
                                     <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{currentItem.user?.name || '-'}</p>
                                     <p className="text-muted-foreground text-xs">{currentItem.user?.email || ''}</p>
@@ -489,7 +489,7 @@ export default function PlanOrdersPage() {
                                 <div>
                                     <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         <Tag className="h-4 w-4" />
-                                        {t('Plan')}
+                                        {translate('Plan')}
                                     </label>
                                     <div className="mt-1">
                                         <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset dark:bg-blue-900/30 dark:text-blue-300">
@@ -505,7 +505,7 @@ export default function PlanOrdersPage() {
                                 <div>
                                     <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         <CreditCard className="h-4 w-4" />
-                                        {t('Original Price')}
+                                        {translate('Original Price')}
                                     </label>
                                     <p className="mt-1 font-mono text-sm font-medium text-gray-900 dark:text-white">
                                         {window.appSettings.formatCurrency(currentItem.original_price)}
@@ -514,7 +514,7 @@ export default function PlanOrdersPage() {
                                 <div>
                                     <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         <Tag className="h-4 w-4" />
-                                        {t('Discount')}
+                                        {translate('Discount')}
                                     </label>
                                     <p className="mt-1 font-mono text-sm font-medium text-gray-900 dark:text-white">
                                         {currentItem.discount_amount > 0 ? `-${window.appSettings.formatCurrency(currentItem.discount_amount)}` : '-'}
@@ -527,7 +527,7 @@ export default function PlanOrdersPage() {
                                 <div>
                                     <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         <CreditCard className="h-4 w-4" />
-                                        {t('Final Price')}
+                                        {translate('Final Price')}
                                     </label>
                                     <p className="mt-1 font-mono text-sm font-medium text-gray-900 dark:text-white">
                                         {window.appSettings.formatCurrency(currentItem.final_price)}
@@ -537,14 +537,14 @@ export default function PlanOrdersPage() {
                                     <div>
                                         <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                             <Download className="h-4 w-4" />
-                                            {t('Payment Receipt')}
+                                            {translate('Payment Receipt')}
                                         </label>
                                         <div className="mt-1">
                                             <Button
                                                 size={'sm'}
                                                 varient={'primary'}
                                                 onClick={() => {
-                                                    const link = document.createElement('a');
+                                                    const link = document.createElementranslate('a');
                                                     link.href = getDisplayUrl(currentItem.receipt_path);
                                                     link.download = '';
                                                     document.body.appendChild(link);
@@ -552,7 +552,7 @@ export default function PlanOrdersPage() {
                                                     document.body.removeChild(link);
                                                 }}
                                             >
-                                                {t('Download Receipt')}
+                                                {translate('Download Receipt')}
                                             </Button>
                                         </div>
                                     </div>
@@ -565,7 +565,7 @@ export default function PlanOrdersPage() {
                                         <div>
                                             <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                                 <UserCheck className="h-4 w-4" />
-                                                {t('Processed By')}
+                                                {translate('Processed By')}
                                             </label>
                                             <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{currentItem.processedBy.name}</p>
                                         </div>
@@ -574,7 +574,7 @@ export default function PlanOrdersPage() {
                                         <div>
                                             <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                                 <FileText className="h-4 w-4" />
-                                                {t('Notes')}
+                                                {translate('Notes')}
                                             </label>
                                             <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">{currentItem.notes}</p>
                                         </div>
@@ -590,28 +590,28 @@ export default function PlanOrdersPage() {
             <Dialog open={isRejectModalOpen} onOpenChange={setIsRejectModalOpen}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>{t('Reject Plan Order')}</DialogTitle>
+                        <DialogTitle>{translate('Reject Plan Order')}</DialogTitle>
                     </DialogHeader>
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
                             const formData = new FormData(e.currentTarget);
-                            const notes = formData.get('notes') as string;
+                            const notes = formData.getranslate('notes') as string;
                             handleRejectConfirm(notes);
                         }}
                     >
                         <div className="space-y-4">
                             <div>
-                                <Label htmlFor="notes">{t('Rejection Reason (Optional)')}</Label>
-                                <Textarea id="notes" name="notes" placeholder={t('Enter rejection reason...')} className="mt-1" />
+                                <Label htmlFor="notes">{translate('Rejection Reason (Optional)')}</Label>
+                                <Textarea id="notes" name="notes" placeholder={translate('Enter rejection reason...')} className="mt-1" />
                             </div>
                         </div>
                         <DialogFooter className="mt-6">
                             <Button type="button" variant="outline" onClick={() => setIsRejectModalOpen(false)}>
-                                {t('Cancel')}
+                                {translate('Cancel')}
                             </Button>
                             <Button type="submit" variant="destructive">
-                                {t('Reject')}
+                                {translate('Reject')}
                             </Button>
                         </DialogFooter>
                     </form>
