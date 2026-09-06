@@ -137,7 +137,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                     <span
                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium capitalize ring-1 ring-inset ${statusColors[value] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}
                     >
-                        {t(value)}
+                        {translate(value)}
                     </span>
                 );
             },
@@ -234,7 +234,9 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                     <CardContent>
                         <p className="text-muted-foreground text-sm">
                             {stats.availableBalance < settings.threshold_amount
-                                ? translate('You need at least {{amount}} to request a payout', { amount: `${currencySymbol}${settings.threshold_amount}` })
+                                ? translate('You need at least {{amount}} to request a payout', {
+                                      amount: `${currencySymbol}${settings.threshold_amount}`,
+                                  })
                                 : translate('You can request up to {{amount}} for payout', { amount: `${currencySymbol}${stats.availableBalance}` })}
                         </p>
                     </CardContent>

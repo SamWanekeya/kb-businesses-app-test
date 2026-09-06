@@ -4,13 +4,13 @@ import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { usePage } from '@inertiajs/react';
-import { BarChart3, DollarSign, Settings as SettingsIcon, Users } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import PayoutRequests from '@pages/referral/components/payout-requests';
 import ReferralDashboard from '@pages/referral/components/referral-dashboard';
 import ReferralSettings from '@pages/referral/components/referral-settings';
 import ReferredUsersSection from '@pages/referral/components/referred-users-section';
+import { BarChart3, DollarSign, Settings as SettingsIcon, Users } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function Referral() {
     const { t: translate } = useTranslation();
@@ -111,7 +111,12 @@ export default function Referral() {
     };
 
     return (
-        <PageTemplate breadcrumbs={breadcrumbs} title={translate('Referral Program')} url="/referral" description={translate('Manage your referral program.')}>
+        <PageTemplate
+            breadcrumbs={breadcrumbs}
+            title={translate('Referral Program')}
+            url="/referral"
+            description={translate('Manage your referral program.')}
+        >
             <style>{`
         @media (min-width: 1280px) {
           [data-slot="sidebar-inset"] {

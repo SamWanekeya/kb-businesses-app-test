@@ -205,7 +205,11 @@ export default function Brands() {
     const canDelete = useHasPermission('delete-brands');
     const canToggleStatus = useHasPermission('toggle-status-brands');
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Product Setup') }, { title: translate('Brands') }];
+    const breadcrumbs = [
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Product Setup') },
+        { title: translate('Brands') },
+    ];
 
     return (
         <PageTemplate
@@ -224,7 +228,9 @@ export default function Brands() {
                                 {formMode === 'create' ? translate('Add New Brand') : translate('Edit Brand')}
                             </h2>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                {formMode === 'create' ? translate('Fill in the details to create a new brand') : translate('Update the brand details below')}
+                                {formMode === 'create'
+                                    ? translate('Fill in the details to create a new brand')
+                                    : translate('Update the brand details below')}
                             </p>
                         </div>
                         <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
@@ -488,7 +494,9 @@ export default function Brands() {
                                                                             </Button>
                                                                         </TooltipTrigger>
                                                                         <TooltipContent>
-                                                                            {item.status === 'active' ? translate('Deactivate') : translate('Activate')}
+                                                                            {item.status === 'active'
+                                                                                ? translate('Deactivate')
+                                                                                : translate('Activate')}
                                                                         </TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>

@@ -16,7 +16,7 @@ export function ChatGptButton({ onClick, text = 'Auto Generate', variant = 'outl
     return (
         <Button type="button" variant={variant} size={size} onClick={onClick} className={`flex items-center gap-2 ${className}`}>
             <Brain className="h-4 w-4" />
-            {t(text)}
+            {translate(text)}
         </Button>
     );
 }

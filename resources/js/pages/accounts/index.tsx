@@ -211,7 +211,10 @@ export default function Accounts() {
             variant: isDisabled ? 'outline' : 'default',
             disabled: isDisabled,
             onClick: isDisabled
-                ? () => toast.error(translate('Account limit reached. Your plan allows maximum {{max}} accounts.', { max: planLimits.maximum_accounts }))
+                ? () =>
+                      toast.error(
+                          translate('Account limit reached. Your plan allows maximum {{max}} accounts.', { max: planLimits.maximum_accounts }),
+                      )
                 : () => router.visit(route('accounts.create')),
             className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
             labelClassName: 'hidden min-[400px]:inline',
@@ -562,7 +565,9 @@ export default function Accounts() {
                                             <h3 className="truncate text-sm font-semibold text-gray-900 dark:text-white">{account.name}</h3>
                                             <div className="mt-0.5 mb-1.5 flex items-center gap-1.5">
                                                 <Mail className="h-3 w-3 shrink-0 text-gray-500" />
-                                                <p className="truncate text-xs text-gray-600 dark:text-gray-400">{account.email || translate('No email')}</p>
+                                                <p className="truncate text-xs text-gray-600 dark:text-gray-400">
+                                                    {account.email || translate('No email')}
+                                                </p>
                                             </div>
                                             <span
                                                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${

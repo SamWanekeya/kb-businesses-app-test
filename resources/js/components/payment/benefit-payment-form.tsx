@@ -98,7 +98,7 @@ export function BenefitPaymentForm({
                         <span className="text-lg font-bold">{formatPrice(planPrice)}</span>
                     </div>
                     <div className="text-muted-foreground mt-1 text-sm">
-                        {translate('Billing Cycle')}: {t(billingCycle)}
+                        {translate('Billing Cycle')}: {translate(billingCycle)}
                     </div>
                     {couponCode && (
                         <div className="mt-1 text-sm text-green-600">
@@ -110,7 +110,9 @@ export function BenefitPaymentForm({
                 <Alert>
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription>
-                        {translate('You will be redirected to Benefit to complete your payment securely. Benefit is the leading payment gateway in Bahrain.')}
+                        {translate(
+                            'You will be redirected to Benefit to complete your payment securely. Benefit is the leading payment gateway in Bahrain.',
+                        )}
                     </AlertDescription>
                 </Alert>
 
@@ -143,7 +145,7 @@ export function BenefitPaymentForm({
                     </Button>
                 </div>
 
-                <div className="text-muted-foreground text-center text-xs">{t("Powered by Benefit - Bahrain's trusted payment gateway")}</div>
+                <div className="text-muted-foreground text-center text-xs">{translate("Powered by Benefit - Bahrain's trusted payment gateway")}</div>
             </CardContent>
         </Card>
     );

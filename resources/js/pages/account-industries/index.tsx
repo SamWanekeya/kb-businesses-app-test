@@ -219,7 +219,11 @@ export default function AccountIndustries() {
     const canDelete = useHasPermission('delete-account-industries');
     const canToggleStatus = useHasPermission('toggle-status-account-industries');
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Account Management') }, { title: translate('Account Industries') }];
+    const breadcrumbs = [
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Account Management') },
+        { title: translate('Account Industries') },
+    ];
 
     return (
         <PageTemplate
@@ -509,7 +513,9 @@ export default function AccountIndustries() {
                                                                             </Button>
                                                                         </TooltipTrigger>
                                                                         <TooltipContent>
-                                                                            {item.status === 'active' ? translate('Deactivate') : translate('Activate')}
+                                                                            {item.status === 'active'
+                                                                                ? translate('Deactivate')
+                                                                                : translate('Activate')}
                                                                         </TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>

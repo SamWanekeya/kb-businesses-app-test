@@ -352,7 +352,9 @@ export default function DocumentFolderView() {
                                 {subFolders.length === 0 && docsList.length === 0 && (
                                     <div className="col-span-full flex flex-col items-center justify-center gap-3" style={{ minHeight: '390px' }}>
                                         <Folder className="h-16 w-16 text-gray-300 dark:text-gray-600" strokeWidth={1} />
-                                        <p className="text-base font-semibold text-gray-500 dark:text-gray-400">{translate('This folder is empty')}</p>
+                                        <p className="text-base font-semibold text-gray-500 dark:text-gray-400">
+                                            {translate('This folder is empty')}
+                                        </p>
                                         <p className="text-sm text-gray-400 dark:text-gray-500">{translate('No subfolders or documents found')}</p>
                                     </div>
                                 )}
@@ -372,8 +374,7 @@ export default function DocumentFolderView() {
                                             </span>
                                         </div>
                                         <div className="absolute top-1.5 right-1.5" onClick={(e) => e.stopPropagation()}>
-                                            {useHasPermission('edit-document-folders') ||
-                                            useHasPermission('delete-document-folders') ? (
+                                            {useHasPermission('edit-document-folders') || useHasPermission('delete-document-folders') ? (
                                                 <DropdownMenu>
                                                     <DropdownMenuTrigger asChild>
                                                         <Button
@@ -397,8 +398,9 @@ export default function DocumentFolderView() {
                                                                 {translate('Edit')}
                                                             </DropdownMenuItem>
                                                         )}
-                                                        {useHasPermission('edit-document-folders') &&
-                                                            useHasPermission('delete-document-folders') && <DropdownMenuSeparator />}
+                                                        {useHasPermission('edit-document-folders') && useHasPermission('delete-document-folders') && (
+                                                            <DropdownMenuSeparator />
+                                                        )}
                                                         {useHasPermission('delete-document-folders') && (
                                                             <DropdownMenuItem
                                                                 className="text-red-600"
@@ -488,8 +490,7 @@ export default function DocumentFolderView() {
                                                                     {translate('Edit')}
                                                                 </DropdownMenuItem>
                                                             )}
-                                                            {(useHasPermission('view-documents') ||
-                                                                useHasPermission('edit-documents')) &&
+                                                            {(useHasPermission('view-documents') || useHasPermission('edit-documents')) &&
                                                                 useHasPermission('delete-documents') && <DropdownMenuSeparator />}
                                                             {useHasPermission('delete-documents') && (
                                                                 <DropdownMenuItem
@@ -584,7 +585,10 @@ export default function DocumentFolderView() {
                         {/* Rows */}
                         <div>
                             <PanelRow label={translate('Name')} value={folder.name} />
-                            <PanelRow label={translate('Parent Folder')} value={folder.parent_folder ? folder.parent_folder.name : translate('Root Folder')} />
+                            <PanelRow
+                                label={translate('Parent Folder')}
+                                value={folder.parent_folder ? folder.parent_folder.name : translate('Root Folder')}
+                            />
                             <PanelRow
                                 label={translate('Created')}
                                 value={
@@ -619,7 +623,13 @@ export default function DocumentFolderView() {
                 onSubmit={handleDocFormSubmit}
                 formConfig={{
                     fields: [
-                        { name: 'name', label: translate('Document Name'), type: 'text', required: true, placeholder: translate('e.g. Q1 Sales Contract') },
+                        {
+                            name: 'name',
+                            label: translate('Document Name'),
+                            type: 'text',
+                            required: true,
+                            placeholder: translate('e.g. Q1 Sales Contract'),
+                        },
                         {
                             name: 'account_id',
                             label: translate('Account'),
@@ -675,7 +685,12 @@ export default function DocumentFolderView() {
                             emptyNote: { link: route('users.index'), linkText: translate('Users') },
                             options: users.map((u: any) => ({ value: u.id, label: `${u.name} (${u.email})` })),
                         },
-                        { name: 'description', label: translate('Description'), type: 'textarea', placeholder: translate('Enter document description...') },
+                        {
+                            name: 'description',
+                            label: translate('Description'),
+                            type: 'textarea',
+                            placeholder: translate('Enter document description...'),
+                        },
                         {
                             name: 'status',
                             label: translate('Status'),

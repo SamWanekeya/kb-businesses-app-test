@@ -191,7 +191,7 @@ export function AuthorizeNetPaymentForm({
                         <span className="text-lg font-bold">{formatPrice(planPrice)}</span>
                     </div>
                     <div className="text-muted-foreground mt-1 text-sm">
-                        {translate('Billing Cycle')}: {t(billingCycle)}
+                        {translate('Billing Cycle')}: {translate(billingCycle)}
                     </div>
                     {couponCode && (
                         <div className="mt-1 text-sm text-green-600">
@@ -289,7 +289,9 @@ export function AuthorizeNetPaymentForm({
                     {isSandbox && (
                         <Alert>
                             <Info className="h-4 w-4" />
-                            <AlertDescription>{translate('Test Mode: This is a sandbox transaction. No real money will be charged.')}</AlertDescription>
+                            <AlertDescription>
+                                {translate('Test Mode: This is a sandbox transaction. No real money will be charged.')}
+                            </AlertDescription>
                         </Alert>
                     )}
 

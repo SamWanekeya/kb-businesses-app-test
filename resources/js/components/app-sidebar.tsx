@@ -4,8 +4,8 @@ import { useBrand } from '@/contexts/BrandContext';
 import { useLayout } from '@/contexts/LayoutContext';
 import { useSidebarSettings } from '@/contexts/SidebarContext';
 import { type NavItem } from '@/types';
+import { resolveImageUrl } from '@/utils/Helpers/Url';
 import { useHasPermission } from '@/utils/Permissions';
-import { getDisplayUrl } from '@/utils/helper';
 import { Link, usePage } from '@inertiajs/react';
 import {
     Activity,
@@ -137,11 +137,7 @@ export function AppSidebar() {
             });
         }
 
-        if (
-            useHasPermission('manage-meetings') ||
-            useHasPermission('manage-calls') ||
-            useHasPermission('manage-project-tasks')
-        ) {
+        if (useHasPermission('manage-meetings') || useHasPermission('manage-calls') || useHasPermission('manage-project-tasks')) {
             items.push({
                 title: translate('Calendar'),
                 href: route('calendar.index'),
@@ -258,11 +254,21 @@ export function AppSidebar() {
         }
 
         if (useHasPermission('manage-delivery-orders')) {
-            items.push({ title: translate('Delivery Orders'), href: route('delivery-orders.index'), icon: Ticket, group: translate('Procurement & Fulfillment') });
+            items.push({
+                title: translate('Delivery Orders'),
+                href: route('delivery-orders.index'),
+                icon: Ticket,
+                group: translate('Procurement & Fulfillment'),
+            });
         }
 
         if (useHasPermission('manage-return-orders')) {
-            items.push({ title: translate('Return Orders'), href: route('return-orders.index'), icon: FileText, group: translate('Procurement & Fulfillment') });
+            items.push({
+                title: translate('Return Orders'),
+                href: route('return-orders.index'),
+                icon: FileText,
+                group: translate('Procurement & Fulfillment'),
+            });
         }
 
         if (useHasPermission('manage-shipping-provider-types')) {
@@ -382,7 +388,12 @@ export function AppSidebar() {
         }
 
         if (useHasPermission('manage-notification-templates')) {
-            items.push({ title: translate('Notification Templates'), href: route('notification-templates.index'), icon: Mail, group: translate('System Control') });
+            items.push({
+                title: translate('Notification Templates'),
+                href: route('notification-templates.index'),
+                icon: Mail,
+                group: translate('System Control'),
+            });
         }
 
         if (useHasPermission('manage-settings')) {
@@ -476,7 +487,7 @@ export function AppSidebar() {
                             {(() => {
                                 const isDark = document.documentElement.classList.contains('dark');
                                 const currentLogo = isDark ? logoLight : logoDark;
-                                const displayUrl = getDisplayUrl(currentLogo) ?? currentLogo;
+                                const displayUrl = resolveImageUrl(currentLogo) ?? currentLogo;
 
                                 return displayUrl ? (
                                     <img
@@ -495,7 +506,7 @@ export function AppSidebar() {
                         {/* Icon for collapsed sidebar */}
                         <div className="hidden h-8 w-8 group-data-[collapsible=icon]:block">
                             {(() => {
-                                const displayFavicon = favicon ? getDisplayUrl(favicon) : '';
+                                const displayFavicon = favicon ? resolveImageUrl(favicon) : '';
 
                                 return displayFavicon ? (
                                     <img

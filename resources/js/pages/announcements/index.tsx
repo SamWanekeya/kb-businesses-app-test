@@ -5,8 +5,8 @@ import { toast } from '@/components/custom-toast';
 import { PageTemplate } from '@/components/page-template';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
+import { formatTitleCase } from '@/utils/Helpers/StringFormatters';
 import { useHasPermission } from '@/utils/Permissions';
-import { capitalize } from '@/utils/helper';
 import { router, usePage } from '@inertiajs/react';
 import { AlertCircle, CheckCircle, Clock, LayoutGrid, PanelsTopLeft, Plus, Tag } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -167,7 +167,9 @@ export default function Announcements() {
 
     const handleToggleStatus = (item: any) => {
         const newStatus = item.is_active ? 'inactive' : 'active';
-        toast.loading(translate('{{action}} announcement...', { action: newStatus === 'active' ? translate('Activating') : translate('Deactivating') }));
+        toast.loading(
+            translate('{{action}} announcement...', { action: newStatus === 'active' ? translate('Activating') : translate('Deactivating') }),
+        );
 
         router.put(
             route('announcements.toggle-status', item.id),
@@ -198,7 +200,7 @@ export default function Announcements() {
             <span
                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.active}`}
             >
-                {capitalize(status) || 'Inactive'}
+                {formatTitleCase(status) || 'Inactive'}
             </span>
         );
     };
@@ -333,7 +335,12 @@ export default function Announcements() {
                         [
                             { value: 'all', label: translate('All'), count: stats.total ?? 0, icon: <LayoutGrid className="h-3.5 w-3.5" /> },
                             { value: 'active', label: translate('Active'), count: stats.active ?? 0, icon: <CheckCircle className="h-3.5 w-3.5" /> },
-                            { value: 'inactive', label: translate('Inactive'), count: stats.inactive ?? 0, icon: <AlertCircle className="h-3.5 w-3.5" /> },
+                            {
+                                value: 'inactive',
+                                label: translate('Inactive'),
+                                count: stats.inactive ?? 0,
+                                icon: <AlertCircle className="h-3.5 w-3.5" />,
+                            },
                             { value: 'expired', label: translate('Expired'), count: stats.expired ?? 0, icon: <Clock className="h-3.5 w-3.5" /> },
                         ] as const
                     ).map((tab) => (
@@ -438,7 +445,13 @@ export default function Announcements() {
                                       }
                                     : undefined,
                         },
-                        { name: 'start_date', label: translate('Start Date'), type: 'date', required: true, placeholder: translate('Select start date') },
+                        {
+                            name: 'start_date',
+                            label: translate('Start Date'),
+                            type: 'date',
+                            required: true,
+                            placeholder: translate('Select start date'),
+                        },
                         { name: 'end_date', label: translate('End Date'), type: 'date', placeholder: translate('Select end date') },
                         {
                             name: 'status',
@@ -456,7 +469,13 @@ export default function Announcements() {
                     modalSize: '2xl',
                 }}
                 initialData={currentItem}
-                title={formMode === 'create' ? translate('Add Announcement') : formMode === 'edit' ? translate('Edit Announcement') : translate('View Announcement')}
+                title={
+                    formMode === 'create'
+                        ? translate('Add Announcement')
+                        : formMode === 'edit'
+                          ? translate('Edit Announcement')
+                          : translate('View Announcement')
+                }
                 mode={formMode}
             />
 

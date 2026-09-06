@@ -226,7 +226,9 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                                     label="Email Content"
                                                     value={templateLangs[language.code]?.content || ''}
                                                     onChange={(content) => handleContentChange(language.code, content)}
-                                                    placeholder={translate('Write your email content here. You can use HTML formatting and variables...')}
+                                                    placeholder={translate(
+                                                        'Write your email content here. You can use HTML formatting and variables...',
+                                                    )}
                                                     className="min-h-[300px]"
                                                 />
                                                 <p className="text-muted-foreground text-xs">

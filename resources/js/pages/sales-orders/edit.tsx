@@ -741,7 +741,9 @@ export default function SalesOrderEdit() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{translate('Tax')}</span>
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">
+                                                        {translate('Tax')}
+                                                    </span>
                                                     {(() => {
                                                         const prod = products?.find((p: any) => String(p.id) === String(line.product_id));
                                                         return (
@@ -754,7 +756,9 @@ export default function SalesOrderEdit() {
                                                     })()}
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-mono font-medium xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{translate('Total')}</span>
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">
+                                                        {translate('Total')}
+                                                    </span>
                                                     <span>{fmt(c.net + c.tax)}</span>
                                                 </td>
                                                 <td className="col-span-1 block w-full border-t px-0 py-0 pt-2 text-right sm:col-span-2 xl:table-cell xl:w-12 xl:border-t-0 xl:px-4 xl:py-3 xl:pt-0 xl:text-left">

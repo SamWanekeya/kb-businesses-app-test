@@ -262,7 +262,7 @@ export default function SalesOrderTemplateSettings() {
 
             if (result.success) {
                 toast.success(result.success);
-                resetranslate('salesOrderLogo');
+                reset('salesOrderLogo');
             } else if (result.error) {
                 toast.error(result.error);
             } else {

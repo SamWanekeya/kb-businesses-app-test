@@ -319,7 +319,9 @@ export default function CouponsPage() {
                     >
                         {value}
                     </button>
-                    {copiedCode === value && <span className="mt-1 ml-3 text-xs font-medium text-red-600 dark:text-red-400">{translate('Copied!')}</span>}
+                    {copiedCode === value && (
+                        <span className="mt-1 ml-3 text-xs font-medium text-red-600 dark:text-red-400">{translate('Copied!')}</span>
+                    )}
                 </div>
             ),
         },

@@ -202,7 +202,7 @@ export default function ReferredUsers() {
                                                                 </Badge>
                                                                 <p className="text-muted-foreground text-sm">
                                                                     {currencySymbol}
-                                                                    {planInfo.price}/{t(planInfo.cycle)}
+                                                                    {planInfo.price}/{translate(planInfo.cycle)}
                                                                 </p>
                                                             </div>
                                                         ) : (

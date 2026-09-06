@@ -44,7 +44,7 @@ export default function ReturnOrderShow() {
             <span
                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status] || statusColors.pending}`}
             >
-                {t(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Pending')}
+                {translate(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Pending')}
             </span>
         );
     };
@@ -152,8 +152,12 @@ export default function ReturnOrderShow() {
                                                     <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
                                                         {translate('Unit Price')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">{translate('Tax')}</TableHead>
-                                                    <TableHead className="py-2.5 text-right font-semibold whitespace-nowrap">{translate('Total')}</TableHead>
+                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
+                                                        {translate('Tax')}
+                                                    </TableHead>
+                                                    <TableHead className="py-2.5 text-right font-semibold whitespace-nowrap">
+                                                        {translate('Total')}
+                                                    </TableHead>
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
@@ -276,7 +280,9 @@ export default function ReturnOrderShow() {
                         <CardContent className="p-0">
                             <div className="max-h-[150px] overflow-y-auto">
                                 <div className="px-5 py-4">
-                                    <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{returnOrder.description || translate('-')}</p>
+                                    <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">
+                                        {returnOrder.description || translate('-')}
+                                    </p>
                                 </div>
                             </div>
                         </CardContent>

@@ -1,5 +1,4 @@
 import { CrudConfig } from '@/types/crud';
-import { useTranslation } from 'react-i18next';
 
 export const organizationPlanOrdersConfig: CrudConfig = {
     entity: {

@@ -11,8 +11,8 @@ import { Label } from '@/components/ui/label';
 import { useBrand } from '@/contexts/BrandContext';
 import { THEME_COLORS } from '@/hooks/use-appearance';
 import AuthLayout from '@/layouts/auth-layout';
-import { isDemoMode } from '@/utils/cookie-utils';
-import { getTermsAndConditionsUrl } from '@/utils/helper';
+import { getCookie } from '@/utils/Helpers/Cookies';
+import { createHafinenExternalUrl } from '@/utils/Helpers/Url';
 import { useTranslation } from 'react-i18next';
 
 type RegisterForm = {
@@ -28,6 +28,7 @@ type RegisterForm = {
 
 export default function Register({ referralCode, planId }: { referralCode?: string; planId?: string }) {
     const { t: translate } = useTranslation();
+    const languageFromCookie = getCookie('__kb_lcl');
     const [recaptchaToken, setRecaptchaToken] = useState<string>('');
     const { themeColor, customColor } = useBrand();
     const primaryColor = themeColor === 'custom' ? customColor : THEME_COLORS[themeColor as keyof typeof THEME_COLORS];
@@ -45,7 +46,7 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
         e.preventDefault();
         post(route('register'), {
             data: { ...data, recaptcha_token: recaptchaToken },
-            onFinish: () => resetranslate('password', 'password_confirmation'),
+            onFinish: () => reset('password', 'password_confirmation'),
         });
     };
 
@@ -146,15 +147,24 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
                             tabIndex={5}
                             className="h-[14px] w-[14px] rounded border border-gray-300 dark:border-gray-600"
                         />
-                        <Label htmlFor="terms" className="text-sm text-gray-600 ltr:ml-2 rtl:mr-2 dark:text-gray-400" required>
+                        <Label htmlFor="terms" className="ml-2 text-sm text-neutral-600 dark:text-neutral-400">
                             {translate('I agree to the')}{' '}
                             <a
-                                href={isDemoMode() ? route('home') : getTermsAndConditionsUrl() || route('home')}
+                                href={`${createHafinenExternalUrl('www')}${languageFromCookie}/trust/terms-of-service/`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                style={{ color: primaryColor }}
+                                className="text-foreground underline"
                             >
-                                {translate('Terms and Conditions')}
+                                {translate('Terms')}
+                            </a>{' '}
+                            {translate('and')}{' '}
+                            <a
+                                href={`${createHafinenExternalUrl('www')}${languageFromCookie}/trust/privacy-policy/`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-foreground underline"
+                            >
+                                {translate('Privacy')}
                             </a>
                         </Label>
                     </div>

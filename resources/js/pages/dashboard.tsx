@@ -267,7 +267,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                             <span className="animate-hand-wave text-2xl select-none sm:text-3xl">👋</span>
                         </div>
                         <p className="mt-1 hidden text-xs text-slate-400 transition-colors duration-300 group-hover:text-slate-300 sm:block">
-                            {t("Here's what's happening across your platform today.")}
+                            {translate("Here's what's happening across your platform today.")}
                         </p>
                         {useHasPermission('manage-opportunities') && (
                             <div className="mt-3 flex items-center gap-3">
@@ -896,7 +896,8 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                             {salesTab === 'sales' ? translate('Sales Trends') : translate('Revenue')}
                                         </CardTitle>
                                         <p className="text-muted-foreground mt-0.5 text-xs">
-                                            {salesTab === 'sales' ? translate('Monthly sales performance') : translate('Monthly invoice revenue')} — {chartYear}
+                                            {salesTab === 'sales' ? translate('Monthly sales performance') : translate('Monthly invoice revenue')} —{' '}
+                                            {chartYear}
                                         </p>
                                     </div>
                                     <div className="flex items-center gap-2">
@@ -1124,7 +1125,13 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                     formatter={(v: number) => (v > 0 ? v : '')}
                                                 />
                                             </Bar>
-                                            <Bar dataKey="conversions" fill="#10b981" name={translate('Conversions')} radius={[4, 4, 0, 0]} maxBarSize={30}>
+                                            <Bar
+                                                dataKey="conversions"
+                                                fill="#10b981"
+                                                name={translate('Conversions')}
+                                                radius={[4, 4, 0, 0]}
+                                                maxBarSize={30}
+                                            >
                                                 <LabelList
                                                     dataKey="conversions"
                                                     position="top"

@@ -485,7 +485,9 @@ export default function ShippingProviderTypes() {
                                                                             </Button>
                                                                         </TooltipTrigger>
                                                                         <TooltipContent>
-                                                                            {item.status === 'active' ? translate('Deactivate') : translate('Activate')}
+                                                                            {item.status === 'active'
+                                                                                ? translate('Deactivate')
+                                                                                : translate('Activate')}
                                                                         </TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>
@@ -651,7 +653,9 @@ export default function ShippingProviderTypes() {
                                 <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700">
                                     <Truck className="h-8 w-8 text-gray-400" />
                                 </div>
-                                <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{translate('No shipping provider types found')}</h3>
+                                <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">
+                                    {translate('No shipping provider types found')}
+                                </h3>
                                 <p className="mx-auto mb-6 max-w-sm text-gray-500 dark:text-gray-400">
                                     {hasActiveFilters()
                                         ? translate('No shipping provider types match your search criteria. Try adjusting your filters.')

@@ -4,8 +4,8 @@ import { Card } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
+import { resolveImageUrl } from '@/utils/Helpers/Url';
 import { useHasPermission } from '@/utils/Permissions';
-import { getDisplayUrl } from '@/utils/helper';
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowLeft, Building2, Calendar, Eye, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -117,7 +117,7 @@ export default function CallShow() {
                                                     alt={attendee?.attendee?.name || 'Avatar'}
                                                     onError={(e) => {
                                                         const target = e.target as HTMLImageElement;
-                                                        target.src = getDisplayUrl('avatars/avatar.png');
+                                                        target.src = resolveImageUrl('avatars/avatar.png');
                                                     }}
                                                 />
                                                 <AvatarFallback className="bg-primary/15 text-primary text-xs font-bold">
@@ -130,7 +130,7 @@ export default function CallShow() {
                                         <div>
                                             <p className="font-medium">{attendee.attendee?.name || translate('Unknown')}</p>
                                             <p className="text-muted-foreground text-sm capitalize">
-                                                {t(attendee.attendee_type)} {attendee.attendee?.email && `• ${attendee.attendee.email}`}
+                                                {translate(attendee.attendee_type)} {attendee.attendee?.email && `• ${attendee.attendee.email}`}
                                             </p>
                                         </div>
                                     </div>
@@ -227,7 +227,7 @@ export default function CallShow() {
                                 <div className="flex min-w-0 items-center gap-2">
                                     {isPerson && <UserInitials name={recordName} />}
                                     <div className="min-w-0">
-                                        <p className="text-muted-foreground text-xs capitalize">{t(call.parent_module)}</p>
+                                        <p className="text-muted-foreground text-xs capitalize">{translate(call.parent_module)}</p>
                                         <p className="text-foreground truncate text-sm font-medium">{recordName}</p>
                                         {isPerson && call.parent_record.email && (
                                             <p className="text-muted-foreground truncate text-xs">{call.parent_record.email}</p>

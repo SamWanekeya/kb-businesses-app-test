@@ -378,9 +378,7 @@ export default function ProjectKanban() {
                                                     e.currentTarget.classList.add('opacity-50');
                                                 }}
                                                 onDragEnd={(e) => e.currentTarget.classList.remove('opacity-50')}
-                                                className={
-                                                    useHasPermission('edit-project-tasks') ? 'cursor-grab active:cursor-grabbing' : ''
-                                                }
+                                                className={useHasPermission('edit-project-tasks') ? 'cursor-grab active:cursor-grabbing' : ''}
                                             >
                                                 <div className="rounded-lg border border-gray-100 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
                                                     <div className="p-3">

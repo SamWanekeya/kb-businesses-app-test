@@ -11,8 +11,8 @@ import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Textarea } from '@/components/ui/textarea';
 import { useInitials } from '@/hooks/use-initials';
+import { formatTitleCase } from '@/utils/Helpers/StringFormatters';
 import { useHasPermission } from '@/utils/Permissions';
-import { capitalize, getDisplayUrl } from '@/utils/helper';
 import { Link, router, usePage } from '@inertiajs/react';
 import { Calendar, CheckCircle, FileDown, Plus, XCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -630,7 +630,7 @@ export default function Invoices() {
                                             </p>
                                             {payment.receipt_path && (
                                                 <a
-                                                    href={getDisplayUrl(payment.receipt_path)}
+                                                    href={resolveImageUrl(payment.receipt_path)}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="text-xs text-blue-600 hover:underline"
@@ -805,9 +805,15 @@ export default function Invoices() {
                                 <table className="min-w-full divide-y divide-gray-200">
                                     <thead className="sticky top-0 bg-gray-50">
                                         <tr>
-                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">{translate('Sent At')}</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">{translate('Type')}</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">{translate('Sent By')}</th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">
+                                                {translate('Sent At')}
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">
+                                                {translate('Type')}
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">
+                                                {translate('Sent By')}
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-200 bg-white">
@@ -819,7 +825,7 @@ export default function Invoices() {
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <span className="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-purple-600/20 ring-inset">
-                                                        {capitalize(reminder.type)}
+                                                        {formatTitleCase(reminder.type)}
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">

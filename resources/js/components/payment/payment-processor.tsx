@@ -445,14 +445,14 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
                         <div>
                             <h3 className="font-medium">{plan.name}</h3>
                             <p className="text-muted-foreground text-sm">
-                                {t(billingCycle)} {translate('subscription')}
+                                {translate(billingCycle)} {translate('subscription')}
                             </p>
                         </div>
                         <div className="text-right">
                             <div className="text-lg font-bold">
                                 {currencySymbol} {plan.price}
                             </div>
-                            <div className="text-muted-foreground text-sm">/{t(billingCycle)}</div>
+                            <div className="text-muted-foreground text-sm">/{translate(billingCycle)}</div>
                         </div>
                     </div>
                 </CardContent>

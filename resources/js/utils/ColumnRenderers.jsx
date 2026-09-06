@@ -72,8 +72,8 @@ export const columnRenderers = {
             if (!value) return <span>-</span>;
 
             try {
-                if (typeof window !== 'undefined' && window.hfSettings) {
-                    const formatted = window.hfSettings.formatDateTime(value, false);
+                if (typeof window !== 'undefined' && window.kbSettings) {
+                    const formatted = window.kbSettings.formatDateTime(value, false);
                     return <span className="text-sm">{formatted}</span>;
                 }
                 const date = new Date(value);

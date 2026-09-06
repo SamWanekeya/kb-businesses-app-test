@@ -1,7 +1,6 @@
 // config/crud/permissions.ts
 import { CrudConfig } from '@/types/crud';
 import { columnRenderers } from '@/utils/ColumnRenderers';
-import { useTranslation } from 'react-i18next';
 
 export const permissionsConfig: CrudConfig = {
     entity: {

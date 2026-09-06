@@ -163,7 +163,9 @@ export default function NotificationTemplateShow({ template, languages, variable
                                             </Badge>
                                             <div>
                                                 <span className="font-medium">{name}</span>
-                                                <p className="text-muted-foreground text-xs">{translate('Edit notification content for this language')}</p>
+                                                <p className="text-muted-foreground text-xs">
+                                                    {translate('Edit notification content for this language')}
+                                                </p>
                                             </div>
                                         </div>
 
@@ -176,7 +178,9 @@ export default function NotificationTemplateShow({ template, languages, variable
                                                     id={`title-${code}`}
                                                     value={templateLangs[code]?.title || ''}
                                                     onChange={(e) => handleTitleChange(code, e.target.value)}
-                                                    placeholder={translate('Enter notification title (you can use variables like {organization_name})')}
+                                                    placeholder={translate(
+                                                        'Enter notification title (you can use variables like {organization_name})',
+                                                    )}
                                                     className="focus:ring-primary focus:ring-2"
                                                 />
                                             </div>

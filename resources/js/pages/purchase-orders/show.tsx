@@ -8,8 +8,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
+import { formatRelativeTime } from '@/utils/Helpers/StringFormatters';
 import { useHasPermission } from '@/utils/Permissions';
-import { formatRelativeTime } from '@/utils/helper';
 import { Link, router, usePage } from '@inertiajs/react';
 import {
     ArrowLeft,
@@ -76,7 +76,13 @@ export default function PurchaseOrderShow() {
             bg: 'bg-purple-50 dark:bg-purple-900/20',
             ring: 'ring-purple-600/20',
         },
-        cancelled: { label: translate('Cancelled'), icon: XCircle, color: 'text-red-600', bg: 'bg-red-50 dark:bg-red-900/20', ring: 'ring-red-600/20' },
+        cancelled: {
+            label: translate('Cancelled'),
+            icon: XCircle,
+            color: 'text-red-600',
+            bg: 'bg-red-50 dark:bg-red-900/20',
+            ring: 'ring-red-600/20',
+        },
     };
 
     const formatCurrency = (amount: number) => window.appSettings?.formatCurrency(Number(amount || 0)) || `$${Number(amount || 0).toFixed(2)}`;
@@ -198,7 +204,9 @@ export default function PurchaseOrderShow() {
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
                                                 <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
-                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.billing_address || translate('-')}</p>
+                                                <p className="text-foreground text-sm font-medium">
+                                                    {purchaseOrder.billing_address || translate('-')}
+                                                </p>
                                             </div>
                                             <div className="space-y-0.5">
                                                 <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
@@ -212,7 +220,9 @@ export default function PurchaseOrderShow() {
                                             </div>
                                             <div className="space-y-0.5">
                                                 <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
-                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.billing_postal_code || translate('-')}</p>
+                                                <p className="text-foreground text-sm font-medium">
+                                                    {purchaseOrder.billing_postal_code || translate('-')}
+                                                </p>
                                             </div>
                                         </div>
                                         <div className="space-y-0.5">
@@ -227,7 +237,9 @@ export default function PurchaseOrderShow() {
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
                                                 <p className="text-muted-foreground text-xs font-medium">{translate('Address')}</p>
-                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.shipping_address || translate('-')}</p>
+                                                <p className="text-foreground text-sm font-medium">
+                                                    {purchaseOrder.shipping_address || translate('-')}
+                                                </p>
                                             </div>
                                             <div className="space-y-0.5">
                                                 <p className="text-muted-foreground text-xs font-medium">{translate('City')}</p>
@@ -237,11 +249,15 @@ export default function PurchaseOrderShow() {
                                         <div className="grid grid-cols-1 gap-2 min-[450px]:grid-cols-2">
                                             <div className="space-y-0.5">
                                                 <p className="text-muted-foreground text-xs font-medium">{translate('State')}</p>
-                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.shipping_state || translate('-')}</p>
+                                                <p className="text-foreground text-sm font-medium">
+                                                    {purchaseOrder.shipping_state || translate('-')}
+                                                </p>
                                             </div>
                                             <div className="space-y-0.5">
                                                 <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
-                                                <p className="text-foreground text-sm font-medium">{purchaseOrder.shipping_postal_code || translate('-')}</p>
+                                                <p className="text-foreground text-sm font-medium">
+                                                    {purchaseOrder.shipping_postal_code || translate('-')}
+                                                </p>
                                             </div>
                                         </div>
                                         <div className="space-y-0.5">
@@ -279,8 +295,12 @@ export default function PurchaseOrderShow() {
                                                     <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
                                                         {translate('Discount')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">{translate('Tax')}</TableHead>
-                                                    <TableHead className="py-2.5 text-end font-semibold whitespace-nowrap">{translate('Total')}</TableHead>
+                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
+                                                        {translate('Tax')}
+                                                    </TableHead>
+                                                    <TableHead className="py-2.5 text-end font-semibold whitespace-nowrap">
+                                                        {translate('Total')}
+                                                    </TableHead>
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
@@ -416,7 +436,9 @@ export default function PurchaseOrderShow() {
                                     <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
                                         <Package className="text-muted-foreground/40 h-8 w-8" />
                                     </div>
-                                    <p className="text-muted-foreground text-sm font-medium">{translate('No products added to this purchase order')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">
+                                        {translate('No products added to this purchase order')}
+                                    </p>
                                 </div>
                             )}
                         </CardContent>

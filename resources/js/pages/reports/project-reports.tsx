@@ -32,7 +32,11 @@ export default function ProjectReports() {
 
     const chartData = chartView === 'daily' ? dailyData : monthlyData;
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Reports'), href: '#' }, { title: translate('Project Reports') }];
+    const breadcrumbs = [
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Reports'), href: '#' },
+        { title: translate('Project Reports') },
+    ];
 
     const summaryCards = [
         {

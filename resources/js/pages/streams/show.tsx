@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useInitials } from '@/hooks/use-initials';
 import { useHasPermission } from '@/utils/Permissions';
-import { capitalize, formatRelativeTime } from '@/utils/helper';
+import { formatRelativeTime } from '@/utils/helper';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { ArrowLeft, Calendar, ExternalLink, MessageCircle, Trash2 } from 'lucide-react';
 import React, { useState } from 'react';
@@ -110,7 +110,7 @@ export default function Show({ module, moduleTitle, streams = [] }: StreamsShowP
 
     return (
         <PageTemplate
-            title={t(moduleTitle)}
+            title={translate(moduleTitle)}
             description={translate('Activity stream and related information')}
             actions={[
                 {
@@ -123,7 +123,7 @@ export default function Show({ module, moduleTitle, streams = [] }: StreamsShowP
             breadcrumbs={breadcrumbs}
             noPadding
         >
-            <Head title={`${t(moduleTitle)} - ${translate('Streams')}`} />
+            <Head title={`${translate(moduleTitle)} - ${translate('Streams')}`} />
 
             {useHasPermission('view-stream') && (
                 <>
@@ -178,7 +178,7 @@ export default function Show({ module, moduleTitle, streams = [] }: StreamsShowP
                                                         <span
                                                             className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset sm:px-2 sm:py-1 ${getActivityBadgeColor(activity.activity_type)}`}
                                                         >
-                                                            {capitalize(activity.activity_type || 'Activity')}
+                                                            {formatTitleCase(activity.activity_type || 'Activity')}
                                                         </span>
                                                         {(() => {
                                                             const rec = getRecordLink(activity);

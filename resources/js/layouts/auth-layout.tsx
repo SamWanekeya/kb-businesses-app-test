@@ -5,7 +5,7 @@ import { useLayout } from '@/contexts/LayoutContext';
 import { THEME_COLORS, useAppearance } from '@/hooks/use-appearance';
 import { useFavicon } from '@/hooks/use-favicon';
 import i18n from '@/i18n';
-import { getCookie } from '@/utils/cookie-utils';
+import { getCookie } from '@/utils/Helpers/Cookies';
 import { Head, usePage } from '@inertiajs/react';
 import { CreditCard } from 'lucide-react';
 import React, { ReactNode, useEffect, useState } from 'react';

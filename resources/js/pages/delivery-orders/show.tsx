@@ -138,7 +138,9 @@ export default function DeliveryOrderShow() {
                                         </div>
                                         <div className="space-y-0.5">
                                             <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
-                                            <p className="text-foreground text-sm font-medium">{deliveryOrder.delivery_postal_code || translate('-')}</p>
+                                            <p className="text-foreground text-sm font-medium">
+                                                {deliveryOrder.delivery_postal_code || translate('-')}
+                                            </p>
                                         </div>
                                     </div>
                                     <div className="space-y-0.5">
@@ -288,7 +290,9 @@ export default function DeliveryOrderShow() {
                                     <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
                                         <Package className="text-muted-foreground/40 h-8 w-8" />
                                     </div>
-                                    <p className="text-muted-foreground text-sm font-medium">{translate('No products added to this delivery order')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">
+                                        {translate('No products added to this delivery order')}
+                                    </p>
                                 </div>
                             )}
                         </CardContent>

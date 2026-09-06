@@ -12,13 +12,13 @@ import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useInitials } from '@/hooks/use-initials';
+import { resolveImageUrl } from '@/utils/Helpers/Url';
 import { useHasPermission } from '@/utils/Permissions';
-import { getDisplayUrl } from '@/utils/helper';
 import { router, usePage } from '@inertiajs/react';
+import ViewPopup from '@pages/users/view';
 import { Edit, Eye, History, KeyRound, Lock, Plus, Trash2, Unlock } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import ViewPopup from '@pages/users/view';
 
 export default function Users() {
     const { t: translate } = useTranslation();
@@ -399,7 +399,14 @@ export default function Users() {
     ];
 
     return (
-        <PageTemplate title={translate('Users')} description={translate('Manage your users.')} url="/users" actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
+        <PageTemplate
+            title={translate('Users')}
+            description={translate('Manage your users.')}
+            url="/users"
+            actions={pageActions}
+            breadcrumbs={breadcrumbs}
+            noPadding
+        >
             {/* Search and filters section */}
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
@@ -511,7 +518,7 @@ export default function Users() {
                                                         onError={(e) => {
                                                             // Fallback to default avatar on error
                                                             const target = e.target as HTMLImageElement;
-                                                            target.src = getDisplayUrl('avatars/avatar.png');
+                                                            target.src = resolveImageUrl('avatars/avatar.png');
                                                         }}
                                                     />
                                                     <AvatarFallback className="text-lg">{user.name?.charAt(0)?.toUpperCase() || 'U'}</AvatarFallback>
@@ -598,7 +605,9 @@ export default function Users() {
                                                             )}
                                                         </Button>
                                                     </TooltipTrigger>
-                                                    <TooltipContent>{user.status === 'active' ? translate('Disable User') : translate('Enable User')}</TooltipContent>
+                                                    <TooltipContent>
+                                                        {user.status === 'active' ? translate('Disable User') : translate('Enable User')}
+                                                    </TooltipContent>
                                                 </Tooltip>
                                             )}
                                             {useHasPermission('delete-users') && (
@@ -773,7 +782,13 @@ export default function Users() {
                 onSubmit={handleResetPasswordConfirm}
                 formConfig={{
                     fields: [
-                        { name: 'password', label: translate('New Password'), type: 'password', required: true, placeholder: translate('Enter New Password') },
+                        {
+                            name: 'password',
+                            label: translate('New Password'),
+                            type: 'password',
+                            required: true,
+                            placeholder: translate('Enter New Password'),
+                        },
                         {
                             name: 'password_confirmation',
                             label: translate('Confirm Password'),

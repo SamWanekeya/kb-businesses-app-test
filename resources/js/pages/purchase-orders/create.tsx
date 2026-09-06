@@ -583,16 +583,22 @@ export default function PurchaseOrderCreate() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-32 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{translate('Tax')}</span>
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">
+                                                        {translate('Tax')}
+                                                    </span>
                                                     <span className="text-muted-foreground text-sm font-medium">
                                                         {(() => {
                                                             const p = productOptions.find((p: any) => String(p.id) === row.product_id);
-                                                            return p?.tax ? `${p.tax.name} (${parseFloat(p.tax.rate).toFixed(2)}%)` : translate('No Tax');
+                                                            return p?.tax
+                                                                ? `${p.tax.name} (${parseFloat(p.tax.rate).toFixed(2)}%)`
+                                                                : translate('No Tax');
                                                         })()}
                                                     </span>
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-mono font-medium xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{translate('Total')}</span>
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">
+                                                        {translate('Total')}
+                                                    </span>
                                                     <span>{fmt(total)}</span>
                                                 </td>
                                                 <td className="col-span-1 block w-full border-t px-0 py-0 pt-2 text-right sm:col-span-2 xl:table-cell xl:w-10 xl:border-t-0 xl:px-4 xl:py-3 xl:pt-0 xl:text-left">

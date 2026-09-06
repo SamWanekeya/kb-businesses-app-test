@@ -18,7 +18,11 @@ export default function ProductReports() {
         if (raw) setPrimaryColor(raw);
     }, []);
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Reports'), href: '#' }, { title: translate('Product Reports') }];
+    const breadcrumbs = [
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Reports'), href: '#' },
+        { title: translate('Product Reports') },
+    ];
 
     const summaryCards = [
         {
@@ -167,7 +171,9 @@ export default function ProductReports() {
                                             <div className="min-w-0 flex-1">
                                                 <p className="truncate text-sm leading-tight font-semibold">{product.name}</p>
 
-                                                <p className="text-muted-foreground mt-0.5 truncate text-xs">SKU: {product.sku || translate('N/A')}</p>
+                                                <p className="text-muted-foreground mt-0.5 truncate text-xs">
+                                                    SKU: {product.sku || translate('N/A')}
+                                                </p>
                                             </div>
                                         </div>
 
@@ -240,7 +246,9 @@ export default function ProductReports() {
                                             <div className="min-w-0 flex-1">
                                                 <p className="truncate text-sm leading-tight font-semibold">{product.name}</p>
 
-                                                <p className="text-muted-foreground mt-0.5 truncate text-xs">SKU: {product.sku || translate('N/A')}</p>
+                                                <p className="text-muted-foreground mt-0.5 truncate text-xs">
+                                                    SKU: {product.sku || translate('N/A')}
+                                                </p>
                                             </div>
                                         </div>
 

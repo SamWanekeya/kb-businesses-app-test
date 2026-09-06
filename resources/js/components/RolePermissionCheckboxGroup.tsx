@@ -2,7 +2,7 @@
 import { Checkbox } from '@/components/ui/checkbox';
 import { IndeterminateCheckbox } from '@/components/ui/indeterminate-checkbox';
 import { Label } from '@/components/ui/label';
-import { capitalize } from '@/utils/helper';
+import { formatTitleCase } from '@/utils/Helpers/StringFormatters';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -193,7 +193,7 @@ export function RolePermissionCheckboxGroup({ permissions, selectedPermissions, 
                                     />
                                 )}
                                 <Label htmlFor={`module-checkbox-${module.replace(/\s+/g, '-').toLowerCase()}`} className="font-medium">
-                                    {capitalize(module)}
+                                    {formatTitleCase(module)}
                                 </Label>
                             </div>
                             {!disabled && (
@@ -221,7 +221,7 @@ export function RolePermissionCheckboxGroup({ permissions, selectedPermissions, 
                                             htmlFor={`permission-checkbox-${permission.id.toString().replace(/\s+/g, '-').toLowerCase()}`}
                                             className="truncate text-sm"
                                         >
-                                            {capitalize(permission.label)}
+                                            {formatTitleCase(permission.label)}
                                         </Label>
                                     </div>
                                 ))}

@@ -32,7 +32,11 @@ export default function CustomerReports() {
 
     const chartData = chartView === 'daily' ? dailyData : monthlyData;
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Reports'), href: '#' }, { title: translate('Contact Reports') }];
+    const breadcrumbs = [
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Reports'), href: '#' },
+        { title: translate('Contact Reports') },
+    ];
 
     const summaryCards = [
         {
@@ -223,7 +227,8 @@ export default function CustomerReports() {
                                                         </time>
                                                     </div>
                                                     <div className="text-muted-foreground text-xs">
-                                                        {translate('With:')} <span className="text-foreground font-medium">{interaction.contact_name}</span>
+                                                        {translate('With:')}{' '}
+                                                        <span className="text-foreground font-medium">{interaction.contact_name}</span>
                                                     </div>
                                                 </div>
                                             </div>

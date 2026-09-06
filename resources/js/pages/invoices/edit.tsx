@@ -204,7 +204,8 @@ export default function InvoiceEdit() {
         if (!form.billing_state.trim()) e.billing_state = translate('Billing state is required');
         if (!form.billing_country.trim()) e.billing_country = translate('Billing country is required');
         if (!form.billing_postal_code.trim()) e.billing_postal_code = translate('Billing postal code is required');
-        if (!form.products.length || form.products.every((l: ProductLine) => !l.product_id)) e.products = translate('At least one product is required');
+        if (!form.products.length || form.products.every((l: ProductLine) => !l.product_id))
+            e.products = translate('At least one product is required');
         setErrors(e);
         return Object.keys(e).length === 0;
     };
@@ -313,7 +314,9 @@ export default function InvoiceEdit() {
                                         </SelectContent>
                                     </Select>
                                     {loadingSalesOrder && (
-                                        <span className="absolute top-2.5 right-8 animate-pulse text-xs text-gray-400">{translate('Loading...')}</span>
+                                        <span className="absolute top-2.5 right-8 animate-pulse text-xs text-gray-400">
+                                            {translate('Loading...')}
+                                        </span>
                                     )}
                                 </div>
                             </Field>
@@ -676,13 +679,19 @@ export default function InvoiceEdit() {
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left xl:table-cell xl:w-36 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{translate('Tax')}</span>
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">
+                                                        {translate('Tax')}
+                                                    </span>
                                                     <span className="text-muted-foreground text-sm font-medium">
-                                                        {prod?.tax ? `${prod.tax.name} (${parseFloat(prod.tax.rate).toFixed(2)}%)` : translate('No Tax')}
+                                                        {prod?.tax
+                                                            ? `${prod.tax.name} (${parseFloat(prod.tax.rate).toFixed(2)}%)`
+                                                            : translate('No Tax')}
                                                     </span>
                                                 </td>
                                                 <td className="col-span-1 block flex w-full items-center justify-between px-0 py-0 text-left font-semibold xl:table-cell xl:w-28 xl:px-4 xl:py-3">
-                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">{translate('Total')}</span>
+                                                    <span className="text-muted-foreground block text-xs font-semibold xl:hidden">
+                                                        {translate('Total')}
+                                                    </span>
                                                     <span className="font-mono">{fmt(c.total)}</span>
                                                 </td>
                                                 {!isPaidOrCancelled && (

@@ -131,7 +131,7 @@ export default function ProjectShow() {
                                 }`}
                             >
                                 <AlertTriangle className="mr-1 h-3 w-3" />
-                                {t(project.priority.charAt(0).toUpperCase() + project.priority.slice(1))}
+                                {translate(project.priority.charAt(0).toUpperCase() + project.priority.slice(1))}
                             </span>
                             <span
                                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
@@ -145,7 +145,7 @@ export default function ProjectShow() {
                                 }`}
                             >
                                 <Clock className="mr-1 h-3 w-3" />
-                                {t(project.status.replace('_', ' ').charAt(0).toUpperCase() + project.status.replace('_', ' ').slice(1))}
+                                {translate(project.status.replace('_', ' ').charAt(0).toUpperCase() + project.status.replace('_', ' ').slice(1))}
                             </span>
                         </div>
                     </div>

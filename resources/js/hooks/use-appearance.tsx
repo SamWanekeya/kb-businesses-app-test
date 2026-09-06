@@ -1,4 +1,3 @@
-import { getCookie, isDemoMode, setCookie } from '@/utils/cookie-utils';
 import { useCallback, useEffect, useState } from 'react';
 
 export type Appearance = 'light' | 'dark' | 'system';
@@ -107,26 +106,14 @@ const handleSystemThemeChange = () => {
 };
 
 const getThemeSettings = (): ThemeSettings => {
-    if (isDemoMode()) {
-        // In demo mode, use cookies
-        try {
-            const savedTheme = getCookie('themeSettings');
-            if (savedTheme) {
-                return JSON.parse(savedTheme);
-            }
-        } catch (error) {
-            // Fall through to default
-        }
-    } else {
-        // In live mode, get from globalSettings
-        const globalSettings = (window as any).page?.props?.globalSettings;
-        if (globalSettings) {
-            return {
-                appearance: globalSettings.themeMode || DEFAULT_THEME.appearance,
-                themeColor: globalSettings.themeColor || DEFAULT_THEME.themeColor,
-                customColor: globalSettings.customColor || DEFAULT_THEME.customColor,
-            };
-        }
+    // In live mode, get from globalSettings
+    const globalSettings = (window as any).page?.props?.globalSettings;
+    if (globalSettings) {
+        return {
+            appearance: globalSettings.themeMode || DEFAULT_THEME.appearance,
+            themeColor: globalSettings.themeColor || DEFAULT_THEME.themeColor,
+            customColor: globalSettings.customColor || DEFAULT_THEME.customColor,
+        };
     }
 
     return DEFAULT_THEME;
@@ -177,28 +164,16 @@ export function useAppearance() {
         });
     }, []);
 
-    const saveThemeSettings = useCallback(() => {
-        if (isDemoMode()) {
-            // Save to cookies only when explicitly called
-            setCookie('themeSettings', JSON.stringify(themeSettings));
-            setCookie('appearance', themeSettings.appearance);
-        }
-        // In non-demo mode, saving is handled by the parent component
-    }, [themeSettings]);
-
     useEffect(() => {
         let savedSettings = getThemeSettings();
 
-        // In non-demo mode, get theme settings from database
-        if (!isDemoMode()) {
-            const globalSettings = (window as any).page?.props?.globalSettings;
-            if (globalSettings) {
-                savedSettings = {
-                    appearance: globalSettings.themeMode || DEFAULT_THEME.appearance,
-                    themeColor: globalSettings.themeColor || DEFAULT_THEME.themeColor,
-                    customColor: globalSettings.customColor || DEFAULT_THEME.customColor,
-                };
-            }
+        const globalSettings = (window as any).page?.props?.globalSettings;
+        if (globalSettings) {
+            savedSettings = {
+                appearance: globalSettings.themeMode || DEFAULT_THEME.appearance,
+                themeColor: globalSettings.themeColor || DEFAULT_THEME.themeColor,
+                customColor: globalSettings.customColor || DEFAULT_THEME.customColor,
+            };
         }
 
         setThemeSettings(savedSettings);
@@ -214,6 +189,5 @@ export function useAppearance() {
         updateAppearance,
         updateThemeColor,
         updateCustomColor,
-        saveThemeSettings,
     } as const;
 }

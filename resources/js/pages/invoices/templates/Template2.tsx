@@ -223,7 +223,8 @@ export default function Template2({ invoice, items, taxesData, settings, color, 
                                 <th style={styles.th}>{translate('Tax')} (%)</th>
                                 <th style={styles.th}>{translate('Discount')}</th>
                                 <th style={styles.th}>
-                                    {translate('Price')} <small style={{ display: 'block', fontSize: '12px' }}>{translate('before tax & discount')}</small>
+                                    {translate('Price')}{' '}
+                                    <small style={{ display: 'block', fontSize: '12px' }}>{translate('before tax & discount')}</small>
                                 </th>
                             </tr>
                             {items.map((item, index) => (

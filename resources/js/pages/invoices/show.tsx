@@ -12,8 +12,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
+import { formatRelativeTime } from '@/utils/Helpers/StringFormatters';
 import { useHasPermission } from '@/utils/Permissions';
-import { formatRelativeTime, getDisplayUrl } from '@/utils/helper';
 import { Link, router, usePage } from '@inertiajs/react';
 import {
     ArrowLeft,
@@ -319,8 +319,12 @@ export default function InvoiceShow() {
                                                     <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
                                                         {translate('Discount')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">{translate('Tax')}</TableHead>
-                                                    <TableHead className="py-2.5 text-right font-semibold whitespace-nowrap">{translate('Total')}</TableHead>
+                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
+                                                        {translate('Tax')}
+                                                    </TableHead>
+                                                    <TableHead className="py-2.5 text-right font-semibold whitespace-nowrap">
+                                                        {translate('Total')}
+                                                    </TableHead>
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
@@ -479,7 +483,9 @@ export default function InvoiceShow() {
                             <CardContent className="p-0">
                                 <div className="max-h-[150px] overflow-y-auto">
                                     <div className="px-5 py-4">
-                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{invoice.notes || translate('-')}</p>
+                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">
+                                            {invoice.notes || translate('-')}
+                                        </p>
                                     </div>
                                 </div>
                             </CardContent>
@@ -494,7 +500,9 @@ export default function InvoiceShow() {
                             <CardContent className="p-0">
                                 <div className="max-h-[150px] overflow-y-auto">
                                     <div className="px-5 py-4">
-                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{invoice.terms || translate('-')}</p>
+                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">
+                                            {invoice.terms || translate('-')}
+                                        </p>
                                     </div>
                                 </div>
                             </CardContent>
@@ -542,7 +550,9 @@ export default function InvoiceShow() {
                                                                             size="sm"
                                                                             variant="ghost"
                                                                             className="h-7 w-7 p-0"
-                                                                            onClick={() => window.open(getDisplayUrl(payment.receipt_path), '_blank')}
+                                                                            onClick={() =>
+                                                                                window.open(resolveImageUrl(payment.receipt_path), '_blank')
+                                                                            }
                                                                         >
                                                                             <Eye className="h-4 w-4 text-gray-500" />
                                                                         </Button>
@@ -572,7 +582,8 @@ export default function InvoiceShow() {
                                                                                         if (page.props.flash.error)
                                                                                             toast.error(t(page.props.flash.error));
                                                                                     },
-                                                                                    onError: () => toast.error(translate('Failed to approve payment')),
+                                                                                    onError: () =>
+                                                                                        toast.error(translate('Failed to approve payment')),
                                                                                 },
                                                                             );
                                                                         }}
@@ -756,7 +767,9 @@ export default function InvoiceShow() {
                                                             {payment.status.charAt(0).toUpperCase() + payment.status.slice(1)}
                                                         </span>
                                                     </td>
-                                                    <td className="px-4 py-3 align-middle font-mono text-sm">{payment.payment_id || translate('-')}</td>
+                                                    <td className="px-4 py-3 align-middle font-mono text-sm">
+                                                        {payment.payment_id || translate('-')}
+                                                    </td>
                                                     <td className="px-4 py-3 text-center align-middle">
                                                         {payment.receipt_path ? (
                                                             <TooltipProvider>
@@ -767,7 +780,7 @@ export default function InvoiceShow() {
                                                                             variant="ghost"
                                                                             className="text-blue-500"
                                                                             onClick={() => {
-                                                                                window.open(getDisplayUrl(payment.receipt_path), '_blank');
+                                                                                window.open(resolveImageUrl(payment.receipt_path), '_blank');
                                                                             }}
                                                                         >
                                                                             <Eye className="h-4 w-4 text-gray-500" />
@@ -1092,13 +1105,12 @@ export default function InvoiceShow() {
                                 </div>
                             )}
                             <div className="space-y-2">
-                                {['pending', 'overdue', 'partially_paid'].includes(invoice.status) &&
-                                    useHasPermission('send-reminder-invoices') && (
-                                        <Button variant="default" size="sm" className="w-full cursor-pointer" onClick={handleSendReminder}>
-                                            <Bell className="mr-2 h-4 w-4" />
-                                            {translate('Send Reminder')}
-                                        </Button>
-                                    )}
+                                {['pending', 'overdue', 'partially_paid'].includes(invoice.status) && useHasPermission('send-reminder-invoices') && (
+                                    <Button variant="default" size="sm" className="w-full cursor-pointer" onClick={handleSendReminder}>
+                                        <Bell className="mr-2 h-4 w-4" />
+                                        {translate('Send Reminder')}
+                                    </Button>
+                                )}
                                 {useHasPermission('edit-invoices') && (
                                     <Button variant="outline" className="w-full" onClick={() => router.visit(route('invoices.edit', invoice.id))}>
                                         <Edit className="mr-2 h-4 w-4" />

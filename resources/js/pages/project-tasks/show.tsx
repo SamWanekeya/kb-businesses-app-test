@@ -110,7 +110,8 @@ export default function ProjectTaskShow() {
                                                 : 'bg-gray-50 text-gray-700 ring-1 ring-gray-600/20 ring-inset'
                                     }`}
                                 >
-                                    {t((task.priority || '').charAt(0).toUpperCase() + (task.priority || '').slice(1))} {translate('Priority')}
+                                    {translate((task.priority || '').charAt(0).toUpperCase() + (task.priority || '').slice(1))}{' '}
+                                    {translate('Priority')}
                                 </span>
                             </div>
                         </div>
@@ -127,7 +128,9 @@ export default function ProjectTaskShow() {
                                     <label className="text-sm font-medium text-gray-500 dark:text-gray-400">{translate('Project')}</label>
                                     <div className="mt-1 flex items-center gap-2">
                                         <Briefcase className="h-4 w-4 text-gray-400" />
-                                        <span className="text-gray-900 dark:text-white">{task.project?.name || translate('No project assigned')}</span>
+                                        <span className="text-gray-900 dark:text-white">
+                                            {task.project?.name || translate('No project assigned')}
+                                        </span>
                                     </div>
                                 </div>
 
@@ -293,7 +296,8 @@ export default function ProjectTaskShow() {
                                             <div>
                                                 <h4 className="font-medium text-gray-900 dark:text-white">{subtask.title}</h4>
                                                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                                                    {subtask.assigned_user?.name || translate('Unassigned')} • {subtask.progress}% {translate('complete')}
+                                                    {subtask.assigned_user?.name || translate('Unassigned')} • {subtask.progress}%{' '}
+                                                    {translate('complete')}
                                                 </p>
                                             </div>
                                         </div>
@@ -321,7 +325,7 @@ export default function ProjectTaskShow() {
                                                             : 'bg-gray-50 text-gray-700 ring-1 ring-gray-600/20 ring-inset'
                                                 }`}
                                             >
-                                                {t((subtask.priority || '').charAt(0).toUpperCase() + (subtask.priority || '').slice(1))}
+                                                {translate((subtask.priority || '').charAt(0).toUpperCase() + (subtask.priority || '').slice(1))}
                                             </span>
                                         </div>
                                     </div>

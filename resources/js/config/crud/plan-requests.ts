@@ -1,6 +1,5 @@
 import { CrudConfig } from '@/types/crud';
 import { columnRenderers } from '@/utils/ColumnRenderers';
-import { useTranslation } from 'react-i18next';
 
 export const planRequestsConfig: CrudConfig = {
     entity: {

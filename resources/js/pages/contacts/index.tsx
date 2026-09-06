@@ -20,16 +20,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function Contacts() {
     const { t: translate } = useTranslation();
-    const {
-        auth,
-        contacts,
-        accounts = [],
-        allAccounts = [],
-        users = [],
-        allUsers = [],
-        planLimits,
-        filters: pageFilters = {},
-    } = usePage().props;
+    const { auth, contacts, accounts = [], allAccounts = [], users = [], allUsers = [], planLimits, filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
 
     // State
@@ -569,7 +560,9 @@ export default function Contacts() {
                                             <h3 className="truncate text-sm font-semibold text-gray-900 dark:text-white">{contact.name}</h3>
                                             <div className="mt-0.5 mb-1.5 flex items-center gap-1.5">
                                                 <Mail className="h-3 w-3 shrink-0 text-gray-500" />
-                                                <p className="truncate text-xs text-gray-600 dark:text-gray-400">{contact.email || translate('No email')}</p>
+                                                <p className="truncate text-xs text-gray-600 dark:text-gray-400">
+                                                    {contact.email || translate('No email')}
+                                                </p>
                                             </div>
                                             <span
                                                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
@@ -704,7 +697,13 @@ export default function Contacts() {
                                       }
                                     : undefined,
                         },
-                        { name: 'address', label: translate('Address'), type: 'textarea', required: true, placeholder: translate('eg. 123 Main St, City, Country') },
+                        {
+                            name: 'address',
+                            label: translate('Address'),
+                            type: 'textarea',
+                            required: true,
+                            placeholder: translate('eg. 123 Main St, City, Country'),
+                        },
                         {
                             name: formMode === 'view' ? 'assigned_user_name' : 'assigned_to',
                             label: translate('Assign To'),

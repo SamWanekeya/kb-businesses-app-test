@@ -205,7 +205,11 @@ export default function TargetLists() {
     const canDelete = useHasPermission('delete-target-lists');
     const canToggleStatus = useHasPermission('toggle-status-target-lists');
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Campaign Management') }, { title: translate('Target Lists') }];
+    const breadcrumbs = [
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Campaign Management') },
+        { title: translate('Target Lists') },
+    ];
 
     return (
         <PageTemplate
@@ -460,7 +464,9 @@ export default function TargetLists() {
                                                                             </Button>
                                                                         </TooltipTrigger>
                                                                         <TooltipContent>
-                                                                            {item.status === 'active' ? translate('Deactivate') : translate('Activate')}
+                                                                            {item.status === 'active'
+                                                                                ? translate('Deactivate')
+                                                                                : translate('Activate')}
                                                                         </TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>

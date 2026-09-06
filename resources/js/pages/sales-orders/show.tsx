@@ -8,8 +8,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
+import { formatRelativeTime } from '@/utils/Helpers/StringFormatters';
 import { useHasPermission } from '@/utils/Permissions';
-import { formatRelativeTime } from '@/utils/helper';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ArrowLeft, Building2, Calendar, Edit, Eye, FileText, MessageCircle, Package, Send, ShoppingCart, Trash2, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -54,7 +54,7 @@ export default function SalesOrderShow() {
             <span
                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.draft}`}
             >
-                {t(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Draft')}
+                {translate(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Draft')}
             </span>
         );
     };
@@ -140,7 +140,9 @@ export default function SalesOrderShow() {
                                             </div>
                                             <div className="space-y-0.5">
                                                 <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
-                                                <p className="text-foreground text-sm font-medium">{salesOrder.billing_postal_code || translate('-')}</p>
+                                                <p className="text-foreground text-sm font-medium">
+                                                    {salesOrder.billing_postal_code || translate('-')}
+                                                </p>
                                             </div>
                                         </div>
                                         <div className="space-y-0.5">
@@ -169,7 +171,9 @@ export default function SalesOrderShow() {
                                             </div>
                                             <div className="space-y-0.5">
                                                 <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
-                                                <p className="text-foreground text-sm font-medium">{salesOrder.shipping_postal_code || translate('-')}</p>
+                                                <p className="text-foreground text-sm font-medium">
+                                                    {salesOrder.shipping_postal_code || translate('-')}
+                                                </p>
                                             </div>
                                         </div>
                                         <div className="space-y-0.5">
@@ -207,8 +211,12 @@ export default function SalesOrderShow() {
                                                     <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
                                                         {translate('Discount')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">{translate('Tax')}</TableHead>
-                                                    <TableHead className="py-2.5 text-right font-semibold whitespace-nowrap">{translate('Total')}</TableHead>
+                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
+                                                        {translate('Tax')}
+                                                    </TableHead>
+                                                    <TableHead className="py-2.5 text-right font-semibold whitespace-nowrap">
+                                                        {translate('Total')}
+                                                    </TableHead>
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>

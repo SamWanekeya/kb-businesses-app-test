@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
-import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { Label } from '@components/ui/label';
 import { RichTextEditor, RichTextEditorRef } from '@components/ui/rich-text-editor';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
 
 interface RichTextFieldProps {
     label?: string;

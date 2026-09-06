@@ -217,7 +217,11 @@ export default function Taxes() {
     const canDelete = useHasPermission('delete-taxes');
     const canToggleStatus = useHasPermission('toggle-status-taxes');
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Product Setup') }, { title: translate('Taxes') }];
+    const breadcrumbs = [
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Product Setup') },
+        { title: translate('Taxes') },
+    ];
 
     return (
         <PageTemplate
@@ -236,7 +240,9 @@ export default function Taxes() {
                                 {formMode === 'create' ? translate('Add New Tax') : translate('Edit Tax')}
                             </h2>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                {formMode === 'create' ? translate('Fill in the details to create a new tax') : translate('Update the tax details below')}
+                                {formMode === 'create'
+                                    ? translate('Fill in the details to create a new tax')
+                                    : translate('Update the tax details below')}
                             </p>
                         </div>
                         <form onSubmit={handleFormSubmit} className="space-y-4 p-6">
@@ -528,7 +534,9 @@ export default function Taxes() {
                                                                             </Button>
                                                                         </TooltipTrigger>
                                                                         <TooltipContent>
-                                                                            {item.status === 'active' ? translate('Deactivate') : translate('Activate')}
+                                                                            {item.status === 'active'
+                                                                                ? translate('Deactivate')
+                                                                                : translate('Activate')}
                                                                         </TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>
@@ -709,7 +717,9 @@ export default function Taxes() {
                                         : translate('Create taxes to apply to your products.')}
                                 </p>
                                 {!hasActiveFilters() && canCreate && (
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">{translate('Use the form on the left to add your first tax.')}</p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                        {translate('Use the form on the left to add your first tax.')}
+                                    </p>
                                 )}
                             </div>
                         )}

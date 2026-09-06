@@ -78,7 +78,7 @@ export const LayoutProvider = ({ children }: { children: ReactNode }) => {
                 const maxAge = days * 24 * 60 * 60;
                 document.cookie = `${name}=${encodeURIComponent(value)};path=/;max-age=${maxAge};SameSite=Lax`;
             };
-            setCookie('layoutDirection', position);
+            storeCookie('layoutDirection', position);
         }
     };
 

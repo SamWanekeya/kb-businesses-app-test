@@ -1,5 +1,5 @@
 @php
-    $locale = Cookie::get('__hf_lcl') ?? "";
+    $locale = Cookie::get('__kb_lcl') ?? "";
     $rtlLocales = ['ar', 'ar-sa', 'ar-ae', 'ar-eg', 'ar-ma', 'ar-dz', 'ar-qa', 'ar-lb', 'he-il', 'fa', 'ur'];
     $layoutDirection = in_array(strtolower($locale), $rtlLocales, true) ? 'rtl' : 'ltr';
 @endphp

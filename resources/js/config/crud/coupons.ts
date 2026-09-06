@@ -2,7 +2,6 @@
 import { toast } from '@/components/custom-toast';
 import { Switch } from '@/components/ui/switch';
 import { CrudConfig } from '@/types/crud';
-import { useTranslation } from 'react-i18next';
 import React from 'react';
 
 export const couponsConfig: CrudConfig = {

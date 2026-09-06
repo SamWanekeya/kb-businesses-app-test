@@ -22,7 +22,11 @@ export default function SalesReports() {
 
     const chartData = chartView === 'daily' ? dailyData : monthlyData;
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Reports'), href: '#' }, { title: translate('Sales Reports') }];
+    const breadcrumbs = [
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Reports'), href: '#' },
+        { title: translate('Sales Reports') },
+    ];
 
     const summaryCards = [
         {

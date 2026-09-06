@@ -471,7 +471,14 @@ export default function Cases() {
     ];
 
     return (
-        <PageTemplate title={translate('Cases')} description={translate('Manage your cases.')} url="/cases" actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
+        <PageTemplate
+            title={translate('Cases')}
+            description={translate('Manage your cases.')}
+            url="/cases"
+            actions={pageActions}
+            breadcrumbs={breadcrumbs}
+            noPadding
+        >
             {/* Search and filters section */}
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
@@ -699,7 +706,9 @@ export default function Cases() {
                                             {/* Row 2: Priority left | Type right */}
                                             <div className="mt-1.5 flex items-center justify-between">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="w-12 shrink-0 text-xs text-gray-500 dark:text-gray-400">{translate('Priority')}:</span>
+                                                    <span className="w-12 shrink-0 text-xs text-gray-500 dark:text-gray-400">
+                                                        {translate('Priority')}:
+                                                    </span>
                                                     <span
                                                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${priorityColors[caseItem.priority] ?? priorityColors.medium}`}
                                                     >
@@ -819,7 +828,12 @@ export default function Cases() {
                             required: true,
                             placeholder: translate('e.g. Sign in page not loading, Billing issue'),
                         },
-                        { name: 'description', label: translate('Description'), type: 'textarea', placeholder: translate('Describe the issue in detail...') },
+                        {
+                            name: 'description',
+                            label: translate('Description'),
+                            type: 'textarea',
+                            placeholder: translate('Describe the issue in detail...'),
+                        },
                         {
                             name: 'account_id',
                             label: translate('Account'),

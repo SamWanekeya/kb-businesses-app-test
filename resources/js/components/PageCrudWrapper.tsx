@@ -6,13 +6,13 @@ import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { BreadcrumbItem } from '@/types';
 import { CrudConfig } from '@/types/crud';
 import { useHasPermission } from '@/utils/Permissions';
+import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import { CrudFormModal } from '@components/CrudFormModal';
+import { CrudTable } from '@components/CrudTable';
 import { router, usePage } from '@inertiajs/react';
 import { PlusIcon } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CrudDeleteModal } from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
-import { CrudTable } from '@components/CrudTable';
 
 export interface CrudButton {
     label: string;

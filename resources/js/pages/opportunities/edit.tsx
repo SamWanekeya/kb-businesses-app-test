@@ -600,7 +600,8 @@ export default function OpportunityEdit() {
                                                     </div>
                                                     <div className="mt-2 flex items-center justify-between border-t pt-2 text-xs">
                                                         <span className="text-muted-foreground">
-                                                            {translate('Tax')}: {tax ? `${tax.name} (${parseFloat(tax.rate).toFixed(2)}%)` : translate('No Tax')}
+                                                            {translate('Tax')}:{' '}
+                                                            {tax ? `${tax.name} (${parseFloat(tax.rate).toFixed(2)}%)` : translate('No Tax')}
                                                         </span>
                                                         <span className="text-foreground font-mono font-semibold">
                                                             {translate('Total')}: {fmt(lineTotal + taxAmt)}

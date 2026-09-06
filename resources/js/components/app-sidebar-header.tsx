@@ -4,13 +4,13 @@ import { ProfileMenu } from '@/components/profile-menu';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useLayout } from '@/contexts/LayoutContext';
 import { type BreadcrumbItem as BreadcrumbItemType } from '@/types';
-import { getCookie, setCookie } from '@/utils/cookie-utils';
+import { getCookie, storeCookie } from '@/utils/Helpers/Cookies';
+import { Button } from '@components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/ui/tooltip';
 import { router, usePage } from '@inertiajs/react';
 import { Moon, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@components/ui/button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/ui/tooltip';
 
 export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: BreadcrumbItemType[] }) {
     const { t: translate } = useTranslation();
@@ -64,9 +64,9 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
                 const existing = getCookie('themeSettings');
                 const parsed = existing ? JSON.parse(existing) : {};
                 const updated = { ...parsed, appearance: newMode };
-                setCookie('themeSettings', JSON.stringify(updated));
+                storeCookie('themeSettings', updated);
             } catch {
-                setCookie('themeSettings', JSON.stringify({ appearance: newMode }));
+                storeCookie('themeSettings', { appearance: newMode });
             }
         } else {
             // Main: save to database

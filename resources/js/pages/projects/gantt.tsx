@@ -495,7 +495,12 @@ export default function ProjectGantt() {
                             required: true,
                             placeholder: translate('e.g. Design homepage mockup, Fix sign in bug'),
                         },
-                        { name: 'description', label: translate('Description'), type: 'textarea', placeholder: translate('Enter task description...') },
+                        {
+                            name: 'description',
+                            label: translate('Description'),
+                            type: 'textarea',
+                            placeholder: translate('Enter task description...'),
+                        },
                         { name: 'start_date', label: translate('Start Date'), type: 'date' },
                         { name: 'due_date', label: translate('Due Date'), type: 'date' },
                         {
@@ -523,7 +528,13 @@ export default function ProjectGantt() {
                             })),
                             defaultValue: taskStatuses.find((s: any) => s.name === 'To Do')?.id || taskStatuses[0]?.id,
                         },
-                        { name: 'estimated_hours', label: translate('Estimated Hours'), type: 'number', step: '0.5', placeholder: translate('e.g. 8') },
+                        {
+                            name: 'estimated_hours',
+                            label: translate('Estimated Hours'),
+                            type: 'number',
+                            step: '0.5',
+                            placeholder: translate('e.g. 8'),
+                        },
                         {
                             name: 'progress',
                             label: translate('Progress (%)'),
@@ -600,7 +611,7 @@ export default function ProjectGantt() {
                                                 : 'bg-gray-50 text-gray-700 ring-1 ring-gray-600/20 ring-inset'
                                     }`}
                                 >
-                                    {t(selectedTask.priority.charAt(0).toUpperCase() + selectedTask.priority.slice(1))}
+                                    {translate(selectedTask.priority.charAt(0).toUpperCase() + selectedTask.priority.slice(1))}
                                 </span>
                             </div>
 

@@ -98,7 +98,9 @@ export default function RolesPage() {
             onError: (errors) => {
                 if (!globalSettings?.is_demo) toast.dismiss();
                 toast.error(
-                    typeof errors === 'string' ? t(errors) : translate('Failed to delete role: {{errors}}', { errors: Object.values(errors).join(', ') }),
+                    typeof errors === 'string'
+                        ? t(errors)
+                        : translate('Failed to delete role: {{errors}}', { errors: Object.values(errors).join(', ') }),
                 );
             },
         });

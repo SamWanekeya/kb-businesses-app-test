@@ -45,15 +45,7 @@ function FieldError({ message }: { message?: string }) {
 
 export default function ReturnOrderEdit() {
     const { t: translate } = useTranslation();
-    const {
-        returnOrder,
-        accounts = [],
-        contacts = [],
-        salesOrders = [],
-        products = [],
-        shippingProviderTypes = [],
-        users = [],
-    } = usePage().props;
+    const { returnOrder, accounts = [], contacts = [], salesOrders = [], products = [], shippingProviderTypes = [], users = [] } = usePage().props;
 
     const [form, setFormData] = useState({
         name: returnOrder.name || '',
@@ -524,7 +516,9 @@ export default function ReturnOrderEdit() {
                                 />
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 3H8a2 2 0 00-2 2v2h12V5a2 2 0 00-2-2z" />
                             </svg>
-                            <span className="text-base font-bold text-gray-900 dark:text-white">{translate('Available Product from Sales Order')}</span>
+                            <span className="text-base font-bold text-gray-900 dark:text-white">
+                                {translate('Available Product from Sales Order')}
+                            </span>
                         </div>
                         {salesOrderItems.length === 0 ? (
                             <p className="py-8 text-center text-sm text-gray-400">{translate('Select an invoice to see available items.')}</p>
@@ -538,7 +532,7 @@ export default function ReturnOrderEdit() {
                                                     key={h}
                                                     className="pe-6 pb-3 text-start text-sm font-medium whitespace-nowrap text-gray-500 dark:text-gray-400"
                                                 >
-                                                    {t(h)}
+                                                    {translate(h)}
                                                 </th>
                                             ))}
                                         </tr>
@@ -595,7 +589,9 @@ export default function ReturnOrderEdit() {
                                                                             className="flex h-8 w-8 items-center justify-center bg-emerald-500 p-2 text-white hover:bg-emerald-600 min-[1200px]:h-auto min-[1200px]:w-auto min-[1200px]:px-3 min-[1200px]:py-1.5"
                                                                         >
                                                                             <Plus className="h-4 w-4 min-[1200px]:mr-1" />
-                                                                            <span className="hidden min-[1200px]:inline">{translate('Add to Return')}</span>
+                                                                            <span className="hidden min-[1200px]:inline">
+                                                                                {translate('Add to Return')}
+                                                                            </span>
                                                                         </Button>
                                                                     </TooltipTrigger>
                                                                     <TooltipContent side="top" className="min-[1200px]:hidden">
@@ -650,7 +646,7 @@ export default function ReturnOrderEdit() {
                                                     key={h}
                                                     className="pe-6 pb-3 text-start text-sm font-medium whitespace-nowrap text-gray-500 dark:text-gray-400"
                                                 >
-                                                    {t(h)}
+                                                    {translate(h)}
                                                 </th>
                                             ))}
                                         </tr>

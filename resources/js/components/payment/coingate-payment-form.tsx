@@ -69,7 +69,9 @@ export function CoinGatePaymentForm({ planId, couponCode, billingCycle, planPric
             <CardContent>
                 <Alert className="mb-4">
                     <Info className="h-4 w-4" />
-                    <AlertDescription>{translate('You will be redirected to CoinGate to complete your cryptocurrency payment securely.')}</AlertDescription>
+                    <AlertDescription>
+                        {translate('You will be redirected to CoinGate to complete your cryptocurrency payment securely.')}
+                    </AlertDescription>
                 </Alert>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -77,7 +79,7 @@ export function CoinGatePaymentForm({ planId, couponCode, billingCycle, planPric
                         <div className="mb-2 flex items-center justify-between">
                             <span className="text-sm font-medium">{translate('Plan')}</span>
                             <span className="text-sm">
-                                {t(billingCycle)} {translate('billing')}
+                                {translate(billingCycle)} {translate('billing')}
                             </span>
                         </div>
                         <div className="flex items-center justify-between">

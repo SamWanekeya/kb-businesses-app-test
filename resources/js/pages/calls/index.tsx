@@ -9,8 +9,8 @@ import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
+import { formatTitleCase } from '@/utils/Helpers/StringFormatters';
 import { useHasPermission } from '@/utils/Permissions';
-import { capitalize } from '@/utils/helper';
 import { router, usePage } from '@inertiajs/react';
 import { Calendar, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -19,16 +19,7 @@ import { useTranslation } from 'react-i18next';
 export default function Calls() {
     const { t: translate } = useTranslation();
     const getInitials = useInitials();
-    const {
-        auth,
-        calls,
-        users = [],
-        allUsers = [],
-        allContacts = [],
-        allLeads = [],
-        filters: pageFilters = {},
-        settings = {},
-    } = usePage().props;
+    const { auth, calls, users = [], allUsers = [], allContacts = [], allLeads = [], filters: pageFilters = {}, settings = {} } = usePage().props;
 
     const userMap: Record<number, any> = Object.fromEntries(allUsers.map((u: any) => [u.id, u]));
     const contactMap: Record<number, any> = Object.fromEntries(allContacts.map((c: any) => [c.id, c]));
@@ -325,7 +316,7 @@ export default function Calls() {
             render: (value: string, row: any) =>
                 value ? (
                     <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium whitespace-nowrap text-blue-700 ring-1 ring-blue-600/20 ring-inset">
-                        {capitalize(value)}
+                        {formatTitleCase(value)}
                     </span>
                 ) : (
                     <span className="whitespace-nowrap">-</span>
@@ -464,7 +455,14 @@ export default function Calls() {
     ];
 
     return (
-        <PageTemplate title={translate('Calls')} description={translate('Manage your calls.')} url="/calls" actions={pageActions} breadcrumbs={breadcrumbs} noPadding>
+        <PageTemplate
+            title={translate('Calls')}
+            description={translate('Manage your calls.')}
+            url="/calls"
+            actions={pageActions}
+            breadcrumbs={breadcrumbs}
+            noPadding
+        >
             <div className="mb-4 rounded-lg border bg-white shadow dark:bg-gray-900">
                 <SearchAndFilterBar
                     searchTerm={searchTerm}

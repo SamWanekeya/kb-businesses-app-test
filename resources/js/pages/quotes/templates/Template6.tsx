@@ -182,7 +182,8 @@ export default function Template6({ quote, items, taxesData, settings, color, qr
                             <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Tax')} (%)</th>
                             <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Discount')}</th>
                             <th style={{ padding: '0.75rem', textAlign: 'left' }}>
-                                {translate('Price')} <small style={{ display: 'block', fontSize: '12px' }}>{translate('before tax & discount')}</small>
+                                {translate('Price')}{' '}
+                                <small style={{ display: 'block', fontSize: '12px' }}>{translate('before tax & discount')}</small>
                             </th>
                         </tr>
                         {items.length > 0 ? (

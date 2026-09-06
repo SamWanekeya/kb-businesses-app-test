@@ -1,7 +1,7 @@
 import { toast } from '@/components/custom-toast';
 import { InvoicePaymentModal } from '@/components/invoice-payment-modal';
+import { resolveImageUrl } from '@/utils/Helpers/Url';
 import { useHasPermission } from '@/utils/Permissions';
-import { getDisplayUrl } from '@/utils/helper';
 import { Head, usePage } from '@inertiajs/react';
 import { Calendar, Check, Copy, CreditCard, DollarSign, FileText, MapPin, Package, Printer, User } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -258,7 +258,7 @@ export default function PublicInvoice({
     return (
         <>
             <Head title={translate('Invoice {{invoiceNumber}}', { invoiceNumber: invoice.invoice_number })}>
-                {settings?.favicon && <link rel="icon" href={getDisplayUrl(settings.favicon, props.globalSettings)} />}
+                {settings?.favicon && <link rel="icon" href={resolveImageUrl(settings.favicon, props.globalSettings)} />}
             </Head>
 
             <div className="min-h-screen bg-gray-50 py-8 dark:from-gray-900 dark:to-gray-800 print:m-0 print:bg-white print:p-0">
@@ -543,12 +543,16 @@ export default function PublicInvoice({
                                         <table className="min-w-full">
                                             <thead>
                                                 <tr style={{ backgroundColor: template.primary }}>
-                                                    <th className="w-1/3 px-6 py-4 text-left text-base font-bold text-white">{translate('Product')}</th>
+                                                    <th className="w-1/3 px-6 py-4 text-left text-base font-bold text-white">
+                                                        {translate('Product')}
+                                                    </th>
                                                     <th className="px-4 py-4 text-right text-base font-bold text-white">{translate('Quantity')}</th>
                                                     <th className="px-4 py-4 text-right text-base font-bold text-white">{translate('Unit Price')}</th>
                                                     <th className="px-4 py-4 text-right text-base font-bold text-white">{translate('Discount')}</th>
                                                     <th className="px-4 py-4 text-right text-base font-bold text-white">{translate('Tax')}</th>
-                                                    <th className="w-1/6 px-4 py-4 text-right text-base font-bold text-white">{translate('Total')}</th>
+                                                    <th className="w-1/6 px-4 py-4 text-right text-base font-bold text-white">
+                                                        {translate('Total')}
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -676,13 +680,17 @@ export default function PublicInvoice({
                                     <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                                         {invoice.notes && (
                                             <div>
-                                                <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{translate('Notes')}</label>
+                                                <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">
+                                                    {translate('Notes')}
+                                                </label>
                                                 <p className="mt-2 text-base leading-relaxed text-gray-700">{invoice.notes}</p>
                                             </div>
                                         )}
                                         {invoice.terms && (
                                             <div>
-                                                <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{translate('Terms')}</label>
+                                                <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">
+                                                    {translate('Terms')}
+                                                </label>
                                                 <p className="mt-2 text-base leading-relaxed text-gray-700">{invoice.terms}</p>
                                             </div>
                                         )}

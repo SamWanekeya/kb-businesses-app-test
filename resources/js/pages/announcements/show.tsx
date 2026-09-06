@@ -70,7 +70,7 @@ export default function AnnouncementShow() {
 
         return (
             <Badge className={statusColors[status as keyof typeof statusColors] || statusColors.inactive}>
-                {t(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Inactive')}
+                {translate(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Inactive')}
             </Badge>
         );
     };

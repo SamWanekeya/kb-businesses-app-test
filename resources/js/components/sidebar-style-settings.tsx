@@ -74,7 +74,11 @@ export function SidebarStyleSettings() {
                     <h4 className="mb-2 text-sm font-medium">{translate('Sidebar Variant')}</h4>
                     <div className="grid grid-cols-3 gap-2">
                         <VariantButton variant="sidebar" isActive={settings.variant === 'sidebar'} onClick={() => updateVariantranslate('sidebar')} />
-                        <VariantButton variant="floating" isActive={settings.variant === 'floating'} onClick={() => updateVariantranslate('floating')} />
+                        <VariantButton
+                            variant="floating"
+                            isActive={settings.variant === 'floating'}
+                            onClick={() => updateVariantranslate('floating')}
+                        />
                         <VariantButton variant="inset" isActive={settings.variant === 'inset'} onClick={() => updateVariantranslate('inset')} />
                     </div>
                 </div>

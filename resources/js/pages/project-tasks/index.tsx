@@ -199,7 +199,9 @@ export default function ProjectTasks() {
                     onError: (errors) => {
                         toast.dismiss();
                         toast.error(
-                            typeof errors === 'string' ? errors : translate('Failed to create: {{errors}}', { errors: Object.values(errors).join(', ') }),
+                            typeof errors === 'string'
+                                ? errors
+                                : translate('Failed to create: {{errors}}', { errors: Object.values(errors).join(', ') }),
                         );
                     },
                 },
@@ -234,7 +236,9 @@ export default function ProjectTasks() {
             },
             onError: (errors) => {
                 toast.dismiss();
-                toast.error(typeof errors === 'string' ? errors : translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(
+                    typeof errors === 'string' ? errors : translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }),
+                );
             },
         });
     };
@@ -472,9 +476,7 @@ export default function ProjectTasks() {
                                                     e.currentTarget.classList.add('opacity-50');
                                                 }}
                                                 onDragEnd={(e) => e.currentTarget.classList.remove('opacity-50')}
-                                                className={
-                                                    useHasPermission('move-project-task') ? 'cursor-grab active:cursor-grabbing' : ''
-                                                }
+                                                className={useHasPermission('move-project-task') ? 'cursor-grab active:cursor-grabbing' : ''}
                                             >
                                                 <div className="rounded-lg border border-gray-100 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
                                                     <div className="p-3">
@@ -539,7 +541,7 @@ export default function ProjectTasks() {
                                                             <span
                                                                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${priorityColors[task.priority] || priorityColors.medium}`}
                                                             >
-                                                                {t(task.priority.charAt(0).toUpperCase() + task.priority.slice(1))}
+                                                                {translate(task.priority.charAt(0).toUpperCase() + task.priority.slice(1))}
                                                             </span>
                                                         </div>
 
@@ -621,7 +623,12 @@ export default function ProjectTasks() {
                             required: true,
                             placeholder: translate('e.g. Design homepage mockup, Fix sign in bug'),
                         },
-                        { name: 'description', label: translate('Description'), type: 'textarea', placeholder: translate('Enter task description...') },
+                        {
+                            name: 'description',
+                            label: translate('Description'),
+                            type: 'textarea',
+                            placeholder: translate('Enter task description...'),
+                        },
                         {
                             name: formMode === 'view' ? 'project_name' : 'project_id',
                             label: translate('Project'),
@@ -685,9 +692,22 @@ export default function ProjectTasks() {
                                 : String(taskStatuses.find((s: any) => s.name === 'To Do')?.id || taskStatuses[0]?.id || ''),
                             hidden: formMode === 'create' && !!prefilledStatus,
                         },
-                        { name: 'estimated_hours', label: translate('Estimated Hours'), type: 'number', step: '0.5', placeholder: translate('e.g. 8') },
+                        {
+                            name: 'estimated_hours',
+                            label: translate('Estimated Hours'),
+                            type: 'number',
+                            step: '0.5',
+                            placeholder: translate('e.g. 8'),
+                        },
                         { name: 'actual_hours', label: translate('Actual Hours'), type: 'number', step: '0.5', placeholder: translate('e.g. 6.5') },
-                        { name: 'progress', label: translate('Progress (%)'), type: 'number', min: '0', max: '100', placeholder: translate('e.g. 50') },
+                        {
+                            name: 'progress',
+                            label: translate('Progress (%)'),
+                            type: 'number',
+                            min: '0',
+                            max: '100',
+                            placeholder: translate('e.g. 50'),
+                        },
                         {
                             name: formMode === 'view' ? 'assigned_user_name' : 'assigned_to',
                             label: translate('Assign To'),

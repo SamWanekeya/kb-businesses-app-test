@@ -12,14 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function LeadCreate() {
     const { t: translate } = useTranslation();
-    const {
-        leadStatuses = [],
-        leadSources = [],
-        accountIndustries = [],
-        campaigns = [],
-        users = [],
-        prefilledLeadStatusId = '',
-    } = usePage().props;
+    const { leadStatuses = [], leadSources = [], accountIndustries = [], campaigns = [], users = [], prefilledLeadStatusId = '' } = usePage().props;
 
     const { data, setData, setError, clearErrors, post, processing, errors } = useForm({
         name: '',

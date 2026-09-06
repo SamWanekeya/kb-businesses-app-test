@@ -30,31 +30,13 @@ export default function CookieConsentBanner() {
 
     useEffect(() => {
         const enableLogging = globalSettings.enableLogging === '1' || globalSettings.enableLogging === 1 || globalSettings.enableLogging === true;
-        const isDemoMode = globalSettings.is_demo === '1' || globalSettings.is_demo === 1 || globalSettings.is_demo === true;
-        const isDashboard = window.location.pathname.includes('/dashboard');
-        const authUser = (props as any).auth?.user;
 
         if (!enableLogging) {
             return;
         }
-
-        if (isDemoMode && !isDashboard) {
-            return;
-        }
-
-        if (isDemoMode) {
-            // Only show cookie popup if user is organization type and on dashboard
-            if (authUser?.type === 'organization' && isDashboard) {
-                const consent = localStorage.getItem('cookie-consent');
-                if (!consent) {
-                    setIsVisible(true);
-                }
-            }
-        } else {
-            const consent = localStorage.getItem('cookie-consent');
-            if (!consent) {
-                setIsVisible(true);
-            }
+        const consent = localStorage.getItem('cookie-consent');
+        if (!consent) {
+            setIsVisible(true);
         }
     }, []);
 
@@ -200,7 +182,8 @@ export default function CookieConsentBanner() {
                     </div>
 
                     <p className="text-muted-foreground mb-4 text-sm">
-                        {settings.cookieDescription || translate('We use cookies to enhance your browsing experience and provide personalized content.')}
+                        {settings.cookieDescription ||
+                            translate('We use cookies to enhance your browsing experience and provide personalized content.')}
                     </p>
 
                     <div className="flex flex-col gap-2">
@@ -257,7 +240,9 @@ export default function CookieConsentBanner() {
                                 {/* Strictly Necessary Cookies */}
                                 <div className="flex items-center justify-between">
                                     <div className="flex-1">
-                                        <h4 className="text-sm font-medium">{settings.strictlyCookieTitle || translate('Strictly Necessary Cookies')}</h4>
+                                        <h4 className="text-sm font-medium">
+                                            {settings.strictlyCookieTitle || translate('Strictly Necessary Cookies')}
+                                        </h4>
                                         <p className="text-muted-foreground mt-1 text-xs">
                                             {settings.strictlyCookieDescription ||
                                                 translate('These cookies are essential for the website to function properly.')}

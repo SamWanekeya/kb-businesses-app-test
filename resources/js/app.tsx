@@ -1,21 +1,20 @@
 import '../css/app.css';
 import '../css/dark-mode.css';
 
-import { createInertiaApp, router } from '@inertiajs/react';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { Suspense } from 'react';
-import { createRoot } from 'react-dom/client';
-import { CustomToast } from '@components/custom-toast';
 import { BrandProvider } from '@/contexts/BrandContext';
 import { LayoutProvider } from '@/contexts/LayoutContext';
 import { ModalStackProvider } from '@/contexts/ModalStackContext';
 import { SidebarProvider } from '@/contexts/SidebarContext';
-import { initializeTheme } from '@hooks/use-appearance';
-import i18n from '/i18n'; // Import i18n configuration
-import { getCookie, isDemoMode } from '@/utils/cookie-utils';
 import { initializeGlobalSettings } from '@/utils/globalSettings';
 import { initPerformanceMonitoring, lazyLoadImages } from '@/utils/performance';
+import { CustomToast } from '@components/custom-toast';
+import { initializeTheme } from '@hooks/use-appearance';
+import { createInertiaApp, router } from '@inertiajs/react';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { Suspense } from 'react';
+import { createRoot } from 'react-dom/client';
 import './utils/routes'; // Import route helper
+import i18n from '/i18n'; // Import i18n configuration
 
 // Initialize performance monitoring
 initPerformanceMonitoring();
@@ -29,10 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
     // Re-apply theme when system preference changes
     let savedTheme = null;
-
-    if (isDemoMode()) {
-        savedTheme = getCookie('themeSettings');
-    }
 
     if (savedTheme) {
         const themeSettings = JSON.parse(savedTheme);
@@ -126,10 +121,6 @@ createInertiaApp({
                 // Force dark mode check on navigation
                 let savedTheme = null;
 
-                if (isDemoMode()) {
-                    savedTheme = getCookie('themeSettings');
-                }
-
                 if (savedTheme) {
                     const themeSettings = JSON.parse(savedTheme);
                     const isDark =
@@ -148,28 +139,3 @@ createInertiaApp({
 
 // This will set light / dark mode on load...
 initializeTheme();
-
-// // Initialize direction from cookies (demo mode) or database (live mode)
-// const initializeDirection = () => {
-//     let savedDirection = null;
-
-//     if (isDemoMode()) {
-//         savedDirection = getCookie('layoutDirection');
-//     } else {
-//         // In live mode, get from globalSettings
-//         const globalSettings = (window as any).page?.props?.globalSettings;
-//         // const globalSettings = (window as any).props.globalSettings || {};
-//         if (globalSettings?.layoutDirection) {
-//             savedDirection = globalSettings.layoutDirection;
-//         }
-//     }
-
-//     if (savedDirection) {
-//         const domsavedDirection = savedDirection === 'right' ? 'rtl' : 'ltr';
-//         document.documentElement.dir = domsavedDirection;
-//         document.documentElement.setAttribute('dir', domsavedDirection);
-//     }
-// };
-
-// // Initialize direction on page load
-// initializeDirection();

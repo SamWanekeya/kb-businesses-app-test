@@ -1,5 +1,5 @@
 @php
-    $locale = Cookie::get('__hf_lcl') ?? "";
+    $locale = Cookie::get('__kb_lcl') ?? "";
 @endphp
 @props(['url'])
 <tr>

@@ -7,8 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
+import { formatTitleCase } from '@/utils/Helpers/StringFormatters';
 import { useHasPermission } from '@/utils/Permissions';
-import { capitalize } from '@/utils/helper';
 import { router, usePage } from '@inertiajs/react';
 import { CalendarDays, ChevronLeft, ChevronRight, Clock, Edit, Eye, MapPin, Plus, RefreshCw, Trash2, Users } from 'lucide-react';
 import { useState } from 'react';
@@ -381,7 +381,7 @@ export default function Meetings() {
                         >
                             <div className="flex items-center gap-2">
                                 <CalendarDays className={`h-4 w-4 shrink-0 ${isActive ? 'text-primary' : 'text-muted-foreground'}`} />
-                                <span>{t(f.charAt(0).toUpperCase() + f.slice(1))}</span>
+                                <span>{translate(f.charAt(0).toUpperCase() + f.slice(1))}</span>
                             </div>
                             {isRtl ? (
                                 <ChevronLeft className="text-muted-foreground h-4 w-4" />
@@ -437,7 +437,7 @@ export default function Meetings() {
                             {(Array.isArray(meetings) ? meetings : (meetings?.data ?? [])).length === 0 ? (
                                 <div className="text-muted-foreground flex flex-col items-center justify-center gap-2 py-16">
                                     <CalendarDays className="h-8 w-8 text-gray-300 dark:text-gray-600" />
-                                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{t("That's all for today!")}</p>
+                                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{translate("That's all for today!")}</p>
                                     <p className="text-muted-foreground text-xs">
                                         {translate('You have no meetings scheduled for')}{' '}
                                         <span className="font-medium">{formatSelectedDate(selectedDateObj)}</span>
@@ -568,7 +568,7 @@ export default function Meetings() {
                                                     )}
                                                     {meeting.parent_module && (
                                                         <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-gray-600/20 ring-inset">
-                                                            {capitalize(meeting.parent_module)}
+                                                            {formatTitleCase(meeting.parent_module)}
                                                         </span>
                                                     )}
                                                 </div>

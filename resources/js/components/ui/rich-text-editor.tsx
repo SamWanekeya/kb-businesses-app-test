@@ -1,4 +1,6 @@
 import { cn } from '@/lib/utils';
+import { Button } from '@components/ui/button';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@components/ui/dialog';
 import Blockquote from '@tiptap/extension-blockquote';
 import BulletList from '@tiptap/extension-bullet-list';
 import Color from '@tiptap/extension-color';
@@ -26,11 +28,9 @@ import {
     Unlink,
 } from 'lucide-react';
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { Button } from '@components/ui/button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@components/ui/dialog';
 
-import { Separator } from '@components/ui/separator';
 import { Input } from '@components/ui/input';
+import { Separator } from '@components/ui/separator';
 
 interface RichTextEditorProps {
     content?: string;

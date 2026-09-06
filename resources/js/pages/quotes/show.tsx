@@ -8,8 +8,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
+import { formatRelativeTime } from '@/utils/Helpers/StringFormatters';
 import { useHasPermission } from '@/utils/Permissions';
-import { formatRelativeTime } from '@/utils/helper';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ArrowLeft, Building2, Calendar, Edit, Eye, FileText, MessageCircle, Package, Send, Trash2, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -54,7 +54,7 @@ export default function QuoteShow() {
             <span
                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.draft}`}
             >
-                {t(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Draft')}
+                {translate(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Draft')}
             </span>
         );
     };
@@ -203,8 +203,12 @@ export default function QuoteShow() {
                                                     <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
                                                         {translate('Discount')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">{translate('Tax')}</TableHead>
-                                                    <TableHead className="py-2.5 text-right font-semibold whitespace-nowrap">{translate('Total')}</TableHead>
+                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
+                                                        {translate('Tax')}
+                                                    </TableHead>
+                                                    <TableHead className="py-2.5 text-right font-semibold whitespace-nowrap">
+                                                        {translate('Total')}
+                                                    </TableHead>
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
@@ -351,7 +355,9 @@ export default function QuoteShow() {
                         <CardContent className="p-0">
                             <div className="max-h-[150px] overflow-y-auto">
                                 <div className="px-4 py-4 sm:px-5">
-                                    <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{quote.description || translate('-')}</p>
+                                    <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">
+                                        {quote.description || translate('-')}
+                                    </p>
                                 </div>
                             </div>
                         </CardContent>

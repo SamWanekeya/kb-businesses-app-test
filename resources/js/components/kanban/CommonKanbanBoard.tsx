@@ -173,7 +173,7 @@ export const CommonKanbanBoard: React.FC<CommonKanbanBoardProps> = ({
                 {useHasPermission(viewPermission) && (
                     <DropdownMenuItem onClick={() => onItemAction('view', item)}>
                         <Eye className="mr-2 h-4 w-4" />
-                        <span>{t(`View ${type}`)}</span>
+                        <span>{translate(`View ${type}`)}</span>
                     </DropdownMenuItem>
                 )}
                 {useHasPermission(editPermission) && (
@@ -344,8 +344,8 @@ export const CommonKanbanBoard: React.FC<CommonKanbanBoardProps> = ({
                                                     <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-gray-100 to-gray-200 shadow-sm">
                                                         <span className="text-lg">{type === 'lead' ? '👤' : '💼'}</span>
                                                     </div>
-                                                    <p className="mb-1 text-sm font-medium text-gray-500">{t(`No ${type}s here`)}</p>
-                                                    <p className="text-xs text-gray-400">{t(`Drag ${type}s here to update status`)}</p>
+                                                    <p className="mb-1 text-sm font-medium text-gray-500">{translate(`No ${type}s here`)}</p>
+                                                    <p className="text-xs text-gray-400">{translate(`Drag ${type}s here to update status`)}</p>
                                                 </div>
                                             )}
                                         </div>

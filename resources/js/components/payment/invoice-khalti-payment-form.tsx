@@ -155,13 +155,13 @@ export function InvoiceKhaltiPaymentForm({
                         <span className="text-lg font-bold">{formatPrice(amount)}</span>
                     </div>
                     <div className="text-muted-foreground mt-1 text-sm">
-                        {translate('Payment Type')}: {t(paymentType)}
+                        {translate('Payment Type')}: {translate(paymentType)}
                     </div>
                 </div>
 
                 <Alert>
                     <AlertCircle className="h-4 w-4" />
-                    <AlertDescription>{t("Khalti is Nepal's most popular digital wallet and payment gateway.")}</AlertDescription>
+                    <AlertDescription>{translate("Khalti is Nepal's most popular digital wallet and payment gateway.")}</AlertDescription>
                 </Alert>
 
                 <div className="rounded-lg border border-purple-200 bg-purple-50 p-4">
@@ -194,7 +194,7 @@ export function InvoiceKhaltiPaymentForm({
                     </Button>
                 </div>
 
-                <div className="text-muted-foreground text-center text-xs">{t("Powered by Khalti - Nepal's digital wallet")}</div>
+                <div className="text-muted-foreground text-center text-xs">{translate("Powered by Khalti - Nepal's digital wallet")}</div>
             </CardContent>
         </Card>
     );

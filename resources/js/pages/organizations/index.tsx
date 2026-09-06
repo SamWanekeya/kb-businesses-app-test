@@ -14,13 +14,13 @@ import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { UpgradePlanModal } from '@/components/UpgradePlanModal';
 import { useInitials } from '@/hooks/use-initials';
+import { formatTitleCase } from '@/utils/Helpers/StringFormatters';
 import { useHasPermission } from '@/utils/Permissions';
-import { capitalize, getDisplayUrl } from '@/utils/helper';
 import { router, usePage } from '@inertiajs/react';
+import ViewPopup from '@pages/organizations/view';
 import { ArrowUpRight, Calendar, CreditCard, Edit, History, Info, KeyRound, Lock, Plus, Trash2, Unlock } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import ViewPopup from '@pages/organizations/view';
 
 export default function Organizations() {
     const { t: translate } = useTranslation();
@@ -394,7 +394,7 @@ export default function Organizations() {
                         'inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-600/20 ring-inset'
                     }
                 >
-                    {capitalize(value)}
+                    {formatTitleCase(value)}
                 </span>
             ),
         },
@@ -608,7 +608,7 @@ export default function Organizations() {
                                                     onError={(e) => {
                                                         // Fallback to default avatar on error
                                                         const target = e.target as HTMLImageElement;
-                                                        target.src = getDisplayUrl('avatars/avatar.png');
+                                                        target.src = resolveImageUrl('avatars/avatar.png');
                                                     }}
                                                 />
                                                 <AvatarFallback className="text-lg">
@@ -731,7 +731,11 @@ export default function Organizations() {
                                                     ) : (
                                                         <Unlock className="mr-2 h-4 w-4 text-gray-500" />
                                                     )}
-                                                    <span>{organization.status === 'active' ? translate('Disable Sign in') : translate('Enable Sign in')}</span>
+                                                    <span>
+                                                        {organization.status === 'active'
+                                                            ? translate('Disable Sign in')
+                                                            : translate('Enable Sign in')}
+                                                    </span>
                                                 </DropdownMenuItem>
                                                 <DropdownMenuSeparator />
                                                 <DropdownMenuItem
@@ -764,7 +768,9 @@ export default function Organizations() {
                                         </svg>
                                     </div>
                                     <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{translate('No organizations found')}</h3>
-                                    <p className="mb-6 text-gray-500 dark:text-gray-400">{translate('Get started by creating your first organization')}</p>
+                                    <p className="mb-6 text-gray-500 dark:text-gray-400">
+                                        {translate('Get started by creating your first organization')}
+                                    </p>
                                     <Button onClick={handleAddNew} className="inline-flex items-center">
                                         <Plus className="mr-2 h-4 w-4" />
                                         {translate('Add Organization')}
@@ -830,7 +836,13 @@ export default function Organizations() {
                 }}
                 formConfig={{
                     fields: [
-                        { name: 'name', label: translate('Organization Name'), type: 'text', placeholder: translate('eg. Acme Corp'), required: true },
+                        {
+                            name: 'name',
+                            label: translate('Organization Name'),
+                            type: 'text',
+                            placeholder: translate('eg. Acme Corp'),
+                            required: true,
+                        },
                         { name: 'email', label: translate('Email'), type: 'email', placeholder: translate('eg. admin@acmecorp.com'), required: true },
                         {
                             name: 'sign_in_enabled',
@@ -876,7 +888,15 @@ export default function Organizations() {
                 onClose={() => setIsResetPasswordModalOpen(false)}
                 onSubmit={handleResetPasswordConfirm}
                 formConfig={{
-                    fields: [{ name: 'password', label: translate('New Password'), type: 'password', placeholder: translate('Enter New Password'), required: true }],
+                    fields: [
+                        {
+                            name: 'password',
+                            label: translate('New Password'),
+                            type: 'password',
+                            placeholder: translate('Enter New Password'),
+                            required: true,
+                        },
+                    ],
                     modalSize: 'sm',
                 }}
                 initialData={{}}

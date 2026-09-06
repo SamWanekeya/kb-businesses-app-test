@@ -463,7 +463,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/* Bank Transfer */}
                             {shouldShowMethod('bank') && (
                                 <PaymentMethodCard
-                                    title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.BANK])}
+                                    title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.BANK])}
                                     icon={<Banknote className="h-5 w-5" />}
                                     enabled={data.is_bank_payment_mode_enabled}
                                     onToggle={(checked) => setData('is_bank_payment_mode_enabled', checked)}
@@ -488,7 +488,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* Stripe *!/*/}
                             {/*{shouldShowMethod('stripe') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.STRIPE])}*/}
+                            {/*        title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.STRIPE])}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_stripe_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_stripe_payment_mode_enabled', checked)}*/}
@@ -520,7 +520,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* PayPal *!/*/}
                             {/*{shouldShowMethod('paypal') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYPAL])}*/}
+                            {/*        title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYPAL])}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_paypal_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_paypal_payment_mode_enabled', checked)}*/}
@@ -559,7 +559,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* Razorpay *!/*/}
                             {/*{shouldShowMethod('razorpay') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.RAZORPAY])}*/}
+                            {/*        title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.RAZORPAY])}*/}
                             {/*        icon={<IndianRupee className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_razorpay_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_razorpay_payment_mode_enabled', checked)}*/}
@@ -591,7 +591,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* Mercado Pago *!/*/}
                             {/*{shouldShowMethod('mercadopago') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.MERCADOPAGO])}*/}
+                            {/*        title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.MERCADOPAGO])}*/}
                             {/*        icon={<Wallet className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_mercadopago_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_mercadopago_payment_mode_enabled', checked)}*/}
@@ -614,14 +614,14 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*                error={errors.mercadopago_access_token}*/}
                             {/*            />*/}
                             {/*            <p className="text-muted-foreground text-xs">*/}
-                            {/*                {t(*/}
+                            {/*                {translate(*/}
                             {/*                    'For server-side API integration, use your Private Access Token (NOT your public key). You can find this in your MercadoPago Developer Dashboard under Credentials > Production/Test Credentials > Access token.',*/}
                             {/*                )}*/}
                             {/*            </p>*/}
                             {/*            <Alert>*/}
                             {/*                <AlertCircle className="h-4 w-4" />*/}
                             {/*                <AlertDescription>*/}
-                            {/*                    {t(*/}
+                            {/*                    {translate(*/}
                             {/*                        'Important: Do not use your Public Key here. The Access Token is different and is required for server-side operations.',*/}
                             {/*                    )}*/}
                             {/*                </AlertDescription>*/}
@@ -633,7 +633,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/* Paystack */}
                             {shouldShowMethod('paystack') && (
                                 <PaymentMethodCard
-                                    title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYSTACK])}
+                                    title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYSTACK])}
                                     icon={<CreditCard className="h-5 w-5" />}
                                     enabled={data.is_paystack_payment_mode_enabled}
                                     onToggle={(checked) => setData('is_paystack_payment_mode_enabled', checked)}
@@ -665,7 +665,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* Flutterwave *!/*/}
                             {/*{shouldShowMethod('flutterwave') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.FLUTTERWAVE])}*/}
+                            {/*        title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.FLUTTERWAVE])}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_flutterwave_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_flutterwave_payment_mode_enabled', checked)}*/}
@@ -697,7 +697,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* PayTabs *!/*/}
                             {/*{shouldShowMethod('paytabs') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYTABS])}*/}
+                            {/*        title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYTABS])}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_paytabs_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_paytabs_payment_mode_enabled', checked)}*/}
@@ -754,7 +754,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* Skrill *!/*/}
                             {/*{shouldShowMethod('skrill') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.SKRILL])}*/}
+                            {/*        title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.SKRILL])}*/}
                             {/*        icon={<Wallet className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_skrill_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_skrill_payment_mode_enabled', checked)}*/}
@@ -786,7 +786,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* CoinGate *!/*/}
                             {/*{shouldShowMethod('coingate') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.COINGATE])}*/}
+                            {/*        title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.COINGATE])}*/}
                             {/*        icon={<Coins className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_coingate_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_coingate_payment_mode_enabled', checked)}*/}
@@ -815,7 +815,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* Payfast *!/*/}
                             {/*{shouldShowMethod('payfast') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYFAST])}*/}
+                            {/*        title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYFAST])}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_payfast_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_payfast_payment_mode_enabled', checked)}*/}
@@ -862,7 +862,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* Tap *!/*/}
                             {/*{shouldShowMethod('tap') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.TAP])}*/}
+                            {/*        title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.TAP])}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_tap_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_tap_payment_mode_enabled', checked)}*/}
@@ -884,7 +884,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* Xendit *!/*/}
                             {/*{shouldShowMethod('xendit') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.XENDIT])}*/}
+                            {/*        title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.XENDIT])}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_xendit_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_xendit_payment_mode_enabled', checked)}*/}
@@ -906,7 +906,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* PayTR *!/*/}
                             {/*{shouldShowMethod('paytr') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYTR])}*/}
+                            {/*        title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYTR])}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_paytr_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_paytr_payment_mode_enabled', checked)}*/}
@@ -947,7 +947,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* Mollie *!/*/}
                             {/*{shouldShowMethod('mollie') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.MOLLIE])}*/}
+                            {/*        title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.MOLLIE])}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_mollie_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_mollie_payment_mode_enabled', checked)}*/}
@@ -969,7 +969,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                             {/*/!* toyyibPay *!/*/}
                             {/*{shouldShowMethod('toyyibpay') && (*/}
                             {/*    <PaymentMethodCard*/}
-                            {/*        title={t(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.TOYYIBPAY])}*/}
+                            {/*        title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.TOYYIBPAY])}*/}
                             {/*        icon={<CreditCard className="h-5 w-5" />}*/}
                             {/*        enabled={data.is_toyyibpay_payment_mode_enabled}*/}
                             {/*        onToggle={(checked) => setData('is_toyyibpay_payment_mode_enabled', checked)}*/}
@@ -1171,7 +1171,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                 enabled={data.is_nepalste_payment_mode_enabled}
                 onToggle={(checked) => setData('is_nepalste_payment_mode_enabled', checked)}
                 helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.NEPALSTE]}
-                helpText={t("Get your Nepalste API credentials from your")}
+                helpText={translate("Get your Nepalste API credentials from your")}
               >
                 <PaymentModeSelector
                   value={data.nepalste_mode as 'sandbox' | 'live'}
@@ -1181,18 +1181,18 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <PaymentInputField
                     id="nepalste_public_key"
-                    label={t("Public Key")}
+                    label={translate("Public Key")}
                     value={data.nepalste_public_key}
                     onChange={(value) => setData('nepalste_public_key', value)}
-                    placeholder={t("Public Key")}
+                    placeholder={translate("Public Key")}
                     error={errors.nepalste_public_key}
                   />
                   <PaymentInputField
                     id="nepalste_secret_key"
-                    label={t("Secret Key")}
+                    label={translate("Secret Key")}
                     value={data.nepalste_secret_key}
                     onChange={(value) => setData('nepalste_secret_key', value)}
-                    placeholder={t("Secret Key")}
+                    placeholder={translate("Secret Key")}
                     isSecret
                     error={errors.nepalste_secret_key}
                   />
@@ -1550,7 +1550,7 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                         <AlertCircle className="h-4 w-4" />
                         <AlertDescription>
                             <strong>{translate('Important:')}</strong>{' '}
-                            {t(
+                            {translate(
                                 'These payment settings will be used for all subscription plan payments. Make sure to test your configuration before going live.',
                             )}
                         </AlertDescription>

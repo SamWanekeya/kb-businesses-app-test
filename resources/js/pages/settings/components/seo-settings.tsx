@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { getDisplayUrl } from '@/utils/helper';
+import { resolveImageUrl } from '@/utils/Helpers/Url';
 import { router, usePage } from '@inertiajs/react';
 import { Lightbulb, Save, Search, Upload, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -129,13 +129,13 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
         );
     };
 
-    const previewImageSrc = imagePreview || (seoSettings.metaImage ? getDisplayUrl(seoSettings.metaImage) : null);
+    const previewImageSrc = imagePreview || (seoSettings.metaImage ? resolveImageUrl(seoSettings.metaImage) : null);
     const hasImage = !!(seoSettings.metaImage || imagePreview);
 
     return (
         <SettingsSection
             title={translate('SEO Settings')}
-            description={t("Configure SEO settings to improve your website's search engine visibility")}
+            description={translate("Configure SEO settings to improve your website's search engine visibility")}
             action={
                 <Button
                     type="submit"
@@ -193,7 +193,7 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
                                         </span>
                                     </div>
                                     <p className="text-muted-foreground text-xs">
-                                        {t(
+                                        {translate(
                                             'Write a compelling description that summarizes your page content and encourages clicks from search results.',
                                         )}
                                     </p>
@@ -210,7 +210,9 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
                                             className="flex flex-1 cursor-pointer items-center gap-2 px-3 py-2 select-none"
                                         >
                                             <Upload className="text-muted-foreground h-4 w-4 shrink-0" />
-                                            <span className="text-muted-foreground">{hasImage ? translate('Change Image') : translate('Upload Image')}</span>
+                                            <span className="text-muted-foreground">
+                                                {hasImage ? translate('Change Image') : translate('Upload Image')}
+                                            </span>
                                         </label>
                                         <Input id="metaImageUpload" type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
                                         {hasImage && (
@@ -293,13 +295,16 @@ export default function SeoSettings({ settings = {} }: SeoSettingsProps) {
                                         </div>
                                         <ul className="space-y-1 text-xs">
                                             <li className="text-blue-600 dark:text-blue-400">
-                                                <span className="font-medium">{translate('Keywords:')}</span> <span>{translate('Use 3-5 relevant keywords')}</span>
+                                                <span className="font-medium">{translate('Keywords:')}</span>{' '}
+                                                <span>{translate('Use 3-5 relevant keywords')}</span>
                                             </li>
                                             <li className="text-blue-600 dark:text-blue-400">
-                                                <span className="font-medium">{translate('Description:')}</span> <span>{translate('150-160 characters')}</span>
+                                                <span className="font-medium">{translate('Description:')}</span>{' '}
+                                                <span>{translate('150-160 characters')}</span>
                                             </li>
                                             <li className="text-blue-600 dark:text-blue-400">
-                                                <span className="font-medium">{translate('Image:')}</span> <span>{translate('1200x630px works well')}</span>
+                                                <span className="font-medium">{translate('Image:')}</span>{' '}
+                                                <span>{translate('1200x630px works well')}</span>
                                             </li>
                                         </ul>
                                     </div>

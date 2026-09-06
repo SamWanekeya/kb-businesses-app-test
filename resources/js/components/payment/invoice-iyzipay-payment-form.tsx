@@ -99,7 +99,7 @@ export function InvoiceIyzipayPaymentForm({
                         <span className="text-lg font-bold">{formatPrice(amount)}</span>
                     </div>
                     <div className="text-muted-foreground mt-1 text-sm">
-                        {translate('Payment Type')}: {t(paymentType === 'full' ? 'Full Payment' : 'Partial Payment')}
+                        {translate('Payment Type')}: {translate(paymentType === 'full' ? 'Full Payment' : 'Partial Payment')}
                     </div>
                 </div>
 

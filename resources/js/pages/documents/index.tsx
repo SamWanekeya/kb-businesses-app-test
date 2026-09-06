@@ -110,7 +110,11 @@ export default function Documents() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Document Management') }, { title: translate('Documents') }];
+    const breadcrumbs = [
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Document Management') },
+        { title: translate('Documents') },
+    ];
 
     const folderFormFields = [
         { name: 'name', label: translate('Folder Name'), type: 'text', required: true, placeholder: translate('e.g. Contracts, HR Documents') },
@@ -181,8 +185,7 @@ export default function Documents() {
 
                                     {/* Three-dot menu */}
                                     <div className="absolute top-2 right-2" onClick={(e) => e.stopPropagation()}>
-                                        {useHasPermission('edit-document-folders') ||
-                                        useHasPermission('delete-document-folders') ? (
+                                        {useHasPermission('edit-document-folders') || useHasPermission('delete-document-folders') ? (
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
                                                     <Button
@@ -206,8 +209,9 @@ export default function Documents() {
                                                             {translate('Edit')}
                                                         </DropdownMenuItem>
                                                     )}
-                                                    {useHasPermission('edit-document-folders') &&
-                                                        useHasPermission('delete-document-folders') && <DropdownMenuSeparator />}
+                                                    {useHasPermission('edit-document-folders') && useHasPermission('delete-document-folders') && (
+                                                        <DropdownMenuSeparator />
+                                                    )}
                                                     {useHasPermission('delete-document-folders') && (
                                                         <DropdownMenuItem
                                                             className="text-red-600"
@@ -245,7 +249,9 @@ export default function Documents() {
                                 {searchTerm ? translate('No folders match your search') : translate('No folders yet')}
                             </h3>
                             <p className="text-sm text-gray-500 dark:text-gray-400">
-                                {searchTerm ? translate('Try a different search term.') : translate('Create a folder to start organizing your documents.')}
+                                {searchTerm
+                                    ? translate('Try a different search term.')
+                                    : translate('Create a folder to start organizing your documents.')}
                             </p>
                         </div>
                     )}

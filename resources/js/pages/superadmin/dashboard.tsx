@@ -224,7 +224,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                             <span className="animate-hand-wave text-2xl select-none sm:text-3xl">👋</span>
                         </div>
                         <p className="mt-1 hidden text-xs text-slate-400 transition-colors duration-300 group-hover:text-slate-300 sm:block">
-                            {t("Here's what's happening across your platform today.")}
+                            {translate("Here's what's happening across your platform today.")}
                         </p>
                         <div className="mt-3 flex items-center gap-3">
                             <div className="flex items-center gap-1.5">
@@ -476,7 +476,9 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                             <div className="flex items-center justify-between">
                                 <div>
                                     <CardTitle className="text-base font-semibold">{translate('Recently Registered Organizations')}</CardTitle>
-                                    <p className="text-muted-foreground mt-0.5 text-xs">{translate('Latest organizations that joined the platform')}</p>
+                                    <p className="text-muted-foreground mt-0.5 text-xs">
+                                        {translate('Latest organizations that joined the platform')}
+                                    </p>
                                 </div>
                                 <Link
                                     href={route('organizations.index')}

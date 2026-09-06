@@ -4,7 +4,7 @@ import { toast } from '@/components/custom-toast';
 import { PageTemplate } from '@/components/page-template';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { capitalize, getDisplayUrl } from '@/utils/helper';
+import { formatTitleCase } from '@/utils/Helpers/StringFormatters';
 import { router, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -154,7 +154,7 @@ export default function PlanRequestsPage() {
             key: 'user.name',
             label: translate('Organization'),
             render: (_, row) => {
-                const avatarUrl = row.user?.avatar ? getDisplayUrl(row.user.avatar) : getDisplayUrl('media/avatars/avatar.png');
+                const avatarUrl = row.user?.avatar ? resolveImageUrl(row.user.avatar) : resolveImageUrl('media/avatars/avatar.png');
                 return (
                     <div className="flex items-center gap-3">
                         <img
@@ -163,7 +163,7 @@ export default function PlanRequestsPage() {
                             className="h-10 w-10 rounded-full object-cover"
                             onError={(e) => {
                                 const target = e.target as HTMLImageElement;
-                                target.src = getDisplayUrl('media/avatars/avatar.png');
+                                target.src = resolveImageUrl('media/avatars/avatar.png');
                             }}
                         />
                         <div>
@@ -186,7 +186,7 @@ export default function PlanRequestsPage() {
                             'inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-sm font-medium text-blue-700 ring-1 ring-blue-600/20 ring-inset'
                         }
                     >
-                        {capitalize(planName)}
+                        {formatTitleCase(planName)}
                     </span>
                 );
             },
@@ -213,7 +213,7 @@ export default function PlanRequestsPage() {
                     <span
                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium capitalize ring-1 ring-inset ${statusColors[value] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}
                     >
-                        {t(value)}
+                        {translate(value)}
                     </span>
                 );
             },

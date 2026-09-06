@@ -265,7 +265,7 @@ export default function QuoteTemplateSettings() {
 
             if (result.success) {
                 toast.success(result.success);
-                resetranslate('quoteLogo');
+                reset('quoteLogo');
             } else if (result.error) {
                 toast.error(result.error);
             } else {

@@ -53,7 +53,7 @@ export default function CacheSettings({ cacheSize = '0.00' }: CacheSettingsProps
                     <div className="space-y-6">
                         <div className="bg-muted/50 rounded-lg p-3">
                             <p className="text-muted-foreground text-sm">
-                                {t("This is a page meant for more advanced users, simply ignore it if you don't understand what cache is.")}
+                                {translate("This is a page meant for more advanced users, simply ignore it if you don't understand what cache is.")}
                             </p>
                         </div>
                         <div className="flex items-center justify-between rounded-lg border p-4">
@@ -77,7 +77,9 @@ export default function CacheSettings({ cacheSize = '0.00' }: CacheSettingsProps
                                             className="max-[1300px]:px-2.5"
                                         >
                                             <Trash2 className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
-                                            <span className="max-[1300px]:hidden">{isClearing ? translate('Clearing...') : translate('Clear Cache')}</span>
+                                            <span className="max-[1300px]:hidden">
+                                                {isClearing ? translate('Clearing...') : translate('Clear Cache')}
+                                            </span>
                                         </Button>
                                     </TooltipTrigger>
                                     <TooltipContent>

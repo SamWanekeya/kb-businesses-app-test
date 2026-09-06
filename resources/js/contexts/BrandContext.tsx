@@ -1,8 +1,7 @@
-import { Appearance, ThemeColor } from '@/hooks/use-appearance';
-import { getCookie, isDemoMode } from '@/utils/cookie-utils';
-import { getDisplayUrl } from '@/utils/helper';
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { LayoutPosition } from '@/contexts/LayoutContext';
+import { Appearance, ThemeColor } from '@/hooks/use-appearance';
+import { resolveImageUrl } from '@/utils/Helpers/Url';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 // Default brand settings
 export const DEFAULT_BRAND_SETTINGS: BrandSettings = {
     logoDark: 'logo/logo-dark.png',
@@ -37,36 +36,6 @@ export interface BrandSettings {
 
 // Get brand settings from props or cookies/localStorage as fallback
 export const getBrandSettings = (userSettings?: Record<string, string>): BrandSettings => {
-    // In demo mode, prioritize cookies over backend settings
-    if (isDemoMode()) {
-        try {
-            const themeSettings = getCookie('themeSettings');
-            const sidebarSettings = getCookie('sidebarSettings');
-            const layoutPosition = getCookie('layoutDirection');
-            const brandSettings = getCookie('brandSettings');
-
-            const parsedTheme = themeSettings ? JSON.parse(themeSettings) : {};
-            const parsedSidebar = sidebarSettings ? JSON.parse(sidebarSettings) : {};
-            const parsedBrand = brandSettings ? JSON.parse(brandSettings) : {};
-
-            return {
-                logoDark: parsedBrand.logoDark || getDisplayUrl(userSettings?.logoDark) || getDisplayUrl(DEFAULT_BRAND_SETTINGS.logoDark),
-                logoLight: parsedBrand.logoLight || getDisplayUrl(userSettings?.logoLight) || getDisplayUrl(DEFAULT_BRAND_SETTINGS.logoLight),
-                favicon: parsedBrand.favicon || getDisplayUrl(userSettings?.favicon) || getDisplayUrl(DEFAULT_BRAND_SETTINGS.favicon),
-                titleText: parsedBrand.titleText || userSettings?.titleText || DEFAULT_BRAND_SETTINGS.titleText,
-                footerText: parsedBrand.footerText || userSettings?.footerText || DEFAULT_BRAND_SETTINGS.footerText,
-                themeColor: parsedTheme.themeColor || DEFAULT_BRAND_SETTINGS.themeColor,
-                customColor: parsedTheme.customColor || DEFAULT_BRAND_SETTINGS.customColor,
-                sidebarVariant: parsedSidebar.variant || DEFAULT_BRAND_SETTINGS.sidebarVariant,
-                sidebarStyle: parsedSidebar.style || DEFAULT_BRAND_SETTINGS.sidebarStyle,
-                layoutDirection: layoutPosition || DEFAULT_BRAND_SETTINGS.layoutDirection,
-                themeMode: parsedTheme.appearance || DEFAULT_BRAND_SETTINGS.themeMode,
-            };
-        } catch (error) {
-            // Fall through to normal logic if cookie parsing fails
-        }
-    }
-
     // If we have settings from the backend, use those (non-demo mode)
     if (userSettings) {
         return {
@@ -108,9 +77,9 @@ export function BrandProvider({ children, globalSettings, user }: { children: Re
         if (isPublicRoute) {
             return {
                 ...globalSettings,
-                favicon: getDisplayUrl(globalSettings.favicon),
-                logoDark: getDisplayUrl(globalSettings.logoDark),
-                logoLight: getDisplayUrl(globalSettings.logoLight),
+                favicon: resolveImageUrl(globalSettings.favicon),
+                logoDark: resolveImageUrl(globalSettings.logoDark),
+                logoLight: resolveImageUrl(globalSettings.logoLight),
             };
         }
 
@@ -118,18 +87,18 @@ export function BrandProvider({ children, globalSettings, user }: { children: Re
         if (user?.role === 'organization' && user?.globalSettings) {
             return {
                 ...user.globalSettings,
-                favicon: getDisplayUrl(user.globalSettings?.favicon),
-                logoDark: getDisplayUrl(user.globalSettings?.logoDark),
-                logoLight: getDisplayUrl(user.globalSettings?.logoLight),
+                favicon: resolveImageUrl(user.globalSettings?.favicon),
+                logoDark: resolveImageUrl(user.globalSettings?.logoDark),
+                logoLight: resolveImageUrl(user.globalSettings?.logoLight),
             };
         }
 
         // Default to global settings (super_admin)
         return {
             ...globalSettings,
-            favicon: getDisplayUrl(globalSettings.favicon),
-            logoDark: getDisplayUrl(globalSettings.logoDark),
-            logoLight: getDisplayUrl(globalSettings.logoLight),
+            favicon: resolveImageUrl(globalSettings.favicon),
+            logoDark: resolveImageUrl(globalSettings.logoDark),
+            logoLight: resolveImageUrl(globalSettings.logoLight),
         };
     };
 
@@ -138,18 +107,6 @@ export function BrandProvider({ children, globalSettings, user }: { children: Re
     // Listen for changes in settings
     useEffect(() => {
         let effectiveSettings = getEffectiveSettings();
-
-        // In demo mode, also check cookies for brand settings
-        if (isDemoMode()) {
-            try {
-                const cookieBrandSettings = getCookie('brandSettings');
-                if (cookieBrandSettings) {
-                    const parsedCookieSettings = JSON.parse(cookieBrandSettings);
-                    // Merge cookie settings with effective settings
-                    effectiveSettings = { ...effectiveSettings, ...parsedCookieSettings };
-                }
-            } catch (error) {}
-        }
 
         const updatedSettings = getBrandSettings(effectiveSettings);
         setBrandSettings(updatedSettings);

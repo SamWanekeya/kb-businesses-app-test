@@ -219,7 +219,11 @@ export default function AccountTypes() {
     const canDelete = useHasPermission('delete-account-types');
     const canToggleStatus = useHasPermission('toggle-status-account-types');
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Account Management') }, { title: translate('Account Types') }];
+    const breadcrumbs = [
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Account Management') },
+        { title: translate('Account Types') },
+    ];
 
     return (
         <PageTemplate
@@ -509,7 +513,9 @@ export default function AccountTypes() {
                                                                             </Button>
                                                                         </TooltipTrigger>
                                                                         <TooltipContent>
-                                                                            {item.status === 'active' ? translate('Deactivate') : translate('Activate')}
+                                                                            {item.status === 'active'
+                                                                                ? translate('Deactivate')
+                                                                                : translate('Activate')}
                                                                         </TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>

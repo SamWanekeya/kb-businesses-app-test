@@ -24,7 +24,7 @@ export default function ShippingProviderTypeShow() {
             <span
                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.active}`}
             >
-                {t(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Active')}
+                {translate(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Active')}
             </span>
         );
     };

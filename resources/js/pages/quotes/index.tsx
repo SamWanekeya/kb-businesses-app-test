@@ -274,7 +274,7 @@ export default function Quotes() {
                     <span
                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${statusColors[value] || statusColors.draft}`}
                     >
-                        {t(value?.charAt(0).toUpperCase() + value?.slice(1)) || translate('Draft')}
+                        {translate(value?.charAt(0).toUpperCase() + value?.slice(1)) || translate('Draft')}
                     </span>
                 );
             },

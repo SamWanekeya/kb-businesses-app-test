@@ -42,7 +42,7 @@ export default function ShowReceiptOrder() {
             <span
                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status] || statusColors.pending}`}
             >
-                {t(status?.charAt(0).toUpperCase() + status?.slice(1))}
+                {translate(status?.charAt(0).toUpperCase() + status?.slice(1))}
             </span>
         );
     };
@@ -160,8 +160,12 @@ export default function ShowReceiptOrder() {
                                                     <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
                                                         {translate('Discount')}
                                                     </TableHead>
-                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">{translate('Tax')}</TableHead>
-                                                    <TableHead className="py-2.5 text-right font-semibold whitespace-nowrap">{translate('Total')}</TableHead>
+                                                    <TableHead className="py-2.5 text-center font-semibold whitespace-nowrap">
+                                                        {translate('Tax')}
+                                                    </TableHead>
+                                                    <TableHead className="py-2.5 text-right font-semibold whitespace-nowrap">
+                                                        {translate('Total')}
+                                                    </TableHead>
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
@@ -311,7 +315,9 @@ export default function ShowReceiptOrder() {
                                     <div className="bg-muted mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
                                         <Package className="text-muted-foreground/40 h-8 w-8" />
                                     </div>
-                                    <p className="text-muted-foreground text-sm font-medium">{translate('No products added to this receipt order')}</p>
+                                    <p className="text-muted-foreground text-sm font-medium">
+                                        {translate('No products added to this receipt order')}
+                                    </p>
                                 </div>
                             )}
                         </CardContent>
@@ -329,7 +335,9 @@ export default function ShowReceiptOrder() {
                             <CardContent className="p-0">
                                 <div className="max-h-[150px] overflow-y-auto">
                                     <div className="px-5 py-4">
-                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">{receiptOrder.notes || translate('-')}</p>
+                                        <p className="text-foreground text-sm leading-relaxed whitespace-pre-line">
+                                            {receiptOrder.notes || translate('-')}
+                                        </p>
                                     </div>
                                 </div>
                             </CardContent>

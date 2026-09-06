@@ -10,10 +10,10 @@ import { UserMenuContent } from '@/components/user-menu-content';
 import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
+import AppLogo from '@components/app-logo';
+import AppLogoIcon from '@components/app-logo-icon';
 import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
-import AppLogoIcon from '@components/app-logo-icon';
-import AppLogo from '@components/app-logo';
 
 const mainNavItems: NavItem[] = [
     {

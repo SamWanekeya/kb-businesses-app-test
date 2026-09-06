@@ -1,7 +1,7 @@
 // components/CrudDeleteModal.tsx
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { capitalize } from '@/utils/helper';
+import { formatTitleCase } from '@/utils/Helpers/StringFormatters';
 import { useTranslation } from 'react-i18next';
 
 interface CrudDeleteModalProps {
@@ -19,7 +19,7 @@ export function CrudDeleteModal({ isOpen, onClose, onConfirm, itemName, entityNa
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle>
-                        {translate('Delete')} {capitalize(entityName)}
+                        {translate('Delete')} {formatTitleCase(entityName)}
                     </DialogTitle>
                 </DialogHeader>
                 <DialogDescription>

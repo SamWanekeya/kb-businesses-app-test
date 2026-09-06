@@ -171,7 +171,8 @@ export default function Template4({ invoice, items, taxesData, settings, color, 
                             <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Tax')} (%)</th>
                             <th style={{ padding: '0.75rem', textAlign: 'left' }}>{translate('Discount')}</th>
                             <th style={{ padding: '0.75rem', textAlign: 'left' }}>
-                                {translate('Price')} <small style={{ display: 'block', fontSize: '12px' }}>{translate('before tax & discount')}</small>
+                                {translate('Price')}{' '}
+                                <small style={{ display: 'block', fontSize: '12px' }}>{translate('before tax & discount')}</small>
                             </th>
                         </tr>
                         {items.length > 0 ? (

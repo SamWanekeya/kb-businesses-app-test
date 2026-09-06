@@ -10,8 +10,7 @@ import { getBrandSettings, useBrand } from '@/contexts/BrandContext';
 import { useLayout, type LayoutPosition } from '@/contexts/LayoutContext';
 import { useSidebarSettings } from '@/contexts/SidebarContext';
 import { useAppearance, type Appearance, type ThemeColor } from '@/hooks/use-appearance';
-import { getCookie, isDemoMode } from '@/utils/cookie-utils';
-import { getDisplayUrl } from '@/utils/helper';
+import { resolveImageUrl } from '@/utils/Helpers/Url';
 import { router, usePage } from '@inertiajs/react';
 import { Check, FileText, Layout, Moon, Palette, Save, Sidebar as SidebarIcon, Upload } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -78,13 +77,6 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
         try {
             let sidebarSettings;
 
-            if (isDemoMode()) {
-                // In demo mode, load from cookies
-                const cookieSettings = getCookie('sidebarSettings');
-                sidebarSettings = cookieSettings ? JSON.parse(cookieSettings) : null;
-            }
-            // In non-demo mode, sidebar settings come from database via currentGlobalSettings
-
             if (sidebarSettings) {
                 setSettings((prev) => ({
                     ...prev,
@@ -133,7 +125,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
         if (!url) {
             const defaultValue = DEFAULT_BRAND_SETTINGS[name as keyof BrandSettings] as string;
             setSettings((prev) => ({ ...prev, [name]: defaultValue }));
-            updateBrandSettings({ [name]: getDisplayUrl(defaultValue) });
+            updateBrandSettings({ [name]: resolveImageUrl(defaultValue) });
             return;
         }
 
@@ -148,7 +140,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
         setSettings((prev) => ({ ...prev, [name]: relativePath }));
 
         // Update brand context with corrected URL for immediate preview
-        updateBrandSettings({ [name]: getDisplayUrl(relativePath) });
+        updateBrandSettings({ [name]: resolveImageUrl(relativePath) });
     };
 
     // Import useBrand hook
@@ -230,9 +222,9 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
 
         // Update brand context with correct URLs
         updateBrandSettings({
-            logoLight: getDisplayUrl(settings.logoLight),
-            logoDark: getDisplayUrl(settings.logoDark),
-            favicon: getDisplayUrl(settings.favicon),
+            logoLight: resolveImageUrl(settings.logoLight),
+            logoDark: resolveImageUrl(settings.logoDark),
+            favicon: resolveImageUrl(settings.favicon),
         });
 
         // Individual update functions already handled storage (cookies in demo mode, localStorage in normal mode)
@@ -273,7 +265,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
     return (
         <SettingsSection
             title={translate('Brand Settings')}
-            description={t("Customize your application's branding and appearance")}
+            description={translate("Customize your application's branding and appearance")}
             action={
                 <Button onClick={saveSettings} disabled={isLoading} size="sm" className="max-[1300px]:px-2.5">
                     <Save className="mr-2 h-4 w-4 max-[1300px]:mr-0" />
@@ -326,7 +318,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                     {settings.logoDark && !logoErrors.logoDark ? (
                                                         <img
                                                             key={`preview-dark-${Date.now()}`}
-                                                            src={getDisplayUrl(settings.logoDark)}
+                                                            src={resolveImageUrl(settings.logoDark)}
                                                             alt="Dark Logo"
                                                             className="max-h-full max-w-full object-contain"
                                                             onError={() => setLogoErrors((prev) => ({ ...prev, logoDark: true }))}
@@ -359,7 +351,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                     {settings.logoLight && !logoErrors.logoLight ? (
                                                         <img
                                                             key={`preview-light-${Date.now()}`}
-                                                            src={getDisplayUrl(settings.logoLight)}
+                                                            src={resolveImageUrl(settings.logoLight)}
                                                             alt="Light Logo"
                                                             className="max-h-full max-w-full object-contain"
                                                             onError={() => setLogoErrors((prev) => ({ ...prev, logoLight: true }))}
@@ -392,7 +384,7 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                     {settings.favicon && !logoErrors.favicon ? (
                                                         <img
                                                             key={`preview-favicon-${Date.now()}`}
-                                                            src={getDisplayUrl(settings.favicon)}
+                                                            src={resolveImageUrl(settings.favicon)}
                                                             alt="Favicon"
                                                             className="h-16 w-16 object-contain"
                                                             onError={() => setLogoErrors((prev) => ({ ...prev, favicon: true }))}
@@ -400,7 +392,9 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                     ) : (
                                                         <div className="text-muted-foreground flex flex-col items-center gap-1">
                                                             <div className="bg-muted flex h-10 w-10 items-center justify-center rounded border border-dashed">
-                                                                <span className="text-muted-foreground text-xs font-semibold">{translate('Icon')}</span>
+                                                                <span className="text-muted-foreground text-xs font-semibold">
+                                                                    {translate('Icon')}
+                                                                </span>
                                                             </div>
                                                             <span className="text-xs">
                                                                 {logoErrors.favicon ? 'Failed to load image' : 'No favicon selected'}
@@ -436,7 +430,9 @@ export default function BrandSettings({ userSettings }: BrandSettingsProps) {
                                                 onChange={handleInputChange}
                                                 placeholder="Kakbima"
                                             />
-                                            <p className="text-muted-foreground text-xs">{translate('Application title displayed in the browser tab')}</p>
+                                            <p className="text-muted-foreground text-xs">
+                                                {translate('Application title displayed in the browser tab')}
+                                            </p>
                                         </div>
 
                                         <div className="space-y-3">

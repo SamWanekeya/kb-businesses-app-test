@@ -8,7 +8,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import UserInitials from '@/components/user-initials';
 import { useInitials } from '@/hooks/use-initials';
 import { useHasPermission } from '@/utils/Permissions';
-import { capitalize, formatRelativeTime } from '@/utils/helper';
+import { formatRelativeTime } from '@/utils/helper';
 import { Link, router, usePage } from '@inertiajs/react';
 import {
     ArrowLeft,
@@ -62,7 +62,7 @@ export default function AccountShow() {
             <span
                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.active}`}
             >
-                {capitalize(status) || 'Active'}
+                {formatTitleCase(status) || 'Active'}
             </span>
         );
     };

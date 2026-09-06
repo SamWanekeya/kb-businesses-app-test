@@ -36,15 +36,7 @@ function SectionHeader({ title }: { title: string }) {
 
 export default function DeliveryOrderEdit() {
     const { t: translate } = useTranslation();
-    const {
-        deliveryOrder,
-        accounts = [],
-        contacts = [],
-        salesOrders = [],
-        products = [],
-        shippingProviderTypes = [],
-        users = [],
-    } = usePage().props;
+    const { deliveryOrder, accounts = [], contacts = [], salesOrders = [], products = [], shippingProviderTypes = [], users = [] } = usePage().props;
 
     const [form, setFormData] = useState({
         name: deliveryOrder.name || '',

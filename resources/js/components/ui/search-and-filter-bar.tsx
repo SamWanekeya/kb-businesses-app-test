@@ -123,7 +123,7 @@ export function SearchAndFilterBar({
                             {filter.type === 'select' && filter.options && (
                                 <Select value={filter.value as string} onValueChange={(value) => filter.onChange(value)}>
                                     <SelectTrigger className="h-9 w-auto gap-2">
-                                        <SelectValue placeholder={t(`All ${filter.label}`)} />
+                                        <SelectValue placeholder={translate(`All ${filter.label}`)} />
                                     </SelectTrigger>
                                     <SelectContent searchable={filter.searchable}>
                                         {filter.options.map((option) => (

@@ -130,7 +130,7 @@ export function ChatGptModal({
                 <div className="flex items-center justify-between border-b p-6">
                     <h2 className="flex items-center gap-2 text-lg font-semibold">
                         <Sparkles className="text-primary h-5 w-5" />
-                        {t(title)}
+                        {translate(title)}
                     </h2>
                     <button
                         onClick={handleClose}
@@ -194,7 +194,7 @@ export function ChatGptModal({
                             id="prompt"
                             value={prompt}
                             onChange={(e) => setPrompt(e.target.value)}
-                            placeholder={t(placeholder)}
+                            placeholder={translate(placeholder)}
                             rows={3}
                             className="mt-1"
                         />

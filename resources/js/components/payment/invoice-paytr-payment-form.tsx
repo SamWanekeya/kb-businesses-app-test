@@ -109,7 +109,9 @@ export function InvoicePayTRPaymentForm({
                     <div className="h-[600px] w-full overflow-hidden rounded-lg border">
                         <iframe ref={iframeRef} src={iframeUrl} width="100%" height="100%" frameBorder="0" scrolling="auto" title="PayTR Payment" />
                     </div>
-                    <p className="text-muted-foreground mt-2 text-center text-xs">{translate('Complete your payment in the secure PayTR iframe above')}</p>
+                    <p className="text-muted-foreground mt-2 text-center text-xs">
+                        {translate('Complete your payment in the secure PayTR iframe above')}
+                    </p>
                 </CardContent>
             </Card>
         );

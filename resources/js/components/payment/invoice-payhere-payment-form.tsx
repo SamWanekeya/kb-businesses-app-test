@@ -106,7 +106,7 @@ export function InvoicePayHerePaymentForm({
                         <span className="text-lg font-bold">{formatPrice(amount)}</span>
                     </div>
                     <div className="text-muted-foreground mt-1 text-sm">
-                        {translate('Payment Type')}: {t(paymentType)}
+                        {translate('Payment Type')}: {translate(paymentType)}
                     </div>
                 </div>
 
@@ -145,7 +145,7 @@ export function InvoicePayHerePaymentForm({
                     </Button>
                 </div>
 
-                <div className="text-muted-foreground text-center text-xs">{t("Powered by PayHere - Sri Lanka's payment gateway")}</div>
+                <div className="text-muted-foreground text-center text-xs">{translate("Powered by PayHere - Sri Lanka's payment gateway")}</div>
             </CardContent>
         </Card>
     );

@@ -126,7 +126,7 @@ export function InvoiceSkrillPaymentForm({
                             <div className="text-sm">
                                 <p className="font-medium text-blue-900 dark:text-blue-100">{translate('Secure Payment with Skrill')}</p>
                                 <p className="mt-1 text-blue-700 dark:text-blue-300">
-                                    {t("You will be redirected to Skrill's secure payment page to complete your transaction.")}
+                                    {translate("You will be redirected to Skrill's secure payment page to complete your transaction.")}
                                 </p>
                             </div>
                         </div>

@@ -9,10 +9,10 @@ import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
+import ViewPopup from '@pages/currencies/view';
 import { Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import ViewPopup from '@pages/currencies/view';
 
 export default function Currencies() {
     const { t: translate } = useTranslation();
@@ -389,7 +389,13 @@ export default function Currencies() {
                     modalSize: 'lg',
                 }}
                 initialData={currentItem}
-                title={formMode === 'create' ? translate('Add New Currency') : formMode === 'edit' ? translate('Edit Currency') : translate('View Currency')}
+                title={
+                    formMode === 'create'
+                        ? translate('Add New Currency')
+                        : formMode === 'edit'
+                          ? translate('Edit Currency')
+                          : translate('View Currency')
+                }
                 mode={formMode}
             />
 

@@ -3,10 +3,10 @@
  */
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { Label } from '@components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/ui/select';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface PaginationProps {
     from?: number;
@@ -53,8 +53,8 @@ export function Pagination({
         <div className={cn('flex flex-wrap items-center justify-center gap-3 border-t p-4 md:justify-center lg:justify-between', className)}>
             <div className="text-muted-foreground text-sm dark:text-gray-300">
                 {translate('Showing')} <span className="font-medium dark:text-white">{from}</span> {translate('to')}{' '}
-                <span className="font-medium dark:text-white">{to}</span> {translate('of')} <span className="font-medium dark:text-white">{total}</span>{' '}
-                {translate('results')}
+                <span className="font-medium dark:text-white">{to}</span> {translate('of')}{' '}
+                <span className="font-medium dark:text-white">{total}</span> {translate('results')}
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-3">

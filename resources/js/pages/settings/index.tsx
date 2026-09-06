@@ -4,6 +4,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { usePage } from '@inertiajs/react';
+import OrganizationSystemSettings from '@pages/settings/components/organization-system-settings';
+import SystemSettings from '@pages/settings/components/system-settings';
 import {
     Bell,
     Bot,
@@ -24,8 +26,6 @@ import {
     Webhook,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import OrganizationSystemSettings from '@pages/settings/components/organization-system-settings';
-import SystemSettings from '@pages/settings/components/system-settings';
 
 import CurrencySettings from '@pages/settings/components/currency-settings';
 import EmailNotificationSettings from '@pages/settings/components/email-notification-settings';
@@ -50,8 +50,8 @@ import WebhookSettings from '@pages/settings/components/webhook-settings';
 import { Toaster } from '@/components/ui/toaster';
 import { useLayout } from '@/contexts/LayoutContext';
 import { useHasPermission } from '@/utils/Permissions';
-import { useTranslation } from 'react-i18next';
 import StorageSettings from '@pages/settings/components/storage-settings';
+import { useTranslation } from 'react-i18next';
 
 export default function Settings() {
     const { t: translate } = useTranslation();
@@ -435,7 +435,7 @@ export default function Settings() {
                     )}
 
                     {/* Currency Settings Section */}
-                    {(useHasPermission('manage-currency-settings')) && (
+                    {useHasPermission('manage-currency-settings') && (
                         <section id="currency-settings" ref={currencySettingsRef} className="mb-8">
                             <CurrencySettings />
                         </section>
@@ -448,19 +448,19 @@ export default function Settings() {
                         </section>
                     )}
                     {/* Email Notification Settings Section */}
-                    {(useHasPermission('manage-email-notifications')) && (
+                    {useHasPermission('manage-email-notifications') && (
                         <section id="email-notification-settings" ref={emailNotificationSettingsRef} className="mb-8">
                             <EmailNotificationSettings />
                         </section>
                     )}
                     {/* Twilio Notification Settings Section */}
-                    {(useHasPermission('manage-twilio-notifications')) && (
+                    {useHasPermission('manage-twilio-notifications') && (
                         <section id="twilio-notification-settings" ref={twilioNotificationSettingsRef} className="mb-8">
                             <TwilioNotificationSettings />
                         </section>
                     )}
                     {/* Slack Notification Settings Section */}
-                    {(useHasPermission('manage-slack-notifications')) && (
+                    {useHasPermission('manage-slack-notifications') && (
                         <section id="slack-notification-settings" ref={slackNotificationSettingsRef} className="mb-8">
                             <SlackNotificationSettings />
                         </section>
@@ -474,7 +474,7 @@ export default function Settings() {
                     )}
 
                     {/* Organization Payment Settings Section */}
-                    {(useHasPermission('settings')) && (
+                    {useHasPermission('settings') && (
                         <section id="organization-payment-settings" ref={organizationPaymentSettingsRef} className="mb-8">
                             <PaymentSettings settings={paymentSettings} />
                         </section>
@@ -544,14 +544,14 @@ export default function Settings() {
                     )}
 
                     {/* Google Calendar Settings Section */}
-                    {(useHasPermission('settings')) && (
+                    {useHasPermission('settings') && (
                         <section id="google-calendar-settings" ref={googleCalendarSettingsRef} className="mb-8">
                             <GoogleCalendarSettings settings={systemSettings} />
                         </section>
                     )}
 
                     {/* Webhook Settings Section */}
-                    {(useHasPermission('manage-webhook-settings')) && (
+                    {useHasPermission('manage-webhook-settings') && (
                         <section id="webhook-settings" ref={webhookSettingsRef} className="mb-8">
                             <WebhookSettings webhooks={webhooks} />
                         </section>

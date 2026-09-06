@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 
 // Import quote templates
 import IframePortal, { IframePortalHandles } from '@/components/IframePortal';
-import { formatRelativeTime, getDisplayUrl } from '@/utils/helper';
+import { formatRelativeTime } from '@/utils/Helpers/StringFormatters';
 import Template1 from '@pages/quotes/templates/Template1';
 import Template10 from '@pages/quotes/templates/Template10';
 import Template2 from '@pages/quotes/templates/Template2';
@@ -273,7 +273,7 @@ export default function PublicQuote({
             <span
                 className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${statusColors[status as keyof typeof statusColors] || statusColors.draft}`}
             >
-                {t(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Draft')}
+                {translate(status?.charAt(0).toUpperCase() + status?.slice(1)) || translate('Draft')}
             </span>
         );
     };
@@ -281,7 +281,7 @@ export default function PublicQuote({
     return (
         <>
             <Head title={translate('Quote {{quoteNumber}}', { quoteNumber: quote.quote_number })}>
-                {settings?.favicon && <link rel="icon" href={getDisplayUrl(settings.favicon, globalSettings)} />}
+                {settings?.favicon && <link rel="icon" href={resolveImageUrl(settings.favicon, globalSettings)} />}
             </Head>
 
             <div className="min-h-screen bg-gray-50 py-8 dark:from-gray-900 dark:to-gray-800 print:m-0 print:bg-white print:p-0">
@@ -602,7 +602,9 @@ export default function PublicQuote({
                                                 </div>
                                                 <div className="space-y-0.5">
                                                     <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
-                                                    <p className="text-foreground text-sm font-medium">{quote.billing_postal_code || translate('-')}</p>
+                                                    <p className="text-foreground text-sm font-medium">
+                                                        {quote.billing_postal_code || translate('-')}
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div className="space-y-0.5">
@@ -643,7 +645,9 @@ export default function PublicQuote({
                                                 </div>
                                                 <div className="space-y-0.5">
                                                     <p className="text-muted-foreground text-xs font-medium">{translate('Postal Code')}</p>
-                                                    <p className="text-foreground text-sm font-medium">{quote.shipping_postal_code || translate('-')}</p>
+                                                    <p className="text-foreground text-sm font-medium">
+                                                        {quote.shipping_postal_code || translate('-')}
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div className="space-y-0.5">

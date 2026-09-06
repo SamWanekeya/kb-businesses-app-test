@@ -4,8 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { formatTitleCase } from '@/utils/Helpers/StringFormatters';
 import { useHasPermission } from '@/utils/Permissions';
-import { capitalize } from '@/utils/helper';
 import allLocales from '@fullcalendar/core/locales-all';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -244,7 +244,12 @@ export default function CalendarIndex() {
     })();
 
     return (
-        <PageTemplate title={translate('Calendar')} description={translate('Manage your calendar and events.')} breadcrumbs={breadcrumbs} actions={pageActions}>
+        <PageTemplate
+            title={translate('Calendar')}
+            description={translate('Manage your calendar and events.')}
+            breadcrumbs={breadcrumbs}
+            actions={pageActions}
+        >
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
                 <div className="lg:col-span-3">
                     <Card className="p-4">
@@ -511,7 +516,7 @@ export default function CalendarIndex() {
                                         getEventColor(selectedEvent.type || 'event')
                                     }
                                 >
-                                    {selectedEvent.type ? t(capitalize(selectedEvent.type)) : translate('Event')}
+                                    {selectedEvent.type ? t(formatTitleCase(selectedEvent.type)) : translate('Event')}
                                 </span>
                             </div>
 
@@ -560,7 +565,7 @@ export default function CalendarIndex() {
                                                           : selectedEvent.status === 'done'
                                                             ? translate('Done')
                                                             : selectedEvent.status
-                                                  : t(capitalize(selectedEvent.status))}
+                                                  : t(formatTitleCase(selectedEvent.status))}
                                         </span>
                                     </div>
                                 )}

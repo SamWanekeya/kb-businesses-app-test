@@ -1,9 +1,8 @@
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { useState } from 'react';
 import { ChatGptButton } from '@components/chatgpt/ChatGptButton';
 import { ChatGptModal } from '@components/chatgpt/ChatGptModal';
-
+import { useState } from 'react';
 
 interface ChatGptFieldProps {
     value: string;

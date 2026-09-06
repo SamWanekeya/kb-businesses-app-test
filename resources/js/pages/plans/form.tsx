@@ -84,8 +84,8 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
 
     return (
         <PageTemplate
-            title={t(isEdit ? 'Edit Plan' : 'Create Plan')}
-            description={t(isEdit ? 'Update subscription plan details' : 'Add a new subscription plan')}
+            title={translate(isEdit ? 'Edit Plan' : 'Create Plan')}
+            description={translate(isEdit ? 'Update subscription plan details' : 'Add a new subscription plan')}
             url={isEdit ? route('plans.update', plan.id) : '/plans/create'}
             breadcrumbs={[
                 { title: translate('Dashboard'), href: route('dashboard') },

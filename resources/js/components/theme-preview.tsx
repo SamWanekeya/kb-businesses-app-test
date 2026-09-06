@@ -2,7 +2,7 @@ import { SidebarMenuSkeleton } from '@/components/ui/sidebar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLogos } from '@/contexts/LogoContext';
 import { useThemePreview } from '@/hooks/use-theme-preview';
-import { getDisplayUrl } from '@/utils/helper';
+import { resolveImageUrl } from '@/utils/Helpers/Url';
 import React from 'react';
 
 export function ThemePreview() {
@@ -59,7 +59,7 @@ export function ThemePreview() {
                         {!logoError && getLogoSrc() ? (
                             <img
                                 key={`preview-${appearance}-${getLogoSrc()}`}
-                                src={getDisplayUrl(getLogoSrc())}
+                                src={resolveImageUrl(getLogoSrc())}
                                 alt={getTitleText()}
                                 className="h-5 max-w-[60px] object-contain"
                                 onError={() => setLogoError(true)}

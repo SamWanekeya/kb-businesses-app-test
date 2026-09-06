@@ -95,7 +95,7 @@ export function FedaPayPaymentForm({
                         <span className="text-lg font-bold">{formatPrice(planPrice)}</span>
                     </div>
                     <div className="text-muted-foreground mt-1 text-sm">
-                        {translate('Billing Cycle')}: {t(billingCycle)}
+                        {translate('Billing Cycle')}: {translate(billingCycle)}
                     </div>
                     {couponCode && (
                         <div className="mt-1 text-sm text-green-600">
@@ -138,7 +138,7 @@ export function FedaPayPaymentForm({
                     </Button>
                 </div>
 
-                <div className="text-muted-foreground text-center text-xs">{t("Powered by FedaPay - West Africa's payment gateway")}</div>
+                <div className="text-muted-foreground text-center text-xs">{translate("Powered by FedaPay - West Africa's payment gateway")}</div>
             </CardContent>
         </Card>
     );

@@ -205,7 +205,11 @@ export default function DocumentFolders() {
     const canDelete = useHasPermission('delete-document-folders');
     const canToggleStatus = useHasPermission('toggle-status-document-folders');
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Document Management') }, { title: translate('Folders') }];
+    const breadcrumbs = [
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Document Management') },
+        { title: translate('Folders') },
+    ];
 
     return (
         <PageTemplate title={translate('Folders')} url="/document-folders" breadcrumbs={breadcrumbs} noPadding>
@@ -491,7 +495,9 @@ export default function DocumentFolders() {
                                                                             </Button>
                                                                         </TooltipTrigger>
                                                                         <TooltipContent>
-                                                                            {item.status === 'active' ? translate('Deactivate') : translate('Activate')}
+                                                                            {item.status === 'active'
+                                                                                ? translate('Deactivate')
+                                                                                : translate('Activate')}
                                                                         </TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>

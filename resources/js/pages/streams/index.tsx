@@ -54,12 +54,12 @@ export default function Index({ modules }: StreamsIndexProps) {
                                 <Card className="cursor-pointer transition-shadow hover:shadow-lg">
                                     <CardHeader className="flex flex-row items-center space-y-0 pb-2">
                                         <IconComponent className="text-primary mr-3 h-6 w-6" />
-                                        <CardTitle className="text-lg">{t(title)}</CardTitle>
+                                        <CardTitle className="text-lg">{translate(title)}</CardTitle>
                                     </CardHeader>
                                     <CardContent>
                                         {useHasPermission('view-stream') && (
                                             <p className="text-sm text-gray-600">
-                                                {translate('View activity logs for')} {t(title.toLowerCase())}
+                                                {translate('View activity logs for')} {translate(title.toLowerCase())}
                                             </p>
                                         )}
                                     </CardContent>

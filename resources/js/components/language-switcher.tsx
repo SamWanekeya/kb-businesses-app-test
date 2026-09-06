@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useLayout } from '@/contexts/LayoutContext';
-import { isDemoMode, setCookie } from '@/utils/cookie-utils';
+import { storeCookie } from '@/utils/Helpers/Cookies';
 import { router, usePage } from '@inertiajs/react';
 import { Globe, Plus, Settings } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
@@ -60,7 +60,7 @@ export const LanguageSwitcher: React.FC = () => {
                 updatePosition(newDirection as 'left' | 'right');
 
                 // Save layoutDirection to database/cookies when RTL language is selected
-                if (isAuthenticated && !isDemoMode()) {
+                if (isAuthenticated) {
                     // Save language change for authenticated non-demo users
                     router.post(
                         route('languages.change'),
@@ -75,8 +75,8 @@ export const LanguageSwitcher: React.FC = () => {
                     );
                 } else {
                     // For demo mode or non-authenticated users, save to cookies
-                    setCookie('app_language', languageCode);
-                    setCookie('layoutDirection', newDirection);
+                    storeCookie('app_language', languageCode);
+                    storeCookie('layoutDirection', newDirection);
                 }
 
                 window.dispatchEvent(

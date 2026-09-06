@@ -10,7 +10,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Textarea } from '@/components/ui/textarea';
 import { useInitials } from '@/hooks/use-initials';
-import { capitalize, getDisplayUrl } from '@/utils/helper';
+import { formatTitleCase } from '@/utils/Helpers/StringFormatters';
 import { router, usePage } from '@inertiajs/react';
 import { Calendar, CheckCircle, CreditCard, Download, FileText, ShoppingCart, Tag, User, UserCheck } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -198,7 +198,7 @@ export default function PlanOrdersPage() {
             label: translate('Ordered By'),
             className: 'whitespace-nowrap',
             render: (_, row) => {
-                const avatarUrl = row.user?.avatar ? getDisplayUrl(row.user.avatar) : getDisplayUrl('avatars/avatar.png');
+                const avatarUrl = row.user?.avatar ? resolveImageUrl(row.user.avatar) : resolveImageUrl('avatars/avatar.png');
                 return (
                     <div className="flex items-center gap-2">
                         <Avatar className="h-8 w-8 flex-shrink-0">
@@ -222,7 +222,7 @@ export default function PlanOrdersPage() {
                 if (!planName) return '-';
                 return (
                     <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-sm font-medium whitespace-nowrap text-blue-700 ring-1 ring-blue-600/20 ring-inset">
-                        {capitalize(planName)}
+                        {formatTitleCase(planName)}
                     </span>
                 );
             },
@@ -256,7 +256,7 @@ export default function PlanOrdersPage() {
                 <span
                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap capitalize ring-1 ring-inset ${statusColors[value] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}
                 >
-                    {t(value)}
+                    {translate(value)}
                 </span>
             ),
         },
@@ -267,7 +267,7 @@ export default function PlanOrdersPage() {
             render: (value) =>
                 value ? (
                     <a
-                        href={getDisplayUrl(value)}
+                        href={resolveImageUrl(value)}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
@@ -461,7 +461,7 @@ export default function PlanOrdersPage() {
                                         <span
                                             className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium capitalize ring-1 ring-inset ${statusColors[currentItem.status] || 'bg-gray-50 text-gray-700 ring-gray-600/20'}`}
                                         >
-                                            {t(currentItem.status)}
+                                            {translate(currentItem.status)}
                                         </span>
                                     </div>
                                 </div>
@@ -493,7 +493,7 @@ export default function PlanOrdersPage() {
                                     </label>
                                     <div className="mt-1">
                                         <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset dark:bg-blue-900/30 dark:text-blue-300">
-                                            {capitalize(currentItem.plan?.name || '-')}
+                                            {formatTitleCase(currentItem.plan?.name || '-')}
                                         </span>
                                     </div>
                                     <p className="text-muted-foreground mt-1 text-xs capitalize">{currentItem.billing_cycle || ''}</p>
@@ -545,7 +545,7 @@ export default function PlanOrdersPage() {
                                                 varient={'primary'}
                                                 onClick={() => {
                                                     const link = document.createElementranslate('a');
-                                                    link.href = getDisplayUrl(currentItem.receipt_path);
+                                                    link.href = resolveImageUrl(currentItem.receipt_path);
                                                     link.download = '';
                                                     document.body.appendChild(link);
                                                     link.click();

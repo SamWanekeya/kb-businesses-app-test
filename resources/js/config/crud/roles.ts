@@ -1,6 +1,5 @@
 // config/crud/roles.ts
 import { CrudConfig } from '@/types/crud';
-import { useTranslation } from 'react-i18next';
 
 export const rolesConfig: CrudConfig = {
     entity: {

@@ -585,7 +585,9 @@ export default function Campaigns() {
                                                     {useHasPermission('toggle-status-campaigns') && (
                                                         <DropdownMenuItem onClick={() => handleAction('toggle-status', campaign)}>
                                                             <Lock className="mr-2 h-4 w-4" />
-                                                            <span>{campaign.status === 'active' ? translate('Deactivate') : translate('Activate')}</span>
+                                                            <span>
+                                                                {campaign.status === 'active' ? translate('Deactivate') : translate('Activate')}
+                                                            </span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('edit-campaigns') && (
@@ -693,10 +695,10 @@ export default function Campaigns() {
                                                     const mos = Math.floor(days / 30);
                                                     const label =
                                                         days >= 365
-                                                            ? `${yrs} ${t(yrs === 1 ? 'Year' : 'Years')}`
+                                                            ? `${yrs} ${translate(yrs === 1 ? 'Year' : 'Years')}`
                                                             : days >= 31
-                                                              ? `${mos} ${t(mos === 1 ? 'Month' : 'Months')}`
-                                                              : `${days} ${t(days === 1 ? 'Day' : 'Days')}`;
+                                                              ? `${mos} ${translate(mos === 1 ? 'Month' : 'Months')}`
+                                                              : `${days} ${translate(days === 1 ? 'Day' : 'Days')}`;
                                                     return (
                                                         <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                                                             <Calendar className="h-3.5 w-3.5 shrink-0" />

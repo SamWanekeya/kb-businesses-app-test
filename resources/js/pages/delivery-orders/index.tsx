@@ -283,7 +283,7 @@ export default function DeliveryOrders() {
                     <span
                         className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap ring-1 ring-inset ${statusColors[value as keyof typeof statusColors] || statusColors.pending}`}
                     >
-                        {t(value.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()))}
+                        {translate(value.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()))}
                     </span>
                 );
             },

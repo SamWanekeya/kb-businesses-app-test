@@ -174,7 +174,7 @@ export default function ProductCreate() {
                                                     <span
                                                         className={`block text-xs font-semibold ${isActive ? 'text-primary' : isDone ? 'text-primary' : 'text-muted-foreground'}`}
                                                     >
-                                                        {t(s.label)}
+                                                        {translate(s.label)}
                                                     </span>
                                                 </span>
                                             </button>

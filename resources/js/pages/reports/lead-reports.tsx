@@ -50,7 +50,11 @@ export default function LeadReports() {
 
     const chartData = chartView === 'daily' ? dailyData : monthlyData;
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Reports'), href: '#' }, { title: translate('Lead Reports') }];
+    const breadcrumbs = [
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Reports'), href: '#' },
+        { title: translate('Lead Reports') },
+    ];
 
     const summaryCards = [
         {

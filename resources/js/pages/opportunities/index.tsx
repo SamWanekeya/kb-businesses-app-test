@@ -31,7 +31,6 @@ export default function Opportunities() {
         flash = {},
         globalSettings = {},
     } = usePage().props;
-    const isDemoMode = globalSettings?.is_demo === true;
 
     useEffect(() => {
         if (flash?.success) toast.success(t(flash.success));
@@ -190,7 +189,9 @@ export default function Opportunities() {
         }
 
         const newStatus = opportunity.status === 'active' ? 'inactive' : 'active';
-        toast.loading(translate('{{action}} opportunity...', { action: newStatus === 'active' ? translate('Activating') : translate('Deactivating') }));
+        toast.loading(
+            translate('{{action}} opportunity...', { action: newStatus === 'active' ? translate('Activating') : translate('Deactivating') }),
+        );
 
         router.put(
             route('opportunities.toggle-status', opportunity.id),
@@ -289,7 +290,11 @@ export default function Opportunities() {
         });
     }
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Opportunity Management') }, { title: translate('Opportunities') }];
+    const breadcrumbs = [
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Opportunity Management') },
+        { title: translate('Opportunities') },
+    ];
 
     // Define table columns
     const columns = [
@@ -630,7 +635,9 @@ export default function Opportunities() {
                                         <LucidIcons.LayoutGrid className="text-primary h-10 w-10" />
                                     </div>
                                     <div className="space-y-1.5">
-                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{translate('No Opportunity Stage Yet')}</h3>
+                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                                            {translate('No Opportunity Stage Yet')}
+                                        </h3>
                                         <p className="text-muted-foreground text-sm leading-relaxed">
                                             {translate('Set up opportunity stages to start organizing your work in a Kanban board.')}
                                         </p>
@@ -755,12 +762,8 @@ export default function Opportunities() {
                                                 stageOpportunities.map((opportunity: any) => (
                                                     <div
                                                         key={opportunity.id}
-                                                        draggable={useHasPermission('edit-opportunities') && !isDemoMode}
+                                                        draggable={useHasPermission('edit-opportunities')}
                                                         onDragStart={(e) => {
-                                                            if (!useHasPermission('edit-opportunities') || isDemoMode) {
-                                                                e.preventDefault();
-                                                                return;
-                                                            }
                                                             e.dataTransfer.setData('opportunityId', opportunity.id.toString());
                                                             setDraggingId(opportunity.id.toString());
                                                         }}
@@ -768,11 +771,7 @@ export default function Opportunities() {
                                                             setDraggingId(null);
                                                             setDragOverStage(null);
                                                         }}
-                                                        className={
-                                                            useHasPermission('edit-opportunities') && !isDemoMode
-                                                                ? 'cursor-grab active:cursor-grabbing'
-                                                                : ''
-                                                        }
+                                                        className={useHasPermission('edit-opportunities') ? 'cursor-grab active:cursor-grabbing' : ''}
                                                         style={{
                                                             opacity: draggingId === opportunity.id.toString() ? 0.4 : 1,
                                                             transition: 'opacity 0.15s',
@@ -985,7 +984,9 @@ export default function Opportunities() {
                                                 {useHasPermission('toggle-status-opportunities') && (
                                                     <DropdownMenuItem onClick={() => handleAction('toggle-status', opportunity)}>
                                                         <Lock className="mr-2 h-4 w-4" />
-                                                        <span>{opportunity.status === 'active' ? translate('Deactivate') : translate('Activate')}</span>
+                                                        <span>
+                                                            {opportunity.status === 'active' ? translate('Deactivate') : translate('Activate')}
+                                                        </span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 <DropdownMenuSeparator />

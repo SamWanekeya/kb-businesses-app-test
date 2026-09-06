@@ -187,7 +187,7 @@ export default function SlackNotificationSettings() {
                                     {availableNotifications.map((item) => (
                                         <div key={item.name} className="flex items-center justify-between rounded-lg border border-gray-200 p-3">
                                             <Label htmlFor={item.name} className="text-sm font-medium">
-                                                {t(item.label)}
+                                                {translate(item.label)}
                                             </Label>
                                             <Switch
                                                 id={item.name}

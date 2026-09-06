@@ -92,7 +92,7 @@ export default function EmailNotificationSettings() {
                             <div key={item.name} className="flex items-center justify-between rounded-md border p-4">
                                 <div>
                                     <Label htmlFor={item.name} className="text-sm font-medium">
-                                        {t(item.label)}
+                                        {translate(item.label)}
                                     </Label>
                                 </div>
                                 <Switch

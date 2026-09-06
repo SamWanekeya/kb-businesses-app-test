@@ -31,7 +31,7 @@ export default function DeleteUser() {
         <div className="rounded-lg border p-6">
             <h3 className="mb-4 text-lg font-medium">{translate('Delete Account')}</h3>
             <p className="mb-6 text-sm text-neutral-500 dark:text-neutral-400">
-                {t(
+                {translate(
                     'Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.',
                 )}
             </p>
@@ -48,7 +48,7 @@ export default function DeleteUser() {
                             {translate('Delete Account')}
                         </DialogTitle>
                         <DialogDescription>
-                            {t(
+                            {translate(
                                 'Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.',
                             )}
                         </DialogDescription>

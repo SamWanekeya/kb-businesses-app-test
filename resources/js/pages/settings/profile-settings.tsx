@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { type NavItem, type SharedData } from '@/types';
-import { getDisplayUrl } from '@/utils/helper';
+import { resolveImageUrl } from '@/utils/Helpers/Url';
 import { router, usePage } from '@inertiajs/react';
 import { Camera, Lock, User } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -113,7 +113,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
     const getAvatarUrl = () => {
         if (profileData.avatar) return URL.createObjectURL(profileData.avatar);
         if (auth?.user?.avatar) return auth.user.avatar;
-        return getDisplayUrl('storage/media/avatars/avatar.png');
+        return resolveImageUrl('storage/media/avatars/avatar.png');
     };
 
     // Handle password form submission
@@ -253,7 +253,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                         <Card className="shadow-sm">
                             <CardHeader>
                                 <CardTitle className="text-lg font-semibold">{translate('Profile Information')}</CardTitle>
-                                <CardDescription>{t("Update your account's profile information and email address")}</CardDescription>
+                                <CardDescription>{translate("Update your account's profile information and email address")}</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <form id="profile-form" onSubmit={submitProfile} className="space-y-6">
@@ -266,7 +266,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                                                 onError={(e) => {
                                                     // Fallback to default avatar on error
                                                     const target = e.target as HTMLImageElement;
-                                                    target.src = getDisplayUrl('storage/media/avatars/avatar.png');
+                                                    target.src = resolveImageUrl('storage/media/avatars/avatar.png');
                                                 }}
                                             />
                                             <AvatarFallback className="text-lg">{auth?.user?.name?.charAt(0)?.toUpperCase() || 'U'}</AvatarFallback>

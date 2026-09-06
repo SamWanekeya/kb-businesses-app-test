@@ -217,7 +217,11 @@ export default function CampaignTypes() {
     const canDelete = useHasPermission('delete-campaign-types');
     const canToggleStatus = useHasPermission('toggle-status-campaign-types');
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Campaign Management') }, { title: translate('Campaign Types') }];
+    const breadcrumbs = [
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Campaign Management') },
+        { title: translate('Campaign Types') },
+    ];
 
     return (
         <PageTemplate
@@ -498,7 +502,9 @@ export default function CampaignTypes() {
                                                                             </Button>
                                                                         </TooltipTrigger>
                                                                         <TooltipContent>
-                                                                            {item.status === 'active' ? translate('Deactivate') : translate('Activate')}
+                                                                            {item.status === 'active'
+                                                                                ? translate('Deactivate')
+                                                                                : translate('Activate')}
                                                                         </TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>

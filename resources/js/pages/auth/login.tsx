@@ -1,6 +1,6 @@
 import { useForm } from '@inertiajs/react';
 import { Building2, Copy, Eye, EyeOff, ShieldCheck, User, Users } from 'lucide-react';
-import { FormEventHandler, useEffect, useState } from 'react';
+import { FormEventHandler, useState } from 'react';
 
 import AuthButton from '@/components/auth/auth-button';
 import InputError from '@/components/input-error';
@@ -55,21 +55,6 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
         remember: false,
     });
 
-    useEffect(() => {
-        // Check if demo mode is enabled
-        const isDemoMode = (window as any).isDemo === true;
-        setIsDemo(isDemoMode);
-
-        // Set default credentials if in demo mode
-        if (isDemoMode) {
-            setData({
-                email: 'organization@kakbima.dev',
-                password: 'password',
-                remember: false,
-            });
-        }
-    }, []);
-
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
@@ -83,7 +68,7 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
         const formData = { ...data, recaptcha_token: recaptchaToken };
         post(route('login'), {
             data: formData,
-            onFinish: () => resetranslate('password'),
+            onFinish: () => reset('password'),
         });
     };
 
@@ -233,7 +218,9 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
                 />
 
                 {showRecaptchaError && recaptchaEnabled && !recaptchaToken && (
-                    <p className="-mt-2 text-center text-sm text-red-600 dark:text-red-400">{translate('Please complete the reCAPTCHA verification')}</p>
+                    <p className="-mt-2 text-center text-sm text-red-600 dark:text-red-400">
+                        {translate('Please complete the reCAPTCHA verification')}
+                    </p>
                 )}
 
                 <AuthButton
@@ -246,7 +233,7 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
                 </AuthButton>
                 <div className="text-center">
                     <p className="text-sm text-gray-500">
-                        {t("Don't have an account?")}{' '}
+                        {translate("Don't have an account?")}{' '}
                         <TextLink href={route('register')} className="font-medium hover:underline" style={{ color: primaryColor }} tabIndex={6}>
                             {translate('Sign up')}
                         </TextLink>
@@ -339,7 +326,9 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
                                                         <div className="hidden h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-blue-50 sm:flex ltr:mr-2 rtl:ml-2 dark:bg-blue-900/30">
                                                             <User className="h-3 w-3" style={{ color: primaryColor }} />
                                                         </div>
-                                                        <span className="truncate font-medium text-gray-900 dark:text-gray-100">{translate('User')}</span>
+                                                        <span className="truncate font-medium text-gray-900 dark:text-gray-100">
+                                                            {translate('User')}
+                                                        </span>
                                                     </div>
                                                 </td>
                                                 <td

@@ -3,11 +3,11 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { ColumnMappingModal } from '@components/ColumnMappingModal';
 import axios from 'axios';
 import { Download } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ColumnMappingModal } from '@components/ColumnMappingModal';
 
 interface ImportModalProps {
     isOpen: boolean;

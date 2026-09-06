@@ -422,7 +422,9 @@ export default function MediaLibraryDemo() {
                                     />
                                 </div>
                                 {searchTerm && (
-                                    <p className="text-muted-foreground mt-1 text-xs">{translate('Showing results for "{{term}}"', { term: searchTerm })}</p>
+                                    <p className="text-muted-foreground mt-1 text-xs">
+                                        {translate('Showing results for "{{term}}"', { term: searchTerm })}
+                                    </p>
                                 )}
                             </div>
 
@@ -712,8 +714,12 @@ export default function MediaLibraryDemo() {
                                     <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
                                         <Upload className={`h-8 w-8 transition-colors ${dragActive ? 'text-blue-500' : 'text-gray-400'}`} />
                                     </div>
-                                    <h3 className="mb-2 text-lg font-medium">{dragActive ? translate('Drop files here') : translate('Upload your files')}</h3>
-                                    <p className="text-muted-foreground mb-6 text-sm">{translate('Drag and drop your files here, or click to browse')}</p>
+                                    <h3 className="mb-2 text-lg font-medium">
+                                        {dragActive ? translate('Drop files here') : translate('Upload your files')}
+                                    </h3>
+                                    <p className="text-muted-foreground mb-6 text-sm">
+                                        {translate('Drag and drop your files here, or click to browse')}
+                                    </p>
 
                                     <Input
                                         type="file"
@@ -839,7 +845,9 @@ export default function MediaLibraryDemo() {
 
                                     {/* URL Section */}
                                     <div className="space-y-1.5">
-                                        <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">{translate('File URL')}</span>
+                                        <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+                                            {translate('File URL')}
+                                        </span>
                                         <div className="bg-muted/50 border-border flex items-center gap-2 rounded-lg border p-2">
                                             <code className="text-muted-foreground flex-1 font-mono text-xs leading-tight break-all">
                                                 {selectedMediaInfo.url}

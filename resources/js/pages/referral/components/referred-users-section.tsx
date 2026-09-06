@@ -196,7 +196,7 @@ export default function ReferredUsersSection({
                                                             </span>
                                                             <p className="text-muted-foreground font-mono text-sm">
                                                                 {currencySymbol}
-                                                                {planInfo.price}/{t(planInfo.cycle)}
+                                                                {planInfo.price}/{translate(planInfo.cycle)}
                                                             </p>
                                                         </div>
                                                     ) : (

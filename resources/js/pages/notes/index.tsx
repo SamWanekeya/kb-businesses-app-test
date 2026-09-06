@@ -11,10 +11,10 @@ import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
+import ViewPopup from '@pages/notes/view';
 import { Calendar, Edit, Eye, MoreHorizontal, NotebookPen, Plus, Share2, Trash2, User, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import ViewPopup from '@pages/notes/view';
 export default function Notes() {
     const { t: translate } = useTranslation();
     const {

@@ -1,7 +1,7 @@
 import { PageTemplate } from '@/components/page-template';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { capitalize } from '@/utils/helper';
+import { formatTitleCase } from '@/utils/Helpers/StringFormatters';
 import { router, usePage } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -75,7 +75,9 @@ export default function RolesShow() {
                     </CardHeader>
                     <CardContent>
                         {assignedPermissionNames.length === 0 ? (
-                            <p className="py-4 text-center text-sm text-gray-500 dark:text-gray-400">{translate('No permissions assigned to this role.')}</p>
+                            <p className="py-4 text-center text-sm text-gray-500 dark:text-gray-400">
+                                {translate('No permissions assigned to this role.')}
+                            </p>
                         ) : (
                             <div className="space-y-3">
                                 {Object.entries(allPermissions as Record<string, any[]>).map(([module, modulePermissions]) => {
@@ -86,7 +88,9 @@ export default function RolesShow() {
                                     return (
                                         <div key={module} className="overflow-hidden rounded-lg border dark:border-gray-700">
                                             <div className="flex items-center justify-between border-b bg-gray-50 px-4 py-2.5 dark:border-gray-700 dark:bg-gray-800">
-                                                <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">{capitalize(module)}</span>
+                                                <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                                                    {formatTitleCase(module)}
+                                                </span>
                                                 <span className="rounded-full border bg-white px-2 py-0.5 text-xs text-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400">
                                                     {assignedInModule.length} / {modulePermissions.length}
                                                 </span>

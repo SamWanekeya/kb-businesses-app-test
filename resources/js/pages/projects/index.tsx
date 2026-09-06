@@ -199,7 +199,9 @@ export default function Projects() {
             },
             onError: (errors) => {
                 toast.dismiss();
-                toast.error(typeof errors === 'string' ? errors : translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
+                toast.error(
+                    typeof errors === 'string' ? errors : translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }),
+                );
             },
         });
     };
@@ -250,7 +252,10 @@ export default function Projects() {
         pageActions.push({
             label:
                 planLimits && !canCreate
-                    ? translate('Project Limit Reached ({{current}}/{{max}})', { current: planLimits.current_projects, max: planLimits.maximum_projects })
+                    ? translate('Project Limit Reached ({{current}}/{{max}})', {
+                          current: planLimits.current_projects,
+                          max: planLimits.maximum_projects,
+                      })
                     : translate('Add Project'),
             icon: <Plus className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
             variant: canCreate ? 'default' : 'outline',
@@ -413,9 +418,24 @@ export default function Projects() {
                         [
                             { value: 'all', label: translate('All'), count: stats.total ?? 0, icon: <LayoutGrid className="h-3.5 w-3.5" /> },
                             { value: 'active', label: translate('Active'), count: stats.ongoing ?? 0, icon: <Play className="h-3.5 w-3.5" /> },
-                            { value: 'inactive', label: translate('Inactive'), count: stats.inactive ?? 0, icon: <AlertCircle className="h-3.5 w-3.5" /> },
-                            { value: 'on_hold', label: translate('On Hold'), count: stats.on_hold ?? 0, icon: <PauseCircle className="h-3.5 w-3.5" /> },
-                            { value: 'completed', label: translate('Finished'), count: stats.completed ?? 0, icon: <CheckCircle className="h-3.5 w-3.5" /> },
+                            {
+                                value: 'inactive',
+                                label: translate('Inactive'),
+                                count: stats.inactive ?? 0,
+                                icon: <AlertCircle className="h-3.5 w-3.5" />,
+                            },
+                            {
+                                value: 'on_hold',
+                                label: translate('On Hold'),
+                                count: stats.on_hold ?? 0,
+                                icon: <PauseCircle className="h-3.5 w-3.5" />,
+                            },
+                            {
+                                value: 'completed',
+                                label: translate('Finished'),
+                                count: stats.completed ?? 0,
+                                icon: <CheckCircle className="h-3.5 w-3.5" />,
+                            },
                         ] as const
                     ).map((tab) => (
                         <button
@@ -556,13 +576,13 @@ export default function Projects() {
                                         {/* Footer: status badge + priority + budget */}
                                         <div className="flex flex-wrap items-center gap-1.5">
                                             <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${sCfg.className}`}>
-                                                {t(sCfg.label)}
+                                                {translate(sCfg.label)}
                                             </span>
                                             {project.priority && (
                                                 <span
                                                     className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${pCfg.className}`}
                                                 >
-                                                    {t(pCfg.label)}
+                                                    {translate(pCfg.label)}
                                                 </span>
                                             )}
                                             {project.budget && (
@@ -616,7 +636,12 @@ export default function Projects() {
                             required: true,
                             placeholder: translate('e.g. Website Redesign, Mobile App v2, CRM Integration'),
                         },
-                        { name: 'description', label: translate('Description'), type: 'textarea', placeholder: translate('Enter project description...') },
+                        {
+                            name: 'description',
+                            label: translate('Description'),
+                            type: 'textarea',
+                            placeholder: translate('Enter project description...'),
+                        },
                         {
                             name: formMode === 'view' ? 'account_name' : 'account_id',
                             label: translate('Account'),

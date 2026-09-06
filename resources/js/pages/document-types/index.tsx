@@ -170,7 +170,11 @@ export default function DocumentTypes() {
     const canDelete = useHasPermission('delete-document-types');
     const canToggleStatus = useHasPermission('toggle-status-document-types');
 
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Document Management') }, { title: translate('Types') }];
+    const breadcrumbs = [
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Document Management') },
+        { title: translate('Types') },
+    ];
 
     return (
         <PageTemplate
@@ -380,7 +384,9 @@ export default function DocumentTypes() {
                                                                             </Button>
                                                                         </TooltipTrigger>
                                                                         <TooltipContent>
-                                                                            {item.status === 'active' ? translate('Deactivate') : translate('Activate')}
+                                                                            {item.status === 'active'
+                                                                                ? translate('Deactivate')
+                                                                                : translate('Activate')}
                                                                         </TooltipContent>
                                                                     </Tooltip>
                                                                 </TooltipProvider>

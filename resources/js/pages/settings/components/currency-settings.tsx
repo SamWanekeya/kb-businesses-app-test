@@ -237,7 +237,9 @@ export default function CurrencySettings() {
                                                                 </SelectItem>
                                                             ))
                                                         ) : (
-                                                            <div className="text-muted-foreground p-2 text-center">{translate('No currencies found')}</div>
+                                                            <div className="text-muted-foreground p-2 text-center">
+                                                                {translate('No currencies found')}
+                                                            </div>
                                                         )}
                                                     </div>
                                                 </SelectContent>
@@ -391,7 +393,9 @@ export default function CurrencySettings() {
                                                     <Label htmlFor="floatNumber" className="font-medium">
                                                         {translate('Show Decimals')}
                                                     </Label>
-                                                    <p className="text-muted-foreground mt-1 text-xs">{translate('Display decimal places in amounts')}</p>
+                                                    <p className="text-muted-foreground mt-1 text-xs">
+                                                        {translate('Display decimal places in amounts')}
+                                                    </p>
                                                 </div>
                                                 <Switch
                                                     id="floatNumber"
@@ -407,7 +411,9 @@ export default function CurrencySettings() {
                                                     <Label htmlFor="currencySymbolSpace" className="font-medium">
                                                         {translate('Add Space')}
                                                     </Label>
-                                                    <p className="text-muted-foreground mt-1 text-xs">{translate('Space between amount and symbol')}</p>
+                                                    <p className="text-muted-foreground mt-1 text-xs">
+                                                        {translate('Space between amount and symbol')}
+                                                    </p>
                                                 </div>
                                                 <Switch
                                                     id="currencySymbolSpace"

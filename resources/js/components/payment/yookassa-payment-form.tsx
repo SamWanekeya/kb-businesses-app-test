@@ -95,7 +95,7 @@ export function YooKassaPaymentForm({
                         <span className="text-lg font-bold">{formatPrice(planPrice)}</span>
                     </div>
                     <div className="text-muted-foreground mt-1 text-sm">
-                        {translate('Billing Cycle')}: {t(billingCycle)}
+                        {translate('Billing Cycle')}: {translate(billingCycle)}
                     </div>
                     {couponCode && (
                         <div className="mt-1 text-sm text-green-600">

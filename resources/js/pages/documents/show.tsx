@@ -5,8 +5,8 @@ import { PageTemplate } from '@/components/page-template';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useInitials } from '@/hooks/use-initials';
+import { resolveImageUrl } from '@/utils/Helpers/Url';
 import { useHasPermission } from '@/utils/Permissions';
-import { getDisplayUrl } from '@/utils/helper';
 import { router, usePage } from '@inertiajs/react';
 import * as LucidIcons from 'lucide-react';
 import {
@@ -187,7 +187,10 @@ export default function DocumentShow() {
             name: 'assigned_to',
             label: translate('Assign To'),
             type: 'select',
-            options: [{ value: 'null', label: translate('Unassigned') }, ...users.map((u: any) => ({ value: u.id, label: `${u.name} (${u.email})` }))],
+            options: [
+                { value: 'null', label: translate('Unassigned') },
+                ...users.map((u: any) => ({ value: u.id, label: `${u.name} (${u.email})` })),
+            ],
         },
         { name: 'description', label: translate('Description'), type: 'textarea' },
         {
@@ -246,12 +249,12 @@ export default function DocumentShow() {
                             <AvatarImage
                                 src={
                                     document.assigned_user?.avatar
-                                        ? getDisplayUrl(document.assigned_user.avatar)
-                                        : getDisplayUrl('avatars/avatar.png')
+                                        ? resolveImageUrl(document.assigned_user.avatar)
+                                        : resolveImageUrl('avatars/avatar.png')
                                 }
                                 className="rounded-xl object-cover"
                                 onError={(e) => {
-                                    e.currentTarget.src = getDisplayUrl('avatars/avatar.png');
+                                    e.currentTarget.src = resolveImageUrl('avatars/avatar.png');
                                 }}
                             />
                             <AvatarFallback className="bg-primary/10 text-primary rounded-xl text-lg font-semibold">
@@ -292,12 +295,12 @@ export default function DocumentShow() {
                             if (isImageExt(ext)) {
                                 return (
                                     <img
-                                        src={getDisplayUrl(document.attachment_url)}
+                                        src={resolveImageUrl(document.attachment_url)}
                                         alt={document.name}
                                         className="h-full w-full rounded-xl object-contain"
                                         style={{ maxHeight: '690px', padding: '16px' }}
                                         onError={(e) => {
-                                            e.currentTarget.src = getDisplayUrl('product/default.svg');
+                                            e.currentTarget.src = resolveImageUrl('product/default.svg');
                                         }}
                                     />
                                 );
@@ -326,7 +329,7 @@ export default function DocumentShow() {
                                     <TooltipProvider>
                                         <Tooltip>
                                             <TooltipTrigger asChild>
-                                                <a href={getDisplayUrl(document.attachment_url)} target="_blank" rel="noreferrer">
+                                                <a href={resolveImageUrl(document.attachment_url)} target="_blank" rel="noreferrer">
                                                     <button className="flex h-7 w-7 items-center justify-center rounded-lg text-cyan-500 transition-colors">
                                                         <ExternalLink className="h-4 w-4 text-gray-500" />
                                                     </button>
@@ -414,7 +417,11 @@ export default function DocumentShow() {
                             />
                             <DetailRow
                                 label={translate('Document Status')}
-                                value={document.expiration_date && new Date(document.expiration_date) < new Date() ? translate('Expired') : translate('Valid')}
+                                value={
+                                    document.expiration_date && new Date(document.expiration_date) < new Date()
+                                        ? translate('Expired')
+                                        : translate('Valid')
+                                }
                                 badgeColor={document.expiration_date && new Date(document.expiration_date) < new Date() ? 'red' : 'green'}
                                 badge
                             />

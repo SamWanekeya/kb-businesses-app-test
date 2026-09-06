@@ -22,7 +22,7 @@ export default function ConfirmPassword() {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(route('password.confirm'), {
-            onFinish: () => resetranslate('password'),
+            onFinish: () => reset('password'),
         });
     };
 

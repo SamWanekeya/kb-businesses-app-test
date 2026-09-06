@@ -147,7 +147,12 @@ export function BankTransferForm({ planId, planPrice, couponCode, billingCycle, 
                             <FileText className="text-primary h-4 w-4 flex-shrink-0" />
                             <span className="truncate text-sm text-gray-700">{receipt.name}</span>
                         </div>
-                        <button type="button" onClick={handleRemoveFile} className="flex-shrink-0 rounded p-1 hover:bg-gray-200" title={translate('Remove')}>
+                        <button
+                            type="button"
+                            onClick={handleRemoveFile}
+                            className="flex-shrink-0 rounded p-1 hover:bg-gray-200"
+                            title={translate('Remove')}
+                        >
                             <X className="h-4 w-4 text-gray-500" />
                         </button>
                     </div>

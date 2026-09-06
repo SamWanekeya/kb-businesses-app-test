@@ -84,9 +84,13 @@ export function UpgradePlanModal({ isOpen, onClose, onConfirm, plans, currentPla
 
                 {/* Billing Period Toggle */}
                 <div className="flex items-center justify-center gap-3 rounded-lg bg-gray-50 px-4 py-2">
-                    <span className={`text-sm font-medium transition-colors ${!isYearly ? 'text-primary' : 'text-gray-600'}`}>{translate('Monthly')}</span>
+                    <span className={`text-sm font-medium transition-colors ${!isYearly ? 'text-primary' : 'text-gray-600'}`}>
+                        {translate('Monthly')}
+                    </span>
                     <Switch checked={isYearly} onCheckedChange={setIsYearly} className="data-[state=checked]:bg-primary" />
-                    <span className={`text-sm font-medium transition-colors ${isYearly ? 'text-primary' : 'text-gray-600'}`}>{translate('Yearly')}</span>
+                    <span className={`text-sm font-medium transition-colors ${isYearly ? 'text-primary' : 'text-gray-600'}`}>
+                        {translate('Yearly')}
+                    </span>
                     {isYearly && (
                         <Badge variant="secondary" className="ml-2 border-0 bg-green-100 text-xs font-medium text-green-700">
                             {translate('Save up to 20%')}
@@ -174,7 +178,8 @@ export function UpgradePlanModal({ isOpen, onClose, onConfirm, plans, currentPla
                         ) : (
                             <div className="py-8 text-center text-gray-500">
                                 <p className="text-sm">
-                                    {translate('No plans available for')} {isYearly ? translate('yearly') : translate('monthly')} {translate('billing')}
+                                    {translate('No plans available for')} {isYearly ? translate('yearly') : translate('monthly')}{' '}
+                                    {translate('billing')}
                                 </p>
                             </div>
                         )}

@@ -112,7 +112,6 @@ class SettingsController extends Controller
             'paymentSettings' => $paymentSettings,
             'currentWorkspace' => $currentWorkspace,
             'webhooks' => $webhooks,
-            'isDemoMode' => config('app.is_demo', false),
         ]);
     }
 

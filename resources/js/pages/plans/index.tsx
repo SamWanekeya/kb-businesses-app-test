@@ -671,7 +671,9 @@ export default function Plans({
                 {/* Header with controls */}
                 <div className="mb-12 flex flex-col items-center text-center">
                     <div className="mx-auto mb-8 max-w-3xl">
-                        <h1 className="mb-4 text-3xl font-bold text-gray-900">{isAdmin ? translate('Subscription Plans') : translate('Choose Your Plan')}</h1>
+                        <h1 className="mb-4 text-3xl font-bold text-gray-900">
+                            {isAdmin ? translate('Subscription Plans') : translate('Choose Your Plan')}
+                        </h1>
                         <p className="text-lg text-gray-600">
                             {isAdmin
                                 ? translate('Create and manage subscription plans to offer different service tiers to your customers.')
@@ -728,7 +730,9 @@ export default function Plans({
                                 {/* Recommended Badge */}
                                 {plan.recommended && (
                                     <div className="absolute -top-4 left-1/2 z-10 -translate-x-1/2 transform">
-                                        <div className="bg-primary rounded-full px-4 py-1 text-sm font-semibold text-white">{translate('Recommended')}</div>
+                                        <div className="bg-primary rounded-full px-4 py-1 text-sm font-semibold text-white">
+                                            {translate('Recommended')}
+                                        </div>
                                     </div>
                                 )}
 
@@ -769,7 +773,7 @@ export default function Plans({
                                                 {currencySymbol}
                                                 {plan.price}
                                             </span>
-                                            <span className="ml-1 text-gray-500">/{t(plan.duration.toLowerCase())}</span>
+                                            <span className="ml-1 text-gray-500">/{translate(plan.duration.toLowerCase())}</span>
                                         </div>
                                     </div>
                                     <p className="mb-4 text-sm text-gray-600">{plan.description}</p>
@@ -785,7 +789,9 @@ export default function Plans({
                                 <div className="flex flex-1 flex-col p-6">
                                     {/* Usage Stats */}
                                     <div className="mb-6">
-                                        <h4 className="mb-3 text-sm font-semibold tracking-wide text-gray-900 uppercase">{t("What's Included")}</h4>
+                                        <h4 className="mb-3 text-sm font-semibold tracking-wide text-gray-900 uppercase">
+                                            {translate("What's Included")}
+                                        </h4>
                                         <div className="space-y-3">
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-2">
@@ -841,7 +847,7 @@ export default function Plans({
                                                             {included ? <CheckCircle2 className="h-3 w-3" /> : <X className="h-3 w-3" />}
                                                         </div>
                                                         <span className={`text-sm ${included ? 'text-gray-700' : 'text-gray-400'}`}>
-                                                            {t(feature)}
+                                                            {translate(feature)}
                                                         </span>
                                                     </li>
                                                 );
@@ -859,7 +865,9 @@ export default function Plans({
                                                         onCheckedChange={() => togglePlanStatus(plan.id)}
                                                         className={plan.status ? 'data-[state=checked]:bg-primary' : ''}
                                                     />
-                                                    <span className="text-sm text-gray-700">{plan.status ? translate('Active') : translate('Inactive')}</span>
+                                                    <span className="text-sm text-gray-700">
+                                                        {plan.status ? translate('Active') : translate('Inactive')}
+                                                    </span>
                                                 </div>
                                                 <div className="flex items-center gap-1">
                                                     <TooltipProvider>

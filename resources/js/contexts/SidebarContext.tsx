@@ -1,5 +1,5 @@
 import { SidebarSettings } from '@/components/sidebar-style-settings';
-import { getCookie, isDemoMode, setCookie } from '@/utils/cookie-utils';
+import { storeCookie } from '@/utils/Helpers/Cookies';
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 
 type SidebarContextType = {
@@ -28,16 +28,6 @@ const DEFAULT_EXTENDED_SETTINGS: ExtendedSidebarSettings = {
 
 // Get extended sidebar settings from cookies (demo mode) or database (non-demo mode)
 const getExtendedSidebarSettings = (): ExtendedSidebarSettings => {
-    if (isDemoMode()) {
-        // In demo mode, use cookies
-        try {
-            const savedSettings = getCookie('sidebarSettings');
-            return savedSettings ? JSON.parse(savedSettings) : DEFAULT_EXTENDED_SETTINGS;
-        } catch (error) {
-            return DEFAULT_EXTENDED_SETTINGS;
-        }
-    }
-
     // In non-demo mode, get from database via global settings
     const globalSettings = (window as any).page?.props?.globalSettings;
     if (globalSettings) {
@@ -59,11 +49,6 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
         setSettings((prev) => {
             const newSettings = { ...prev, variant };
 
-            if (isDemoMode()) {
-                setCookie('sidebarSettings', JSON.stringify(newSettings));
-            }
-            // In non-demo mode, don't store locally - will be handled by parent component
-
             return newSettings;
         });
     };
@@ -72,11 +57,6 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
     const updateCollapsible = (collapsible: SidebarSettings['collapsible']) => {
         setSettings((prev) => {
             const newSettings = { ...prev, collapsible };
-
-            if (isDemoMode()) {
-                setCookie('sidebarSettings', JSON.stringify(newSettings));
-            }
-            // In non-demo mode, don't store locally - will be handled by parent component
 
             return newSettings;
         });
@@ -91,7 +71,7 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
         const isDemo = (window as any).page?.props?.globalSettings?.is_demo || false;
 
         if (isDemo) {
-            setCookie('sidebarSettings', JSON.stringify(settings));
+            storeCookie('sidebarSettings', settings);
         }
     };
 
@@ -100,23 +80,6 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
         const newSettings = getExtendedSidebarSettings();
         setSettings(newSettings);
     }, [(window as any).page?.props?.globalSettings]);
-
-    useEffect(() => {
-        if (isDemoMode()) {
-            // In demo mode, listen for storage events to update settings when changed from another tab
-            const handleStorageChange = (event: StorageEvent) => {
-                if (event.key === 'sidebarSettings') {
-                    try {
-                        const newSettings = JSON.parse(event.newValue || '');
-                        setSettings(newSettings);
-                    } catch (error) {}
-                }
-            };
-
-            window.addEventListener('storage', handleStorageChange);
-            return () => window.removeEventListener('storage', handleStorageChange);
-        }
-    }, []);
 
     return (
         <SidebarContext.Provider

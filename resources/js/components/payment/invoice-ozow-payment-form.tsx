@@ -93,7 +93,7 @@ export function InvoiceOzowPaymentForm({
                         <span className="text-lg font-bold">{formatPrice(amount)}</span>
                     </div>
                     <div className="text-muted-foreground mt-1 text-sm">
-                        {translate('Payment Type')}: {t(paymentType)}
+                        {translate('Payment Type')}: {translate(paymentType)}
                     </div>
                 </div>
 
@@ -130,7 +130,9 @@ export function InvoiceOzowPaymentForm({
                     </Button>
                 </div>
 
-                <div className="text-muted-foreground text-center text-xs">{t("Powered by Ozow - South Africa's instant EFT payment gateway")}</div>
+                <div className="text-muted-foreground text-center text-xs">
+                    {translate("Powered by Ozow - South Africa's instant EFT payment gateway")}
+                </div>
             </CardContent>
         </Card>
     );

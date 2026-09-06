@@ -4,11 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { InvoiceBankTransferForm } from '@components/payment/invoice-bank-transfer-form';
+import { InvoicePaystackPaymentForm } from '@components/payment/invoice-paystack-payment-form';
 import { Banknote, CreditCard } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { InvoiceBankTransferForm } from '@components/payment/invoice-bank-transfer-form';
-import { InvoicePaystackPaymentForm } from '@components/payment/invoice-paystack-payment-form';
 
 interface PaymentMethod {
     id: string;

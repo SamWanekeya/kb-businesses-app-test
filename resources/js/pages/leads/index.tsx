@@ -361,7 +361,11 @@ export default function Leads() {
             tooltipClassName: 'min-[450px]:hidden',
         });
     }
-    const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Lead Management') }, { title: translate('Leads') }];
+    const breadcrumbs = [
+        { title: translate('Dashboard'), href: route('dashboard') },
+        { title: translate('Lead Management') },
+        { title: translate('Leads') },
+    ];
 
     // Define table columns
     const columns = [
@@ -817,9 +821,7 @@ export default function Leads() {
                                                             e.currentTarget.classList.add('opacity-50');
                                                         }}
                                                         onDragEnd={(e) => e.currentTarget.classList.remove('opacity-50')}
-                                                        className={
-                                                            useHasPermission('edit-leads') ? 'cursor-grab active:cursor-grabbing' : ''
-                                                        }
+                                                        className={useHasPermission('edit-leads') ? 'cursor-grab active:cursor-grabbing' : ''}
                                                     >
                                                         <div className="rounded-lg border border-gray-100 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
                                                             <div className="p-3">
@@ -864,30 +866,25 @@ export default function Leads() {
                                                                                         {translate('Edit')}
                                                                                     </DropdownMenuItem>
                                                                                 )}
-                                                                                {useHasPermission('convert-leads') &&
-                                                                                    !lead.is_converted && (
-                                                                                        <>
-                                                                                            <DropdownMenuSeparator />
-                                                                                            <DropdownMenuItem
-                                                                                                onClick={() =>
-                                                                                                    handleAction('convert-to-account', lead)
-                                                                                                }
-                                                                                                className="text-green-600"
-                                                                                            >
-                                                                                                <Building2 className="mr-2 h-4 w-4" />
-                                                                                                {translate('To Account')}
-                                                                                            </DropdownMenuItem>
-                                                                                            <DropdownMenuItem
-                                                                                                onClick={() =>
-                                                                                                    handleAction('convert-to-contact', lead)
-                                                                                                }
-                                                                                                className="text-blue-600"
-                                                                                            >
-                                                                                                <Users className="mr-2 h-4 w-4" />
-                                                                                                {translate('To Contact')}
-                                                                                            </DropdownMenuItem>
-                                                                                        </>
-                                                                                    )}
+                                                                                {useHasPermission('convert-leads') && !lead.is_converted && (
+                                                                                    <>
+                                                                                        <DropdownMenuSeparator />
+                                                                                        <DropdownMenuItem
+                                                                                            onClick={() => handleAction('convert-to-account', lead)}
+                                                                                            className="text-green-600"
+                                                                                        >
+                                                                                            <Building2 className="mr-2 h-4 w-4" />
+                                                                                            {translate('To Account')}
+                                                                                        </DropdownMenuItem>
+                                                                                        <DropdownMenuItem
+                                                                                            onClick={() => handleAction('convert-to-contact', lead)}
+                                                                                            className="text-blue-600"
+                                                                                        >
+                                                                                            <Users className="mr-2 h-4 w-4" />
+                                                                                            {translate('To Contact')}
+                                                                                        </DropdownMenuItem>
+                                                                                    </>
+                                                                                )}
                                                                                 {useHasPermission('delete-leads') && (
                                                                                     <>
                                                                                         <DropdownMenuSeparator />
@@ -1023,7 +1020,7 @@ export default function Leads() {
                                                 {useHasPermission('view-leads') && (
                                                     <DropdownMenuItem onClick={() => handleAction('view', lead)}>
                                                         <Eye className="h-4 w-4 mr-2" />
-                                                        <span>{t("View Lead")}</span>
+                                                        <span>{translate("View Lead")}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {useHasPermission('toggle-status-leads') && (
@@ -1036,11 +1033,11 @@ export default function Leads() {
                                                     <>
                                                         <DropdownMenuItem onClick={() => handleAction('convert-to-account', lead)} className="text-green-600">
                                                             <Building2 className='mr-2 w-4 h-4' />
-                                                            <span>{t("Convert to Account")}</span>
+                                                            <span>{translate("Convert to Account")}</span>
                                                         </DropdownMenuItem>
                                                         <DropdownMenuItem onClick={() => handleAction('convert-to-contact', lead)} className="text-blue-600">
                                                             <Users className='mr-2 w-4 h-4' />
-                                                            <span>{t("Convert to Contact")}</span>
+                                                            <span>{translate("Convert to Contact")}</span>
                                                         </DropdownMenuItem>
                                                     </>
                                                 )}
@@ -1048,13 +1045,13 @@ export default function Leads() {
                                                 {useHasPermission('edit-leads') && (
                                                     <DropdownMenuItem onClick={() => handleAction('edit', lead)} className="text-amber-600">
                                                         <Edit className="h-4 w-4 mr-2" />
-                                                        <span>{t("Edit")}</span>
+                                                        <span>{translate("Edit")}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {useHasPermission('delete-leads') && (
                                                     <DropdownMenuItem onClick={() => handleAction('delete', lead)} className="text-rose-600">
                                                         <Trash2 className="h-4 w-4 mr-2" />
-                                                        <span>{t("Delete")}</span>
+                                                        <span>{translate("Delete")}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                             </DropdownMenuContent>
@@ -1094,10 +1091,10 @@ export default function Leads() {
 
                     {/* Created date */}
                     {/* <div className="text-xs text-gray-500 dark:text-gray-400 mb-4">
-                                        {t("Created:")} {window.appSettings?.formatDateTime(lead.created_at, false) || new Date(lead.created_at).toLocaleDateString()}
+                                        {translate("Created:")} {window.appSettings?.formatDateTime(lead.created_at, false) || new Date(lead.created_at).toLocaleDateString()}
                                     </div> */}
                     {/* <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-4">
-                                        <span>{t("Created:")}</span>
+                                        <span>{translate("Created:")}</span>
 
                                         {lead.created_at && <LucidIcons.Calendar className="h-4 w-4" />}
 
@@ -1117,7 +1114,7 @@ export default function Leads() {
                                                 className="flex-1 h-9 text-sm border-gray-300 dark:border-gray-600 dark:text-gray-200"
                                             >
                                                 <Edit className="h-4 w-4 mr-2" />
-                                                {t("Edit")}
+                                                {translate("Edit")}
                                             </Button>
                                         )}
 
@@ -1129,7 +1126,7 @@ export default function Leads() {
                                                 className="flex-1 h-9 text-sm border-gray-300 dark:border-gray-600 dark:text-gray-200"
                                             >
                                                 <Eye className="h-4 w-4 mr-2" />
-                                                {t("View")}
+                                                {translate("View")}
                                             </Button>
                                         )}
 
@@ -1141,7 +1138,7 @@ export default function Leads() {
                                                 className="flex-1 h-9 text-sm text-gray-700 border-gray-300 dark:border-gray-600 dark:text-gray-200"
                                             >
                                                 <Trash2 className="h-4 w-4 mr-2" />
-                                                {t("Delete")}
+                                                {translate("Delete")}
                                             </Button>
                                         )}
                                     </div>
@@ -1264,8 +1261,20 @@ export default function Leads() {
                                       colSpan: 2,
                                       placeholder: translate('eg. 123 Main St'),
                                   },
-                                  { name: 'billing_city', label: translate('Billing City'), type: 'text', required: true, placeholder: translate('eg. New York') },
-                                  { name: 'billing_state', label: translate('Billing State'), type: 'text', required: true, placeholder: translate('eg. NY') },
+                                  {
+                                      name: 'billing_city',
+                                      label: translate('Billing City'),
+                                      type: 'text',
+                                      required: true,
+                                      placeholder: translate('eg. New York'),
+                                  },
+                                  {
+                                      name: 'billing_state',
+                                      label: translate('Billing State'),
+                                      type: 'text',
+                                      required: true,
+                                      placeholder: translate('eg. NY'),
+                                  },
                                   {
                                       name: 'billing_postal_code',
                                       label: translate('Billing Postal Code'),
@@ -1346,10 +1355,25 @@ export default function Leads() {
                                       colSpan: 2,
                                       placeholder: translate('eg. 456 Elm St'),
                                   },
-                                  { name: 'shipping_city', label: translate('Shipping City'), type: 'text', placeholder: translate('eg. Los Angeles') },
+                                  {
+                                      name: 'shipping_city',
+                                      label: translate('Shipping City'),
+                                      type: 'text',
+                                      placeholder: translate('eg. Los Angeles'),
+                                  },
                                   { name: 'shipping_state', label: translate('Shipping State'), type: 'text', placeholder: translate('eg. CA') },
-                                  { name: 'shipping_postal_code', label: translate('Shipping Postal Code'), type: 'text', placeholder: translate('eg. 90001') },
-                                  { name: 'shipping_country', label: translate('Shipping Country'), type: 'text', placeholder: translate('eg. United States') },
+                                  {
+                                      name: 'shipping_postal_code',
+                                      label: translate('Shipping Postal Code'),
+                                      type: 'text',
+                                      placeholder: translate('eg. 90001'),
+                                  },
+                                  {
+                                      name: 'shipping_country',
+                                      label: translate('Shipping Country'),
+                                      type: 'text',
+                                      placeholder: translate('eg. United States'),
+                                  },
                               ]
                             : [
                                   {
@@ -1371,7 +1395,13 @@ export default function Leads() {
                                                 }
                                               : undefined,
                                   },
-                                  { name: 'position', label: translate('Position'), type: 'text', colSpan: 2, placeholder: translate('eg. CEO, Manager, Developer') },
+                                  {
+                                      name: 'position',
+                                      label: translate('Position'),
+                                      type: 'text',
+                                      colSpan: 2,
+                                      placeholder: translate('eg. CEO, Manager, Developer'),
+                                  },
                                   {
                                       name: 'address',
                                       label: translate('Address'),
@@ -1393,7 +1423,7 @@ export default function Leads() {
                           }
                         : null
                 }
-                title={t(`Convert Lead to ${convertType === 'account' ? 'Account' : 'Contact'}`)}
+                title={translate(`Convert Lead to ${convertType === 'account' ? 'Account' : 'Contact'}`)}
                 mode="create"
             />
 
@@ -1408,7 +1438,7 @@ export default function Leads() {
                 importRoute="lead.import"
                 parseRoute="lead.parse"
                 samplePath={samplePath}
-                importNotes={t(
+                importNotes={translate(
                     'Ensure that the values entered for Lead Status, Lead Source, Account Industry, Campaign match the existing records in your system.',
                 )}
                 databaseFields={[
