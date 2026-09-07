@@ -92,12 +92,12 @@ export function resolveImageUrl(path: string): string {
 }
 
 /**
- * Creates a Hafinen external URL with an optional subdomain prefix.
+ * Creates a Kakbima external URL with an optional subdomain prefix.
  *
  * @param prefix - Optional subdomain prefix.
  * @returns Fully qualified HTTPS URL.
  */
-export function createHafinenExternalUrl(prefix?: string): string {
+export function createKakbimaExternalUrl(prefix?: string): string {
     const host = prefix ? `${prefix}.${getEnvironmentVariable.domainName}` : getEnvironmentVariable.domainName;
 
     return new URL(`https://${host}`).href;

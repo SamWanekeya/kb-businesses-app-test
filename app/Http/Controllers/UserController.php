@@ -111,7 +111,7 @@ class UserController extends BaseController
             $maxUsers = $authUser->plan->maximum_users;
 
             if ($currentUserCount >= $maxUsers) {
-                return redirect()->back()->with('error', __('User limit exceeded. Your plan allows maximum :max users. Please upgrade your plan.', ['max' => $maxUsers]));
+                return redirect()->back()->with('error', __('User limit exceeded. Your plan allows maximum :max users. Please upgrade your plan.', ['maximum' => $maxUsers]));
             }
         } // Check plan limits for staff users (created by organization users)
         elseif ($authUser->type !== 'super_admin' && $authUser->created_by) {
@@ -121,7 +121,7 @@ class UserController extends BaseController
                 $maxUsers = $organizationUser->plan->maximum_users;
 
                 if ($currentUserCount >= $maxUsers) {
-                    return redirect()->back()->with('error', __('User limit exceeded. Your organization plan allows maximum :max users. Please contact your administrator.', ['max' => $maxUsers]));
+                    return redirect()->back()->with('error', __('User limit exceeded. Your organization plan allows maximum :max users. Please contact your administrator.', ['maximum' => $maxUsers]));
                 }
             }
         }

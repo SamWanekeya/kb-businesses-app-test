@@ -126,10 +126,10 @@ class LanguageController extends Controller
         ], [
             'code.required' => __('Language code is required.'),
             'code.string' => __('Language code must be a valid string.'),
-            'code.max' => __('Language code must not exceed 10 characters.'),
+            'code.maximum' => __('Language code must not exceed 10 characters.'),
             'name.required' => __('Language name is required.'),
             'name.string' => __('Language name must be a valid string.'),
-            'name.max' => __('Language name must not exceed 255 characters.'),
+            'name.maximum' => __('Language name must not exceed 255 characters.'),
             'countryCode.required' => __('Country code is required.'),
             'countryCode.string' => __('Country code must be a valid string.'),
             'countryCode.size' => __('Country code must be exactly 2 characters.'),

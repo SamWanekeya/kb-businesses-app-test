@@ -31,10 +31,10 @@ class MediaItem extends Model implements HasMedia
             $allowedExtensions[] = 'jpg';
         }
 
-        $maxSizeBytes = ($config['maximum_file_size_mb'] ?? 10) * 1024 * 1024; // Convert MB to bytes
+        $maximumSizeBytes = ($config['maximum_file_size_mb'] ?? 10) * 1024 * 1024; // Convert MB to bytes
 
         $this->addMediaCollection('images')
-            ->acceptsFile(function ($file) use ($allowedExtensions, $maxSizeBytes) {
+            ->acceptsFile(function ($file) use ($allowedExtensions, $maximumSizeBytes) {
                 try {
                     // Check file extension
                     $fileName = $file->name ?? $file->getFilename();
@@ -48,8 +48,8 @@ class MediaItem extends Model implements HasMedia
 
                     // Check file size
                     $fileSize = $file->size ?? filesize($file->getPathname());
-                    if ($fileSize > $maxSizeBytes) {
-                        Log::warning('File size too large', ['size' => $fileSize, 'max' => $maxSizeBytes]);
+                    if ($fileSize > $maximumSizeBytes) {
+                        Log::warning('File size too large', ['size' => $fileSize, 'maximum' => $maximumSizeBytes]);
 
                         return false;
                     }

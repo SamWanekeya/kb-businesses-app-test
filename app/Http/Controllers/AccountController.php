@@ -120,7 +120,7 @@ class AccountController extends Controller
             if ($organization && $organization->plan) {
                 $currentAccountsCount = Account::where('created_by', createdBy())->count();
                 if ($currentAccountsCount >= $organization->plan->maximum_accounts) {
-                    return redirect()->back()->with('error', __('Account limit reached. Your plan allows maximum :max accounts.', ['max' => $organization->plan->maximum_accounts]));
+                    return redirect()->back()->with('error', __('Account limit reached. Your plan allows maximum :max accounts.', ['maximum' => $organization->plan->maximum_accounts]));
                 }
             }
         }

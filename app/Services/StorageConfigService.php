@@ -127,11 +127,11 @@ class StorageConfigService
         $config = self::getStorageConfig();
 
         $allowedTypes = $config['allowed_file_types'] ?? '';
-        $maxSize = ($config['maximum_file_size_mb'] ?? 2) * 1024; // Convert MB to KB
+        $maximumSize = ($config['maximum_file_size_mb'] ?? 2) * 1024; // Convert MB to KB
 
         return [
             'mimes:' . $allowedTypes,
-            'max:' . $maxSize,
+            'max:' . $maximumSize,
         ];
     }
 

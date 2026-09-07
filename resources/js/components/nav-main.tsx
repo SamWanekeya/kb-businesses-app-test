@@ -19,7 +19,7 @@ import {
     SidebarMenuSubItem,
     useSidebar,
 } from '@/components/ui/sidebar';
-import { type NavItem } from '@/types';
+import { NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { ChevronDown, ChevronRight, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';

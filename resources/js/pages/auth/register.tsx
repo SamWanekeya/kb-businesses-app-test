@@ -12,7 +12,7 @@ import { useBrand } from '@/contexts/BrandContext';
 import { THEME_COLORS } from '@/hooks/use-appearance';
 import AuthLayout from '@/layouts/auth-layout';
 import { getCookie } from '@/utils/Helpers/Cookies';
-import { createHafinenExternalUrl } from '@/utils/Helpers/Url';
+import { createKakbimaExternalUrl } from '@/utils/Helpers/Url';
 import { useTranslation } from 'react-i18next';
 
 type RegisterForm = {
@@ -150,7 +150,7 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
                         <Label htmlFor="terms" className="ml-2 text-sm text-neutral-600 dark:text-neutral-400">
                             {translate('I agree to the')}{' '}
                             <a
-                                href={`${createHafinenExternalUrl('www')}${languageFromCookie}/trust/terms-of-service/`}
+                                href={`${createKakbimaExternalUrl('www')}${languageFromCookie}/trust/terms-of-service/`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-foreground underline"
@@ -159,7 +159,7 @@ export default function Register({ referralCode, planId }: { referralCode?: stri
                             </a>{' '}
                             {translate('and')}{' '}
                             <a
-                                href={`${createHafinenExternalUrl('www')}${languageFromCookie}/trust/privacy-policy/`}
+                                href={`${createKakbimaExternalUrl('www')}${languageFromCookie}/trust/privacy-policy/`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-foreground underline"

@@ -94,10 +94,10 @@ class HandleInertiaRequests extends Middleware
                         ->pluck('value', 'key')
                         ->toArray();
 
-                    $maxSizeKB = (int)($storageSettingsData['storage_maximum_upload_size'] ?? 2048);
+                    $maximumSizeKB = (int)($storageSettingsData['storage_maximum_upload_size'] ?? 2048);
                     $storageSettings = [
                         'allowed_file_types' => $storageSettingsData['storage_file_types'] ?? 'jpg,png,webp,gif',
-                        'maximum_file_size_mb' => round($maxSizeKB / 1024, 2),
+                        'maximum_file_size_mb' => round($maximumSizeKB / 1024, 2),
                     ];
                 } else {
                     $storageSettings = [

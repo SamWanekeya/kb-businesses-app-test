@@ -18,7 +18,7 @@ type CurrencySettings = {
     currency_name: string;
 };
 
-export type HfSettings = {
+export type KbSettings = {
     get<T = any>(key: string, defaultValue?: T): T;
 
     date_format: string;
@@ -221,7 +221,7 @@ function createFormatters(timezone: string, dateFormat: string, timeFormat: stri
     };
 }
 
-export function bootstrapHfSettings(settings: Record<string, any>): void {
+export function bootstrapKbSettings(settings: Record<string, any>): void {
     const currencySettings: CurrencySettings = {
         decimal_format: String(settings.decimal_format ?? '2'),
         default_currency: String(settings.default_currency ?? 'USD'),

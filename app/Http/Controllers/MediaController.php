@@ -104,8 +104,8 @@ class MediaController extends Controller
         // Normalize allowed file types to handle case sensitivity
         $allowedTypes = $config['allowed_file_types'];
         $normalizedTypes = strtolower($allowedTypes);
-        $maxSizeKB = (int)($config['storage_maximum_upload_size'] ?? 2048);
-        $maxSizeMB = round($maxSizeKB / 1024, 2);
+        $maximumSizeKB = (int)($config['storage_maximum_upload_size'] ?? 2048);
+        $maximumSizeMB = round($maximumSizeKB / 1024, 2);
         $validationRules = StorageConfigService::getFileValidationRules();
 
         // Custom validation with user-friendly messages
@@ -116,7 +116,7 @@ class MediaController extends Controller
             'files.*.mimes' => __('Only these file types are allowed: :type', [
                 'type' => strtoupper(str_replace(',', ', ', $allowedTypes)),
             ]),
-            'files.*.max' => __('File size cannot exceed :max MB.', ['max' => $maxSizeMB]),
+            'files.*.maximum' => __('File size cannot exceed :max MB.', ['maximum' => $maximumSizeMB]),
         ]);
 
         if ($validator->fails()) {
@@ -124,12 +124,12 @@ class MediaController extends Controller
                 'message' => __('File validation failed'),
                 'errors' => $validator->errors()->all(),
                 'allowed_types' => $config['allowed_file_types'],
-                'maximum_size_mb' => $maxSizeMB,
+                'maximum_size_mb' => $maximumSizeMB,
             ], 422);
         }
 
         // Set max file size for Spatie Media Library (in bytes)
-        config(['media-library.maximum_file_size' => $maxSizeKB * 1024]);
+        config(['media-library.maximum_file_size' => $maximumSizeKB * 1024]);
 
         $uploadedMedia = [];
         $errors = [];
@@ -183,7 +183,7 @@ class MediaController extends Controller
                 }
                 $errors[] = [
                     'file' => $file->getClientOriginalName(),
-                    'error' => $this->getUserFriendlyError($e, $file->getClientOriginalName(), $maxSizeMB),
+                    'error' => $this->getUserFriendlyError($e, $file->getClientOriginalName(), $maximumSizeMB),
                 ];
             }
         }
@@ -301,7 +301,7 @@ class MediaController extends Controller
         $user->increment('storage_limit', $size);
     }
 
-    private function getUserFriendlyError(Exception $e, $fileName, $maxSizeMB = null): string
+    private function getUserFriendlyError(Exception $e, $fileName, $maximumSizeMB = null): string
     {
         $message = $e->getMessage();
         $extension = strtoupper(pathinfo($fileName, PATHINFO_EXTENSION));
@@ -328,8 +328,8 @@ class MediaController extends Controller
 
         // Handle file size errors
         if (str_contains($message, 'size') || str_contains($message, 'large') || str_contains($message, 'exceeds')) {
-            if ($maxSizeMB) {
-                return __("Max :max MB is allowed.", ['max' => $maxSizeMB]);
+            if ($maximumSizeMB) {
+                return __("Max :max MB is allowed.", ['maximum' => $maximumSizeMB]);
             }
 
             return __("File too large: :extension", ['extension' => $extension]);

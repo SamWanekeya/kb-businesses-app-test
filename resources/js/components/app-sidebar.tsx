@@ -3,7 +3,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@/compone
 import { useBrand } from '@/contexts/BrandContext';
 import { useLayout } from '@/contexts/LayoutContext';
 import { useSidebarSettings } from '@/contexts/SidebarContext';
-import { type NavItem } from '@/types';
+import { NavItem } from '@/types';
 import { resolveImageUrl } from '@/utils/Helpers/Url';
 import { useHasPermission } from '@/utils/Permissions';
 import { Link, usePage } from '@inertiajs/react';

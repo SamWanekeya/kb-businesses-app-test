@@ -2,7 +2,7 @@ import { PageTemplate } from '@/components/page-template';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
-import { type NavItem } from '@/types';
+import { NavItem } from '@/types';
 import { usePage } from '@inertiajs/react';
 import OrganizationSystemSettings from '@pages/settings/components/organization-system-settings';
 import SystemSettings from '@pages/settings/components/system-settings';

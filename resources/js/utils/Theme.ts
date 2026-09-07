@@ -22,7 +22,7 @@ export type ResolvedAppearance = 'light' | 'dark';
 /**
  * Storage key for theme mode
  */
-export const THEME_KEY = '__hf_thm_md';
+export const THEME_KEY = '__kb_thm_md';
 
 /**
  * Parse stored value:

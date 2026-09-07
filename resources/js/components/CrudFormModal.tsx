@@ -530,9 +530,9 @@ export function CrudFormModal({
                 const file = formData[field.name];
 
                 // Check file size
-                if (field.fileValidation.maxSize && file.size > field.fileValidation.maxSize) {
-                    const maxSizeMB = field.fileValidation.maxSize / (1024 * 1024);
-                    newErrors[field.name] = `File size must be less than ${maxSizeMB}MB`;
+                if (field.fileValidation.maximumSize && file.size > field.fileValidation.maximumSize) {
+                    const maximumSizeMB = field.fileValidation.maximumSize / (1024 * 1024);
+                    newErrors[field.name] = `File size must be less than ${maximumSizeMB}MB`;
                 }
 
                 // Check mime type
@@ -1138,9 +1138,9 @@ export function CrudFormModal({
                                         {translate('Allowed extensions')}: {field.fileValidation.extensions.join(', ')}{' '}
                                     </span>
                                 )}
-                                {field.fileValidation.maxSize && (
+                                {field.fileValidation.maximumSize && (
                                     <span>
-                                        {translate('Max size')}: {(field.fileValidation.maxSize / (1024 * 1024)).toFixed(1)}MB
+                                        {translate('Max size')}: {(field.fileValidation.maximumSize / (1024 * 1024)).toFixed(1)}MB
                                     </span>
                                 )}
                             </div>

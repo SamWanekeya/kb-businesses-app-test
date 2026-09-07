@@ -2,7 +2,7 @@ import { PageTemplate } from '@/components/page-template';
 import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
-import { type NavItem } from '@/types';
+import { NavItem } from '@/types';
 import { usePage } from '@inertiajs/react';
 import PayoutRequests from '@pages/referral/components/payout-requests';
 import ReferralDashboard from '@pages/referral/components/referral-dashboard';
