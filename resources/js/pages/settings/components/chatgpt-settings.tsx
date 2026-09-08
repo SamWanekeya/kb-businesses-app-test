@@ -1,4 +1,4 @@
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import { SettingsSection } from '@/components/settings-section';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { router, usePage } from '@inertiajs/react';
 import { Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface ChatGptSettingsProps {

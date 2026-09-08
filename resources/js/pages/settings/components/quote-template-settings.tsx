@@ -1,4 +1,4 @@
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import IframePortal from '@/components/IframePortal';
 import MediaPicker from '@/components/MediaPicker';
 import { SettingsSection } from '@/components/settings-section';
@@ -21,6 +21,7 @@ import { useForm, usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { Save } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface QuoteTemplateSettingsProps {}

@@ -1,6 +1,7 @@
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { usePage } from '@inertiajs/react';
 import { Info } from 'lucide-react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export function DemoModeBanner() {

@@ -4,6 +4,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { usePage } from '@inertiajs/react';
 import { ArrowLeft, Calendar, DollarSign, TrendingUp, Users } from 'lucide-react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface CouponUsage {

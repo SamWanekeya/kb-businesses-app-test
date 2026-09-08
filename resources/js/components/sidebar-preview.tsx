@@ -1,4 +1,5 @@
 import { FileText, Home, Settings, ShoppingCart, Sidebar as SidebarIcon, Users } from 'lucide-react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface SidebarPreviewProps {

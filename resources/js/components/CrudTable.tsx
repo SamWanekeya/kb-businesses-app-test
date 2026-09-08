@@ -9,6 +9,7 @@ import { useHasPermission } from '@/utils/Permissions';
 import { Link } from '@inertiajs/react';
 import * as LucidIcons from 'lucide-react';
 import { ChevronDown, ChevronUp, ChevronsUpDown } from 'lucide-react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface CrudTableProps {

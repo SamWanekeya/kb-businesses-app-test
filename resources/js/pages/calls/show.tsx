@@ -8,6 +8,7 @@ import { resolveImageUrl } from '@/utils/Helpers/Url';
 import { useHasPermission } from '@/utils/Permissions';
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowLeft, Building2, Calendar, Eye, Users } from 'lucide-react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function CallShow() {

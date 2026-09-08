@@ -24,6 +24,7 @@ import backgroundImageLight from '@images/background_image.jpg';
 import backgroundImageDark from '@images/background_image_dark.jpg';
 import kakbimaLogoLight from '@images/logos/kakbima_logo.png';
 import kakbimaLogoDark from '@images/logos/kakbima_logo_dark.png';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 /**

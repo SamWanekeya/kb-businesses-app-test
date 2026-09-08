@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { formatTitleCase } from '@/utils/Helpers/StringFormatters';
 import { router, usePage } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function RolesShow() {

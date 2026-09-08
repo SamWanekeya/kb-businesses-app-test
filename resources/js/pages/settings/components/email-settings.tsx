@@ -1,4 +1,4 @@
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import { SettingsSection } from '@/components/settings-section';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,6 +9,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { router, usePage } from '@inertiajs/react';
 import { AlertCircle, Lock, Mail, Save, Send, Server, User } from 'lucide-react';
 import { useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function EmailSettings() {

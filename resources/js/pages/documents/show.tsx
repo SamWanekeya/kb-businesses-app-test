@@ -1,6 +1,6 @@
 import { CrudDeleteModal } from '@/components/CrudDeleteModal';
 import { CrudFormModal } from '@/components/CrudFormModal';
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import { PageTemplate } from '@/components/page-template';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -28,6 +28,7 @@ import {
     User,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function DocumentShow() {

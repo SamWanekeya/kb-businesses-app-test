@@ -4,6 +4,7 @@ import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { ArrowRight, BarChart2, Calendar, Clock, Eye, List, Megaphone, Star, Tag, TrendingUp, XCircle } from 'lucide-react';
 import { useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function AnnouncementDashboard() {

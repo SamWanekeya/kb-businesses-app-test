@@ -4,6 +4,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { useInitials } from '@/hooks/use-initials';
 import { router } from '@inertiajs/react';
 import { Calendar, CheckCircle, DollarSign, Users } from 'lucide-react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface ReferredUser {

@@ -2,6 +2,7 @@ import { PageTemplate } from '@/components/page-template';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowLeft, Calendar, Mail, Shield, User } from 'lucide-react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function UserShow() {

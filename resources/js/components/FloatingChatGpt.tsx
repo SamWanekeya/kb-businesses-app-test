@@ -5,6 +5,7 @@ import { usePage } from '@inertiajs/react';
 import { Sparkles } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export function FloatingChatGpt() {

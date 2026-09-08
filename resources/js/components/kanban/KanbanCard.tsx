@@ -7,6 +7,7 @@ import { useHasPermission } from '@/utils/Permissions';
 import { Draggable } from '@hello-pangea/dnd';
 import { Building2, Edit, Eye, MoreHorizontal, Trash2, User, Users } from 'lucide-react';
 import React from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface Lead {

@@ -8,6 +8,7 @@ import { useInitials } from '@/hooks/use-initials';
 import { useHasPermission } from '@/utils/Permissions';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ArrowLeft, BarChart3, Calendar, DollarSign, Eye, Tag, Target, TrendingUp, Users } from 'lucide-react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function CampaignShow() {

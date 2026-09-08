@@ -1,4 +1,4 @@
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import { PageTemplate } from '@/components/page-template';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Head, router, usePage } from '@inertiajs/react';
 import { ArrowLeft, Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface EmailTemplateLang {

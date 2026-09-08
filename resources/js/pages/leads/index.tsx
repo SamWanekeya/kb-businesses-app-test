@@ -2,7 +2,7 @@ import { CrudDeleteModal } from '@/components/CrudDeleteModal';
 import { CrudFormModal } from '@/components/CrudFormModal';
 import { CrudTable } from '@/components/CrudTable';
 import { ImportModal } from '@/components/ImportModal';
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import { PageTemplate } from '@/components/page-template';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -17,6 +17,7 @@ import { router, usePage } from '@inertiajs/react';
 import * as LucidIcons from 'lucide-react';
 import { Banknote, Building2, Edit, Eye, FileDown, FileUp, MoreHorizontal, Plus, Trash2, User, Users } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function Leads() {

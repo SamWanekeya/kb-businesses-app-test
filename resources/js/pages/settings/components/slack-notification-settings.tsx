@@ -1,4 +1,4 @@
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import { SettingsSection } from '@/components/settings-section';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,6 +8,7 @@ import { router } from '@inertiajs/react';
 import axios from 'axios';
 import { Bell, Link, Save, Send, Slack } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface NotificationItem {

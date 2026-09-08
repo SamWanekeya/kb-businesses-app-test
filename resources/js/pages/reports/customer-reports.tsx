@@ -7,6 +7,7 @@ import UserInitials from '@/components/user-initials';
 import { usePage } from '@inertiajs/react';
 import { DollarSign, MessageSquare, Phone, UserCheck, UserPlus, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 import { CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 

@@ -13,6 +13,7 @@ import { THEME_COLORS } from '@/hooks/use-appearance';
 import AuthLayout from '@/layouts/auth-layout';
 import { getCookie } from '@/utils/Helpers/Cookies';
 import { createKakbimaExternalUrl } from '@/utils/Helpers/Url';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 type RegisterForm = {

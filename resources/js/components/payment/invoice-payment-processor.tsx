@@ -1,4 +1,4 @@
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -8,6 +8,7 @@ import { InvoiceBankTransferForm } from '@components/payment/invoice-bank-transf
 import { InvoicePaystackPaymentForm } from '@components/payment/invoice-paystack-payment-form';
 import { Banknote, CreditCard } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface PaymentMethod {

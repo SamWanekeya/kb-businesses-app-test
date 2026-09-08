@@ -1,4 +1,4 @@
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import InputError from '@/components/input-error';
 import { PageTemplate } from '@/components/page-template';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -12,6 +12,7 @@ import { resolveImageUrl } from '@/utils/Helpers/Url';
 import { router, usePage } from '@inertiajs/react';
 import { Camera, Lock, User } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 const sidebarNavItems: NavItem[] = [

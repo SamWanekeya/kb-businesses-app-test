@@ -1,4 +1,4 @@
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import MediaPicker from '@/components/MediaPicker';
 import { PageTemplate } from '@/components/page-template';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { router, useForm, usePage } from '@inertiajs/react';
 import { ArrowLeft, Banknote, Box, Image, Tag, UserCheck } from 'lucide-react';
 import { useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 const STEPS = [

@@ -1,5 +1,5 @@
 import { CrudDeleteModal } from '@/components/CrudDeleteModal';
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import { PageTemplate } from '@/components/page-template';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +7,7 @@ import { useHasPermission } from '@/utils/Permissions';
 import { Head, router, usePage } from '@inertiajs/react';
 import { ArrowLeft, CalendarDays, Star, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function AnnouncementShow() {

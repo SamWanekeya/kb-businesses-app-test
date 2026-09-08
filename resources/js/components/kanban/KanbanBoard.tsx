@@ -1,6 +1,7 @@
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import React, { useEffect, useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 import { KanbanColumn } from './KanbanColumn';
 

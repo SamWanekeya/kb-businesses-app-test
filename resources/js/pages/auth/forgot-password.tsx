@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { useBrand } from '@/contexts/BrandContext';
 import { THEME_COLORS } from '@/hooks/use-appearance';
 import AuthLayout from '@/layouts/auth-layout';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function ForgotPassword({ status, error }: { status?: string; error?: string }) {

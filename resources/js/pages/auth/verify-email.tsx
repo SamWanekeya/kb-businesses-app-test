@@ -3,11 +3,12 @@ import { Mail } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
 import AuthButton from '@/components/auth/auth-button';
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import TextLink from '@/components/text-link';
 import { useBrand } from '@/contexts/BrandContext';
 import { THEME_COLORS } from '@/hooks/use-appearance';
 import AuthLayout from '@/layouts/auth-layout';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function VerifyEmail({ status }: { status?: string }) {

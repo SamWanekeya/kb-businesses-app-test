@@ -1,6 +1,7 @@
 import QRCodeComponent from '@/components/QRCodeComponent';
 import { useBrand } from '@/contexts/BrandContext';
 import React from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface Template10Props {

@@ -1,5 +1,5 @@
 import languageData from '@/../../resources/lang/language.json';
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,6 +10,7 @@ import { Check, Copy, Loader2, Sparkles, X } from 'lucide-react';
 import { useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { createPortal } from 'react-dom';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface ChatGptModalProps {

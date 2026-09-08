@@ -1,5 +1,5 @@
 // components/PageCrudWrapper.tsx
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import { PageAction, PageTemplate } from '@/components/page-template';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
@@ -12,6 +12,7 @@ import { CrudTable } from '@components/CrudTable';
 import { router, usePage } from '@inertiajs/react';
 import { PlusIcon } from 'lucide-react';
 import { ReactNode, useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export interface CrudButton {

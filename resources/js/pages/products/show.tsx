@@ -5,6 +5,7 @@ import { useInitials } from '@/hooks/use-initials';
 import { router, usePage } from '@inertiajs/react';
 import { ArrowLeft, Bookmark, ChevronLeft, ChevronRight, DollarSign, Download, FileText, Layers, Package, Tag, Users, ZoomIn } from 'lucide-react';
 import { useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function ProductShow() {

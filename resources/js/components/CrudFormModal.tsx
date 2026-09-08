@@ -14,6 +14,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { FormField } from '@/types/crud';
 import { Link } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface CrudFormModalProps {

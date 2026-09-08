@@ -1,10 +1,11 @@
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import { PageWrapper } from '@/components/PageWrapper';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useHasPermission } from '@/utils/Permissions';
 import { Head, router, usePage } from '@inertiajs/react';
 import { Briefcase, Building2, FileIcon, FileText, ShoppingBag, Users } from 'lucide-react';
 import React from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface StreamsIndexProps {

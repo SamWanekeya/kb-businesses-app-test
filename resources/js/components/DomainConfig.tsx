@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import React from 'react';
 
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface DomainConfigProps {

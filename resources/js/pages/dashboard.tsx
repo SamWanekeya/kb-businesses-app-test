@@ -22,6 +22,7 @@ import {
     TrendingUp,
 } from 'lucide-react';
 import React from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 import {
     Bar,

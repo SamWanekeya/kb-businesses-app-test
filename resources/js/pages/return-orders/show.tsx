@@ -10,6 +10,7 @@ import { useHasPermission } from '@/utils/Permissions';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ArrowLeft, Building2, Calendar, Edit, Eye, FileText, Hash, Package, User } from 'lucide-react';
 import { useEffect } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function ReturnOrderShow() {

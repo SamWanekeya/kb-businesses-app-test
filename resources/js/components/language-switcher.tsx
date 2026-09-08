@@ -14,6 +14,7 @@ import { router, usePage } from '@inertiajs/react';
 import { Globe, Plus, Settings } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface Language {

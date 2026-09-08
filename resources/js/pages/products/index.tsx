@@ -1,7 +1,7 @@
 import { CrudDeleteModal } from '@/components/CrudDeleteModal';
 import { CrudTable } from '@/components/CrudTable';
 import { ImportModal } from '@/components/ImportModal';
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import { PageTemplate } from '@/components/page-template';
 import { Button } from '@/components/ui/button';
 import { Pagination } from '@/components/ui/pagination';
@@ -12,6 +12,7 @@ import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { Edit, Eye, FileDown, FileUp, Lock, Package, Plus, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 // import { ProductBarcode } from '@/components/Barcode';

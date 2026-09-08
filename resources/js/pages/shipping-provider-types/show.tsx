@@ -2,6 +2,7 @@ import { PageTemplate } from '@/components/page-template';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { usePage } from '@inertiajs/react';
 import { ArrowLeft, Palette, Truck, User } from 'lucide-react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function ShippingProviderTypeShow() {

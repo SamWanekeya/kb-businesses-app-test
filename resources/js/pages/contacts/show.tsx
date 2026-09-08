@@ -9,6 +9,7 @@ import { useHasPermission } from '@/utils/Permissions';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ArrowLeft, Briefcase, Building, Calendar, Clock, Eye, FileText, MapPin, Phone, Tag, User, UserCheck } from 'lucide-react';
 import { useMemo } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function ContactShow() {

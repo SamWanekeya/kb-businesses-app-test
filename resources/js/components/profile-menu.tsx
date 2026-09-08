@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ChevronDown, LogOut, User } from 'lucide-react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export function ProfileMenu() {

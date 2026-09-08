@@ -1,5 +1,5 @@
 import { CrudDeleteModal } from '@/components/CrudDeleteModal';
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import { PageTemplate } from '@/components/page-template';
 import { PlanSubscriptionModal } from '@/components/plan-subscription-modal';
 import { Badge } from '@/components/ui/badge';
@@ -30,6 +30,7 @@ import {
     Zap,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface Plan {

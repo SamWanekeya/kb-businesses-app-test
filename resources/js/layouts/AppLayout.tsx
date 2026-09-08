@@ -2,6 +2,7 @@ import { toast } from '@/components/CustomToast';
 import AppLayoutTemplate from '@/layouts/AppSidebarLayout';
 import { usePage } from '@inertiajs/react';
 import { JSX, useEffect } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 /**

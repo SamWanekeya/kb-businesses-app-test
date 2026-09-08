@@ -51,6 +51,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { useLayout } from '@/contexts/LayoutContext';
 import { useHasPermission } from '@/utils/Permissions';
 import StorageSettings from '@pages/settings/components/storage-settings';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function Settings() {

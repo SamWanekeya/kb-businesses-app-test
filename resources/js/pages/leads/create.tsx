@@ -2,12 +2,13 @@ import { PageTemplate } from '@/components/page-template';
 import { useForm, usePage } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
 
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function LeadCreate() {

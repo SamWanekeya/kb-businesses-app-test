@@ -1,5 +1,6 @@
 import { PageCrudWrapper } from '@/components/PageCrudWrapper';
 import { permissionsConfig } from '@/config/Crud/Permissions';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function PermissionsPage() {

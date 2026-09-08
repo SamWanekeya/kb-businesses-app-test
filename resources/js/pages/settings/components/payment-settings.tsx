@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import { PaymentInputField } from '@/components/payment/payment-input-field';
 import { PaymentMethodCard } from '@/components/payment/payment-method-card';
 import { SettingsSection } from '@/components/settings-section';
@@ -15,6 +15,7 @@ import { PAYMENT_METHODS, PAYMENT_METHOD_HELP_URLS, PAYMENT_METHOD_LABELS } from
 import { useForm } from '@inertiajs/react';
 import { AlertCircle, Banknote, CreditCard, Save, Search, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface PaymentSettings {

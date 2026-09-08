@@ -6,6 +6,7 @@ import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { router, usePage } from '@inertiajs/react';
 import { Eye } from 'lucide-react';
 import { useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface Props {

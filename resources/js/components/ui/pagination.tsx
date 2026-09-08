@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { Label } from '@components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/ui/select';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface PaginationProps {

@@ -1,4 +1,4 @@
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import { useHasPermission } from '@/utils/Permissions';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';

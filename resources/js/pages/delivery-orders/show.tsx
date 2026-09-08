@@ -26,6 +26,7 @@ import {
     XCircle,
 } from 'lucide-react';
 import { useEffect } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function DeliveryOrderShow() {

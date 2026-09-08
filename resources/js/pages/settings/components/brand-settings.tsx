@@ -14,6 +14,7 @@ import { resolveImageUrl } from '@/utils/Helpers/Url';
 import { router, usePage } from '@inertiajs/react';
 import { Check, FileText, Layout, Moon, Palette, Save, Sidebar as SidebarIcon, Upload } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 

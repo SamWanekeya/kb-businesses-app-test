@@ -3,6 +3,7 @@ import { SidebarMenuSkeleton } from '@/components/ui/sidebar';
 import { useLayout } from '@/contexts/LayoutContext';
 import { Check, Sidebar as SidebarIcon } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 // Sidebar style types

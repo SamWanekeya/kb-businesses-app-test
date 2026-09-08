@@ -1,5 +1,6 @@
 import { PaymentProcessor } from '@/components/payment/payment-processor';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface PaymentMethod {

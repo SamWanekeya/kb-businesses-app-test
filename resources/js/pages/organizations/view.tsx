@@ -1,5 +1,6 @@
 import { DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Building2, Calendar, CreditCard, Lock, Mail } from 'lucide-react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface ViewProps {

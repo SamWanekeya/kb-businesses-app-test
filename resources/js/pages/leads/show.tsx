@@ -32,6 +32,7 @@ import {
     Users,
 } from 'lucide-react';
 import { useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function LeadShow() {

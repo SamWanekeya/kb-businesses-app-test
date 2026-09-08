@@ -8,6 +8,7 @@ import { useInitials } from '@/hooks/use-initials';
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowUpRight, Calendar, Clock, Target, TrendingUp, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 import { CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 

@@ -1,5 +1,5 @@
 import { CrudDeleteModal } from '@/components/CrudDeleteModal';
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import { PageTemplate } from '@/components/page-template';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,7 @@ import { formatRelativeTime } from '@/utils/helper';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { ArrowLeft, Calendar, ExternalLink, MessageCircle, Trash2 } from 'lucide-react';
 import React, { useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface Stream {

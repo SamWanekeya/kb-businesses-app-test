@@ -1,6 +1,6 @@
 import { CrudDeleteModal } from '@/components/CrudDeleteModal';
 import { CrudFormModal } from '@/components/CrudFormModal';
-import { toast } from '@/components/custom-toast';
+import { toast } from '@/components/CustomToast';
 import { PageTemplate } from '@/components/page-template';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -14,6 +14,7 @@ import { router, usePage } from '@inertiajs/react';
 import ViewPopup from '@pages/notes/view';
 import { Calendar, Edit, Eye, MoreHorizontal, NotebookPen, Plus, Share2, Trash2, User, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 export default function Notes() {
     const { t: translate } = useTranslation();

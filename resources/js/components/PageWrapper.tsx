@@ -4,6 +4,7 @@ import { BreadcrumbItem } from '@/types';
 import { useHasPermission } from '@/utils/Permissions';
 import { usePage } from '@inertiajs/react';
 import { ReactNode } from 'react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export interface PageButton {

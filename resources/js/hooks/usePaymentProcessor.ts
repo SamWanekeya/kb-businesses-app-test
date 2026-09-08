@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { toast } from '@/components/CustomToast';
 import { route } from '@/utils/Routes';
 import { router } from '@inertiajs/react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface PaymentData {

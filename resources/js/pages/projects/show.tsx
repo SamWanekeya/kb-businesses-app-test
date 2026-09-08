@@ -7,6 +7,7 @@ import { useInitials } from '@/hooks/use-initials';
 import { useHasPermission } from '@/utils/Permissions';
 import { router, usePage } from '@inertiajs/react';
 import { AlertTriangle, ArrowLeft, BanknoteIcon, BarChart3, Building2, Calendar, Clock, DollarSign, LayoutGrid } from 'lucide-react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function ProjectShow() {

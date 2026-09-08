@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Brain } from 'lucide-react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface ChatGptButtonProps {

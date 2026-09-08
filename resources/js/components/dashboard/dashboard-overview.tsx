@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@inertiajs/react';
 import { ArrowRight, Briefcase, Building2, CreditCard, Sparkles, Target, TicketPercent, TrendingUp, Wallet } from 'lucide-react';
+import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface DashboardOverviewProps {
