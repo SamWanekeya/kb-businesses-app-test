@@ -1,7 +1,8 @@
-import { useModalStack } from '@/contexts/ModalStackContext';
 import { useEffect, useState } from 'react';
 
-export function useStackedModal(baseId?: string, externalIsOpen?: boolean) {
+import { useModalStack } from '@/contexts/ModalStackContext';
+
+export default function useStackedModal(baseId?: string, externalIsOpen?: boolean) {
     const { registerModal, unregisterModal, getZIndex } = useModalStack();
     const [modalId] = useState(() => baseId || `modal-${Date.now()}-${Math.random()}`);
     const [internalIsOpen, setInternalIsOpen] = useState(false);
@@ -14,7 +15,9 @@ export function useStackedModal(baseId?: string, externalIsOpen?: boolean) {
         } else {
             unregisterModal(modalId);
         }
-        return () => unregisterModal(modalId);
+        return () => {
+            unregisterModal(modalId);
+        };
     }, [isOpen, modalId, registerModal, unregisterModal]);
 
     const zIndex = getZIndex(modalId);
@@ -24,8 +27,14 @@ export function useStackedModal(baseId?: string, externalIsOpen?: boolean) {
         isOpen,
         setIsOpen: setInternalIsOpen,
         zIndex,
-        open: () => setInternalIsOpen(true),
-        close: () => setInternalIsOpen(false),
-        toggle: () => setInternalIsOpen((prev) => !prev),
+        open: () => {
+            setInternalIsOpen(true);
+        },
+        close: () => {
+            setInternalIsOpen(false);
+        },
+        toggle: () => {
+            setInternalIsOpen((prev) => !prev);
+        },
     };
 }

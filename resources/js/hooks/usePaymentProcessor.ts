@@ -1,16 +1,15 @@
-import { toast } from '@/components/custom-toast';
-import { router } from '@inertiajs/react';
 import { useState } from 'react';
+
+import { toast } from '@/components/CustomToast';
+import { route } from '@/utils/Routes';
+import { router } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 
 interface PaymentData {
-    planId?: number;
-    billingCycle?: string;
+    planId: number;
+    billingCycle: string;
     couponCode?: string;
-    invoiceId?: number;
-    amount?: number;
-    paymentType?: string;
-    paymentMethod?: string;
+    paymentMethod: string;
 
     [key: string]: any;
 }
@@ -20,7 +19,7 @@ interface UsePaymentProcessorOptions {
     onError?: (error: string) => void;
 }
 
-export function usePaymentProcessor(options: UsePaymentProcessorOptions = {}) {
+export default function usePaymentProcessor(options: UsePaymentProcessorOptions = {}) {
     const { t: translate } = useTranslation();
     const [processing, setProcessing] = useState(false);
 
@@ -28,12 +27,9 @@ export function usePaymentProcessor(options: UsePaymentProcessorOptions = {}) {
         setProcessing(true);
 
         const routes = {
-            stripe: data.invoiceId ? 'invoice.stripe.payment' : 'stripe.payment',
-            paypal: data.invoiceId ? 'invoice.paypal.payment' : 'paypal.payment',
-            bank: data.invoiceId ? 'invoice.bank.payment' : 'bank.payment',
-            payfast: data.invoiceId ? 'invoice.payfast.payment' : 'payfast.payment',
-            tap: data.invoiceId ? 'invoice.tap.payment' : 'tap.payment',
-            xendit: data.invoiceId ? 'invoice.xendit.payment' : 'xendit.payment',
+            stripe: 'stripe.payment',
+            paypal: 'paypal.payment',
+            bank: 'bank.payment',
             razorpay: 'razorpay.payment',
             mercadopago: 'mercadopago.payment',
             paystack: 'paystack.payment',
@@ -49,21 +45,16 @@ export function usePaymentProcessor(options: UsePaymentProcessorOptions = {}) {
         }
 
         const formattedData = formatPaymentData(paymentMethod, data);
+        const toastId = toast.loading(translate('Loading...'));
 
         router.post(route(routeName), formattedData, {
-            onSuccess: (page) => {
-                // Check if there's a success message in the response
-                if (page.props?.flash?.success) {
-                    toast.success(t(page.props.flash.success));
-                } else {
-                    toast.success(translate('Payment successful'));
-                }
+            onSuccess: () => {
+                toast.dismiss(toastId);
                 options.onSuccess?.();
             },
             onError: (errors) => {
-                const errorMessage = errors?.message || errors?.error || translate('Payment failed');
-                toast.error(errorMessage);
-                options.onError?.(errorMessage);
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
             onFinish: () => {
                 setProcessing(false);
@@ -76,9 +67,6 @@ export function usePaymentProcessor(options: UsePaymentProcessorOptions = {}) {
             stripe: ['payment_method_id', 'cardholder_name'],
             paypal: ['order_id', 'payment_id'],
             bank: ['amount'],
-            payfast: ['customer_details'],
-            tap: [],
-            xendit: [],
             razorpay: ['payment_id', 'order_id', 'signature'],
             mercadopago: ['payment_id', 'status'],
             paystack: ['payment_id'],
@@ -89,7 +77,7 @@ export function usePaymentProcessor(options: UsePaymentProcessorOptions = {}) {
 
         for (const field of required) {
             if (!data[field]) {
-                toast.error(t(`${field} is required`));
+                toast.error(translate(`${field} is required`));
                 return false;
             }
         }
@@ -98,20 +86,10 @@ export function usePaymentProcessor(options: UsePaymentProcessorOptions = {}) {
     };
 
     const formatPaymentData = (paymentMethod: string, data: PaymentData) => {
-        if (data.invoiceId) {
-            // Invoice payment format
-            return {
-                invoice_id: data.invoiceId,
-                amount: data.amount,
-                payment_type: data.paymentType,
-                ...data,
-            };
-        }
-        // Plan payment format
         return {
             plan_id: data.planId,
             billing_cycle: data.billingCycle,
-            coupon_code: data.couponCode || '',
+            coupon_code: data.couponCode ?? '',
             ...data,
         };
     };

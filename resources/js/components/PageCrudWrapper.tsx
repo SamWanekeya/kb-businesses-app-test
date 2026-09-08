@@ -4,7 +4,7 @@ import { PageAction, PageTemplate } from '@/components/page-template';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { BreadcrumbItem } from '@/types';
-import { CrudConfig } from '@/types/crud';
+import { CrudConfig } from '@/types/crud.d';
 import { useHasPermission } from '@/utils/Permissions';
 import { CrudDeleteModal } from '@components/CrudDeleteModal';
 import { CrudFormModal } from '@components/CrudFormModal';

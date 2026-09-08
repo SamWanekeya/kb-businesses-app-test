@@ -1,6 +1,6 @@
-import { CrudConfig } from '@/types/crud';
+import { CrudConfig } from '@/types/crud.d';
 
-export const organizationPlanOrdersConfig: CrudConfig = {
+export const usePlanOrdersConfig: CrudConfig = {
     entity: {
         name: 'organization-plan-orders',
         endpoint: route('organization.plan-orders.index'),

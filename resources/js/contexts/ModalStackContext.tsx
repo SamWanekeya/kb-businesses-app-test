@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 interface ModalStackContextType {
     registerModal: (id: string) => number;
@@ -11,14 +11,19 @@ const ModalStackContext = createContext<ModalStackContextType | undefined>(undef
 
 export function ModalStackProvider({ children }: { children: React.ReactNode }) {
     const [modalStack, setModalStack] = useState<string[]>([]);
-    const baseZIndex = 50; // Base z-index for modals
+    const baseZIndex = 50;
 
     const registerModal = useCallback((id: string) => {
+        let index = 0;
         setModalStack((prev) => {
-            if (prev.includes(id)) return prev;
+            if (prev.includes(id)) {
+                index = prev.indexOf(id);
+                return prev;
+            }
+            index = prev.length;
             return [...prev, id];
         });
-        return baseZIndex;
+        return baseZIndex + index;
     }, []);
 
     const unregisterModal = useCallback((id: string) => {
@@ -33,7 +38,18 @@ export function ModalStackProvider({ children }: { children: React.ReactNode }) 
         [modalStack],
     );
 
-    return <ModalStackContext.Provider value={{ registerModal, unregisterModal, getZIndex, modalStack }}>{children}</ModalStackContext.Provider>;
+    // Memoize the entire context to prevent unnecessary re-renders
+    const contextValue = useMemo(
+        () => ({
+            registerModal,
+            unregisterModal,
+            getZIndex,
+            modalStack,
+        }),
+        [registerModal, unregisterModal, getZIndex, modalStack],
+    );
+
+    return <ModalStackContext.Provider value={contextValue}>{children}</ModalStackContext.Provider>;
 }
 
 export function useModalStack() {

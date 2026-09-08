@@ -3,7 +3,7 @@ import { toast } from '@/components/custom-toast';
 import { PageTemplate } from '@/components/page-template';
 import { Pagination } from '@/components/ui/pagination';
 import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { organizationPlanRequestsConfig } from '@/config/crud/organization-plan-requests';
+import { usePlanRequestsConfig } from '@/config/Crud/PlanRequests';
 import { router, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,7 +28,7 @@ export default function OrganizationPlanRequestsPage() {
 
     useEffect(() => {
         const initialFilters: Record<string, any> = {};
-        organizationPlanRequestsConfig.filters?.forEach((filter) => {
+        usePlanRequestsConfig.filters?.forEach((filter) => {
             initialFilters[filter.key] = pageFilters[filter.key] || 'all';
         });
         setFilterValues(initialFilters);
@@ -100,16 +100,16 @@ export default function OrganizationPlanRequestsPage() {
                     onSearchChange={setSearchTerm}
                     onSearch={handleSearch}
                     filters={
-                        organizationPlanRequestsConfig.filters?.map((filter) => ({
+                        usePlanRequestsConfig.filters?.map((filter) => ({
                             name: filter.key,
-                            label: t(filter.label),
+                            label: translate(filter.label),
                             type: 'select',
                             value: filterValues[filter.key] || 'all',
                             onChange: (value) => handleFilterChange(filter.key, value),
                             options:
                                 filter.options?.map((option) => ({
                                     value: option.value,
-                                    label: t(option.label),
+                                    label: translate(option.label),
                                 })) || [],
                         })) || []
                     }
@@ -146,16 +146,16 @@ export default function OrganizationPlanRequestsPage() {
 
             <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
                 <CrudTable
-                    columns={organizationPlanRequestsConfig.table.columns.map((col) => ({
+                    columns={usePlanRequestsConfig.table.columns.map((col) => ({
                         ...col,
-                        label: t(col.label),
+                        label: translate(col.label),
                     }))}
                     actions={[]}
                     data={planRequests?.data || []}
                     from={planRequests?.from || 1}
                     onAction={() => {}}
                     permissions={permissions}
-                    entityPermissions={organizationPlanRequestsConfig.entity.permissions}
+                    entityPermissions={usePlanRequestsConfig.entity.permissions}
                 />
 
                 <Pagination

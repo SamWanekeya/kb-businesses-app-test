@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-export function useScrollAnimation(threshold = 0.1) {
+export default function useScrollAnimation(threshold = 0.1) {
     const [isVisible, setIsVisible] = useState(false);
     const ref = useRef<HTMLElement>(null);
 
@@ -19,7 +19,9 @@ export function useScrollAnimation(threshold = 0.1) {
             observer.observe(ref.current);
         }
 
-        return () => observer.disconnect();
+        return () => {
+            observer.disconnect();
+        };
     }, [threshold]);
 
     return { ref, isVisible };
