@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Middleware\CheckInstallation;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\ShareGlobalSettings;
@@ -19,7 +18,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->encryptCookies(except: ['appearance']);
 
         $middleware->web(append: [
-            CheckInstallation::class,
             HandleAppearance::class,
             ShareGlobalSettings::class,
             HandleInertiaRequests::class,
