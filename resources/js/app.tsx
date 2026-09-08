@@ -10,8 +10,8 @@ import '@/utils/Helpers/SecurityInit';
 import { scrubFingerprints } from '@/utils/Helpers/SecurityInit';
 
 // Styles
-import hafinenLogoLight from '@images/logos/hafinen_logo.png';
-import hafinenLogoDark from '@images/logos/hafinen_logo_dark.png';
+import kakbimaLogoLight from '@images/logos/kakbima_logo.png';
+import kakbimaLogoDark from '@images/logos/kakbima_logo_dark.png';
 import '../css/app.css';
 import './lib/i18n';
 
@@ -88,7 +88,7 @@ const initialAppearance: 'light' | 'dark' = (() => {
     return 'light';
 })();
 
-const currentLogo = initialAppearance === 'dark' ? hafinenLogoDark : hafinenLogoLight;
+const currentLogo = initialAppearance === 'dark' ? kakbimaLogoDark : kakbimaLogoLight;
 
 // Dev-only diagnostics
 
@@ -252,7 +252,7 @@ export const KakbimaRoot: React.FC<any> = ({ App, props }) => {
  */
 function initializeKakbimaApp(): void {
     // Pre-hydration language & theme sync
-    const el = document.getElementById('hafinen-saas');
+    const el = document.getElementById('kakbima-saas');
     if (el) {
         const userLang = getCookie('__kb_lcl');
         i18n.changeLanguage(userLang);
@@ -267,7 +267,7 @@ function initializeKakbimaApp(): void {
     }
 
     void createInertiaApp({
-        id: 'hafinen-saas',
+        id: 'kakbima-saas',
 
         resolve: (name: string) => {
             const pages = import.meta.glob('./pages/**/*.tsx');
