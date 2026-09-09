@@ -1,18 +1,21 @@
 // components/PageCrudWrapper.tsx
-import { BreadcrumbItem } from '@/types';
+import { ReactNode, useEffect, useState } from 'react';
+
+import { BreadcrumbItemTypes } from '@/types';
 import { CrudConfig } from '@/types/crud.d';
-import { CrudDeleteModal } from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
-import { CrudTable } from '@components/CrudTable';
+import CrudDeleteModal from '@components/CrudDeleteModal';
+import CrudFormModal from '@components/CrudFormModal';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
-import { PageAction, PageTemplate } from '@components/page-template';
-import { Pagination } from '@components/UserInterface/pagination';
-import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
+import PageTemplate, { PageAction } from '@components/PageTemplate';
+import { Button } from '@components/UserInterface/Button';
+import { Input } from '@components/UserInterface/Input';
+import { Label } from '@components/UserInterface/Label';
+import Pagination from '@components/UserInterface/Pagination';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { router, usePage } from '@inertiajs/react';
-import { useHasPermission } from '@utils/Permissions';
 import { route } from '@utils/Routes';
-import { PlusIcon } from 'lucide-react';
-import { ReactNode, useState } from 'react';
+import { Filter, PlusIcon, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export interface CrudButton {
@@ -20,7 +23,7 @@ export interface CrudButton {
     icon?: ReactNode;
     variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
     onClick?: () => void;
-    permission?: string;
+    requiredPermission?: string;
     className?: string;
     showAddButton?: boolean;
 }
@@ -30,41 +33,55 @@ interface PageCrudWrapperProps {
     title?: string;
     url: string;
     buttons?: CrudButton[];
-    breadcrumbs?: BreadcrumbItem[];
+    breadcrumbs?: BreadcrumbItemTypes[];
+    description: string | null;
 }
 
-export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs }: PageCrudWrapperProps) {
+export default function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs, description }: PageCrudWrapperProps) {
     const { t: translate } = useTranslation();
-    const { entity, table, filters = [], form, hooks } = config;
+    const { entity, table, filters, form, hooks } = config;
     const { auth, ...pageProps } = usePage().props;
-    const permissions = auth?.permissions || [];
+    const permissions = auth?.permissions ?? [];
 
     // Get data from page props using entity name
     const data = pageProps[entity.name] || { data: [], links: [] };
     const pageFilters = pageProps.filters || {};
 
     // State
-    const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
-    const [filterValues, setFilterValues] = useState<Record<string, any>>(() => {
-        const initial: Record<string, any> = {};
-        filters.forEach((filter) => {
-            const filterKey = filter.name || filter.key;
-            initial[filterKey] = pageFilters[filterKey] || '';
-        });
-        return initial;
-    });
+    const [searchTerm, setSearchTerm] = useState<string>(pageFilters.search ?? '');
+    const [filterValues, setFilterValues] = useState<Record<string, any>>({});
     const [showFilters, setShowFilters] = useState(false);
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [currentItem, setCurrentItem] = useState<any>(null);
     const [formMode, setFormMode] = useState<'create' | 'edit' | 'view'>('create');
 
+    // Initialize filter values from URL
+    useEffect(() => {
+        const initialFilters: Record<string, any> = {};
+        filters.forEach((filter) => {
+            const filterKey = filter.label || filter.key;
+            initialFilters[filterKey] = pageFilters[filterKey] || '';
+        });
+        setFilterValues(initialFilters);
+    }, [filters]);
+
+    // Check if any filters are active
     const hasActiveFilters = () => {
-        return Object.values(filterValues).some((v) => v && v !== '' && v !== 'all') || searchTerm !== '';
+        return (
+            Object.entries(filterValues).some(([, value]) => {
+                return value && value !== '';
+            }) || searchTerm !== ''
+        );
     };
 
+    // Count active filters
     const activeFilterCount = () => {
-        return Object.values(filterValues).filter((v) => v && v !== '' && v !== 'all').length;
+        return (
+            Object.entries(filterValues).filter(([_key, value]) => {
+                return value && value !== '';
+            }).length + (searchTerm ? 1 : 0)
+        );
     };
 
     const handleSearch = (e: React.FormEvent) => {
@@ -96,6 +113,27 @@ export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs 
 
     const handleFilterChange = (key: string, value: any) => {
         setFilterValues((prev) => ({ ...prev, [key]: value }));
+
+        const params: any = { page: 1 };
+
+        if (searchTerm) {
+            params.search = searchTerm;
+        }
+
+        // Add all current filter values
+        const newFilters = { ...filterValues, [key]: value };
+        Object.entries(newFilters).forEach(([k, v]) => {
+            if (v && v !== '') {
+                params[k] = v;
+            }
+        });
+
+        // Add per_page if it exists
+        if (pageFilters.per_page) {
+            params.per_page = pageFilters.per_page;
+        }
+
+        router.get(entity.endpoint, params, { preserveState: true, preserveScroll: true });
     };
 
     const handleSort = (field: string) => {
@@ -160,19 +198,18 @@ export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs 
         if (entity.name === 'roles') {
             // Extract permission names from the permissions array if they're objects
             if (processedFormData.permissions && Array.isArray(processedFormData.permissions)) {
-                const permissionNames = processedFormData.permissions.map((p) => {
+                processedFormData.permissions = processedFormData.permissions.map((p) => {
                     if (typeof p === 'object' && p !== null && p.name) {
                         return p.name;
                     }
                     return String(p);
                 });
-                processedFormData.permissions = permissionNames;
             }
 
             // Reset the object with only the fields we need
             const cleanData = {
                 label: processedFormData.label,
-                description: processedFormData.description || '',
+                description: processedFormData.description ?? '',
                 permissions: processedFormData.permissions || [],
             };
 
@@ -215,7 +252,7 @@ export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs 
                     if (processedFormData[key] && typeof processedFormData[key] === 'object') {
                         formDataObj.append(key, processedFormData[key]);
                     }
-                    // Otherwise skip this field - don't send empty file fields
+                    // Otherwise skip this field - don’t send empty file fields
                     return;
                 }
                 formDataObj.append(key, processedFormData[key]);
@@ -223,42 +260,38 @@ export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs 
 
             if (formMode === 'create') {
                 // Show loading toast
-                toast.loading(translate('Creating...'));
+                const toastId = toast.loading(translate('Creating...'));
 
                 router.post(entity.endpoint, formDataObj, {
-                    onSuccess: (page) => {
+                    onSuccess: () => {
                         setIsFormModalOpen(false);
-                        toast.dismiss();
-                        toast.success(
-                            t(`${entity.name.slice(0, -1).charAt(0).toUpperCase() + entity.name.slice(0, -1).slice(1)} created successfully`),
-                        );
+                        toast.dismiss(toastId);
+
                         if (hooks?.afterCreate) {
-                            hooks.afterCreate(formData, page.props[entity.name]);
+                            hooks.afterCreate(formData, pageProps[entity.name]);
                         }
                     },
                     onError: (errors) => {
-                        toast.dismiss();
-                        toast.error(t(`Failed to create ${entity.name.slice(0, -1)}: ${Object.values(errors).join(', ')}`));
+                        toast.dismiss(toastId);
+                        Object.values(errors).forEach((message) => toast.error(translate(message)));
                     },
                 });
             } else if (formMode === 'edit') {
                 // Show loading toast
-                toast.loading(translate('Updating...'));
+                const toastId = toast.loading(translate('Updating...'));
 
                 router.post(`${entity.endpoint}/${currentItem.id}?_method=PUT`, formDataObj, {
-                    onSuccess: (page) => {
+                    onSuccess: () => {
                         setIsFormModalOpen(false);
-                        toast.dismiss();
-                        toast.success(
-                            t(`${entity.name.slice(0, -1).charAt(0).toUpperCase() + entity.name.slice(0, -1).slice(1)} updated successfully`),
-                        );
+                        toast.dismiss(toastId);
+
                         if (hooks?.afterUpdate) {
-                            hooks.afterUpdate(formData, page.props[entity.name]);
+                            hooks.afterUpdate(formData, pageProps[entity.name]);
                         }
                     },
                     onError: (errors) => {
-                        toast.dismiss();
-                        toast.error(t(`Failed to update ${entity.name.slice(0, -1)}: ${Object.values(errors).join(', ')}`));
+                        toast.dismiss(toastId);
+                        Object.values(errors).forEach((message) => toast.error(translate(message)));
                     },
                 });
             }
@@ -267,48 +300,36 @@ export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs 
 
         if (formMode === 'create') {
             // Show loading toast
-            toast.loading(translate('Creating...'));
+            const toastId = toast.loading(translate('Creating...'));
 
             router.post(entity.endpoint, processedFormData, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
-                    const successMessage = page.props.flash?.success;
-                    const errorMessage = page.props.flash?.error;
-                    if (successMessage) {
-                        toast.success(successMessage);
-                    } else if (errorMessage) {
-                        toast.error(errorMessage);
-                    } else {
-                        toast.success(
-                            t(`${entity.name.slice(0, -1).charAt(0).toUpperCase() + entity.name.slice(0, -1).slice(1)} created successfully`),
-                        );
-                    }
+                    toast.dismiss(toastId);
                     if (hooks?.afterCreate) {
-                        hooks.afterCreate(formData, page.props[entity.name]);
+                        hooks.afterCreate(formData, pageProps[entity.name]);
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
-                    toast.error(t(`Failed to create ${entity.name.slice(0, -1)}: ${Object.values(errors).join(', ')}`));
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         } else if (formMode === 'edit') {
             // Show loading toast
-            toast.loading(translate('Updating...'));
+            const toastId = toast.loading(translate('Updating...'));
 
             router.put(`${entity.endpoint}/${currentItem.id}`, processedFormData, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
-                    toast.success(t(`${entity.name.slice(0, -1).charAt(0).toUpperCase() + entity.name.slice(0, -1).slice(1)} updated successfully`));
+                    toast.dismiss(toastId);
                     if (hooks?.afterUpdate) {
-                        hooks.afterUpdate(formData, page.props[entity.name]);
+                        hooks.afterUpdate(formData, pageProps[entity.name]);
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
-                    toast.error(t(`Failed to update ${entity.name.slice(0, -1)}: ${Object.values(errors).join(', ')}`));
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             });
         }
@@ -316,30 +337,31 @@ export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs 
 
     const handleDeleteConfirm = () => {
         // Show loading toast
-        toast.loading(translate('Deleting...'));
+        const toastId = toast.loading(translate('Deleting...'));
 
         router.delete(`${entity.endpoint}/${currentItem.id}`, {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
-                if (page.props.flash?.error) {
-                    toast.error(t(page.props.flash?.error));
-                    return;
-                }
-                toast.success(t(`${entity.name.slice(0, -1).charAt(0).toUpperCase() + entity.name.slice(0, -1).slice(1)} deleted successfully`));
+                toast.dismiss(toastId);
+
                 if (hooks?.afterDelete) {
                     hooks.afterDelete(currentItem.id);
                 }
             },
             onError: (errors) => {
-                toast.dismiss();
-                toast.error(t(`Failed to delete ${entity.name.slice(0, -1)}: ${Object.values(errors).join(', ')}`));
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
 
+    const hasPermission = (permission?: string) => {
+        if (!permission) return true;
+        if (!auth || !auth.user || !auth.permissions) return false;
+        return auth.permissions.includes(permission);
+    };
+
     const handleResetFilters = () => {
-        // Reset all filters to default values
         const resetFilters: Record<string, any> = {};
         filters.forEach((filter) => {
             resetFilters[filter.key] = filter.type === 'select' ? 'all' : '';
@@ -353,7 +375,7 @@ export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs 
             entity.endpoint,
             {
                 page: 1,
-                per_page: pageFilters.per_page ?? 10,
+                per_page: pageFilters.per_page || 10,
             },
             { preserveState: true, preserveScroll: true },
         );
@@ -362,80 +384,160 @@ export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs 
     // Check if we should show the add button
     const showAddButton = buttons.every((button) => button.showAddButton !== false);
 
-    // Define page actions
-    const pageActions: PageAction[] = [];
+    // Build page actions safely
+    const pageActions: PageAction[] = buttons
+        .filter((button) => hasPermission(button.requiredPermission))
+        .map((button) => ({
+            label: button.label,
+            icon: button.icon,
+            variant: button.variant,
+            onClick: button.onClick,
+        }));
 
-    // Add custom buttons with permission check
-    buttons.forEach((button) => {
-        if (!button.permission || useHasPermission(button.permission)) {
-            pageActions.push({
-                label: button.label,
-                icon: button.icon,
-                variant: button.variant,
-                onClick: button.onClick,
-            });
-        }
-    });
+    // Check create permission
+    const canCreateEntity = hasPermission(entity.permissions.create);
 
-    // Add the default "Add" button if allowed and user has permission
-    if (showAddButton && useHasPermission(entity.permissions.create)) {
+    // Add default "Add a new" button
+    if (showAddButton && canCreateEntity) {
         pageActions.push({
-            label: `Add ${entity.name.slice(0, -1).charAt(0).toUpperCase() + entity.name.slice(0, -1).slice(1)}`,
+            label: `${translate('Add a new')} ${entity.name.slice(0, -1).charAt(0).toUpperCase() + entity.name.slice(0, -1).slice(1)}`,
             icon: <PlusIcon className="h-4 w-4" />,
             variant: 'default',
-            onClick: () => handleAddNew(),
+            onClick: handleAddNew,
         });
     }
 
-    const pageTitle = title || entity.name.charAt(0).toUpperCase() + entity.name.slice(1);
+    const pageTitle = translate(title || entity.name.charAt(0).toUpperCase() + entity.name.slice(1));
 
-    // Generate default breadcrumbs if not provided
-    const defaultBreadcrumbs: BreadcrumbItem[] = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: pageTitle }];
+    const defaultBreadcrumbs: BreadcrumbItemTypes[] = [
+        {
+            title: translate('Dashboard'),
+            href: route('dashboard.index'),
+        },
+        { title: pageTitle },
+    ];
 
     const pageBreadcrumbs = breadcrumbs || defaultBreadcrumbs;
 
     return (
-        <PageTemplate title={pageTitle} url={url} actions={pageActions} breadcrumbs={pageBreadcrumbs} noPadding>
+        <PageTemplate title={pageTitle} url={url} actions={pageActions} breadcrumbs={pageBreadcrumbs} description={description}>
             {/* Search and filters section */}
-            <div className="mb-4 rounded-lg bg-white p-4 shadow dark:bg-gray-900">
-                <SearchAndFilterBar
-                    searchTerm={searchTerm}
-                    onSearchChange={setSearchTerm}
-                    onSearch={handleSearch}
-                    filters={filters.map((filter) => {
-                        const filterKey = filter.name || filter.key;
-                        return {
-                            name: filterKey,
-                            label: filter.label,
-                            type: filter.type || 'select',
-                            options: filter.options,
-                            value: filterValues[filterKey] || '',
-                            onChange: (value: any) => handleFilterChange(filterKey, value),
-                        };
-                    })}
-                    showFilters={showFilters}
-                    setShowFilters={setShowFilters}
-                    hasActiveFilters={hasActiveFilters}
-                    activeFilterCount={activeFilterCount}
-                    onResetFilters={handleResetFilters}
-                    onApplyFilters={applyFilters}
-                    currentPerPage={pageFilters.per_page?.toString() || '10'}
-                    onPerPageChange={(value) => {
-                        const params: any = { page: 1, per_page: parseInt(value) };
-                        if (searchTerm) params.search = searchTerm;
-                        Object.entries(filterValues).forEach(([key, val]) => {
-                            if (val && val !== '') params[key] = val;
-                        });
-                        router.get(entity.endpoint, params, { preserveState: true, preserveScroll: true });
-                    }}
-                    showViewToggle={false}
-                    activeView="list"
-                    onViewChange={() => {}}
-                />
+            <div className="mb-4 rounded-lg bg-white shadow dark:bg-neutral-900">
+                <div className="p-4">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <form autoComplete="off" onSubmit={handleSearch} className="flex gap-2">
+                                <div className="relative w-64">
+                                    <Input
+                                        value={searchTerm}
+                                        onChange={(e) => {
+                                            setSearchTerm(e.target.value);
+                                        }}
+                                        className="w-full"
+                                    />
+                                </div>
+                                <Button type="submit" size="lg">
+                                    <Search className="mr-1.5 h-4 w-4" />
+                                    {translate('Search')}
+                                </Button>
+                            </form>
+
+                            {filters.length > 0 && (
+                                <div className="ml-2">
+                                    <Button
+                                        variant={hasActiveFilters() ? 'default' : 'outline'}
+                                        size="lg"
+                                        onClick={() => {
+                                            setShowFilters(!showFilters);
+                                        }}
+                                    >
+                                        <Filter className="mr-1.5 h-3.5 w-3.5" />
+                                        {showFilters ? translate('Hide filters') : translate('Show filters')}
+                                        {hasActiveFilters() && (
+                                            <span className="bg-primary-foreground text-primary ml-1 flex h-5 w-5 items-center justify-center rounded-full text-xs">
+                                                {activeFilterCount()}
+                                            </span>
+                                        )}
+                                    </Button>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                            <Label className="text-muted-foreground text-xs">{translate('Per page')}:</Label>
+                            <Select
+                                value={pageFilters.per_page?.toString() || '10'}
+                                onValueChange={(value) => {
+                                    const params: any = { page: 1, per_page: parseInt(value) };
+
+                                    if (searchTerm) {
+                                        params.search = searchTerm;
+                                    }
+
+                                    Object.entries(filterValues).forEach(([key, val]) => {
+                                        if (val && val !== '') {
+                                            params[key] = val;
+                                        }
+                                    });
+
+                                    router.get(entity.endpoint, params, { preserveState: true, preserveScroll: true });
+                                }}
+                            >
+                                <SelectTrigger className="h-8 w-16">
+                                    <SelectValue placeholder={translate('Select...')} />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="10">10</SelectItem>
+                                    <SelectItem value="25">25</SelectItem>
+                                    <SelectItem value="50">50</SelectItem>
+                                    <SelectItem value="100">100</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+
+                    {showFilters && filters.length > 0 && (
+                        <div className="mt-3 w-full rounded-md border bg-neutral-50 p-4 dark:border-neutral-700 dark:bg-neutral-800">
+                            <div className="flex flex-wrap items-end gap-4">
+                                {filters.map((filter) => {
+                                    const filterKey = filter.name || filter.key;
+                                    return (
+                                        <div key={filterKey} className="space-y-2">
+                                            <Label>{filter.label}</Label>
+                                            {filter.type === 'select' && (
+                                                <Select
+                                                    value={filterValues[filterKey] || ''}
+                                                    onValueChange={(value) => {
+                                                        handleFilterChange(filterKey, value);
+                                                    }}
+                                                >
+                                                    <SelectTrigger className="w-40">
+                                                        <SelectValue placeholder={`All ${filter.label}`} />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {filter.options?.map((option) => (
+                                                            <SelectItem key={option.value} value={option.value}>
+                                                                {option.label}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+
+                                <Button variant="outline" size="lg" onClick={handleResetFilters} disabled={!hasActiveFilters()}>
+                                    {translate('Reset filters')}
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
 
             {/* Table section */}
-            <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-900">
+            <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-neutral-900">
                 <CrudTable
                     columns={table.columns}
                     actions={table.actions}
@@ -457,13 +559,18 @@ export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs 
                     total={data.total}
                     links={data.links}
                     entityName={entity.name}
-                    onPageChange={(url) => router.get(url)}
+                    onPageChange={(url) => {
+                        router.get(url);
+                    }}
                 />
             </div>
 
             <CrudFormModal
                 isOpen={isFormModalOpen}
-                onClose={() => setIsFormModalOpen(false)}
+                onClose={() => {
+                    setIsFormModalOpen(false);
+                }}
+                autoComplete="off"
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     ...form,
@@ -472,7 +579,7 @@ export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs 
                 initialData={currentItem}
                 title={
                     formMode === 'create'
-                        ? `Add ${entity.name.slice(0, -1).charAt(0).toUpperCase() + entity.name.slice(0, -1).slice(1)}`
+                        ? `Add New ${entity.name.slice(0, -1).charAt(0).toUpperCase() + entity.name.slice(0, -1).slice(1)}`
                         : formMode === 'edit'
                           ? `Edit ${entity.name.slice(0, -1).charAt(0).toUpperCase() + entity.name.slice(0, -1).slice(1)}`
                           : `View ${entity.name.slice(0, -1).charAt(0).toUpperCase() + entity.name.slice(0, -1).slice(1)}`
@@ -483,7 +590,9 @@ export function PageCrudWrapper({ config, title, url, buttons = [], breadcrumbs 
 
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
                 entityName={entity.name.slice(0, -1)}

@@ -1,7 +1,7 @@
-import { PageTemplate } from '@components/page-template';
-import UserInitials from '@components/user-initials';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/select';
+import PageTemplate from '@components/PageTemplate';
+import UserInitials from '@components/UserInitials';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { Link, router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import {

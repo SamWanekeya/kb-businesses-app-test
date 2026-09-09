@@ -36,7 +36,7 @@ const IframePortal = forwardRef<IframePortalHandles, IframePortalProps>(({ child
                             html, body {
                                 background: #ffffff;
                                 color: #000000;
-                                font-family: Lato, sans-serif;
+                                font-family: Mulish, sans-serif;
                                 color-scheme: light;
                                 overflow:hidden;
                             }

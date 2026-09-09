@@ -85,7 +85,7 @@ export function SidebarProvider({
         _setOpen((prev) => {
             const next = typeof value === 'function' ? value(prev) : value;
 
-            storeCookie('__hf_sidebar_st', next);
+            storeCookie('__kb_sidebar_st', next);
 
             return next;
         });

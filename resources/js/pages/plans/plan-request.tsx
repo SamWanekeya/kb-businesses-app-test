@@ -1,9 +1,9 @@
 // pages/plans/plan-request.tsx
 import { CrudTable } from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
-import { PageTemplate } from '@components/page-template';
-import { Pagination } from '@components/UserInterface/pagination';
-import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
+import PageTemplate from '@components/PageTemplate';
+import Pagination from '@components/UserInterface/Pagination';
+import SearchAndFilterBar from '@components/UserInterface/SearchAndFilterBar';
 import { router, usePage } from '@inertiajs/react';
 import { formatTitleCase } from '@utils/Helpers/StringFormatters';
 import { route } from '@utils/Routes';
@@ -80,9 +80,9 @@ export default function PlanRequestsPage() {
                             toast.dismiss();
                         }
                         if (page.props.flash.success) {
-                            toast.success(t(page.props.flash.success));
+                            toast.success(translate(page.props.flash.success));
                         } else if (page.props.flash.error) {
-                            toast.error(t(page.props.flash.error));
+                            toast.error(translate(page.props.flash.error));
                         }
                     },
                     onError: (errors) => {
@@ -111,9 +111,9 @@ export default function PlanRequestsPage() {
                             toast.dismiss();
                         }
                         if (page.props.flash.success) {
-                            toast.success(t(page.props.flash.success));
+                            toast.success(translate(page.props.flash.success));
                         } else if (page.props.flash.error) {
-                            toast.error(t(page.props.flash.error));
+                            toast.error(translate(page.props.flash.error));
                         }
                     },
                     onError: (errors) => {

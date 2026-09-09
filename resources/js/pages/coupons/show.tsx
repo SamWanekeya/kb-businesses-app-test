@@ -1,7 +1,7 @@
-import { PageTemplate } from '@components/page-template';
-import { Card, CardContent } from '@components/UserInterface/card';
-import { Pagination } from '@components/UserInterface/pagination';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@components/UserInterface/table';
+import PageTemplate from '@components/PageTemplate';
+import { Card, CardContent } from '@components/UserInterface/Card';
+import Pagination from '@components/UserInterface/Pagination';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@components/UserInterface/Table';
 import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { ArrowLeft, Calendar, DollarSign, TrendingUp, Users } from 'lucide-react';

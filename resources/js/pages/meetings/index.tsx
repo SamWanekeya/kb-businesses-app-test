@@ -1,12 +1,12 @@
-import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import CrudDeleteModal from '@components/CrudDeleteModal';
 import { CrudFormModal } from '@components/CrudFormModal';
 import { toast } from '@components/CustomToast';
-import { PageTemplate } from '@components/page-template';
-import UserInitials from '@components/user-initials';
-import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
-import { Button } from '@components/UserInterface/button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
-import { useInitials } from '@hooks/use-initials';
+import PageTemplate from '@components/PageTemplate';
+import UserInitials from '@components/UserInitials';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
+import { Button } from '@components/UserInterface/Button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
+import useInitials from '@hooks/useInitials';
 import { router, usePage } from '@inertiajs/react';
 import { formatTitleCase } from '@utils/Helpers/StringFormatters';
 import { useHasPermission } from '@utils/Permissions';
@@ -103,9 +103,9 @@ export default function Meetings() {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
                     toast.dismiss();
-                    if (page.props.flash.success) toast.success(t(page.props.flash.success));
-                    else if (page.props.flash.error) toast.error(t(page.props.flash.error));
-                    else if (page.props.flash.warning) toast.warning(t(page.props.flash.warning));
+                    if (page.props.flash.success) toast.success(translate(page.props.flash.success));
+                    else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
+                    else if (page.props.flash.warning) toast.warning(translate(page.props.flash.warning));
                 },
                 onError: (errors) => {
                     toast.dismiss();
@@ -118,9 +118,9 @@ export default function Meetings() {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
                     toast.dismiss();
-                    if (page.props.flash.success) toast.success(t(page.props.flash.success));
-                    else if (page.props.flash.error) toast.error(t(page.props.flash.error));
-                    else if (page.props.flash.warning) toast.warning(t(page.props.flash.warning));
+                    if (page.props.flash.success) toast.success(translate(page.props.flash.success));
+                    else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
+                    else if (page.props.flash.warning) toast.warning(translate(page.props.flash.warning));
                 },
                 onError: (errors) => {
                     toast.dismiss();
@@ -136,9 +136,9 @@ export default function Meetings() {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
                 toast.dismiss();
-                if (page.props.flash.success) toast.success(t(page.props.flash.success));
-                else if (page.props.flash.error) toast.error(t(page.props.flash.error));
-                else if (page.props.flash.warning) toast.warning(t(page.props.flash.warning));
+                if (page.props.flash.success) toast.success(translate(page.props.flash.success));
+                else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
+                else if (page.props.flash.warning) toast.warning(translate(page.props.flash.warning));
             },
             onError: (errors) => {
                 toast.dismiss();
@@ -152,8 +152,8 @@ export default function Meetings() {
             onSuccess: (page) => {
                 setIsStatusModalOpen(false);
                 toast.dismiss();
-                if (page.props.flash.success) toast.success(t(page.props.flash.success));
-                else if (page.props.flash.error) toast.error(t(page.props.flash.error));
+                if (page.props.flash.success) toast.success(translate(page.props.flash.success));
+                else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
             },
             onError: (errors) => {
                 toast.dismiss();

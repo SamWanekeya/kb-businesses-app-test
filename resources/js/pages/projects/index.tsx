@@ -1,18 +1,18 @@
-import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import CrudDeleteModal from '@components/CrudDeleteModal';
 import { CrudFormModal } from '@components/CrudFormModal';
 import { toast } from '@components/CustomToast';
-import { PageTemplate } from '@components/page-template';
-import { Button } from '@components/UserInterface/button';
-import { Card } from '@components/UserInterface/card';
+import PageTemplate from '@components/PageTemplate';
+import { Button } from '@components/UserInterface/Button';
+import { Card } from '@components/UserInterface/Card';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@components/UserInterface/dropdown-menu';
-import { Pagination } from '@components/UserInterface/pagination';
-import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
+} from '@components/UserInterface/DropdownMenu';
+import Pagination from '@components/UserInterface/Pagination';
+import SearchAndFilterBar from '@components/UserInterface/SearchAndFilterBar';
 import { router, usePage } from '@inertiajs/react';
 import { useHasPermission } from '@utils/Permissions';
 import { route } from '@utils/Routes';
@@ -152,8 +152,8 @@ export default function Projects() {
                     setIsFormModalOpen(false);
                     toast.dismiss();
                     page.props.flash.success
-                        ? toast.success(t(page.props.flash.success))
-                        : page.props.flash.error && toast.error(t(page.props.flash.error));
+                        ? toast.success(translate(page.props.flash.success))
+                        : page.props.flash.error && toast.error(translate(page.props.flash.error));
                 },
                 onError: (errors) => {
                     toast.dismiss();
@@ -167,8 +167,8 @@ export default function Projects() {
                     setIsFormModalOpen(false);
                     toast.dismiss();
                     page.props.flash.success
-                        ? toast.success(t(page.props.flash.success))
-                        : page.props.flash.error && toast.error(t(page.props.flash.error));
+                        ? toast.success(translate(page.props.flash.success))
+                        : page.props.flash.error && toast.error(translate(page.props.flash.error));
                 },
                 onError: (errors) => {
                     toast.dismiss();
@@ -185,8 +185,8 @@ export default function Projects() {
                 setIsDeleteModalOpen(false);
                 toast.dismiss();
                 page.props.flash.success
-                    ? toast.success(t(page.props.flash.success))
-                    : page.props.flash.error && toast.error(t(page.props.flash.error));
+                    ? toast.success(translate(page.props.flash.success))
+                    : page.props.flash.error && toast.error(translate(page.props.flash.error));
             },
             onError: (errors) => {
                 toast.dismiss();
@@ -201,8 +201,8 @@ export default function Projects() {
                 setIsStatusModalOpen(false);
                 toast.dismiss();
                 page.props.flash.success
-                    ? toast.success(t(page.props.flash.success))
-                    : page.props.flash.error && toast.error(t(page.props.flash.error));
+                    ? toast.success(translate(page.props.flash.success))
+                    : page.props.flash.error && toast.error(translate(page.props.flash.error));
             },
             onError: (errors) => {
                 toast.dismiss();

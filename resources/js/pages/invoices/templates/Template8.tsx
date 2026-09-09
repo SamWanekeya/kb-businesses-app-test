@@ -47,7 +47,7 @@ export default function Template8({ invoice, items, taxesData, settings, color, 
                 margin: '0 auto',
                 background: '#ffffff',
                 boxShadow: '0 0 10px #ddd',
-                fontFamily: 'Lato, sans-serif',
+                fontFamily: 'Mulish, sans-serif',
                 ...externalStyles?.invoicePreviewMain,
             }}
         >

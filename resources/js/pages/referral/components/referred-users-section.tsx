@@ -1,7 +1,7 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
-import { Pagination } from '@components/UserInterface/pagination';
-import { useInitials } from '@hooks/use-initials';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import Pagination from '@components/UserInterface/Pagination';
+import useInitials from '@hooks/useInitials';
 import { router } from '@inertiajs/react';
 import { Calendar, CheckCircle, DollarSign, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';

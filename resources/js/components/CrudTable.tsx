@@ -1,14 +1,14 @@
 // components/CrudTable.tsx
 import { TableAction, TableColumn } from '@/types/crud.d';
-import { Badge } from '@components/UserInterface/badge';
-import { Button } from '@components/UserInterface/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@components/UserInterface/table';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
+import { Badge } from '@components/UserInterface/Badge';
+import { Button } from '@components/UserInterface/Button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@components/UserInterface/Table';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
 import { Link } from '@inertiajs/react';
 import { cn } from '@lib/utils';
 import { useHasPermission } from '@utils/Permissions';
 import * as LucidIcons from 'lucide-react';
-import { ChevronDown, ChevronUp, ChevronsUpDown } from 'lucide-react';
+import { ChevronDown, ChevronsUpDown, ChevronUp } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 interface CrudTableProps {
@@ -21,16 +21,16 @@ interface CrudTableProps {
     sortDirection?: 'asc' | 'desc';
     onSort?: (field: string) => void;
     statusColors?: Record<string, string>;
-    permissions: string[];
     entityPermissions?: {
         view: string;
         edit: string;
         delete: string;
     };
     showActionsAsIcons?: boolean;
+    showActions?: boolean;
 }
 
-export function CrudTable({
+export default function CrudTable({
     columns,
     actions,
     data,
@@ -40,8 +40,8 @@ export function CrudTable({
     sortDirection,
     onSort,
     statusColors = {},
-    permissions,
     entityPermissions,
+    showActions = true,
 }: CrudTableProps) {
     const { t: translate } = useTranslation();
     const renderSortIcon = (column: TableColumn) => {
@@ -58,8 +58,6 @@ export function CrudTable({
         if (!column.sortable || !onSort) return;
         onSort(column.key);
     };
-
-    // Check if any actions have permissions
     const hasAnyActionPermission = actions.some((action) => {
         const permissionKey =
             action.requiredPermission ||
@@ -74,12 +72,11 @@ export function CrudTable({
 
         return !permissionKey || useHasPermission(permissionKey);
     });
-
     const renderActionButtons = (row: any) => {
         return (
             <div className="flex items-center justify-end space-x-2">
                 {actions.map((action, index) => {
-                    // Skip if user doesn't have permission
+                    // Skip if user doesn’t have permission
                     const permissionKey =
                         action.requiredPermission ||
                         (entityPermissions &&
@@ -104,14 +101,14 @@ export function CrudTable({
 
                     // Handle link actions
                     if (action.href) {
-                        const href = typeof action.href === 'function' ? action.href(row) : action.href.replace(':id', row.id);
+                        const href = typeof action.href === 'function' ? action.href(row) : action.href?.replace(':id', row.id);
 
                         return (
                             <TooltipProvider key={index}>
                                 <Tooltip>
                                     <TooltipTrigger asChild>
                                         <Link href={href} target={action.openInNewTab ? '_blank' : undefined}>
-                                            <Button variant="ghost" size="icon" className={cn('h-8 w-8 text-gray-500')}>
+                                            <Button variant="ghost" size="icon" className={cn('h-8 w-8', action.className)}>
                                                 <IconComponent size={16} />
                                             </Button>
                                         </Link>
@@ -132,8 +129,10 @@ export function CrudTable({
                                     <Button
                                         variant="ghost"
                                         size="icon"
-                                        className={cn('h-8 w-8 text-gray-500')}
-                                        onClick={() => onAction(action.action, row)}
+                                        className={cn('h-8 w-8', action.className)}
+                                        onClick={() => {
+                                            onAction(action.action, row);
+                                        }}
                                     >
                                         <IconComponent size={16} />
                                     </Button>
@@ -175,7 +174,7 @@ export function CrudTable({
 
             case 'image':
                 if (!value) {
-                    return <div className="text-center text-gray-400">{translate('No image')}</div>;
+                    return <div className="text-center text-neutral-400">{translate('No image')}</div>;
                 }
                 return (
                     <div className="flex justify-center">
@@ -191,27 +190,27 @@ export function CrudTable({
                 );
 
             case 'date':
-                return (
-                    <div className="flex items-center gap-2 whitespace-nowrap text-gray-500">
-                        {value && <LucidIcons.Calendar className="h-4 w-4" />}
-                        <span>{window.appSettings?.formatDateTime(value, false) || '-'}</span>
-                    </div>
-                );
+                return value ? <span className="text-sm">{window.hfSettings.formatDateTimeSimple(value, false)}</span> : <span>-</span>;
 
             case 'currency':
                 return (
                     <span className="text-sm">
-                        {typeof value === 'number' ? value.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : value}
+                        {typeof value === 'number'
+                            ? value.toLocaleString('en-US', {
+                                  style: 'currency',
+                                  currency: 'USD',
+                              })
+                            : value}
                     </span>
                 );
 
             case 'boolean':
-                return <span className="text-sm">{value ? 'Yes' : 'No'}</span>;
+                return <span className="text-sm">{value ? translate('Yes') : translate('No')}</span>;
 
             case 'link':
                 if (!value) return <span>-</span>;
 
-                const href = col.href ? (typeof col.href === 'function' ? col.href(row) : col.href.replace(':id', row.id)) : '#';
+                const href = col.href ? (typeof col.href === 'function' ? col.href(row) : col.href?.replace(':id', row.id)) : '#';
 
                 return (
                     <Link
@@ -224,21 +223,23 @@ export function CrudTable({
                 );
 
             default:
-                return <span className="text-sm font-medium">{value || '-'}</span>;
+                return <span className="text-sm font-medium">{value || ''}</span>;
         }
     };
 
     return (
-        <div className="border-collapse dark:bg-gray-900">
+        <div className="border-collapse dark:bg-neutral-900">
             <Table>
                 <TableHeader>
-                    <TableRow className="border-b bg-[#F0F0F1] hover:!bg-[#F0F0F1] dark:bg-gray-800 dark:hover:!bg-gray-800">
+                    <TableRow className="border-b bg-neutral-50 dark:bg-neutral-800">
                         <TableHead className="w-12 py-2.5 font-semibold">#</TableHead>
                         {columns.map((column) => (
                             <TableHead
                                 key={column.key}
-                                className={cn('py-2.5 font-semibold', column.sortable && 'cursor-pointer select-none', column.className)}
-                                onClick={() => handleSort(column)}
+                                className={cn('py-2.5 text-left font-semibold', column.sortable && 'cursor-pointer select-none', column.className)}
+                                onClick={() => {
+                                    handleSort(column);
+                                }}
                             >
                                 <div className="flex items-center">
                                     {column.label}
@@ -246,29 +247,43 @@ export function CrudTable({
                                 </div>
                             </TableHead>
                         ))}
-                        {hasAnyActionPermission && <TableHead className="w-24 py-2.5 text-center font-semibold">{translate('Actions')}</TableHead>}
+                        {/* <TableHead className="w-24 py-2.5 font-semibold text-right">{translate('Actions')}</TableHead> */}
+                        {showActions && hasAnyActionPermission && (
+                            <TableHead className="w-24 py-2.5 text-right font-semibold">{translate('Actions')}</TableHead>
+                        )}
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {data.length > 0 ? (
                         data.map((row, index) => (
-                            <TableRow key={row.id || index} className="border-b hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700">
+                            <TableRow key={row.id || index} className="border-b hover:bg-neutral-50 dark:bg-neutral-900 dark:hover:bg-neutral-700">
                                 <TableCell className="py-2.5 font-medium">{from + index}</TableCell>
                                 {columns.map((col) => (
-                                    <TableCell key={col.key} className={cn('py-2.5', col.className)}>
+                                    <TableCell key={col.key} className={cn('py-2.5 text-left', col.className)}>
                                         {renderCellContent(row, col)}
                                     </TableCell>
                                 ))}
-                                {hasAnyActionPermission && <TableCell className="py-2.5 text-right">{renderActionButtons(row)}</TableCell>}
+                                {/* <TableCell className="py-2.5 text-right">
+                  {renderActionButtons(row)}
+                </TableCell> */}
+                                {showActions && hasAnyActionPermission && (
+                                    <TableCell className="py-2.5 text-right">{renderActionButtons(row)}</TableCell>
+                                )}
                             </TableRow>
                         ))
                     ) : (
                         <TableRow>
+                            {/* <TableCell
+                colSpan={columns.length + 2}
+                className="h-24 text-center text-muted-foreground dark:text-neutral-400"
+              >
+                {translate('No results found')}
+              </TableCell> */}
                             <TableCell
-                                colSpan={columns.length + (hasAnyActionPermission ? 2 : 1)}
-                                className="text-muted-foreground h-24 text-center dark:text-gray-400"
+                                colSpan={columns.length + (showActions && hasAnyActionPermission ? 2 : 1)}
+                                className="text-muted-foreground h-24 text-center dark:text-neutral-400"
                             >
-                                {translate('No results found.')}
+                                {translate('No results found')}
                             </TableCell>
                         </TableRow>
                     )}

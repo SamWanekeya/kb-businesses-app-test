@@ -42,7 +42,7 @@ export default function Template2({ invoice, items, taxesData, settings, color, 
 
     const styles = {
         root: {
-            fontFamily: 'Lato, sans-serif',
+            fontFamily: 'Mulish, sans-serif',
             margin: 0,
             padding: 0,
             boxSizing: 'border-box' as const,
@@ -52,7 +52,7 @@ export default function Template2({ invoice, items, taxesData, settings, color, 
             margin: '0 auto',
             background: '#ffff',
             boxShadow: '0 0 10px #ddd',
-            fontFamily: 'Lato, sans-serif',
+            fontFamily: 'Mulish, sans-serif',
             ...externalStyles?.invoicePreviewMain,
         },
         invoiceHeader: {

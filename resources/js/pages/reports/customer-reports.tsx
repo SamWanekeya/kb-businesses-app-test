@@ -1,9 +1,9 @@
-import { PageTemplate } from '@components/page-template';
+import PageTemplate from '@components/PageTemplate';
 import { ReportFilters } from '@components/Reports/ReportFilters';
 import { SummaryCards } from '@components/Reports/SummaryCards';
-import UserInitials from '@components/user-initials';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
-import { Tabs, TabsList, TabsTrigger } from '@components/UserInterface/tabs';
+import UserInitials from '@components/UserInitials';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import { Tabs, TabsList, TabsTrigger } from '@components/UserInterface/Tabs';
 import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { DollarSign, MessageSquare, Phone, UserCheck, UserPlus, Users } from 'lucide-react';

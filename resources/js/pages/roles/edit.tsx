@@ -1,11 +1,11 @@
 import { toast } from '@components/CustomToast';
-import { PageTemplate } from '@components/page-template';
+import PageTemplate from '@components/PageTemplate';
 import { RolePermissionCheckboxGroup } from '@components/RolePermissionCheckboxGroup';
-import { Button } from '@components/UserInterface/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/UserInterface/card';
-import { Input } from '@components/UserInterface/input';
-import { Label } from '@components/UserInterface/label';
-import { Textarea } from '@components/UserInterface/textarea';
+import { Button } from '@components/UserInterface/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import { Input } from '@components/UserInterface/Input';
+import { Label } from '@components/UserInterface/Label';
+import { Textarea } from '@components/UserInterface/Textarea';
 import { router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { ArrowLeft } from 'lucide-react';
@@ -60,8 +60,8 @@ export default function RolesEdit() {
                 onSuccess: (page) => {
                     if (!isDemo) {
                         if (!globalSettings?.is_demo) toast.dismiss();
-                        if (page.props.flash.success) toast.success(t(page.props.flash.success));
-                        else if (page.props.flash.error) toast.error(t(page.props.flash.error));
+                        if (page.props.flash.success) toast.success(translate(page.props.flash.success));
+                        else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
                     }
                 },
                 onError: (errs) => {

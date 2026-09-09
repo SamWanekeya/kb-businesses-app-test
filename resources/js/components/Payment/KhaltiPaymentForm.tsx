@@ -1,7 +1,7 @@
 import { toast } from '@components/CustomToast';
-import { Alert, AlertDescription } from '@components/UserInterface/alert';
-import { Button } from '@components/UserInterface/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
+import { Alert, AlertDescription } from '@components/UserInterface/Alert';
+import { Button } from '@components/UserInterface/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { AlertCircle, CreditCard, Loader2 } from 'lucide-react';

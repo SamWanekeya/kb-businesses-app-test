@@ -41,7 +41,7 @@ export default function Template9({ quote, items, taxesData, settings, color, qr
                 margin: '0 auto',
                 background: '#ffffff',
                 boxShadow: '0 0 10px #ddd',
-                fontFamily: 'Lato, sans-serif',
+                fontFamily: 'Mulish, sans-serif',
                 borderRight: `40px solid #${color}`,
                 ...externalStyles?.invoicePreviewMain,
             }}

@@ -1,5 +1,5 @@
 import { toast } from '@components/CustomToast';
-import { Button } from '@components/UserInterface/button';
+import { Button } from '@components/UserInterface/Button';
 import { route } from '@utils/Routes';
 import axios from 'axios';
 import { Loader2 } from 'lucide-react';

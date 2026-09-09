@@ -2,12 +2,12 @@ import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 
 import AccountButton from '@components/Account/AccountButton';
-import InputError from '@components/input-error';
+import InputError from '@components/InputError';
 import Recaptcha from '@components/recaptcha';
 import TextLink from '@components/text-link';
-import { Checkbox } from '@components/UserInterface/checkbox';
-import { Input } from '@components/UserInterface/input';
-import { Label } from '@components/UserInterface/label';
+import { Checkbox } from '@components/UserInterface/Checkbox';
+import { Input } from '@components/UserInterface/Input';
+import { Label } from '@components/UserInterface/Label';
 import { useBrand } from '@contexts/BrandContext';
 import { THEME_COLORS } from '@hooks/use-appearance';
 import AuthLayout from '@layouts/auth-layout';

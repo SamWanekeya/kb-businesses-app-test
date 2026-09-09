@@ -1,12 +1,12 @@
 // pages/currencies/index.tsx
-import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import CrudDeleteModal from '@components/CrudDeleteModal';
 import { CrudFormModal } from '@components/CrudFormModal';
 import { CrudTable } from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
-import { PageTemplate } from '@components/page-template';
-import { Dialog } from '@components/UserInterface/dialog';
-import { Pagination } from '@components/UserInterface/pagination';
-import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
+import PageTemplate from '@components/PageTemplate';
+import { Dialog } from '@components/UserInterface/Dialog';
+import Pagination from '@components/UserInterface/Pagination';
+import SearchAndFilterBar from '@components/UserInterface/SearchAndFilterBar';
 import { router, usePage } from '@inertiajs/react';
 import ViewPopup from '@pages/currencies/view';
 import { useHasPermission } from '@utils/Permissions';
@@ -115,9 +115,9 @@ export default function Currencies() {
                         toast.dismiss();
                     }
                     if (page.props.flash.success) {
-                        toast.success(t(page.props.flash.success));
+                        toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
-                        toast.error(t(page.props.flash.error));
+                        toast.error(translate(page.props.flash.error));
                     }
                 },
                 onError: (errors) => {
@@ -143,9 +143,9 @@ export default function Currencies() {
                         toast.dismiss();
                     }
                     if (page.props.flash.success) {
-                        toast.success(t(page.props.flash.success));
+                        toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
-                        toast.error(t(page.props.flash.error));
+                        toast.error(translate(page.props.flash.error));
                     }
                 },
                 onError: (errors) => {
@@ -174,9 +174,9 @@ export default function Currencies() {
                     toast.dismiss();
                 }
                 if (page.props.flash.success) {
-                    toast.success(t(page.props.flash.success));
+                    toast.success(translate(page.props.flash.success));
                 } else if (page.props.flash.error) {
-                    toast.error(t(page.props.flash.error));
+                    toast.error(translate(page.props.flash.error));
                 }
             },
             onError: (errors) => {

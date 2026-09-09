@@ -1,9 +1,9 @@
 import { toast } from '@components/CustomToast';
-import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
-import { Button } from '@components/UserInterface/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/UserInterface/card';
-import { Input } from '@components/UserInterface/input';
-import { useInitials } from '@hooks/use-initials';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
+import { Button } from '@components/UserInterface/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import { Input } from '@components/UserInterface/Input';
+import useInitials from '@hooks/useInitials';
 import { Award, Calendar, Check, Clock, Copy, DollarSign, Mail, TrendingUp, Users } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';

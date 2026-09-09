@@ -1,5 +1,5 @@
-import { Button } from '@components/UserInterface/button';
-import { DatePicker } from '@components/UserInterface/date-picker';
+import { Button } from '@components/UserInterface/Button';
+import { DatePicker } from '@components/UserInterface/DatePicker';
 import { router } from '@inertiajs/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';

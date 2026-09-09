@@ -1,11 +1,11 @@
 import { ColumnMappingModal } from '@components/ColumnMappingModal';
 import { toast } from '@components/CustomToast';
-import { Button } from '@components/UserInterface/button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@components/UserInterface/dialog';
-import { Input } from '@components/UserInterface/input';
-import { Label } from '@components/UserInterface/label';
+import { Button } from '@components/UserInterface/Button';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
+import { Input } from '@components/UserInterface/Input';
+import { Label } from '@components/UserInterface/Label';
+import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
-import axios from 'axios';
 import { Download } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,19 +16,70 @@ interface ImportModalProps {
     title: string;
     importRoute: string;
     parseRoute: string;
-    samplePath?: string;
+    sampleRoute?: string;
     importNotes: string;
     databaseFields: { key: string; required?: boolean }[];
+    modalSize?: 'sm' | 'md' | 'lg' | 'xl';
 }
 
-export function ImportModal({ isOpen, onClose, title, importRoute, parseRoute, samplePath, importNotes, databaseFields }: ImportModalProps) {
+export function ImportModal({
+    isOpen,
+    onClose,
+    title,
+    importRoute,
+    parseRoute,
+    sampleRoute,
+    importNotes,
+    databaseFields,
+    modalSize = 'lg',
+}: ImportModalProps) {
     const { t: translate } = useTranslation();
+    const { csrfToken } = usePage().props;
+
     const [file, setFile] = useState<File | null>(null);
     const [isImporting, setIsImporting] = useState(false);
     const [showMappingModal, setShowMappingModal] = useState(false);
     const [excelColumns, setExcelColumns] = useState<string[]>([]);
     const [parsedData, setParsedData] = useState<Record<string, string>[]>([]);
     const [previewData, setPreviewData] = useState<Record<string, string>[]>([]);
+
+    const handleDownloadSample = async () => {
+        if (!sampleRoute) return;
+
+        const response = await fetch(route(sampleRoute), {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        });
+
+        if (!response.ok) {
+            const data = await response.json().catch(() => ({}));
+            toast.error(translate(data.error));
+            return;
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+
+        // Extract filename from Content-Disposition header or use default
+        const contentDisposition = response.headers.get('Content-Disposition');
+        let filename = 'sample-template.xlsx';
+        if (contentDisposition) {
+            const filenameMatch = contentDisposition.match(/filename="?(.+?)"?$/i);
+            if (filenameMatch) {
+                filename = filenameMatch[1];
+            }
+        }
+
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -42,27 +93,32 @@ export function ImportModal({ isOpen, onClose, title, importRoute, parseRoute, s
         formData.append('file', file);
 
         setIsImporting(true);
-        toast.loading(translate('Parsing file...'));
+        const toastId = toast.loading(translate('Parsing file...'));
 
-        try {
-            const { data } = await axios.post(route(parseRoute), formData);
+        const response = await fetch(route(parseRoute), {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+            },
+        });
 
-            if (data.excelColumns && data.previewData) {
-                setExcelColumns(data.excelColumns);
-                setParsedData(data.previewData);
-                setPreviewData(data.previewData || []);
-                toast.dismiss();
-                onClose();
-                setShowMappingModal(true);
+        const data = await response.json();
+
+        if (data.excelColumns && data.previewData) {
+            setExcelColumns(data.excelColumns);
+            setParsedData(data.previewData);
+            setPreviewData(data.previewData || []);
+            toast.dismiss(toastId);
+            onClose();
+            setShowMappingModal(true);
+        } else {
+            toast.dismiss(toastId);
+            if (data.message) {
+                toast.error(translate(data.message));
             } else {
-                toast.dismiss();
-                toast.error(data.message || translate('Failed to parse file'));
+                toast.error(translate('Failed to parse file'));
             }
-        } catch (error) {
-            toast.dismiss();
-            toast.error(translate('Network error or invalid response'));
-        } finally {
-            setIsImporting(false);
         }
     };
 
@@ -81,65 +137,62 @@ export function ImportModal({ isOpen, onClose, title, importRoute, parseRoute, s
         }
     };
 
+    const modalSizeClass = {
+        sm: 'sm:max-w-sm',
+        md: 'sm:max-w-md',
+        lg: 'sm:max-w-lg',
+        xl: 'sm:max-w-xl',
+    }[modalSize];
+
     return (
         <>
             <Dialog open={isOpen} onOpenChange={handleClose}>
-                <DialogContent className="sm:max-w-md">
+                <DialogContent className={modalSizeClass}>
                     <DialogHeader>
                         <DialogTitle>{title}</DialogTitle>
                     </DialogHeader>
                     <div className="space-y-4">
-                        {samplePath && (
-                            <div className="text-center">
+                        {sampleRoute && (
+                            <div className="flex items-center justify-between rounded-md border border-neutral-200 p-3">
+                                <p className="text-sm text-neutral-700">{translate('Download sample template for required format')}</p>
                                 <Button
                                     type="button"
-                                    variant="outline"
-                                    onClick={async () => {
-                                        try {
-                                            const response = await fetch(samplePath);
-                                            if (!response.ok) {
-                                                const error = await response.json();
-                                                toast.error(t(error.error || 'Failed to download template'));
-                                                return;
-                                            }
-                                            window.location.href = samplePath;
-                                        } catch (error) {
-                                            toast.error(translate('Failed to download template'));
-                                        }
-                                    }}
-                                    disabled={!samplePath}
-                                    className="mb-4"
+                                    variant="ghost"
+                                    size="lg"
+                                    onClick={handleDownloadSample}
+                                    className="ml-3 text-blue-600 hover:text-blue-800"
                                 >
-                                    <Download className="mr-2 h-4 w-4" />
-                                    {translate('Download Template')}
+                                    <Download className="h-4 w-4" />
                                 </Button>
                             </div>
                         )}
 
                         <div className="space-y-2">
-                            <Label htmlFor="file" required>
-                                {translate('Select File')}
+                            <Label htmlFor="file">
+                                {translate('Select file')} <span className="text-red-600">*</span>
                             </Label>
                             <Input
                                 id="file"
                                 type="file"
                                 accept=".xlsx,.xls,.csv"
-                                onChange={(e) => setFile(e.target.files?.[0] || null)}
+                                onChange={(e) => {
+                                    setFile(e.target.files?.[0] || null);
+                                }}
                                 disabled={isImporting}
                                 required
                             />
                         </div>
 
                         <div className="rounded-md border border-blue-200 bg-blue-50 p-3">
-                            <h4 className="mb-2 text-sm font-medium text-blue-800">{translate('Import Notes:')}</h4>
+                            <h4 className="mb-2 text-sm font-medium text-blue-800">{translate('Import notes:')}</h4>
                             <p className="text-xs text-blue-700">{importNotes}</p>
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button type="button" variant="outline" onClick={handleClose} disabled={isImporting}>
+                        <Button type="button" size="lg" variant="outline" onClick={handleClose} disabled={isImporting}>
                             {translate('Cancel')}
                         </Button>
-                        <Button type="button" onClick={handleSubmit} disabled={isImporting}>
+                        <Button type="button" size="lg" onClick={handleSubmit} disabled={isImporting}>
                             {translate('Import')}
                         </Button>
                     </DialogFooter>

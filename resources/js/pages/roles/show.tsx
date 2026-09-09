@@ -1,6 +1,6 @@
-import { PageTemplate } from '@components/page-template';
-import { Badge } from '@components/UserInterface/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/UserInterface/card';
+import PageTemplate from '@components/PageTemplate';
+import { Badge } from '@components/UserInterface/Badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { router, usePage } from '@inertiajs/react';
 import { formatTitleCase } from '@utils/Helpers/StringFormatters';
 import { route } from '@utils/Routes';

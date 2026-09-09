@@ -1,8 +1,8 @@
 import { toast } from '@components/CustomToast';
-import { Alert, AlertDescription } from '@components/UserInterface/alert';
-import { Button } from '@components/UserInterface/button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@components/UserInterface/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/select';
+import { Alert, AlertDescription } from '@components/UserInterface/Alert';
+import { Button } from '@components/UserInterface/Button';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { Info } from 'lucide-react';
@@ -28,7 +28,7 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
         if (isOpen && excelColumns.length > 0) {
             const autoMapping: Record<string, string> = {};
             databaseFields.forEach((field) => {
-                const match = excelColumns.find((col) => col.toLowerCase().replace(/[_\s]/g, '') === field.key.toLowerCase().replace(/[_\s]/g, ''));
+                const match = excelColumns.find((col) => col.toLowerCase()?.replace(/[_\s]/g, '') === field.key.toLowerCase()?.replace(/[_\s]/g, ''));
                 if (match) {
                     autoMapping[field.key] = match;
                 }
@@ -61,7 +61,7 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
         });
 
         setIsImporting(true);
-        toast.loading(translate('Importing...'));
+        const toastId = toast.loading(translate('Importing...'));
 
         router.post(
             route(importRoute),
@@ -70,24 +70,14 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
             },
             {
                 preserveState: true,
-                onSuccess: (page) => {
-                    onClose();
+                onSuccess: () => {
                     setIsImporting(false);
-                    toast.dismiss();
-                    if (page.props.flash.success) {
-                        toast.success(t(page.props.flash.success));
-                    } else if (page.props.flash.error) {
-                        toast.error(t(page.props.flash.error));
-                    }
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => {
                     setIsImporting(false);
-                    toast.dismiss();
-                    if (typeof errors === 'string') {
-                        toast.error(errors);
-                    } else {
-                        toast.error(translate('Failed to import'));
-                    }
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
             },
         );
@@ -95,9 +85,9 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()} modal={false}>
-            <DialogContent className="flex max-h-[90vh] max-w-6xl flex-col overflow-hidden">
+            <DialogContent className="flex max-h-[85vh] max-w-7xl flex-col overflow-hidden">
                 <DialogHeader>
-                    <DialogTitle>{translate('Import Customers')}</DialogTitle>
+                    <DialogTitle>{translate('Map columns')}</DialogTitle>
                 </DialogHeader>
 
                 <Alert className="border-amber-200 bg-amber-50">
@@ -106,17 +96,17 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
                 </Alert>
 
                 <div className="flex-1 overflow-auto">
-                    <h3 className="mb-3 text-sm font-semibold">{translate('Map Excel Columns to Database Fields')}</h3>
-                    <div className="rounded-lg border">
-                        <table className="w-full text-sm">
-                            <thead className="border-b bg-gray-50">
+                    <h3 className="mb-3 text-base font-semibold">{translate('Column mapping & preview')}</h3>
+                    <div className="overflow-x-auto rounded-lg border">
+                        <table className="w-full">
+                            <thead className="sticky top-0 border-b bg-neutral-50">
                                 <tr>
                                     {databaseFields.map((field) => (
-                                        <th key={field.key} className="px-4 py-2 text-left font-medium text-gray-700">
-                                            <div className="space-y-1">
-                                                <div>
-                                                    {field.key}
-                                                    {field.required && <span className="ml-1 text-red-500">*</span>}
+                                        <th key={field.key} className="min-w-[180px] px-4 py-3 text-left font-medium text-neutral-700">
+                                            <div className="space-y-2">
+                                                <div className="text-sm font-semibold">
+                                                    {field.key?.replace(/_/g, ' ')?.replace(/\b\w/g, (l) => l.toUpperCase())}
+                                                    {field.required && <span className="ml-1 text-red-600">*</span>}
                                                 </div>
                                                 <Select
                                                     value={mapping[field.key] || '__unselect__'}
@@ -126,7 +116,6 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
                                                             if (value === '__unselect__') {
                                                                 delete newMapping[field.key];
                                                             } else {
-                                                                // Remove this column from other mappings
                                                                 Object.keys(newMapping).forEach((key) => {
                                                                     if (newMapping[key] === value) delete newMapping[key];
                                                                 });
@@ -136,11 +125,11 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
                                                         });
                                                     }}
                                                 >
-                                                    <SelectTrigger className="h-8 w-full text-xs">
-                                                        <SelectValue placeholder={translate('Select column...')} />
+                                                    <SelectTrigger className="h-9 w-full bg-white text-sm">
+                                                        <SelectValue placeholder={translate('Select...')} />
                                                     </SelectTrigger>
                                                     <SelectContent position="popper" className="z-[9999]">
-                                                        <SelectItem value="__unselect__">{translate('Select column...')}</SelectItem>
+                                                        <SelectItem value="__unselect__">{translate('Select...')}</SelectItem>
                                                         {excelColumns.map((col) => {
                                                             const isUsed = Object.values(mapping).includes(col) && mapping[field.key] !== col;
                                                             return (
@@ -158,10 +147,16 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
                             </thead>
                             <tbody>
                                 {previewData.map((row, idx) => (
-                                    <tr key={idx} className="border-b">
+                                    <tr key={idx} className="border-b hover:bg-neutral-50">
                                         {databaseFields.map((field) => (
-                                            <td key={field.key} className="px-4 py-2 text-gray-600">
-                                                {mapping[field.key] ? row[mapping[field.key]] || translate('No data') : translate('-')}
+                                            <td key={field.key} className="px-4 py-3 text-sm text-neutral-700">
+                                                <div className="max-w-[200px] truncate" title={mapping[field.key] ? row[mapping[field.key]] : ''}>
+                                                    {mapping[field.key] ? (
+                                                        row[mapping[field.key]] || <span className="text-xs text-neutral-400 italic">empty</span>
+                                                    ) : (
+                                                        <span className="text-neutral-400">-</span>
+                                                    )}
+                                                </div>
                                             </td>
                                         ))}
                                     </tr>
@@ -169,14 +164,17 @@ export function ColumnMappingModal({ isOpen, onClose, excelColumns, databaseFiel
                             </tbody>
                         </table>
                     </div>
+                    <p className="mt-3 text-sm text-neutral-500 dark:text-neutral-400">
+                        {translate('Showing all {{count}} rows', { count: previewData.length })}
+                    </p>
                 </div>
 
                 <DialogFooter>
-                    <Button type="button" variant="outline" onClick={onClose} disabled={isImporting}>
+                    <Button type="button" size="lg" variant="outline" onClick={onClose} disabled={isImporting}>
                         {translate('Back')}
                     </Button>
-                    <Button type="button" onClick={handleSubmit} disabled={isImporting}>
-                        {translate('Import Data')}
+                    <Button type="button" size="lg" onClick={handleSubmit} disabled={isImporting}>
+                        {translate('Import data')}
                     </Button>
                 </DialogFooter>
             </DialogContent>

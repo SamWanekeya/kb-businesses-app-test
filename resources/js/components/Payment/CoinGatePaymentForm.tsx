@@ -1,6 +1,6 @@
-import { Alert, AlertDescription } from '@components/UserInterface/alert';
-import { Button } from '@components/UserInterface/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
+import { Alert, AlertDescription } from '@components/UserInterface/Alert';
+import { Button } from '@components/UserInterface/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { route } from '@utils/Routes';
 import { Coins, Info, Loader2 } from 'lucide-react';
 import { useState } from 'react';

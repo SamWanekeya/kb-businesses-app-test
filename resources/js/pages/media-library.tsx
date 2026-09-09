@@ -1,11 +1,11 @@
-import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import CrudDeleteModal from '@components/CrudDeleteModal';
 import { toast } from '@components/CustomToast';
-import { PageTemplate } from '@components/page-template';
-import { Badge } from '@components/UserInterface/badge';
-import { Button } from '@components/UserInterface/button';
-import { Card, CardContent } from '@components/UserInterface/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/dialog';
-import { Input } from '@components/UserInterface/input';
+import PageTemplate from '@components/PageTemplate';
+import { Badge } from '@components/UserInterface/Badge';
+import { Button } from '@components/UserInterface/Button';
+import { Card, CardContent } from '@components/UserInterface/Card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
+import { Input } from '@components/UserInterface/Input';
 import { usePage } from '@inertiajs/react';
 import { useHasPermission } from '@utils/Permissions';
 import { route } from '@utils/Routes';

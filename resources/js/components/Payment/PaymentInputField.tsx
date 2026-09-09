@@ -1,6 +1,6 @@
-import { Button } from '@components/UserInterface/button';
-import { Input } from '@components/UserInterface/input';
-import { Label } from '@components/UserInterface/label';
+import { Button } from '@components/UserInterface/Button';
+import { Input } from '@components/UserInterface/Input';
+import { Label } from '@components/UserInterface/Label';
 import { Eye, EyeOff } from 'lucide-react';
 import { useState } from 'react';
 

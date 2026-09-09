@@ -1,17 +1,17 @@
-import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import CrudDeleteModal from '@components/CrudDeleteModal';
 import { CrudFormModal } from '@components/CrudFormModal';
 import { toast } from '@components/CustomToast';
-import { PageTemplate } from '@components/page-template';
-import { Button } from '@components/UserInterface/button';
+import PageTemplate from '@components/PageTemplate';
+import { Button } from '@components/UserInterface/Button';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@components/UserInterface/dropdown-menu';
-import { Pagination } from '@components/UserInterface/pagination';
-import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
+} from '@components/UserInterface/DropdownMenu';
+import Pagination from '@components/UserInterface/Pagination';
+import SearchAndFilterBar from '@components/UserInterface/SearchAndFilterBar';
 import { useBrand } from '@contexts/BrandContext';
 import { THEME_COLORS } from '@hooks/use-appearance';
 import { router, usePage } from '@inertiajs/react';
@@ -54,9 +54,9 @@ export default function Documents() {
                 onSuccess: (page) => {
                     setIsFolderModalOpen(false);
                     toast.dismiss();
-                    if (page.props.flash.success_title) toast.success(t(page.props.flash.success_title));
-                    if (page.props.flash.success) toast.success(t(page.props.flash.success));
-                    else if (page.props.flash.error) toast.error(t(page.props.flash.error));
+                    if (page.props.flash.success_title) toast.success(translate(page.props.flash.success_title));
+                    if (page.props.flash.success) toast.success(translate(page.props.flash.success));
+                    else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
                 },
                 onError: (errors) => {
                     toast.dismiss();
@@ -70,9 +70,9 @@ export default function Documents() {
                 onSuccess: (page) => {
                     setIsFolderModalOpen(false);
                     toast.dismiss();
-                    if (page.props.flash.success_title) toast.success(t(page.props.flash.success_title));
-                    if (page.props.flash.success) toast.success(t(page.props.flash.success));
-                    else if (page.props.flash.error) toast.error(t(page.props.flash.error));
+                    if (page.props.flash.success_title) toast.success(translate(page.props.flash.success_title));
+                    if (page.props.flash.success) toast.success(translate(page.props.flash.success));
+                    else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
                 },
                 onError: (errors) => {
                     toast.dismiss();
@@ -88,9 +88,9 @@ export default function Documents() {
             onSuccess: (page) => {
                 setIsFolderDeleteModalOpen(false);
                 toast.dismiss();
-                if (page.props.flash.success_title) toast.success(t(page.props.flash.success_title));
-                if (page.props.flash.success) toast.success(t(page.props.flash.success));
-                else if (page.props.flash.error) toast.error(t(page.props.flash.error));
+                if (page.props.flash.success_title) toast.success(translate(page.props.flash.success_title));
+                if (page.props.flash.success) toast.success(translate(page.props.flash.success));
+                else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
             },
             onError: (errors) => {
                 toast.dismiss();

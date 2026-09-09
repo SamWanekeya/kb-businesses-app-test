@@ -1,11 +1,11 @@
 import { CrudTable } from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
-import { Button } from '@components/UserInterface/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@components/UserInterface/dialog';
-import { Input } from '@components/UserInterface/input';
-import { Label } from '@components/UserInterface/label';
-import { Textarea } from '@components/UserInterface/textarea';
+import { Button } from '@components/UserInterface/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@components/UserInterface/Dialog';
+import { Input } from '@components/UserInterface/Input';
+import { Label } from '@components/UserInterface/Label';
+import { Textarea } from '@components/UserInterface/Textarea';
 import { router, useForm } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { Plus } from 'lucide-react';
@@ -38,9 +38,9 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                 setShowCreateDialog(false);
                 reset();
                 if (page.props.flash.success) {
-                    toast.success(t(page.props.flash.success));
+                    toast.success(translate(page.props.flash.success));
                 } else if (page.props.flash.error) {
-                    toast.error(t(page.props.flash.error));
+                    toast.error(translate(page.props.flash.error));
                 }
             },
             onError: (errors) => {
@@ -59,9 +59,9 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                 {
                     onSuccess: (page) => {
                         if (page.props.flash.success) {
-                            toast.success(t(page.props.flash.success));
+                            toast.success(translate(page.props.flash.success));
                         } else if (page.props.flash.error) {
-                            toast.error(t(page.props.flash.error));
+                            toast.error(translate(page.props.flash.error));
                         }
                     },
                     onError: (errors) => {
@@ -85,9 +85,9 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                 onSuccess: (page) => {
                     setIsRejectModalOpen(false);
                     if (page.props.flash.success) {
-                        toast.success(t(page.props.flash.success));
+                        toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
-                        toast.error(t(page.props.flash.error));
+                        toast.error(translate(page.props.flash.error));
                     }
                 },
                 onError: (errors) => {

@@ -1,25 +1,18 @@
 // components/RolePermissionCheckboxGroup.tsx
-import { Checkbox } from '@components/UserInterface/checkbox';
-import { IndeterminateCheckbox } from '@components/UserInterface/indeterminate-checkbox';
-import { Label } from '@components/UserInterface/label';
-import { formatTitleCase } from '@utils/Helpers/StringFormatters';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
-interface Permission {
-    id: string | number;
-    name: string;
-    label: string;
-}
+import { Checkbox } from '@components/UserInterface/Checkbox';
+import { IndeterminateCheckbox } from '@components/UserInterface/IndeterminateCheckbox';
+import { Label } from '@components/UserInterface/Label';
+import { useTranslation } from 'react-i18next';
 
 interface RolePermissionCheckboxGroupProps {
     permissions: Record<string, any[]>;
     selectedPermissions: any;
     onChange: (permissions: string[]) => void;
-    disabled?: boolean;
 }
 
-export function RolePermissionCheckboxGroup({ permissions, selectedPermissions, onChange, disabled = false }: RolePermissionCheckboxGroupProps) {
+export default function RolePermissionCheckboxGroup({ permissions, selectedPermissions, onChange }: RolePermissionCheckboxGroupProps) {
     const { t: translate } = useTranslation();
     const [selected, setSelected] = useState<string[]>([]);
 
@@ -39,7 +32,7 @@ export function RolePermissionCheckboxGroup({ permissions, selectedPermissions, 
 
     // Get all permission IDs for a specific module
     const getModulePermissionIds = (module: string): string[] => {
-        return filteredPermissions[module]?.map((permission) => permission.id.toString()) || [];
+        return filteredPermissions[module].map((permission) => permission.id.toString()) || [];
     };
 
     // Initialize selected permissions
@@ -70,7 +63,7 @@ export function RolePermissionCheckboxGroup({ permissions, selectedPermissions, 
                         return nameMap[String(p)] || String(p);
                     })
                     .filter(Boolean);
-            } else if (typeof selectedPermissions === 'object' && selectedPermissions !== null) {
+            } else if (typeof selectedPermissions === 'object') {
                 if ('permissions' in selectedPermissions && Array.isArray(selectedPermissions.permissions)) {
                     processedPermissions = selectedPermissions.permissions
                         .map((p) => {
@@ -86,6 +79,7 @@ export function RolePermissionCheckboxGroup({ permissions, selectedPermissions, 
 
             setSelected(processedPermissions);
         } catch (error) {
+            console.error('Error processing permissions:', error);
             setSelected([]);
         }
     }, [selectedPermissions]);
@@ -156,52 +150,49 @@ export function RolePermissionCheckboxGroup({ permissions, selectedPermissions, 
     return (
         <div className="space-y-6">
             {/* Select All Checkbox */}
-            {!disabled && (
-                <div className="rounded border bg-gray-50 p-3 shadow-sm">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                            <IndeterminateCheckbox
-                                id="select-all-permissions-checkbox"
-                                checked={isAllSelected}
-                                onCheckedChange={(checked) => handleSelectAll(checked === true)}
-                            />
-                            <Label htmlFor="select-all-permissions-checkbox" className="font-medium">
-                                {translate('Select All Permissions')}
-                            </Label>
-                        </div>
-                        <div className="text-xs text-gray-500">
-                            {selected.length} {translate('of')} {getAllPermissionIds().length} {translate('selected')}
-                        </div>
+            <div className="rounded border bg-neutral-50 p-3 shadow-sm dark:bg-neutral-800">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                        <IndeterminateCheckbox
+                            id="select-all-permissions-checkbox"
+                            checked={isAllSelected}
+                            onCheckedChange={(checked) => {
+                                handleSelectAll(checked === true);
+                            }}
+                        />
+                        <Label htmlFor="select-all-permissions-checkbox" className="font-medium">
+                            {translate('Select all permissions')}
+                        </Label>
+                    </div>
+                    <div className="text-xs text-neutral-500">
+                        {selected.length} {translate('Of')} {getAllPermissionIds().length} {translate('Selected')}
                     </div>
                 </div>
-            )}
+            </div>
 
             {/* Module Permissions */}
             <div className="space-y-6">
                 {Object.entries(filteredPermissions).map(([module, modulePermissions]) => (
                     <div key={module} className="rounded border shadow-sm">
                         {/* Module Header */}
-                        <div className="flex items-center justify-between border-b bg-gray-50 p-3">
+                        <div className="flex items-center justify-between border-b bg-neutral-50 p-3 dark:bg-neutral-800">
                             <div className="flex items-center space-x-2">
-                                {!disabled && (
-                                    <IndeterminateCheckbox
-                                        id={`module-checkbox-${module.replace(/\s+/g, '-').toLowerCase()}`}
-                                        checked={isModuleSelected(module)}
-                                        indeterminate={isModuleIndeterminate(module)}
-                                        onCheckedChange={(checked) => handleModuleChange(module, checked === true)}
-                                        disabled={disabled}
-                                    />
-                                )}
-                                <Label htmlFor={`module-checkbox-${module.replace(/\s+/g, '-').toLowerCase()}`} className="font-medium">
-                                    {formatTitleCase(module)}
+                                <IndeterminateCheckbox
+                                    id={`module-checkbox-${module?.replace(/\s+/g, '-').toLowerCase()}`}
+                                    checked={isModuleSelected(module)}
+                                    indeterminate={isModuleIndeterminate(module)}
+                                    onCheckedChange={(checked) => {
+                                        handleModuleChange(module, checked === true);
+                                    }}
+                                />
+                                <Label htmlFor={`module-checkbox-${module?.replace(/\s+/g, '-').toLowerCase()}`} className="font-medium">
+                                    {module}
                                 </Label>
                             </div>
-                            {!disabled && (
-                                <div className="text-xs text-gray-500">
-                                    {modulePermissions.filter((p) => selected.includes(p.id.toString())).length} of {modulePermissions.length}{' '}
-                                    {translate('selected')}
-                                </div>
-                            )}
+                            <div className="text-xs text-neutral-500">
+                                {modulePermissions.filter((p) => selected.includes(p.id.toString())).length} of {modulePermissions.length}{' '}
+                                {translate('Selected')}
+                            </div>
                         </div>
 
                         {/* Individual Permissions */}
@@ -209,19 +200,18 @@ export function RolePermissionCheckboxGroup({ permissions, selectedPermissions, 
                             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                                 {modulePermissions.map((permission) => (
                                     <div key={permission.id} className="flex items-center space-x-2">
-                                        {!disabled && (
-                                            <Checkbox
-                                                id={`permission-checkbox-${permission.id.toString().replace(/\s+/g, '-').toLowerCase()}`}
-                                                checked={selected.includes(permission.id.toString()) || selected.includes(permission.name)}
-                                                onCheckedChange={(checked) => handlePermissionChange(permission.id.toString(), checked === true)}
-                                                disabled={disabled}
-                                            />
-                                        )}
+                                        <Checkbox
+                                            id={`permission-checkbox-${permission.id.toString()?.replace(/\s+/g, '-').toLowerCase()}`}
+                                            checked={selected.includes(permission.id.toString()) || selected.includes(permission.name)}
+                                            onCheckedChange={(checked) => {
+                                                handlePermissionChange(permission.id.toString(), checked === true);
+                                            }}
+                                        />
                                         <Label
-                                            htmlFor={`permission-checkbox-${permission.id.toString().replace(/\s+/g, '-').toLowerCase()}`}
+                                            htmlFor={`permission-checkbox-${permission.id.toString()?.replace(/\s+/g, '-').toLowerCase()}`}
                                             className="truncate text-sm"
                                         >
-                                            {formatTitleCase(permission.label)}
+                                            {permission.label}
                                         </Label>
                                     </div>
                                 ))}

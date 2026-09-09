@@ -1,9 +1,9 @@
-import { PageTemplate } from '@components/page-template';
-import UserInitials from '@components/user-initials';
-import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
-import { Button } from '@components/UserInterface/button';
-import { Card } from '@components/UserInterface/card';
-import { useInitials } from '@hooks/use-initials';
+import PageTemplate from '@components/PageTemplate';
+import UserInitials from '@components/UserInitials';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
+import { Button } from '@components/UserInterface/Button';
+import { Card } from '@components/UserInterface/Card';
+import useInitials from '@hooks/useInitials';
 import { router, usePage } from '@inertiajs/react';
 import { useHasPermission } from '@utils/Permissions';
 import { route } from '@utils/Routes';

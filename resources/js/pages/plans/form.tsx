@@ -1,10 +1,10 @@
-import InputError from '@components/input-error';
-import { PageTemplate } from '@components/page-template';
-import { Button } from '@components/UserInterface/button';
-import { Input } from '@components/UserInterface/input';
-import { Label } from '@components/UserInterface/label';
-import { Switch } from '@components/UserInterface/switch';
-import { Textarea } from '@components/UserInterface/textarea';
+import InputError from '@components/InputError';
+import PageTemplate from '@components/PageTemplate';
+import { Button } from '@components/UserInterface/Button';
+import { Input } from '@components/UserInterface/Input';
+import { Label } from '@components/UserInterface/Label';
+import { Switch } from '@components/UserInterface/Switch';
+import { Textarea } from '@components/UserInterface/Textarea';
 import { router, useForm } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { ArrowLeft } from 'lucide-react';

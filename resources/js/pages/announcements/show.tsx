@@ -1,8 +1,8 @@
-import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import CrudDeleteModal from '@components/CrudDeleteModal';
 import { toast } from '@components/CustomToast';
-import { PageTemplate } from '@components/page-template';
-import { Badge } from '@components/UserInterface/badge';
-import { Card, CardHeader, CardTitle } from '@components/UserInterface/card';
+import PageTemplate from '@components/PageTemplate';
+import { Badge } from '@components/UserInterface/Badge';
+import { Card, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { Head, router, usePage } from '@inertiajs/react';
 import { useHasPermission } from '@utils/Permissions';
 import { route } from '@utils/Routes';
@@ -23,7 +23,7 @@ export default function AnnouncementShow() {
             onSuccess: (page) => {
                 toast.dismiss();
                 if (page.props.flash.success) {
-                    toast.success(t(page.props.flash.success));
+                    toast.success(translate(page.props.flash.success));
                 }
                 router.get(route('announcements.index'));
             },

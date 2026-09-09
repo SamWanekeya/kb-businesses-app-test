@@ -1,7 +1,7 @@
 import { toast } from '@components/CustomToast';
-import { Button } from '@components/UserInterface/button';
-import { Input } from '@components/UserInterface/input';
-import { Label } from '@components/UserInterface/label';
+import { Button } from '@components/UserInterface/Button';
+import { Input } from '@components/UserInterface/Input';
+import { Label } from '@components/UserInterface/Label';
 import { usePaymentProcessor } from '@hooks/usePaymentProcessor';
 import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';

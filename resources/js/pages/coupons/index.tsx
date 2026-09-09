@@ -1,14 +1,14 @@
 // pages/coupons/index.tsx
-import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import CrudDeleteModal from '@components/CrudDeleteModal';
 import { CrudFormModal } from '@components/CrudFormModal';
 import { CrudTable } from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
-import { PageTemplate } from '@components/page-template';
-import { Button } from '@components/UserInterface/button';
-import { Input } from '@components/UserInterface/input';
-import { Pagination } from '@components/UserInterface/pagination';
-import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
-import { Switch } from '@components/UserInterface/switch';
+import PageTemplate from '@components/PageTemplate';
+import { Button } from '@components/UserInterface/Button';
+import { Input } from '@components/UserInterface/Input';
+import Pagination from '@components/UserInterface/Pagination';
+import SearchAndFilterBar from '@components/UserInterface/SearchAndFilterBar';
+import { Switch } from '@components/UserInterface/Switch';
 import { router, usePage } from '@inertiajs/react';
 import { useHasPermission } from '@utils/Permissions';
 import { route } from '@utils/Routes';
@@ -159,9 +159,9 @@ export default function CouponsPage() {
                         toast.dismiss();
                     }
                     if (page.props.flash.success) {
-                        toast.success(t(page.props.flash.success));
+                        toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
-                        toast.error(t(page.props.flash.error));
+                        toast.error(translate(page.props.flash.error));
                     }
                 },
                 onError: (errors) => {
@@ -187,9 +187,9 @@ export default function CouponsPage() {
                         toast.dismiss();
                     }
                     if (page.props.flash.success) {
-                        toast.success(t(page.props.flash.success));
+                        toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
-                        toast.error(t(page.props.flash.error));
+                        toast.error(translate(page.props.flash.error));
                     }
                 },
                 onError: (errors) => {
@@ -218,9 +218,9 @@ export default function CouponsPage() {
                     toast.dismiss();
                 }
                 if (page.props.flash.success) {
-                    toast.success(t(page.props.flash.success));
+                    toast.success(translate(page.props.flash.success));
                 } else if (page.props.flash.error) {
-                    toast.error(t(page.props.flash.error));
+                    toast.error(translate(page.props.flash.error));
                 }
             },
             onError: (errors) => {
@@ -254,9 +254,9 @@ export default function CouponsPage() {
                         toast.dismiss();
                     }
                     if (page.props.flash.success) {
-                        toast.success(t(page.props.flash.success));
+                        toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
-                        toast.error(t(page.props.flash.error));
+                        toast.error(translate(page.props.flash.error));
                     }
                 },
                 onError: (errors) => {

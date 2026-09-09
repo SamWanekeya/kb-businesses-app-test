@@ -1,7 +1,7 @@
 import { CrudTable } from '@components/CrudTable';
-import { PageTemplate } from '@components/page-template';
-import { Pagination } from '@components/UserInterface/pagination';
-import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
+import PageTemplate from '@components/PageTemplate';
+import Pagination from '@components/UserInterface/Pagination';
+import SearchAndFilterBar from '@components/UserInterface/SearchAndFilterBar';
 import { Head, router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { useEffect, useState } from 'react';

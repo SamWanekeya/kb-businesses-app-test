@@ -1,5 +1,5 @@
-import { Label } from '@components/UserInterface/label';
-import { RadioGroup, RadioGroupItem } from '@components/UserInterface/radio-group';
+import { Label } from '@components/UserInterface/Label';
+import { RadioGroup, RadioGroupItem } from '@components/UserInterface/RadioGroup';
 import { useTranslation } from 'react-i18next';
 
 interface PaymentModeSelectorProps {

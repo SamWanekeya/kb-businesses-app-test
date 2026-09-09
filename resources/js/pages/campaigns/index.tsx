@@ -1,21 +1,21 @@
-import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import CrudDeleteModal from '@components/CrudDeleteModal';
 import { CrudTable } from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
-import { PageTemplate } from '@components/page-template';
-import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
-import { Button } from '@components/UserInterface/button';
-import { Card } from '@components/UserInterface/card';
+import PageTemplate from '@components/PageTemplate';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
+import { Button } from '@components/UserInterface/Button';
+import { Card } from '@components/UserInterface/Card';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@components/UserInterface/dropdown-menu';
-import { Pagination } from '@components/UserInterface/pagination';
-import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
-import { useInitials } from '@hooks/use-initials';
+} from '@components/UserInterface/DropdownMenu';
+import Pagination from '@components/UserInterface/Pagination';
+import SearchAndFilterBar from '@components/UserInterface/SearchAndFilterBar';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
+import useInitials from '@hooks/useInitials';
 import { router, usePage } from '@inertiajs/react';
 import { useHasPermission } from '@utils/Permissions';
 import { route } from '@utils/Routes';
@@ -151,9 +151,9 @@ export default function Campaigns() {
                 setIsDeleteModalOpen(false);
                 toast.dismiss();
                 if (page.props.flash.success) {
-                    toast.success(t(page.props.flash.success));
+                    toast.success(translate(page.props.flash.success));
                 } else if (page.props.flash.error) {
-                    toast.error(t(page.props.flash.error));
+                    toast.error(translate(page.props.flash.error));
                 }
             },
             onError: (errors) => {
@@ -178,9 +178,9 @@ export default function Campaigns() {
                 onSuccess: (page) => {
                     toast.dismiss();
                     if (page.props.flash.success) {
-                        toast.success(t(page.props.flash.success));
+                        toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
-                        toast.error(t(page.props.flash.error));
+                        toast.error(translate(page.props.flash.error));
                     }
                 },
                 onError: (errors) => {

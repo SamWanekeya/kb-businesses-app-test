@@ -1,11 +1,11 @@
 import { toast } from '@components/CustomToast';
 import { SettingsSection } from '@components/settings-section';
-import { Button } from '@components/UserInterface/button';
-import { Card, CardContent } from '@components/UserInterface/card';
-import { Checkbox } from '@components/UserInterface/checkbox';
-import { Input } from '@components/UserInterface/input';
-import { Label } from '@components/UserInterface/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/UserInterface/tabs';
+import { Button } from '@components/UserInterface/Button';
+import { Card, CardContent } from '@components/UserInterface/Card';
+import { Checkbox } from '@components/UserInterface/Checkbox';
+import { Input } from '@components/UserInterface/Input';
+import { Label } from '@components/UserInterface/Label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/UserInterface/Tabs';
 import { router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { HardDrive, Save, Search } from 'lucide-react';

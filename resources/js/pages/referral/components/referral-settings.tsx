@@ -1,10 +1,10 @@
 import { toast } from '@components/CustomToast';
-import { Button } from '@components/UserInterface/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
-import { Input } from '@components/UserInterface/input';
-import { Label } from '@components/UserInterface/label';
-import { Switch } from '@components/UserInterface/switch';
-import { Textarea } from '@components/UserInterface/textarea';
+import { Button } from '@components/UserInterface/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import { Input } from '@components/UserInterface/Input';
+import { Label } from '@components/UserInterface/Label';
+import { Switch } from '@components/UserInterface/Switch';
+import { Textarea } from '@components/UserInterface/Textarea';
 import { useForm } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { Save } from 'lucide-react';
@@ -39,9 +39,9 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
                     toast.dismiss();
                 }
                 if (page.props.flash.success) {
-                    toast.success(t(page.props.flash.success));
+                    toast.success(translate(page.props.flash.success));
                 } else if (page.props.flash.error) {
-                    toast.error(t(page.props.flash.error));
+                    toast.error(translate(page.props.flash.error));
                 }
             },
             onError: (errors) => {

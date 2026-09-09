@@ -1,16 +1,15 @@
-import { ChatGptModal } from '@components/chatgpt';
-import { Button } from '@components/UserInterface/button';
-import { useLayout } from '@contexts/LayoutContext';
-import { usePage } from '@inertiajs/react';
-import { Sparkles } from 'lucide-react';
 import { useEffect, useState } from 'react';
+
+import ChatGptModal from '@components/ChatGpt/ChatGptModal';
+import { Button } from '@components/UserInterface/Button';
+import { usePage } from '@inertiajs/react';
+import { Brain } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 
-export function FloatingChatGpt() {
+export default function FloatingChatGpt() {
     const { t: translate } = useTranslation();
     const { auth } = usePage().props;
-    const { position } = useLayout();
     const [isOpen, setIsOpen] = useState(false);
     const [generatedContent, setGeneratedContent] = useState('');
 
@@ -33,25 +32,31 @@ export function FloatingChatGpt() {
         canUseChatGPT = hasActivePlan && creator?.plan?.enable_kakbima_intelligence === 'on';
     }
 
-    useEffect(() => {}, [isOpen]);
-
-    const handleGenerate = (content: string) => {
-        setGeneratedContent(content);
-    };
-
-    const handleModalOpen = () => setIsOpen(true);
-    const handleModalClose = () => setIsOpen(false);
-
-    // Don't render if user doesn't have access — AFTER all hooks
+    // Don’t render if user doesn’t have access
     if (!canUseChatGPT) {
         return null;
     }
 
+    useEffect(() => {}, [isOpen]);
+
+    const handleGenerate = (content: string) => {
+        setGeneratedContent(content);
+        // You can add additional logic here if needed
+    };
+
+    const handleModalOpen = () => {
+        setIsOpen(true);
+    };
+
+    const handleModalClose = () => {
+        setIsOpen(false);
+    };
+
     return createPortal(
         <>
             <div
-                className={`pointer-events-auto fixed bottom-6 z-[80000] ${position === 'right' ? 'left-6' : 'right-6'}`}
-                data-chatgpt-button
+                className="pointer-events-auto fixed bottom-6 z-[80000] ltr:right-6 rtl:left-6"
+                data-kakbima-intelligence-button="data-kakbima-intelligence-button"
                 style={{ pointerEvents: 'auto', zIndex: 80000 }}
                 onClickCapture={(e) => {
                     e.preventDefault();
@@ -74,22 +79,16 @@ export function FloatingChatGpt() {
                         e.stopPropagation();
                         handleModalOpen();
                     }}
-                    className="pointer-events-auto h-14 w-14 rounded-full shadow-lg transition-shadow hover:shadow-xl"
+                    className="pointer-events-auto rounded-full shadow-lg transition-shadow hover:shadow-xl"
                     size="lg"
-                    data-chatgpt-button
+                    data-kakbima-intelligence-button
                     style={{ pointerEvents: 'auto' }}
                 >
-                    <Sparkles className="h-6 w-6" />
+                    <Brain className="h-32 w-32" />
                 </Button>
             </div>
 
-            <ChatGptModal
-                isOpen={isOpen}
-                onClose={handleModalClose}
-                onGenerate={handleGenerate}
-                title={translate('AI Assistant')}
-                placeholder={translate('What would you like me to help you generate?')}
-            />
+            <ChatGptModal isOpen={isOpen} onClose={handleModalClose} onGenerate={handleGenerate} title={translate('Hafinen Intelligence')} />
         </>,
         document.body,
     );

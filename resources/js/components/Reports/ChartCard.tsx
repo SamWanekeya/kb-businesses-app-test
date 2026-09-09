@@ -1,4 +1,4 @@
-import { Card } from '@components/UserInterface/card';
+import { Card } from '@components/UserInterface/Card';
 import { ReactNode } from 'react';
 
 interface ChartCardProps {

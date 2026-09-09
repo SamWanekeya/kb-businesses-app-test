@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@components/UserInterface/card';
+import { Card, CardContent } from '@components/UserInterface/Card';
 import { ReactNode } from 'react';
 
 interface SummaryCardProps {

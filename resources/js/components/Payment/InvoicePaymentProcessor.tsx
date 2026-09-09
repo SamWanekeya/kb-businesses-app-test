@@ -1,11 +1,11 @@
 import { toast } from '@components/CustomToast';
 import { InvoiceBankTransferForm } from '@components/Payment/InvoiceBankTransferForm';
 import { InvoicePaystackPaymentForm } from '@components/Payment/InvoicePaystackPaymentForm';
-import { Badge } from '@components/UserInterface/badge';
-import { Button } from '@components/UserInterface/button';
-import { Card, CardContent } from '@components/UserInterface/card';
-import { Input } from '@components/UserInterface/input';
-import { Label } from '@components/UserInterface/label';
+import { Badge } from '@components/UserInterface/Badge';
+import { Button } from '@components/UserInterface/Button';
+import { Card, CardContent } from '@components/UserInterface/Card';
+import { Input } from '@components/UserInterface/Input';
+import { Label } from '@components/UserInterface/Label';
 import { Banknote, CreditCard } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

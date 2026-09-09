@@ -1,9 +1,9 @@
 import { toast } from '@components/CustomToast';
 import { SettingsSection } from '@components/settings-section';
-import { Button } from '@components/UserInterface/button';
-import { Input } from '@components/UserInterface/input';
-import { Label } from '@components/UserInterface/label';
-import { Switch } from '@components/UserInterface/switch';
+import { Button } from '@components/UserInterface/Button';
+import { Input } from '@components/UserInterface/Input';
+import { Label } from '@components/UserInterface/Label';
+import { Switch } from '@components/UserInterface/Switch';
 import { router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import axios from 'axios';

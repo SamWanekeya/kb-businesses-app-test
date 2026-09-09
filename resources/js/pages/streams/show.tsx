@@ -1,11 +1,11 @@
-import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import CrudDeleteModal from '@components/CrudDeleteModal';
 import { toast } from '@components/CustomToast';
-import { PageTemplate } from '@components/page-template';
-import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
-import { Button } from '@components/UserInterface/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
-import { useInitials } from '@hooks/use-initials';
+import PageTemplate from '@components/PageTemplate';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
+import { Button } from '@components/UserInterface/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
+import useInitials from '@hooks/useInitials';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { formatRelativeTime } from '@utils/helper';
 import { useHasPermission } from '@utils/Permissions';

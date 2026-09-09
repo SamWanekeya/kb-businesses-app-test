@@ -1,11 +1,11 @@
 import { toast } from '@components/CustomToast';
-import { PageTemplate } from '@components/page-template';
-import { Button } from '@components/UserInterface/button';
-import { Input } from '@components/UserInterface/input';
-import { Label } from '@components/UserInterface/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/select';
-import { Textarea } from '@components/UserInterface/textarea';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
+import PageTemplate from '@components/PageTemplate';
+import { Button } from '@components/UserInterface/Button';
+import { Input } from '@components/UserInterface/Input';
+import { Label } from '@components/UserInterface/Label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
+import { Textarea } from '@components/UserInterface/Textarea';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
 import { useForm, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { ArrowLeft, Copy } from 'lucide-react';

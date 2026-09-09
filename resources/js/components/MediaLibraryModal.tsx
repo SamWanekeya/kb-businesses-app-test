@@ -1,8 +1,8 @@
 import { toast } from '@components/CustomToast';
-import { Badge } from '@components/UserInterface/badge';
-import { Button } from '@components/UserInterface/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/dialog';
-import { Input } from '@components/UserInterface/input';
+import { Badge } from '@components/UserInterface/Badge';
+import { Button } from '@components/UserInterface/Button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
+import { Input } from '@components/UserInterface/Input';
 import { usePage } from '@inertiajs/react';
 import { useHasPermission } from '@utils/Permissions';
 import { Check, File, FileText, Image as ImageIcon, Plus, Search, Upload } from 'lucide-react';

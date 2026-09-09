@@ -1,11 +1,11 @@
 import MediaPicker from '@components/MediaPicker';
 import { SettingsSection } from '@components/settings-section';
 import { ThemePreview } from '@components/theme-preview';
-import { Button } from '@components/UserInterface/button';
-import { Card, CardContent } from '@components/UserInterface/card';
-import { Input } from '@components/UserInterface/input';
-import { Label } from '@components/UserInterface/label';
-import { Separator } from '@components/UserInterface/separator';
+import { Button } from '@components/UserInterface/Button';
+import { Card, CardContent } from '@components/UserInterface/Card';
+import { Input } from '@components/UserInterface/Input';
+import { Label } from '@components/UserInterface/Label';
+import { Separator } from '@components/UserInterface/Separator';
 import { getBrandSettings, useBrand } from '@contexts/BrandContext';
 import { LayoutPosition, useLayout } from '@contexts/LayoutContext';
 import { useSidebarSettings } from '@contexts/SidebarContext';

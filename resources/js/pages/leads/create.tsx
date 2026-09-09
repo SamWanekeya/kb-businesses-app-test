@@ -1,13 +1,13 @@
-import { PageTemplate } from '@components/page-template';
+import PageTemplate from '@components/PageTemplate';
 import { useForm, usePage } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
 
 import { toast } from '@components/CustomToast';
-import { Button } from '@components/UserInterface/button';
-import { Input } from '@components/UserInterface/input';
-import { Label } from '@components/UserInterface/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/select';
-import { Textarea } from '@components/UserInterface/textarea';
+import { Button } from '@components/UserInterface/Button';
+import { Input } from '@components/UserInterface/Input';
+import { Label } from '@components/UserInterface/Label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
+import { Textarea } from '@components/UserInterface/Textarea';
 import { route } from '@utils/Routes';
 import { useTranslation } from 'react-i18next';
 

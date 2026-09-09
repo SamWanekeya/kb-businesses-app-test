@@ -1,10 +1,10 @@
-import { PageTemplate } from '@components/page-template';
+import PageTemplate from '@components/PageTemplate';
 import { ReportFilters } from '@components/Reports/ReportFilters';
 import { SummaryCards } from '@components/Reports/SummaryCards';
-import UserInitials from '@components/user-initials';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
-import { Tabs, TabsList, TabsTrigger } from '@components/UserInterface/tabs';
-import { useInitials } from '@hooks/use-initials';
+import UserInitials from '@components/UserInitials';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import { Tabs, TabsList, TabsTrigger } from '@components/UserInterface/Tabs';
+import useInitials from '@hooks/useInitials';
 import { Link, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { ArrowUpRight, Calendar, Clock, Target, TrendingUp, Users } from 'lucide-react';

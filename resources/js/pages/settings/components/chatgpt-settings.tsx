@@ -1,10 +1,10 @@
 import { toast } from '@components/CustomToast';
 import { SettingsSection } from '@components/settings-section';
-import { Button } from '@components/UserInterface/button';
-import { Card, CardContent } from '@components/UserInterface/card';
-import { Input } from '@components/UserInterface/input';
-import { Label } from '@components/UserInterface/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/select';
+import { Button } from '@components/UserInterface/Button';
+import { Card, CardContent } from '@components/UserInterface/Card';
+import { Input } from '@components/UserInterface/Input';
+import { Label } from '@components/UserInterface/Label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { Save } from 'lucide-react';

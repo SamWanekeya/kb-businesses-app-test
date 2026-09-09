@@ -1,8 +1,8 @@
-import { PageTemplate } from '@components/page-template';
+import PageTemplate from '@components/PageTemplate';
 import { ReportFilters } from '@components/Reports/ReportFilters';
 import { SummaryCards } from '@components/Reports/SummaryCards';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
-import { Tabs, TabsList, TabsTrigger } from '@components/UserInterface/tabs';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import { Tabs, TabsList, TabsTrigger } from '@components/UserInterface/Tabs';
 import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { Briefcase, Calendar, CheckCircle, Percent, Play } from 'lucide-react';

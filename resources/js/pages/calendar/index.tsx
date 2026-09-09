@@ -1,9 +1,9 @@
 import { toast } from '@components/CustomToast';
-import { PageTemplate } from '@components/page-template';
-import { Button } from '@components/UserInterface/button';
-import { Card } from '@components/UserInterface/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/select';
+import PageTemplate from '@components/PageTemplate';
+import { Button } from '@components/UserInterface/Button';
+import { Card } from '@components/UserInterface/Card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import allLocales from '@fullcalendar/core/locales-all';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';

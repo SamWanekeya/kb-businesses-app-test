@@ -1,6 +1,6 @@
 import { toast } from '@components/CustomToast';
 import { PageWrapper } from '@components/PageWrapper';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { Head, router, usePage } from '@inertiajs/react';
 import { useHasPermission } from '@utils/Permissions';
 import { route } from '@utils/Routes';

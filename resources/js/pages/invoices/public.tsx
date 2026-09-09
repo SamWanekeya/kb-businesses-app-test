@@ -1,5 +1,5 @@
 import { toast } from '@components/CustomToast';
-import { InvoicePaymentModal } from '@components/invoice-payment-modal';
+import { InvoicePaymentModal } from '@components/InvoicePaymentModal';
 import { Head, usePage } from '@inertiajs/react';
 import { resolveImageUrl } from '@utils/Helpers/Url';
 import { useHasPermission } from '@utils/Permissions';
@@ -133,10 +133,10 @@ export default function PublicInvoice({
     // Handle flash messages
     useEffect(() => {
         if (props.flash?.success) {
-            toast.success(t(props.flash.success));
+            toast.success(translate(props.flash.success));
         }
         if (props.flash?.error) {
-            toast.error(t(props.flash.error));
+            toast.error(translate(props.flash.error));
         }
     }, [props.flash, t]);
 

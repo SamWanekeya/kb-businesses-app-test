@@ -1,17 +1,17 @@
 // pages/users/index.tsx
-import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import CrudDeleteModal from '@components/CrudDeleteModal';
 import { CrudFormModal } from '@components/CrudFormModal';
 import { CrudTable } from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
-import { PageTemplate } from '@components/page-template';
-import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
-import { Button } from '@components/UserInterface/button';
-import { Card } from '@components/UserInterface/card';
-import { Dialog } from '@components/UserInterface/dialog';
-import { Pagination } from '@components/UserInterface/pagination';
-import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@components/UserInterface/tooltip';
-import { useInitials } from '@hooks/use-initials';
+import PageTemplate from '@components/PageTemplate';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
+import { Button } from '@components/UserInterface/Button';
+import { Card } from '@components/UserInterface/Card';
+import { Dialog } from '@components/UserInterface/Dialog';
+import Pagination from '@components/UserInterface/Pagination';
+import SearchAndFilterBar from '@components/UserInterface/SearchAndFilterBar';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@components/UserInterface/Tooltip';
+import useInitials from '@hooks/useInitials';
 import { router, usePage } from '@inertiajs/react';
 import ViewPopup from '@pages/users/view';
 import { resolveImageUrl } from '@utils/Helpers/Url';
@@ -131,11 +131,11 @@ export default function Users() {
                     setIsFormModalOpen(false);
                     toast.dismiss();
                     if (page.props.flash.success) {
-                        toast.success(t(page.props.flash.success));
+                        toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
-                        toast.error(t(page.props.flash.error));
+                        toast.error(translate(page.props.flash.error));
                     } else if (page.props.flash.warning) {
-                        toast.warning(t(page.props.flash.warning));
+                        toast.warning(translate(page.props.flash.warning));
                     }
                 },
                 onError: (errors) => {
@@ -155,11 +155,11 @@ export default function Users() {
                     setIsFormModalOpen(false);
                     toast.dismiss();
                     if (page.props.flash.success) {
-                        toast.success(t(page.props.flash.success));
+                        toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
-                        toast.error(t(page.props.flash.error));
+                        toast.error(translate(page.props.flash.error));
                     } else if (page.props.flash.warning) {
-                        toast.warning(t(page.props.flash.warning));
+                        toast.warning(translate(page.props.flash.warning));
                     }
                 },
                 onError: (errors) => {
@@ -182,11 +182,11 @@ export default function Users() {
                 setIsDeleteModalOpen(false);
                 toast.dismiss();
                 if (page.props.flash.success) {
-                    toast.success(t(page.props.flash.success));
+                    toast.success(translate(page.props.flash.success));
                 } else if (page.props.flash.error) {
-                    toast.error(t(page.props.flash.error));
+                    toast.error(translate(page.props.flash.error));
                 } else if (page.props.flash.warning) {
-                    toast.warning(t(page.props.flash.warning));
+                    toast.warning(translate(page.props.flash.warning));
                 }
             },
             onError: (errors) => {
@@ -208,9 +208,9 @@ export default function Users() {
                 setIsResetPasswordModalOpen(false);
                 toast.dismiss();
                 if (page.props.flash.success) {
-                    toast.success(t(page.props.flash.success));
+                    toast.success(translate(page.props.flash.success));
                 } else if (page.props.flash.error) {
-                    toast.error(t(page.props.flash.error));
+                    toast.error(translate(page.props.flash.error));
                 }
             },
             onError: (errors) => {
@@ -235,9 +235,9 @@ export default function Users() {
                 onSuccess: (page) => {
                     toast.dismiss();
                     if (page.props.flash.success) {
-                        toast.success(t(page.props.flash.success));
+                        toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
-                        toast.error(t(page.props.flash.error));
+                        toast.error(translate(page.props.flash.error));
                     }
                 },
                 onError: (errors) => {

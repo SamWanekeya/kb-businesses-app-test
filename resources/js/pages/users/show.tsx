@@ -1,5 +1,5 @@
-import { PageTemplate } from '@components/page-template';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
+import PageTemplate from '@components/PageTemplate';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { Link, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { ArrowLeft, Calendar, Mail, Shield, User } from 'lucide-react';

@@ -1,20 +1,20 @@
-import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import CrudDeleteModal from '@components/CrudDeleteModal';
 import { CrudFormModal } from '@components/CrudFormModal';
 import { toast } from '@components/CustomToast';
-import { PageTemplate } from '@components/page-template';
-import { Button } from '@components/UserInterface/button';
-import { Card } from '@components/UserInterface/card';
-import { Dialog } from '@components/UserInterface/dialog';
+import PageTemplate from '@components/PageTemplate';
+import { Button } from '@components/UserInterface/Button';
+import { Card } from '@components/UserInterface/Card';
+import { Dialog } from '@components/UserInterface/Dialog';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@components/UserInterface/dropdown-menu';
-import { Pagination } from '@components/UserInterface/pagination';
-import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@components/UserInterface/tooltip';
+} from '@components/UserInterface/DropdownMenu';
+import Pagination from '@components/UserInterface/Pagination';
+import SearchAndFilterBar from '@components/UserInterface/SearchAndFilterBar';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@components/UserInterface/Tooltip';
 import { router, usePage } from '@inertiajs/react';
 import ViewPopup from '@pages/notes/view';
 import { useHasPermission } from '@utils/Permissions';

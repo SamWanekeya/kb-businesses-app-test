@@ -1,17 +1,17 @@
-import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import CrudDeleteModal from '@components/CrudDeleteModal';
 import { CrudFormModal } from '@components/CrudFormModal';
 import { toast } from '@components/CustomToast';
-import { PageTemplate } from '@components/page-template';
-import UserInitials from '@components/user-initials';
-import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
-import { Button } from '@components/UserInterface/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@components/UserInterface/dialog';
-import { Label } from '@components/UserInterface/label';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@components/UserInterface/table';
-import { Textarea } from '@components/UserInterface/textarea';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
-import { useInitials } from '@hooks/use-initials';
+import PageTemplate from '@components/PageTemplate';
+import UserInitials from '@components/UserInitials';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
+import { Button } from '@components/UserInterface/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
+import { Label } from '@components/UserInterface/Label';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@components/UserInterface/Table';
+import { Textarea } from '@components/UserInterface/Textarea';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
+import useInitials from '@hooks/useInitials';
 import { Link, router, usePage } from '@inertiajs/react';
 import { formatRelativeTime } from '@utils/Helpers/StringFormatters';
 import { useHasPermission } from '@utils/Permissions';
@@ -91,9 +91,9 @@ export default function InvoiceShow() {
                     setIsRejectPaymentModalOpen(false);
                     setCurrentPayment(null);
                     if (page.props.flash.success) {
-                        toast.success(t(page.props.flash.success));
+                        toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
-                        toast.error(t(page.props.flash.error));
+                        toast.error(translate(page.props.flash.error));
                     } else {
                         toast.success(translate('Payment rejected successfully'));
                     }
@@ -125,9 +125,9 @@ export default function InvoiceShow() {
                     setSelectedSalesOrderId('empty');
                     toast.dismiss();
                     if (page.props.flash.success) {
-                        toast.success(t(page.props.flash.success));
+                        toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
-                        toast.error(t(page.props.flash.error));
+                        toast.error(translate(page.props.flash.error));
                     }
                 },
                 onError: (errors) => {
@@ -184,8 +184,8 @@ export default function InvoiceShow() {
                 preserveState: false,
                 onSuccess: (page: any) => {
                     toast.dismiss();
-                    if (page.props.flash?.success) toast.success(t(page.props.flash.success));
-                    else if (page.props.flash?.error) toast.error(t(page.props.flash.error));
+                    if (page.props.flash?.success) toast.success(translate(page.props.flash.success));
+                    else if (page.props.flash?.error) toast.error(translate(page.props.flash.error));
                     fetch(route('invoices.reminder-history', invoice.id))
                         .then((r) => r.json())
                         .then((data) => setReminderHistory(data.reminders || []))
@@ -579,9 +579,9 @@ export default function InvoiceShow() {
                                                                                     preserveScroll: true,
                                                                                     onSuccess: (page) => {
                                                                                         if (page.props.flash.success)
-                                                                                            toast.success(t(page.props.flash.success));
+                                                                                            toast.success(translate(page.props.flash.success));
                                                                                         if (page.props.flash.error)
-                                                                                            toast.error(t(page.props.flash.error));
+                                                                                            toast.error(translate(page.props.flash.error));
                                                                                     },
                                                                                     onError: () =>
                                                                                         toast.error(translate('Failed to approve payment')),

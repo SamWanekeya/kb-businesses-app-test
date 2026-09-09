@@ -1,12 +1,12 @@
-import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import CrudDeleteModal from '@components/CrudDeleteModal';
 import { toast } from '@components/CustomToast';
-import { PageTemplate } from '@components/page-template';
+import PageTemplate from '@components/PageTemplate';
 import { PlanSubscriptionModal } from '@components/plan-subscription-modal';
-import { Badge } from '@components/UserInterface/badge';
-import { Button } from '@components/UserInterface/button';
-import { Switch } from '@components/UserInterface/switch';
-import { Tabs, TabsList, TabsTrigger } from '@components/UserInterface/tabs';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
+import { Badge } from '@components/UserInterface/Badge';
+import { Button } from '@components/UserInterface/Button';
+import { Switch } from '@components/UserInterface/Switch';
+import { Tabs, TabsList, TabsTrigger } from '@components/UserInterface/Tabs';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
 import { router, useForm, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import {
@@ -146,9 +146,9 @@ export default function Plans({
                 onSuccess: (page) => {
                     toast.dismiss();
                     if (page.props.flash.success) {
-                        toast.success(t(page.props.flash.success));
+                        toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
-                        toast.error(t(page.props.flash.error));
+                        toast.error(translate(page.props.flash.error));
                     }
                 },
                 onError: (errors) => {
@@ -175,9 +175,9 @@ export default function Plans({
                 onSuccess: (page) => {
                     toast.dismiss();
                     if (page.props.flash.success) {
-                        toast.success(t(page.props.flash.success));
+                        toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
-                        toast.error(t(page.props.flash.error));
+                        toast.error(translate(page.props.flash.error));
                     }
                 },
                 onError: (errors) => {
@@ -613,9 +613,9 @@ export default function Plans({
                     setPlans(plans.map((plan) => (plan.id === planId ? { ...plan, status: !plan.status } : plan)));
                     toast.dismiss();
                     if (page.props.flash.success) {
-                        toast.success(t(page.props.flash.success));
+                        toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
-                        toast.error(t(page.props.flash.error));
+                        toast.error(translate(page.props.flash.error));
                     }
                 },
             },
@@ -637,9 +637,9 @@ export default function Plans({
                     setPlanToDelete(null);
                     toast.dismiss();
                     if (page.props.flash.success) {
-                        toast.success(t(page.props.flash.success));
+                        toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
-                        toast.error(t(page.props.flash.error));
+                        toast.error(translate(page.props.flash.error));
                     }
                 },
             });

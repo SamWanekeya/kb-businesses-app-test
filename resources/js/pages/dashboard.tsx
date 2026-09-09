@@ -1,9 +1,9 @@
-import { PageTemplate } from '@components/page-template';
-import UserInitials from '@components/user-initials';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/select';
-import { Tabs, TabsList, TabsTrigger } from '@components/UserInterface/tabs';
-import { TooltipContent, TooltipProvider, TooltipTrigger, Tooltip as UITooltip } from '@components/UserInterface/tooltip';
+import PageTemplate from '@components/PageTemplate';
+import UserInitials from '@components/UserInitials';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
+import { Tabs, TabsList, TabsTrigger } from '@components/UserInterface/Tabs';
+import { TooltipContent, TooltipProvider, TooltipTrigger, Tooltip as UITooltip } from '@components/UserInterface/Tooltip';
 import { Link, router, usePage } from '@inertiajs/react';
 import { useHasPermission } from '@utils/Permissions';
 import { route } from '@utils/Routes';

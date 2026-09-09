@@ -1,4 +1,4 @@
-import { PageTemplate } from '@components/page-template';
+import PageTemplate from '@components/PageTemplate';
 import { router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { ArrowLeft, FileIcon } from 'lucide-react';

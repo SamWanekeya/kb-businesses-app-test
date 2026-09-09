@@ -1,5 +1,5 @@
-import { Button } from '@components/UserInterface/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/UserInterface/card';
+import { Button } from '@components/UserInterface/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { route } from '@utils/Routes';
 import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';

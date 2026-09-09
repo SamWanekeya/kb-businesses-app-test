@@ -1,8 +1,8 @@
-import { PageTemplate } from '@components/page-template';
-import { Button } from '@components/UserInterface/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/dialog';
-import { Pagination } from '@components/UserInterface/pagination';
-import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
+import PageTemplate from '@components/PageTemplate';
+import { Button } from '@components/UserInterface/Button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
+import Pagination from '@components/UserInterface/Pagination';
+import SearchAndFilterBar from '@components/UserInterface/SearchAndFilterBar';
 import { router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { Eye } from 'lucide-react';

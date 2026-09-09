@@ -1,6 +1,6 @@
 import { toast } from '@components/CustomToast';
-import { Button } from '@components/UserInterface/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
+import { Button } from '@components/UserInterface/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { route } from '@utils/Routes';
 import axios from 'axios';
 import { CreditCard, ExternalLink, Loader2 } from 'lucide-react';

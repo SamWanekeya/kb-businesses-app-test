@@ -36,7 +36,7 @@ export default function Template1({ salesOrder, items, taxesData, settings, colo
 
     const styles = {
         root: {
-            fontFamily: 'Lato, sans-serif',
+            fontFamily: 'Mulish, sans-serif',
             margin: 0,
             padding: 0,
             boxSizing: 'border-box' as const,

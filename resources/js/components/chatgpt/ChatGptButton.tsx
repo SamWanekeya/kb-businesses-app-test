@@ -1,4 +1,4 @@
-import { Button } from '@components/UserInterface/button';
+import { Button } from '@components/UserInterface/Button';
 import { Brain } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 

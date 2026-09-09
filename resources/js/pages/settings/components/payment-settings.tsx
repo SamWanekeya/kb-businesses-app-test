@@ -1,16 +1,16 @@
-import { Badge } from '@components/UserInterface/badge';
-import { Button } from '@components/UserInterface/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/UserInterface/card';
-import { Input } from '@components/UserInterface/input';
-import { Label } from '@components/UserInterface/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/select';
-import { Textarea } from '@components/UserInterface/textarea';
+import { Badge } from '@components/UserInterface/Badge';
+import { Button } from '@components/UserInterface/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import { Input } from '@components/UserInterface/Input';
+import { Label } from '@components/UserInterface/Label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
+import { Textarea } from '@components/UserInterface/Textarea';
 
 import { toast } from '@components/CustomToast';
 import { PaymentInputField } from '@components/Payment/PaymentInputField';
 import { PaymentMethodCard } from '@components/Payment/PaymentMethodCard';
 import { SettingsSection } from '@components/settings-section';
-import { Alert, AlertDescription } from '@components/UserInterface/alert';
+import { Alert, AlertDescription } from '@components/UserInterface/Alert';
 import { useForm } from '@inertiajs/react';
 import { PAYMENT_METHODS, PAYMENT_METHOD_HELP_URLS, PAYMENT_METHOD_LABELS } from '@utils/Payment';
 import { route } from '@utils/Routes';

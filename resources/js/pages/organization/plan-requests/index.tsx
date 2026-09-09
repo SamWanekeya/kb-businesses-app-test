@@ -1,8 +1,8 @@
 import { CrudTable } from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
-import { PageTemplate } from '@components/page-template';
-import { Pagination } from '@components/UserInterface/pagination';
-import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
+import PageTemplate from '@components/PageTemplate';
+import Pagination from '@components/UserInterface/Pagination';
+import SearchAndFilterBar from '@components/UserInterface/SearchAndFilterBar';
 import { usePlanRequestsConfig } from '@config/Crud/PlanRequests';
 import { router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';

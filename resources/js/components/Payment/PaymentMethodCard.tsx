@@ -1,5 +1,5 @@
-import { Alert, AlertDescription } from '@components/UserInterface/alert';
-import { Switch } from '@components/UserInterface/switch';
+import { Alert, AlertDescription } from '@components/UserInterface/Alert';
+import { Switch } from '@components/UserInterface/Switch';
 import { AlertCircle } from 'lucide-react';
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';

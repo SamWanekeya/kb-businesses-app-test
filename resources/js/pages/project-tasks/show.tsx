@@ -1,7 +1,7 @@
-import { PageTemplate } from '@components/page-template';
-import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
-import { useInitials } from '@hooks/use-initials';
+import PageTemplate from '@components/PageTemplate';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import useInitials from '@hooks/useInitials';
 import { router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { ArrowLeft, BarChart3, Briefcase, Calendar, CheckCircle, Clock, FileText } from 'lucide-react';

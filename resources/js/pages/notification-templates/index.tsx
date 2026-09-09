@@ -1,8 +1,8 @@
 import { CrudTable } from '@components/CrudTable';
-import { PageTemplate } from '@components/page-template';
-import { Input } from '@components/UserInterface/input';
-import { Pagination } from '@components/UserInterface/pagination';
-import { Tabs, TabsList, TabsTrigger } from '@components/UserInterface/tabs';
+import PageTemplate from '@components/PageTemplate';
+import { Input } from '@components/UserInterface/Input';
+import Pagination from '@components/UserInterface/Pagination';
+import { Tabs, TabsList, TabsTrigger } from '@components/UserInterface/Tabs';
 import { Head, router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { Search, X } from 'lucide-react';

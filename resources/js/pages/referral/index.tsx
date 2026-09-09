@@ -1,7 +1,7 @@
 import { NavItem } from '@/types';
-import { PageTemplate } from '@components/page-template';
-import { Button } from '@components/UserInterface/button';
-import { Toaster } from '@components/UserInterface/toaster';
+import PageTemplate from '@components/PageTemplate';
+import { Button } from '@components/UserInterface/Button';
+import { Toaster } from '@components/UserInterface/Toaster';
 import { usePage } from '@inertiajs/react';
 import { cn } from '@lib/utils';
 import PayoutRequests from '@pages/referral/components/payout-requests';

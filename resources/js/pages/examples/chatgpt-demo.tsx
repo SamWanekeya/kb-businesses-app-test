@@ -1,9 +1,9 @@
 import { ChatGptButton, ChatGptField, ChatGptModal } from '@components/chatgpt';
 import { PageWrapper } from '@components/PageWrapper';
-import { Button } from '@components/UserInterface/button';
-import { Card } from '@components/UserInterface/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/dialog';
-import { Label } from '@components/UserInterface/label';
+import { Button } from '@components/UserInterface/Button';
+import { Card } from '@components/UserInterface/Card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
+import { Label } from '@components/UserInterface/Label';
 import { route } from '@utils/Routes';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';

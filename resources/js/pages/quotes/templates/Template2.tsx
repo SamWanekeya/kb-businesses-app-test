@@ -36,7 +36,7 @@ export default function Template2({ quote, items, taxesData, settings, color, qr
 
     const styles = {
         root: {
-            fontFamily: 'Lato, sans-serif',
+            fontFamily: 'Mulish, sans-serif',
             margin: 0,
             padding: 0,
             boxSizing: 'border-box' as const,

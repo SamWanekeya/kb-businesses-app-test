@@ -1,7 +1,7 @@
-import { PageTemplate } from '@components/page-template';
+import PageTemplate from '@components/PageTemplate';
 import { ReportFilters } from '@components/Reports/ReportFilters';
 import { SummaryCards } from '@components/Reports/SummaryCards';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { Award, CheckCircle, DollarSign, Package } from 'lucide-react';

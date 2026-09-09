@@ -1,8 +1,8 @@
 import { toast } from '@components/CustomToast';
-import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@components/UserInterface/table';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
-import UserInitials from '@components/user-initials';
+import UserInitials from '@components/UserInitials';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@components/UserInterface/Table';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
 import { Head, usePage } from '@inertiajs/react';
 import { useHasPermission } from '@utils/Permissions';
 import { Calendar, Check, Clock, Copy, DollarSign, MessageCircle, Package, Printer, Truck, User } from 'lucide-react';
@@ -114,10 +114,10 @@ export default function PublicSalesOrder({
 
     useEffect(() => {
         if (props.flash?.success) {
-            toast.success(t(props.flash.success));
+            toast.success(translate(props.flash.success));
         }
         if (props.flash?.error) {
-            toast.error(t(props.flash.error));
+            toast.error(translate(props.flash.error));
         }
     }, [props.flash, t]);
 

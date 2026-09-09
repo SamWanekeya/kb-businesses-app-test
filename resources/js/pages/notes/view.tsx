@@ -1,4 +1,4 @@
-import { DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/dialog';
+import { DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
 import { NotebookPen, Share2, User, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 

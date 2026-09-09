@@ -1,9 +1,9 @@
-import { PageTemplate } from '@components/page-template';
-import UserInitials from '@components/user-initials';
-import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
-import { Card } from '@components/UserInterface/card';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
-import { useInitials } from '@hooks/use-initials';
+import PageTemplate from '@components/PageTemplate';
+import UserInitials from '@components/UserInitials';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
+import { Card } from '@components/UserInterface/Card';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
+import useInitials from '@hooks/useInitials';
 import { Link, usePage } from '@inertiajs/react';
 import { resolveImageUrl } from '@utils/Helpers/Url';
 import { useHasPermission } from '@utils/Permissions';

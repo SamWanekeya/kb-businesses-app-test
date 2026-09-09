@@ -1,8 +1,8 @@
 import { toast } from '@components/CustomToast';
-import { Button } from '@components/UserInterface/button';
-import { Card, CardContent } from '@components/UserInterface/card';
-import { Input } from '@components/UserInterface/input';
-import { Label } from '@components/UserInterface/label';
+import { Button } from '@components/UserInterface/Button';
+import { Card, CardContent } from '@components/UserInterface/Card';
+import { Input } from '@components/UserInterface/Input';
+import { Label } from '@components/UserInterface/Label';
 import { router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { CheckCircle, Copy, FileText, Upload, X } from 'lucide-react';

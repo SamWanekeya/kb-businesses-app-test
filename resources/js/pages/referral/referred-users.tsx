@@ -1,7 +1,7 @@
-import { PageTemplate } from '@components/page-template';
-import { Badge } from '@components/UserInterface/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
-import { Pagination } from '@components/UserInterface/pagination';
+import PageTemplate from '@components/PageTemplate';
+import { Badge } from '@components/UserInterface/Badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import Pagination from '@components/UserInterface/Pagination';
 import { router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { ArrowLeft, Calendar, CheckCircle, DollarSign, Users } from 'lucide-react';

@@ -42,7 +42,7 @@ export default function Template3({ invoice, items, taxesData, settings, color, 
 
     const styles = {
         root: {
-            fontFamily: 'Lato, sans-serif',
+            fontFamily: 'Mulish, sans-serif',
             margin: 0,
             padding: 0,
             boxSizing: 'border-box' as const,

@@ -1,6 +1,6 @@
 // components/PageWrapper.tsx
 import { BreadcrumbItem } from '@/types';
-import { PageAction, PageTemplate } from '@components/page-template';
+import { PageAction, PageTemplate } from '@components/PageTemplate';
 import { usePage } from '@inertiajs/react';
 import { useHasPermission } from '@utils/Permissions';
 import { route } from '@utils/Routes';

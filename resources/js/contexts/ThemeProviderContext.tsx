@@ -83,7 +83,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
      */
     useEffect(() => {
         const handler = (e: StorageEvent) => {
-            if (e.key !== '__hf_thm_md') return;
+            if (e.key !== '__kb_thm_md') return;
 
             const stored = getStoredTheme();
 
