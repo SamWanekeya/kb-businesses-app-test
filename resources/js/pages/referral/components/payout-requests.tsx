@@ -1,15 +1,15 @@
-import { CrudTable } from '@/components/CrudTable';
-import { toast } from '@/components/CustomToast';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { CrudTable } from '@components/CrudTable';
+import { toast } from '@components/CustomToast';
+import { Button } from '@components/UserInterface/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@components/UserInterface/dialog';
+import { Input } from '@components/UserInterface/input';
+import { Label } from '@components/UserInterface/label';
+import { Textarea } from '@components/UserInterface/textarea';
 import { router, useForm } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface PayoutRequestsProps {

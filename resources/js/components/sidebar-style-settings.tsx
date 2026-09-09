@@ -1,9 +1,8 @@
-import { Button } from '@/components/ui/button';
-import { SidebarMenuSkeleton } from '@/components/ui/sidebar';
-import { useLayout } from '@/contexts/LayoutContext';
+import { Button } from '@components/UserInterface/button';
+import { SidebarMenuSkeleton } from '@components/UserInterface/sidebar';
+import { useLayout } from '@contexts/LayoutContext';
 import { Check, Sidebar as SidebarIcon } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 // Sidebar style types

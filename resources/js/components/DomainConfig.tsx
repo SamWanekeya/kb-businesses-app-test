@@ -1,11 +1,11 @@
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
+import { Button } from '@components/UserInterface/button';
+import { Card } from '@components/UserInterface/card';
+import { Input } from '@components/UserInterface/input';
+import { Label } from '@components/UserInterface/label';
+import { Switch } from '@components/UserInterface/switch';
 import React from 'react';
 
-import { route } from '@/utils/Routes';
+import { route } from '@utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface DomainConfigProps {

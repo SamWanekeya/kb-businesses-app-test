@@ -3,8 +3,8 @@
  *
  * Handles cookie read/write with consistent encoding, typing and defaults.
  */
-import { getEnvironmentVariable } from '@/utils/Helpers/EnvironmentVariables';
-import { Serializable } from '@/utils/Helpers/Storage';
+import { getEnvironmentVariable } from '@utils/Helpers/EnvironmentVariables';
+import { Serializable } from '@utils/Helpers/Storage';
 
 const cookieMaximumAge = 400 * 24 * 60 * 60; // 400 days
 const cookieDomain = getEnvironmentVariable.sessionDomain ? `; Domain=${getEnvironmentVariable.sessionDomain}` : '';

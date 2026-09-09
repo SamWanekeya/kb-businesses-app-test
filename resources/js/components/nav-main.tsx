@@ -1,3 +1,4 @@
+import { NavItem } from '@/types';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -7,7 +8,7 @@ import {
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@components/UserInterface/dropdown-menu';
 import {
     SidebarGroup,
     SidebarGroupLabel,
@@ -18,12 +19,10 @@ import {
     SidebarMenuSubButton,
     SidebarMenuSubItem,
     useSidebar,
-} from '@/components/ui/sidebar';
-import { NavItem } from '@/types';
+} from '@components/UserInterface/sidebar';
 import { Link, usePage } from '@inertiajs/react';
 import { ChevronDown, ChevronRight, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 // Store expanded menu state in localStorage

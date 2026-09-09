@@ -1,15 +1,15 @@
-import { toast } from '@/components/CustomToast';
-import { SettingsSection } from '@/components/settings-section';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { toast } from '@components/CustomToast';
+import { SettingsSection } from '@components/settings-section';
+import { Button } from '@components/UserInterface/button';
+import { Card, CardContent } from '@components/UserInterface/card';
+import { Checkbox } from '@components/UserInterface/checkbox';
+import { Input } from '@components/UserInterface/input';
+import { Label } from '@components/UserInterface/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/UserInterface/tabs';
 import { router } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import { HardDrive, Save, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 type StorageType = 'local' | 'aws_s3' | 'wasabi';

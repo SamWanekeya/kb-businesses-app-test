@@ -1,6 +1,6 @@
 // components/multi-select-field.tsx
-import { SimpleMultiSelect } from '@/components/simple-multi-select';
-import { FormField } from '@/types/crud';
+import { FormField } from '@/types/crud.d';
+import { SimpleMultiSelect } from '@components/simple-multi-select';
 
 interface MultiSelectFieldProps {
     field: FormField;

@@ -1,10 +1,10 @@
-import { PageTemplate } from '@/components/page-template';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { formatTitleCase } from '@/utils/Helpers/StringFormatters';
+import { PageTemplate } from '@components/page-template';
+import { Badge } from '@components/UserInterface/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/UserInterface/card';
 import { router, usePage } from '@inertiajs/react';
+import { formatTitleCase } from '@utils/Helpers/StringFormatters';
+import { route } from '@utils/Routes';
 import { ArrowLeft } from 'lucide-react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function RolesShow() {

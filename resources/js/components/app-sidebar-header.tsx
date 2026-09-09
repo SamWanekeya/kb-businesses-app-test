@@ -1,16 +1,16 @@
-import { Breadcrumbs } from '@/components/breadcrumbs';
-import { LanguageSwitcher } from '@/components/language-switcher';
-import { ProfileMenu } from '@/components/profile-menu';
-import { SidebarTrigger } from '@/components/ui/sidebar';
-import { useLayout } from '@/contexts/LayoutContext';
-import { type BreadcrumbItem as BreadcrumbItemType } from '@/types';
-import { getCookie, storeCookie } from '@/utils/Helpers/Cookies';
-import { Button } from '@components/ui/button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/ui/tooltip';
+import { BreadcrumbItem as BreadcrumbItemType } from '@/types';
+import { Breadcrumbs } from '@components/breadcrumbs';
+import { LanguageSwitcher } from '@components/language-switcher';
+import { ProfileMenu } from '@components/profile-menu';
+import { Button } from '@components/UserInterface/button';
+import { SidebarTrigger } from '@components/UserInterface/sidebar';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
+import { useLayout } from '@contexts/LayoutContext';
 import { router, usePage } from '@inertiajs/react';
+import { getCookie, storeCookie } from '@utils/Helpers/Cookies';
+import { route } from '@utils/Routes';
 import { Moon, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: BreadcrumbItemType[] }) {

@@ -1,7 +1,7 @@
-import { useLayout } from '@/contexts/LayoutContext';
-import { cn } from '@/lib/utils';
 import HeadingSmall from '@components/heading-small';
+import { useLayout } from '@contexts/LayoutContext';
 import { Head } from '@inertiajs/react';
+import { cn } from '@lib/utils';
 import { AlignLeft, AlignRight, LucideIcon } from 'lucide-react';
 
 export const LayoutRtlSettings = () => {

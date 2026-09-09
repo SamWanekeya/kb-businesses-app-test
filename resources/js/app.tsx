@@ -7,7 +7,7 @@
 
 // Security bootstrap — must be the absolute first import
 import '@/utils/Helpers/SecurityInit';
-import { scrubFingerprints } from '@/utils/Helpers/SecurityInit';
+import { scrubFingerprints } from '@utils/Helpers/SecurityInit';
 
 // Styles
 import kakbimaLogoLight from '@images/logos/kakbima_logo.png';
@@ -22,25 +22,25 @@ import React, { ComponentType, StrictMode, Suspense, useEffect, useMemo } from '
 import { createRoot, hydrateRoot } from 'react-dom/client';
 
 // App internals
-import { BrandProvider } from '@/contexts/BrandContext';
-import { LayoutProvider } from '@/contexts/LayoutContext';
-import { ModalStackProvider } from '@/contexts/ModalStackContext';
-import { SidebarProvider } from '@/contexts/SidebarContext';
-import { ThemeEffect } from '@/contexts/ThemeEffect';
-import { ThemeProvider } from '@/contexts/ThemeProviderContext';
 import { SharedData } from '@/types';
-import { rtlLanguages } from '@/utils/Constants';
-import { bootstrapKbSettings } from '@/utils/GlobalSettings';
-import { getCookie } from '@/utils/Helpers/Cookies';
-import { getEnvironmentVariable } from '@/utils/Helpers/EnvironmentVariables';
-import { suppressConsoleMethods } from '@/utils/Helpers/Security';
-import { initPerformanceMonitoring, lazyLoadImages } from '@/utils/Performance';
-import { initZiggyConfig } from '@/utils/Routes';
-import { applyThemeToDocument } from '@/utils/Theme';
 import { CustomToast } from '@components/CustomToast';
+import { BrandProvider } from '@contexts/BrandContext';
+import { LayoutProvider } from '@contexts/LayoutContext';
+import { ModalStackProvider } from '@contexts/ModalStackContext';
+import { SidebarProvider } from '@contexts/SidebarContext';
+import { ThemeEffect } from '@contexts/ThemeEffect';
+import { ThemeProvider } from '@contexts/ThemeProviderContext';
 import { Page } from '@inertiajs/core';
+import { rtlLanguages } from '@utils/Constants';
+import { bootstrapKbSettings } from '@utils/GlobalSettings';
+import { getCookie } from '@utils/Helpers/Cookies';
+import { getEnvironmentVariable } from '@utils/Helpers/EnvironmentVariables';
+import { suppressConsoleMethods } from '@utils/Helpers/Security';
+import { initPerformanceMonitoring, lazyLoadImages } from '@utils/Performance';
+import { initZiggyConfig } from '@utils/Routes';
+import { applyThemeToDocument } from '@utils/Theme';
 import i18n from 'i18next';
-import { type Config } from 'ziggy-js';
+import { Config } from 'ziggy-js';
 
 // Runtime security + perf (safe to run after React is imported)
 if (getEnvironmentVariable.isProduction) {

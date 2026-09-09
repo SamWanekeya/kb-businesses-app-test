@@ -1,22 +1,22 @@
-import { CrudDeleteModal } from '@/components/CrudDeleteModal';
-import { CrudFormModal } from '@/components/CrudFormModal';
-import { CrudTable } from '@/components/CrudTable';
-import { toast } from '@/components/CustomToast';
-import { PageTemplate } from '@/components/page-template';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
-import { Pagination } from '@/components/ui/pagination';
-import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { Textarea } from '@/components/ui/textarea';
-import { useInitials } from '@/hooks/use-initials';
-import { formatTitleCase } from '@/utils/Helpers/StringFormatters';
-import { useHasPermission } from '@/utils/Permissions';
+import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import { CrudFormModal } from '@components/CrudFormModal';
+import { CrudTable } from '@components/CrudTable';
+import { toast } from '@components/CustomToast';
+import { PageTemplate } from '@components/page-template';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
+import { Button } from '@components/UserInterface/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/dialog';
+import { Label } from '@components/UserInterface/label';
+import { Pagination } from '@components/UserInterface/pagination';
+import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
+import { Textarea } from '@components/UserInterface/textarea';
+import { useInitials } from '@hooks/use-initials';
 import { Link, router, usePage } from '@inertiajs/react';
+import { formatTitleCase } from '@utils/Helpers/StringFormatters';
+import { useHasPermission } from '@utils/Permissions';
+import { route } from '@utils/Routes';
 import { Calendar, CheckCircle, FileDown, Plus, XCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function Invoices() {

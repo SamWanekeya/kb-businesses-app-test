@@ -1,12 +1,11 @@
-import { toast } from '@/components/CustomToast';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { useInitials } from '@/hooks/use-initials';
+import { toast } from '@components/CustomToast';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
+import { Button } from '@components/UserInterface/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/UserInterface/card';
+import { Input } from '@components/UserInterface/input';
+import { useInitials } from '@hooks/use-initials';
 import { Award, Calendar, Check, Clock, Copy, DollarSign, Mail, TrendingUp, Users } from 'lucide-react';
 import { useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface ReferralDashboardProps {

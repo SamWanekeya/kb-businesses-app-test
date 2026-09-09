@@ -1,14 +1,14 @@
-import { PageTemplate } from '@/components/page-template';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card } from '@/components/ui/card';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import UserInitials from '@/components/user-initials';
-import { useInitials } from '@/hooks/use-initials';
-import { resolveImageUrl } from '@/utils/Helpers/Url';
-import { useHasPermission } from '@/utils/Permissions';
+import { PageTemplate } from '@components/page-template';
+import UserInitials from '@components/user-initials';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
+import { Card } from '@components/UserInterface/card';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
+import { useInitials } from '@hooks/use-initials';
 import { Link, usePage } from '@inertiajs/react';
+import { resolveImageUrl } from '@utils/Helpers/Url';
+import { useHasPermission } from '@utils/Permissions';
+import { route } from '@utils/Routes';
 import { ArrowLeft, Building2, Calendar, Eye, MapPin, Users } from 'lucide-react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function MeetingShow() {

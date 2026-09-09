@@ -1,11 +1,10 @@
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Switch } from '@/components/ui/switch';
+import { Badge } from '@components/UserInterface/badge';
+import { Button } from '@components/UserInterface/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@components/UserInterface/dialog';
+import { RadioGroup, RadioGroupItem } from '@components/UserInterface/radio-group';
+import { Switch } from '@components/UserInterface/switch';
 import { CheckCircle2, CreditCard } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface Plan {

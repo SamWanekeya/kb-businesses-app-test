@@ -1,6 +1,6 @@
 import { SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { route } from '@/utils/Routes';
+import { route } from '@utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function Welcome() {

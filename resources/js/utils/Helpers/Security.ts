@@ -10,7 +10,7 @@
  *  - ConsoleRestoreFn        → type for the restore callback
  */
 
-import { getEnvironmentVariable } from '@/utils/Helpers/EnvironmentVariables';
+import { getEnvironmentVariable } from '@utils/Helpers/EnvironmentVariables';
 
 /**
  * Every `console` method we want to silence.

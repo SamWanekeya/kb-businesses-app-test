@@ -1,10 +1,10 @@
-import { PageTemplate } from '@/components/page-template';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useHasPermission } from '@/utils/Permissions';
+import { PageTemplate } from '@components/page-template';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
 import { router, usePage } from '@inertiajs/react';
+import { useHasPermission } from '@utils/Permissions';
+import { route } from '@utils/Routes';
 import { ArrowRight, BarChart2, Calendar, Clock, Eye, List, Megaphone, Star, Tag, TrendingUp, XCircle } from 'lucide-react';
 import { useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function AnnouncementDashboard() {

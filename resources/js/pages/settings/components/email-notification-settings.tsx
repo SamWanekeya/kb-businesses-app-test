@@ -1,14 +1,14 @@
-import { toast } from '@/components/CustomToast';
-import { SettingsSection } from '@/components/settings-section';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
+import { toast } from '@components/CustomToast';
+import { SettingsSection } from '@components/settings-section';
+import { Button } from '@components/UserInterface/button';
+import { Card, CardContent } from '@components/UserInterface/card';
+import { Label } from '@components/UserInterface/label';
+import { Switch } from '@components/UserInterface/switch';
 import { router } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import axios from 'axios';
 import { Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface NotificationItem {

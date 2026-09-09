@@ -1,18 +1,18 @@
-import { CrudDeleteModal } from '@/components/CrudDeleteModal';
-import { toast } from '@/components/CustomToast';
-import { SettingsSection } from '@/components/settings-section';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import { toast } from '@components/CustomToast';
+import { SettingsSection } from '@components/settings-section';
+import { Button } from '@components/UserInterface/button';
+import { Card, CardContent } from '@components/UserInterface/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/dialog';
+import { Input } from '@components/UserInterface/input';
+import { Label } from '@components/UserInterface/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@components/UserInterface/table';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
+import { route } from '@utils/Routes';
 import axios from 'axios';
 import { Edit, Link2, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface Webhook {

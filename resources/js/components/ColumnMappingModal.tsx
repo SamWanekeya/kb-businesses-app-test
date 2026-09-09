@@ -1,12 +1,12 @@
-import { toast } from '@/components/CustomToast';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { toast } from '@components/CustomToast';
+import { Alert, AlertDescription } from '@components/UserInterface/alert';
+import { Button } from '@components/UserInterface/button';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@components/UserInterface/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/select';
 import { router } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import { Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface ColumnMappingModalProps {

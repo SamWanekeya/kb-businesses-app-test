@@ -1,10 +1,10 @@
-import { PageTemplate } from '@/components/page-template';
-import { Card, CardContent } from '@/components/ui/card';
-import { Pagination } from '@/components/ui/pagination';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { PageTemplate } from '@components/page-template';
+import { Card, CardContent } from '@components/UserInterface/card';
+import { Pagination } from '@components/UserInterface/pagination';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@components/UserInterface/table';
 import { usePage } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import { ArrowLeft, Calendar, DollarSign, TrendingUp, Users } from 'lucide-react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface CouponUsage {

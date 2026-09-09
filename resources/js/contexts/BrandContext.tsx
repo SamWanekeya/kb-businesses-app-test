@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-import type { BrandSettings } from '@/pages/Settings/BrandSettings';
+import type { BrandSettings } from '@pages/Settings/BrandSettings';
 
 /**
  * Props for BrandProvider.

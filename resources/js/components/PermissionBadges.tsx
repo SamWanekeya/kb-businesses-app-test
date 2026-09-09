@@ -1,5 +1,4 @@
 // components/PermissionBadges.tsx
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface Permission {

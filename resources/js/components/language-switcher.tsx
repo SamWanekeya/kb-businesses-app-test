@@ -1,5 +1,5 @@
-import { CreateLanguageModal } from '@/components/create-language-modal';
-import { Button } from '@/components/ui/button';
+import { CreateLanguageModal } from '@components/create-language-modal';
+import { Button } from '@components/UserInterface/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -7,14 +7,14 @@ import {
     DropdownMenuItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useLayout } from '@/contexts/LayoutContext';
-import { storeCookie } from '@/utils/Helpers/Cookies';
+} from '@components/UserInterface/dropdown-menu';
+import { useLayout } from '@contexts/LayoutContext';
 import { router, usePage } from '@inertiajs/react';
+import { storeCookie } from '@utils/Helpers/Cookies';
+import { route } from '@utils/Routes';
 import { Globe, Plus, Settings } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface Language {

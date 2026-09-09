@@ -1,13 +1,13 @@
-import { CrudDeleteModal } from '@/components/CrudDeleteModal';
-import { CrudTable } from '@/components/CrudTable';
-import { toast } from '@/components/CustomToast';
-import { PageTemplate } from '@/components/page-template';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Pagination } from '@/components/ui/pagination';
-import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
+import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import { CrudTable } from '@components/CrudTable';
+import { toast } from '@components/CustomToast';
+import { PageTemplate } from '@components/page-template';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/dialog';
+import { Pagination } from '@components/UserInterface/pagination';
+import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
 import { router, usePage } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function LoginHistory() {

@@ -1,6 +1,5 @@
-import { DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/dialog';
 import { FileText, Lock, Radio } from 'lucide-react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface ViewProps {

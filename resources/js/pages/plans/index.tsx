@@ -1,13 +1,14 @@
-import { CrudDeleteModal } from '@/components/CrudDeleteModal';
-import { toast } from '@/components/CustomToast';
-import { PageTemplate } from '@/components/page-template';
-import { PlanSubscriptionModal } from '@/components/plan-subscription-modal';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import { toast } from '@components/CustomToast';
+import { PageTemplate } from '@components/page-template';
+import { PlanSubscriptionModal } from '@components/plan-subscription-modal';
+import { Badge } from '@components/UserInterface/badge';
+import { Button } from '@components/UserInterface/button';
+import { Switch } from '@components/UserInterface/switch';
+import { Tabs, TabsList, TabsTrigger } from '@components/UserInterface/tabs';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
 import { router, useForm, usePage } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import {
     Banknote,
     BarChart2,
@@ -30,7 +31,6 @@ import {
     Zap,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface Plan {

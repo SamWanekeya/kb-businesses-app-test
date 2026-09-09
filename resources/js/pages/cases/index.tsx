@@ -1,21 +1,27 @@
-import { CrudDeleteModal } from '@/components/CrudDeleteModal';
-import { CrudFormModal } from '@/components/CrudFormModal';
-import { CrudTable } from '@/components/CrudTable';
-import { toast } from '@/components/CustomToast';
-import { PageTemplate } from '@/components/page-template';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Pagination } from '@/components/ui/pagination';
-import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useInitials } from '@/hooks/use-initials';
-import { useHasPermission } from '@/utils/Permissions';
+import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import { CrudFormModal } from '@components/CrudFormModal';
+import { CrudTable } from '@components/CrudTable';
+import { toast } from '@components/CustomToast';
+import { PageTemplate } from '@components/page-template';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
+import { Button } from '@components/UserInterface/button';
+import { Card } from '@components/UserInterface/card';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@components/UserInterface/dropdown-menu';
+import { Pagination } from '@components/UserInterface/pagination';
+import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
+import { useInitials } from '@hooks/use-initials';
 import { Link, router, usePage } from '@inertiajs/react';
+import { useHasPermission } from '@utils/Permissions';
+import { route } from '@utils/Routes';
 import { Building2, Calendar, Edit, Eye, FileDown, MoreHorizontal, Plus, RefreshCw, Trash2, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function Cases() {

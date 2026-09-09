@@ -1,16 +1,16 @@
-import { PageTemplate } from '@/components/page-template';
-import { Button } from '@/components/ui/button';
-import { Toaster } from '@/components/ui/toaster';
-import { cn } from '@/lib/utils';
 import { NavItem } from '@/types';
+import { PageTemplate } from '@components/page-template';
+import { Button } from '@components/UserInterface/button';
+import { Toaster } from '@components/UserInterface/toaster';
 import { usePage } from '@inertiajs/react';
+import { cn } from '@lib/utils';
 import PayoutRequests from '@pages/referral/components/payout-requests';
 import ReferralDashboard from '@pages/referral/components/referral-dashboard';
 import ReferralSettings from '@pages/referral/components/referral-settings';
 import ReferredUsersSection from '@pages/referral/components/referred-users-section';
+import { route } from '@utils/Routes';
 import { BarChart3, DollarSign, Settings as SettingsIcon, Users } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function Referral() {

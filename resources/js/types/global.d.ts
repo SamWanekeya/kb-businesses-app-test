@@ -1,8 +1,8 @@
 // resources/js/types/global.d.ts
 export {};
 
-import type { KbSettings } from '@/utils/GlobalSettings';
 import type { SidebarSettings } from '@components/SidebarStyleSettings';
+import type { KbSettings } from '@utils/GlobalSettings';
 
 declare global {
     /**

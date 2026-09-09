@@ -1,9 +1,8 @@
 import { useState } from 'react';
 
-import { toast } from '@/components/CustomToast';
-import { route } from '@/utils/Routes';
+import { toast } from '@components/CustomToast';
 import { router } from '@inertiajs/react';
-import { route } from '@/utils/Routes';
+import { route } from '@utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface PaymentData {
@@ -28,13 +27,13 @@ export default function usePaymentProcessor(options: UsePaymentProcessorOptions 
         setProcessing(true);
 
         const routes = {
-            stripe: 'stripe.payment',
-            paypal: 'paypal.payment',
+            // stripe: 'stripe.payment',
+            // paypal: 'paypal.payment',
             bank: 'bank.payment',
-            razorpay: 'razorpay.payment',
-            mercadopago: 'mercadopago.payment',
+            // razorpay: 'razorpay.payment',
+            // mercadopago: 'mercadopago.payment',
             paystack: 'paystack.payment',
-            flutterwave: 'flutterwave.payment',
+            // flutterwave: 'flutterwave.payment',
         };
 
         const routeName = routes[paymentMethod as keyof typeof routes];

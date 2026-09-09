@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { useModalStack } from '@/contexts/ModalStackContext';
+import { useModalStack } from '@contexts/ModalStackContext';
 
 export default function useStackedModal(baseId?: string, externalIsOpen?: boolean) {
     const { registerModal, unregisterModal, getZIndex } = useModalStack();

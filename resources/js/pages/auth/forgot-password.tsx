@@ -2,16 +2,16 @@ import { useForm } from '@inertiajs/react';
 import { Mail } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 
-import AuthButton from '@/components/auth/auth-button';
-import InputError from '@/components/input-error';
-import Recaptcha from '@/components/recaptcha';
-import TextLink from '@/components/text-link';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useBrand } from '@/contexts/BrandContext';
-import { THEME_COLORS } from '@/hooks/use-appearance';
-import AuthLayout from '@/layouts/auth-layout';
-import { route } from '@/utils/Routes';
+import AccountButton from '@components/Account/AccountButton';
+import InputError from '@components/input-error';
+import Recaptcha from '@components/recaptcha';
+import TextLink from '@components/text-link';
+import { Input } from '@components/UserInterface/input';
+import { Label } from '@components/UserInterface/label';
+import { useBrand } from '@contexts/BrandContext';
+import { THEME_COLORS } from '@hooks/use-appearance';
+import AuthLayout from '@layouts/auth-layout';
+import { route } from '@utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function ForgotPassword({ status, error }: { status?: string; error?: string }) {
@@ -65,14 +65,14 @@ export default function ForgotPassword({ status, error }: { status?: string; err
 
                 <Recaptcha onVerify={setRecaptchaToken} onExpired={() => setRecaptchaToken('')} onError={() => setRecaptchaToken('')} />
 
-                <AuthButton
+                <AccountButton
                     tabIndex={2}
                     processing={processing}
                     className="w-full transform rounded-md py-2.5 text-sm font-medium tracking-wide text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg"
                     style={{ backgroundColor: primaryColor }}
                 >
                     {translate('Send Reset Link')}
-                </AuthButton>
+                </AccountButton>
 
                 <div className="text-center">
                     <p className="text-sm text-gray-500">

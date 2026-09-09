@@ -1,5 +1,5 @@
-import type { Appearance, ResolvedAppearance } from '@/utils/Theme';
-import { applyThemeToDocument, getStoredTheme, resolveAppearance, storeTheme } from '@/utils/Theme';
+import type { Appearance, ResolvedAppearance } from '@utils/Theme';
+import { applyThemeToDocument, getStoredTheme, resolveAppearance, storeTheme } from '@utils/Theme';
 
 import React, { createContext, useCallback, useEffect, useMemo, useState } from 'react';
 

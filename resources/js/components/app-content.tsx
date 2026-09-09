@@ -1,5 +1,5 @@
-import { SidebarInset } from '@/components/ui/sidebar';
-import { useLayout } from '@/contexts/LayoutContext';
+import { SidebarInset } from '@components/UserInterface/sidebar';
+import { useLayout } from '@contexts/LayoutContext';
 
 export function AppContent({ variant = 'header', children, ...props }) {
     const { position } = useLayout();

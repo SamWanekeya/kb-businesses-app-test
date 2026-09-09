@@ -1,5 +1,5 @@
-import { storeCookie } from '@/utils/Helpers/Cookies';
 import useIsMobile from '@hooks/useIsMobile';
+import { storeCookie } from '@utils/Helpers/Cookies';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 const SIDEBAR_KEYBOARD_SHORTCUT = '[';

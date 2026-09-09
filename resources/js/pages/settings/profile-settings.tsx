@@ -1,18 +1,18 @@
-import { toast } from '@/components/CustomToast';
-import InputError from '@/components/input-error';
-import { PageTemplate } from '@/components/page-template';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { cn } from '@/lib/utils';
-import { type NavItem, type SharedData } from '@/types';
-import { resolveImageUrl } from '@/utils/Helpers/Url';
+import { NavItem, SharedData } from '@/types';
+import { toast } from '@components/CustomToast';
+import InputError from '@components/input-error';
+import { PageTemplate } from '@components/page-template';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
+import { Button } from '@components/UserInterface/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/UserInterface/card';
+import { Input } from '@components/UserInterface/input';
+import { Label } from '@components/UserInterface/label';
 import { router, usePage } from '@inertiajs/react';
+import { cn } from '@lib/utils';
+import { resolveImageUrl } from '@utils/Helpers/Url';
+import { route } from '@utils/Routes';
 import { Camera, Lock, User } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 const sidebarNavItems: NavItem[] = [

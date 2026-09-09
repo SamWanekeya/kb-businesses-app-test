@@ -1,10 +1,10 @@
 // components/PageWrapper.tsx
-import { PageAction, PageTemplate } from '@/components/page-template';
 import { BreadcrumbItem } from '@/types';
-import { useHasPermission } from '@/utils/Permissions';
+import { PageAction, PageTemplate } from '@components/page-template';
 import { usePage } from '@inertiajs/react';
+import { useHasPermission } from '@utils/Permissions';
+import { route } from '@utils/Routes';
 import { ReactNode } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export interface PageButton {

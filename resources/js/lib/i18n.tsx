@@ -5,8 +5,8 @@
  * Optimized for Laravel + Inertia + React applications with SSR support.
  */
 
-import { supportedLanguages } from '@/utils/Constants';
-import { getEnvironmentVariable } from '@/utils/Helpers/EnvironmentVariables';
+import { supportedLanguages } from '@utils/Constants';
+import { getEnvironmentVariable } from '@utils/Helpers/EnvironmentVariables';
 import i18n, { Resource } from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';

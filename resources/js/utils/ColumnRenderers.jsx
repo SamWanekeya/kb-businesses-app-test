@@ -1,7 +1,7 @@
-import { Badge } from '@/components/UserInterface/Badge';
-import { Switch } from '@/components/UserInterface/Switch';
-import { cn } from '@/lib/utils';
+import { Badge } from '@components/UserInterface/Badge';
+import { Switch } from '@components/UserInterface/Switch';
 import { Link } from '@inertiajs/react';
+import { cn } from '@lib/utils';
 
 /**
  * Predefined column renderers for tables.

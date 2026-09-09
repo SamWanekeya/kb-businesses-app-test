@@ -1,18 +1,16 @@
-import { toast } from '@/components/CustomToast';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import UserInitials from '@/components/user-initials';
-import { useHasPermission } from '@/utils/Permissions';
+import { toast } from '@components/CustomToast';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@components/UserInterface/table';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
+import UserInitials from '@components/user-initials';
 import { Head, usePage } from '@inertiajs/react';
+import { useHasPermission } from '@utils/Permissions';
 import { Calendar, Check, Clock, Copy, DollarSign, MessageCircle, Package, Printer, Truck, User } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 // Import quote templates
-import IframePortal, { IframePortalHandles } from '@/components/IframePortal';
-import { formatRelativeTime } from '@/utils/Helpers/StringFormatters';
+import IframePortal, { IframePortalHandles } from '@components/IframePortal';
 import Template1 from '@pages/quotes/templates/Template1';
 import Template10 from '@pages/quotes/templates/Template10';
 import Template2 from '@pages/quotes/templates/Template2';
@@ -23,6 +21,7 @@ import Template6 from '@pages/quotes/templates/Template6';
 import Template7 from '@pages/quotes/templates/Template7';
 import Template8 from '@pages/quotes/templates/Template8';
 import Template9 from '@pages/quotes/templates/Template9';
+import { formatRelativeTime } from '@utils/Helpers/StringFormatters';
 
 interface Quote {
     id: number;

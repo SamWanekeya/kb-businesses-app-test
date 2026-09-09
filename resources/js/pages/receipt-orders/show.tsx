@@ -1,16 +1,16 @@
-import { PageTemplate } from '@/components/page-template';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import UserInitials from '@/components/user-initials';
-import { useInitials } from '@/hooks/use-initials';
-import { useHasPermission } from '@/utils/Permissions';
+import { PageTemplate } from '@components/page-template';
+import UserInitials from '@components/user-initials';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
+import { Button } from '@components/UserInterface/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@components/UserInterface/table';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
+import { useInitials } from '@hooks/use-initials';
 import { Link, router, usePage } from '@inertiajs/react';
+import { useHasPermission } from '@utils/Permissions';
+import { route } from '@utils/Routes';
 import { ArrowLeft, Building2, Calendar, ClipboardCheck, Edit, Eye, FileText, Package, ShoppingCart, User } from 'lucide-react';
 import { useEffect } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function ShowReceiptOrder() {

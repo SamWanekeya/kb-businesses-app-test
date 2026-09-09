@@ -1,13 +1,14 @@
-import { CrudDeleteModal } from '@/components/CrudDeleteModal';
-import { toast } from '@/components/CustomToast';
-import { PageTemplate } from '@/components/page-template';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { useHasPermission } from '@/utils/Permissions';
+import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import { toast } from '@components/CustomToast';
+import { PageTemplate } from '@components/page-template';
+import { Badge } from '@components/UserInterface/badge';
+import { Button } from '@components/UserInterface/button';
+import { Card, CardContent } from '@components/UserInterface/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/dialog';
+import { Input } from '@components/UserInterface/input';
 import { usePage } from '@inertiajs/react';
+import { useHasPermission } from '@utils/Permissions';
+import { route } from '@utils/Routes';
 import {
     Calendar,
     ChevronLeft,
@@ -26,7 +27,6 @@ import {
     X,
 } from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface MediaItem {

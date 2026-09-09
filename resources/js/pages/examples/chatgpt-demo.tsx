@@ -1,11 +1,11 @@
-import { ChatGptButton, ChatGptField, ChatGptModal } from '@/components/chatgpt';
-import { PageWrapper } from '@/components/PageWrapper';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
+import { ChatGptButton, ChatGptField, ChatGptModal } from '@components/chatgpt';
+import { PageWrapper } from '@components/PageWrapper';
+import { Button } from '@components/UserInterface/button';
+import { Card } from '@components/UserInterface/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/dialog';
+import { Label } from '@components/UserInterface/label';
+import { route } from '@utils/Routes';
 import { useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function ChatGptDemo() {

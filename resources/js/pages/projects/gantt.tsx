@@ -1,12 +1,12 @@
-import { CrudFormModal } from '@/components/CrudFormModal';
-import { toast } from '@/components/CustomToast';
-import { PageTemplate } from '@/components/page-template';
-import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { useHasPermission } from '@/utils/Permissions';
+import { CrudFormModal } from '@components/CrudFormModal';
+import { toast } from '@components/CustomToast';
+import { PageTemplate } from '@components/page-template';
+import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
 import { router, usePage } from '@inertiajs/react';
+import { useHasPermission } from '@utils/Permissions';
+import { route } from '@utils/Routes';
 import { ArrowLeft, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 // Helper functions for time scale calculations

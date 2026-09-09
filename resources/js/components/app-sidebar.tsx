@@ -1,12 +1,13 @@
-import { NavMain } from '@/components/nav-main';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@/components/ui/sidebar';
-import { useBrand } from '@/contexts/BrandContext';
-import { useLayout } from '@/contexts/LayoutContext';
-import { useSidebarSettings } from '@/contexts/SidebarContext';
 import { NavItem } from '@/types';
-import { resolveImageUrl } from '@/utils/Helpers/Url';
-import { useHasPermission } from '@/utils/Permissions';
+import { NavMain } from '@components/nav-main';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@components/UserInterface/sidebar';
+import { useBrand } from '@contexts/BrandContext';
+import { useLayout } from '@contexts/LayoutContext';
+import { useSidebarSettings } from '@contexts/SidebarContext';
 import { Link, usePage } from '@inertiajs/react';
+import { resolveImageUrl } from '@utils/Helpers/Url';
+import { useHasPermission } from '@utils/Permissions';
+import { route } from '@utils/Routes';
 import {
     Activity,
     Briefcase,
@@ -38,7 +39,6 @@ import {
     X,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export function AppSidebar() {

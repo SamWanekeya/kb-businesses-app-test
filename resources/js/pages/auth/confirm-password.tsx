@@ -2,14 +2,14 @@ import { useForm } from '@inertiajs/react';
 import { Lock } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
-import AuthButton from '@/components/auth/auth-button';
-import InputError from '@/components/input-error';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useBrand } from '@/contexts/BrandContext';
-import { THEME_COLORS } from '@/hooks/use-appearance';
-import AuthLayout from '@/layouts/auth-layout';
-import { route } from '@/utils/Routes';
+import AccountButton from '@components/Account/AccountButton';
+import InputError from '@components/input-error';
+import { Input } from '@components/UserInterface/input';
+import { Label } from '@components/UserInterface/label';
+import { useBrand } from '@contexts/BrandContext';
+import { THEME_COLORS } from '@hooks/use-appearance';
+import AuthLayout from '@layouts/auth-layout';
+import { route } from '@utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function ConfirmPassword() {
@@ -58,14 +58,14 @@ export default function ConfirmPassword() {
                     </div>
                 </div>
 
-                <AuthButton
+                <AccountButton
                     tabIndex={2}
                     processing={processing}
                     className="w-full transform rounded-md py-2.5 text-sm font-medium tracking-wide text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg"
                     style={{ backgroundColor: primaryColor }}
                 >
                     {translate('CONFIRM PASSWORD').toUpperCase()}
-                </AuthButton>
+                </AccountButton>
             </form>
         </AuthLayout>
     );

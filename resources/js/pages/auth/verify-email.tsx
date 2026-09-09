@@ -2,13 +2,13 @@ import { useForm } from '@inertiajs/react';
 import { Mail } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
-import AuthButton from '@/components/auth/auth-button';
-import { toast } from '@/components/CustomToast';
-import TextLink from '@/components/text-link';
-import { useBrand } from '@/contexts/BrandContext';
-import { THEME_COLORS } from '@/hooks/use-appearance';
-import AuthLayout from '@/layouts/auth-layout';
-import { route } from '@/utils/Routes';
+import AccountButton from '@components/Account/AccountButton';
+import { toast } from '@components/CustomToast';
+import TextLink from '@components/text-link';
+import { useBrand } from '@contexts/BrandContext';
+import { THEME_COLORS } from '@hooks/use-appearance';
+import AuthLayout from '@layouts/auth-layout';
+import { route } from '@utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function VerifyEmail({ status }: { status?: string }) {
@@ -41,13 +41,13 @@ export default function VerifyEmail({ status }: { status?: string }) {
             }
         >
             <form onSubmit={submit} className="space-y-5">
-                <AuthButton
+                <AccountButton
                     processing={processing}
                     className="w-full transform rounded-md py-2.5 text-sm font-medium tracking-wide text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg"
                     style={{ backgroundColor: primaryColor }}
                 >
                     {translate('RESEND EMAIL').toUpperCase()}
-                </AuthButton>
+                </AccountButton>
 
                 <div className="mt-5 text-center">
                     <p className="text-xs text-gray-500">

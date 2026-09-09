@@ -1,8 +1,8 @@
-import CookieConsentBanner from '@/components/CookieConsentBanner';
-import { FloatingChatGpt } from '@/components/FloatingChatGpt';
-import { SidebarProvider } from '@/components/ui/sidebar';
-import { useLayout } from '@/contexts/LayoutContext';
-import { cn } from '@/lib/utils';
+import CookieConsentBanner from '@components/CookieConsentBanner';
+import { FloatingChatGpt } from '@components/FloatingChatGpt';
+import { SidebarProvider } from '@components/UserInterface/sidebar';
+import { useLayout } from '@contexts/LayoutContext';
+import { cn } from '@lib/utils';
 import { useState } from 'react';
 
 interface AppShellProps {

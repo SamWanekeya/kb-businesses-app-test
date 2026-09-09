@@ -1,5 +1,5 @@
 // components/simple-multi-select.tsx
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@components/UserInterface/badge';
 import { X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 

@@ -1,12 +1,12 @@
-import { CrudTable } from '@/components/CrudTable';
-import { PageTemplate } from '@/components/page-template';
-import { Input } from '@/components/ui/input';
-import { Pagination } from '@/components/ui/pagination';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { CrudTable } from '@components/CrudTable';
+import { PageTemplate } from '@components/page-template';
+import { Input } from '@components/UserInterface/input';
+import { Pagination } from '@components/UserInterface/pagination';
+import { Tabs, TabsList, TabsTrigger } from '@components/UserInterface/tabs';
 import { Head, router } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import { Search, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface NotificationTemplate {

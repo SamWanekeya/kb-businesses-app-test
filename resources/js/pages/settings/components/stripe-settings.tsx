@@ -1,13 +1,12 @@
-import { SettingsSection } from '@/components/settings-section';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { SettingsSection } from '@components/settings-section';
+import { Alert, AlertDescription } from '@components/UserInterface/alert';
+import { Button } from '@components/UserInterface/button';
+import { Input } from '@components/UserInterface/input';
+import { Label } from '@components/UserInterface/label';
+import { Switch } from '@components/UserInterface/switch';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
 import { AlertCircle, CreditCard, Eye, EyeOff, Save } from 'lucide-react';
 import { useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function StripeSettings() {

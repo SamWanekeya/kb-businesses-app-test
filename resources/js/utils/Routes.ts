@@ -24,7 +24,7 @@
  *
  */
 
-import { route as ziggyRoute, type Config, type Router } from 'ziggy-js';
+import { Config, Router, route as ziggyRoute } from 'ziggy-js';
 
 // ---------------------------------------------------------------------------
 // Global type augmentation

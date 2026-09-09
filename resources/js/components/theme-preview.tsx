@@ -1,8 +1,8 @@
-import { SidebarMenuSkeleton } from '@/components/ui/sidebar';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useLogos } from '@/contexts/LogoContext';
-import { useThemePreview } from '@/hooks/use-theme-preview';
-import { resolveImageUrl } from '@/utils/Helpers/Url';
+import { SidebarMenuSkeleton } from '@components/UserInterface/sidebar';
+import { Skeleton } from '@components/UserInterface/skeleton';
+import { useLogos } from '@contexts/LogoContext';
+import { useThemePreview } from '@hooks/use-theme-preview';
+import { resolveImageUrl } from '@utils/Helpers/Url';
 import React from 'react';
 
 export function ThemePreview() {

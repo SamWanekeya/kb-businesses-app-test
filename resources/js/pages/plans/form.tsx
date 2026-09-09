@@ -1,13 +1,13 @@
-import InputError from '@/components/input-error';
-import { PageTemplate } from '@/components/page-template';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { Textarea } from '@/components/ui/textarea';
+import InputError from '@components/input-error';
+import { PageTemplate } from '@components/page-template';
+import { Button } from '@components/UserInterface/button';
+import { Input } from '@components/UserInterface/input';
+import { Label } from '@components/UserInterface/label';
+import { Switch } from '@components/UserInterface/switch';
+import { Textarea } from '@components/UserInterface/textarea';
 import { router, useForm } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import { ArrowLeft } from 'lucide-react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface Plan {

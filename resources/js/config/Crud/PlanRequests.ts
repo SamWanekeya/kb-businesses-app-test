@@ -1,6 +1,6 @@
 import { CrudConfig } from '@/types/crud.d';
-import { columnRenderers } from '@/utils/ColumnRenderers';
-import { route } from '@/utils/Routes';
+import { columnRenderers } from '@utils/ColumnRenderers';
+import { route } from '@utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export const usePlanRequestsConfig = (): CrudConfig => {

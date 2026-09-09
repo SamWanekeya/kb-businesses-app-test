@@ -1,15 +1,15 @@
-import { toast } from '@/components/CustomToast';
-import { PageTemplate } from '@/components/page-template';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
+import { toast } from '@components/CustomToast';
+import { PageTemplate } from '@components/page-template';
+import { Button } from '@components/UserInterface/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
+import { Input } from '@components/UserInterface/input';
+import { Label } from '@components/UserInterface/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/select';
+import { Textarea } from '@components/UserInterface/textarea';
 import { useForm, usePage } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import { ArrowLeft, Copy, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 type ProductRow = {

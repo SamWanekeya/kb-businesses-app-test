@@ -1,11 +1,12 @@
-import { PageTemplate } from '@/components/page-template';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { TooltipContent, TooltipProvider, TooltipTrigger, Tooltip as UITooltip } from '@/components/ui/tooltip';
-import UserInitials from '@/components/user-initials';
-import { useHasPermission } from '@/utils/Permissions';
+import { PageTemplate } from '@components/page-template';
+import UserInitials from '@components/user-initials';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/select';
+import { Tabs, TabsList, TabsTrigger } from '@components/UserInterface/tabs';
+import { TooltipContent, TooltipProvider, TooltipTrigger, Tooltip as UITooltip } from '@components/UserInterface/tooltip';
 import { Link, router, usePage } from '@inertiajs/react';
+import { useHasPermission } from '@utils/Permissions';
+import { route } from '@utils/Routes';
 import {
     ArrowUpRight,
     Banknote,
@@ -22,7 +23,6 @@ import {
     TrendingUp,
 } from 'lucide-react';
 import React from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 import {
     Bar,

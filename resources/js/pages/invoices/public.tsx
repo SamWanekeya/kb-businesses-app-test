@@ -1,14 +1,13 @@
-import { toast } from '@/components/CustomToast';
-import { InvoicePaymentModal } from '@/components/invoice-payment-modal';
-import { resolveImageUrl } from '@/utils/Helpers/Url';
-import { useHasPermission } from '@/utils/Permissions';
+import { toast } from '@components/CustomToast';
+import { InvoicePaymentModal } from '@components/invoice-payment-modal';
 import { Head, usePage } from '@inertiajs/react';
+import { resolveImageUrl } from '@utils/Helpers/Url';
+import { useHasPermission } from '@utils/Permissions';
 import { Calendar, Check, Copy, CreditCard, DollarSign, FileText, MapPin, Package, Printer, User } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
-import IframePortal, { IframePortalHandles } from '@/components/IframePortal';
+import IframePortal, { IframePortalHandles } from '@components/IframePortal';
 import Template1 from '@pages/quotes/templates/Template1';
 import Template10 from '@pages/quotes/templates/Template10';
 import Template2 from '@pages/quotes/templates/Template2';

@@ -1,18 +1,18 @@
 // components/PageCrudWrapper.tsx
-import { toast } from '@/components/CustomToast';
-import { PageAction, PageTemplate } from '@/components/page-template';
-import { Pagination } from '@/components/ui/pagination';
-import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
 import { BreadcrumbItem } from '@/types';
 import { CrudConfig } from '@/types/crud.d';
-import { useHasPermission } from '@/utils/Permissions';
 import { CrudDeleteModal } from '@components/CrudDeleteModal';
 import { CrudFormModal } from '@components/CrudFormModal';
 import { CrudTable } from '@components/CrudTable';
+import { toast } from '@components/CustomToast';
+import { PageAction, PageTemplate } from '@components/page-template';
+import { Pagination } from '@components/UserInterface/pagination';
+import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
 import { router, usePage } from '@inertiajs/react';
+import { useHasPermission } from '@utils/Permissions';
+import { route } from '@utils/Routes';
 import { PlusIcon } from 'lucide-react';
 import { ReactNode, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export interface CrudButton {

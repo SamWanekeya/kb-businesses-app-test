@@ -1,4 +1,4 @@
-import useTheme from '@/hooks/useTheme';
+import useTheme from '@hooks/useTheme';
 import { router } from '@inertiajs/react';
 import { useEffect } from 'react';
 

@@ -1,8 +1,8 @@
-import { PageTemplate } from '@/components/page-template';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { PageTemplate } from '@components/page-template';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
 import { usePage } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import { ArrowLeft, Palette, Truck, User } from 'lucide-react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function ShippingProviderTypeShow() {

@@ -2,17 +2,17 @@ import { useForm } from '@inertiajs/react';
 import { Building2, Copy, Eye, EyeOff, ShieldCheck, User, Users } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 
-import AuthButton from '@/components/auth/auth-button';
-import InputError from '@/components/input-error';
-import Recaptcha, { useRecaptchaSettings } from '@/components/recaptcha';
-import TextLink from '@/components/text-link';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useBrand } from '@/contexts/BrandContext';
-import { THEME_COLORS } from '@/hooks/use-appearance';
-import AuthLayout from '@/layouts/auth-layout';
-import { route } from '@/utils/Routes';
+import AccountButton from '@components/Account/AccountButton';
+import InputError from '@components/input-error';
+import Recaptcha, { useRecaptchaSettings } from '@components/recaptcha';
+import TextLink from '@components/text-link';
+import { Checkbox } from '@components/UserInterface/checkbox';
+import { Input } from '@components/UserInterface/input';
+import { Label } from '@components/UserInterface/label';
+import { useBrand } from '@contexts/BrandContext';
+import { THEME_COLORS } from '@hooks/use-appearance';
+import AuthLayout from '@layouts/auth-layout';
+import { route } from '@utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 type LoginForm = {
@@ -224,14 +224,14 @@ export default function Login({ status, canResetPassword, demoOrganizations = []
                     </p>
                 )}
 
-                <AuthButton
+                <AccountButton
                     tabIndex={4}
                     processing={processing}
                     className="w-full transform rounded-md py-2.5 text-sm font-medium tracking-wide text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:shadow-lg"
                     style={{ backgroundColor: primaryColor }}
                 >
                     {translate('Sign in')}
-                </AuthButton>
+                </AccountButton>
                 <div className="text-center">
                     <p className="text-sm text-gray-500">
                         {translate("Don't have an account?")}{' '}

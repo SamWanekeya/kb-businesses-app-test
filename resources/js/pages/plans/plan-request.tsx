@@ -1,13 +1,13 @@
 // pages/plans/plan-request.tsx
-import { CrudTable } from '@/components/CrudTable';
-import { toast } from '@/components/CustomToast';
-import { PageTemplate } from '@/components/page-template';
-import { Pagination } from '@/components/ui/pagination';
-import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { formatTitleCase } from '@/utils/Helpers/StringFormatters';
+import { CrudTable } from '@components/CrudTable';
+import { toast } from '@components/CustomToast';
+import { PageTemplate } from '@components/page-template';
+import { Pagination } from '@components/UserInterface/pagination';
+import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
 import { router, usePage } from '@inertiajs/react';
+import { formatTitleCase } from '@utils/Helpers/StringFormatters';
+import { route } from '@utils/Routes';
 import { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function PlanRequestsPage() {

@@ -1,13 +1,13 @@
-import { toast } from '@/components/CustomToast';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
-import { useBrand } from '@/contexts/BrandContext';
-import { THEME_COLORS } from '@/hooks/use-appearance';
+import { toast } from '@components/CustomToast';
+import { Button } from '@components/UserInterface/button';
+import { Card } from '@components/UserInterface/card';
+import { Switch } from '@components/UserInterface/switch';
+import { useBrand } from '@contexts/BrandContext';
+import { THEME_COLORS } from '@hooks/use-appearance';
 import { usePage } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function CookieConsentBanner() {

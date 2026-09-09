@@ -11,7 +11,7 @@
  * - Do not introduce side effects here without considering all call sites.
  */
 
-import { SonnerToaster } from '@/components/UserInterface/SonnerToaster';
+import { SonnerToaster } from '@components/UserInterface/SonnerToaster';
 import { router } from '@inertiajs/react';
 import { toast as sonnerToast } from 'sonner';
 

@@ -69,7 +69,7 @@ export default [
                         {
                             group: [
                                 '@/utils/**/index',
-                                '@/components/**/index',
+                                '@components/**/index',
                                 '@/hooks/**/index',
                             ],
                             message:

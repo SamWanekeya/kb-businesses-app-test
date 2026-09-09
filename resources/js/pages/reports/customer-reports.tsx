@@ -1,13 +1,13 @@
-import { PageTemplate } from '@/components/page-template';
-import { ReportFilters } from '@/components/reports/report-filters';
-import { SummaryCards } from '@/components/reports/summary-cards';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import UserInitials from '@/components/user-initials';
+import { PageTemplate } from '@components/page-template';
+import { ReportFilters } from '@components/Reports/ReportFilters';
+import { SummaryCards } from '@components/Reports/SummaryCards';
+import UserInitials from '@components/user-initials';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
+import { Tabs, TabsList, TabsTrigger } from '@components/UserInterface/tabs';
 import { usePage } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import { DollarSign, MessageSquare, Phone, UserCheck, UserPlus, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 import { CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 

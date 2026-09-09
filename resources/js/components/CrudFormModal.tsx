@@ -1,20 +1,20 @@
 // components/CrudFormModal.tsx
-import MediaPicker from '@/components/MediaPicker';
-import { MultiSelectField } from '@/components/multi-select-field';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { RichTextField } from '@/components/ui/rich-text-field';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Textarea } from '@/components/ui/textarea';
-import { FormField } from '@/types/crud';
+import { FormField } from '@/types/crud.d';
+import MediaPicker from '@components/MediaPicker';
+import { MultiSelectField } from '@components/multi-select-field';
+import { Button } from '@components/UserInterface/button';
+import { Checkbox } from '@components/UserInterface/checkbox';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@components/UserInterface/dialog';
+import { Input } from '@components/UserInterface/input';
+import { Label } from '@components/UserInterface/label';
+import { RadioGroup, RadioGroupItem } from '@components/UserInterface/radio-group';
+import { RichTextField } from '@components/UserInterface/rich-text-field';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/select';
+import { Switch } from '@components/UserInterface/switch';
+import { Textarea } from '@components/UserInterface/textarea';
 import { Link } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import React, { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface CrudFormModalProps {

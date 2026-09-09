@@ -1,10 +1,10 @@
-import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
-import { UserInfo } from '@/components/user-info';
-import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
-import { type User } from '@/types';
+import { User } from '@/types';
+import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@components/UserInterface/dropdown-menu';
+import { UserInfo } from '@components/user-info';
+import { useMobileNavigation } from '@hooks/use-mobile-navigation';
 import { Link } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import { LogOut, Settings } from 'lucide-react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface UserMenuContentProps {

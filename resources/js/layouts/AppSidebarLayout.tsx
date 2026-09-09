@@ -1,4 +1,4 @@
-import { type PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 
 import AppContent from '@components/AppContent';
 import AppShell from '@components/AppShell';

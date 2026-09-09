@@ -1,20 +1,20 @@
-import { toast } from '@/components/CustomToast';
-import { PageTemplate } from '@/components/page-template';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { formatTitleCase } from '@/utils/Helpers/StringFormatters';
-import { useHasPermission } from '@/utils/Permissions';
+import { toast } from '@components/CustomToast';
+import { PageTemplate } from '@components/page-template';
+import { Button } from '@components/UserInterface/button';
+import { Card } from '@components/UserInterface/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/select';
 import allLocales from '@fullcalendar/core/locales-all';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { router, usePage } from '@inertiajs/react';
+import { formatTitleCase } from '@utils/Helpers/StringFormatters';
+import { useHasPermission } from '@utils/Permissions';
+import { route } from '@utils/Routes';
 import { Calendar, CheckSquare, Clock, ExternalLink, Phone, RefreshCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function CalendarIndex() {

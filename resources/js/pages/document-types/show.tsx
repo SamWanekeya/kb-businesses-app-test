@@ -1,7 +1,7 @@
-import { PageTemplate } from '@/components/page-template';
+import { PageTemplate } from '@components/page-template';
 import { router, usePage } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import { ArrowLeft, FileIcon } from 'lucide-react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function ShowDocumentType() {

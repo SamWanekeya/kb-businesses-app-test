@@ -1,15 +1,14 @@
 // components/CrudTable.tsx
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { cn } from '@/lib/utils';
-import { TableAction, TableColumn } from '@/types/crud';
-import { useHasPermission } from '@/utils/Permissions';
+import { TableAction, TableColumn } from '@/types/crud.d';
+import { Badge } from '@components/UserInterface/badge';
+import { Button } from '@components/UserInterface/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@components/UserInterface/table';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
 import { Link } from '@inertiajs/react';
+import { cn } from '@lib/utils';
+import { useHasPermission } from '@utils/Permissions';
 import * as LucidIcons from 'lucide-react';
 import { ChevronDown, ChevronUp, ChevronsUpDown } from 'lucide-react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface CrudTableProps {

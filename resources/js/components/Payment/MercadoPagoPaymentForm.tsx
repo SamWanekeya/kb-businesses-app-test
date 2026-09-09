@@ -1,0 +1,89 @@
+import { toast } from '@components/CustomToast';
+import { Button } from '@components/UserInterface/button';
+import { route } from '@utils/Routes';
+import axios from 'axios';
+import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+interface MercadoPagoPaymentFormProps {
+    planId: number;
+    planPrice: number;
+    couponCode: string;
+    billingCycle: 'monthly' | 'yearly';
+    accessToken: string;
+    currency?: string;
+    onSuccess: () => void;
+    onCancel: () => void;
+}
+
+export function MercadoPagoPaymentForm({
+    planId,
+    planPrice,
+    couponCode,
+    billingCycle,
+    accessToken,
+    currency = 'BRL',
+    onSuccess,
+    onCancel,
+}: MercadoPagoPaymentFormProps) {
+    const { t: translate } = useTranslation();
+    const [isLoading, setIsLoading] = useState(false);
+
+    // Payment method using redirect flow
+    const handlePayment = async () => {
+        try {
+            setIsLoading(true);
+
+            // Create a preference and redirect to MercadoPago checkout
+            const response = await axios.post(
+                route('mercadopago.create-preference'),
+                {
+                    plan_id: planId,
+                    billing_cycle: billingCycle,
+                    coupon_code: couponCode || undefined,
+                },
+                {
+                    headers: {
+                        Accept: 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                },
+            );
+
+            if (response.data.redirect_url) {
+                // Redirect to MercadoPago checkout
+                window.location.href = response.data.redirect_url;
+            } else {
+                toast.error(translate('Failed to create payment preference'));
+                setIsLoading(false);
+            }
+        } catch (error: any) {
+            const errorMsg = error.response?.data?.error || error.message || translate('Failed to create payment preference');
+            toast.error(errorMsg);
+            setIsLoading(false);
+        }
+    };
+
+    return (
+        <div className="space-y-4">
+            <p className="text-muted-foreground text-sm">{translate('You will be redirected to MercadoPago to complete your payment.')}</p>
+
+            <div className="mt-4 flex gap-3">
+                <Button variant="outline" onClick={onCancel} className="flex-1" disabled={isLoading}>
+                    {translate('Cancel')}
+                </Button>
+                <Button onClick={handlePayment} className="flex-1" disabled={isLoading}>
+                    {isLoading ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            {translate('Processing...')}
+                        </>
+                    ) : (
+                        translate('Pay with MercadoPago')
+                    )}
+                </Button>
+            </div>
+        </div>
+    );
+}

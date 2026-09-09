@@ -1,20 +1,20 @@
-import { CrudDeleteModal } from '@/components/CrudDeleteModal';
-import { CrudFormModal } from '@/components/CrudFormModal';
-import { CrudTable } from '@/components/CrudTable';
-import { toast } from '@/components/CustomToast';
-import { PageTemplate } from '@/components/page-template';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Pagination } from '@/components/ui/pagination';
-import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import UserInitials from '@/components/user-initials';
-import { useInitials } from '@/hooks/use-initials';
-import { formatTitleCase } from '@/utils/Helpers/StringFormatters';
-import { useHasPermission } from '@/utils/Permissions';
+import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import { CrudFormModal } from '@components/CrudFormModal';
+import { CrudTable } from '@components/CrudTable';
+import { toast } from '@components/CustomToast';
+import { PageTemplate } from '@components/page-template';
+import UserInitials from '@components/user-initials';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
+import { Pagination } from '@components/UserInterface/pagination';
+import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
+import { useInitials } from '@hooks/use-initials';
 import { router, usePage } from '@inertiajs/react';
+import { formatTitleCase } from '@utils/Helpers/StringFormatters';
+import { useHasPermission } from '@utils/Permissions';
+import { route } from '@utils/Routes';
 import { Calendar, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function Calls() {

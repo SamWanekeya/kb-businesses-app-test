@@ -1,18 +1,18 @@
 // pages/currencies/index.tsx
-import { CrudDeleteModal } from '@/components/CrudDeleteModal';
-import { CrudFormModal } from '@/components/CrudFormModal';
-import { CrudTable } from '@/components/CrudTable';
-import { toast } from '@/components/CustomToast';
-import { PageTemplate } from '@/components/page-template';
-import { Dialog } from '@/components/ui/dialog';
-import { Pagination } from '@/components/ui/pagination';
-import { SearchAndFilterBar } from '@/components/ui/search-and-filter-bar';
-import { useHasPermission } from '@/utils/Permissions';
+import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import { CrudFormModal } from '@components/CrudFormModal';
+import { CrudTable } from '@components/CrudTable';
+import { toast } from '@components/CustomToast';
+import { PageTemplate } from '@components/page-template';
+import { Dialog } from '@components/UserInterface/dialog';
+import { Pagination } from '@components/UserInterface/pagination';
+import { SearchAndFilterBar } from '@components/UserInterface/search-and-filter-bar';
 import { router, usePage } from '@inertiajs/react';
 import ViewPopup from '@pages/currencies/view';
+import { useHasPermission } from '@utils/Permissions';
+import { route } from '@utils/Routes';
 import { Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function Currencies() {

@@ -1,0 +1,231 @@
+import { toast } from '@components/CustomToast';
+import { Alert, AlertDescription } from '@components/UserInterface/alert';
+import { Button } from '@components/UserInterface/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
+import { Input } from '@components/UserInterface/input';
+import { Label } from '@components/UserInterface/label';
+import { route } from '@utils/Routes';
+import { AlertCircle, CreditCard, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+interface PayfastPaymentFormProps {
+    planId: number;
+    couponCode: string;
+    billingCycle: 'monthly' | 'yearly';
+    planPrice: number;
+    payfastMerchantId: string;
+    currency: string;
+    onSuccess: () => void;
+    onCancel: () => void;
+}
+
+export function PayfastPaymentForm({
+    planId,
+    couponCode,
+    billingCycle,
+    planPrice,
+    payfastMerchantId,
+    currency,
+    onSuccess,
+    onCancel,
+}: PayfastPaymentFormProps) {
+    const { t: translate } = useTranslation();
+    const [isProcessing, setIsProcessing] = useState(false);
+    const [customerDetails, setCustomerDetails] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+    });
+
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+    const validateForm = () => {
+        const newErrors: { [key: string]: string } = {};
+
+        if (!customerDetails.firstName.trim()) {
+            newErrors.firstName = translate('First name is required');
+        }
+
+        if (!customerDetails.lastName.trim()) {
+            newErrors.lastName = translate('Last name is required');
+        }
+
+        if (!customerDetails.email.trim()) {
+            newErrors.email = translate('Email is required');
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerDetails.email)) {
+            newErrors.email = translate('Please enter a valid email address');
+        }
+
+        return newErrors;
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const formErrors = validateForm();
+        setErrors(formErrors);
+
+        if (Object.keys(formErrors).length > 0) {
+            toast.error(translate('Please fix the errors below'));
+            return;
+        }
+
+        if (planPrice < 5) {
+            toast.error(translate('Minimum payment amount is R5.00'));
+            return;
+        }
+
+        setIsProcessing(true);
+
+        try {
+            const response = await fetch(route('payfast.payment'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                },
+                body: JSON.stringify({
+                    plan_id: planId,
+                    billing_cycle: billingCycle,
+                    coupon_code: couponCode,
+                    customer_details: customerDetails,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Create and submit form to PayFast
+                const form = document.createElementranslate('form');
+                form.method = 'POST';
+                form.action = data.action;
+                form.innerHTML = data.inputs;
+                document.body.appendChild(form);
+                form.submit();
+            } else {
+                toast.error(data.error || translate('Payment failed'));
+                setIsProcessing(false);
+            }
+        } catch (error) {
+            toast.error(translate('Payment failed. Please try again.'));
+            setIsProcessing(false);
+        }
+    };
+
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                    <CreditCard className="h-5 w-5" />
+                    {translate('Payfast Payment')}
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <input type="hidden" name="_token" value={document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''} />
+                    <input type="hidden" name="plan_id" value={planId} />
+                    <input type="hidden" name="billing_cycle" value={billingCycle} />
+                    <input type="hidden" name="coupon_code" value={couponCode || ''} />
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="firstName">{translate('First Name')}</Label>
+                            <Input
+                                id="firstName"
+                                name="customer_details[firstName]"
+                                value={customerDetails.firstName}
+                                onChange={(e) => {
+                                    setCustomerDetails((prev) => ({ ...prev, firstName: e.target.value }));
+                                    if (errors.firstName) {
+                                        setErrors((prev) => ({ ...prev, firstName: '' }));
+                                    }
+                                }}
+                                placeholder={translate('Enter first name')}
+                                className={errors.firstName ? 'border-red-500' : ''}
+                                required
+                            />
+                            {errors.firstName && <p className="mt-1 text-sm text-red-500">{errors.firstName}</p>}
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="lastName">{translate('Last Name')}</Label>
+                            <Input
+                                id="lastName"
+                                name="customer_details[lastName]"
+                                value={customerDetails.lastName}
+                                onChange={(e) => {
+                                    setCustomerDetails((prev) => ({ ...prev, lastName: e.target.value }));
+                                    if (errors.lastName) {
+                                        setErrors((prev) => ({ ...prev, lastName: '' }));
+                                    }
+                                }}
+                                placeholder={translate('Enter last name')}
+                                className={errors.lastName ? 'border-red-500' : ''}
+                                required
+                            />
+                            {errors.lastName && <p className="mt-1 text-sm text-red-500">{errors.lastName}</p>}
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="email">{translate('Email Address')}</Label>
+                        <Input
+                            id="email"
+                            name="customer_details[email]"
+                            type="email"
+                            value={customerDetails.email}
+                            onChange={(e) => {
+                                setCustomerDetails((prev) => ({ ...prev, email: e.target.value }));
+                                if (errors.email) {
+                                    setErrors((prev) => ({ ...prev, email: '' }));
+                                }
+                            }}
+                            placeholder={translate('Enter email address')}
+                            className={errors.email ? 'border-red-500' : ''}
+                            required
+                        />
+                        {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
+                        <p className="text-muted-foreground text-xs">{translate('You will be redirected to Payfast to complete the payment')}</p>
+                    </div>
+
+                    {planPrice < 5 && (
+                        <Alert variant="destructive">
+                            <AlertCircle className="h-4 w-4" />
+                            <AlertDescription>
+                                {translate('PayFast requires a minimum payment of R5.00. Current amount: {{currency}} {{amount}}', {
+                                    currency,
+                                    amount: planPrice,
+                                })}
+                            </AlertDescription>
+                        </Alert>
+                    )}
+
+                    <div className="bg-muted rounded-lg p-3">
+                        <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium">{translate('Amount')}</span>
+                            <span className="text-sm font-bold">
+                                {currency} {planPrice}
+                            </span>
+                        </div>
+                        <p className="text-muted-foreground mt-1 text-xs">{translate('Secure payment processing via PayFast')}</p>
+                    </div>
+
+                    <div className="flex gap-3 pt-4">
+                        <Button type="button" variant="outline" onClick={onCancel} className="flex-1">
+                            {translate('Cancel')}
+                        </Button>
+                        <Button type="submit" disabled={isProcessing || planPrice < 5} className="flex-1">
+                            {isProcessing ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    {translate('Processing...')}
+                                </>
+                            ) : (
+                                translate('Pay {{amount}}', { amount: `${currency} ${planPrice}` })
+                            )}
+                        </Button>
+                    </div>
+                </form>
+            </CardContent>
+        </Card>
+    );
+}

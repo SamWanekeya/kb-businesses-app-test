@@ -1,10 +1,10 @@
-import { FloatingChatGpt } from '@/components/FloatingChatGpt';
-import { Button } from '@/components/ui/button';
-import AppLayout from '@/layouts/app-layout';
-import { cn } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/ui/tooltip';
+import { FloatingChatGpt } from '@components/FloatingChatGpt';
+import { Button } from '@components/UserInterface/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
 import { Head, usePage } from '@inertiajs/react';
+import AppLayout from '@layouts/app-layout';
+import { cn } from '@lib/utils';
 import { ReactNode } from 'react';
 
 export interface PageAction {

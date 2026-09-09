@@ -1,15 +1,15 @@
-import { toast } from '@/components/CustomToast';
-import { SettingsSection } from '@/components/settings-section';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { toast } from '@components/CustomToast';
+import { SettingsSection } from '@components/settings-section';
+import { Button } from '@components/UserInterface/button';
+import { Label } from '@components/UserInterface/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/select';
 import { router, usePage } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import { Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
-// import languageData from '@/../../resources/lang/language.json';
-import { Card, CardContent } from '@/components/ui/card';
+// import languageData from '/resources/lang/language.json';
+import { Card, CardContent } from '@components/UserInterface/card';
 import ReactCountryFlag from 'react-country-flag';
 interface SystemSettingsProps {
     settings?: Record<string, string>;

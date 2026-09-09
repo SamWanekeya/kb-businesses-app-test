@@ -10,7 +10,7 @@ import createServer from '@inertiajs/react/server';
 
 import { initI18nForSSR } from '@lib/i18n';
 
-import { getEnvironmentVariable } from '@/utils/Helpers/EnvironmentVariables';
+import { getEnvironmentVariable } from '@utils/Helpers/EnvironmentVariables';
 import { renderToString } from 'react-dom/server';
 import { KakbimaRoot } from './app';
 

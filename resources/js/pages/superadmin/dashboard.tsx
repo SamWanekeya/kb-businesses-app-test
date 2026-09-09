@@ -1,8 +1,9 @@
-import { PageTemplate } from '@/components/page-template';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import UserInitials from '@/components/user-initials';
+import { PageTemplate } from '@components/page-template';
+import UserInitials from '@components/user-initials';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/select';
 import { Link, router, usePage } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import {
     AlertCircle,
     ArrowUpRight,
@@ -19,7 +20,6 @@ import {
     Users,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 

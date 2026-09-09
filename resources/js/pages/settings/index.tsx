@@ -1,9 +1,9 @@
-import { PageTemplate } from '@/components/page-template';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { cn } from '@/lib/utils';
 import { NavItem } from '@/types';
+import { PageTemplate } from '@components/page-template';
+import { Button } from '@components/UserInterface/button';
+import { ScrollArea } from '@components/UserInterface/scroll-area';
 import { usePage } from '@inertiajs/react';
+import { cn } from '@lib/utils';
 import OrganizationSystemSettings from '@pages/settings/components/organization-system-settings';
 import SystemSettings from '@pages/settings/components/system-settings';
 import {
@@ -47,11 +47,11 @@ import SalesOrderTemplateSettings from '@pages/settings/components/sales-order-t
 import SeoSettings from '@pages/settings/components/seo-settings';
 import WebhookSettings from '@pages/settings/components/webhook-settings';
 
-import { Toaster } from '@/components/ui/toaster';
-import { useLayout } from '@/contexts/LayoutContext';
-import { useHasPermission } from '@/utils/Permissions';
+import { Toaster } from '@components/UserInterface/toaster';
+import { useLayout } from '@contexts/LayoutContext';
 import StorageSettings from '@pages/settings/components/storage-settings';
-import { route } from '@/utils/Routes';
+import { useHasPermission } from '@utils/Permissions';
+import { route } from '@utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function Settings() {

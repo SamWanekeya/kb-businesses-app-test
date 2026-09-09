@@ -1,6 +1,6 @@
-import { PageCrudWrapper } from '@/components/PageCrudWrapper';
-import { permissionsConfig } from '@/config/Crud/Permissions';
-import { route } from '@/utils/Routes';
+import { PageCrudWrapper } from '@components/PageCrudWrapper';
+import { usePermissionsConfig } from '@config/Crud/Permissions';
+import { route } from '@utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function PermissionsPage() {
@@ -11,5 +11,5 @@ export default function PermissionsPage() {
         { title: translate('Permissions') },
     ];
 
-    return <PageCrudWrapper config={permissionsConfig} url="/permissions" breadcrumbs={breadcrumbs} />;
+    return <PageCrudWrapper config={usePermissionsConfig} url="/permissions" breadcrumbs={breadcrumbs} />;
 }

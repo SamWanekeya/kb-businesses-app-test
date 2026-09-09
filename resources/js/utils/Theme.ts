@@ -14,7 +14,7 @@
  * - Side effects on app state
  */
 
-import { getCookie, storeCookie } from '@/utils/Helpers/Cookies';
+import { getCookie, storeCookie } from '@utils/Helpers/Cookies';
 
 export type Appearance = 'light' | 'dark' | 'system';
 export type ResolvedAppearance = 'light' | 'dark';

@@ -1,10 +1,9 @@
 // components/RolePermissionCheckboxGroup.tsx
-import { Checkbox } from '@/components/ui/checkbox';
-import { IndeterminateCheckbox } from '@/components/ui/indeterminate-checkbox';
-import { Label } from '@/components/ui/label';
-import { formatTitleCase } from '@/utils/Helpers/StringFormatters';
+import { Checkbox } from '@components/UserInterface/checkbox';
+import { IndeterminateCheckbox } from '@components/UserInterface/indeterminate-checkbox';
+import { Label } from '@components/UserInterface/label';
+import { formatTitleCase } from '@utils/Helpers/StringFormatters';
 import { useEffect, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface Permission {

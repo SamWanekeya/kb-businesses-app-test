@@ -1,17 +1,17 @@
-import { CrudDeleteModal } from '@/components/CrudDeleteModal';
-import { toast } from '@/components/CustomToast';
-import { PageTemplate } from '@/components/page-template';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useInitials } from '@/hooks/use-initials';
-import { useHasPermission } from '@/utils/Permissions';
-import { formatRelativeTime } from '@/utils/helper';
+import { CrudDeleteModal } from '@components/CrudDeleteModal';
+import { toast } from '@components/CustomToast';
+import { PageTemplate } from '@components/page-template';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
+import { Button } from '@components/UserInterface/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/card';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/tooltip';
+import { useInitials } from '@hooks/use-initials';
 import { Head, Link, router, usePage } from '@inertiajs/react';
+import { formatRelativeTime } from '@utils/helper';
+import { useHasPermission } from '@utils/Permissions';
+import { route } from '@utils/Routes';
 import { ArrowLeft, Calendar, ExternalLink, MessageCircle, Trash2 } from 'lucide-react';
 import React, { useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface Stream {

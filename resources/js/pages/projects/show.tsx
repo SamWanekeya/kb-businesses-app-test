@@ -1,13 +1,13 @@
-import { PageTemplate } from '@/components/page-template';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import UserInitials from '@/components/user-initials';
-import { useInitials } from '@/hooks/use-initials';
-import { useHasPermission } from '@/utils/Permissions';
+import { PageTemplate } from '@components/page-template';
+import UserInitials from '@components/user-initials';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/avatar';
+import { Button } from '@components/UserInterface/button';
+import { Card } from '@components/UserInterface/card';
+import { useInitials } from '@hooks/use-initials';
 import { router, usePage } from '@inertiajs/react';
+import { useHasPermission } from '@utils/Permissions';
+import { route } from '@utils/Routes';
 import { AlertTriangle, ArrowLeft, BanknoteIcon, BarChart3, Building2, Calendar, Clock, DollarSign, LayoutGrid } from 'lucide-react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function ProjectShow() {

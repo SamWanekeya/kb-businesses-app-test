@@ -1,4 +1,4 @@
-import { getEnvironmentVariable } from '@/utils/Helpers/EnvironmentVariables';
+import { getEnvironmentVariable } from '@utils/Helpers/EnvironmentVariables';
 
 /**
  * Join two URL segments with correct slash handling.

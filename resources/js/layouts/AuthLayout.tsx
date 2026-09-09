@@ -14,17 +14,16 @@
 import { Head, usePage } from '@inertiajs/react';
 import { JSX, ReactNode, useCallback, useEffect, useState } from 'react';
 
-import CookieConsentBanner from '@/components/CookieConsentBanner';
-import { toast } from '@/components/CustomToast';
-import { LanguageSelector } from '@/components/LanguageSelector';
-import useTheme from '@/hooks/useTheme';
-import { getCookie } from '@/utils/Helpers/Cookies';
-import { createKakbimaExternalUrl } from '@/utils/Helpers/Url';
+import CookieConsentBanner from '@components/CookieConsentBanner';
+import { toast } from '@components/CustomToast';
+import { LanguageSelector } from '@components/LanguageSelector';
+import useTheme from '@hooks/useTheme';
 import backgroundImageLight from '@images/background_image.jpg';
 import backgroundImageDark from '@images/background_image_dark.jpg';
 import kakbimaLogoLight from '@images/logos/kakbima_logo.png';
 import kakbimaLogoDark from '@images/logos/kakbima_logo_dark.png';
-import { route } from '@/utils/Routes';
+import { getCookie } from '@utils/Helpers/Cookies';
+import { createKakbimaExternalUrl } from '@utils/Helpers/Url';
 import { useTranslation } from 'react-i18next';
 
 /**

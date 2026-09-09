@@ -1,21 +1,21 @@
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@components/UserInterface/badge';
+import { Button } from '@components/UserInterface/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/UserInterface/card';
+import { Input } from '@components/UserInterface/input';
+import { Label } from '@components/UserInterface/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/select';
+import { Textarea } from '@components/UserInterface/textarea';
 
-import { toast } from '@/components/CustomToast';
-import { PaymentInputField } from '@/components/payment/payment-input-field';
-import { PaymentMethodCard } from '@/components/payment/payment-method-card';
-import { SettingsSection } from '@/components/settings-section';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { PAYMENT_METHODS, PAYMENT_METHOD_HELP_URLS, PAYMENT_METHOD_LABELS } from '@/utils/Payment';
+import { toast } from '@components/CustomToast';
+import { PaymentInputField } from '@components/Payment/PaymentInputField';
+import { PaymentMethodCard } from '@components/Payment/PaymentMethodCard';
+import { SettingsSection } from '@components/settings-section';
+import { Alert, AlertDescription } from '@components/UserInterface/alert';
 import { useForm } from '@inertiajs/react';
+import { PAYMENT_METHODS, PAYMENT_METHOD_HELP_URLS, PAYMENT_METHOD_LABELS } from '@utils/Payment';
+import { route } from '@utils/Routes';
 import { AlertCircle, Banknote, CreditCard, Save, Search, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { route } from '@/utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 interface PaymentSettings {
