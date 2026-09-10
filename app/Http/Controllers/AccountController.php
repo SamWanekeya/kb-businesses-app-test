@@ -71,7 +71,7 @@ class AccountController extends Controller
         }
 
         $defaultPerPage = $request->view === 'grid' ? 12 : 10;
-        $perPage = max(1, min(200, (int)$request->get('per_page', $defaultPerPage)));
+        $perPage = max(1, min(200, (int)$request->input('per_page', $defaultPerPage)));
         $accounts = $query->paginate($perPage)->withQueryString();
 
         // Get users for assignment dropdown
@@ -99,7 +99,7 @@ class AccountController extends Controller
             ];
         }
 
-        return Inertia::render('accounts/index', [
+        return Inertia::render('Accounts/Index', [
             'accounts' => $accounts,
             'users' => $users,
             'allUsers' => $allUsers,
@@ -190,7 +190,7 @@ class AccountController extends Controller
             ->select('id', 'name', 'email')
             ->get();
 
-        return Inertia::render('accounts/create', [
+        return Inertia::render('Accounts/Create', [
             'accountTypes' => $accountTypes,
             'accountIndustries' => $accountIndustries,
             'users' => $users,
@@ -220,7 +220,7 @@ class AccountController extends Controller
 
             $meetings = $parentMeetings->merge($parentCalls)->sortByDesc('start_date')->values();
 
-            return Inertia::render('accounts/show', [
+            return Inertia::render('Accounts/Show', [
                 'account' => $account,
                 'streamItems' => $account->activities()->orderBy('id', 'desc')->get(),
                 'meetings' => $meetings,
@@ -249,7 +249,7 @@ class AccountController extends Controller
         $users = User::where('created_by', createdBy())
             ->where('status', 'active')->select('id', 'name', 'email')->get();
 
-        return Inertia::render('accounts/edit', [
+        return Inertia::render('Accounts/Edit', [
             'account' => $account,
             'accountTypes' => $accountTypes,
             'accountIndustries' => $accountIndustries,

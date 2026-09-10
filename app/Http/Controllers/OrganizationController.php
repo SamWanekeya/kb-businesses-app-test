@@ -84,7 +84,7 @@ class OrganizationController extends Controller
         // Get plans for dropdown
         $plans = Plan::all(['id', 'name']);
 
-        return Inertia::render('organizations/index', [
+        return Inertia::render('Organizations/Index', [
             'organizations' => $organizations,
             'plans' => $plans,
             'filters' => $request->only(['search', 'status', 'start_date', 'end_date', 'sort_field', 'sort_direction', 'per_page', 'view', 'page']),

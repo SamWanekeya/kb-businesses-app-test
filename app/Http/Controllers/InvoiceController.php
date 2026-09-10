@@ -75,7 +75,7 @@ class InvoiceController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $invoices = $query->paginate($perPage)->withQueryString();
 
         $userQuery = User::where('created_by', createdBy());
@@ -86,7 +86,7 @@ class InvoiceController extends Controller
         $allAccounts = (clone $accountQuery)->select('id', 'name')->get();
         $accounts = (clone $accountQuery)->where('status', 'active')->select('id', 'name')->get();
 
-        return Inertia::render('invoices/index', [
+        return Inertia::render('Invoices/Index', [
             'invoices' => $invoices,
             'accounts' => $accounts,
             'allAccounts' => $allAccounts,
@@ -341,7 +341,7 @@ class InvoiceController extends Controller
         $products = $this->getFilteredProducts();
         $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
-        return Inertia::render('invoices/create', [
+        return Inertia::render('Invoices/Create', [
             'accounts' => $accounts,
             'contacts' => $contacts,
             'salesOrders' => $salesOrders,
@@ -378,7 +378,7 @@ class InvoiceController extends Controller
         // Get pending payments for approval
         $pendingPayments = $invoice->payments()->where('status', 'pending')->get();
 
-        return Inertia::render('invoices/show', [
+        return Inertia::render('Invoices/Show', [
             'invoice' => $invoice,
             'streamItems' => $invoice->activities,
             'pendingPayments' => $pendingPayments,
@@ -411,7 +411,7 @@ class InvoiceController extends Controller
             $products = $this->getFilteredProducts();
             $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
-            return Inertia::render('invoices/edit', [
+            return Inertia::render('Invoices/Edit', [
                 'invoice' => $invoice,
                 'accounts' => $accounts,
                 'contacts' => $contacts,
@@ -616,7 +616,7 @@ class InvoiceController extends Controller
                 $settings['invoiceLogo'] = $media ? $media->getUrl() : null;
             }
 
-            return Inertia::render('invoices/public', [
+            return Inertia::render('Invoices/Public', [
                 'invoice' => $invoice,
                 'templateId' => $templateId,
                 'color' => $color,
@@ -679,9 +679,9 @@ class InvoiceController extends Controller
 
     public function showPaymentPage(Request $request, $method)
     {
-        $invoiceId = $request->get('invoice_id');
-        $amount = $request->get('amount');
-        $paymentType = $request->get('payment_type', 'full');
+        $invoiceId = $request->input('invoice_id');
+        $amount = $request->input('amount');
+        $paymentType = $request->input('payment_type', 'full');
 
         if (!$invoiceId || !$amount) {
             abort(400, __('Missing required parameters'));
@@ -695,7 +695,7 @@ class InvoiceController extends Controller
         // Get currency from settings or default
         $currency = getSetting('defaultCurrency', 'USD', $invoice->created_by);
 
-        return Inertia::render('invoices/payment', [
+        return Inertia::render('Invoices/Payment', [
             'invoice' => $invoice,
             'paymentMethod' => $method,
             'amount' => $amount,
@@ -916,7 +916,7 @@ class InvoiceController extends Controller
         $templateColor = '#' . $color;
         $isPreview = true;
 
-        return Inertia::render('Invoices-template/TemplatePreview', [
+        return Inertia::render('InvoicesTemplate/TemplatePreview', [
             'invoice' => $invoice,
             'templateId' => (int)$templateId,
             'templateColor' => $templateColor,

@@ -39,10 +39,10 @@ class LeadSourceController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $leadSources = $query->paginate($perPage);
 
-        return Inertia::render('lead-sources/index', [
+        return Inertia::render('LeadSources/Index', [
             'leadSources' => $leadSources,
             'filters' => $request->all(['search', 'status', 'sort_field', 'sort_direction', 'per_page', 'page']),
         ]);

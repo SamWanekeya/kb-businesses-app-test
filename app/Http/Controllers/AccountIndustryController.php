@@ -32,10 +32,10 @@ class AccountIndustryController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $accountIndustries = $query->paginate($perPage);
 
-        return Inertia::render('account-industries/index', [
+        return Inertia::render('AccountIndustries/Index', [
             'accountIndustries' => $accountIndustries,
             'filters' => $request->only(['search', 'status', 'sort_field', 'sort_direction', 'per_page', 'page']),
         ]);

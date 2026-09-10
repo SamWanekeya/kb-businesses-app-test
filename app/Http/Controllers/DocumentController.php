@@ -38,7 +38,7 @@ class DocumentController extends Controller
             ->get()
             ->toArray();
 
-        return Inertia::render('documents/index', [
+        return Inertia::render('Documents/Index', [
             'rootFolders' => $rootFolders,
             'parentFolders' => $parentFolders,
             'filters' => $request->only(['search', 'page']),
@@ -65,7 +65,7 @@ class DocumentController extends Controller
 
         $opportunities = Opportunity::where('created_by', createdBy())->select('id', 'name')->get();
 
-        return Inertia::render('documents/create', [
+        return Inertia::render('Documents/Create', [
             'users' => $users,
             'accounts' => $accounts,
             'folders' => $folders,
@@ -123,7 +123,7 @@ class DocumentController extends Controller
         }
         $document->load(['account', 'folder', 'type', 'opportunity', 'creator', 'assignedUser', 'media']);
 
-        return Inertia::render('documents/show', [
+        return Inertia::render('Documents/Show', [
             'document' => $document,
             'users' => User::where('created_by', createdBy())->select('id', 'name', 'email')->get(),
             'accounts' => Account::where('created_by', createdBy())->select('id', 'name')->get(),
@@ -148,7 +148,7 @@ class DocumentController extends Controller
 
         $opportunities = Opportunity::where('created_by', createdBy())->select('id', 'name')->get();
 
-        return Inertia::render('documents/edit', [
+        return Inertia::render('Documents/Edit', [
             'document' => $document,
             'users' => $users,
             'accounts' => $accounts,

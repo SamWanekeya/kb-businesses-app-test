@@ -40,10 +40,10 @@ class NotificationTemplateController extends Controller
         }
 
         // Pagination
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $templates = $query->paginate($perPage)->withQueryString();
 
-        return Inertia::render('notification-templates/index', [
+        return Inertia::render('NotificationTemplates/Index', [
             'templates' => $templates,
             'filters' => array_merge(
                 $request->only(['search', 'sort_field', 'sort_direction', 'per_page', 'page']),
@@ -113,7 +113,7 @@ class NotificationTemplateController extends Controller
             ];
         }
 
-        return Inertia::render('notification-templates/show', [
+        return Inertia::render('NotificationTemplates/Show', [
             'template' => $template,
             'languages' => $languages,
             'variables' => $variables,

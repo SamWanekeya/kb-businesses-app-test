@@ -81,7 +81,7 @@ class LeadController extends Controller
             $leads = collect(['data' => $query->get()]);
         } else {
             $defaultPerPage = $request->view === 'grid' ? 12 : 10;
-            $perPage = max(1, min(200, (int)$request->get('per_page', $defaultPerPage)));
+            $perPage = max(1, min(200, (int)$request->input('per_page', $defaultPerPage)));
             $leads = $query->paginate($perPage)->withQueryString();
         }
 
@@ -105,7 +105,7 @@ class LeadController extends Controller
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
 
-        return Inertia::render('leads/index', [
+        return Inertia::render('Leads/Index', [
             'leads' => $leads,
             'leadStatuses' => $leadStatuses,
             'allLeadStatuses' => $allLeadStatuses,
@@ -195,13 +195,13 @@ class LeadController extends Controller
             ->select('id', 'name', 'email')
             ->get();
 
-        return Inertia::render('leads/create', [
+        return Inertia::render('Leads/Create', [
             'leadStatuses' => $leadStatuses,
             'leadSources' => $leadSources,
             'accountIndustries' => $accountIndustries,
             'campaigns' => $campaigns,
             'users' => $users,
-            'prefilledLeadStatusId' => $request->get('lead_status_id', ''),
+            'prefilledLeadStatusId' => $request->input('lead_status_id', ''),
         ]);
     }
 
@@ -262,7 +262,7 @@ class LeadController extends Controller
 
             $meetings = $parentMeetings->merge($attendeeMeetings)->merge($parentCalls)->merge($attendeeCalls)->unique('id')->sortByDesc('start_date')->values();
 
-            return Inertia::render('leads/show', [
+            return Inertia::render('Leads/Show', [
                 'lead' => $lead,
                 'streamItems' => $lead->activities()->with('user:id,name,avatar')->orderBy('created_at', 'asc')->get(),
                 'comments' => $lead->comments,
@@ -298,7 +298,7 @@ class LeadController extends Controller
         $users = User::where('created_by', createdBy())
             ->where('status', 'active')->select('id', 'name', 'email')->get();
 
-        return Inertia::render('leads/edit', [
+        return Inertia::render('Leads/Edit', [
             'lead' => $lead,
             'leadStatuses' => $leadStatuses,
             'leadSources' => $leadSources,

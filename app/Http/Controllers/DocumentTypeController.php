@@ -40,10 +40,10 @@ class DocumentTypeController extends Controller
         // Apply authorization filter
         $query->where('created_by', createdBy());
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $documentTypes = $query->paginate($perPage)->withQueryString();
 
-        return Inertia::render('document-types/index', [
+        return Inertia::render('DocumentTypes/Index', [
             'documentTypes' => $documentTypes,
             'filters' => $request->only(['search', 'status', 'sort_field', 'sort_direction', 'per_page', 'page']),
         ]);
@@ -89,7 +89,7 @@ class DocumentTypeController extends Controller
 
         $documentType->load(['creator']);
 
-        return Inertia::render('document-types/show', [
+        return Inertia::render('DocumentTypes/Show', [
             'documentType' => $documentType,
         ]);
     }

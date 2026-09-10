@@ -36,10 +36,10 @@ class TargetListController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $targetLists = $query->paginate($perPage);
 
-        return Inertia::render('target-lists/index', [
+        return Inertia::render('TargetLists/Index', [
             'targetLists' => $targetLists,
             'filters' => $request->all(['search', 'status', 'sort_field', 'sort_direction', 'per_page', 'page']),
         ]);

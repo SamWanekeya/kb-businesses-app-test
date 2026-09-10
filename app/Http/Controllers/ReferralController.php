@@ -100,7 +100,7 @@ class ReferralController extends Controller
         $referredUsers = (clone $referredUsersQuery)->paginate(5)
             ->withQueryString();
 
-        return Inertia::render('referral/index', [
+        return Inertia::render('Referral/Index', [
             'userType' => 'super_admin',
             'settings' => $settings,
             'stats' => [
@@ -190,7 +190,7 @@ class ReferralController extends Controller
             $currencySymbol = $currencyData ? $currencyData->symbol : '$';
         }
 
-        return Inertia::render('referral/index', [
+        return Inertia::render('Referral/Index', [
             'userType' => 'organization',
             'settings' => $settings,
             'stats' => [
@@ -308,7 +308,7 @@ class ReferralController extends Controller
                 ->withQueryString();
         }
 
-        return Inertia::render('referral/referred-users', [
+        return Inertia::render('Referral/ReferredUsers', [
             'referredUsers' => $referredUsers,
             'userType' => $user->isSuperAdministrator() ? 'super_admin' : 'organization',
             'currency' => $currency,

@@ -62,7 +62,7 @@ class DeliveryOrderController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $deliveryOrders = $query->paginate($perPage)->withQueryString();
 
         $userQuery = User::where('created_by', createdBy());
@@ -71,7 +71,7 @@ class DeliveryOrderController extends Controller
         $accountQuery = Account::where('created_by', createdBy());
         $allAccounts = (clone $accountQuery)->select('id', 'name')->get();
 
-        return Inertia::render('delivery-orders/index', [
+        return Inertia::render('DeliveryOrders/Index', [
             'deliveryOrders' => $deliveryOrders,
             'allAccounts' => $allAccounts,
             'salesOrders' => SalesOrder::where('created_by', createdBy())->select('id', 'name', 'order_number')->get(),
@@ -163,7 +163,7 @@ class DeliveryOrderController extends Controller
         $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
         $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
-        return Inertia::render('delivery-orders/create', [
+        return Inertia::render('DeliveryOrders/Create', [
             'accounts' => $accounts,
             'contacts' => $contacts,
             'salesOrders' => $salesOrders,
@@ -197,7 +197,7 @@ class DeliveryOrderController extends Controller
             return redirect()->route('delivery-orders.index')->with('error', __('Delivery order not found.'));
         }
 
-        return Inertia::render('delivery-orders/show', [
+        return Inertia::render('DeliveryOrders/Show', [
             'deliveryOrder' => $deliveryOrder,
         ]);
     }
@@ -225,7 +225,7 @@ class DeliveryOrderController extends Controller
             $shippingProviderTypes = ShippingProviderType::where('created_by', createdBy())->select('id', 'name')->get();
             $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
-            return Inertia::render('delivery-orders/edit', [
+            return Inertia::render('DeliveryOrders/Edit', [
                 'deliveryOrder' => $deliveryOrder,
                 'accounts' => $accounts,
                 'contacts' => $contacts,

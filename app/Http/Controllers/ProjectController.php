@@ -65,7 +65,7 @@ class ProjectController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 12)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 12)));
         $projects = $query->paginate($perPage)->withQueryString();
 
         // Eager-load task counts per project
@@ -139,7 +139,7 @@ class ProjectController extends Controller
             'can_create' => $currentProjectCount < $plan->maximum_projects,
         ];
 
-        return Inertia::render('projects/index', [
+        return Inertia::render('Projects/Index', [
             'projects' => $projects,
             'accounts' => $accounts,
             'allAccounts' => $allAccounts,
@@ -198,7 +198,7 @@ class ProjectController extends Controller
             ->orderBy('id')
             ->get(['id', 'name', 'color']);
 
-        return Inertia::render('projects/show', [
+        return Inertia::render('Projects/Show', [
             'project' => $project,
             'taskStats' => $taskStats,
             'totalTasks' => $totalTasks,

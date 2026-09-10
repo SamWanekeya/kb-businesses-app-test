@@ -28,7 +28,7 @@ class AnnouncementController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return Inertia::render('announcements/dashboard', [
+        return Inertia::render('Announcements/Dashboard', [
             'announcements' => $announcements,
         ]);
     }
@@ -65,7 +65,7 @@ class AnnouncementController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $announcements = $query->paginate($perPage)->withQueryString();
 
         $categoryQuery = AnnouncementCategory::where('created_by', createdBy());
@@ -80,7 +80,7 @@ class AnnouncementController extends Controller
             'expired' => (clone $statsQuery)->where('status', 'expired')->count(),
         ];
 
-        return Inertia::render('announcements/index', [
+        return Inertia::render('Announcements/Index', [
             'announcements' => $announcements,
             'categories' => $categories,
             'allCategories' => $allCategories,
@@ -95,7 +95,7 @@ class AnnouncementController extends Controller
             ->where('created_by', createdBy())
             ->findOrFail($id);
 
-        return Inertia::render('announcements/show', [
+        return Inertia::render('Announcements/Show', [
             'announcement' => $announcement,
         ]);
     }

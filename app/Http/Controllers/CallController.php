@@ -60,7 +60,7 @@ class CallController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $calls = $query->paginate($perPage)->withQueryString();
 
         $userQuery = User::where('created_by', createdBy());
@@ -69,7 +69,7 @@ class CallController extends Controller
         $allContacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
         $allLeads = Lead::where('created_by', createdBy())->select('id', 'name')->get();
 
-        return Inertia::render('calls/index', [
+        return Inertia::render('Calls/Index', [
             'calls' => $calls,
             'users' => $users,
             'allUsers' => $allUsers,
@@ -127,7 +127,7 @@ class CallController extends Controller
             }
         }
 
-        return Inertia::render('calls/show', [
+        return Inertia::render('Calls/Show', [
             'call' => $call,
         ]);
     }

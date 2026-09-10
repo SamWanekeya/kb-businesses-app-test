@@ -69,7 +69,7 @@ class ProductController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $products = $query->paginate($perPage)->withQueryString();
 
         $categoryQuery = Category::where('created_by', createdBy());
@@ -86,7 +86,7 @@ class ProductController extends Controller
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
 
-        return Inertia::render('products/index', [
+        return Inertia::render('Products/Index', [
             'products' => $products,
             'categories' => $categories,
             'allCategories' => $allCategories,
@@ -150,7 +150,7 @@ class ProductController extends Controller
             ->select('id', 'name', 'email')
             ->get();
 
-        return Inertia::render('products/create', [
+        return Inertia::render('Products/Create', [
             'categories' => $categories,
             'brands' => $brands,
             'taxes' => $taxes,
@@ -167,7 +167,7 @@ class ProductController extends Controller
             ->first();
         if ($product) {
 
-            return Inertia::render('products/show', [
+            return Inertia::render('Products/Show', [
                 'product' => $product,
                 'mainImage' => $product->main_image_url,
                 'additionalImages' => $product->additional_image_urls,
@@ -197,7 +197,7 @@ class ProductController extends Controller
             $users = User::where('created_by', createdBy())
                 ->select('id', 'name', 'email')->get();
 
-            return Inertia::render('products/edit', [
+            return Inertia::render('Products/Edit', [
                 'product' => array_merge($product->toArray(), [
                     'main_image_id' => $product->main_image_id,
                     'additional_image_ids' => $product->additional_image_ids ?: [],

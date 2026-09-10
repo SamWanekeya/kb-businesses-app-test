@@ -34,10 +34,10 @@ class TaskStatusController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $taskStatuses = $query->paginate($perPage)->withQueryString();
 
-        return Inertia::render('task-statuses/index', [
+        return Inertia::render('TaskStatuses/Index', [
             'taskStatuses' => $taskStatuses,
             'filters' => $request->only(['search', 'status', 'per_page', 'sort_field', 'sort_direction', 'page']),
         ]);

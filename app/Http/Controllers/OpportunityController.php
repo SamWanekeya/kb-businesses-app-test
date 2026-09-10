@@ -73,7 +73,7 @@ class OpportunityController extends Controller
             $opportunities = collect(['data' => $query->get()]);
         } else {
             $defaultPerPage = $request->view === 'grid' ? 12 : 10;
-            $perPage = max(1, min(200, (int)$request->get('per_page', $defaultPerPage)));
+            $perPage = max(1, min(200, (int)$request->input('per_page', $defaultPerPage)));
             $opportunities = $query->paginate($perPage)->withQueryString();
         }
         // Get data for dropdowns - filter by assigned_to for non-organization users
@@ -97,7 +97,7 @@ class OpportunityController extends Controller
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
 
-        return Inertia::render('opportunities/index', [
+        return Inertia::render('Opportunities/Index', [
             'opportunities' => $opportunities,
             'accounts' => $accounts,
             'allAccounts' => $allAccounts,
@@ -133,14 +133,14 @@ class OpportunityController extends Controller
         $users = User::where('created_by', createdBy())
             ->where('status', 'active')->select('id', 'name', 'email')->get();
 
-        return Inertia::render('opportunities/create', [
+        return Inertia::render('Opportunities/Create', [
             'accounts' => $accounts,
             'contacts' => $contacts,
             'products' => $products,
             'opportunityStages' => $opportunityStages,
             'opportunitySources' => $opportunitySources,
             'users' => $users,
-            'prefilledOpportunityStageId' => $request->get('opportunity_stage_id', ''),
+            'prefilledOpportunityStageId' => $request->input('opportunity_stage_id', ''),
         ]);
     }
 
@@ -238,7 +238,7 @@ class OpportunityController extends Controller
 
         $meetings = $parentMeetings->merge($parentCalls)->sortByDesc('start_date')->values();
 
-        return Inertia::render('opportunities/show', [
+        return Inertia::render('Opportunities/Show', [
             'opportunity' => $opportunity,
             'streamItems' => $opportunity->activities()->orderBy('created_at', 'asc')->get(),
             'meetings' => $meetings,
@@ -274,7 +274,7 @@ class OpportunityController extends Controller
         $users = User::where('created_by', createdBy())
             ->where('status', 'active')->select('id', 'name', 'email')->get();
 
-        return Inertia::render('opportunities/edit', [
+        return Inertia::render('Opportunities/Edit', [
             'opportunity' => $opportunity,
             'accounts' => $accounts,
             'contacts' => $contacts,

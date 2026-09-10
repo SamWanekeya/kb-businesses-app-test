@@ -20,11 +20,11 @@ class ReportsController extends Controller
     public function leads(Request $request)
     {
         if (isDemo()) {
-            $dateFrom = $request->get('date_from', Carbon::parse('2024-01-04')->format('Y-m-d'));
-            $dateTo = $request->get('date_to', Carbon::parse('2025-09-09')->format('Y-m-d'));
+            $dateFrom = $request->input('date_from', Carbon::parse('2024-01-04')->format('Y-m-d'));
+            $dateTo = $request->input('date_to', Carbon::parse('2025-09-09')->format('Y-m-d'));
         } else {
-            $dateFrom = $request->get('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
-            $dateTo = $request->get('date_to', Carbon::now()->format('Y-m-d'));
+            $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
+            $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
         }
         $dateFrom = Carbon::parse($dateFrom)->startOfDay();
         $dateTo = Carbon::parse($dateTo)->endOfDay();
@@ -81,7 +81,7 @@ class ReportsController extends Controller
             ->limit(5)
             ->get();
 
-        return Inertia::render('reports/lead-reports', [
+        return Inertia::render('Reports/LeadReports', [
             'filters' => compact('dateFrom', 'dateTo'),
             'summary' => $summary,
             'monthlyData' => $monthlyData,
@@ -94,11 +94,11 @@ class ReportsController extends Controller
     public function sales(Request $request)
     {
         if (isDemo()) {
-            $dateFrom = $request->get('date_from', Carbon::parse('2024-01-04')->format('Y-m-d'));
-            $dateTo = $request->get('date_to', Carbon::parse('2025-09-09')->format('Y-m-d'));
+            $dateFrom = $request->input('date_from', Carbon::parse('2024-01-04')->format('Y-m-d'));
+            $dateTo = $request->input('date_to', Carbon::parse('2025-09-09')->format('Y-m-d'));
         } else {
-            $dateFrom = $request->get('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
-            $dateTo = $request->get('date_to', Carbon::now()->format('Y-m-d'));
+            $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
+            $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
         }
 
         $dateTo = Carbon::parse($dateTo)->endOfDay();
@@ -172,7 +172,7 @@ class ReportsController extends Controller
                 return $item;
             });
 
-        return Inertia::render('reports/sales-reports', [
+        return Inertia::render('Reports/SalesReports', [
             'filters' => compact('dateFrom', 'dateTo'),
             'summary' => $summary,
             'monthlyData' => $monthlyData,
@@ -186,11 +186,11 @@ class ReportsController extends Controller
     public function products(Request $request)
     {
         if (isDemo()) {
-            $dateFrom = $request->get('date_from', Carbon::parse('2024-01-04')->format('Y-m-d'));
-            $dateTo = $request->get('date_to', Carbon::parse('2025-09-09')->format('Y-m-d'));
+            $dateFrom = $request->input('date_from', Carbon::parse('2024-01-04')->format('Y-m-d'));
+            $dateTo = $request->input('date_to', Carbon::parse('2025-09-09')->format('Y-m-d'));
         } else {
-            $dateFrom = $request->get('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
-            $dateTo = $request->get('date_to', Carbon::now()->format('Y-m-d'));
+            $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
+            $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
         }
 
         $organizationId = Auth::user()->creatorId();
@@ -256,7 +256,7 @@ class ReportsController extends Controller
             ->where('stock_quantity', '<=', 0)
             ->get();
 
-        return Inertia::render('reports/product-reports', [
+        return Inertia::render('Reports/ProductReports', [
             'filters' => compact('dateFrom', 'dateTo'),
             'summary' => $summary,
             'productSales' => $productSales,
@@ -269,11 +269,11 @@ class ReportsController extends Controller
     public function customers(Request $request)
     {
         if (isDemo()) {
-            $dateFrom = $request->get('date_from', Carbon::parse('2024-01-04')->format('Y-m-d'));
-            $dateTo = $request->get('date_to', Carbon::parse('2025-09-09')->format('Y-m-d'));
+            $dateFrom = $request->input('date_from', Carbon::parse('2024-01-04')->format('Y-m-d'));
+            $dateTo = $request->input('date_to', Carbon::parse('2025-09-09')->format('Y-m-d'));
         } else {
-            $dateFrom = $request->get('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
-            $dateTo = $request->get('date_to', Carbon::now()->format('Y-m-d'));
+            $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
+            $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
         }
 
         $organizationId = Auth::user()->creatorId();
@@ -360,7 +360,7 @@ class ReportsController extends Controller
             ->take(5)
             ->values();
 
-        return Inertia::render('reports/customer-reports', [
+        return Inertia::render('Reports/CustomerReports', [
             'filters' => compact('dateFrom', 'dateTo'),
             'summary' => $summary,
             'monthlyData' => $monthlyData,
@@ -374,11 +374,11 @@ class ReportsController extends Controller
     public function projects(Request $request)
     {
         if (isDemo()) {
-            $dateFrom = $request->get('date_from', Carbon::parse('2024-01-04')->format('Y-m-d'));
-            $dateTo = $request->get('date_to', Carbon::parse('2025-09-09')->format('Y-m-d'));
+            $dateFrom = $request->input('date_from', Carbon::parse('2024-01-04')->format('Y-m-d'));
+            $dateTo = $request->input('date_to', Carbon::parse('2025-09-09')->format('Y-m-d'));
         } else {
-            $dateFrom = $request->get('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
-            $dateTo = $request->get('date_to', Carbon::now()->format('Y-m-d'));
+            $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
+            $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
         }
 
         $organizationId = Auth::user()->creatorId();
@@ -419,7 +419,7 @@ class ReportsController extends Controller
             ->where('end_date', '<', Carbon::now()->format('Y-m-d'))
             ->get();
 
-        return Inertia::render('reports/project-reports', [
+        return Inertia::render('Reports/ProjectReports', [
             'filters' => compact('dateFrom', 'dateTo'),
             'summary' => $summary,
             'monthlyData' => $monthlyData,

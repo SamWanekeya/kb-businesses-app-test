@@ -219,7 +219,7 @@ class DashboardController extends Controller
                 }),
         ];
 
-        return Inertia::render('super_admin/dashboard', props: [
+        return Inertia::render('Dashboard/SuperAdminDashboard', props: [
             'dashboardData' => $dashboardData,
         ]);
     }
@@ -591,7 +591,7 @@ class DashboardController extends Controller
             ],
         ];
 
-        return Inertia::render('dashboard', [
+        return Inertia::render('Dashboard/OrganizationDashboard', [
             'dashboardData' => $dashboardData,
         ]);
     }

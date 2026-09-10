@@ -1,0 +1,322 @@
+import QRCodeComponent from '@components/QRCodeComponent';
+import { useBrand } from '@contexts/BrandContext';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
+interface Template3Props {
+    invoice: any;
+    items: any[];
+    taxesData: any;
+    settings: any;
+    color: string;
+    qr_invoice: string;
+    qrCodeSvg?: string;
+    styles?: any;
+}
+
+export default function Template3({ invoice, items, taxesData, settings, color, qr_invoice, qrCodeSvg, styles: externalStyles }: Template3Props) {
+    const { t: translate } = useTranslation();
+    const { logoDark } = useBrand();
+    const fontColor =
+        color === 'ffffff' || color === 'fbdd03' || color === 'c1d82f' || color === '46de98' || color === '40c7d0' || color === 'fac168'
+            ? '#000000'
+            : '#ffffff';
+    const borderColor = color === 'ffffff' ? '#000000' : `#${color}`;
+    const paidAmount =
+        invoice.payments?.reduce((total: number, payment: any) => {
+            const amount = Number(payment.amount) || 0;
+            return payment.status === 'completed' ? total + amount : total;
+        }, 0) || 0;
+    const dueAmount = Math.max(0, (Number(invoice.total_amount) || 0) - paidAmount);
+
+    const formatCurrency = (amount: number | string): React.ReactNode => {
+        if (typeof amount === 'string' && amount.startsWith('<')) return amount;
+        const val = (window as any).appSettings?.formatCurrency(Number(amount)) || `$${Number(amount)}`;
+        return <span style={{ fontFamily: 'monospace' }}>{val}</span>;
+    };
+
+    const formatValue = (value: any, fallback: string = '') => {
+        if (typeof value === 'string' && value.startsWith('<')) return value;
+        return value || fallback;
+    };
+
+    const styles = {
+        root: {
+            fontFamily: 'Mulish, sans-serif',
+            margin: 0,
+            padding: 0,
+            boxSizing: 'border-box' as const,
+        },
+        invoicePreviewMain: {
+            width: '100%',
+            margin: '0 auto',
+            background: '#ffff',
+            boxShadow: '0 0 10px #ddd',
+            ...externalStyles?.invoicePreviewMain,
+        },
+        invoiceHeader: {
+            padding: '15px 30px',
+        },
+        headerTable: {
+            width: '100%',
+            borderCollapse: 'collapse' as const,
+        },
+        headerCell: {
+            padding: '15px 30px',
+            verticalAlign: 'top' as const,
+        },
+        logo: {
+            maxWidth: '250px',
+        },
+        invoiceTitle: {
+            textTransform: 'uppercase' as const,
+            fontSize: '20px',
+            fontWeight: 'bold',
+            marginBottom: '15px',
+        },
+        invoiceBody: {
+            padding: '30px 25px 30px 25px',
+        },
+        table: {
+            width: '100%',
+            borderCollapse: 'collapse' as const,
+            marginTop: '30px',
+        },
+        tableHeader: {
+            background: `#${color}`,
+            color: fontColor,
+        },
+        th: {
+            padding: '0.75rem',
+            textAlign: 'left' as const,
+            fontSize: '13px',
+            fontWeight: '600',
+        },
+        td: {
+            padding: '0.75rem',
+            textAlign: 'left' as const,
+            borderTop: `1px solid ${borderColor}`,
+        },
+        totalTable: {
+            width: '100%',
+        },
+        totalTd: {
+            padding: '0.75rem',
+            textAlign: 'right' as const,
+        },
+        qrCode: {
+            maxWidth: '114px',
+            maxHeight: '114px',
+            marginLeft: '0',
+            marginRight: '0',
+            marginTop: '15px',
+            background: '#ffffff',
+        },
+        footer: {
+            padding: '15px 20px',
+        },
+        noSpace: {
+            padding: 0,
+        },
+    };
+
+    return (
+        <div style={styles.root}>
+            <div className="invoice-preview-main" id="boxes" style={styles.invoicePreviewMain}>
+                <div className="invoice-header" style={styles.invoiceHeader}>
+                    <table className="vertical-align-top" style={styles.headerTable}>
+                        <tbody>
+                            <tr>
+                                <td style={styles.headerCell}>
+                                    <h3 style={{ textTransform: 'uppercase', fontSize: '20px', fontWeight: 'bold' }}>{translate('INVOICE')}</h3>
+                                    <div className="view-qrcode" style={{ ...styles.qrCode, marginLeft: '0', marginRight: '0' }}>
+                                        {qr_invoice === 'on' && <QRCodeComponent text={window.location.href} size={114} />}
+                                    </div>
+                                </td>
+                                <td className="text-right" style={{ ...styles.headerCell, textAlign: 'right' }}>
+                                    <img src={settings.invoiceLogo || logoDark} style={{ maxWidth: '150px', maxHeight: '150px' }} alt="Logo" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table className="vertical-align-top" style={styles.headerTable}>
+                        <tbody>
+                            <tr>
+                                <td style={styles.headerCell}>
+                                    <strong>{translate('From')}:</strong>
+                                    <p style={{ margin: '10px 0', lineHeight: '1.5' }}>
+                                        {formatValue(invoice.creator?.name) && (
+                                            <>
+                                                {formatValue(invoice.creator.name)}
+                                                <br />
+                                            </>
+                                        )}
+                                        {formatValue(invoice.creator?.email) && <>{formatValue(invoice.creator.email)}</>}
+                                    </p>
+                                </td>
+                                <td style={styles.headerCell}>
+                                    <table className="no-space" style={{ width: '100%' }}>
+                                        <tbody>
+                                            <tr>
+                                                <td className="text-right" style={{ ...styles.noSpace }}></td>
+                                                <td className="text-right" style={{ ...styles.noSpace, textAlign: 'right' }}>
+                                                    {translate('Number')}: {formatValue(invoice.invoice_number)}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style={styles.noSpace}></td>
+                                                <td className="text-right" style={{ ...styles.noSpace, textAlign: 'right' }}>
+                                                    {translate('Invoice Date')}: {formatValue(invoice.invoice_date)}
+                                                    <br />
+                                                    {translate('Due Date')}: {formatValue(invoice.due_date)}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style={styles.invoiceBody}>
+                    <table style={{ width: '100%' }}>
+                        <tbody>
+                            <tr>
+                                <td style={{ verticalAlign: 'top' }}>
+                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Bill To')}:</strong>
+                                    <p style={{ margin: 0, lineHeight: '1.5' }}>
+                                        {formatValue(invoice.account?.name || invoice.contact?.name)}
+                                        <br />
+                                        {formatValue(invoice.account?.email || invoice.contact?.email)}
+                                        <br />
+                                        {formatValue(invoice.account?.phone || invoice.contact?.phone)}
+                                        <br />
+                                        {formatValue(invoice.billing_address)}
+                                        <br />
+                                        {formatValue(invoice.billing_postal_code)}
+                                        <br />
+                                        {formatValue(invoice.billing_city)} {formatValue(invoice.billing_state)}{' '}
+                                        {formatValue(invoice.billing_country)}
+                                    </p>
+                                </td>
+                                <td style={{ verticalAlign: 'top', textAlign: 'right' }}>
+                                    <strong style={{ marginBottom: '10px', display: 'block' }}>{translate('Organization')}:</strong>
+                                    <p style={{ margin: 0, lineHeight: '1.5' }}>
+                                        {formatValue(invoice.creator?.name)}
+                                        <br />
+                                        {formatValue(invoice.creator?.email)}
+                                        <br />
+                                    </p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table style={styles.table}>
+                        <tbody>
+                            <tr style={styles.tableHeader}>
+                                <th style={styles.th}>{translate('Item')}</th>
+                                <th style={styles.th}>{translate('Quantity')}</th>
+                                <th style={styles.th}>{translate('Rate')}</th>
+                                <th style={styles.th}>{translate('Tax')} (%)</th>
+                                <th style={styles.th}>{translate('Discount')}</th>
+                                <th style={styles.th}>
+                                    {translate('Price')}{' '}
+                                    <small style={{ display: 'block', fontSize: '12px' }}>{translate('before tax & discount')}</small>
+                                </th>
+                            </tr>
+                            {items.map((item, index) => (
+                                <tr key={index}>
+                                    <td style={styles.td}>{formatValue(item.name)}</td>
+                                    <td style={styles.td}>{formatValue(item.quantity)}</td>
+                                    <td style={styles.td}>{formatCurrency(item.price)}</td>
+                                    <td style={styles.td}>
+                                        {item.itemTax?.map((tax: any, taxIndex: number) => (
+                                            <span key={taxIndex}>
+                                                {tax.name} ({tax.rate})<br />
+                                                {tax.price}
+                                            </span>
+                                        ))}
+                                    </td>
+                                    <td style={styles.td}>{item.discount ? formatCurrency(item.discount) : '-'}</td>
+                                    <td style={styles.td}>
+                                        {formatCurrency(
+                                            typeof item.price === 'string' && item.price.startsWith('<')
+                                                ? item.price
+                                                : Number(item.price) * Number(item.quantity),
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                            <tr>
+                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{translate('Total')}</td>
+                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>
+                                    {typeof items[0]?.quantity === 'string' && items[0]?.quantity.startsWith('<')
+                                        ? formatValue(items[0]?.quantity)
+                                        : items.reduce((sum, item) => sum + Number(item.quantity), 0)}
+                                </td>
+                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>
+                                    {formatCurrency(
+                                        typeof items[0]?.price === 'string' && items[0]?.price.startsWith('<')
+                                            ? items[0]?.price
+                                            : items.reduce((sum, item) => sum + Number(item.price), 0),
+                                    )}
+                                </td>
+                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{formatCurrency(invoice.total_tax || 0)}</td>
+                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>
+                                    {formatCurrency(invoice.total_discount || 0)}
+                                </td>
+                                <td style={{ ...styles.td, borderBottom: `1px solid ${borderColor}` }}>{formatCurrency(invoice.sub_total || 0)}</td>
+                            </tr>
+                            <tr>
+                                <td colSpan={6} style={{ border: 'none', padding: '0' }}>
+                                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                                        <tbody>
+                                            {invoice.total_discount > 0 && (
+                                                <tr>
+                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{translate('Discount')}:</td>
+                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
+                                                        {formatCurrency(invoice.total_discount)}
+                                                    </td>
+                                                </tr>
+                                            )}
+                                            {Object.entries(taxesData || {}).map(([taxName, taxPrice]) => (
+                                                <tr key={taxName}>
+                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{taxName}:</td>
+                                                    <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
+                                                        {formatCurrency(taxPrice as number)}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            <tr>
+                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{translate('Paid')}:</td>
+                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
+                                                    {formatCurrency(paidAmount)}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>{translate('Due')}:</td>
+                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
+                                                    {formatCurrency(dueAmount)}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right' }}>
+                                                    <strong>{translate('Total')}:</strong>
+                                                </td>
+                                                <td style={{ padding: '0.75rem 0 0 0', textAlign: 'right', width: '146px' }}>
+                                                    <strong>{formatCurrency(invoice.total_amount || 0)}</strong>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    );
+}

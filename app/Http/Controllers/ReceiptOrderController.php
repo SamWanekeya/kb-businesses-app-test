@@ -59,7 +59,7 @@ class ReceiptOrderController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $receiptOrders = $query->paginate($perPage)->withQueryString();
 
         $userQuery = User::where('created_by', createdBy());
@@ -70,7 +70,7 @@ class ReceiptOrderController extends Controller
         $allAccounts = (clone $accountQuery)->select('id', 'name')->get();
         $accounts = (clone $accountQuery)->where('status', 'active')->select('id', 'name')->get();
 
-        return Inertia::render('receipt-orders/index', [
+        return Inertia::render('ReceiptOrders/Index', [
             'receiptOrders' => $receiptOrders,
             'accounts' => $accounts,
             'allAccounts' => $allAccounts,
@@ -172,7 +172,7 @@ class ReceiptOrderController extends Controller
         $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
         $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
-        return Inertia::render('receipt-orders/create', [
+        return Inertia::render('ReceiptOrders/Create', [
             'accounts' => $accounts,
             'contacts' => $contacts,
             'purchaseOrders' => $purchaseOrders,
@@ -219,7 +219,7 @@ class ReceiptOrderController extends Controller
             return redirect()->route('receipt-orders.index')->with('error', __('Receipt order not found.'));
         }
 
-        return Inertia::render('receipt-orders/show', [
+        return Inertia::render('ReceiptOrders/Show', [
             'receiptOrder' => $receiptOrder,
         ]);
     }
@@ -247,7 +247,7 @@ class ReceiptOrderController extends Controller
             $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
             $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
-            return Inertia::render('receipt-orders/edit', [
+            return Inertia::render('ReceiptOrders/Edit', [
                 'receiptOrder' => $receiptOrder,
                 'accounts' => $accounts,
                 'contacts' => $contacts,

@@ -39,10 +39,10 @@ class LeadStatusController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $leadStatuses = $query->paginate($perPage)->withQueryString();
 
-        return Inertia::render('lead-statuses/index', [
+        return Inertia::render('LeadStatuses/Index', [
             'leadStatuses' => $leadStatuses,
             'filters' => $request->all(['search', 'status', 'sort_field', 'sort_direction', 'per_page', 'page']),
         ]);

@@ -46,11 +46,11 @@ class SignInHistoryController extends Controller
             }
 
             // Pagination
-            $perPage = $request->get('per_page', 10);
+            $perPage = $request->input('per_page', 10);
             $ipAddressHistory = $query->paginate((int)$perPage)->withQueryString();
 
-            return Inertia::render('sign-in-history/index', [
-                'loginHistory' => $ipAddressHistory,
+            return Inertia::render('Account/SignInHistory/Index', [
+                'signInHistory' => $ipAddressHistory,
                 'filters' => $request->only(['search', 'sort_field', 'sort_direction', 'per_page']),
             ]);
         } else {

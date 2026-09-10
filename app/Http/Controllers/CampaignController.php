@@ -61,7 +61,7 @@ class CampaignController extends Controller
         }
 
         $defaultPerPage = $request->view === 'grid' ? 12 : 10;
-        $perPage = max(1, min(200, (int)$request->get('per_page', $defaultPerPage)));
+        $perPage = max(1, min(200, (int)$request->input('per_page', $defaultPerPage)));
         $campaigns = $query->paginate($perPage)->withQueryString();
 
         $userQuery = User::where('created_by', createdBy());
@@ -76,7 +76,7 @@ class CampaignController extends Controller
         $allTargetLists = (clone $targetListQuery)->select('id', 'name')->get();
         $targetLists = (clone $targetListQuery)->where('status', 'active')->select('id', 'name')->get();
 
-        return Inertia::render('campaigns/index', [
+        return Inertia::render('Campaigns/Index', [
             'campaigns' => $campaigns,
             'users' => $users,
             'allUsers' => $allUsers,
@@ -134,7 +134,7 @@ class CampaignController extends Controller
         $campaignTypes = CampaignType::where('created_by', createdBy())->where('status', 'active')->select('id', 'name')->get();
         $targetLists = TargetList::where('created_by', createdBy())->where('status', 'active')->select('id', 'name')->get();
 
-        return Inertia::render('campaigns/create', [
+        return Inertia::render('Campaigns/Create', [
             'users' => $users,
             'campaignTypes' => $campaignTypes,
             'targetLists' => $targetLists,
@@ -159,7 +159,7 @@ class CampaignController extends Controller
 
         $campaign->leads = $campaignLeads;
 
-        return Inertia::render('campaigns/show', [
+        return Inertia::render('Campaigns/Show', [
             'campaign' => $campaign,
             'campaignLeads' => $campaignLeads,
         ]);
@@ -176,7 +176,7 @@ class CampaignController extends Controller
             $campaignTypes = CampaignType::where('created_by', createdBy())->where('status', 'active')->select('id', 'name')->get();
             $targetLists = TargetList::where('created_by', createdBy())->where('status', 'active')->select('id', 'name')->get();
 
-            return Inertia::render('campaigns/edit', [
+            return Inertia::render('Campaigns/Edit', [
                 'campaign' => $campaign,
                 'users' => $users,
                 'campaignTypes' => $campaignTypes,

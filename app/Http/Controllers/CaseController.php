@@ -73,7 +73,7 @@ class CaseController extends Controller
         }
 
         $defaultPerPage = $request->view === 'grid' ? 12 : 10;
-        $perPage = max(1, min(200, (int)$request->get('per_page', $defaultPerPage)));
+        $perPage = max(1, min(200, (int)$request->input('per_page', $defaultPerPage)));
         $cases = $query->paginate($perPage)->withQueryString();
 
         $accountQuery = Account::where('created_by', createdBy());
@@ -89,7 +89,7 @@ class CaseController extends Controller
         $allUsers = (clone $userQuery)->select('id', 'name', 'email')->get();
         $users = (clone $userQuery)->where('status', 'active')->select('id', 'name', 'email')->get();
 
-        return Inertia::render('cases/index', [
+        return Inertia::render('Cases/Index', [
             'cases' => $cases,
             'accounts' => $accounts,
             'allAccounts' => $allAccounts,
@@ -126,7 +126,7 @@ class CaseController extends Controller
 
         $meetings = $parentMeetings->merge($parentCalls)->sortByDesc('start_date')->values();
 
-        return Inertia::render('cases/show', [
+        return Inertia::render('Cases/Show', [
             'case' => $case,
             'meetings' => $meetings,
         ]);
@@ -145,7 +145,7 @@ class CaseController extends Controller
 
         $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
-        return Inertia::render('cases/edit', [
+        return Inertia::render('Cases/Edit', [
             'case' => $case,
             'accounts' => $accounts,
             'contacts' => $contacts,
@@ -206,7 +206,7 @@ class CaseController extends Controller
 
         $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
-        return Inertia::render('cases/create', [
+        return Inertia::render('Cases/Create', [
             'accounts' => $accounts,
             'contacts' => $contacts,
             'users' => $users,

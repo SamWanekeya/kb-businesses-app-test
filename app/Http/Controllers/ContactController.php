@@ -63,7 +63,7 @@ class ContactController extends Controller
         }
 
         $defaultPerPage = $request->view === 'grid' ? 12 : 10;
-        $perPage = max(1, min(200, (int)$request->get('per_page', $defaultPerPage)));
+        $perPage = max(1, min(200, (int)$request->input('per_page', $defaultPerPage)));
         $contacts = $query->paginate($perPage)->withQueryString();
 
         $accountQuery = Account::where('created_by', createdBy());
@@ -88,7 +88,7 @@ class ContactController extends Controller
             ];
         }
 
-        return Inertia::render('contacts/index', [
+        return Inertia::render('Contacts/Index', [
             'contacts' => $contacts,
             'accounts' => $accounts,
             'allAccounts' => $allAccounts,
@@ -236,7 +236,7 @@ class ContactController extends Controller
 
         $meetings = $parentMeetings->merge($attendeeMeetings)->merge($parentCalls)->merge($attendeeCalls)->unique('id')->sortByDesc('start_date')->values();
 
-        return Inertia::render('contacts/show', [
+        return Inertia::render('Contacts/Show', [
             'contact' => $contact,
             'meetings' => $meetings,
         ]);

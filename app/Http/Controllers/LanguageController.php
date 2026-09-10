@@ -62,7 +62,7 @@ class LanguageController extends Controller
         if (File::exists($langListPath)) {
             $languages = collect(json_decode(File::get($langListPath), true));
         }
-        $lang = $request->get('lang', 'en');
+        $lang = $request->input('lang', 'en');
         if (!$languages->pluck('code')->contains($lang)) {
             return response()->json(['error' => __('Language not found')], 404);
         }
@@ -84,8 +84,8 @@ class LanguageController extends Controller
             if (File::exists($langListPath)) {
                 $languages = collect(json_decode(File::get($langListPath), true));
             }
-            $lang = $request->get('lang');
-            $data = $request->get('data');
+            $lang = $request->input('lang');
+            $data = $request->input('data');
             if (!$lang || !is_array($data) || !$languages->pluck('code')->contains($lang)) {
                 if ($request->expectsJson()) {
                     return response()->json(['error' => __('Invalid request')], 400);

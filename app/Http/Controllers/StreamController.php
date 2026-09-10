@@ -25,7 +25,7 @@ class StreamController extends Controller
             'sales_order_activities' => 'Sales Order Activities',
         ];
 
-        return Inertia::render('streams/index', [
+        return Inertia::render('Streams/Index', [
             'modules' => $modules,
         ]);
     }
@@ -37,7 +37,7 @@ class StreamController extends Controller
             ->where('created_by', createdBy())
             ->orderBy('created_at', 'desc')->get();
 
-        return Inertia::render('streams/show', [
+        return Inertia::render('Streams/Show', [
             'module' => 'account_activities',
             'moduleTitle' => 'Account Activities',
             'streams' => $streams,
@@ -64,7 +64,7 @@ class StreamController extends Controller
             ->where('created_by', createdBy())
             ->orderBy('created_at', 'desc')->get();
 
-        return Inertia::render('streams/show', [
+        return Inertia::render('Streams/Show', [
             'module' => 'invoice_activities',
             'moduleTitle' => 'Invoice Activities',
             'streams' => $streams,
@@ -91,7 +91,7 @@ class StreamController extends Controller
             ->where('created_by', createdBy())
             ->orderBy('created_at', 'desc')->get();
 
-        return Inertia::render('streams/show', [
+        return Inertia::render('Streams/Show', [
             'module' => 'lead_activities',
             'moduleTitle' => 'Lead Activities',
             'streams' => $streams,
@@ -118,7 +118,7 @@ class StreamController extends Controller
             ->where('created_by', createdBy())
             ->orderBy('created_at', 'desc')->get();
 
-        return Inertia::render('streams/show', [
+        return Inertia::render('Streams/Show', [
             'module' => 'opportunity_activities',
             'moduleTitle' => 'Opportunity Activities',
             'streams' => $streams,
@@ -145,7 +145,7 @@ class StreamController extends Controller
             ->where('created_by', createdBy())
             ->orderBy('created_at', 'desc')->get();
 
-        return Inertia::render('streams/show', [
+        return Inertia::render('Streams/Show', [
             'module' => 'purchase_order_activities',
             'moduleTitle' => 'Purchase Order Activities',
             'streams' => $streams,
@@ -172,7 +172,7 @@ class StreamController extends Controller
             ->where('created_by', createdBy())
             ->orderBy('created_at', 'desc')->get();
 
-        return Inertia::render('streams/show', [
+        return Inertia::render('Streams/Show', [
             'module' => 'quote_activities',
             'moduleTitle' => 'Quote Activities',
             'streams' => $streams,
@@ -199,7 +199,7 @@ class StreamController extends Controller
             ->where('created_by', createdBy())
             ->orderBy('created_at', 'desc')->get();
 
-        return Inertia::render('streams/show', [
+        return Inertia::render('Streams/Show', [
             'module' => 'sales_order_activities',
             'moduleTitle' => 'Sales Order Activities',
             'streams' => $streams,

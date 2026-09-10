@@ -35,10 +35,10 @@ class ShippingProviderTypeController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $shippingProviderTypes = $query->paginate($perPage)->withQueryString();
 
-        return Inertia::render('shipping-provider-types/index', [
+        return Inertia::render('ShippingProviderTypes/Index', [
             'shippingProviderTypes' => $shippingProviderTypes,
             'filters' => $request->all(['search', 'status', 'sort_field', 'sort_direction', 'per_page', 'page']),
         ]);
@@ -120,7 +120,7 @@ class ShippingProviderTypeController extends Controller
             return redirect()->route('shipping-provider-types.index')->with('error', __('Shipping provider type not found.'));
         }
 
-        return Inertia::render('shipping-provider-types/show', [
+        return Inertia::render('ShippingProviderTypes/Show', [
             'shippingProviderType' => $shippingProviderType,
         ]);
     }

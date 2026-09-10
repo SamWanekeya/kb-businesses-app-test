@@ -56,7 +56,7 @@ class DocumentFolderController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $documentFolders = $query->paginate($perPage)->withQueryString();
 
         // Get data for dropdowns with parent folder name
@@ -76,7 +76,7 @@ class DocumentFolderController extends Controller
                 ];
             });
 
-        return Inertia::render('document-folders/index', [
+        return Inertia::render('DocumentFolders/Index', [
             'documentFolders' => $documentFolders,
             'parentFolders' => $parentFolders,
             'filters' => $request->all(['search', 'parent_folder_id', 'sort_field', 'sort_direction', 'per_page', 'page']),
@@ -125,7 +125,7 @@ class DocumentFolderController extends Controller
         $parentFolders = DocumentFolder::where('created_by', createdBy())
             ->get(['id', 'name']);
 
-        return Inertia::render('document-folders/create', [
+        return Inertia::render('DocumentFolders/Create', [
             'parentFolders' => $parentFolders,
         ]);
     }
@@ -157,7 +157,7 @@ class DocumentFolderController extends Controller
                 'display_name' => $f->parentFolder ? $f->parentFolder->name . ' / ' . $f->name : $f->name,
             ])->all();
 
-        return Inertia::render('documents/folder', [
+        return Inertia::render('Documents/Folder', [
             'folder' => $folder,
             'documents' => $documents,
             'parentFolders' => $parentFolders,
@@ -179,7 +179,7 @@ class DocumentFolderController extends Controller
             ->where('id', '!=', $id) // Exclude current folder to prevent circular reference
             ->get(['id', 'name']);
 
-        return Inertia::render('document-folders/edit', [
+        return Inertia::render('DocumentFolders/Edit', [
             'documentFolder' => $documentFolder,
             'parentFolders' => $parentFolders,
         ]);

@@ -64,7 +64,7 @@ class QuoteController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $quotes = $query->paginate($perPage)->withQueryString();
 
         $userQuery = User::where('created_by', createdBy());
@@ -79,7 +79,7 @@ class QuoteController extends Controller
         $allOpportunities = (clone $opportunityQuery)->select('id', 'name')->get();
         $opportunities = (clone $opportunityQuery)->where('status', 'active')->select('id', 'name')->get();
 
-        return Inertia::render('quotes/index', [
+        return Inertia::render('Quotes/Index', [
             'quotes' => $quotes,
             'accounts' => $accounts,
             'allAccounts' => $allAccounts,
@@ -208,7 +208,7 @@ class QuoteController extends Controller
         $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
         $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
-        return Inertia::render('quotes/create', [
+        return Inertia::render('Quotes/Create', [
             'accounts' => $accounts,
             'contacts' => $contacts,
             'opportunities' => $opportunities,
@@ -258,7 +258,7 @@ class QuoteController extends Controller
             return redirect()->route('quotes.index')->with('error', __('Quote not found.'));
         }
 
-        return Inertia::render('quotes/show', [
+        return Inertia::render('Quotes/Show', [
             'quote' => $quote,
             'streamItems' => $quote->activities,
         ]);
@@ -290,7 +290,7 @@ class QuoteController extends Controller
             $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
             $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
-            return Inertia::render('quotes/edit', [
+            return Inertia::render('Quotes/Edit', [
                 'quote' => $quote,
                 'accounts' => $accounts,
                 'contacts' => $contacts,
@@ -628,7 +628,7 @@ class QuoteController extends Controller
                 $settings['quoteLogo'] = $media ? $media->getUrl() : null;
             }
 
-            return Inertia::render('quotes/public', [
+            return Inertia::render('Quotes/Public', [
                 'quote' => $quote,
                 'templateId' => $templateId,
                 'color' => $color,

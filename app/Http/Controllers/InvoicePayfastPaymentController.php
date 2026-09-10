@@ -202,10 +202,10 @@ class InvoicePayfastPaymentController extends Controller
     public function success(Request $request)
     {
         try {
-            $invoiceId = $request->get('invoice_id');
-            $amount = $request->get('amount');
-            $paymentType = $request->get('payment_type');
-            $paymentId = $request->get('m_payment_id');
+            $invoiceId = $request->input('invoice_id');
+            $amount = $request->input('amount');
+            $paymentType = $request->input('payment_type');
+            $paymentId = $request->input('m_payment_id');
 
             if (!$invoiceId || !$amount || !$paymentType) {
                 return redirect()->back()->with('error', __('Invalid payment parameters'));

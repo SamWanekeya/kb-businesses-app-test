@@ -62,7 +62,7 @@ class SalesOrderController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $salesOrders = $query->paginate($perPage)->withQueryString();
 
         $userQuery = User::where('created_by', createdBy());
@@ -73,7 +73,7 @@ class SalesOrderController extends Controller
         $allAccounts = (clone $accountQuery)->select('id', 'name')->get();
         $accounts = (clone $accountQuery)->where('status', 'active')->select('id', 'name')->get();
 
-        return Inertia::render('sales-orders/index', [
+        return Inertia::render('SalesOrders/Index', [
             'salesOrders' => $salesOrders,
             'accounts' => $accounts,
             'allAccounts' => $allAccounts,
@@ -102,7 +102,7 @@ class SalesOrderController extends Controller
         $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
         $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
-        return Inertia::render('sales-orders/create', [
+        return Inertia::render('SalesOrders/Create', [
             'accounts' => $accounts,
             'contacts' => $contacts,
             'quotes' => $quotes,
@@ -213,7 +213,7 @@ class SalesOrderController extends Controller
             return redirect()->route('sales-orders.index')->with('error', __('Sales order not found.'));
         }
 
-        return Inertia::render('sales-orders/show', [
+        return Inertia::render('SalesOrders/Show', [
             'salesOrder' => $salesOrder,
             'streamItems' => $salesOrder->activities,
         ]);
@@ -245,7 +245,7 @@ class SalesOrderController extends Controller
             $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
             $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
-            return Inertia::render('sales-orders/edit', [
+            return Inertia::render('SalesOrders/Edit', [
                 'salesOrder' => $salesOrder,
                 'accounts' => $accounts,
                 'contacts' => $contacts,
@@ -527,7 +527,7 @@ class SalesOrderController extends Controller
                 $settings['salesOrderLogo'] = $media ? $media->getUrl() : null;
             }
 
-            return Inertia::render('sales-orders/public', [
+            return Inertia::render('SalesOrders/public', [
                 'salesOrder' => $salesOrder,
                 'templateId' => $templateId,
                 'color' => $color,

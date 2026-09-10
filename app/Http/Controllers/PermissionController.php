@@ -21,7 +21,7 @@ class PermissionController extends BaseController
     {
         $permissions = Permission::withPermissionCheck()->latest()->paginate(10);
 
-        return Inertia::render('permissions/index', [
+        return Inertia::render('Permissions/Index', [
             'permissions' => $permissions,
         ]);
     }

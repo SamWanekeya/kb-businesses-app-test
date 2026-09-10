@@ -40,10 +40,10 @@ class BrandController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $brands = $query->paginate($perPage)->withQueryString();
 
-        return Inertia::render('brands/index', [
+        return Inertia::render('Brands/Index', [
             'brands' => $brands,
             'filters' => $request->all(['search', 'status', 'sort_field', 'sort_direction', 'per_page', 'page']),
         ]);

@@ -64,7 +64,7 @@ class PurchaseOrderController extends Controller
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $purchaseOrders = $query->paginate($perPage)->withQueryString();
 
         $userQuery = User::where('created_by', createdBy());
@@ -75,7 +75,7 @@ class PurchaseOrderController extends Controller
         $allAccounts = (clone $accountQuery)->select('id', 'name')->get();
         $accounts = (clone $accountQuery)->where('status', 'active')->select('id', 'name')->get();
 
-        return Inertia::render('purchase-orders/index', [
+        return Inertia::render('PurchaseOrders/Index', [
             'purchaseOrders' => $purchaseOrders,
             'accounts' => $accounts,
             'allAccounts' => $allAccounts,
@@ -188,7 +188,7 @@ class PurchaseOrderController extends Controller
         $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
         $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
-        return Inertia::render('purchase-orders/create', [
+        return Inertia::render('PurchaseOrders/Create', [
             'accounts' => $accounts,
             'contacts' => $contacts,
             'salesOrders' => $salesOrders,
@@ -238,7 +238,7 @@ class PurchaseOrderController extends Controller
             return redirect()->route('purchase-orders.index')->with('error', __('Purchase order not found.'));
         }
 
-        return Inertia::render('purchase-orders/show', [
+        return Inertia::render('PurchaseOrders/Show', [
             'purchaseOrder' => $purchaseOrder,
             'streamItems' => $purchaseOrder->activities,
         ]);
@@ -271,7 +271,7 @@ class PurchaseOrderController extends Controller
             $taxes = Tax::where('created_by', createdBy())->select('id', 'name', 'rate')->get();
             $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
-            return Inertia::render('purchase-orders/edit', [
+            return Inertia::render('PurchaseOrders/Edit', [
                 'purchaseOrder' => $purchaseOrder,
                 'accounts' => $accounts,
                 'contacts' => $contacts,

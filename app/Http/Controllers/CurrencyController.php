@@ -45,7 +45,7 @@ class CurrencyController extends Controller
 
         $currencies = $query->paginate((int)$perPage)->withQueryString();
 
-        return Inertia::render('currencies/index', [
+        return Inertia::render('Currencies/Index', [
             'currencies' => $currencies,
             'filters' => $request->all(['search', 'sort_field', 'sort_direction', 'per_page', 'page']),
         ]);

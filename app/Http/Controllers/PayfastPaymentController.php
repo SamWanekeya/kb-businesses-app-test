@@ -190,7 +190,7 @@ class PayfastPaymentController extends Controller
     public function success(Request $request)
     {
         // Try different parameter names PayFast might use
-        $paymentId = $request->get('m_payment_id') ?? $request->get('pf_payment_id') ?? $request->get('payment_id');
+        $paymentId = $request->input('m_payment_id') ?? $request->input('pf_payment_id') ?? $request->input('payment_id');
 
         if (!$paymentId && auth()->check()) {
             // If no payment ID, find the most recent pending order for this user

@@ -101,7 +101,7 @@ class SettingsController extends Controller
             $currentWorkspace = Workspace::find($workspaceId);
         }
 
-        return Inertia::render('settings/index', [
+        return Inertia::render('settings/Index', [
             'systemSettings' => $systemSettings,
             'settings' => $systemSettings, // For helper functions
             'cacheSize' => getCacheSize(),

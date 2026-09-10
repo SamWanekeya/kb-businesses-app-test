@@ -65,7 +65,7 @@ class GoogleCalendarController extends Controller
         try {
             $events = $this->calendarService->getEvents(
                 auth()->id(),
-                $request->get('maxResults', 50)
+                $request->input('maxResults', 50)
             );
 
             return response()->json([

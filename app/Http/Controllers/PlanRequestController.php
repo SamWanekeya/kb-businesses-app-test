@@ -55,7 +55,7 @@ class PlanRequestController extends BaseController
 
         $planRequests = $query->paginate((int)$perPage)->withQueryString();
 
-        return Inertia::render('plans/plan-request', [
+        return Inertia::render('Plans/PlanRequest', [
             'planRequests' => $planRequests,
             'filters' => $request->only(['search', 'status', 'sort_field', 'sort_direction', 'per_page', 'page']),
         ]);

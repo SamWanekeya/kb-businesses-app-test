@@ -76,7 +76,7 @@ class PlanOrderController extends BaseController
 
         $planOrders = $query->paginate((int)$perPage)->withQueryString();
 
-        return Inertia::render('plans/plan-orders', [
+        return Inertia::render('Plans/PlanOrders', [
             'planOrders' => $planOrders,
             'filters' => $request->only(['search', 'status', 'sort_field', 'sort_direction', 'per_page', 'date_from', 'date_to', 'page']),
             'currency' => $currency,

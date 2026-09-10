@@ -92,7 +92,7 @@ class MeetingController extends Controller
         $allContacts = Contact::where('created_by', createdBy())->select('id', 'name')->get();
         $allLeads = Lead::where('created_by', createdBy())->select('id', 'name')->get();
 
-        return Inertia::render('meetings/index', [
+        return Inertia::render('Meetings/Index', [
             'meetings' => $meetings,
             'users' => $users,
             'allUsers' => $allUsers,
@@ -112,7 +112,7 @@ class MeetingController extends Controller
     {
         $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
-        return Inertia::render('meetings/create', [
+        return Inertia::render('Meetings/Create', [
             'users' => $users,
         ]);
     }
@@ -164,7 +164,7 @@ class MeetingController extends Controller
             }
         }
 
-        return Inertia::render('meetings/show', [
+        return Inertia::render('Meetings/Show', [
             'meeting' => $meeting,
         ]);
     }
@@ -544,7 +544,7 @@ class MeetingController extends Controller
 
         $users = User::where('created_by', createdBy())->select('id', 'name', 'email')->get();
 
-        return Inertia::render('meetings/edit', [
+        return Inertia::render('Meetings/Edit', [
             'meeting' => $meeting,
             'users' => $users,
         ]);

@@ -96,7 +96,7 @@ class ProjectTaskController extends Controller
             ];
         }
 
-        return Inertia::render('project-tasks/index', [
+        return Inertia::render('ProjectsTasks/Index', [
             'kanbanData' => $kanbanData,
             'statuses' => $taskStatuses,
             'projects' => $projects,
@@ -121,7 +121,7 @@ class ProjectTaskController extends Controller
             ->select('id', 'name', 'color')
             ->get();
 
-        return Inertia::render('project-tasks/show', [
+        return Inertia::render('ProjectsTasks/Show', [
             'task' => $task,
             'taskStatuses' => $taskStatuses,
         ]);
@@ -336,7 +336,7 @@ class ProjectTaskController extends Controller
             ->select('id', 'name', 'email')
             ->get();
 
-        return Inertia::render('projects/kanban', [
+        return Inertia::render('Projects/Kanban', [
             'project' => $project,
             'kanbanData' => $kanbanData,
             'statuses' => $statuses,
@@ -476,7 +476,7 @@ class ProjectTaskController extends Controller
             ->select('id', 'name', 'color')
             ->get();
 
-        return Inertia::render('projects/gantt', [
+        return Inertia::render('Projects/Gantt', [
             'project' => $project,
             'tasks' => $tasks,
             'users' => $users,

@@ -92,7 +92,7 @@ class PlanController extends Controller
             }
         }
 
-        return Inertia::render('plans/index', [
+        return Inertia::render('Plans/Index', [
             'plans' => $plans,
             'billingCycle' => $billingCycle,
             'hasDefaultPlan' => $hasDefaultPlan,
@@ -181,7 +181,7 @@ class PlanController extends Controller
             });
         }
 
-        return Inertia::render('plans/index', [
+        return Inertia::render('Plans/Index', [
             'plans' => $plans,
             'billingCycle' => $billingCycle,
             'currentPlan' => $user->plan,
@@ -307,7 +307,7 @@ class PlanController extends Controller
     {
         $hasDefaultPlan = Plan::where('is_default', true)->exists();
 
-        return Inertia::render('plans/create', [
+        return Inertia::render('Plans/Create', [
             'hasDefaultPlan' => $hasDefaultPlan,
         ]);
     }
@@ -321,7 +321,7 @@ class PlanController extends Controller
             ->where('id', '!=', $plan->id)
             ->exists();
 
-        return Inertia::render('plans/edit', [
+        return Inertia::render('Plans/Edit', [
             'plan' => $plan,
             'otherDefaultPlanExists' => $otherDefaultPlanExists,
         ]);

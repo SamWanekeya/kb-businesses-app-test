@@ -44,12 +44,12 @@ class RoleController extends BaseController
             $query->orderBy($sortField, $sortDirection);
         }
 
-        $perPage = max(1, min(100, (int)$request->get('per_page', 10)));
+        $perPage = max(1, min(100, (int)$request->input('per_page', 10)));
         $roles = $query->paginate($perPage)->withQueryString();
 
         $permissions = $this->getFilteredPermissions();
 
-        return Inertia::render('roles/index', [
+        return Inertia::render('Roles/Index', [
             'roles' => $roles,
             'permissions' => $permissions,
             'filters' => $request->all(['search', 'sort_field', 'sort_direction', 'per_page', 'page']),
@@ -101,7 +101,7 @@ class RoleController extends BaseController
         if (Auth::user()->can('create-roles')) {
             $permissions = $this->getFilteredPermissions();
 
-            return Inertia::render('roles/create', [
+            return Inertia::render('Roles/Create', [
                 'permissions' => $permissions,
             ]);
         } else {
@@ -184,7 +184,7 @@ class RoleController extends BaseController
 
             $permissions = $this->getFilteredPermissions();
 
-            return Inertia::render('roles/show', [
+            return Inertia::render('Roles/Show', [
                 'role' => $role,
                 'permissions' => $permissions,
             ]);
@@ -204,7 +204,7 @@ class RoleController extends BaseController
 
             $permissions = $this->getFilteredPermissions();
 
-            return Inertia::render('roles/edit', [
+            return Inertia::render('Roles/Edit', [
                 'role' => $role,
                 'permissions' => $permissions,
             ]);

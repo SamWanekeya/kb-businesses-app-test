@@ -15,7 +15,7 @@ class CalendarController extends Controller
     {
         // Check if demo mode is enabled
         if (IsDemo()) {
-            return Inertia::render('calendar/index', [
+            return Inertia::render('Calendar/Index', [
                 'events' => getDemoCalendarData(),
                 'settings' => settings(createdBy()),
             ]);
@@ -111,7 +111,7 @@ class CalendarController extends Controller
             // Skip if ProjectTask model doesn't exist
         }
 
-        return Inertia::render('calendar/index', [
+        return Inertia::render('Calendar/Index', [
             'events' => $events->values()->toArray(),
             'settings' => settings(createdBy()),
         ]);

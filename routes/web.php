@@ -272,10 +272,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Permissions routes with granular permissions
         Route::middleware('permission:manage-permissions')->group(function () {
             Route::get('permissions', [PermissionController::class, 'index'])->middleware('permission:manage-permissions')->name('permissions.index');
-            Route::get('permissions/create', [PermissionController::class, 'create'])->middleware('permission:create-permissions')->name('permissions.create');
+            Route::get('permissions/Create', [PermissionController::class, 'create'])->middleware('permission:create-permissions')->name('permissions.create');
             Route::post('permissions', [PermissionController::class, 'store'])->middleware('permission:create-permissions')->name('permissions.store');
             Route::get('permissions/{permission}', [PermissionController::class, 'show'])->middleware('permission:view-permissions')->name('permissions.show');
-            Route::get('permissions/{permission}/edit', [PermissionController::class, 'edit'])->middleware('permission:edit-permissions')->name('permissions.edit');
+            Route::get('permissions/{permission}/Edit', [PermissionController::class, 'edit'])->middleware('permission:edit-permissions')->name('permissions.edit');
             Route::put('permissions/{permission}', [PermissionController::class, 'update'])->middleware('permission:edit-permissions')->name('permissions.update');
             Route::patch('permissions/{permission}', [PermissionController::class, 'update'])->middleware('permission:edit-permissions');
             Route::delete('permissions/{permission}', [PermissionController::class, 'destroy'])->middleware('permission:delete-permissions')->name('permissions.destroy');
@@ -284,10 +284,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Roles routes with granular permissions
         Route::middleware('permission:manage-roles')->group(function () {
             Route::get('roles', [RoleController::class, 'index'])->middleware('permission:manage-roles')->name('roles.index');
-            Route::get('roles/create', [RoleController::class, 'create'])->middleware('permission:create-roles')->name('roles.create');
+            Route::get('roles/Create', [RoleController::class, 'create'])->middleware('permission:create-roles')->name('roles.create');
             Route::post('roles', [RoleController::class, 'store'])->middleware('permission:create-roles')->name('roles.store');
             Route::get('roles/{role}', [RoleController::class, 'show'])->middleware('permission:view-roles')->name('roles.show');
-            Route::get('roles/{role}/edit', [RoleController::class, 'edit'])->middleware('permission:edit-roles')->name('roles.edit');
+            Route::get('roles/{role}/Edit', [RoleController::class, 'edit'])->middleware('permission:edit-roles')->name('roles.edit');
             Route::put('roles/{role}', [RoleController::class, 'update'])->middleware('permission:edit-roles')->name('roles.update');
             Route::patch('roles/{role}', [RoleController::class, 'update'])->middleware('permission:edit-roles');
             Route::delete('roles/{role}', [RoleController::class, 'destroy'])->middleware('permission:delete-roles')->name('roles.destroy');
@@ -296,10 +296,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Users routes with granular permissions
         Route::middleware('permission:manage-users')->group(function () {
             Route::get('users', [UserController::class, 'index'])->middleware('permission:manage-users')->name('users.index');
-            Route::get('users/create', [UserController::class, 'create'])->middleware('permission:create-users')->name('users.create');
+            Route::get('users/Create', [UserController::class, 'create'])->middleware('permission:create-users')->name('users.create');
             Route::post('users', [UserController::class, 'store'])->middleware('permission:create-users')->name('users.store');
             Route::get('users/{user}', [UserController::class, 'show'])->middleware('permission:view-users')->name('users.show');
-            Route::get('users/{user}/edit', [UserController::class, 'edit'])->middleware('permission:edit-users')->name('users.edit');
+            Route::get('users/{user}/Edit', [UserController::class, 'edit'])->middleware('permission:edit-users')->name('users.edit');
             Route::put('users/{user}', [UserController::class, 'update'])->middleware('permission:edit-users')->name('users.update');
             Route::patch('users/{user}', [UserController::class, 'update'])->middleware('permission:edit-users');
             Route::delete('users/{user}', [UserController::class, 'destroy'])->middleware('permission:delete-users')->name('users.destroy');
@@ -312,9 +312,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Plans management routes (admin only)
         Route::middleware('permission:manage-plans')->group(function () {
-            Route::get('plans/create', [PlanController::class, 'create'])->middleware('permission:create-plans')->name('plans.create');
+            Route::get('plans/Create', [PlanController::class, 'create'])->middleware('permission:create-plans')->name('plans.create');
             Route::post('plans', [PlanController::class, 'store'])->middleware('permission:create-plans')->name('plans.store');
-            Route::get('plans/{plan}/edit', [PlanController::class, 'edit'])->middleware('permission:edit-plans')->name('plans.edit');
+            Route::get('plans/{plan}/Edit', [PlanController::class, 'edit'])->middleware('permission:edit-plans')->name('plans.edit');
             Route::put('plans/{plan}', [PlanController::class, 'update'])->middleware('permission:edit-plans')->name('plans.update');
             Route::delete('plans/{plan}', [PlanController::class, 'destroy'])->middleware('permission:delete-plans')->name('plans.destroy');
             Route::post('plans/{plan}/toggle-status', [PlanController::class, 'toggleStatus'])->name('plans.toggle-status');
@@ -329,7 +329,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Plan Requests routes (placeholder)
         Route::get('plan-requests', function () {
-            return Inertia::render('plans/plan-requests');
+            return Inertia::render('Plans/PlanRequests');
         })->name('plan-requests.index');
 
         // Organizations routes
@@ -410,9 +410,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Products routes
         Route::middleware('permission:manage-products')->group(function () {
             Route::get('products', [ProductController::class, 'index'])->middleware('permission:manage-products')->name('products.index');
-            Route::get('products/create', [ProductController::class, 'create'])->middleware('permission:create-products')->name('products.create');
+            Route::get('products/Create', [ProductController::class, 'create'])->middleware('permission:create-products')->name('products.create');
             Route::get('products/{product}', [ProductController::class, 'show'])->middleware('permission:view-products')->name('products.show');
-            Route::get('products/{product}/edit', [ProductController::class, 'edit'])->middleware('permission:edit-products')->name('products.edit');
+            Route::get('products/{product}/Edit', [ProductController::class, 'edit'])->middleware('permission:edit-products')->name('products.edit');
             Route::post('products', [ProductController::class, 'store'])->middleware('permission:create-products')->name('products.store');
             Route::put('products/{product}', [ProductController::class, 'update'])->middleware('permission:edit-products')->name('products.update');
             Route::delete('products/{product}/', [ProductController::class, 'destroy'])->middleware('permission:delete-products')->name('products.destroy');
@@ -455,8 +455,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Accounts routes
         Route::middleware('permission:manage-accounts')->group(function () {
             Route::get('accounts', [AccountController::class, 'index'])->middleware('permission:manage-accounts')->name('accounts.index');
-            Route::get('accounts/create', [AccountController::class, 'create'])->middleware('permission:create-accounts')->name('accounts.create');
-            Route::get('accounts/{account}/edit', [AccountController::class, 'edit'])->middleware('permission:edit-accounts')->name('accounts.edit');
+            Route::get('accounts/Create', [AccountController::class, 'create'])->middleware('permission:create-accounts')->name('accounts.create');
+            Route::get('accounts/{account}/Edit', [AccountController::class, 'edit'])->middleware('permission:edit-accounts')->name('accounts.edit');
             Route::get('accounts/{account}', [AccountController::class, 'show'])->middleware('permission:view-accounts')->name('accounts.show');
             Route::post('accounts', [AccountController::class, 'store'])->middleware('permission:create-accounts')->name('accounts.store');
             Route::put('accounts/{account}', [AccountController::class, 'update'])->middleware('permission:edit-accounts')->name('accounts.update');
@@ -507,8 +507,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Lead routes
         Route::middleware('permission:manage-leads')->group(function () {
             Route::get('leads', [LeadController::class, 'index'])->middleware('permission:manage-leads')->name('leads.index');
-            Route::get('leads/create', [LeadController::class, 'create'])->middleware('permission:create-leads')->name('leads.create');
-            Route::get('leads/{lead}/edit', [LeadController::class, 'edit'])->middleware('permission:edit-leads')->name('leads.edit');
+            Route::get('leads/Create', [LeadController::class, 'create'])->middleware('permission:create-leads')->name('leads.create');
+            Route::get('leads/{lead}/Edit', [LeadController::class, 'edit'])->middleware('permission:edit-leads')->name('leads.edit');
             Route::get('leads/{lead}', [LeadController::class, 'show'])->middleware('permission:view-leads')->name('leads.show');
             Route::post('leads', [LeadController::class, 'store'])->middleware('permission:create-leads')->name('leads.store');
             Route::put('leads/{lead}', [LeadController::class, 'update'])->middleware('permission:edit-leads')->name('leads.update');
@@ -556,8 +556,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Opportunity routes
         Route::middleware('permission:manage-opportunities')->group(function () {
             Route::get('opportunities', [OpportunityController::class, 'index'])->middleware('permission:manage-opportunities')->name('opportunities.index');
-            Route::get('opportunities/create', [OpportunityController::class, 'create'])->middleware('permission:create-opportunities')->name('opportunities.create');
-            Route::get('opportunities/{opportunity}/edit', [OpportunityController::class, 'edit'])->middleware('permission:edit-opportunities')->name('opportunities.edit');
+            Route::get('opportunities/Create', [OpportunityController::class, 'create'])->middleware('permission:create-opportunities')->name('opportunities.create');
+            Route::get('opportunities/{opportunity}/Edit', [OpportunityController::class, 'edit'])->middleware('permission:edit-opportunities')->name('opportunities.edit');
             Route::get('opportunities/{opportunity}', [OpportunityController::class, 'show'])->middleware('permission:view-opportunities')->name('opportunities.show');
             Route::post('opportunities', [OpportunityController::class, 'store'])->middleware('permission:create-opportunities')->name('opportunities.store');
             Route::put('opportunities/{opportunity}', [OpportunityController::class, 'update'])->middleware('permission:edit-opportunities')->name('opportunities.update');
@@ -596,8 +596,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Campaign routes
         Route::middleware('permission:manage-campaigns')->group(function () {
             Route::get('campaigns', [CampaignController::class, 'index'])->middleware('permission:manage-campaigns')->name('campaigns.index');
-            Route::get('campaigns/create', [CampaignController::class, 'create'])->middleware('permission:create-campaigns')->name('campaigns.create');
-            Route::get('campaigns/{campaign}/edit', [CampaignController::class, 'edit'])->middleware('permission:edit-campaigns')->name('campaigns.edit');
+            Route::get('campaigns/Create', [CampaignController::class, 'create'])->middleware('permission:create-campaigns')->name('campaigns.create');
+            Route::get('campaigns/{campaign}/Edit', [CampaignController::class, 'edit'])->middleware('permission:edit-campaigns')->name('campaigns.edit');
             Route::post('campaigns', [CampaignController::class, 'store'])->middleware('permission:create-campaigns')->name('campaigns.store');
             Route::put('campaigns/{campaign}', [CampaignController::class, 'update'])->middleware('permission:edit-campaigns')->name('campaigns.update');
             Route::delete('campaigns/{campaign}', [CampaignController::class, 'destroy'])->middleware('permission:delete-campaigns')->name('campaigns.destroy');
@@ -618,9 +618,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Cases routes
         Route::middleware('permission:manage-cases')->group(function () {
             Route::get('cases', [CaseController::class, 'index'])->middleware('permission:manage-cases')->name('cases.index');
-            Route::get('cases/create', [CaseController::class, 'create'])->middleware('permission:create-cases')->name('cases.create');
+            Route::get('cases/Create', [CaseController::class, 'create'])->middleware('permission:create-cases')->name('cases.create');
             Route::get('cases/{case}', [CaseController::class, 'show'])->middleware('permission:view-cases')->name('cases.show');
-            Route::get('cases/{case}/edit', [CaseController::class, 'edit'])->middleware('permission:edit-cases')->name('cases.edit');
+            Route::get('cases/{case}/Edit', [CaseController::class, 'edit'])->middleware('permission:edit-cases')->name('cases.edit');
             Route::post('cases', [CaseController::class, 'store'])->middleware('permission:create-cases')->name('cases.store');
             Route::put('cases/{case}', [CaseController::class, 'update'])->middleware('permission:edit-cases')->name('cases.update');
             Route::delete('cases/{case}', [CaseController::class, 'destroy'])->middleware('permission:delete-cases')->name('cases.destroy');
@@ -633,8 +633,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Quote routes
         Route::middleware('permission:manage-quotes')->group(function () {
             Route::get('quotes', [QuoteController::class, 'index'])->middleware('permission:manage-quotes')->name('quotes.index');
-            Route::get('quotes/create', [QuoteController::class, 'create'])->middleware('permission:create-quotes')->name('quotes.create');
-            Route::get('quotes/{quote}/edit', [QuoteController::class, 'edit'])->middleware('permission:edit-quotes')->name('quotes.edit');
+            Route::get('quotes/Create', [QuoteController::class, 'create'])->middleware('permission:create-quotes')->name('quotes.create');
+            Route::get('quotes/{quote}/Edit', [QuoteController::class, 'edit'])->middleware('permission:edit-quotes')->name('quotes.edit');
             Route::get('quotes/{quote}', [QuoteController::class, 'show'])->middleware('permission:view-quotes')->name('quotes.show');
             Route::post('quotes', [QuoteController::class, 'store'])->middleware('permission:create-quotes')->name('quotes.store');
             Route::put('quotes/{quote}', [QuoteController::class, 'update'])->middleware('permission:edit-quotes')->name('quotes.update');
@@ -659,8 +659,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Sales Order routes
         Route::middleware('permission:manage-sales-orders')->group(function () {
             Route::get('sales-orders', [SalesOrderController::class, 'index'])->middleware('permission:manage-sales-orders')->name('sales-orders.index');
-            Route::get('sales-orders/create', [SalesOrderController::class, 'create'])->middleware('permission:create-sales-orders')->name('sales-orders.create');
-            Route::get('sales-orders/{salesOrder}/edit', [SalesOrderController::class, 'edit'])->middleware('permission:edit-sales-orders')->name('sales-orders.edit');
+            Route::get('sales-orders/Create', [SalesOrderController::class, 'create'])->middleware('permission:create-sales-orders')->name('sales-orders.create');
+            Route::get('sales-orders/{salesOrder}/Edit', [SalesOrderController::class, 'edit'])->middleware('permission:edit-sales-orders')->name('sales-orders.edit');
             Route::get('sales-orders/{salesOrder}', [SalesOrderController::class, 'show'])->middleware('permission:view-sales-orders')->name('sales-orders.show');
             Route::post('sales-orders', [SalesOrderController::class, 'store'])->middleware('permission:create-sales-orders')->name('sales-orders.store');
             Route::put('sales-orders/{salesOrder}', [SalesOrderController::class, 'update'])->middleware('permission:edit-sales-orders')->name('sales-orders.update');
@@ -696,8 +696,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Invoice routes
         Route::middleware('permission:manage-invoices')->group(function () {
             Route::get('invoices', [InvoiceController::class, 'index'])->middleware('permission:manage-invoices')->name('invoices.index');
-            Route::get('invoices/create', [InvoiceController::class, 'create'])->middleware('permission:create-invoices')->name('invoices.create');
-            Route::get('invoices/{invoice}/edit', [InvoiceController::class, 'edit'])->middleware('permission:edit-invoices')->name('invoices.edit');
+            Route::get('invoices/Create', [InvoiceController::class, 'create'])->middleware('permission:create-invoices')->name('invoices.create');
+            Route::get('invoices/{invoice}/Edit', [InvoiceController::class, 'edit'])->middleware('permission:edit-invoices')->name('invoices.edit');
             Route::get('invoices/{invoice}', [InvoiceController::class, 'show'])->middleware('permission:view-invoices')->name('invoices.show');
             Route::post('invoices', [InvoiceController::class, 'store'])->middleware('permission:create-invoices')->name('invoices.store');
             Route::put('invoices/{invoice}', [InvoiceController::class, 'update'])->middleware('permission:edit-invoices')->name('invoices.update');
@@ -723,8 +723,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Delivery Order routes
         Route::middleware('permission:manage-delivery-orders')->group(function () {
             Route::get('delivery-orders', [DeliveryOrderController::class, 'index'])->middleware('permission:manage-delivery-orders')->name('delivery-orders.index');
-            Route::get('delivery-orders/create', [DeliveryOrderController::class, 'create'])->middleware('permission:create-delivery-orders')->name('delivery-orders.create');
-            Route::get('delivery-orders/{deliveryOrder}/edit', [DeliveryOrderController::class, 'edit'])->middleware('permission:edit-delivery-orders')->name('delivery-orders.edit');
+            Route::get('delivery-orders/Create', [DeliveryOrderController::class, 'create'])->middleware('permission:create-delivery-orders')->name('delivery-orders.create');
+            Route::get('delivery-orders/{deliveryOrder}/Edit', [DeliveryOrderController::class, 'edit'])->middleware('permission:edit-delivery-orders')->name('delivery-orders.edit');
             Route::get('delivery-orders/{deliveryOrder}', [DeliveryOrderController::class, 'show'])->middleware('permission:view-delivery-orders')->name('delivery-orders.show');
             Route::post('delivery-orders', [DeliveryOrderController::class, 'store'])->middleware('permission:create-delivery-orders')->name('delivery-orders.store');
             Route::put('delivery-orders/{deliveryOrder}', [DeliveryOrderController::class, 'update'])->middleware('permission:edit-delivery-orders')->name('delivery-orders.update');
@@ -740,8 +740,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Return Order routes
         Route::middleware('permission:manage-return-orders')->group(function () {
             Route::get('return-orders', [ReturnOrderController::class, 'index'])->middleware('permission:manage-return-orders')->name('return-orders.index');
-            Route::get('return-orders/create', [ReturnOrderController::class, 'create'])->middleware('permission:create-return-orders')->name('return-orders.create');
-            Route::get('return-orders/{returnOrder}/edit', [ReturnOrderController::class, 'edit'])->middleware('permission:edit-return-orders')->name('return-orders.edit');
+            Route::get('return-orders/Create', [ReturnOrderController::class, 'create'])->middleware('permission:create-return-orders')->name('return-orders.create');
+            Route::get('return-orders/{returnOrder}/Edit', [ReturnOrderController::class, 'edit'])->middleware('permission:edit-return-orders')->name('return-orders.edit');
             Route::get('return-orders/{returnOrder}', [ReturnOrderController::class, 'show'])->middleware('permission:view-return-orders')->name('return-orders.show');
             Route::post('return-orders', [ReturnOrderController::class, 'store'])->middleware('permission:create-return-orders')->name('return-orders.store');
             Route::put('return-orders/{returnOrder}', [ReturnOrderController::class, 'update'])->middleware('permission:edit-return-orders')->name('return-orders.update');
@@ -754,8 +754,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Purchase Order routes
         Route::middleware('permission:manage-purchase-orders')->group(function () {
             Route::get('purchase-orders', [PurchaseOrderController::class, 'index'])->middleware('permission:manage-purchase-orders')->name('purchase-orders.index');
-            Route::get('purchase-orders/create', [PurchaseOrderController::class, 'create'])->middleware('permission:create-purchase-orders')->name('purchase-orders.create');
-            Route::get('purchase-orders/{purchaseOrder}/edit', [PurchaseOrderController::class, 'edit'])->middleware('permission:edit-purchase-orders')->name('purchase-orders.edit');
+            Route::get('purchase-orders/Create', [PurchaseOrderController::class, 'create'])->middleware('permission:create-purchase-orders')->name('purchase-orders.create');
+            Route::get('purchase-orders/{purchaseOrder}/Edit', [PurchaseOrderController::class, 'edit'])->middleware('permission:edit-purchase-orders')->name('purchase-orders.edit');
             Route::get('purchase-orders/{purchaseOrder}', [PurchaseOrderController::class, 'show'])->middleware('permission:view-purchase-orders')->name('purchase-orders.show');
             Route::post('purchase-orders', [PurchaseOrderController::class, 'store'])->middleware('permission:create-purchase-orders')->name('purchase-orders.store');
             Route::put('purchase-orders/{purchaseOrder}', [PurchaseOrderController::class, 'update'])->middleware('permission:edit-purchase-orders')->name('purchase-orders.update');
@@ -775,8 +775,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Receipt Order routes
         Route::middleware('permission:manage-receipt-orders')->group(function () {
             Route::get('receipt-orders', [ReceiptOrderController::class, 'index'])->middleware('permission:manage-receipt-orders')->name('receipt-orders.index');
-            Route::get('receipt-orders/create', [ReceiptOrderController::class, 'create'])->middleware('permission:create-receipt-orders')->name('receipt-orders.create');
-            Route::get('receipt-orders/{receiptOrder}/edit', [ReceiptOrderController::class, 'edit'])->middleware('permission:edit-receipt-orders')->name('receipt-orders.edit');
+            Route::get('receipt-orders/Create', [ReceiptOrderController::class, 'create'])->middleware('permission:create-receipt-orders')->name('receipt-orders.create');
+            Route::get('receipt-orders/{receiptOrder}/Edit', [ReceiptOrderController::class, 'edit'])->middleware('permission:edit-receipt-orders')->name('receipt-orders.edit');
             Route::get('receipt-orders/{receiptOrder}', [ReceiptOrderController::class, 'show'])->middleware('permission:view-receipt-orders')->name('receipt-orders.show');
             Route::post('receipt-orders', [ReceiptOrderController::class, 'store'])->middleware('permission:create-receipt-orders')->name('receipt-orders.store');
             Route::put('receipt-orders/{receiptOrder}', [ReceiptOrderController::class, 'update'])->middleware('permission:edit-receipt-orders')->name('receipt-orders.update');
@@ -963,7 +963,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('language/load', [LanguageController::class, 'load'])->name('language.load');
         Route::match(['POST', 'PATCH'], 'language/save', [LanguageController::class, 'save'])->middleware('permission:edit-language')->name('language.save');
         Route::post('languages/change', [LanguageController::class, 'changeLanguage'])->name('languages.change');
-        Route::post('languages/create', [LanguageController::class, 'createLanguage'])->middleware('App\Http\Middleware\SuperAdminMiddleware')->name('languages.create');
+        Route::post('languages/Create', [LanguageController::class, 'createLanguage'])->middleware('App\Http\Middleware\SuperAdminMiddleware')->name('languages.create');
         Route::delete('languages/{languageCode}', [LanguageController::class, 'deleteLanguage'])->middleware('App\Http\Middleware\SuperAdminMiddleware')->name('languages.delete');
         Route::patch('languages/{languageCode}/toggle', [LanguageController::class, 'toggleLanguageStatus'])->middleware('App\Http\Middleware\SuperAdminMiddleware')->name('languages.toggle');
 
@@ -1047,10 +1047,10 @@ Route::post('invoices/payment/bank', [InvoiceBankPaymentController::class, 'proc
 //Route::match(['GET', 'POST'], 'invoices/payment/toyyibpay/success', [InvoiceToyyibPayPaymentController::class, 'success'])->name('invoice.toyyibpay.success');
 //Route::post('invoices/payment/toyyibpay/callback', [InvoiceToyyibPayPaymentController::class, 'callback'])->name('invoice.toyyibpay.callback');
 //Route::post('invoices/payment/iyzipay/create-form', [InvoiceIyzipayPaymentController::class, 'createPaymentForm'])->name('invoice.iyzipay.create-form');
-//Route::post('invoices/payment/aamarpay/create', [InvoiceAamarpayPaymentController::class, 'createPayment'])->name('invoice.aamarpay.create');
+//Route::post('invoices/payment/aamarpay/Create', [InvoiceAamarpayPaymentController::class, 'createPayment'])->name('invoice.aamarpay.create');
 //Route::match(['GET', 'POST'], 'invoices/payment/aamarpay/success', [InvoiceAamarpayPaymentController::class, 'success'])->name('invoice.aamarpay.success');
 //Route::post('invoices/payment/aamarpay/callback', [InvoiceAamarpayPaymentController::class, 'callback'])->name('invoice.aamarpay.callback');
-//Route::post('invoices/payment/midtrans/create', [InvoiceMidtransPaymentController::class, 'createPayment'])->name('invoice.midtrans.create');
+//Route::post('invoices/payment/midtrans/Create', [InvoiceMidtransPaymentController::class, 'createPayment'])->name('invoice.midtrans.create');
 //Route::match(['GET', 'POST'], 'invoices/payment/midtrans/success', [InvoiceMidtransPaymentController::class, 'success'])->name('invoice.midtrans.success');
 //Route::post('invoices/payment/midtrans/callback', [InvoiceMidtransPaymentController::class, 'callback'])->name('invoice.midtrans.callback');
 //Route::post('invoices/payment/yookassa/create-payment', [InvoiceYooKassaPaymentController::class, 'createPayment'])->name('invoice.yookassa.create-payment');

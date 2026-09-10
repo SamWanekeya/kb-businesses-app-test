@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Rules\WorkEmail;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -18,82 +17,60 @@ class PasswordResetLinkController extends Controller
     /**
      * Show the password reset link request page.
      */
-    public function create(Request $request): Response
+    public function create(): Response
     {
-        return Inertia::render('auth/forgot-password', [
-            'status' => $request->session()->get('status'),
-            'error' => $request->session()->get('error'),
+        return Inertia::render('Account/ForgotPassword', [
             'settings' => settings(),
         ]);
     }
 
     /**
      * Handle an incoming password reset link request.
-     *
-     * @throws ValidationException
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'email' => 'required|email',
-        ]);
-
-        $configResult = $this->configureMail($request->email);
-
-        if ($configResult === false) {
-            return back()->with('error', __('Email configuration is not set. Please contact administrator.'));
-        }
+        $validated = $request->validate(
+            [
+                'email' => [
+                    'required',
+                    'email',
+                    'max:255',
+                    new WorkEmail(),
+                ],
+            ],
+            [
+                'email.required' => __('The work email field is required'),
+                'email.email' => __('Please provide a valid work email address'),
+                'email.max' => __('Are you sure you entered the work email correctly?'),
+            ]
+        );
 
         try {
-            Password::sendResetLink(
-                $request->only('email')
-            );
+            $status = Password::sendResetLink($validated);
+            /**
+             * Always show the same success message regardless of whether the email exists.
+             * This prevents email enumeration attacks.
+             */
+            if ($status === Password::RESET_LINK_SENT) {
+                return back()->with('success', __('If an account with that work email exists, a password reset link has been sent to it.'));
+            }
+
+            $messages = [
+                Password::INVALID_USER => __('If an account with that work email exists, a password reset link has been sent to it.'),
+                Password::RESET_THROTTLED => __('Too many requests. Please wait a few minutes before trying again.'),
+            ];
+
+            return back()->with('info', $messages[$status] ?? __('Unable to send reset link. Please try again.'));
+
         } catch (Exception $e) {
-            return back()->with('error', __('Failed to send reset link. Please try again.'));
+            // Log the exception using Laravel's logging system
+            Log::error('Password reset link error', [
+                'email' => $validated['email'],
+                'exception' => $e,
+            ]);
+
+            // Return an appropriate error response
+            return back()->with('error', __('Something went wrong. Please try again. later.'));
         }
-
-        return back()->with('status', __('A reset link will be sent if the account exists.'));
-    }
-
-    /**
-     * Configure mail settings based on user type
-     */
-    private function configureMail(string $email)
-    {
-        $user = User::where('email', $email)->first();
-        if (!$user) {
-            return true;
-        }
-
-        if ($user->hasRole('organization')) {
-            $configUser = User::where('id', $user->created_by)->first();
-        } else {
-            $configUser = User::where('id', $user->created_by)->first();
-        }
-
-        if (!$configUser) {
-            return true;
-        }
-
-        $settings = settings($configUser->id);
-
-        if (!isset($settings['email_driver']) || !isset($settings['email_host']) || !isset($settings['email_port']) ||
-            !isset($settings['email_username']) || !isset($settings['email_password']) ||
-            !isset($settings['email_from_address']) || !isset($settings['email_from_name'])) {
-            return false;
-        }
-
-        Config::set([
-            'mail.default' => $settings['email_driver'],
-            'mail.mailers.smtp.host' => $settings['email_host'],
-            'mail.mailers.smtp.port' => $settings['email_port'],
-            'mail.mailers.smtp.encryption' => $settings['email_encryption'] === 'none' ? null : $settings['email_encryption'],
-            'mail.mailers.smtp.username' => $settings['email_username'],
-            'mail.mailers.smtp.password' => $settings['email_password'],
-            'mail.from.address' => $settings['email_from_address'],
-            'mail.from.name' => $settings['email_from_name'],
-        ]);
-
-        return true;
     }
 }

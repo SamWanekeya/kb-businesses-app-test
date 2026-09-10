@@ -15,27 +15,45 @@ class ConfirmablePasswordController extends Controller
     /**
      * Show the confirm password page.
      */
-    public function show(): Response
+    public function show(Request $request): Response
     {
-        return Inertia::render('auth/confirm-password');
+        return Inertia::render('Account/ConfirmPassword', [
+            'intended' => url()->previous(),
+        ]);
     }
 
     /**
      * Confirm the user's password.
+     *
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
     {
-        if (!Auth::guard('web')->validate([
-            'email' => $request->user()->email,
-            'password' => $request->password,
-        ])) {
+        $request->validate(
+            [
+                'password' => ['required'],
+            ],
+            [
+                'password.required' => __('Please confirm your password to continue'),
+            ]
+        );
+
+        $user = $request->user();
+
+        if (! $user || ! Auth::guard('web')->validate([
+                'email' => $user->email,
+                'password' => $request->password,
+            ])) {
             throw ValidationException::withMessages([
-                'password' => __('auth.password'),
+                'password' => __('The password you entered is incorrect'),
             ]);
         }
 
+        // Mark password as confirmed
         $request->session()->put('auth.password_confirmed_at', time());
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(
+            route('dashboard.index', absolute: false)
+        )->with('success', __('Password confirmed successfully'));
     }
 }

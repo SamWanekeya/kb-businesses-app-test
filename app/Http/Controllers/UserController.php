@@ -65,7 +65,7 @@ class UserController extends BaseController
 
         // Handle pagination
         $defaultPerPage = $request->view === 'grid' ? 12 : 10;
-        $perPage = max(1, min(200, (int)$request->get('per_page', $defaultPerPage)));
+        $perPage = max(1, min(200, (int)$request->input('per_page', $defaultPerPage)));
         $users = $userQuery->paginate($perPage)->withQueryString();
 
         # Roles listing - Get roles based on user type
@@ -90,7 +90,7 @@ class UserController extends BaseController
             ];
         }
 
-        return Inertia::render('users/index', [
+        return Inertia::render('Users/Index', [
             'users' => $users,
             'roles' => $roles,
             'planLimits' => $planLimits,
@@ -239,7 +239,7 @@ class UserController extends BaseController
             ->orderBy('start_date', 'desc')
             ->get();
 
-        return Inertia::render('users/show', [
+        return Inertia::render('Users/Show', [
             'user' => $user->load(['roles', 'creator']),
             'meetings' => $meetings,
         ]);
@@ -293,10 +293,10 @@ class UserController extends BaseController
         }
 
         // Handle pagination
-        $perPage = $request->get('per_page', 10);
+        $perPage = $request->input('per_page', 10);
         $ipAddressHistories = $ipAddressHistoriesQuery->paginate((int)$perPage)->withQueryString();
 
-        return Inertia::render('users/all-logs', [
+        return Inertia::render('Users/AllLogs', [
             'signInHistories' => $ipAddressHistories,
             'filters' => [
                 'search' => $request->search ?? '',

@@ -20,8 +20,8 @@ class EmailTemplateController extends Controller
         }
 
         // Sorting
-        $sortField = $request->get('sort_field', 'created_at');
-        $sortDirection = $request->get('sort_direction', 'desc');
+        $sortField = $request->input('sort_field', 'created_at');
+        $sortDirection = $request->input('sort_direction', 'desc');
         $allowedSorts = ['name', 'created_at'];
         $allowedDirection = ['asc', 'desc'];
         if (!in_array($sortDirection, $allowedDirection)) {
@@ -32,10 +32,10 @@ class EmailTemplateController extends Controller
         }
 
         // Pagination
-        $perPage = $request->get('per_page', 10);
+        $perPage = $request->input('per_page', 10);
         $templates = $query->paginate((int)$perPage)->withQueryString();
 
-        return Inertia::render('email-templates/index', [
+        return Inertia::render('EmailTemplates/Index', [
             'templates' => $templates,
             'filters' => $request->only(['search', 'sort_field', 'sort_direction', 'per_page']),
         ]);
@@ -267,7 +267,7 @@ class EmailTemplateController extends Controller
             ];
         }
 
-        return Inertia::render('email-templates/show', [
+        return Inertia::render('EmailTemplates/Show', [
             'template' => $template,
             'languages' => $languages,
             'variables' => $variables,
