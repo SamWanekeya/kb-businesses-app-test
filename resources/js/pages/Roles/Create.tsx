@@ -1,6 +1,6 @@
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
-import { RolePermissionCheckboxGroup } from '@components/RolePermissionCheckboxGroup';
+import RolePermissionCheckboxGroup from '@components/RolePermissionCheckboxGroup';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
@@ -15,7 +15,6 @@ import { useTranslation } from 'react-i18next';
 export default function RolesCreate() {
     const { t: translate } = useTranslation();
     const { auth, permissions, globalSettings } = usePage().props;
-    const isDemo = globalSettings?.is_demo;
 
     const [label, setLabel] = useState('');
     const [description, setDescription] = useState('');
@@ -42,10 +41,8 @@ export default function RolesCreate() {
             return;
         }
 
-        if (!isDemo) {
-            setProcessing(true);
-            if (!globalSettings?.is_demo) toast.loading(translate('Creating role...'));
-        }
+        setProcessing(true);
+        const toastId = toast.loading(translate('Creating a new role...'));
 
         router.post(
             route('roles.store'),
@@ -55,19 +52,13 @@ export default function RolesCreate() {
                 permissions: selectedPermissions,
             },
             {
-                onSuccess: (page) => {
-                    if (!isDemo) {
-                        if (!globalSettings?.is_demo) toast.dismiss();
-                        if (page.props.flash.success) toast.success(translate(page.props.flash.success));
-                        else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
-                    }
+                onSuccess: () => {
+                    toast.dismiss(toastId);
                 },
-                onError: (errs) => {
-                    if (!isDemo) if (!globalSettings?.is_demo) toast.dismiss();
-                    if (typeof errs === 'object') setErrors(errs as Record<string, string>);
-                    else if (!isDemo) toast.error(t(errs));
+                onError: (errors) => {
+                    toast.dismiss(toastId);
+                    Object.values(errors).forEach((message) => toast.error(translate(message)));
                 },
-                onFinish: () => setProcessing(false),
             },
         );
     };
@@ -155,7 +146,7 @@ export default function RolesCreate() {
                         {translate('Cancel')}
                     </Button>
                     <Button type="submit" disabled={processing}>
-                        {processing && !isDemo ? translate('Saving...') : translate('Save')}
+                        {processing ? translate('Saving...') : translate('Save')}
                     </Button>
                 </div>
             </form>

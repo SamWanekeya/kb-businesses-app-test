@@ -45,7 +45,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
             },
             onError: (errors) => {
                 if (typeof errors === 'string') {
-                    toast.error(t(errors));
+                    toast.error(translate(errors));
                 }
             },
         });
@@ -66,7 +66,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                     },
                     onError: (errors) => {
                         if (typeof errors === 'string') {
-                            toast.error(t(errors));
+                            toast.error(translate(errors));
                         }
                     },
                 },
@@ -92,7 +92,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                 },
                 onError: (errors) => {
                     if (typeof errors === 'string') {
-                        toast.error(t(errors));
+                        toast.error(translate(errors));
                     }
                 },
             },

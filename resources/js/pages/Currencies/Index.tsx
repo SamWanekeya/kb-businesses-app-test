@@ -125,7 +125,7 @@ export default function Currencies() {
                         toast.dismiss();
                     }
                     if (typeof errors === 'string') {
-                        toast.error(t(errors));
+                        toast.error(translate(errors));
                     } else {
                         toast.error(translate('Failed to create currency: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
@@ -153,7 +153,7 @@ export default function Currencies() {
                         toast.dismiss();
                     }
                     if (typeof errors === 'string') {
-                        toast.error(t(errors));
+                        toast.error(translate(errors));
                     } else {
                         toast.error(translate('Failed to update currency: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
@@ -184,7 +184,7 @@ export default function Currencies() {
                     toast.dismiss();
                 }
                 if (typeof errors === 'string') {
-                    toast.error(t(errors));
+                    toast.error(translate(errors));
                 } else {
                     toast.error(translate('Failed to delete currency: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }

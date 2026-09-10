@@ -19,13 +19,8 @@ class ReportsController extends Controller
 {
     public function leads(Request $request)
     {
-        if (isDemo()) {
-            $dateFrom = $request->input('date_from', Carbon::parse('2024-01-04')->format('Y-m-d'));
-            $dateTo = $request->input('date_to', Carbon::parse('2025-09-09')->format('Y-m-d'));
-        } else {
-            $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
-            $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
-        }
+        $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
+        $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
         $dateFrom = Carbon::parse($dateFrom)->startOfDay();
         $dateTo = Carbon::parse($dateTo)->endOfDay();
 
@@ -93,13 +88,8 @@ class ReportsController extends Controller
 
     public function sales(Request $request)
     {
-        if (isDemo()) {
-            $dateFrom = $request->input('date_from', Carbon::parse('2024-01-04')->format('Y-m-d'));
-            $dateTo = $request->input('date_to', Carbon::parse('2025-09-09')->format('Y-m-d'));
-        } else {
-            $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
-            $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
-        }
+        $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
+        $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
 
         $dateTo = Carbon::parse($dateTo)->endOfDay();
 
@@ -185,13 +175,8 @@ class ReportsController extends Controller
 
     public function products(Request $request)
     {
-        if (isDemo()) {
-            $dateFrom = $request->input('date_from', Carbon::parse('2024-01-04')->format('Y-m-d'));
-            $dateTo = $request->input('date_to', Carbon::parse('2025-09-09')->format('Y-m-d'));
-        } else {
-            $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
-            $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
-        }
+        $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
+        $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
 
         $organizationId = Auth::user()->creatorId();
 
@@ -268,13 +253,8 @@ class ReportsController extends Controller
 
     public function customers(Request $request)
     {
-        if (isDemo()) {
-            $dateFrom = $request->input('date_from', Carbon::parse('2024-01-04')->format('Y-m-d'));
-            $dateTo = $request->input('date_to', Carbon::parse('2025-09-09')->format('Y-m-d'));
-        } else {
-            $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
-            $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
-        }
+        $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
+        $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
 
         $organizationId = Auth::user()->creatorId();
 
@@ -373,13 +353,8 @@ class ReportsController extends Controller
 
     public function projects(Request $request)
     {
-        if (isDemo()) {
-            $dateFrom = $request->input('date_from', Carbon::parse('2024-01-04')->format('Y-m-d'));
-            $dateTo = $request->input('date_to', Carbon::parse('2025-09-09')->format('Y-m-d'));
-        } else {
-            $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
-            $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
-        }
+        $dateFrom = $request->input('date_from', Carbon::now()->subMonth()->format('Y-m-d'));
+        $dateTo = $request->input('date_to', Carbon::now()->format('Y-m-d'));
 
         $organizationId = Auth::user()->creatorId();
 

@@ -103,54 +103,30 @@ class DashboardController extends Controller
         $pendingRequests = PlanRequest::where('status', 'pending')->count();
         $activeCoupons = Coupon::where('status', true)->count();
 
-        if (isDemo()) {
-            $demoRevenue = [4200, 5800, 3900, 7100, 6400, 8900, 7600, 9200, 8100, 10500, 9800, 12400];
-            $monthlyRevenue = [];
-            for ($i = 1; $i <= 12; $i++) {
-                $monthlyRevenue[] = [
-                    'month' => date('F Y', mktime(0, 0, 0, $i, 1, $revenueYear)),
-                    'short' => date('M', mktime(0, 0, 0, $i, 1, $revenueYear)),
-                    'revenue' => (float)$demoRevenue[$i - 1],
-                ];
-            }
-        } else {
-            $monthlyRevenue = [];
-            for ($i = 1; $i <= 12; $i++) {
-                $revenue = PlanOrder::where('status', 'approved')
-                    ->whereMonth('processed_at', $i)
-                    ->whereYear('processed_at', $revenueYear)
-                    ->sum('final_price') ?? 0;
-                $monthlyRevenue[] = [
-                    'month' => date('F Y', mktime(0, 0, 0, $i, 1, $revenueYear)),
-                    'short' => date('M', mktime(0, 0, 0, $i, 1, $revenueYear)),
-                    'revenue' => (float)$revenue,
-                ];
-            }
+        $monthlyRevenue = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $revenue = PlanOrder::where('status', 'approved')
+                ->whereMonth('processed_at', $i)
+                ->whereYear('processed_at', $revenueYear)
+                ->sum('final_price') ?? 0;
+            $monthlyRevenue[] = [
+                'month' => date('F Y', mktime(0, 0, 0, $i, 1, $revenueYear)),
+                'short' => date('M', mktime(0, 0, 0, $i, 1, $revenueYear)),
+                'revenue' => (float)$revenue,
+            ];
         }
 
-        if (isDemo()) {
-            $demoOrganizations = [3, 5, 4, 7, 6, 9, 8, 11, 7, 13, 10, 15];
-            $monthlyOrganizations = [];
-            for ($i = 1; $i <= 12; $i++) {
-                $monthlyOrganizations[] = [
-                    'month' => date('F Y', mktime(0, 0, 0, $i, 1, $organizationsYear)),
-                    'short' => date('M', mktime(0, 0, 0, $i, 1, $organizationsYear)),
-                    'count' => $demoOrganizations[$i - 1],
-                ];
-            }
-        } else {
-            $monthlyOrganizations = [];
-            for ($i = 1; $i <= 12; $i++) {
-                $count = User::where('type', 'organization')
-                    ->whereMonth('created_at', $i)
-                    ->whereYear('created_at', $organizationsYear)
-                    ->count();
-                $monthlyOrganizations[] = [
-                    'month' => date('F Y', mktime(0, 0, 0, $i, 1, $organizationsYear)),
-                    'short' => date('M', mktime(0, 0, 0, $i, 1, $organizationsYear)),
-                    'count' => $count,
-                ];
-            }
+        $monthlyOrganizations = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $count = User::where('type', 'organization')
+                ->whereMonth('created_at', $i)
+                ->whereYear('created_at', $organizationsYear)
+                ->count();
+            $monthlyOrganizations[] = [
+                'month' => date('F Y', mktime(0, 0, 0, $i, 1, $organizationsYear)),
+                'short' => date('M', mktime(0, 0, 0, $i, 1, $organizationsYear)),
+                'count' => $count,
+            ];
         }
 
         $firstOrganizationYear = User::where('type', 'organization')->min('created_at')
@@ -158,21 +134,17 @@ class DashboardController extends Controller
             : now()->year;
         $availableOrganizationYears = range(now()->year, $firstOrganizationYear);
 
-        if (isDemo()) {
-            $monthlyGrowth = 55;
-        } else {
-            $currentMonthOrganizations = User::where('type', 'organization')
-                ->whereMonth('created_at', now()->month)
-                ->whereYear('created_at', now()->year)
-                ->count();
-            $previousMonthOrganizations = User::where('type', 'organization')
-                ->whereMonth('created_at', now()->subMonth()->month)
-                ->whereYear('created_at', now()->subMonth()->year)
-                ->count();
-            $monthlyGrowth = $previousMonthOrganizations > 0
-                ? round((($currentMonthOrganizations - $previousMonthOrganizations) / $previousMonthOrganizations) * 100, 1)
-                : ($currentMonthOrganizations > 0 ? 100 : 0);
-        }
+        $currentMonthOrganizations = User::where('type', 'organization')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->count();
+        $previousMonthOrganizations = User::where('type', 'organization')
+            ->whereMonth('created_at', now()->subMonth()->month)
+            ->whereYear('created_at', now()->subMonth()->year)
+            ->count();
+        $monthlyGrowth = $previousMonthOrganizations > 0
+            ? round((($currentMonthOrganizations - $previousMonthOrganizations) / $previousMonthOrganizations) * 100, 1)
+            : ($currentMonthOrganizations > 0 ? 100 : 0);
 
         $availableYears = range(now()->year + 2, now()->year - 4);
 

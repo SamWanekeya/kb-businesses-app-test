@@ -106,7 +106,7 @@ export default function PlanOrdersPage() {
                             toast.dismiss();
                         }
                         if (typeof errors === 'string') {
-                            toast.error(t(errors));
+                            toast.error(translate(errors));
                         } else {
                             toast.error(translate('Failed to approve plan order: {{errors}}', { errors: Object.values(errors).join(', ') }));
                         }
@@ -147,7 +147,7 @@ export default function PlanOrdersPage() {
                         toast.dismiss();
                     }
                     if (typeof errors === 'string') {
-                        toast.error(t(errors));
+                        toast.error(translate(errors));
                     } else {
                         toast.error(translate('Failed to reject plan order: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }

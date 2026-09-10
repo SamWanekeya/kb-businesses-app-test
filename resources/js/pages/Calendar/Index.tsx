@@ -20,8 +20,7 @@ import { useTranslation } from 'react-i18next';
 export default function CalendarIndex() {
     const { t: translate, i18n } = useTranslation();
     const { csrf_token,events, auth, settings = {}, globalSettings = {} } = usePage().props;
-    const permissions = auth?.permissions || [];
-    const isDemo = globalSettings?.is_demo === '1' || globalSettings?.is_demo === true;
+
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [activeCalendar, setActiveCalendar] = useState<'local' | 'google'>('local');
@@ -600,7 +599,7 @@ export default function CalendarIndex() {
                                     (eventType === 'call' && useHasPermission('view-calls')) ||
                                     (eventType === 'task' && useHasPermission('view-project-tasks'));
 
-                                return hasViewPermission && !isDemo ? (
+                                return hasViewPermission ? (
                                     <div className="flex justify-end border-t pt-4">
                                         <Button
                                             onClick={() => {

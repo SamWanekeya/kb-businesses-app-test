@@ -90,7 +90,7 @@ export default function PlanRequestsPage() {
                             toast.dismiss();
                         }
                         if (typeof errors === 'string') {
-                            toast.error(t(errors));
+                            toast.error(translate(errors));
                         } else {
                             toast.error(translate('Failed to approve plan request: {{errors}}', { errors: Object.values(errors).join(', ') }));
                         }
@@ -121,7 +121,7 @@ export default function PlanRequestsPage() {
                             toast.dismiss();
                         }
                         if (typeof errors === 'string') {
-                            toast.error(t(errors));
+                            toast.error(translate(errors));
                         } else {
                             toast.error(translate('Failed to reject plan request: {{errors}}', { errors: Object.values(errors).join(', ') }));
                         }

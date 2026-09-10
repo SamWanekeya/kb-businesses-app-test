@@ -238,10 +238,6 @@ export default function ReturnOrderEdit() {
             return;
         }
 
-        if ((window as any).isDemo) {
-            router.put(route('return-orders.update', returnOrder.id), {});
-            return;
-        }
         setProcessing(true);
         toast.loading(translate('Saving...'));
 

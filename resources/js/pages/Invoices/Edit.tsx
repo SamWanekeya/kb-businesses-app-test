@@ -214,10 +214,6 @@ export default function InvoiceEdit() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!validate()) return;
-        if ((window as any).isDemo) {
-            router.put(route('invoices.update', invoice.id), {});
-            return;
-        }
         setSubmitting(true);
         toast.loading(translate('Updating invoice...'));
         const payload = {

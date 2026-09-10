@@ -165,10 +165,6 @@ export default function DeliveryOrderEdit() {
             return;
         }
 
-        if ((window as any).isDemo) {
-            router.put(route('delivery-orders.update', deliveryOrder.id), {});
-            return;
-        }
         setProcessing(true);
         toast.loading(translate('Saving...'));
 

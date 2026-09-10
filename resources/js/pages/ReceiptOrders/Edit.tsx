@@ -211,10 +211,6 @@ export default function ReceiptOrderEdit() {
             return;
         }
 
-        if ((window as any).isDemo) {
-            router.put(route('receipt-orders.update', receiptOrder.id), {});
-            return;
-        }
         setProcessing(true);
         toast.loading(translate('Updating...'));
 

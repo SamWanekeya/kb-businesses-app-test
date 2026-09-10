@@ -96,7 +96,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                     toast.dismiss();
                 }
                 if (typeof errors === 'string') {
-                    toast.error(t(errors));
+                    toast.error(translate(errors));
                 } else {
                     toast.error(translate('Failed to update profile: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
@@ -156,7 +156,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                     passwordInput.current?.focus();
                 }
                 if (typeof errors === 'string') {
-                    toast.error(t(errors));
+                    toast.error(translate(errors));
                 } else {
                     toast.error(translate('Failed to update password: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }

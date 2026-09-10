@@ -169,7 +169,7 @@ export default function CouponsPage() {
                         toast.dismiss();
                     }
                     if (typeof errors === 'string') {
-                        toast.error(t(errors));
+                        toast.error(translate(errors));
                     } else {
                         toast.error(translate('Failed to create coupon: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
@@ -197,7 +197,7 @@ export default function CouponsPage() {
                         toast.dismiss();
                     }
                     if (typeof errors === 'string') {
-                        toast.error(t(errors));
+                        toast.error(translate(errors));
                     } else {
                         toast.error(translate('Failed to update coupon: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }
@@ -228,7 +228,7 @@ export default function CouponsPage() {
                     toast.dismiss();
                 }
                 if (typeof errors === 'string') {
-                    toast.error(t(errors));
+                    toast.error(translate(errors));
                 } else {
                     toast.error(translate('Failed to delete coupon: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }
@@ -264,7 +264,7 @@ export default function CouponsPage() {
                         toast.dismiss();
                     }
                     if (typeof errors === 'string') {
-                        toast.error(t(errors));
+                        toast.error(translate(errors));
                     } else {
                         toast.error(translate('Failed to update coupon status: {{errors}}', { errors: Object.values(errors).join(', ') }));
                     }

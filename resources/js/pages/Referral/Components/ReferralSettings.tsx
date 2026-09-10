@@ -49,7 +49,7 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
                     toast.dismiss();
                 }
                 if (typeof errors === 'string') {
-                    toast.error(t(errors));
+                    toast.error(translate(errors));
                 } else {
                     toast.error(translate('Failed to update referral settings: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 }

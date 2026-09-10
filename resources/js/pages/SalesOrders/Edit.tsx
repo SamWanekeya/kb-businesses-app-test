@@ -358,10 +358,6 @@ export default function SalesOrderEdit() {
         if (!validate()) {
             return;
         }
-        if ((window as any).isDemo) {
-            router.put(route('sales-orders.update', salesOrder.id), {});
-            return;
-        }
         setSubmitting(true);
         const payload = {
             ...form,
