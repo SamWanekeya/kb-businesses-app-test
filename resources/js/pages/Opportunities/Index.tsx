@@ -168,18 +168,18 @@ export default function Opportunities() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting opportunity...'));
+        const toastId = toast.loading(translate('Deleting opportunity...'));
 
         router.delete(route('opportunities.destroy', currentItem.id), {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (activeView === 'kanban') {
                     loadKanbanData();
                 }
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
@@ -205,13 +205,13 @@ export default function Opportunities() {
             {},
             {
                 onSuccess: () => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (activeView === 'kanban') {
                         loadKanbanData();
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
@@ -719,10 +719,10 @@ export default function Opportunities() {
                                                     preserveState: true,
                                                     preserveScroll: true,
                                                     onSuccess: () => {
-                                                        toast.dismiss();
+                                                        toast.dismiss(toastId);
                                                     },
                                                     onError: () => {
-                                                        toast.dismiss();
+                                                        toast.dismiss(toastId);
                                                         toast.error(translate('Failed to update opportunity stage'));
                                                         setKanbanData(kanbanDataRef);
                                                     },

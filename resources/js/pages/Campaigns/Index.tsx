@@ -144,12 +144,12 @@ export default function Campaigns() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting campaign...'));
+        const toastId = toast.loading(translate('Deleting campaign...'));
 
         router.delete(route('campaigns.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (page.props.flash.success) {
                     toast.success(translate(page.props.flash.success));
                 } else if (page.props.flash.error) {
@@ -157,7 +157,7 @@ export default function Campaigns() {
                 }
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
@@ -176,7 +176,7 @@ export default function Campaigns() {
             {},
             {
                 onSuccess: (page) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -184,7 +184,7 @@ export default function Campaigns() {
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {

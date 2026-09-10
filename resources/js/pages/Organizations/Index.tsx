@@ -157,13 +157,13 @@ export default function Organizations() {
 
     const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
-            toast.loading(translate('Creating organization...'));
+            const toastId = toast.loading(translate('Creating organization...'));
 
             router.post(route('organizations.store'), formData, {
                 forceFormData: true,
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -171,7 +171,7 @@ export default function Organizations() {
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
@@ -180,12 +180,12 @@ export default function Organizations() {
                 },
             });
         } else if (formMode === 'edit') {
-            toast.loading(translate('Updating organization...'));
+            const toastId = toast.loading(translate('Updating organization...'));
 
             router.put(route('organizations.update', currentOrganization.id), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -193,7 +193,7 @@ export default function Organizations() {
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
@@ -205,12 +205,12 @@ export default function Organizations() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting organization...'));
+        const toastId = toast.loading(translate('Deleting organization...'));
 
         router.delete(route('organizations.destroy', currentOrganization.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (page.props.flash.success) {
                     toast.success(translate(page.props.flash.success));
                 } else if (page.props.flash.error) {
@@ -218,7 +218,7 @@ export default function Organizations() {
                 }
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
@@ -229,12 +229,12 @@ export default function Organizations() {
     };
 
     const handleResetPasswordConfirm = (data: { password: string }) => {
-        toast.loading(translate('Resetting password...'));
+        const toastId = toast.loading(translate('Resetting password...'));
 
         router.put(route('organizations.reset-password', currentOrganization.id), data, {
             onSuccess: (page) => {
                 setIsResetPasswordModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (page.props.flash.success) {
                     toast.success(translate(page.props.flash.success));
                 } else if (page.props.flash.error) {
@@ -242,7 +242,7 @@ export default function Organizations() {
                 }
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
@@ -253,14 +253,14 @@ export default function Organizations() {
     };
 
     const handleToggleStatus = (organization: any) => {
-        toast.loading(translate('Updating status...'));
+        const toastId = toast.loading(translate('Updating status...'));
 
         router.put(
             route('organizations.toggle-status', organization.id),
             {},
             {
                 onSuccess: (page) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -268,7 +268,7 @@ export default function Organizations() {
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
@@ -300,22 +300,22 @@ export default function Organizations() {
         setCurrentOrganization(organization);
 
         // Fetch available plans
-        toast.loading(translate('Loading plans...'));
+        const toastId = toast.loading(translate('Loading plans...'));
         fetch(route('organizations.plans', organization.id))
             .then((res) => res.json())
             .then((data) => {
                 setAvailablePlans(data.plans);
                 setIsUpgradePlanModalOpen(true);
-                toast.dismiss();
+                toast.dismiss(toastId);
             })
             .catch((err) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 toast.error(translate('Failed to load plans'));
             });
     };
 
     const handleUpgradePlanConfirm = (planId: number, duration: string) => {
-        toast.loading(translate('Upgrading plan...'));
+        const toastId = toast.loading(translate('Upgrading plan...'));
 
         // Use Inertia router to handle the request
         router.put(
@@ -327,7 +327,7 @@ export default function Organizations() {
             {
                 onSuccess: (page) => {
                     setIsUpgradePlanModalOpen(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -336,7 +336,7 @@ export default function Organizations() {
                     router.reload();
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {

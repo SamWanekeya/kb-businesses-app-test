@@ -200,7 +200,7 @@ export default function QuoteCreate() {
             return;
         }
 
-        toast.loading(translate('Creating quote...'));
+        const toastId = toast.loading(translate('Creating quote...'));
         post(route('quotes.store'), {
             onSuccess: () => toast.dismiss(),
             onError: () => toast.dismiss(),

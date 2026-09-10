@@ -189,7 +189,7 @@ export default function ProjectTasks() {
 
     const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
-            toast.loading(translate('Creating task...'));
+            const toastId = toast.loading(translate('Creating task...'));
             router.post(
                 route('project-tasks.store'),
                 {
@@ -199,12 +199,12 @@ export default function ProjectTasks() {
                 {
                     onSuccess: (page) => {
                         setIsFormModalOpen(false);
-                        toast.dismiss();
+                        toast.dismiss(toastId);
                         if (page.props.flash.success) toast.success(translate(page.props.flash.success));
                         else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
                     },
                     onError: (errors) => {
-                        toast.dismiss();
+                        toast.dismiss(toastId);
                         toast.error(
                             typeof errors === 'string'
                                 ? errors
@@ -214,16 +214,16 @@ export default function ProjectTasks() {
                 },
             );
         } else if (formMode === 'edit') {
-            toast.loading(translate('Updating task...'));
+            const toastId = toast.loading(translate('Updating task...'));
             router.put(route('project-tasks.update', currentItem.id), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) toast.success(translate(page.props.flash.success));
                     else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     toast.error(
                         typeof errors === 'string' ? errors : translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }),
                     );
@@ -233,16 +233,16 @@ export default function ProjectTasks() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting task...'));
+        const toastId = toast.loading(translate('Deleting task...'));
         router.delete(route('project-tasks.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (page.props.flash.success) toast.success(translate(page.props.flash.success));
                 else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 toast.error(
                     typeof errors === 'string' ? errors : translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }),
                 );
@@ -416,7 +416,7 @@ export default function ProjectTasks() {
                                         toast.error(translate('Permission denied.'));
                                         return;
                                     }
-                                    toast.loading(translate('Updating task status...'));
+                                    const toastId = toast.loading(translate('Updating task status...'));
                                     router.put(
                                         route('project-tasks.update-status', taskId),
                                         { task_status_id: status.id },
@@ -424,13 +424,13 @@ export default function ProjectTasks() {
                                             preserveState: true,
                                             preserveScroll: true,
                                             onSuccess: (page) => {
-                                                toast.dismiss();
+                                                toast.dismiss(toastId);
                                                 if (page.props.flash?.success) toast.success(translate(page.props.flash.success));
                                                 else if (page.props.flash?.error) toast.error(translate(page.props.flash.error));
                                                 router.reload();
                                             },
                                             onError: () => {
-                                                toast.dismiss();
+                                                toast.dismiss(toastId);
                                                 toast.error(translate('Failed to update task status'));
                                             },
                                         },

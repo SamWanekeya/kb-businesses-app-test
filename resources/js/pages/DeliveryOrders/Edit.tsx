@@ -166,7 +166,7 @@ export default function DeliveryOrderEdit() {
         }
 
         setProcessing(true);
-        toast.loading(translate('Saving...'));
+        const toastId = toast.loading(translate('Saving...'));
 
         router.put(
             route('delivery-orders.update', deliveryOrder.id),
@@ -177,10 +177,10 @@ export default function DeliveryOrderEdit() {
             },
             {
                 onSuccess: () => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                 },
                 onError: (errs: any) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     setErrors(errs);
                     setProcessing(false);
                 },

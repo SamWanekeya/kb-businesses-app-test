@@ -51,11 +51,11 @@ export default function CampaignEdit() {
             return;
         }
 
-        toast.loading(translate('Updating campaign...'));
+        const toastId = toast.loading(translate('Updating campaign...'));
         put(route('campaigns.update', campaign.id), {
             onSuccess: () => toast.dismiss(),
             onError: (errs) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 const first = Object.values(errs)[0] as string;
                 if (first) toast.error(first);
             },

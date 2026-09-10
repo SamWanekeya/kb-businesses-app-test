@@ -274,7 +274,7 @@ export default function InvoiceCreate() {
         e.preventDefault();
         if (!validate()) return;
         setSubmitting(true);
-        toast.loading(translate('Creating invoice...'));
+        const toastId = toast.loading(translate('Creating invoice...'));
         const payload = {
             ...form,
             products: form.products
@@ -286,11 +286,11 @@ export default function InvoiceCreate() {
         };
         router.post(route('invoices.store'), payload, {
             onSuccess: () => {
-                toast.dismiss();
+                toast.dismiss(toastId);
             },
             onError: (errs) => {
                 setSubmitting(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 const firstError = Object.values(errs)[0] as string;
                 if (firstError) toast.error(firstError);
                 setErrors(errs as Errors);

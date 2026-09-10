@@ -146,32 +146,32 @@ export default function Projects() {
 
     const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
-            toast.loading(translate('Creating project...'));
+            const toastId = toast.loading(translate('Creating project...'));
             router.post(route('projects.store'), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     page.props.flash.success
                         ? toast.success(translate(page.props.flash.success))
                         : page.props.flash.error && toast.error(translate(page.props.flash.error));
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     toast.error(typeof errors === 'string' ? errors : `Failed to create project: ${Object.values(errors).join(', ')}`);
                 },
             });
         } else if (formMode === 'edit') {
-            toast.loading(translate('Updating project...'));
+            const toastId = toast.loading(translate('Updating project...'));
             router.put(route('projects.update', currentItem.id), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     page.props.flash.success
                         ? toast.success(translate(page.props.flash.success))
                         : page.props.flash.error && toast.error(translate(page.props.flash.error));
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     toast.error(typeof errors === 'string' ? errors : `Failed to update project: ${Object.values(errors).join(', ')}`);
                 },
             });
@@ -179,17 +179,17 @@ export default function Projects() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting project...'));
+        const toastId = toast.loading(translate('Deleting project...'));
         router.delete(route('projects.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 page.props.flash.success
                     ? toast.success(translate(page.props.flash.success))
                     : page.props.flash.error && toast.error(translate(page.props.flash.error));
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 toast.error(typeof errors === 'string' ? errors : `Failed to delete project: ${Object.values(errors).join(', ')}`);
             },
         });
@@ -199,13 +199,13 @@ export default function Projects() {
         router.put(route('projects.toggle-status', currentItem.id), formData, {
             onSuccess: (page) => {
                 setIsStatusModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 page.props.flash.success
                     ? toast.success(translate(page.props.flash.success))
                     : page.props.flash.error && toast.error(translate(page.props.flash.error));
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 toast.error(
                     typeof errors === 'string' ? errors : translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }),
                 );

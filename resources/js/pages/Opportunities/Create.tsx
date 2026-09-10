@@ -127,7 +127,7 @@ export default function OpportunityCreate() {
             return;
         }
 
-        toast.loading(translate('Creating opportunity...'));
+        const toastId = toast.loading(translate('Creating opportunity...'));
         post(route('opportunities.store'), {
             onSuccess: () => toast.dismiss(),
             onError: () => toast.dismiss(),

@@ -128,7 +128,7 @@ export default function Announcements() {
                 toast.success(t(formMode === 'create' ? 'Announcement created successfully.' : 'Announcement updated successfully.'));
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
@@ -152,7 +152,7 @@ export default function Announcements() {
         router.put(route('announcements.toggle-status', currentItem.id), formData, {
             onSuccess: (page) => {
                 setIsStatusModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (page.props.flash.success) {
                     toast.success(translate(page.props.flash.success));
                 } else if (page.props.flash.error) {
@@ -160,7 +160,7 @@ export default function Announcements() {
                 }
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
@@ -177,13 +177,13 @@ export default function Announcements() {
             {},
             {
                 onSuccess: (page) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 },
             },

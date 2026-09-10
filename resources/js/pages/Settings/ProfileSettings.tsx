@@ -64,7 +64,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
         e.preventDefault();
 
         if (!globalSettings?.is_demo) {
-            toast.loading(translate('Updating profile...'));
+            const toastId = toast.loading(translate('Updating profile...'));
         }
         setProfileProcessing(true);
 
@@ -82,7 +82,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                 setProfileData((prev) => ({ ...prev, avatar: null }));
                 setProfileErrors({});
                 if (!globalSettings?.is_demo) {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                 }
                 if ((page.props as any).flash?.success) {
                     toast.success(t((page.props as any).flash.success));
@@ -93,7 +93,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
             onError: (errors) => {
                 setProfileErrors(errors as Record<string, string>);
                 if (!globalSettings?.is_demo) {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                 }
                 if (typeof errors === 'string') {
                     toast.error(translate(errors));
@@ -122,7 +122,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
         e.preventDefault();
 
         if (!globalSettings?.is_demo) {
-            toast.loading(translate('Updating password...'));
+            const toastId = toast.loading(translate('Updating password...'));
         }
         setPasswordProcessing(true);
 
@@ -133,7 +133,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                 setPasswordData({ current_password: '', password: '', password_confirmation: '' });
                 setPasswordErrors({});
                 if (!globalSettings?.is_demo) {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                 }
                 if ((page.props as any).flash?.success) {
                     toast.success(t((page.props as any).flash.success));
@@ -145,7 +145,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
             onError: (errors) => {
                 setPasswordErrors(errors as Record<string, string>);
                 if (!globalSettings?.is_demo) {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                 }
                 if ((errors as any).current_password) {
                     setPasswordData((prev) => ({ ...prev, current_password: '' }));

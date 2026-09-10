@@ -84,7 +84,7 @@ export default function PlanOrdersPage() {
     const handleAction = (action: string, item: any) => {
         if (action === 'approve') {
             if (!globalSettings?.is_demo) {
-                toast.loading(translate('Approving plan order...'));
+                const toastId = toast.loading(translate('Approving plan order...'));
             }
 
             router.post(
@@ -93,7 +93,7 @@ export default function PlanOrdersPage() {
                 {
                     onSuccess: (page) => {
                         if (!globalSettings?.is_demo) {
-                            toast.dismiss();
+                            toast.dismiss(toastId);
                         }
                         if (page.props.flash.success) {
                             toast.success(translate(page.props.flash.success));
@@ -103,7 +103,7 @@ export default function PlanOrdersPage() {
                     },
                     onError: (errors) => {
                         if (!globalSettings?.is_demo) {
-                            toast.dismiss();
+                            toast.dismiss(toastId);
                         }
                         if (typeof errors === 'string') {
                             toast.error(translate(errors));
@@ -124,7 +124,7 @@ export default function PlanOrdersPage() {
 
     const handleRejectConfirm = (notes: string) => {
         if (!globalSettings?.is_demo) {
-            toast.loading(translate('Rejecting plan order...'));
+            const toastId = toast.loading(translate('Rejecting plan order...'));
         }
 
         router.post(
@@ -134,7 +134,7 @@ export default function PlanOrdersPage() {
                 onSuccess: (page) => {
                     setIsRejectModalOpen(false);
                     if (!globalSettings?.is_demo) {
-                        toast.dismiss();
+                        toast.dismiss(toastId);
                     }
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
@@ -144,7 +144,7 @@ export default function PlanOrdersPage() {
                 },
                 onError: (errors) => {
                     if (!globalSettings?.is_demo) {
-                        toast.dismiss();
+                        toast.dismiss(toastId);
                     }
                     if (typeof errors === 'string') {
                         toast.error(translate(errors));

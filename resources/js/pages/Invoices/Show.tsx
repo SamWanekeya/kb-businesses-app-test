@@ -112,7 +112,7 @@ export default function InvoiceShow() {
             return;
         }
 
-        toast.loading(translate('Assigning sales order...'));
+        const toastId = toast.loading(translate('Assigning sales order...'));
 
         router.put(
             route('invoices.add-sales-order', invoice.id),
@@ -123,7 +123,7 @@ export default function InvoiceShow() {
                 onSuccess: (page) => {
                     setIsAssignSalesOrderModalOpen(false);
                     setSelectedSalesOrderId('empty');
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -131,7 +131,7 @@ export default function InvoiceShow() {
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
@@ -175,7 +175,7 @@ export default function InvoiceShow() {
     };
 
     const handleSendReminder = () => {
-        toast.loading(translate('Sending payment reminder...'));
+        const toastId = toast.loading(translate('Sending payment reminder...'));
         router.post(
             route('invoices.send-reminder', invoice.id),
             { type: 'email' },
@@ -183,7 +183,7 @@ export default function InvoiceShow() {
                 preserveScroll: true,
                 preserveState: false,
                 onSuccess: (page: any) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash?.success) toast.success(translate(page.props.flash.success));
                     else if (page.props.flash?.error) toast.error(translate(page.props.flash.error));
                     fetch(route('invoices.reminder-history', invoice.id))
@@ -192,7 +192,7 @@ export default function InvoiceShow() {
                         .catch(() => {});
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {

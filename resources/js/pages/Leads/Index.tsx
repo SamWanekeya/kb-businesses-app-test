@@ -198,18 +198,18 @@ export default function Leads() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting lead...'));
+        const toastId = toast.loading(translate('Deleting lead...'));
 
         router.delete(route('leads.destroy', currentItem.id), {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (activeView === 'kanban') {
                     loadKanbanData();
                 }
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
@@ -233,13 +233,13 @@ export default function Leads() {
             {},
             {
                 onSuccess: () => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (activeView === 'kanban') {
                         loadKanbanData();
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
@@ -252,19 +252,19 @@ export default function Leads() {
 
     const handleConvertSubmit = (formData: any) => {
         const route_name = convertType === 'account' ? 'leads.convert-to-account' : 'leads.convert-to-contact';
-        toast.loading(translate(`Converting lead to ${convertType}...`));
+        const toastId = toast.loading(translate(`Converting lead to ${convertType}...`));
 
         router.put(route(route_name, currentItem.id), formData, {
             // router.post(route(route_name, currentItem.id), formData, {
             onSuccess: (page) => {
                 setIsConvertModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (activeView === 'kanban') {
                     loadKanbanData();
                 }
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
@@ -761,17 +761,17 @@ export default function Leads() {
                                                 .flatMap((c: any) => c.items)
                                                 .find((l: any) => l.id.toString() === leadId);
                                             if (currentLead) {
-                                                toast.loading(translate('Updating...'));
+                                                const toastId = toast.loading(translate('Updating...'));
                                                 router.put(
                                                     route('leads.update', leadId),
                                                     { ...(currentLead as any), lead_status_id: status.id },
                                                     {
                                                         onSuccess: () => {
-                                                            toast.dismiss();
+                                                            toast.dismiss(toastId);
                                                             loadKanbanData();
                                                         },
                                                         onError: () => {
-                                                            toast.dismiss();
+                                                            toast.dismiss(toastId);
                                                             toast.error(translate('Failed to update lead status'));
                                                         },
                                                     },

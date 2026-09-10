@@ -212,7 +212,7 @@ export default function ReceiptOrderEdit() {
         }
 
         setProcessing(true);
-        toast.loading(translate('Updating...'));
+        const toastId = toast.loading(translate('Updating...'));
 
         router.put(
             route('receipt-orders.update', receiptOrder.id),
@@ -227,10 +227,10 @@ export default function ReceiptOrderEdit() {
             },
             {
                 onSuccess: () => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                 },
                 onError: (errs: any) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     setErrors(errs);
                     setProcessing(false);
                 },

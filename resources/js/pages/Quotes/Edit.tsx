@@ -208,7 +208,7 @@ export default function QuoteEdit() {
             return;
         }
 
-        toast.loading(translate('Updating quote...'));
+        const toastId = toast.loading(translate('Updating quote...'));
         put(route('quotes.update', quote.id), {
             onSuccess: () => toast.dismiss(),
             onError: () => toast.dismiss(),

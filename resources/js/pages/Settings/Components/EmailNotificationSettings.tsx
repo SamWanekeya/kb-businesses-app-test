@@ -51,12 +51,12 @@ export default function EmailNotificationSettings() {
     const handleSave = (e: React.FormEvent) => {
         e.preventDefault();
         setProcessing(true);
-        toast.loading(translate('Saving email notification settings...'));
+        const toastId = toast.loading(translate('Saving email notification settings...'));
         router.post(route('settings.email-notifications.update'), notifications, {
             preserveScroll: true,
             onSuccess: (page) => {
                 setProcessing(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 const successMessage = page.props.flash?.success;
                 const errorMessage = page.props.flash?.error;
 

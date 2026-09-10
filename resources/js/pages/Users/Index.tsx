@@ -124,12 +124,12 @@ export default function Users() {
         }
 
         if (formMode === 'create') {
-            toast.loading(translate('Creating user...'));
+            const toastId = toast.loading(translate('Creating user...'));
 
             router.post(route('users.store'), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -139,7 +139,7 @@ export default function Users() {
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
@@ -148,12 +148,12 @@ export default function Users() {
                 },
             });
         } else if (formMode === 'edit') {
-            toast.loading(translate('Updating user...'));
+            const toastId = toast.loading(translate('Updating user...'));
 
             router.put(route('users.update', currentItem.id), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -163,7 +163,7 @@ export default function Users() {
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
@@ -175,12 +175,12 @@ export default function Users() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting user...'));
+        const toastId = toast.loading(translate('Deleting user...'));
 
         router.delete(route('users.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (page.props.flash.success) {
                     toast.success(translate(page.props.flash.success));
                 } else if (page.props.flash.error) {
@@ -190,7 +190,7 @@ export default function Users() {
                 }
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
@@ -201,12 +201,12 @@ export default function Users() {
     };
 
     const handleResetPasswordConfirm = (data: { password: string; password_confirmation: string }) => {
-        toast.loading(translate('Resetting password...'));
+        const toastId = toast.loading(translate('Resetting password...'));
 
         router.put(route('users.reset-password', currentItem.id), data, {
             onSuccess: (page) => {
                 setIsResetPasswordModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (page.props.flash.success) {
                     toast.success(translate(page.props.flash.success));
                 } else if (page.props.flash.error) {
@@ -214,7 +214,7 @@ export default function Users() {
                 }
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
@@ -233,7 +233,7 @@ export default function Users() {
             {},
             {
                 onSuccess: (page) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -241,7 +241,7 @@ export default function Users() {
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {

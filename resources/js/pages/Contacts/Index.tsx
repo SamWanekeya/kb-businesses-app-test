@@ -133,12 +133,12 @@ export default function Contacts() {
 
     const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
-            toast.loading(translate('Creating contact...'));
+            const toastId = toast.loading(translate('Creating contact...'));
 
             router.post(route('contacts.store'), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -146,7 +146,7 @@ export default function Contacts() {
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
@@ -155,12 +155,12 @@ export default function Contacts() {
                 },
             });
         } else if (formMode === 'edit') {
-            toast.loading(translate('Updating contact...'));
+            const toastId = toast.loading(translate('Updating contact...'));
 
             router.put(route('contacts.update', currentItem.id), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -168,7 +168,7 @@ export default function Contacts() {
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
@@ -180,12 +180,12 @@ export default function Contacts() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting contact...'));
+        const toastId = toast.loading(translate('Deleting contact...'));
 
         router.delete(route('contacts.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (page.props.flash.success) {
                     toast.success(translate(page.props.flash.success));
                 } else if (page.props.flash.error) {
@@ -193,7 +193,7 @@ export default function Contacts() {
                 }
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
@@ -212,7 +212,7 @@ export default function Contacts() {
             {},
             {
                 onSuccess: (page) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -220,7 +220,7 @@ export default function Contacts() {
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {

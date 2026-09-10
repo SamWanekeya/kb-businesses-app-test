@@ -105,7 +105,7 @@ export default function AccountCreate() {
             Object.entries(clientErrors).forEach(([k, v]) => setError(k as any, v));
             return;
         }
-        toast.loading(translate('Creating account...'));
+        const toastId = toast.loading(translate('Creating account...'));
         post(route('accounts.store'), {
             onSuccess: () => toast.dismiss(),
             onError: () => toast.dismiss(),

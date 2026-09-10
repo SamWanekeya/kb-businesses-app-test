@@ -148,12 +148,12 @@ export default function Cases() {
 
     const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
-            toast.loading(translate('Creating case...'));
+            const toastId = toast.loading(translate('Creating case...'));
 
             router.post(route('cases.store'), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -163,7 +163,7 @@ export default function Cases() {
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
@@ -172,12 +172,12 @@ export default function Cases() {
                 },
             });
         } else if (formMode === 'edit') {
-            toast.loading(translate('Updating case...'));
+            const toastId = toast.loading(translate('Updating case...'));
 
             router.put(route('cases.update', currentItem.id), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -187,7 +187,7 @@ export default function Cases() {
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
@@ -199,12 +199,12 @@ export default function Cases() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting case...'));
+        const toastId = toast.loading(translate('Deleting case...'));
 
         router.delete(route('cases.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (page.props.flash.success) {
                     toast.success(translate(page.props.flash.success));
                 } else if (page.props.flash.error) {
@@ -214,7 +214,7 @@ export default function Cases() {
                 }
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
@@ -228,7 +228,7 @@ export default function Cases() {
         router.put(route('cases.toggle-status', currentItem.id), formData, {
             onSuccess: (page) => {
                 setIsStatusModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (page.props.flash.success) {
                     toast.success(translate(page.props.flash.success));
                 } else if (page.props.flash.error) {
@@ -236,7 +236,7 @@ export default function Cases() {
                 }
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
@@ -255,7 +255,7 @@ export default function Cases() {
             {},
             {
                 onSuccess: (page) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -263,7 +263,7 @@ export default function Cases() {
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {

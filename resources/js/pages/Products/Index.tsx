@@ -135,15 +135,15 @@ export default function Products() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting product...'));
+        const toastId = toast.loading(translate('Deleting product...'));
 
         router.delete(route('products.destroy', currentItem.id), {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {

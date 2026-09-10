@@ -211,7 +211,7 @@ export default function ReturnOrderCreate() {
         }
 
         setProcessing(true);
-        toast.loading(translate('Saving...'));
+        const toastId = toast.loading(translate('Saving...'));
 
         router.post(
             route('return-orders.store'),
@@ -226,10 +226,10 @@ export default function ReturnOrderCreate() {
             },
             {
                 onSuccess: () => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                 },
                 onError: (errs: any) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     setErrors(errs);
                     setProcessing(false);
                 },

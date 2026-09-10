@@ -120,15 +120,15 @@ export default function ReceiptOrders() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting receipt order...'));
+        const toastId = toast.loading(translate('Deleting receipt order...'));
 
         router.delete(route('receipt-orders.destroy', currentItem.id), {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
@@ -140,7 +140,7 @@ export default function ReceiptOrders() {
                 setIsStatusModalOpen(false);
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
@@ -159,13 +159,13 @@ export default function ReceiptOrders() {
             {},
             {
                 onSuccess: (page) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 },
             },

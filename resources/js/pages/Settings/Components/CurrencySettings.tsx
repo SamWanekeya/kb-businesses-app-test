@@ -122,14 +122,14 @@ export default function CurrencySettings() {
     const submitCurrencySettings = (e: React.FormEvent) => {
         e.preventDefault();
 
-        toast.loading(translate('Saving currency settings...'));
+        const toastId = toast.loading(translate('Saving currency settings...'));
         setProcessing(true);
 
         router.post(route('settings.currency.update'), currencySettings, {
             preserveScroll: true,
             onSuccess: (page) => {
                 setProcessing(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 const successMessage = page.props.flash?.success;
                 const errorMessage = page.props.flash?.error;
 
@@ -143,7 +143,7 @@ export default function CurrencySettings() {
             },
             onError: (errors) => {
                 setProcessing(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to update currency settings');
                 toast.error(errorMessage);
             },

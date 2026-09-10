@@ -203,7 +203,7 @@ export default function ReceiptOrderCreate() {
         }
 
         setProcessing(true);
-        toast.loading(translate('Saving...'));
+        const toastId = toast.loading(translate('Saving...'));
 
         router.post(
             route('receipt-orders.store'),
@@ -218,10 +218,10 @@ export default function ReceiptOrderCreate() {
             },
             {
                 onSuccess: () => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                 },
                 onError: (errs: any) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     setErrors(errs);
                     setProcessing(false);
                 },

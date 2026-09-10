@@ -135,17 +135,17 @@ export default function Calls() {
         }
 
         if (formMode === 'create') {
-            toast.loading(translate('Creating call...'));
+            const toastId = toast.loading(translate('Creating call...'));
             router.post(route('calls.store'), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     const errorMessages = Object.entries(errors)
                         .map(([field, messages]) => {
                             const messageArray = Array.isArray(messages) ? messages : [messages];
@@ -156,11 +156,11 @@ export default function Calls() {
                 },
             });
         } else if (formMode === 'edit') {
-            toast.loading(translate('Updating call...'));
+            const toastId = toast.loading(translate('Updating call...'));
             router.put(route('calls.update', currentItem.id), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -168,7 +168,7 @@ export default function Calls() {
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     const errorMessages = Object.entries(errors)
                         .map(([field, messages]) => {
                             const messageArray = Array.isArray(messages) ? messages : [messages];
@@ -182,11 +182,11 @@ export default function Calls() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting call...'));
+        const toastId = toast.loading(translate('Deleting call...'));
         router.delete(route('calls.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (page.props.flash.success) {
                     toast.success(translate(page.props.flash.success));
                 } else if (page.props.flash.error) {
@@ -194,7 +194,7 @@ export default function Calls() {
                 }
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 toast.error(translate('Failed to delete call: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
@@ -204,7 +204,7 @@ export default function Calls() {
         router.put(route('calls.toggle-status', currentItem.id), formData, {
             onSuccess: (page) => {
                 setIsStatusModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (page.props.flash.success) {
                     toast.success(translate(page.props.flash.success));
                 } else if (page.props.flash.error) {
@@ -212,7 +212,7 @@ export default function Calls() {
                 }
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 toast.error(translate('Failed to update call status: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
@@ -226,13 +226,13 @@ export default function Calls() {
             {},
             {
                 onSuccess: (page) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     toast.error(translate('Failed to update call status: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 },
             },

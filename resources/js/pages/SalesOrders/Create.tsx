@@ -354,11 +354,11 @@ export default function SalesOrderCreate() {
         };
         router.post(route('sales-orders.store'), payload, {
             onSuccess: () => {
-                toast.dismiss();
+                toast.dismiss(toastId);
             },
             onError: (errs) => {
                 setSubmitting(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 setErrors(errs as Errors);
             },
         });

@@ -29,14 +29,14 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
         e.preventDefault();
 
         if (!globalSettings?.is_demo) {
-            toast.loading(translate('Updating referral settings...'));
+            const toastId = toast.loading(translate('Updating referral settings...'));
         }
 
         post(route('referral.settings.update'), {
             preserveScroll: true,
             onSuccess: (page) => {
                 if (!globalSettings?.is_demo) {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                 }
                 if (page.props.flash.success) {
                     toast.success(translate(page.props.flash.success));
@@ -46,7 +46,7 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
             },
             onError: (errors) => {
                 if (!globalSettings?.is_demo) {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                 }
                 if (typeof errors === 'string') {
                     toast.error(translate(errors));

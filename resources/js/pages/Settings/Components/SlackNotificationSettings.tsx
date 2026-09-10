@@ -69,13 +69,13 @@ export default function SlackNotificationSettings() {
             slack_webhook_url: slackWebhookUrl,
         };
 
-        toast.loading(translate('Saving slack settings...'));
+        const toastId = toast.loading(translate('Saving slack settings...'));
 
         router.post(route('settings.slack-notifications.update'), data, {
             preserveScroll: true,
             onSuccess: (page) => {
                 setProcessing(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 const successMessage = page.props.flash?.success;
                 const errorMessage = page.props.flash?.error;
 
@@ -101,7 +101,7 @@ export default function SlackNotificationSettings() {
 
         setIsSendingMessage(true);
         setTestMessageResult(null);
-        toast.loading(translate('Sending test message...'));
+        const toastId = toast.loading(translate('Sending test message...'));
 
         router.post(
             route('settings.slack.test'),
@@ -110,7 +110,7 @@ export default function SlackNotificationSettings() {
                 preserveScroll: true,
                 onSuccess: (page) => {
                     setIsSendingMessage(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     const successMessage = page.props.flash?.success;
                     const errorMessage = page.props.flash?.error;
 
@@ -132,7 +132,7 @@ export default function SlackNotificationSettings() {
                 },
                 onError: (errors) => {
                     setIsSendingMessage(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to send test message');
                     toast.error(errorMessage);
                     setTestMessageResult({ success: false, message: errorMessage });

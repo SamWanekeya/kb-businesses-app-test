@@ -134,7 +134,7 @@ export default function Plans({
 
     // Organization plan actions
     const handlePlanRequest = (planId: number) => {
-        toast.loading(translate('Submitting plan request...'));
+        const toastId = toast.loading(translate('Submitting plan request...'));
 
         router.post(
             route('plans.request'),
@@ -144,7 +144,7 @@ export default function Plans({
             },
             {
                 onSuccess: (page) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -152,7 +152,7 @@ export default function Plans({
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
@@ -164,7 +164,7 @@ export default function Plans({
     };
 
     const handleStartTrial = (planId: number) => {
-        toast.loading(translate('Starting trial...'));
+        const toastId = toast.loading(translate('Starting trial...'));
 
         router.post(
             route('plans.trial'),
@@ -173,7 +173,7 @@ export default function Plans({
             },
             {
                 onSuccess: (page) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -181,7 +181,7 @@ export default function Plans({
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
@@ -611,7 +611,7 @@ export default function Plans({
                 onSuccess: (page) => {
                     // Update local state
                     setPlans(plans.map((plan) => (plan.id === planId ? { ...plan, status: !plan.status } : plan)));
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -635,7 +635,7 @@ export default function Plans({
                 onSuccess: (page) => {
                     setIsDeleteModalOpen(false);
                     setPlanToDelete(null);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {

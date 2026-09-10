@@ -116,15 +116,15 @@ export default function DeliveryOrders() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting delivery order...'));
+        const toastId = toast.loading(translate('Deleting delivery order...'));
 
         router.delete(route('delivery-orders.destroy', currentItem.id), {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 toast.error(translate('Failed to delete delivery order: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
@@ -149,20 +149,20 @@ export default function DeliveryOrders() {
             cancelled: 'pending',
         };
         const newStatus = statusMap[deliveryOrder.status as keyof typeof statusMap] || 'pending';
-        toast.loading(translate('Setting delivery order to {{status}}...', { status: newStatus }));
+        const toastId = toast.loading(translate('Setting delivery order to {{status}}...', { status: newStatus }));
 
         router.put(
             route('delivery-orders.toggle-status', deliveryOrder.id),
             {},
             {
                 onSuccess: (page) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     toast.error(translate('Failed to update delivery order status: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 },
             },

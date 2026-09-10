@@ -126,7 +126,7 @@ export default function OpportunityEdit() {
             return;
         }
 
-        toast.loading(translate('Updating opportunity...'));
+        const toastId = toast.loading(translate('Updating opportunity...'));
         put(route('opportunities.update', opportunity.id), {
             onSuccess: () => toast.dismiss(),
             onError: () => toast.dismiss(),

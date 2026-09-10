@@ -125,14 +125,14 @@ export default function Quotes() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting quote...'));
+        const toastId = toast.loading(translate('Deleting quote...'));
         router.delete(route('quotes.destroy', currentItem.id), {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
@@ -156,10 +156,10 @@ export default function Quotes() {
         router.put(route('quotes.toggle-status', currentItem.id), formData, {
             onSuccess: () => {
                 setIsStatusModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });

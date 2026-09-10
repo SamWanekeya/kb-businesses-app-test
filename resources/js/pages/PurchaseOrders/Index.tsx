@@ -129,15 +129,15 @@ export default function PurchaseOrders() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting purchase order...'));
+        const toastId = toast.loading(translate('Deleting purchase order...'));
 
         router.delete(route('purchase-orders.destroy', currentItem.id), {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
@@ -155,20 +155,20 @@ export default function PurchaseOrders() {
     };
 
     const handleToggleStatus = (purchaseOrder: any) => {
-        toast.loading(translate('Updating purchase order status...'));
+        const toastId = toast.loading(translate('Updating purchase order status...'));
 
         router.put(
             route('purchase-orders.toggle-status', purchaseOrder.id),
             {},
             {
                 onSuccess: (page) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 },
             },

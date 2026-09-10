@@ -97,14 +97,14 @@ export default function ReturnOrders() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting return order...'));
+        const toastId = toast.loading(translate('Deleting return order...'));
         router.delete(route('return-orders.destroy', currentItem.id), {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 toast.error(
                     translate('Failed to delete: {{errors}}', {
                         errors: Object.values(errors).join(', '),

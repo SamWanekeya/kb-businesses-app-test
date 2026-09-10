@@ -47,14 +47,14 @@ export default function EmailSettings() {
     const submitEmailSettings = (e: React.FormEvent) => {
         e.preventDefault();
 
-        toast.loading(translate('Saving email settings...'));
+        const toastId = toast.loading(translate('Saving email settings...'));
         setProcessing(true);
 
         router.post(route('settings.email.update'), emailSettings, {
             preserveScroll: true,
             onSuccess: (page) => {
                 setProcessing(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 const successMessage = page.props.flash?.success;
                 const errorMessage = page.props.flash?.error;
 
@@ -68,7 +68,7 @@ export default function EmailSettings() {
             },
             onError: (errors) => {
                 setProcessing(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to save email settings');
                 toast.error(errorMessage);
             },
@@ -82,7 +82,7 @@ export default function EmailSettings() {
 
         setIsSending(true);
         setTestResult(null);
-        toast.loading(translate('Sending test email...'));
+        const toastId = toast.loading(translate('Sending test email...'));
 
         router.post(
             route('settings.email.test'),
@@ -91,7 +91,7 @@ export default function EmailSettings() {
                 preserveScroll: true,
                 onSuccess: (page) => {
                     setIsSending(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     const successMessage = page.props.flash?.success;
                     const errorMessage = page.props.flash?.error;
 
@@ -114,7 +114,7 @@ export default function EmailSettings() {
                 },
                 onError: (errors) => {
                     setIsSending(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to send test email');
                     toast.error(errorMessage);
                     setTestResult({ success: false, message: errorMessage });

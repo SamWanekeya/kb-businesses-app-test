@@ -322,7 +322,7 @@ export default function ProjectGantt() {
 
     const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
-            toast.loading(translate('Creating task...'));
+            const toastId = toast.loading(translate('Creating task...'));
 
             const taskData = {
                 ...formData,
@@ -332,14 +332,14 @@ export default function ProjectGantt() {
             router.post(route('project-tasks.store'), taskData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     }
                     router.reload();
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {

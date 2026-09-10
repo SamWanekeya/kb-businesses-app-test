@@ -17,18 +17,18 @@ export default function AnnouncementShow() {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting announcement...'));
+        const toastId = toast.loading(translate('Deleting announcement...'));
 
         router.delete(route('announcements.destroy', announcement.id), {
             onSuccess: (page) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (page.props.flash.success) {
                     toast.success(translate(page.props.flash.success));
                 }
                 router.get(route('announcements.index'));
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {

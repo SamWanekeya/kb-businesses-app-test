@@ -98,32 +98,32 @@ export default function Meetings() {
         if (formData.assigned_to) formData.assigned_to = String(formData.assigned_to);
 
         if (formMode === 'create') {
-            toast.loading(translate('Creating meeting...'));
+            const toastId = toast.loading(translate('Creating meeting...'));
             router.post(route('meetings.store'), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) toast.success(translate(page.props.flash.success));
                     else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
                     else if (page.props.flash.warning) toast.warning(translate(page.props.flash.warning));
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     toast.error(translate('Failed to create: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 },
             });
         } else if (formMode === 'edit') {
-            toast.loading(translate('Updating meeting...'));
+            const toastId = toast.loading(translate('Updating meeting...'));
             router.put(route('meetings.update', currentItem.id), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) toast.success(translate(page.props.flash.success));
                     else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
                     else if (page.props.flash.warning) toast.warning(translate(page.props.flash.warning));
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
                 },
             });
@@ -131,17 +131,17 @@ export default function Meetings() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting meeting...'));
+        const toastId = toast.loading(translate('Deleting meeting...'));
         router.delete(route('meetings.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (page.props.flash.success) toast.success(translate(page.props.flash.success));
                 else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
                 else if (page.props.flash.warning) toast.warning(translate(page.props.flash.warning));
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });
@@ -151,12 +151,12 @@ export default function Meetings() {
         router.put(route('meetings.toggle-status', currentItem.id), formData, {
             onSuccess: (page) => {
                 setIsStatusModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (page.props.flash.success) toast.success(translate(page.props.flash.success));
                 else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 toast.error(translate('Failed to update: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });

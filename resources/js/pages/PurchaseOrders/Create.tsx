@@ -180,11 +180,11 @@ export default function PurchaseOrderCreate() {
             return;
         }
 
-        toast.loading(translate('Creating purchase order...'));
+        const toastId = toast.loading(translate('Creating purchase order...'));
         post(route('purchase-orders.store'), {
             onSuccess: () => toast.dismiss(),
             onError: () => {
-                toast.dismiss();
+                toast.dismiss(toastId);
             },
         });
     };

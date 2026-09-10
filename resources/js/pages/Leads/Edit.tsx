@@ -77,7 +77,7 @@ export default function LeadEdit() {
             return;
         }
 
-        toast.loading(translate('Updating lead...'));
+        const toastId = toast.loading(translate('Updating lead...'));
         put(route('leads.update', lead.id), {
             onSuccess: () => toast.dismiss(),
             onError: () => toast.dismiss(),

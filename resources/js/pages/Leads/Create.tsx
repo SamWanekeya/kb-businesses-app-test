@@ -78,7 +78,7 @@ export default function LeadCreate() {
             return;
         }
 
-        toast.loading(translate('Creating lead...'));
+        const toastId = toast.loading(translate('Creating lead...'));
 
         post(route('leads.store'), {
             onSuccess: () => toast.dismiss(),

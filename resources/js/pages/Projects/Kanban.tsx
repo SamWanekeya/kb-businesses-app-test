@@ -106,7 +106,7 @@ export default function ProjectKanban() {
 
     const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
-            toast.loading(translate('Creating task...'));
+            const toastId = toast.loading(translate('Creating task...'));
 
             const taskData = {
                 ...formData,
@@ -117,14 +117,14 @@ export default function ProjectKanban() {
             router.post(route('project-tasks.store'), taskData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     }
                     router.reload();
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
@@ -138,7 +138,7 @@ export default function ProjectKanban() {
                 return;
             }
 
-            toast.loading(translate('Updating task...'));
+            const toastId = toast.loading(translate('Updating task...'));
 
             // Ensure task_status_id is properly formatted
             const updateData = {
@@ -149,14 +149,14 @@ export default function ProjectKanban() {
             router.put(route('project-tasks.update', currentItem.id), updateData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     }
                     router.reload();
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
@@ -168,19 +168,19 @@ export default function ProjectKanban() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting task...'));
+        const toastId = toast.loading(translate('Deleting task...'));
 
         router.delete(route('project-tasks.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (page.props.flash.success) {
                     toast.success(translate(page.props.flash.success));
                 }
                 router.reload();
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
@@ -318,7 +318,7 @@ export default function ProjectKanban() {
                                         .flatMap((column: any) => column.tasks)
                                         .find((task: any) => task.id.toString() === taskId);
                                     if (currentTask) {
-                                        toast.loading(translate('Updating task status...'));
+                                        const toastId = toast.loading(translate('Updating task status...'));
                                         router.put(
                                             route('project-tasks.update-status', taskId),
                                             { task_status_id: status.id },
@@ -326,12 +326,12 @@ export default function ProjectKanban() {
                                                 preserveState: true,
                                                 preserveScroll: true,
                                                 onSuccess: (page) => {
-                                                    toast.dismiss();
+                                                    toast.dismiss(toastId);
                                                     if (page.props.flash?.success) toast.success(translate(page.props.flash.success));
                                                     router.reload();
                                                 },
                                                 onError: () => {
-                                                    toast.dismiss();
+                                                    toast.dismiss(toastId);
                                                     toast.error(translate('Failed to update task status'));
                                                 },
                                             },

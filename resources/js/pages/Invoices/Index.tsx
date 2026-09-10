@@ -146,15 +146,15 @@ export default function Invoices() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting invoice...'));
+        const toastId = toast.loading(translate('Deleting invoice...'));
 
         router.delete(route('invoices.destroy', currentItem.id), {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
@@ -184,7 +184,7 @@ export default function Invoices() {
             {},
             {
                 onSuccess: (page) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
                     } else if (page.props.flash.error) {
@@ -192,7 +192,7 @@ export default function Invoices() {
                     }
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
@@ -218,17 +218,17 @@ export default function Invoices() {
     };
 
     const handleSendReminder = (invoice: any, type: string) => {
-        toast.loading(translate('Sending payment reminder...'));
+        const toastId = toast.loading(translate('Sending payment reminder...'));
 
         router.post(
             route('invoices.send-reminder', invoice.id),
             { type },
             {
                 onSuccess: () => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                 },
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {
@@ -251,7 +251,7 @@ export default function Invoices() {
     };
 
     const handleApprovePayment = async (payment: any) => {
-        toast.loading(translate('Approving payment...'));
+        const toastId = toast.loading(translate('Approving payment...'));
         try {
             const response = await fetch(route('invoice-payments.approve', payment.id), {
                 method: 'POST',
@@ -261,7 +261,7 @@ export default function Invoices() {
                 },
             });
             const data = await response.json();
-            toast.dismiss();
+            toast.dismiss(toastId);
             if (data.success) {
                 if (data.message) {
                     toast.success(translate(data.message));
@@ -277,7 +277,7 @@ export default function Invoices() {
                 }
             }
         } catch (error) {
-            toast.dismiss();
+            toast.dismiss(toastId);
             toast.error(translate('Failed to approve payment'));
         }
     };
@@ -288,7 +288,7 @@ export default function Invoices() {
     };
 
     const handleRejectConfirm = async () => {
-        toast.loading(translate('Rejecting payment...'));
+        const toastId = toast.loading(translate('Rejecting payment...'));
         try {
             const response = await fetch(route('invoice-payments.reject', currentPayment.id), {
                 method: 'POST',
@@ -299,7 +299,7 @@ export default function Invoices() {
                 body: JSON.stringify({ notes: rejectNotes }),
             });
             const data = await response.json();
-            toast.dismiss();
+            toast.dismiss(toastId);
             if (data.success) {
                 if (data.message) {
                     toast.success(translate(data.message));
@@ -317,7 +317,7 @@ export default function Invoices() {
                 }
             }
         } catch (error) {
-            toast.dismiss();
+            toast.dismiss(toastId);
             toast.error(translate('Failed to reject payment'));
         }
     };

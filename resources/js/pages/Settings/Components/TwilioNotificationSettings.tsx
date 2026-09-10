@@ -79,13 +79,13 @@ export default function TwilioNotificationSettings() {
             ...twilioSettings,
         };
 
-        toast.loading(translate('Saving twilio settings...'));
+        const toastId = toast.loading(translate('Saving twilio settings...'));
 
         router.post(route('settings.twilio-notifications.update'), data, {
             preserveScroll: true,
             onSuccess: (page) => {
                 setProcessing(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 const successMessage = page.props.flash?.success;
                 const errorMessage = page.props.flash?.error;
 
@@ -113,7 +113,7 @@ export default function TwilioNotificationSettings() {
 
         setIsSendingSMS(true);
         setTestSMSResult(null);
-        toast.loading(translate('Sending test SMS...'));
+        const toastId = toast.loading(translate('Sending test SMS...'));
 
         router.post(
             route('settings.sms.test'),
@@ -122,7 +122,7 @@ export default function TwilioNotificationSettings() {
                 preserveScroll: true,
                 onSuccess: (page) => {
                     setIsSendingSMS(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     const successMessage = page.props.flash?.success;
                     const errorMessage = page.props.flash?.error;
 
@@ -145,7 +145,7 @@ export default function TwilioNotificationSettings() {
                 },
                 onError: (errors) => {
                     setIsSendingSMS(false);
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to send test SMS');
                     toast.error(errorMessage);
                     setTestSMSResult({ success: false, message: errorMessage });

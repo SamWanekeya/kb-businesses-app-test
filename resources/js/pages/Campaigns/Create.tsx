@@ -50,11 +50,11 @@ export default function CampaignCreate() {
             return;
         }
 
-        toast.loading(translate('Creating campaign...'));
+        const toastId = toast.loading(translate('Creating campaign...'));
         post(route('campaigns.store'), {
             onSuccess: () => toast.dismiss(),
             onError: (errs) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 const first = Object.values(errs)[0] as string;
                 if (first) toast.error(first);
             },

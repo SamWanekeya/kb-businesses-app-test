@@ -139,20 +139,20 @@ export default function Accounts() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting account...'));
+        const toastId = toast.loading(translate('Deleting account...'));
 
         if (!currentItem?.id) {
-            toast.dismiss();
+            toast.dismiss(toastId);
             toast.error('Invalid account selected');
             return;
         }
         router.delete(route('accounts.destroy', currentItem.id), {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 if (typeof errors === 'string') {
                     toast.error(errors);
                 } else {
@@ -172,7 +172,7 @@ export default function Accounts() {
             {
                 onSuccess: () => toast.dismiss(),
                 onError: (errors) => {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                     if (typeof errors === 'string') {
                         toast.error(errors);
                     } else {

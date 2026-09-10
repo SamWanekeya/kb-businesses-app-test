@@ -105,14 +105,14 @@ export default function Currencies() {
     const handleFormSubmit = (formData: any) => {
         if (formMode === 'create') {
             if (!globalSettings?.is_demo) {
-                toast.loading(translate('Creating currency...'));
+                const toastId = toast.loading(translate('Creating currency...'));
             }
 
             router.post(route('currencies.store'), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
                     if (!globalSettings?.is_demo) {
-                        toast.dismiss();
+                        toast.dismiss(toastId);
                     }
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
@@ -122,7 +122,7 @@ export default function Currencies() {
                 },
                 onError: (errors) => {
                     if (!globalSettings?.is_demo) {
-                        toast.dismiss();
+                        toast.dismiss(toastId);
                     }
                     if (typeof errors === 'string') {
                         toast.error(translate(errors));
@@ -133,14 +133,14 @@ export default function Currencies() {
             });
         } else if (formMode === 'edit') {
             if (!globalSettings?.is_demo) {
-                toast.loading(translate('Updating currency...'));
+                const toastId = toast.loading(translate('Updating currency...'));
             }
 
             router.put(route('currencies.update', currentItem.id), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
                     if (!globalSettings?.is_demo) {
-                        toast.dismiss();
+                        toast.dismiss(toastId);
                     }
                     if (page.props.flash.success) {
                         toast.success(translate(page.props.flash.success));
@@ -150,7 +150,7 @@ export default function Currencies() {
                 },
                 onError: (errors) => {
                     if (!globalSettings?.is_demo) {
-                        toast.dismiss();
+                        toast.dismiss(toastId);
                     }
                     if (typeof errors === 'string') {
                         toast.error(translate(errors));
@@ -164,14 +164,14 @@ export default function Currencies() {
 
     const handleDeleteConfirm = () => {
         if (!globalSettings?.is_demo) {
-            toast.loading(translate('Deleting currency...'));
+            const toastId = toast.loading(translate('Deleting currency...'));
         }
 
         router.delete(route('currencies.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
                 if (!globalSettings?.is_demo) {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                 }
                 if (page.props.flash.success) {
                     toast.success(translate(page.props.flash.success));
@@ -181,7 +181,7 @@ export default function Currencies() {
             },
             onError: (errors) => {
                 if (!globalSettings?.is_demo) {
-                    toast.dismiss();
+                    toast.dismiss(toastId);
                 }
                 if (typeof errors === 'string') {
                     toast.error(translate(errors));

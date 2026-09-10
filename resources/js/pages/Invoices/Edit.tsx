@@ -215,7 +215,7 @@ export default function InvoiceEdit() {
         e.preventDefault();
         if (!validate()) return;
         setSubmitting(true);
-        toast.loading(translate('Updating invoice...'));
+        const toastId = toast.loading(translate('Updating invoice...'));
         const payload = {
             ...form,
             products: form.products
@@ -227,11 +227,11 @@ export default function InvoiceEdit() {
         };
         router.put(route('invoices.update', invoice.id), payload, {
             onSuccess: () => {
-                toast.dismiss();
+                toast.dismiss(toastId);
             },
             onError: (errs) => {
                 setSubmitting(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 const firstError = Object.values(errs)[0] as string;
                 if (firstError) toast.error(firstError);
                 setErrors(errs as Errors);

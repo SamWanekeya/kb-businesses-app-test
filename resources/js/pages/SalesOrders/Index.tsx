@@ -114,15 +114,15 @@ export default function SalesOrders() {
     };
 
     const handleDeleteConfirm = () => {
-        toast.loading(translate('Deleting sales order...'));
+        const toastId = toast.loading(translate('Deleting sales order...'));
 
         router.delete(route('sales-orders.destroy', currentItem.id), {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 toast.error(translate('Failed to delete: {{errors}}', { errors: Object.values(errors).join(', ') }));
             },
         });

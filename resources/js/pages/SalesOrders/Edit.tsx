@@ -370,11 +370,11 @@ export default function SalesOrderEdit() {
         };
         router.put(route('sales-orders.update', salesOrder.id), payload, {
             onSuccess: () => {
-                toast.dismiss();
+                toast.dismiss(toastId);
             },
             onError: (errs) => {
                 setSubmitting(false);
-                toast.dismiss();
+                toast.dismiss(toastId);
                 setErrors(errs as Errors);
             },
         });

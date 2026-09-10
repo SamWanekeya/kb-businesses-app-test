@@ -110,11 +110,11 @@ export default function ProductCreate() {
             if (firstErrStep) setStep(firstErrStep);
             return;
         }
-        toast.loading(translate('Creating product...'));
+        const toastId = toast.loading(translate('Creating product...'));
         post(route('products.store'), {
             onSuccess: () => toast.dismiss(),
             onError: (errs) => {
-                toast.dismiss();
+                toast.dismiss(toastId);
                 const firstErrStep = [1, 2, 3, 4].find((s) => Object.keys(validateStep(s)).length > 0);
                 if (firstErrStep) setStep(firstErrStep);
             },
