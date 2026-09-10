@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import ChatGptModal from '@components/ChatGpt/ChatGptModal';
 import { Button } from '@components/UserInterface/Button';
 import { usePage } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import { Brain } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';

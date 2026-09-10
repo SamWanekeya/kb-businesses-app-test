@@ -3,6 +3,7 @@ import PageTemplate from '@components/PageTemplate';
 import { Button } from '@components/UserInterface/Button';
 import { ScrollArea } from '@components/UserInterface/ScrollArea';
 import { usePage } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import { cn } from '@lib/utils';
 import OrganizationSystemSettings from '@pages/Settings/Components/OrganizationSystemSettings';
 import SystemSettings from '@pages/Settings/Components/SystemSettings';
@@ -49,7 +50,6 @@ import Toaster from '@components/UserInterface/Toaster';
 import { useLayout } from '@contexts/LayoutContext';
 import StorageSettings from '@pages/Settings/Components/StorageSettings';
 import { useHasPermission } from '@utils/Permissions';
-import { route } from '@utils/Routes';
 import { useTranslation } from 'react-i18next';
 
 export default function Settings() {

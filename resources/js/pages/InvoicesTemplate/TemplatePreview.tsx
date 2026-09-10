@@ -1,4 +1,5 @@
 import { usePage } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 
 export default function TemplatePreview() {
     const { invoice, templateId, templateColor, settings } = usePage().props;

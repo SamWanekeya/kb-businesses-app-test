@@ -2,7 +2,7 @@ import { toast } from '@components/CustomToast';
 import { Alert, AlertDescription } from '@components/UserInterface/Alert';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
-import { router } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { AlertCircle, CreditCard, Loader2 } from 'lucide-react';
 import { useState } from 'react';
@@ -28,6 +28,8 @@ export function InvoiceKhaltiPaymentForm({
     onCancel,
 }: InvoiceKhaltiPaymentFormProps) {
     const { t: translate } = useTranslation();
+    const { csrf_token } = usePage().props;
+
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -45,7 +47,7 @@ export function InvoiceKhaltiPaymentForm({
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                    'X-CSRF-TOKEN': csrf_token,
                 },
                 body: JSON.stringify({
                     invoice_id: invoiceId,

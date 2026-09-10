@@ -5,6 +5,7 @@ import { route } from '@utils/Routes';
 import { AlertCircle, CreditCard, ExternalLink, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { usePage } from '@inertiajs/react';
 
 interface EasebuzzPaymentFormProps {
     planId: number;
@@ -28,6 +29,8 @@ export function EasebuzzPaymentForm({
     onCancel,
 }: EasebuzzPaymentFormProps) {
     const { t: translate } = useTranslation();
+    const { csrf_token } = usePage().props;
+
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -45,7 +48,7 @@ export function EasebuzzPaymentForm({
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                    'X-CSRF-TOKEN': csrf_token,
                 },
                 body: JSON.stringify({
                     plan_id: planId,

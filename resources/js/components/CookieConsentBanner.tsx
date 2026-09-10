@@ -5,8 +5,8 @@ import { Button } from '@components/UserInterface/Button';
 import { Card } from '@components/UserInterface/Card';
 import { Switch } from '@components/UserInterface/Switch';
 import { usePage } from '@inertiajs/react';
-import { getFromLocalStorage, storeToLocalStorage } from '@utils/Helpers/Storage';
 import { route } from '@utils/Routes';
+import { getFromLocalStorage, storeToLocalStorage } from '@utils/Helpers/Storage';
 import { X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 

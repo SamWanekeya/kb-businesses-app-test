@@ -77,9 +77,9 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
 
             if (data.valid) {
                 setAppliedCoupon(data.coupon);
-                toast.success(t(data.message || 'Coupon applied successfully'));
+                toast.success(translate(data.message || 'Coupon applied successfully'));
             } else {
-                toast.error(t(data.message || 'Invalid coupon code'));
+                toast.error(translate(data.message || 'Invalid coupon code'));
                 setAppliedCoupon(null);
             }
         } catch (error: any) {

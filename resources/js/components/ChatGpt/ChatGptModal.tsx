@@ -4,7 +4,7 @@ import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { Textarea } from '@components/UserInterface/Textarea';
-import { useStackedModal } from '@hooks/useStackedModal';
+import useStackedModal from '@hooks/useStackedModal';
 import languageData from '@lang/language.json';
 import { route } from '@utils/Routes';
 import { Check, Copy, Loader2, Sparkles, X } from 'lucide-react';
@@ -12,6 +12,7 @@ import { useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
+import { usePage } from '@inertiajs/react';
 
 interface ChatGptModalProps {
     isOpen: boolean;
@@ -29,6 +30,7 @@ export function ChatGptModal({
     placeholder = 'Describe what you want to generate...',
 }: ChatGptModalProps) {
     const { t: translate } = useTranslation();
+    const { csrf_token } = usePage().props;
     const { modalId, zIndex } = useStackedModal('chatgpt-modal', isOpen);
     const [prompt, setPrompt] = useState('');
     const [generatedContent, setGeneratedContent] = useState('');
@@ -52,7 +54,7 @@ export function ChatGptModal({
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                    'X-CSRF-TOKEN': csrf_token,
                 },
                 body: JSON.stringify({
                     prompt,

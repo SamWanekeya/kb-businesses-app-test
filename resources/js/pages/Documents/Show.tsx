@@ -38,9 +38,9 @@ export default function DocumentShow() {
     const flash = (usePage().props as any).flash || {};
 
     useEffect(() => {
-        if (flash.error) toast.error(t(flash.error));
-        if (flash.success_title) toast.success(t(flash.success_title));
-        if (flash.success) toast.success(t(flash.success));
+        if (flash.error) toast.error(translate(flash.error));
+        if (flash.success_title) toast.success(translate(flash.success_title));
+        if (flash.success) toast.success(translate(flash.success));
         if (!useHasPermission('view-documents')) {
             toast.error(translate('Permission denied.'));
             router.get(document.folder?.id ? route('documents.folder', document.folder.id) : route('documents.index'));

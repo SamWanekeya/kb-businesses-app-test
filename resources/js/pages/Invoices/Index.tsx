@@ -25,12 +25,13 @@ export default function Invoices() {
     const { flash } = usePage().props;
 
     useEffect(() => {
-        if (flash?.success) toast.success(t(flash.success));
-        else if (flash?.error) toast.error(t(flash.error));
-        else if (flash?.warning) toast.warning ? toast.warning(t(flash.warning)) : toast.error(t(flash.warning));
+        if (flash?.success) toast.success(translate(flash.success));
+        else if (flash?.error) toast.error(translate(flash.error));
+        else if (flash?.warning) toast.warning ? toast.warning(translate(flash.warning)) : toast.error(translate(flash.warning));
     }, [flash]);
 
     const {
+        csrf_token,
         auth,
         invoices,
         accounts,
@@ -256,21 +257,21 @@ export default function Invoices() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                    'X-CSRF-TOKEN': csrf_token,
                 },
             });
             const data = await response.json();
             toast.dismiss();
             if (data.success) {
                 if (data.message) {
-                    toast.success(t(data.message));
+                    toast.success(translate(data.message));
                 } else {
                     toast.success(translate('Payment approved successfully'));
                 }
                 router.reload({ only: ['pendingPayments', 'invoices'] });
             } else {
                 if (data.message) {
-                    toast.error(t(data.message));
+                    toast.error(translate(data.message));
                 } else {
                     toast.error(translate('Failed to approve payment'));
                 }
@@ -293,7 +294,7 @@ export default function Invoices() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                    'X-CSRF-TOKEN': csrf_token,
                 },
                 body: JSON.stringify({ notes: rejectNotes }),
             });
@@ -301,7 +302,7 @@ export default function Invoices() {
             toast.dismiss();
             if (data.success) {
                 if (data.message) {
-                    toast.success(t(data.message));
+                    toast.success(translate(data.message));
                 } else {
                     toast.success(translate('Payment rejected successfully'));
                 }
@@ -310,7 +311,7 @@ export default function Invoices() {
                 router.reload({ only: ['pendingPayments', 'invoices'] });
             } else {
                 if (data.message) {
-                    toast.error(t(data.message));
+                    toast.error(translate(data.message));
                 } else {
                     toast.error(translate('Failed to reject payment'));
                 }

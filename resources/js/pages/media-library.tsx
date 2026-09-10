@@ -7,8 +7,8 @@ import { Card, CardContent } from '@components/UserInterface/Card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
 import { Input } from '@components/UserInterface/Input';
 import { usePage } from '@inertiajs/react';
-import { useHasPermission } from '@utils/Permissions';
 import { route } from '@utils/Routes';
+import { useHasPermission } from '@utils/Permissions';
 import {
     Calendar,
     ChevronLeft,

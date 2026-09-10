@@ -40,9 +40,9 @@ export default function Opportunities() {
     } = usePage().props;
 
     useEffect(() => {
-        if (flash?.success) toast.success(t(flash.success));
-        else if (flash?.error) toast.error(t(flash.error));
-        else if (flash?.warning) toast.warning(t(flash.warning));
+        if (flash?.success) toast.success(translate(flash.success));
+        else if (flash?.error) toast.error(translate(flash.error));
+        else if (flash?.warning) toast.warning(translate(flash.warning));
     }, [flash]);
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();

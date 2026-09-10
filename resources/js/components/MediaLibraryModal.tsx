@@ -4,6 +4,7 @@ import { Button } from '@components/UserInterface/Button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
 import { Input } from '@components/UserInterface/Input';
 import { usePage } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import { useHasPermission } from '@utils/Permissions';
 import { Check, File, FileText, Image as ImageIcon, Plus, Search, Upload } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';

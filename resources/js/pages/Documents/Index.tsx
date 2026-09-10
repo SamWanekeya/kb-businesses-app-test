@@ -30,7 +30,7 @@ export default function Documents() {
     const flash = (usePage().props as any).flash || {};
 
     useEffect(() => {
-        if (flash.error) toast.error(t(flash.error));
+        if (flash.error) toast.error(translate(flash.error));
     }, [flash.error]);
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');

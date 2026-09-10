@@ -18,8 +18,8 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function CalendarIndex() {
-    const { t, i18n } = useTranslation();
-    const { events, auth, settings = {}, globalSettings = {} } = usePage().props;
+    const { t: translate, i18n } = useTranslation();
+    const { csrf_token,events, auth, settings = {}, globalSettings = {} } = usePage().props;
     const permissions = auth?.permissions || [];
     const isDemo = globalSettings?.is_demo === '1' || globalSettings?.is_demo === true;
     const [selectedEvent, setSelectedEvent] = useState(null);
@@ -60,7 +60,7 @@ export default function CalendarIndex() {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                        'X-CSRF-TOKEN': csrf_token,
                     },
                 });
                 const data = await response.json();

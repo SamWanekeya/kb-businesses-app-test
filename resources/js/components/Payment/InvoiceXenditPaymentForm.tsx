@@ -5,6 +5,7 @@ import { route } from '@utils/Routes';
 import { AlertCircle, CreditCard, ExternalLink, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { usePage } from '@inertiajs/react';
 
 interface InvoiceXenditPaymentFormProps {
     invoiceId: number;
@@ -26,6 +27,8 @@ export function InvoiceXenditPaymentForm({
     onCancel,
 }: InvoiceXenditPaymentFormProps) {
     const { t: translate } = useTranslation();
+    const { csrf_token } = usePage().props;
+
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -43,7 +46,7 @@ export function InvoiceXenditPaymentForm({
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                    'X-CSRF-TOKEN': csrf_token,
                 },
                 body: JSON.stringify({
                     invoice_id: invoiceId,

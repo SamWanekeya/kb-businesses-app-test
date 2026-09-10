@@ -1,5 +1,6 @@
 import { toast } from '@components/CustomToast';
 import { usePage } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import AppLayoutTemplate from '@layouts/AppSidebarLayout';
 import { JSX, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';

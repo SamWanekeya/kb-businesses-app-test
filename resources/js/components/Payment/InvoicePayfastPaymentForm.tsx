@@ -8,6 +8,7 @@ import { route } from '@utils/Routes';
 import { AlertCircle, CreditCard, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { usePage } from '@inertiajs/react';
 
 interface InvoicePayfastPaymentFormProps {
     invoiceId: number;
@@ -29,6 +30,8 @@ export function InvoicePayfastPaymentForm({
     onCancel,
 }: InvoicePayfastPaymentFormProps) {
     const { t: translate } = useTranslation();
+    const { csrf_token } = usePage().props;
+
     const [isProcessing, setIsProcessing] = useState(false);
     const [customerDetails, setCustomerDetails] = useState({
         firstName: '',
@@ -81,7 +84,7 @@ export function InvoicePayfastPaymentForm({
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                    'X-CSRF-TOKEN': csrf_token,
                 },
                 body: JSON.stringify({
                     invoice_id: invoiceId,
