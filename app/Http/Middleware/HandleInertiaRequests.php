@@ -58,7 +58,6 @@ class HandleInertiaRequests extends Middleware
                 'currencyNname' => 'US Dollar',
                 'base_url' => config('app.url'),
                 'image_url' => getImageUrlPrefix(),
-                'is_demo' => config('app.is_demo', false),
                 'availableLanguages' => $availableLanguages,
             ];
             $storageSettings = [
@@ -170,7 +169,6 @@ class HandleInertiaRequests extends Middleware
             $globalSettings = array_merge($settings, $currencySettings, $superAdminCurrencySettings);
             $globalSettings['base_url'] = config('app.url');
             $globalSettings['image_url'] = getImageUrlPrefix();
-            $globalSettings['is_demo'] = config('app.is_demo', false);
             $globalSettings['availableLanguages'] = $availableLanguages;
             $globalSettings['enableLogging'] = $superAdminEnableLogging;
             $globalSettings['themeMode'] = getSetting('themeMode', $settings['themeMode'] ?? 'light', auth()?->id());
@@ -179,14 +177,10 @@ class HandleInertiaRequests extends Middleware
             //     $cookieSetting = Setting::where('key', 'strictlyNecessaryCookies')->first();
             //     $globalSettings['strictlyNecessaryCookies'] = $cookieSetting ? (int)$cookieSetting->value : 0;
             //
-            // Get layout direction from Super Administrator settings for public pages
-            if (config('app.is_demo')) {
-                $globalSettings['layoutDirection'] = $request->cookie('layoutDirection', 'left');
-            } else {
-                // $globalSettings['layoutDirection'] = $globalSettings['layoutDirection'] ?? 'left';
-                $globalSettings['layoutDirection'] = getSetting('layoutDirection', $settings['layoutDirection'] ?? 'left', auth()?->id());
 
-            }
+            // $globalSettings['layoutDirection'] = $globalSettings['layoutDirection'] ?? 'left';
+            $globalSettings['layoutDirection'] = getSetting('layoutDirection', $settings['layoutDirection'] ?? 'left', auth()?->id());
+
             if (auth()->user() && auth()->user()->hasRole('organization')) {
                 $lastPlanOrder = PlanOrder::where('user_id', auth()->id())->orderByDesc('processed_at')->first();
                 if ($lastPlanOrder) {
@@ -209,9 +203,7 @@ class HandleInertiaRequests extends Middleware
                 'roles' => fn () => $request->user()?->roles->pluck('name'),
                 'permissions' => fn () => $request->user()?->getAllPermissions()->pluck('name'),
             ],
-            'userLanguage' => config('app.is_demo')
-                ? $request->cookie('app_language', $request->user()?->lang ?? $globalSettings['defaultLanguage'] ?? 'en')
-                : ($request->user()?->lang ?? $globalSettings['defaultLanguage'] ?? 'en'),
+            'userLanguage' => $request->user()?->lang ?? $globalSettings['defaultLanguage'] ?? 'en',
             'isImpersonating' => session('on_behalf_of_by') ? true : false,
             'ziggy' => fn (): array => [
                 ...(new Ziggy())->toArray(),
@@ -223,7 +215,6 @@ class HandleInertiaRequests extends Middleware
             ],
             'globalSettings' => $globalSettings,
             'storageSettings' => $storageSettings,
-            'is_demo' => config('app.is_demo', false),
         ];
     }
 }

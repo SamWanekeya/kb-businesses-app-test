@@ -148,14 +148,14 @@ export default function CouponsPage() {
         if (formData.use_limit_per_user) formData.use_limit_per_user = parseInt(formData.use_limit_per_user);
 
         if (formMode === 'create') {
-            if (!globalSettings?.is_demo) {
+            {
                 const toastId = toast.loading(translate('Creating coupon...'));
             }
 
             router.post(route('coupons.store'), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    if (!globalSettings?.is_demo) {
+                    {
                         toast.dismiss(toastId);
                     }
                     if (page.props.flash.success) {
@@ -165,7 +165,7 @@ export default function CouponsPage() {
                     }
                 },
                 onError: (errors) => {
-                    if (!globalSettings?.is_demo) {
+                    {
                         toast.dismiss(toastId);
                     }
                     if (typeof errors === 'string') {
@@ -176,14 +176,14 @@ export default function CouponsPage() {
                 },
             });
         } else if (formMode === 'edit') {
-            if (!globalSettings?.is_demo) {
+            {
                 const toastId = toast.loading(translate('Updating coupon...'));
             }
 
             router.put(route('coupons.update', currentItem.id), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
-                    if (!globalSettings?.is_demo) {
+                    {
                         toast.dismiss(toastId);
                     }
                     if (page.props.flash.success) {
@@ -193,7 +193,7 @@ export default function CouponsPage() {
                     }
                 },
                 onError: (errors) => {
-                    if (!globalSettings?.is_demo) {
+                    {
                         toast.dismiss(toastId);
                     }
                     if (typeof errors === 'string') {
@@ -207,14 +207,14 @@ export default function CouponsPage() {
     };
 
     const handleDeleteConfirm = () => {
-        if (!globalSettings?.is_demo) {
+        {
             const toastId = toast.loading(translate('Deleting coupon...'));
         }
 
         router.delete(route('coupons.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
-                if (!globalSettings?.is_demo) {
+                {
                     toast.dismiss(toastId);
                 }
                 if (page.props.flash.success) {
@@ -224,7 +224,7 @@ export default function CouponsPage() {
                 }
             },
             onError: (errors) => {
-                if (!globalSettings?.is_demo) {
+                {
                     toast.dismiss(toastId);
                 }
                 if (typeof errors === 'string') {
@@ -241,7 +241,7 @@ export default function CouponsPage() {
     };
 
     const handleToggleStatus = (coupon: any) => {
-        if (!globalSettings?.is_demo) {
+        {
             toast.loading(t(coupon.status ? 'Deactivating' : 'Activating') + ' ' + translate('coupon...'));
         }
 
@@ -250,7 +250,7 @@ export default function CouponsPage() {
             {},
             {
                 onSuccess: (page) => {
-                    if (!globalSettings?.is_demo) {
+                    {
                         toast.dismiss(toastId);
                     }
                     if (page.props.flash.success) {
@@ -260,7 +260,7 @@ export default function CouponsPage() {
                     }
                 },
                 onError: (errors) => {
-                    if (!globalSettings?.is_demo) {
+                    {
                         toast.dismiss(toastId);
                     }
                     if (typeof errors === 'string') {

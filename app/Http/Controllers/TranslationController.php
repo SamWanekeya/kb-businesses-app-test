@@ -3,125 +3,173 @@
 namespace App\Http\Controllers;
 
 use App\Models\Setting;
-use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\File;
 
 class TranslationController extends BaseController
 {
-    public function getTranslations($locale)
+    /**
+     * Resolve the preferred locale based on multiple factors.
+     *
+     * Order of precedence:
+     *  1. Frontend-provided locale (query or route param)
+     *  2. Cookie (__hf_lcl)
+     *  3. Authenticated user preference
+     *  4. Default: 'en'
+     *
+     * @param string|null $requestedLocale
+     *
+     * @return string
+     */
+    protected function resolveLocale(?string $requestedLocale = null): string
     {
-        $path = resource_path("lang/{$locale}.json");
-
-        if (!File::exists($path)) {
-            $path = resource_path("lang/en.json");
-            $locale = 'en';
+        if ($requestedLocale) {
+            return $requestedLocale;
         }
 
-        // Always determine direction based on locale
-        $direction = in_array($locale, ['ar', 'he']) ? 'right' : 'left';
-        $layoutDirection = in_array($locale, ['ar', 'he']) ? 'rtl' : 'ltr';
-
-        // Only store in cookies if in demo mode
-        if (config('app.is_demo')) {
-            Cookie::queue('app_language', $locale, 60 * 24 * 30); // 30 days
-            Cookie::queue('app_direction', $layoutDirection, 60 * 24 * 30);
+        if ($cookieLocale = Cookie::get('__hf_lcl')) {
+            return $cookieLocale;
         }
 
-        // Demo mode handling
-        if (config('app.is_demo') !== true) {
-            if (auth()->check()) {
-                // Update authenticated user's language setting
-                auth()->user()->update(['lang' => $locale]);
-
-                // Setting::updateOrCreate(
-                //     [
-                //         'key' => 'layoutDirection',
-                //         'user_id' => auth()->id()
-                //     ],
-                //     [
-                //         'value' => $direction
-                //     ]
-                // );
-
-                // if (in_array($locale, ['ar', 'he'])) {
-                //     Setting::updateOrCreate(
-                //         [
-                //             'key' => 'layoutDirection',
-                //             'user_id' => auth()->id()
-                //         ],
-                //         [
-                //             'value' => $direction
-                //         ]
-                //     );
-                // }
-
-            } else {
-                // For unauthenticated users on auth pages, use super_admin's language
-                $superAdmin = User::where('type', 'super_admin')->first();
-                if ($superAdmin && request()->is('login', 'register', 'password/*', 'email/*')) {
-                    $locale = $superAdmin->lang ?? 'en';
-                    $path = resource_path("lang/{$locale}.json");
-
-                    if (!File::exists($path)) {
-                        $path = resource_path("lang/en.json");
-                        $locale = 'en';
-                    }
-
-                    // Re-determine direction based on super_admin's locale
-                    $direction = in_array($locale, ['ar', 'he']) ? 'right' : 'left';
-                    $layoutDirection = in_array($locale, ['ar', 'he']) ? 'rtl' : 'ltr';
-                }
-            }
+        if (auth()?->check()) {
+            return auth()?->user()?->lang ?? 'en';
         }
 
-        $translations = json_decode(File::get($path), true);
-
-        // Add layout direction to the response
-        $response = [
-            'translations' => $translations,
-            'layoutDirection' => $layoutDirection,
-            'locale' => $locale,
-        ];
-
-        return response()->json($response);
+        return 'en';
     }
 
-    public function getInitialLocale()
+    /**
+     * Determine layout direction based on locale.
+     *
+     * @param string $locale
+     *
+     * @return string 'rtl' or 'ltr'
+     */
+    protected function getLayoutDirection(string $locale): string
     {
-        $locale = null;
+        $rtlLocales = ['ar', 'ar-sa', 'ar-ae', 'ar-eg', 'ar-ma', 'ar-dz', 'ar-qa', 'ar-lb', 'he-il', 'fa', 'ur'];
 
-        // In demo mode, check cookie first
-        if (config('app.is_demo')) {
-            $cookieLang = Cookie::get('app_language');
-            if ($cookieLang) {
-                return $cookieLang;
-            }
-        }
+        return in_array(strtolower($locale), $rtlLocales, true) ? 'rtl' : 'ltr';
+    }
 
-        // For authenticated users, always get from database
-        if (auth()->check()) {
-            $locale = auth()->user()->lang ?? 'en';
-        } elseif (request()->is('login', 'register', 'password/*', 'email/*')) {
-            // For auth pages, get from super_admin
-            $superAdmin = User::where('type', 'super_admin')->first();
-            $locale = $superAdmin->lang ?? 'en';
-        } else {
-            $locale = 'en';
-        }
+    /**
+     * Load translations for a locale (cached per locale).
+     *
+     * Uses Laravel's cache to avoid repeated file reads.
+     * Cache key format: "translations.{locale}"
+     *
+     * @param string $locale
+     *
+     * @return array{locale: string, translations: array, layout_direction: string}
+     */
+    protected function loadTranslations(string $locale): array
+    {
+        return Cache::rememberForever("translations.{$locale}", function () use ($locale) {
+            $path = resource_path("lang/{$locale}.json");
 
-        // Check if the determined locale is enabled
-        $languagesFile = resource_path('lang/language.json');
-        if (File::exists($languagesFile)) {
-            $languages = json_decode(File::get($languagesFile), true);
-            $languageData = collect($languages)->firstWhere('code', $locale);
-
-            // If language is disabled, fallback to English
-            if ($languageData && isset($languageData['enabled']) && $languageData['enabled'] === false) {
+            if (!File::exists($path)) {
+                $path = resource_path('lang/en.json');
                 $locale = 'en';
             }
+
+            $translations = json_decode(File::get($path), true) ?? [];
+            $layoutDirection = $this->getLayoutDirection($locale);
+
+            return [
+                'locale' => $locale,
+                'layout_direction' => $layoutDirection,
+                'translations' => $translations,
+            ];
+        });
+    }
+
+    /**
+     * Persist the user's language preference via cookie and database.
+     *
+     * @param string $locale
+     * @param string $layoutDirection
+     *
+     * @return void
+     */
+    protected function persistLocalePreference(string $locale, string $layoutDirection): void
+    {
+        //        $minutes = 400 * 24 * 60; // 400 days in minutes
+        //        Cookie::queue('__hf_lcl', $locale, $minutes);
+
+        if (auth()?->check()) {
+            auth()?->user()?->update(['lang' => $locale]);
+
+            Setting::updateOrCreate(
+                ['key' => 'layout_direction', 'user_id' => auth()?->id()],
+                ['value' => $layoutDirection]
+            );
+        }
+    }
+
+    /**
+     * Main endpoint: Get translation data for a given locale.
+     *
+     * Frontend usage examples:
+     *  - Initial language load
+     *  - Language switch event
+     *
+     * Example call:
+     *  GET /translations/sw
+     *
+     * @param string|null $locale
+     *
+     * @return JsonResponse
+     */
+    public function getTranslations(?string $locale = null): JsonResponse
+    {
+        $resolvedLocale = $this->resolveLocale($locale);
+        $data = $this->loadTranslations($resolvedLocale);
+
+        $this->persistLocalePreference($data['locale'], $data['layout_direction']);
+
+        return response()->json($data);
+    }
+
+    /**
+     * Secondary endpoint: Get the user's current locale (for app initialization).
+     *
+     * Example frontend flow:
+     *  1. GET /initial-locale → returns { locale: "sw", layout_direction: "ltr" }
+     *  2. Initialize i18n with that locale before rendering.
+     *
+     * @return JsonResponse
+     */
+    public function getInitialLocale(): JsonResponse
+    {
+        $locale = $this->resolveLocale();
+        $layoutDirection = $this->getLayoutDirection($locale);
+
+        return response()->json([
+            'locale' => $locale,
+            'layout_direction' => $layoutDirection,
+        ]);
+    }
+
+    /**
+     * Clear cached translations manually (useful when updating language files).
+     *
+     * Example admin command:
+     *  GET /clear-translations-cache
+     *
+     * @return JsonResponse
+     */
+    public function clearTranslationsCache(): JsonResponse
+    {
+        $locales = collect(File::files(resource_path('lang')))
+            ->filter(fn ($file) => $file->getExtension() === 'json')
+            ->map(fn ($file) => pathinfo($file->getFilename(), PATHINFO_FILENAME));
+
+        foreach ($locales as $locale) {
+            Cache::forget("translations.{$locale}");
         }
 
-        return $locale;
+        return response()->json(['status' => 'ok', 'message' => 'Translation cache cleared.']);
     }
 }

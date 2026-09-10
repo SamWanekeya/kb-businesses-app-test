@@ -67,7 +67,7 @@ export default function PlanRequestsPage() {
 
     const handleAction = (action: string, item: any) => {
         if (action === 'approve') {
-            if (!globalSettings?.is_demo) {
+            {
                 const toastId = toast.loading(translate('Approving plan request...'));
             }
 
@@ -76,7 +76,7 @@ export default function PlanRequestsPage() {
                 {},
                 {
                     onSuccess: (page) => {
-                        if (!globalSettings?.is_demo) {
+                        {
                             toast.dismiss(toastId);
                         }
                         if (page.props.flash.success) {
@@ -86,7 +86,7 @@ export default function PlanRequestsPage() {
                         }
                     },
                     onError: (errors) => {
-                        if (!globalSettings?.is_demo) {
+                        {
                             toast.dismiss(toastId);
                         }
                         if (typeof errors === 'string') {
@@ -98,7 +98,7 @@ export default function PlanRequestsPage() {
                 },
             );
         } else if (action === 'reject') {
-            if (!globalSettings?.is_demo) {
+            {
                 const toastId = toast.loading(translate('Rejecting plan request...'));
             }
 
@@ -107,7 +107,7 @@ export default function PlanRequestsPage() {
                 {},
                 {
                     onSuccess: (page) => {
-                        if (!globalSettings?.is_demo) {
+                        {
                             toast.dismiss(toastId);
                         }
                         if (page.props.flash.success) {
@@ -117,7 +117,7 @@ export default function PlanRequestsPage() {
                         }
                     },
                     onError: (errors) => {
-                        if (!globalSettings?.is_demo) {
+                        {
                             toast.dismiss(toastId);
                         }
                         if (typeof errors === 'string') {

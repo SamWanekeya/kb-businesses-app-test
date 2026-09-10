@@ -87,20 +87,20 @@ export default function RolesPage() {
     };
 
     const handleDeleteConfirm = () => {
-        if (!globalSettings?.is_demo) const toastId = toast.loading(translate('Deleting role...'));
+        const toastId = toast.loading(translate('Deleting role...'));
 
         router.delete(route('roles.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
-                if (!globalSettings?.is_demo) toast.dismiss(toastId);
+                toast.dismiss(toastId);
                 if (page.props.flash.success) toast.success(translate(page.props.flash.success));
                 else if (page.props.flash.error) toast.error(translate(page.props.flash.error));
             },
             onError: (errors) => {
-                if (!globalSettings?.is_demo) toast.dismiss(toastId);
+                toast.dismiss(toastId);
                 toast.error(
                     typeof errors === 'string'
-                        ? t(errors)
+                        ? translate(errors)
                         : translate('Failed to delete role: {{errors}}', { errors: Object.values(errors).join(', ') }),
                 );
             },

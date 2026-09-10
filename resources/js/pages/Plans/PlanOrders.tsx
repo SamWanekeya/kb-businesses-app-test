@@ -83,7 +83,7 @@ export default function PlanOrdersPage() {
 
     const handleAction = (action: string, item: any) => {
         if (action === 'approve') {
-            if (!globalSettings?.is_demo) {
+            {
                 const toastId = toast.loading(translate('Approving plan order...'));
             }
 
@@ -92,7 +92,7 @@ export default function PlanOrdersPage() {
                 {},
                 {
                     onSuccess: (page) => {
-                        if (!globalSettings?.is_demo) {
+                        {
                             toast.dismiss(toastId);
                         }
                         if (page.props.flash.success) {
@@ -102,7 +102,7 @@ export default function PlanOrdersPage() {
                         }
                     },
                     onError: (errors) => {
-                        if (!globalSettings?.is_demo) {
+                        {
                             toast.dismiss(toastId);
                         }
                         if (typeof errors === 'string') {
@@ -123,7 +123,7 @@ export default function PlanOrdersPage() {
     };
 
     const handleRejectConfirm = (notes: string) => {
-        if (!globalSettings?.is_demo) {
+        {
             const toastId = toast.loading(translate('Rejecting plan order...'));
         }
 
@@ -133,7 +133,7 @@ export default function PlanOrdersPage() {
             {
                 onSuccess: (page) => {
                     setIsRejectModalOpen(false);
-                    if (!globalSettings?.is_demo) {
+                    {
                         toast.dismiss(toastId);
                     }
                     if (page.props.flash.success) {
@@ -143,7 +143,7 @@ export default function PlanOrdersPage() {
                     }
                 },
                 onError: (errors) => {
-                    if (!globalSettings?.is_demo) {
+                    {
                         toast.dismiss(toastId);
                     }
                     if (typeof errors === 'string') {

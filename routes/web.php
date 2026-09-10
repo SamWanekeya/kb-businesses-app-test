@@ -33,7 +33,6 @@ use App\Http\Controllers\InvoiceCommentController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\InvoicePaystackPaymentController;
 use App\Http\Controllers\InvoiceReminderController;
-use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\LeadCommentController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\LeadSourceController;
@@ -956,17 +955,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // ChatGPT routes
         Route::post('api/chatgpt/generate', [ChatGptController::class, 'generate'])->name('chatgpt.generate');
-
-
-        // Language management
-        Route::get('manage-language/{lang?}', [LanguageController::class, 'managePage'])->middleware('permission:manage-language')->name('manage-language');
-        Route::get('language/load', [LanguageController::class, 'load'])->name('language.load');
-        Route::match(['POST', 'PATCH'], 'language/save', [LanguageController::class, 'save'])->middleware('permission:edit-language')->name('language.save');
-        Route::post('languages/change', [LanguageController::class, 'changeLanguage'])->name('languages.change');
-        Route::post('languages/Create', [LanguageController::class, 'createLanguage'])->middleware('App\Http\Middleware\SuperAdminMiddleware')->name('languages.create');
-        Route::delete('languages/{languageCode}', [LanguageController::class, 'deleteLanguage'])->middleware('App\Http\Middleware\SuperAdminMiddleware')->name('languages.delete');
-        Route::patch('languages/{languageCode}/toggle', [LanguageController::class, 'toggleLanguageStatus'])->middleware('App\Http\Middleware\SuperAdminMiddleware')->name('languages.toggle');
-
 
         // Sign in History routes
         Route::middleware('permission:manage-sign-in-history')->group(function () {

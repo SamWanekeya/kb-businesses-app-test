@@ -1160,17 +1160,6 @@ if (!function_exists('createdBy')) {
     }
 }
 
-if (!function_exists('IsDemo')) {
-    function IsDemo()
-    {
-        if (config('app.is_demo')) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
-
 if (!function_exists('createDefaultNotificationTemplates')) {
     /**
      * Create default notification templates for a new organization

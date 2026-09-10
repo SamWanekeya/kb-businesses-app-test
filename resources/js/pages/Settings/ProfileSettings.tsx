@@ -63,7 +63,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
     const submitProfile = (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!globalSettings?.is_demo) {
+        {
             const toastId = toast.loading(translate('Updating profile...'));
         }
         setProfileProcessing(true);
@@ -81,7 +81,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
             onSuccess: (page) => {
                 setProfileData((prev) => ({ ...prev, avatar: null }));
                 setProfileErrors({});
-                if (!globalSettings?.is_demo) {
+                {
                     toast.dismiss(toastId);
                 }
                 if ((page.props as any).flash?.success) {
@@ -92,7 +92,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
             },
             onError: (errors) => {
                 setProfileErrors(errors as Record<string, string>);
-                if (!globalSettings?.is_demo) {
+                {
                     toast.dismiss(toastId);
                 }
                 if (typeof errors === 'string') {
@@ -121,7 +121,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
     const updatePassword = (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!globalSettings?.is_demo) {
+        {
             const toastId = toast.loading(translate('Updating password...'));
         }
         setPasswordProcessing(true);
@@ -132,7 +132,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
             onSuccess: (page) => {
                 setPasswordData({ current_password: '', password: '', password_confirmation: '' });
                 setPasswordErrors({});
-                if (!globalSettings?.is_demo) {
+                {
                     toast.dismiss(toastId);
                 }
                 if ((page.props as any).flash?.success) {
@@ -144,7 +144,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
             },
             onError: (errors) => {
                 setPasswordErrors(errors as Record<string, string>);
-                if (!globalSettings?.is_demo) {
+                {
                     toast.dismiss(toastId);
                 }
                 if ((errors as any).current_password) {
@@ -339,7 +339,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                                     )}
 
                                     <div className="flex items-center gap-4">
-                                        <Button disabled={profileProcessing && !globalSettings?.is_demo}>{translate('Save')}</Button>
+                                        <Button disabled={profileProcessing}>{translate('Save')}</Button>
                                     </div>
                                 </form>
                             </CardContent>
@@ -406,7 +406,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                                     </div>
 
                                     <div className="flex items-center gap-4">
-                                        <Button disabled={passwordProcessing && !globalSettings?.is_demo}>{translate('Save')}</Button>
+                                        <Button disabled={passwordProcessing}>{translate('Save')}</Button>
                                     </div>
                                 </form>
                             </CardContent>

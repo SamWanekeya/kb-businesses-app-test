@@ -88,10 +88,6 @@ class SettingsController extends Controller
         $currencies = Currency::all();
         $paymentSettings = PaymentSetting::getUserSettings($user->id, $workspaceId);
 
-        // Mask sensitive data for display in demo mode
-        if (config('app.is_demo', false)) {
-            $paymentSettings = $this->maskSensitiveDataForDemo($paymentSettings);
-        }
         $webhooks = Webhook::where('user_id', $user->id)
             ->get();
 

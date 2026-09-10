@@ -28,14 +28,14 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!globalSettings?.is_demo) {
+        {
             const toastId = toast.loading(translate('Updating referral settings...'));
         }
 
         post(route('referral.settings.update'), {
             preserveScroll: true,
             onSuccess: (page) => {
-                if (!globalSettings?.is_demo) {
+                {
                     toast.dismiss(toastId);
                 }
                 if (page.props.flash.success) {
@@ -45,7 +45,7 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
                 }
             },
             onError: (errors) => {
-                if (!globalSettings?.is_demo) {
+                {
                     toast.dismiss(toastId);
                 }
                 if (typeof errors === 'string') {
