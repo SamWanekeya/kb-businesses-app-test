@@ -67,10 +67,10 @@ export default function MediaLibraryDemo() {
     useEffect(() => {
         const checkChatGpt = () => {
             const chatGptModal =
-                document.querySelector('[data-chatgpt-modal]') ||
-                document.querySelector('.chatgpt-modal') ||
-                document.querySelector('[class*="chatgpt"]') ||
-                document.querySelector('[id*="chatgpt"]');
+                document.querySelector('[data-chat-gpt-modal]') ||
+                document.querySelector('.chat-gpt-modal') ||
+                document.querySelector('[class*="chat-gpt"]') ||
+                document.querySelector('[id*="chat-gpt"]');
             setIsChatGptOpen(!!chatGptModal);
         };
 

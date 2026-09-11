@@ -1,23 +1,28 @@
-import { NavItem, SharedData } from '@/types';
-import { toast } from '@components/CustomToast';
+import { type NavItem } from '@/types';
 import InputError from '@components/InputError';
 import PageTemplate from '@components/PageTemplate';
-import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
 import { Button } from '@components/UserInterface/Button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
-import { router, usePage } from '@inertiajs/react';
 import { cn } from '@lib/utils';
-import { resolveImageUrl } from '@utils/Helpers/Url';
-import { route } from '@utils/Routes';
-import { Camera, Lock, User } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+
+import { Camera, Lock, User } from 'lucide-react';
+
+// Profile components
+import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
+import { router, usePage } from '@inertiajs/react';
+import { route } from '@utils/Routes';
 import { useTranslation } from 'react-i18next';
+
+import { toast } from '@components/CustomToast';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import useInitials from '@hooks/useInitials';
+import defaultUserIcon from '@images/defaults/default_user_icon.png';
 
 const sidebarNavItems: NavItem[] = [
     {
-        title: 'Profile',
+        title: 'Personal information',
         href: '#profile',
         icon: <User className="mr-2 h-4 w-4" />,
     },
@@ -30,8 +35,10 @@ const sidebarNavItems: NavItem[] = [
 
 export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerifyEmail?: boolean; status?: string }) {
     const { t: translate } = useTranslation();
-    const { auth, globalSettings } = usePage<SharedData>().props as any;
-    const [activeSection, setActiveSection] = useState('profile');
+    const { auth } = usePage().props;
+    const getInitials = useInitials();
+
+    const [activeSection, setActiveSection] = useState('my-kakbima-account');
 
     // Refs for each section
     const profileRef = useRef<HTMLDivElement>(null);
@@ -63,9 +70,8 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
     const submitProfile = (e: React.FormEvent) => {
         e.preventDefault();
 
-        {
-            const toastId = toast.loading(translate('Updating profile...'));
-        }
+        const toastId = toast.loading(translate('Updating profile information...'));
+
         setProfileProcessing(true);
 
         const formData = new FormData();
@@ -74,32 +80,19 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
         formData.append('_method', 'PATCH');
         if (profileData.avatar) formData.append('avatar', profileData.avatar);
 
-        router.post(route('profile.update'), formData, {
+        router.post(route('my-kakbima-account.update'), formData, {
             preserveScroll: true,
             forceFormData: true,
-            onFinish: () => setProfileProcessing(false),
-            onSuccess: (page) => {
+
+            onSuccess: () => {
                 setProfileData((prev) => ({ ...prev, avatar: null }));
                 setProfileErrors({});
-                {
-                    toast.dismiss(toastId);
-                }
-                if ((page.props as any).flash?.success) {
-                    toast.success(t((page.props as any).flash.success));
-                } else if ((page.props as any).flash?.error) {
-                    toast.error(t((page.props as any).flash.error));
-                }
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
-                setProfileErrors(errors as Record<string, string>);
-                {
-                    toast.dismiss(toastId);
-                }
-                if (typeof errors === 'string') {
-                    toast.error(translate(errors));
-                } else {
-                    toast.error(translate('Failed to update profile: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                }
+                setProfileErrors(errors);
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
@@ -114,52 +107,29 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
     const getAvatarUrl = () => {
         if (profileData.avatar) return URL.createObjectURL(profileData.avatar);
         if (auth?.user?.avatar) return auth.user.avatar;
-        return resolveImageUrl('storage/media/avatars/avatar.png');
+        return defaultUserIcon;
     };
 
     // Handle password form submission
     const updatePassword = (e: React.FormEvent) => {
         e.preventDefault();
 
-        {
-            const toastId = toast.loading(translate('Updating password...'));
-        }
+        const toastId = toast.loading(translate('Updating password information...'));
+
         setPasswordProcessing(true);
 
-        router.put(route('password.update'), passwordData, {
+        router.put(route('my-kakbima-account.password.update'), passwordData, {
             preserveScroll: true,
-            onFinish: () => setPasswordProcessing(false),
-            onSuccess: (page) => {
+
+            onSuccess: () => {
                 setPasswordData({ current_password: '', password: '', password_confirmation: '' });
                 setPasswordErrors({});
-                {
-                    toast.dismiss(toastId);
-                }
-                if ((page.props as any).flash?.success) {
-                    toast.success(t((page.props as any).flash.success));
-                }
-                // else if ((page.props as any).flash?.error) {
-                //   toast.error(t((page.props as any).flash.error));
-                // }
+                toast.dismiss(toastId);
             },
             onError: (errors) => {
-                setPasswordErrors(errors as Record<string, string>);
-                {
-                    toast.dismiss(toastId);
-                }
-                if ((errors as any).current_password) {
-                    setPasswordData((prev) => ({ ...prev, current_password: '' }));
-                    currentPasswordInput.current?.focus();
-                }
-                if ((errors as any).password) {
-                    setPasswordData((prev) => ({ ...prev, password: '', password_confirmation: '' }));
-                    passwordInput.current?.focus();
-                }
-                if (typeof errors === 'string') {
-                    toast.error(translate(errors));
-                } else {
-                    toast.error(translate('Failed to update password: {{errors}}', { errors: Object.values(errors).join(', ') }));
-                }
+                setPasswordErrors(errors);
+                toast.dismiss(toastId);
+                Object.values(errors).forEach((message) => toast.error(translate(message)));
             },
         });
     };
@@ -170,14 +140,13 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
             const scrollPosition = window.scrollY + 100; // Add offset for better UX
 
             // Get positions of each section
-            const profilePosition = profileRef.current?.offsetTop || 0;
             const passwordPosition = passwordRef.current?.offsetTop || 0;
 
             // Determine active section based on scroll position
-            if (scrollPosition >= passwordPosition && passwordPosition > 0) {
+            if (scrollPosition >= passwordPosition) {
                 setActiveSection('password');
             } else {
-                setActiveSection('profile');
+                setActiveSection('my-kakbima-account');
             }
         };
 
@@ -185,7 +154,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
         window.addEventListener('scroll', handleScroll);
 
         // Initial check for hash in URL
-        const hash = window.location.hash.replace('#', '');
+        const hash = window.location.hash?.replace('#', '');
         if (hash) {
             const element = document.getElementById(hash);
             if (element) {
@@ -201,7 +170,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
 
     // Handle navigation click
     const handleNavClick = (href: string) => {
-        const id = href.replace('#', '');
+        const id = href?.replace('#', '');
         const element = document.getElementById(id);
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
@@ -210,39 +179,31 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
     };
 
     return (
-        <PageTemplate title={translate('Profile Settings')} url="/profile">
-            <style>{`
-            main {
-            max-width: 100vw;
-            overflow-x: clip !important;
-            }
-            body {
-            overflow-x: clip !important;
-            }
-        `}</style>
+        <PageTemplate
+            title={translate('My Kakbima account')}
+            description={translate('Stores and manages your profile information, account credentials, and profile settings.')}
+            url="/my-kakbima-account"
+        >
             <div className="flex flex-col gap-8 md:flex-row">
                 {/* Sidebar */}
                 <div className="flex-shrink-0 md:w-64">
                     <div className="sticky top-20">
-                        <div className="bg-card text-card-foreground rounded-lg border p-3 pr-4 shadow-sm">
-                            <div className="flex flex-col gap-2">
-                                {sidebarNavItems.map((item) => (
-                                    <Button
-                                        key={item.href}
-                                        variant="ghost"
-                                        className={cn(
-                                            'text-card-foreground hover:bg-muted w-full justify-start gap-3 rounded-lg text-sm font-normal hover:font-normal',
-                                            {
-                                                'bg-muted text-card-foreground font-medium': activeSection === item.href.replace('#', ''),
-                                            },
-                                        )}
-                                        onClick={() => handleNavClick(item.href)}
-                                    >
-                                        {item.icon}
-                                        {item.title}
-                                    </Button>
-                                ))}
-                            </div>
+                        <div className="space-y-1">
+                            {sidebarNavItems.map((item) => (
+                                <Button
+                                    key={item.href}
+                                    variant="ghost"
+                                    className={cn('w-full justify-start text-sm', {
+                                        'bg-muted font-semibold': activeSection === item.href?.replace('#', ''),
+                                    })}
+                                    onClick={() => {
+                                        handleNavClick(item.href);
+                                    }}
+                                >
+                                    {item.icon}
+                                    {translate(item.title)}
+                                </Button>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -253,24 +214,16 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                     <section id="profile" ref={profileRef} className="mb-16">
                         <Card className="shadow-sm">
                             <CardHeader>
-                                <CardTitle className="text-lg font-semibold">{translate('Profile Information')}</CardTitle>
-                                <CardDescription>{translate("Update your account's profile information and email address")}</CardDescription>
+                                <CardTitle className="text-lg font-semibold">{translate('Personal information')}</CardTitle>
+                                <CardDescription>{translate('Change your Kakbima account picture, name & work email.')}</CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <form id="profile-form" onSubmit={submitProfile} className="space-y-6">
+                                <form id="profile-form" autoComplete="off" onSubmit={submitProfile} className="space-y-6">
                                     {/* Avatar Upload Section */}
                                     <div className="flex items-center space-x-6">
                                         <Avatar className="h-20 w-20">
-                                            <AvatarImage
-                                                src={getAvatarUrl()}
-                                                alt={auth?.user?.name || 'Avatar'}
-                                                onError={(e) => {
-                                                    // Fallback to default avatar on error
-                                                    const target = e.target as HTMLImageElement;
-                                                    target.src = resolveImageUrl('storage/media/avatars/avatar.png');
-                                                }}
-                                            />
-                                            <AvatarFallback className="text-lg">{auth?.user?.name?.charAt(0)?.toUpperCase() || 'U'}</AvatarFallback>
+                                            <AvatarImage src={getAvatarUrl()} alt={auth?.user?.name} />
+                                            <AvatarFallback className="text-lg">{getInitials(auth?.user?.name || '')}</AvatarFallback>
                                         </Avatar>
                                         <div className="flex flex-col space-y-2">
                                             <Label
@@ -278,41 +231,46 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                                                 className="border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex cursor-pointer items-center rounded-md border px-4 py-2 text-sm font-medium transition-colors"
                                             >
                                                 <Camera className="mr-2 h-4 w-4" />
-                                                {translate('Change Avatar')}
+                                                {translate('Change profile picture')}
                                             </Label>
                                             <Input id="avatar" type="file" accept="image/*" onChange={handleAvatarChange} className="hidden" />
-                                            <p className="text-muted-foreground text-xs">{translate('JPG, PNG, GIF up to 2MB')}</p>
                                         </div>
                                     </div>
                                     <InputError className="mt-2" message={profileErrors.avatar} />
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="name" required>
-                                            {translate('Name')}
-                                        </Label>
+                                        <Label htmlFor="name">{translate('Name')}</Label>
                                         <Input
                                             id="name"
                                             className="mt-1 block w-full"
                                             value={profileData.name}
-                                            onChange={(e) => setProfileData((prev) => ({ ...prev, name: e.target.value }))}
+                                            onChange={(e) => {
+                                                setProfileData((prev) => ({
+                                                    ...prev,
+                                                    name: e.target.value,
+                                                }));
+                                            }}
+                                            required
                                             autoComplete="name"
-                                            placeholder={translate('Full name')}
                                         />
                                         <InputError className="mt-2" message={profileErrors.name} />
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="email" required>
-                                            {translate('Email address')}
-                                        </Label>
+                                        <Label htmlFor="email">{translate('Work email')}</Label>
                                         <Input
                                             id="email"
                                             type="email"
                                             className="mt-1 block w-full"
                                             value={profileData.email}
-                                            onChange={(e) => setProfileData((prev) => ({ ...prev, email: e.target.value }))}
+                                            onChange={(e) => {
+                                                setProfileData((prev) => ({
+                                                    ...prev,
+                                                    email: e.target.value,
+                                                }));
+                                            }}
+                                            required
                                             autoComplete="username"
-                                            placeholder={translate('Email address')}
                                         />
                                         <InputError className="mt-2" message={profileErrors.email} />
                                     </div>
@@ -324,7 +282,7 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                                                 <button
                                                     type="button"
                                                     onClick={() => route('verification.send')}
-                                                    className="text-foreground cursor-pointer underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current dark:decoration-neutral-500"
+                                                    className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current dark:decoration-neutral-500"
                                                 >
                                                     {translate('Click here to resend the verification email.')}
                                                 </button>
@@ -339,7 +297,9 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                                     )}
 
                                     <div className="flex items-center gap-4">
-                                        <Button disabled={profileProcessing}>{translate('Save')}</Button>
+                                        <Button size="lg" disabled={profileProcessing}>
+                                            {translate('Save')}
+                                        </Button>
                                     </div>
                                 </form>
                             </CardContent>
@@ -350,63 +310,75 @@ export default function ProfileSettings({ mustVerifyEmail, status }: { mustVerif
                     <section id="password" ref={passwordRef} className="mb-16">
                         <Card className="shadow-sm">
                             <CardHeader>
-                                <CardTitle className="text-lg font-semibold">{translate('Update Password')}</CardTitle>
-                                <CardDescription>{translate('Ensure your account is using a long, random password to stay secure')}</CardDescription>
+                                <CardTitle className="text-lg font-semibold">{translate('Password')}</CardTitle>
+                                <CardDescription>
+                                    {translate(
+                                        'Choose a strong password and don’t reuse it for other accounts. You will be signed out of your account on all your devices.',
+                                    )}
+                                </CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <form id="password-form" onSubmit={updatePassword} className="space-y-6">
+                                <form id="password-form" autoComplete="off" onSubmit={updatePassword} className="space-y-6">
                                     <div className="grid gap-2">
-                                        <Label htmlFor="current_password" required>
-                                            {translate('Current password')}
-                                        </Label>
+                                        <Label htmlFor="current_password">{translate('Current password')}</Label>
                                         <Input
                                             id="current_password"
                                             ref={currentPasswordInput}
                                             value={passwordData.current_password}
-                                            onChange={(e) => setPasswordData((prev) => ({ ...prev, current_password: e.target.value }))}
+                                            onChange={(e) => {
+                                                setPasswordData((prev) => ({
+                                                    ...prev,
+                                                    current_password: e.target.value,
+                                                }));
+                                            }}
                                             type="password"
                                             className="mt-1 block w-full"
                                             autoComplete="current-password"
-                                            placeholder="Current password"
                                         />
                                         <InputError message={passwordErrors.current_password} />
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="password" required>
-                                            {translate('New password')}
-                                        </Label>
+                                        <Label htmlFor="password">{translate('New password')}</Label>
                                         <Input
                                             id="password"
                                             ref={passwordInput}
                                             value={passwordData.password}
-                                            onChange={(e) => setPasswordData((prev) => ({ ...prev, password: e.target.value }))}
+                                            onChange={(e) => {
+                                                setPasswordData((prev) => ({
+                                                    ...prev,
+                                                    password: e.target.value,
+                                                }));
+                                            }}
                                             type="password"
                                             className="mt-1 block w-full"
                                             autoComplete="new-password"
-                                            placeholder="New password"
                                         />
                                         <InputError message={passwordErrors.password} />
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="password_confirmation" required>
-                                            {translate('Confirm password')}
-                                        </Label>
+                                        <Label htmlFor="password_confirmation">{translate('Confirm new password')}</Label>
                                         <Input
                                             id="password_confirmation"
                                             value={passwordData.password_confirmation}
-                                            onChange={(e) => setPasswordData((prev) => ({ ...prev, password_confirmation: e.target.value }))}
+                                            onChange={(e) => {
+                                                setPasswordData((prev) => ({
+                                                    ...prev,
+                                                    password_confirmation: e.target.value,
+                                                }));
+                                            }}
                                             type="password"
                                             className="mt-1 block w-full"
                                             autoComplete="new-password"
-                                            placeholder="Confirm password"
                                         />
                                         <InputError message={passwordErrors.password_confirmation} />
                                     </div>
 
                                     <div className="flex items-center gap-4">
-                                        <Button disabled={passwordProcessing}>{translate('Save')}</Button>
+                                        <Button size="lg" disabled={passwordProcessing}>
+                                            {translate('Change password')}
+                                        </Button>
                                     </div>
                                 </form>
                             </CardContent>

@@ -5,30 +5,35 @@ namespace App\Http\Controllers\Settings;
 use App\Http\Controllers\Controller;
 use App\Mail\TestMail;
 use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Inertia\Inertia;
 
 class EmailSettingController extends Controller
 {
+    public function index(): \Inertia\Response
+    {
+        return Inertia::render('Settings/EmailSettings');
+    }
+
     /**
      * Get email settings for the authenticated user.
      *
-     * @return JsonResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getEmailSettings()
     {
         $settings = [
             'provider' => getSetting('email_provider', 'smtp'),
-            'driver' => getSetting('email_driver', 'smtp'),
-            'host' => getSetting('email_host', 'smtp.kakbima.dev'),
+            'driver' => getSetting('email_driver', 'mailgun'),
+            'host' => getSetting('email_host', 'api.eu.mailgun.net'),
             'port' => getSetting('email_port', '587'),
             'username' => getSetting('email_username', 'user@kakbima.dev'),
             'password' => getSetting('email_password', ''),
             'encryption' => getSetting('email_encryption', 'tls'),
-            'fromAddress' => getSetting('email_from_address', 'noreply@kakbima.dev'),
+            'fromAddress' => getSetting('email_from_address', 'no-reply@kakbima.dev'),
             'fromName' => getSetting('email_from_name', 'Kakbima'),
         ];
 
@@ -43,11 +48,10 @@ class EmailSettingController extends Controller
     /**
      * Update email settings for the authenticated user.
      *
-     * @param Request $request
+     * @param \Illuminate\Http\Request $request
      */
     public function updateEmailSettings(Request $request)
     {
-        $user = Auth::user();
         $validated = $request->validate([
             'provider' => 'required|string',
             'driver' => 'required|string',
@@ -56,7 +60,7 @@ class EmailSettingController extends Controller
             'username' => 'required|string',
             'password' => 'nullable|string',
             'encryption' => 'required|string',
-            'fromAddress' => 'required|email',
+            'fromAddress' => 'required|email|max:255',
             'fromName' => 'required|string',
         ]);
 
@@ -81,29 +85,29 @@ class EmailSettingController extends Controller
     /**
      * Send a test email.
      *
-     * @param Request $request
+     * @param \Illuminate\Http\Request $request
      */
     public function sendTestEmail(Request $request)
     {
         $validator = Validator::make(
             $request->all(),
             [
-                'email' => 'required|email',
+                'email' => 'required|email|max:255',
             ]
         );
 
         if ($validator->fails()) {
-            return redirect()->back()->with('error', $validator->errors()->first());
+            return redirect()->back()->with('error', $validator->errors()?->first());
         }
 
         $settings = [
             'provider' => getSetting('email_provider', 'smtp'),
-            'driver' => getSetting('email_driver', 'smtp'),
-            'host' => getSetting('email_host', 'smtp.kakbima.dev'),
+            'driver' => getSetting('email_driver', 'mailgun'),
+            'host' => getSetting('email_host', 'api.eu.mailgun.net'),
             'port' => getSetting('email_port', '587'),
             'username' => getSetting('email_username', 'user@kakbima.dev'),
             'encryption' => getSetting('email_encryption', 'tls'),
-            'fromAddress' => getSetting('email_from_address', 'noreply@kakbima.dev'),
+            'fromAddress' => getSetting('email_from_address', 'no-reply@kakbima.dev'),
             'fromName' => getSetting('email_from_name', 'Kakbima'),
         ];
 
@@ -128,7 +132,11 @@ class EmailSettingController extends Controller
 
             return redirect()->back()->with('success', __('Test email sent successfully to :email', ["email" => $request->email]));
         } catch (Exception $e) {
-            return redirect()->back()->with('error', __('Failed to send test email: :message', ["message" => $e->getMessage()]));
+            // Fail silently but log once for investigation
+            Log::error($e);
+
+            // Return an appropriate error response
+            return redirect()->back()->with('error', __('Something went wrong. Please try again.'));
         }
     }
 

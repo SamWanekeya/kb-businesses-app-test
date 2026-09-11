@@ -123,7 +123,7 @@ class SystemSettingsController extends Controller
     }
 
     /**
-     * Update the chatgpt settings.
+     * Update the chat-gpt settings.
      *
      * @param Request $request
      *
@@ -133,8 +133,8 @@ class SystemSettingsController extends Controller
     {
         try {
             $validated = $request->validate([
-                'chatgptKey' => 'required|string',
-                'chatgptModel' => 'required|string',
+                'chat-gptKey' => 'required|string',
+                'chat-gptModel' => 'required|string',
             ]);
 
             foreach ($validated as $key => $value) {
@@ -175,56 +175,6 @@ class SystemSettingsController extends Controller
             return redirect()->back()->with('success', __('Cookie settings updated successfully.'));
         } catch (Exception $e) {
             return redirect()->back()->with('error', __('Failed to update cookie settings: :error', ['error' => $e->getMessage()]));
-        }
-    }
-
-    /**
-     * Update the SEO settings.
-     *
-     * @param Request $request
-     *
-     * @return RedirectResponse
-     */
-    public function updateSeo(Request $request)
-    {
-        try {
-            $rules = [
-                'metaKeywords' => 'required|string|max:255',
-                'metaDescription' => 'required|string|max:160',
-            ];
-
-            if ($request->hasFile('metaImage')) {
-                $rules['metaImage'] = 'required|file|image|max:5120';
-            } else {
-                $rules['metaImage'] = 'required|string';
-            }
-
-            $validated = $request->validate($rules);
-
-            updateSetting('metaKeywords', $validated['metaKeywords']);
-            updateSetting('metaDescription', $validated['metaDescription']);
-
-            if ($request->hasFile('metaImage')) {
-                $filenameWithExt = $request->file('metaImage')->getClientOriginalName();
-                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                $extension = $request->file('metaImage')->getClientOriginalExtension();
-                $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-
-                $upload = upload_file($request, 'metaImage', $fileNameToStore, 'seo');
-                if ($upload['status'] == true) {
-                    updateSetting('metaImage', $upload['url']);
-                } else {
-                    return redirect()->back()
-                        ->withErrors(['metaImage' => $upload['msg']])
-                        ->withInput();
-                }
-            } else {
-                updateSetting('metaImage', $validated['metaImage']);
-            }
-
-            return redirect()->back()->with('success', __('SEO settings updated successfully.'));
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', __('Failed to update SEO settings: :error', ['error' => $e->getMessage()]));
         }
     }
 

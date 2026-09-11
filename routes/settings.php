@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\InvoiceStripePaymentController;
-use App\Http\Controllers\PlanOrderController;
 use App\Http\Controllers\Settings\CurrencySettingController;
 use App\Http\Controllers\Settings\EmailSettingController;
 use App\Http\Controllers\Settings\OrganizationPaymentSettingController;
@@ -14,7 +13,6 @@ use App\Http\Controllers\Settings\SystemSettingsController;
 use App\Http\Controllers\Settings\WebhookController;
 use App\Http\Controllers\StripePaymentController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,11 +27,10 @@ use Inertia\Inertia;
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/payment-methods', [PaymentSettingController::class, 'getPaymentMethods'])->name('payment.methods');
     Route::get('/enabled-payment-methods', [PaymentSettingController::class, 'getEnabledMethods'])->name('payment.enabled-methods');
-    Route::post('/plan-orders', [PlanOrderController::class, 'create'])->name('plan-orders.create');
     Route::post('/stripe-payment', [StripePaymentController::class, 'processPayment'])->name('settings.stripe.payment');
 });
 
-Route::middleware(['auth', 'verified', 'plan.access'])->group(function () {
+Route::middleware(['auth', 'verified', 'check.subscription'])->group(function () {
     // Payment Settings (admin only)
     Route::post('/payment-settings', [PaymentSettingController::class, 'store'])->name('payment.settings');
 
@@ -43,28 +40,23 @@ Route::middleware(['auth', 'verified', 'plan.access'])->group(function () {
 
     // Invoice Stripe Payment
     Route::post('/invoice-stripe-payment', [InvoiceStripePaymentController::class, 'processPayment'])->name('settings.invoice.stripe.payment');
-    Route::post('/invoice-stripe-confirm', [InvoiceStripePaymentController::class, 'confirmPayment'])->name('settings.invoice.stripe.confirm');
 
-    // Profile settings page with profile and password sections
-    Route::get('profile', function () {
-        return Inertia::render('settings/profile-settings');
-    })->name('profile');
+    // My account settings page with profile and password sections
+    Route::get('my-kakbima-account', ProfileController::class)->name('my-kakbima-account.success');
 
     // Routes for form submissions
-    Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::post('profile', [ProfileController::class, 'update']); // For file uploads with method spoofing
-    Route::delete('profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::put('profile/password', [PasswordController::class, 'update'])->name('password.update');
-
-    // Email settings page
-    Route::get('settings/email', function () {
-        return Inertia::render('settings/components/email-settings');
-    })->name('settings.email');
+    Route::patch('my-kakbima-account', [ProfileController::class, 'update'])->name('my-kakbima-account.update');
+    Route::post('my-kakbima-account', [ProfileController::class, 'update']); // For file uploads with method spoofing
+    Route::delete('my-kakbima-account', [ProfileController::class, 'destroy'])->name('my-kakbima-account.destroy');
+    Route::put('my-kakbima-account/password', [PasswordController::class, 'update'])->name('my-kakbima-account.password.update');
 
     // Email settings routes
-    Route::get('settings/email/get', [EmailSettingController::class, 'getEmailSettings'])->name('settings.email.get');
-    Route::post('settings/email/update', [EmailSettingController::class, 'updateEmailSettings'])->name('settings.email.update');
-    Route::post('settings/email/test', [EmailSettingController::class, 'sendTestEmail'])->name('settings.email.test');
+    Route::prefix('settings/email')->name('settings.email.')->controller(EmailSettingController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/get', 'getEmailSettings')->name('get');
+        Route::post('/update', 'updateEmailSettings')->name('update');
+        Route::post('/test', 'sendTestEmail')->name('test');
+    });
 
     // General settings page with system and organization settings
     Route::get('settings', [SettingsController::class, 'index'])->name('settings');
@@ -77,9 +69,8 @@ Route::middleware(['auth', 'verified', 'plan.access'])->group(function () {
     Route::post('settings/organization/system', [OrganizationSystemSettingsController::class, 'update'])->name('settings.organization.system.update');
 
     Route::post('settings/recaptcha', [SystemSettingsController::class, 'updateRecaptcha'])->name('settings.recaptcha.update');
-    Route::post('settings/chatgpt', [SystemSettingsController::class, 'updateChatgpt'])->name('settings.chatgpt.update');
+    Route::post('settings/chat-gpt', [SystemSettingsController::class, 'updateChatgpt'])->name('settings.chat-gpt.update');
     Route::post('settings/cookie', [SystemSettingsController::class, 'updateCookie'])->name('settings.cookie.update');
-    Route::post('settings/seo', [SystemSettingsController::class, 'updateSeo'])->name('settings.seo.update');
     Route::post('settings/storage', [SystemSettingsController::class, 'updateStorage'])->name('settings.storage.update');
     Route::get('settings/email-notifications', [SystemSettingsController::class, 'getEmailNotifications'])->name('settings.email-notifications.get');
     Route::get('settings/email-notifications/available', [SystemSettingsController::class, 'getAvailableEmailNotifications'])->name('settings.email-notifications.available');

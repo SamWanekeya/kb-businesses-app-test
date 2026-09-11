@@ -31,7 +31,7 @@ export function ChatGptModal({
 }: ChatGptModalProps) {
     const { t: translate } = useTranslation();
     const { csrf_token } = usePage().props;
-    const { modalId, zIndex } = useStackedModal('chatgpt-modal', isOpen);
+    const { modalId, zIndex } = useStackedModal('chat-gpt-modal', isOpen);
     const [prompt, setPrompt] = useState('');
     const [generatedContent, setGeneratedContent] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +50,7 @@ export function ChatGptModal({
 
         setIsLoading(true);
         try {
-            const response = await fetch(route('chatgpt.generate'), {
+            const response = await fetch(route('chat-gpt.generate'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

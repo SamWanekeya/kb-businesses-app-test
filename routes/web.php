@@ -224,7 +224,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //    Route::post('authorizenet/test-connection', [AuthorizeNetPaymentController::class, 'testConnection'])->name('authorizenet.test-connection');
 
     // All other routes require plan access check
-    Route::middleware('plan.access')->group(function () {
+    Route::middleware('check.subscription')->group(function () {
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('dashboard/redirect', [DashboardController::class, 'redirectToFirstAvailablePage'])->name('dashboard.redirect');
 
@@ -954,7 +954,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
 
         // ChatGPT routes
-        Route::post('api/chatgpt/generate', [ChatGptController::class, 'generate'])->name('chatgpt.generate');
+        Route::post('api/chat-gpt/generate', [ChatGptController::class, 'generate'])->name('chat-gpt.generate');
 
         // Sign in History routes
         Route::middleware('permission:manage-sign-in-history')->group(function () {
@@ -975,7 +975,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('email-templates/{emailTemplate}/settings', [EmailTemplateController::class, 'updateSettings'])->name('email-templates.update-settings');
             Route::put('email-templates/{emailTemplate}/content', [EmailTemplateController::class, 'updateContent'])->name('email-templates.update-content');
         });
-    }); // End plan.access middleware group
+    }); // End check.subscription middleware group
     Route::post('impersonate/leave', [ImpersonateController::class, 'leave'])->name('impersonate.leave');
 });
 

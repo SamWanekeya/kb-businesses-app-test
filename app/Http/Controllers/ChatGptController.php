@@ -21,8 +21,8 @@ class ChatGptController extends Controller
         ]);
 
         try {
-            $apiKey = Setting::where('key', 'chatgptKey')->value('value');
-            $model = Setting::where('key', 'chatgptModel')->value('value') ?? 'gpt-3.5-turbo';
+            $apiKey = Setting::where('key', 'chat-gptKey')->value('value');
+            $model = Setting::where('key', 'chat-gptModel')->value('value') ?? 'gpt-3.5-turbo';
 
             if (!$apiKey) {
                 return response()->json([

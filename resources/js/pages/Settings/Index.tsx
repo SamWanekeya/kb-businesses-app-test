@@ -4,8 +4,8 @@ import { Button } from '@components/UserInterface/Button';
 import { ScrollArea } from '@components/UserInterface/ScrollArea';
 import { usePage } from '@inertiajs/react';
 import { cn } from '@lib/utils';
-import OrganizationSystemSettings from '@pages/Settings/Components/OrganizationSystemSettings';
-import SystemSettings from '@pages/Settings/Components/SystemSettings';
+import OrganizationSystemSettings from '@pages/Settings/OrganizationSystemSettings';
+import SystemSettings from '@pages/Settings/SystemSettings';
 import { route } from '@utils/Routes';
 import {
     Bell,
@@ -27,28 +27,28 @@ import {
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
-import CurrencySettings from '@pages/Settings/Components/CurrencySettings';
-import EmailNotificationSettings from '@pages/Settings/Components/EmailNotificationSettings';
-import SlackNotificationSettings from '@pages/Settings/Components/SlackNotificationSettings';
-import TwilioNotificationSettings from '@pages/Settings/Components/TwilioNotificationSettings';
+import CurrencySettings from '@pages/Settings/CurrencySettings';
+import EmailNotificationSettings from '@pages/Settings/EmailNotificationSettings';
+import SlackNotificationSettings from '@pages/Settings/SlackNotificationSettings';
+import TwilioNotificationSettings from '@pages/Settings/TwilioNotificationSettings';
 
-import BrandSettings from '@pages/Settings/Components/BrandSettings';
-import EmailSettings from '@pages/Settings/Components/EmailSettings';
-import PaymentSettings from '@pages/Settings/Components/PaymentSettings';
+import BrandSettings from '@pages/Settings/BrandSettings';
+import EmailSettings from '@pages/Settings/EmailSettings';
+import PaymentSettings from '@pages/Settings/PaymentSettings';
 
-import CacheSettings from '@pages/Settings/Components/CacheSettings';
-import ChatGptSettings from '@pages/Settings/Components/ChatGptSettings';
-import CookieSettings from '@pages/Settings/Components/CookieSettings';
-import GoogleCalendarSettings from '@pages/Settings/Components/GoogleCalendarSettings';
-import InvoiceTemplateSettings from '@pages/Settings/Components/InvoiceTemplateSettings';
-import QuoteTemplateSettings from '@pages/Settings/Components/QuoteTemplateSettings';
-import RecaptchaSettings from '@pages/Settings/Components/RecaptchaSettings';
-import SalesOrderTemplateSettings from '@pages/Settings/Components/SalesOrderTemplateSettings';
-import WebhookSettings from '@pages/Settings/Components/WebhookSettings';
+import CacheSettings from '@pages/Settings/CacheSettings';
+import ChatGptSettings from '@pages/Settings/ChatGptSettings';
+import CookieSettings from '@pages/Settings/CookieSettings';
+import GoogleCalendarSettings from '@pages/Settings/GoogleCalendarSettings';
+import InvoiceTemplateSettings from '@pages/Settings/InvoiceTemplateSettings';
+import QuoteTemplateSettings from '@pages/Settings/QuoteTemplateSettings';
+import RecaptchaSettings from '@pages/Settings/RecaptchaSettings';
+import SalesOrderTemplateSettings from '@pages/Settings/SalesOrderTemplateSettings';
+import WebhookSettings from '@pages/Settings/WebhookSettings';
 
 import Toaster from '@components/UserInterface/Toaster';
 import { useLayout } from '@contexts/LayoutContext';
-import StorageSettings from '@pages/Settings/Components/StorageSettings';
+import StorageSettings from '@pages/Settings/StorageSettings';
 import { useHasPermission } from '@utils/Permissions';
 import { useTranslation } from 'react-i18next';
 
@@ -153,9 +153,9 @@ export default function Settings() {
         },
         {
             title: translate('Chat GPT Settings'),
-            href: '#chatgpt-settings',
+            href: '#chat-gpt-settings',
             icon: <Bot className="mr-2 h-4 w-4" />,
-            permission: 'manage-chatgpt-settings',
+            permission: 'manage-chat-gpt-settings',
         },
         {
             title: translate('Cookie Settings'),
@@ -234,7 +234,7 @@ export default function Settings() {
     const slackNotificationSettingsRef = useRef<HTMLDivElement>(null);
 
     const recaptchaSettingsRef = useRef<HTMLDivElement>(null);
-    const chatgptSettingsRef = useRef<HTMLDivElement>(null);
+    const chat-gptSettingsRef = useRef<HTMLDivElement>(null);
     const cookieSettingsRef = useRef<HTMLDivElement>(null);
     const seoSettingsRef = useRef<HTMLDivElement>(null);
     const cacheSettingsRef = useRef<HTMLDivElement>(null);
@@ -265,7 +265,7 @@ export default function Settings() {
             const slackNotificationSettingsPosition = slackNotificationSettingsRef.current?.offsetTop || 0;
 
             const recaptchaSettingsPosition = recaptchaSettingsRef.current?.offsetTop || 0;
-            const chatgptSettingsPosition = chatgptSettingsRef.current?.offsetTop || 0;
+            const chat-gptSettingsPosition = chat-gptSettingsRef.current?.offsetTop || 0;
             const cookieSettingsPosition = cookieSettingsRef.current?.offsetTop || 0;
             const seoSettingsPosition = seoSettingsRef.current?.offsetTop || 0;
             const cacheSettingsPosition = cacheSettingsRef.current?.offsetTop || 0;
@@ -287,8 +287,8 @@ export default function Settings() {
                 setActiveSection('seo-settings');
             } else if (scrollPosition >= cookieSettingsPosition && cookieSettingsPosition > 0) {
                 setActiveSection('cookie-settings');
-            } else if (scrollPosition >= chatgptSettingsPosition && chatgptSettingsPosition > 0) {
-                setActiveSection('chatgpt-settings');
+            } else if (scrollPosition >= chat-gptSettingsPosition && chat-gptSettingsPosition > 0) {
+                setActiveSection('chat-gpt-settings');
             } else if (scrollPosition >= recaptchaSettingsPosition && recaptchaSettingsPosition > 0) {
                 setActiveSection('recaptcha-settings');
             } else if (scrollPosition >= invoiceTemplatesPosition && invoiceTemplatesPosition > 0) {
@@ -502,8 +502,8 @@ export default function Settings() {
                     )}
 
                     {/* Chat GPT Settings Section */}
-                    {(useHasPermission('manage-chatgpt-settings') || auth?.user?.type === 'super_admin') && (
-                        <section id="chatgpt-settings" ref={chatgptSettingsRef} className="mb-8">
+                    {(useHasPermission('manage-chat-gpt-settings') || auth?.user?.type === 'super_admin') && (
+                        <section id="chat-gpt-settings" ref={chat-gptSettingsRef} className="mb-8">
                             <ChatGptSettings settings={systemSettings} />
                         </section>
                     )}

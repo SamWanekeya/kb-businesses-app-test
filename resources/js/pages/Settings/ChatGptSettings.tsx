@@ -22,17 +22,17 @@ export default function ChatGptSettings({ settings = {} }: ChatGptSettingsProps)
 
     // Default settings
     const defaultSettings = {
-        chatgptKey: '',
-        chatgptModel: 'gpt-3.5-turbo',
+        chat-gptKey: '',
+        chat-gptModel: 'gpt-3.5-turbo',
     };
 
     // Combine settings from props and page props
     const settingsData = Object.keys(settings).length > 0 ? settings : pageProps.settings || {};
 
     // Initialize state with merged settings
-    const [chatgptSettings, setChatgptSettings] = useState(() => ({
-        chatgptKey: settingsData.chatgptKey || defaultSettings.chatgptKey,
-        chatgptModel: settingsData.chatgptModel || defaultSettings.chatgptModel,
+    const [chat-gptSettings, setChatgptSettings] = useState(() => ({
+        chat-gptKey: settingsData.chat-gptKey || defaultSettings.chat-gptKey,
+        chat-gptModel: settingsData.chat-gptModel || defaultSettings.chat-gptModel,
     }));
 
     // Update state when settings change
@@ -66,7 +66,7 @@ export default function ChatGptSettings({ settings = {} }: ChatGptSettingsProps)
         e.preventDefault();
         setProcessing(true);
 
-        router.post(route('settings.chatgpt.update'), chatgptSettings, {
+        router.post(route('settings.chat-gpt.update'), chat-gptSettings, {
             preserveScroll: true,
             onSuccess: (page) => {
                 setProcessing(false);
@@ -92,7 +92,7 @@ export default function ChatGptSettings({ settings = {} }: ChatGptSettingsProps)
             title={translate('Chat GPT Settings')}
             description={translate('Configure Chat GPT integration settings for AI-powered features')}
             action={
-                <Button type="submit" disabled={processing} form="chatgpt-settings-form" size="sm">
+                <Button type="submit" disabled={processing} form="chat-gpt-settings-form" size="sm">
                     <Save className="mr-2 h-4 w-4" />
                     {processing ? translate('Saving...') : translate('Save Changes')}
                 </Button>
@@ -100,24 +100,24 @@ export default function ChatGptSettings({ settings = {} }: ChatGptSettingsProps)
         >
             <Card>
                 <CardContent className="mt-6">
-                    <form id="chatgpt-settings-form" onSubmit={submitChatgptSettings} className="space-y-6">
+                    <form id="chat-gpt-settings-form" onSubmit={submitChatgptSettings} className="space-y-6">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="grid gap-2 md:col-span-2">
-                                <Label htmlFor="chatgptKey" required>
+                                <Label htmlFor="chat-gptKey" required>
                                     {translate('Chat GPT Key')}
                                 </Label>
                                 <Input
-                                    id="chatgptKey"
+                                    id="chat-gptKey"
                                     type="password"
-                                    value={chatgptSettings.chatgptKey}
-                                    onChange={(e) => handleSettingsChange('chatgptKey', e.target.value)}
+                                    value={chat-gptSettings.chat-gptKey}
+                                    onChange={(e) => handleSettingsChange('chat-gptKey', e.target.value)}
                                     placeholder={translate('Enter your OpenAI API key')}
                                 />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="chatgptModel">{translate('Chat GPT Model Name')}</Label>
-                                <Select value={chatgptSettings.chatgptModel} onValueChange={(value) => handleSettingsChange('chatgptModel', value)}>
+                                <Label htmlFor="chat-gptModel">{translate('Chat GPT Model Name')}</Label>
+                                <Select value={chat-gptSettings.chat-gptModel} onValueChange={(value) => handleSettingsChange('chat-gptModel', value)}>
                                     <SelectTrigger>
                                         <SelectValue placeholder={translate('Select Chat GPT model')} />
                                     </SelectTrigger>
