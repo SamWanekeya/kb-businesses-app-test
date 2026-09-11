@@ -4,10 +4,88 @@ namespace App\Services;
 
 use Exception;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class DynamicStorageService
 {
+    /**
+     * Configure dynamic storage disks based on database settings
+     */
+    public static function configureDynamicDisks(): void
+    {
+        try {
+            $config = StorageConfigService::getStorageConfig();
+
+            // Configure S3 disk if credentials exist
+            if (!empty($config['s3']['key']) && !empty($config['s3']['secret'])) {
+                self::configureS3Disk($config['s3']);
+            }
+
+            // Configure Wasabi disk if credentials exist
+            if (!empty($config['wasabi']['key']) && !empty($config['wasabi']['secret'])) {
+                self::configureWasabiDisk($config['wasabi']);
+            }
+        } catch (Exception $e) {
+            Log::error('Failed to configure dynamic storage disks', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+        }
+    }
+
+    // private static function configureS3Disk(array $s3Config): void
+    // {
+    //     // For standard AWS S3, endpoint should be null
+    //     $endpoint = null;
+    //     if (!empty($s3Config['endpoint']) && !str_contains($s3Config['endpoint'], 'amazonaws.com')) {
+    //         $endpoint = $s3Config['endpoint'];
+    //     }
+
+    //     Config::set('filesystems.disks.s3', [
+    //         'driver' => 's3',
+    //         'key' => $s3Config['key'],
+    //         'secret' => $s3Config['secret'],
+    //         'region' => $s3Config['region'],
+    //         'bucket' => $s3Config['bucket'],
+    //         'url' => $s3Config['url'] ?: null,
+    //         'endpoint' => $endpoint,
+    //         'use_path_style_endpoint' => false,
+    //         'visibility' => 'public',
+    //     ]);
+    // }
+
+    private static function configureS3Disk(array $s3Config): void
+    {
+        config(
+            [
+                'filesystems.disks.s3.key' => $s3Config['key'],
+                'filesystems.disks.s3.secret' => $s3Config['secret'],
+                'filesystems.disks.s3.region' => $s3Config['region'],
+                'filesystems.disks.s3.bucket' => $s3Config['bucket'],
+                // 'filesystems.disks.s3.url' => $storage_settings['s3_url'],
+                // 'filesystems.disks.s3.endpoint' => $storage_settings['s3_endpoint'],
+            ]
+        );
+    }
+
+    private static function configureWasabiDisk(array $wasabiConfig): void
+    {
+        $region = $wasabiConfig['region'] ?: 'us-east-1';
+        $endpoint = $wasabiConfig['url'] ?: ('https://s3.' . $region . '.wasabisys.com');
+
+        Config::set('filesystems.disks.wasabi', [
+            'driver' => 's3',
+            'key' => $wasabiConfig['key'],
+            'secret' => $wasabiConfig['secret'],
+            'region' => $region,
+            'bucket' => $wasabiConfig['bucket'],
+            'endpoint' => $endpoint,
+            'use_path_style_endpoint' => false,
+            'visibility' => 'public',
+        ]);
+    }
+
     /**
      * Get the active storage disk instance
      */
@@ -21,40 +99,11 @@ class DynamicStorageService
         try {
             return Storage::disk($diskName);
         } catch (Exception $e) {
+            // Fail silently but log once for investigation
+            Log::error($e);
+
             // Fallback to public disk
             return Storage::disk('public');
-        }
-    }
-
-    /**
-     * Configure dynamic storage disks based on database settings
-     */
-    public static function configureDynamicDisks(): void
-    {
-        $config = StorageConfigService::getStorageConfig();
-
-        // Configure S3 disk if credentials exist
-        if (!empty($config['s3']['key']) && !empty($config['s3']['secret'])) {
-            Config::set('filesystems.disks.s3', [
-                'key' => $config['s3']['key'],
-                'secret' => $config['s3']['secret'],
-                'region' => $config['s3']['region'],
-                'bucket' => $config['s3']['bucket'],
-            ]);
-        }
-
-        // Configure Wasabi disk if credentials exist
-        if (!empty($config['wasabi']['key']) && !empty($config['wasabi']['secret'])) {
-            Config::set('filesystems.disks.wasabi', [
-                'driver' => 's3',
-                'key' => $config['wasabi']['key'],
-                'secret' => $config['wasabi']['secret'],
-                'region' => $config['wasabi']['region'],
-                'bucket' => $config['wasabi']['bucket'],
-                'endpoint' => 'https://s3.' . $config['wasabi']['region'] . '.wasabisys.com',
-                'use_path_style_endpoint' => false,
-                'visibility' => 'public',
-            ]);
         }
     }
 
@@ -77,6 +126,10 @@ class DynamicStorageService
 
             return $retrieved === $testContent;
         } catch (Exception $e) {
+            // Fail silently but log once for investigation
+            Log::error($e);
+
+            // Return an appropriate error response
             return false;
         }
     }

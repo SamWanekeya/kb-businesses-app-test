@@ -7,8 +7,8 @@ import { Card, CardContent } from '@components/UserInterface/Card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
 import { Input } from '@components/UserInterface/Input';
 import { usePage } from '@inertiajs/react';
-import { route } from '@utils/Routes';
 import { useHasPermission } from '@utils/Permissions';
+import { route } from '@utils/Routes';
 import {
     Calendar,
     ChevronLeft,
@@ -45,7 +45,7 @@ export default function MediaLibraryDemo() {
     const { csrf_token, storageSettings, auth, planLimits } = usePage().props;
     const permissions = auth?.permissions || [];
 
-    const allowedTypes = storageSettings?.allowed_file_types || 'jpg,png,webp,gif';
+    const allowedTypes = storageSettings?.allowed_file_types || 'jpg,png,webp,gif,pdf,doc,docx,txt,csv';
     const acceptAttribute = allowedTypes
         .split(',')
         .map((type) => `.${type.trim()}`)

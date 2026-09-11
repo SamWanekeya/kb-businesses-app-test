@@ -37,7 +37,7 @@ class InvoiceSkrillPaymentController extends Controller
             $organizationId = $invoice->created_by;
             $organization = User::findOrFail($organizationId);
             $settings = $this->getInvoicePaymentSettings($organizationId);
-            $currency = $settings['general_settings']['defaultCurrency'] ?? 'USD';
+            $currency = $settings['general_settings']['default_currency'] ?? 'USD';
 
             if (!isset($settings['payment_settings']['skrill_merchant_id'])) {
                 Log::error('Skrill payment failed: Configuration missing', ['invoice_id' => $invoice->id]);

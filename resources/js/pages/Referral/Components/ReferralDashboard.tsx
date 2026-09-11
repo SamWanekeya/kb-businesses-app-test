@@ -13,10 +13,10 @@ interface ReferralDashboardProps {
     stats: any;
     referralLink?: string;
     recentReferredUsers?: any[];
-    currencySymbol?: string;
+    currency_symbol?: string;
 }
 
-export default function ReferralDashboard({ userType, stats, referralLink, recentReferredUsers, currencySymbol }: ReferralDashboardProps) {
+export default function ReferralDashboard({ userType, stats, referralLink, recentReferredUsers, currency_symbol }: ReferralDashboardProps) {
     const { t: translate } = useTranslation();
     const getInitials = useInitials();
 
@@ -72,7 +72,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                                 <div>
                                     <p className="text-muted-foreground text-sm font-medium">{translate('Total Commission Paid')}</p>
                                     <h3 className="mt-1 font-mono text-2xl font-bold text-green-600 dark:text-green-400">
-                                        {currencySymbol}
+                                        {currency_symbol}
                                         {stats.totalCommissionPaid}
                                     </h3>
                                     <p className="text-muted-foreground mt-1 text-xs">{translate('Total payouts')}</p>
@@ -144,7 +144,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                                                     {organization.referral_count}
                                                 </div>
                                                 <p className="font-mono text-xs font-medium text-green-600 dark:text-green-400">
-                                                    {currencySymbol}
+                                                    {currency_symbol}
                                                     {organization.total_earned || 0}
                                                 </p>
                                             </div>
@@ -195,7 +195,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                                         <DollarSign className="h-4 w-4 text-green-600 dark:text-green-400" />
                                     </div>
                                     <p className="font-mono text-2xl font-bold text-green-600 dark:text-green-400">
-                                        {currencySymbol}
+                                        {currency_symbol}
                                         {typeof stats.monthlyPayouts === 'object'
                                             ? Object.values(stats.monthlyPayouts || {}).reduce((a: any, b: any) => a + b, 0)
                                             : stats.monthlyPayouts || 0}
@@ -253,7 +253,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                             <div>
                                 <p className="text-muted-foreground text-sm font-medium">{translate('Total Earned')}</p>
                                 <h3 className="mt-1 font-mono text-2xl font-bold text-amber-600 dark:text-amber-400">
-                                    {currencySymbol}
+                                    {currency_symbol}
                                     {stats.totalEarned}
                                 </h3>
                                 <p className="text-muted-foreground mt-1 text-xs">{translate('Commission earned')}</p>
@@ -271,7 +271,7 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
                             <div>
                                 <p className="text-muted-foreground text-sm font-medium">{translate('Available Balance')}</p>
                                 <h3 className="mt-1 font-mono text-2xl font-bold text-purple-600 dark:text-purple-400">
-                                    {currencySymbol}
+                                    {currency_symbol}
                                     {stats.availableBalance.toFixed(2)}
                                 </h3>
                                 <p className="text-muted-foreground mt-1 text-xs">{translate('Ready to withdraw')}</p>

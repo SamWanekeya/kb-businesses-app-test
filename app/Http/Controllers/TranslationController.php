@@ -15,7 +15,7 @@ class TranslationController extends BaseController
      *
      * Order of precedence:
      *  1. Frontend-provided locale (query or route param)
-     *  2. Cookie (__hf_lcl)
+     *  2. Cookie (__kb_lcl)
      *  3. Authenticated user preference
      *  4. Default: 'en'
      *
@@ -29,7 +29,7 @@ class TranslationController extends BaseController
             return $requestedLocale;
         }
 
-        if ($cookieLocale = Cookie::get('__hf_lcl')) {
+        if ($cookieLocale = Cookie::get('__kb_lcl')) {
             return $cookieLocale;
         }
 
@@ -96,7 +96,7 @@ class TranslationController extends BaseController
     protected function persistLocalePreference(string $locale, string $layoutDirection): void
     {
         //        $minutes = 400 * 24 * 60; // 400 days in minutes
-        //        Cookie::queue('__hf_lcl', $locale, $minutes);
+        //        Cookie::queue('__kb_lcl', $locale, $minutes);
 
         if (auth()?->check()) {
             auth()?->user()?->update(['lang' => $locale]);
@@ -136,7 +136,7 @@ class TranslationController extends BaseController
      * Secondary endpoint: Get the user's current locale (for app initialization).
      *
      * Example frontend flow:
-     *  1. GET /initial-locale → returns { locale: "sw", layout_direction: "ltr" }
+     *  1. GET /initial-locale -> returns { locale: "sw", layout_direction: "ltr" }
      *  2. Initialize i18n with that locale before rendering.
      *
      * @return JsonResponse

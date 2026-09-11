@@ -9,9 +9,9 @@ import { useTranslation } from 'react-i18next';
 export interface InputProps extends React.ComponentProps<'input'> {
     /**
      * Triggered whenever validation runs.
-     * - `valid = true` → no error
-     * - `valid = false` → error occurred
-     * - `message` → human-readable error text
+     * - `valid = true` -> no error
+     * - `valid = false` -> error occurred
+     * - `message` -> human-readable error text
      */
     onValidate?: (valid: boolean, message: string | null) => void;
 

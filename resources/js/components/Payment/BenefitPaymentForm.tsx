@@ -1,11 +1,11 @@
 import { Alert, AlertDescription } from '@components/UserInterface/Alert';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
+import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { AlertCircle, CreditCard, ExternalLink, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { usePage } from '@inertiajs/react';
 
 interface BenefitPaymentFormProps {
     planId: number;

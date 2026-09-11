@@ -78,7 +78,7 @@ class OzowPaymentController extends Controller
                 'transactionReference' => $transactionReference,
                 'bankReference' => $bankReference,
                 'cancelUrl' => $cancelUrl,
-                'currencyCode' => $currency,
+                'currency_code' => $currency,
                 'errorUrl' => $successUrl,
                 'isTest' => $isTest,
                 'notifyUrl' => $successUrl,

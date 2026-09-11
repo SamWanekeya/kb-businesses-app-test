@@ -4,11 +4,11 @@ import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
+import { usePage } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import { AlertCircle, CreditCard, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { usePage } from '@inertiajs/react';
 
 interface InvoicePayfastPaymentFormProps {
     invoiceId: number;

@@ -19,7 +19,7 @@ export default function Taxes() {
     const { t: translate } = useTranslation();
     const { auth, taxes, filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
-    const currencySymbol = window?.appSettings?.currencySettings?.currencySymbol;
+    const currency_symbol = window?.appSettings?.currencySettings?.currency_symbol;
 
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
     const [selectedStatus, setSelectedStatus] = useState(pageFilters.status || 'all');
@@ -210,7 +210,7 @@ export default function Taxes() {
 
     const formatRate = (item: any) => {
         const rate = parseFloat(item.rate || 0);
-        return item.type === 'percentage' ? `${rate}%` : `${currencySymbol}${rate}`;
+        return item.type === 'percentage' ? `${rate}%` : `${currency_symbol}${rate}`;
     };
 
     const canCreate = useHasPermission('create-taxes');

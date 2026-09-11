@@ -122,7 +122,7 @@ export default function ProductCreate() {
     };
 
     const { globalSettings } = usePage().props;
-    const currencySymbol = globalSettings?.currencySymbol || '$';
+    const currency_symbol = globalSettings?.currency_symbol || '$';
     const selectedCategory = categories?.find((c: any) => c.id.toString() === data.category_id);
 
     return (
@@ -456,7 +456,7 @@ export default function ProductCreate() {
                                     <div className="bg-muted border-border rounded-lg border p-2">
                                         <p className="text-muted-foreground text-[10px] font-medium tracking-wide">{translate('Sale Price')}</p>
                                         <p className="text-foreground mt-0.5 font-mono text-sm font-bold">
-                                            {data.price ? `${currencySymbol}${parseFloat(data.price).toFixed(2)}` : `${currencySymbol}0.00`}
+                                            {data.price ? `${currency_symbol}${parseFloat(data.price).toFixed(2)}` : `${currency_symbol}0.00`}
                                         </p>
                                     </div>
                                     <div className="rounded-lg border border-orange-200 bg-orange-50 p-2 dark:border-orange-800/40 dark:bg-orange-900/20">

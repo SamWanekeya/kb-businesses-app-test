@@ -18,15 +18,15 @@ interface PaymentInputFieldProps {
 }
 
 export default function PaymentInputField({
-                                              id,
-                                              label,
-                                              value,
-                                              onChange,
-                                              type = 'text',
-                                              isSecret = false,
-                                              error,
-                                              className = '',
-                                          }: PaymentInputFieldProps) {
+    id,
+    label,
+    value,
+    onChange,
+    type = 'text',
+    isSecret = false,
+    error,
+    className = '',
+}: PaymentInputFieldProps) {
     const [showSecret, setShowSecret] = useState(false);
 
     // Show asterisks in demo mode for secret fields with values

@@ -22,7 +22,7 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
     const { t: translate } = useTranslation();
     const pageProps = usePage().props;
     const { globalSettings } = usePage().props;
-    const languageData = globalSettings?.availableLanguages || [];
+    const languageData = globalSettings?.available_languages || [];
 
     // Default settings
     const defaultSettings = {

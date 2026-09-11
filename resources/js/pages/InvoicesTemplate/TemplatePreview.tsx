@@ -1,10 +1,9 @@
 import { usePage } from '@inertiajs/react';
-import { route } from '@utils/Routes';
 
 export default function TemplatePreview() {
     const { invoice, templateId, templateColor, settings } = usePage().props;
 
-    const currency = settings?.defaultCurrency || '$';
+    const currency = settings?.default_currency || '$';
     // window.appSettings?.formatCurrency(parseFloat(value))
     const formatCurrency = (amount: number) => `${amount.toFixed(2)}`;
     const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString();

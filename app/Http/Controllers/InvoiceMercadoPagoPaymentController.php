@@ -35,7 +35,7 @@ class InvoiceMercadoPagoPaymentController extends Controller
             }
 
             $accessToken = $settings['payment_settings']['mercadopago_access_token'];
-            $currency = $settings['general_settings']['defaultCurrency'] ?? 'BRL';
+            $currency = $settings['general_settings']['default_currency'] ?? 'BRL';
             $mode = $settings['payment_settings']['mercadopago_mode'] ?? 'sandbox';
 
             SDK::setAccessToken($accessToken);

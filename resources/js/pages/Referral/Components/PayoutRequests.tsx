@@ -17,10 +17,10 @@ interface PayoutRequestsProps {
     payoutRequests: any;
     settings: any;
     stats: any;
-    currencySymbol?: string;
+    currency_symbol?: string;
 }
 
-export default function PayoutRequests({ userType, payoutRequests, settings, stats, currencySymbol }: PayoutRequestsProps) {
+export default function PayoutRequests({ userType, payoutRequests, settings, stats, currency_symbol }: PayoutRequestsProps) {
     const { t: translate } = useTranslation();
 
     const [showCreateDialog, setShowCreateDialog] = useState(false);
@@ -120,7 +120,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
             label: translate('Amount'),
             render: (value) => (
                 <span className="font-mono">
-                    {currencySymbol}
+                    {currency_symbol}
                     {value}
                 </span>
             ),
@@ -208,14 +208,14 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                                         <p>
                                             {translate('Available Balance')}:{' '}
                                             <span className="font-mono">
-                                                {currencySymbol}
+                                                {currency_symbol}
                                                 {stats.availableBalance}
                                             </span>
                                         </p>
                                         <p>
                                             {translate('Minimum Amount')}:{' '}
                                             <span className="font-mono">
-                                                {currencySymbol}
+                                                {currency_symbol}
                                                 {settings.threshold_amount}
                                             </span>
                                         </p>
@@ -236,9 +236,9 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                         <p className="text-muted-foreground text-sm">
                             {stats.availableBalance < settings.threshold_amount
                                 ? translate('You need at least {{amount}} to request a payout', {
-                                      amount: `${currencySymbol}${settings.threshold_amount}`,
+                                      amount: `${currency_symbol}${settings.threshold_amount}`,
                                   })
-                                : translate('You can request up to {{amount}} for payout', { amount: `${currencySymbol}${stats.availableBalance}` })}
+                                : translate('You can request up to {{amount}} for payout', { amount: `${currency_symbol}${stats.availableBalance}` })}
                         </p>
                     </CardContent>
                 </Card>

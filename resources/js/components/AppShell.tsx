@@ -20,7 +20,7 @@ interface AppShellProps {
 /**
  * Top-level layout for pages in the SPA.
  *
- * Sidebar variant persists open/closed state in localStorage (`__hf_sidebar`).
+ * Sidebar variant persists open/closed state in localStorage (`__kb_sidebar`).
  * Only one shell should be mounted per SPA instance to avoid duplicated
  * global integrations and sidebar conflicts.
  *
@@ -34,17 +34,17 @@ export default function AppShell({ children, variant = 'header' }: AppShellProps
      * Defaults to open unless localStorage explicitly stores "false".
      * Lazily initialized to avoid SSR mismatch.
      */
-    const [isOpen, setIsOpen] = useState(() => (typeof window !== 'undefined' ? getFromLocalStorage('__hf_sidebar') !== 'false' : true));
+    const [isOpen, setIsOpen] = useState(() => (typeof window !== 'undefined' ? getFromLocalStorage('__kb_sidebar') !== 'false' : true));
 
     /**
      * Updates controlled sidebar state and persists preference.
-     * Must be the single write path to `__hf_sidebar` to maintain consistency.
+     * Must be the single write path to `__kb_sidebar` to maintain consistency.
      */
     const handleSidebarChange = (open: boolean) => {
         setIsOpen(open);
 
         if (typeof window !== 'undefined') {
-            localStorage.setItem('__hf_sidebar', String(open));
+            localStorage.setItem('__kb_sidebar', String(open));
         }
     };
 

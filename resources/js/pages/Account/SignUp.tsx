@@ -9,7 +9,7 @@ import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
 import AuthLayout from '@layouts/AuthLayout';
 import { getCookie } from '@utils/Helpers/Cookies';
-import { createHafinenExternalUrl } from '@utils/Helpers/Url';
+import { createKakbimaExternalUrl } from '@utils/Helpers/Url';
 import { route } from '@utils/Routes';
 import { useTranslation } from 'react-i18next';
 
@@ -26,7 +26,7 @@ type SignUpForm = {
 
 /**
 
- * SignUp component — renders the Hafinen registration form and handles client-side
+ * SignUp component — renders the Kakbima registration form and handles client-side
  * validation (including password confirmation), Google reCAPTCHA token management, terms
  * acceptance, and submission via Inertia `post`.
  *
@@ -43,7 +43,7 @@ type SignUpForm = {
 export default function SignUp({ referralCode, planId }: { referralCode?: string; planId?: string }) {
     const { t: translate } = useTranslation();
     const [recaptchaToken, setRecaptchaToken] = useState('');
-    const languageFromCookie = getCookie('__hf_lcl');
+    const languageFromCookie = getCookie('__kb_lcl');
 
     const { data, setData, post, processing, reset } = useForm<SignUpForm>({
         name: '',
@@ -187,7 +187,7 @@ export default function SignUp({ referralCode, planId }: { referralCode?: string
     const isSubmitDisabled = hasErrors || requiredFieldsEmpty || processing || !data.terms || Boolean(passwordMismatchError);
 
     return (
-        <AuthLayout title={translate('Create your Hafinen account')}>
+        <AuthLayout title={translate('Create your Kakbima account')}>
             <form className="space-y-5" autoComplete="off" onSubmit={handleSubmit}>
                 <div className="space-y-4">
                     {/* Name */}
@@ -284,7 +284,7 @@ export default function SignUp({ referralCode, planId }: { referralCode?: string
                         <Label htmlFor="terms" className="ml-2 text-sm text-neutral-600 dark:text-neutral-400">
                             {translate('I agree to the')}{' '}
                             <a
-                                href={`${createHafinenExternalUrl('www')}${languageFromCookie}/trust/terms-of-service/`}
+                                href={`${createKakbimaExternalUrl('www')}${languageFromCookie}/trust/terms-of-service/`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-foreground underline"
@@ -293,7 +293,7 @@ export default function SignUp({ referralCode, planId }: { referralCode?: string
                             </a>{' '}
                             {translate('and')}{' '}
                             <a
-                                href={`${createHafinenExternalUrl('www')}${languageFromCookie}/trust/privacy-policy/`}
+                                href={`${createKakbimaExternalUrl('www')}${languageFromCookie}/trust/privacy-policy/`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-foreground underline"

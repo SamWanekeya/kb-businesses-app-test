@@ -987,16 +987,16 @@ if (!function_exists('defaultSettings')) {
             'wasabi_root' => '',
 
             // Currency Settings
-            'decimalFormat' => '2',
-            'defaultCurrency' => 'USD',
-            'decimalSeparator' => '.',
-            'thousandsSeparator' => ',',
-            'floatNumber' => true,
-            'currencySymbolSpace' => false,
-            'currencySymbolPosition' => 'before',
+            'decimal_format' => '2',
+            'default_currency' => 'USD',
+            'decimal_separator' => '.',
+            'thousands_separator' => ',',
+            'float_number' => true,
+            'currency_symbol_space' => false,
+            'currency_symbol_position' => 'before',
 
             // Cookie Settings
-            'enableLogging' => false,
+            'enable_logging' => false,
             'strictlyNecessaryCookies' => true,
             'cookieTitle' => 'Cookie Consent',
             'strictlyCookieTitle' => 'Strictly Necessary Cookies',
@@ -1070,7 +1070,7 @@ if (!function_exists('copySettingsFromSuperAdmin')) {
             'sidebarStyle',
             'layoutDirection',
             'themeMode',
-            'enableLogging',
+            'enable_logging',
             'strictlyNecessaryCookies',
             'cookieTitle',
             'strictlyCookieTitle',
@@ -1082,13 +1082,13 @@ if (!function_exists('copySettingsFromSuperAdmin')) {
 
         // Currency settings - use defaults for organization (not copied from super_admin)
         $currencyDefaults = [
-            'decimalFormat' => '2',
-            'defaultCurrency' => 'USD',
-            'decimalSeparator' => '.',
-            'thousandsSeparator' => ',',
-            'floatNumber' => '1',
-            'currencySymbolSpace' => '0',
-            'currencySymbolPosition' => 'before',
+            'decimal_format' => '2',
+            'default_currency' => 'USD',
+            'decimal_separator' => '.',
+            'thousands_separator' => ',',
+            'float_number' => '1',
+            'currency_symbol_space' => '0',
+            'currency_symbol_position' => 'before',
         ];
 
         $superAdminSettings = Setting::where('user_id', $superAdmin->id)

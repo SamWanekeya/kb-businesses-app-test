@@ -94,7 +94,7 @@ export default function NavMain({ items, position }: { items: NavItem[]; positio
         // Update state and save to localStorage
         setExpandedItems(newExpandedItems);
         try {
-            storeToLocalStorage('__hf_nv_xpndd_mnu_itms', newExpandedItems);
+            storeToLocalStorage('__kb_nv_xpndd_mnu_itms', newExpandedItems);
         } catch (e) {
             console.error('Error saving navigation state:', e);
         }
@@ -124,7 +124,7 @@ export default function NavMain({ items, position }: { items: NavItem[]; positio
 
         // Save to localStorage
         try {
-            storeToLocalStorage('__hf_nv_xpndd_mnu_itms', newExpandedItems);
+            storeToLocalStorage('__kb_nv_xpndd_mnu_itms', newExpandedItems);
         } catch (e) {
             console.error('Error saving navigation state:', e);
         }

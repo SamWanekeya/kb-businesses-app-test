@@ -108,7 +108,7 @@ export default defineConfig(({ mode }) => {
                 '@images': resolve(import.meta.dirname, 'resources/images'),
 
                 /**
-                 * Ziggy route helper (Laravel → JS bridge)
+                 * Ziggy route helper (Laravel -> JS bridge)
                  *
                  * Note:
                  * - This couples frontend to Laravel routing

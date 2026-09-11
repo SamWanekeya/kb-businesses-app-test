@@ -1,6 +1,6 @@
-import hafinenIcon from '@images/logos/hafinen_icon.png';
-import hafinenLogoLight from '@images/logos/hafinen_logo.png';
-import hafinenLogoDark from '@images/logos/hafinen_logo_dark.png';
+import kakbimaIcon from '@images/logos/kakbima_icon.png';
+import kakbimaLogoLight from '@images/logos/kakbima_logo.png';
+import kakbimaLogoDark from '@images/logos/kakbima_logo_dark.png';
 
 import { type NavItem } from '@/types';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@components/UserInterface/Sidebar';
@@ -991,11 +991,11 @@ export default function AppSidebar() {
     // Resolve logo and favicon based on theme & availability
     const resolveLogo = useCallback(() => {
         const theme = getCurrentTheme();
-        if (theme === 'dark') return logoDark || hafinenLogoDark;
-        return logoLight || hafinenLogoLight;
+        if (theme === 'dark') return logoDark || kakbimaLogoDark;
+        return logoLight || kakbimaLogoLight;
     }, [logoLight, logoDark, getCurrentTheme]);
 
-    const resolveFavicon = useCallback(() => favicon || hafinenIcon, [favicon]);
+    const resolveFavicon = useCallback(() => favicon || kakbimaIcon, [favicon]);
 
     // Sidebar state
     const [currentLogo, setCurrentLogo] = useState(resolveLogo);
@@ -1035,7 +1035,7 @@ export default function AppSidebar() {
                         <div className="flex h-12 items-center group-data-[collapsible=icon]:hidden">
                             <img
                                 src={resolveImageUrl(currentLogo)}
-                                alt="Hafinen"
+                                alt="Kakbima"
                                 className="h-11 w-auto max-w-[180px] transition-all duration-200"
                                 onError={handleLogoError}
                             />

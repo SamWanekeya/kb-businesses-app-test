@@ -31,7 +31,7 @@ class MercadoPagoController extends Controller
         return [
             'access_token' => $accessToken,
             'mode' => $settings['payment_settings']['mercadopago_mode'] ?? 'sandbox',
-            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'BRL',
+            'currency' => $settings['general_settings']['default_currency'] ?? 'BRL',
         ];
     }
 

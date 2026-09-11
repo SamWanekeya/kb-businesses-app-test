@@ -49,11 +49,11 @@ class PlanOrderController extends BaseController
         // Always use super admin currency for plan pricing
         $superAdmin = User::where('type', 'super_admin')->first();
         $superAdminSettings = settings($superAdmin->id);
-        $currency = $superAdminSettings ? ($superAdminSettings['defaultCurrency'] ?? 'USD') : 'USD';
-        $currencySymbol = '$';
+        $currency = $superAdminSettings ? ($superAdminSettings['default_currency'] ?? 'USD') : 'USD';
+        $currency_symbol = '$';
         if (!empty($currency)) {
             $currencyData = Currency::where('code', $currency)->first();
-            $currencySymbol = $currencyData ? $currencyData->symbol : '$';
+            $currency_symbol = $currencyData ? $currencyData->symbol : '$';
         }
 
         // Apply sorting
@@ -80,7 +80,7 @@ class PlanOrderController extends BaseController
             'planOrders' => $planOrders,
             'filters' => $request->only(['search', 'status', 'sort_field', 'sort_direction', 'per_page', 'date_from', 'date_to', 'page']),
             'currency' => $currency,
-            'currencySymbol' => $currencySymbol,
+            'currency_symbol' => $currency_symbol,
         ]);
     }
 

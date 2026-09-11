@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class StorageConfigService
 {
@@ -16,30 +18,93 @@ class StorageConfigService
      */
     public static function getActiveDisk(): string
     {
-        $cacheKey = 'global_storage_config';
-        $config = Cache::remember($cacheKey, 60, function () {
-            return self::loadStorageConfigFromDB();
+        $userId = Auth::id();
+        if (!$userId) {
+            return 'public'; // Default for unauthenticated users
+        }
+
+        $cacheKey = 'active_storage_config';
+        $config = Cache::remember($cacheKey, 300, function () use ($userId) {
+            return self::loadStorageConfigFromDB($userId);
         });
 
         return $config['disk'] ?? 'public';
     }
 
     /**
-     * Load storage configuration from database
+     * Get file validation rules based on settings
      */
-    private static function loadStorageConfigFromDB(): array
+    public static function getFileValidationRules(): array
+    {
+        $config = self::getStorageConfig();
+
+        $allowedTypes = $config['allowed_file_types'] ?? '';
+        $maximumSize = ($config['maximum_file_size_mb'] ?? 2) * 1024; // Convert MB to KB
+
+        return [
+            'mimes:' . $allowedTypes,
+            'maximum:' . $maximumSize,
+        ];
+    }
+
+    /**
+     * Get complete storage configuration
+     */
+    public static function getStorageConfig(): array
     {
         try {
-            $superAdminId = DB::table('users')
-                ->where('type', 'super_admin')
-                ->value('id');
+            // Check if user is authenticated
+            if (!Auth::check() || !Auth::user()) {
+                return self::getDefaultConfig();
+            }
 
-            if (!$superAdminId) {
+            $user = Auth::user();
+            $userId = null;
+
+            if ($user->type === 'super_admin') {
+                $userId = $user->id;
+            } else {
+                $userId = getOrganizationId($user->created_by) ?? null;
+            }
+
+            if (!$userId) {
+                return self::getDefaultConfig();
+            }
+
+            $cacheKey = 'active_storage_config_' . $userId;
+
+            // return Cache::remember($cacheKey, 300, function () use ($userId) {
+            return self::loadStorageConfigFromDB($userId);
+            // });
+        } catch (Exception $e) {
+            Log::error('Error in getStorageConfig', ['error' => $e->getMessage()]);
+
+            return self::getDefaultConfig();
+        }
+    }
+
+    /**
+     * Clear storage configuration cache
+     */
+    public static function clearCache(): void
+    {
+        Cache::forget('active_storage_config');
+        Cache::forget('admin_settings');
+    }
+
+    /**
+     * Load storage configuration from database
+     */
+    private static function loadStorageConfigFromDB($userId = null): array
+    {
+        try {
+
+            if (!$userId) {
                 return self::getDefaultConfig();
             }
 
             $settings = DB::table('settings')
-                ->where('user_id', $superAdminId)
+                ->where('user_id', $userId)
                 ->whereIn('key', [
                     'storage_type',
                     'storage_file_types',
@@ -60,42 +125,57 @@ class StorageConfigService
                 ->pluck('value', 'key')
                 ->toArray();
 
-            Log::info('Storage settings loaded', ['user_id' => $superAdminId, 'settings' => $settings]);
-
-            // If no settings found, return default
-            if (empty($settings)) {
-                Log::info('No storage settings found, using defaults');
-
-                return self::getDefaultConfig();
-            }
             // Map storage_type to correct disk name
-            $storageType = $settings['storage_type'] ?? 'local';
+            $superAdmin = User::where('type', 'super_admin')->first();
+            if ($superAdmin) {
+                $superAdminSettings = DB::table('settings')->where('user_id', $superAdmin->id)->whereIn('key', [
+                    'storage_type',
+                    'storage_file_types',
+                    'storage_maximum_upload_size',
+                    'aws_access_key_id',
+                    'aws_secret_access_key',
+                    'aws_default_region',
+                    'aws_bucket',
+                    'aws_url',
+                    'aws_endpoint',
+                    'wasabi_access_key',
+                    'wasabi_secret_key',
+                    'wasabi_region',
+                    'wasabi_bucket',
+                    'wasabi_url',
+                    'wasabi_root',
+                ])
+                    ->pluck('value', 'key')
+                    ->toArray();
+            }
+
+            $storageType = $superAdminSettings['storage_type'] ?? 'local';
             $diskName = match ($storageType) {
                 'local' => 'public',
-                's3' => 's3',
+                'aws_s3' => 's3',
                 'wasabi' => 'wasabi',
                 default => 'public'
             };
 
             return [
                 'disk' => $diskName,
-                'allowed_file_types' => $settings['storage_file_types'] ?? 'jpg,png,webp,gif',
-                'maximum_file_size_mb' => (int)($settings['storage_maximum_upload_size'] ?? 2),
+                'allowed_file_types' => $superAdminSettings['storage_file_types'] ?? 'jpg,jpeg,png,webp,gif,pdf,doc,docx,csv,txt,zip,mp4,mp3',
+                'maximum_file_size_mb' => (int) ($superAdminSettings['storage_maximum_upload_size'] ?? 2),
                 's3' => [
-                    'key' => $settings['aws_access_key_id'] ?? '',
-                    'secret' => $settings['aws_secret_access_key'] ?? '',
-                    'bucket' => $settings['aws_bucket'] ?? '',
-                    'region' => $settings['aws_default_region'] ?? 'us-east-1',
-                    'url' => $settings['aws_url'] ?? '',
-                    'endpoint' => $settings['aws_endpoint'] ?? '',
+                    'key' => $superAdminSettings['aws_access_key_id'] ?? '',
+                    'secret' => $superAdminSettings['aws_secret_access_key'] ?? '',
+                    'bucket' => $superAdminSettings['aws_bucket'] ?? '',
+                    'region' => $superAdminSettings['aws_default_region'] ?? 'us-east-1',
+                    'url' => $superAdminSettings['aws_url'] ?? '',
+                    'endpoint' => $superAdminSettings['aws_endpoint'] ?? '',
                 ],
                 'wasabi' => [
-                    'key' => $settings['wasabi_access_key'] ?? '',
-                    'secret' => $settings['wasabi_secret_key'] ?? '',
-                    'bucket' => $settings['wasabi_bucket'] ?? '',
-                    'region' => $settings['wasabi_region'] ?? 'us-east-1',
-                    'url' => $settings['wasabi_url'] ?? '',
-                    'root' => $settings['wasabi_root'] ?? '',
+                    'key' => $superAdminSettings['wasabi_access_key'] ?? '',
+                    'secret' => $superAdminSettings['wasabi_secret_key'] ?? '',
+                    'bucket' => $superAdminSettings['wasabi_bucket'] ?? '',
+                    'region' => $superAdminSettings['wasabi_region'] ?? 'us-east-1',
+                    'url' => $superAdminSettings['wasabi_url'] ?? '',
+                    'root' => $superAdminSettings['wasabi_root'] ?? '',
                 ],
             ];
         } catch (Exception $e) {
@@ -112,54 +192,10 @@ class StorageConfigService
     {
         return [
             'disk' => 'public',
-            'allowed_file_types' => 'jpg,png,webp,gif',
+            'allowed_file_types' => 'jpg,png,webp,gif,pdf,doc,docx,txt,csv,png',
             'maximum_file_size_mb' => 2,
             's3' => [],
             'wasabi' => [],
         ];
-    }
-
-    /**
-     * Get file validation rules based on settings
-     */
-    public static function getFileValidationRules(): array
-    {
-        $config = self::getStorageConfig();
-
-        $allowedTypes = $config['allowed_file_types'] ?? '';
-        $maximumSize = ($config['maximum_file_size_mb'] ?? 2) * 1024; // Convert MB to KB
-
-        return [
-            'mimes:' . $allowedTypes,
-            'max:' . $maximumSize,
-        ];
-    }
-
-    /**
-     * Get complete storage configuration
-     */
-    public static function getStorageConfig(): array
-    {
-        $cacheKey = 'global_storage_config';
-
-        if (Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
-        }
-
-        $data = self::loadStorageConfigFromDB();
-
-        Cache::put($cacheKey, $data, 300);
-
-        return $data;
-    }
-
-    /**
-     * Clear storage configuration cache
-     */
-    public static function clearCache(): void
-    {
-        Cache::forget('global_storage_config');
-        // Also clear for all users if needed
-        Cache::flush();
     }
 }

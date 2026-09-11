@@ -158,7 +158,7 @@ class SystemSettingsController extends Controller
     {
         try {
             $validated = $request->validate([
-                'enableLogging' => 'required|boolean',
+                'enable_logging' => 'required|boolean',
                 'strictlyNecessaryCookies' => 'required|boolean',
                 'cookieTitle' => 'required|string|max:255',
                 'strictlyCookieTitle' => 'required|string|max:255',
@@ -454,7 +454,7 @@ class SystemSettingsController extends Controller
         $settings = StorageConfigService::getStorageConfig();
 
         return response()->json([
-            'allowed_file_types' => $settings['allowed_file_types'] ?? 'jpg,png,webp,gif',
+            'allowed_file_types' => $settings['allowed_file_types'] ?? 'jpg,png,webp,gif,pdf,doc,docx,txt,csv',
             'maximum_file_size_mb' => $settings['maximum_file_size_mb'] ?? 2,
         ]);
     }

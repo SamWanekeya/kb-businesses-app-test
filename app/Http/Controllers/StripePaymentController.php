@@ -21,7 +21,7 @@ class StripePaymentController extends Controller
             $plan = Plan::findOrFail($validated['plan_id']);
             $pricing = calculatePlanPricing($plan, $validated['coupon_code'] ?? null, $validated['billing_cycle']);
             $settings = getPaymentGatewaySettings();
-            $currency = $settings['general_settings']['defaultCurrency'] ?? 'usd';
+            $currency = $settings['general_settings']['default_currency'] ?? 'usd';
             if (!isset($settings['payment_settings']['stripe_secret']) || !isset($settings['payment_settings']['stripe_key'])) {
                 return back()->withErrors(['error' => __('Stripe not configured')]);
             }

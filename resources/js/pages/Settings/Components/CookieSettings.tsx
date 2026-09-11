@@ -23,7 +23,7 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
 
     // Default settings
     const defaultSettings = {
-        enableLogging: false,
+        enable_logging: false,
         strictlyNecessaryCookies: true,
         cookieTitle: 'Cookie Consent',
         strictlyCookieTitle: 'Strictly Necessary Cookies',
@@ -38,7 +38,7 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
 
     // Initialize state with merged settings
     const [cookieSettings, setCookieSettings] = useState(() => ({
-        enableLogging: settingsData.enableLogging === '1' || settingsData.enableLogging === true || defaultSettings.enableLogging,
+        enable_logging: settingsData.enable_logging === '1' || settingsData.enable_logging === true || defaultSettings.enable_logging,
         strictlyNecessaryCookies:
             settingsData.strictlyNecessaryCookies === '1' ||
             settingsData.strictlyNecessaryCookies === true ||
@@ -56,7 +56,7 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
         if (Object.keys(settingsData).length > 0) {
             setCookieSettings((prevSettings) => ({
                 ...prevSettings,
-                enableLogging: settingsData.enableLogging === '1' || settingsData.enableLogging === true || defaultSettings.enableLogging,
+                enable_logging: settingsData.enable_logging === '1' || settingsData.enable_logging === true || defaultSettings.enable_logging,
                 strictlyNecessaryCookies:
                     settingsData.strictlyNecessaryCookies === '1' ||
                     settingsData.strictlyNecessaryCookies === true ||
@@ -130,13 +130,13 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                             {/* Enable Logging Switch */}
                             <div className="flex items-center justify-between space-x-2">
                                 <div className="space-y-0.5">
-                                    <Label htmlFor="enableLogging">{translate('Enable Logging')}</Label>
+                                    <Label htmlFor="enable_logging">{translate('Enable Logging')}</Label>
                                     <p className="text-muted-foreground text-sm">{translate('Enable cookie activity logging')}</p>
                                 </div>
                                 <Switch
-                                    id="enableLogging"
-                                    checked={cookieSettings.enableLogging}
-                                    onCheckedChange={(checked) => handleCookieSettingsChange('enableLogging', checked)}
+                                    id="enable_logging"
+                                    checked={cookieSettings.enable_logging}
+                                    onCheckedChange={(checked) => handleCookieSettingsChange('enable_logging', checked)}
                                 />
                             </div>
 

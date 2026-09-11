@@ -6,7 +6,7 @@
  * Responsibilities:
  * - Read/write appearance preference (cookie)
  * - Normalize legacy values
- * - Resolve "system" → concrete mode
+ * - Resolve "system" -> concrete mode
  *
  * Non-responsibilities:
  * - React state
@@ -72,7 +72,7 @@ export function storeTheme(appearance: Appearance): void {
 }
 
 /**
- * Resolve appearance → concrete mode
+ * Resolve appearance -> concrete mode
  */
 export function resolveAppearance(appearance: Appearance): ResolvedAppearance {
     if (appearance === 'light') return 'light';

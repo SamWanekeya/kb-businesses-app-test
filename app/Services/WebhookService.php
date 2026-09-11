@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Webhook;
-use Throwable;
 
 class WebhookService
 {
@@ -19,7 +18,7 @@ class WebhookService
 
     private function webhookSetting($module, $id)
     {
-        $webhook = Webhook::where('module', $module)->where('user_id', $id)->first();
+        $webhook = Webhook::where('module', $module)->where('user_id', $id)?->first();
 
         if (!empty($webhook)) {
             $url = $webhook->url;
@@ -52,7 +51,7 @@ class WebhookService
                 } else {
                     return false;
                 }
-            } catch (Throwable $th) {
+            } catch (\Throwable $th) {
                 return false;
             }
         } else {

@@ -1,6 +1,5 @@
 // utils/usePermissions.ts
 import { usePage } from '@inertiajs/react';
-import { route } from '@utils/Routes';
 
 /**
  * Hook to check if the current user has a specific permission

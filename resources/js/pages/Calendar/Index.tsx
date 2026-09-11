@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function CalendarIndex() {
     const { t: translate, i18n } = useTranslation();
-    const { csrf_token,events, auth, settings = {}, globalSettings = {} } = usePage().props;
+    const { csrf_token, events, auth, settings = {}, globalSettings = {} } = usePage().props;
 
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [showModal, setShowModal] = useState(false);

@@ -31,11 +31,11 @@ class PlanController extends Controller
         // Always use super admin currency for plan pricing
         $superAdmin = User::where('type', 'super_admin')->first();
         $superAdminSettings = settings($superAdmin->id);
-        $currency = $superAdminSettings ? ($superAdminSettings['defaultCurrency'] ?? 'USD') : 'USD';
-        $currencySymbol = '$';
+        $currency = $superAdminSettings ? ($superAdminSettings['default_currency'] ?? 'USD') : 'USD';
+        $currency_symbol = '$';
         if (!empty($currency)) {
             $currencyData = Currency::where('code', $currency)->first();
-            $currencySymbol = $currencyData ? $currencyData->symbol : '$';
+            $currency_symbol = $currencyData ? $currencyData->symbol : '$';
         }
 
         $plans = $dbPlans->map(function ($plan) use ($billingCycle) {
@@ -98,7 +98,7 @@ class PlanController extends Controller
             'hasDefaultPlan' => $hasDefaultPlan,
             'isAdmin' => true,
             'currency' => $currency,
-            'currencySymbol' => $currencySymbol,
+            'currency_symbol' => $currency_symbol,
         ]);
     }
 
@@ -112,11 +112,11 @@ class PlanController extends Controller
         // Always use super admin currency for plan pricing
         $superAdmin = User::where('type', 'super_admin')->first();
         $superAdminSettings = settings($superAdmin->id);
-        $currency = $superAdminSettings ? ($superAdminSettings['defaultCurrency'] ?? 'USD') : 'USD';
-        $currencySymbol = '$';
+        $currency = $superAdminSettings ? ($superAdminSettings['default_currency'] ?? 'USD') : 'USD';
+        $currency_symbol = '$';
         if (!empty($currency)) {
             $currencyData = Currency::where('code', $currency)->first();
-            $currencySymbol = $currencyData ? $currencyData->symbol : '$';
+            $currency_symbol = $currencyData ? $currencyData->symbol : '$';
         }
 
         // Determine the organization's current billing cycle from their latest approved plan order
@@ -187,7 +187,7 @@ class PlanController extends Controller
             'currentPlan' => $user->plan,
             'userTrialUsed' => $user->is_trial,
             'currency' => $currency,
-            'currencySymbol' => $currencySymbol,
+            'currency_symbol' => $currency_symbol,
         ]);
     }
 

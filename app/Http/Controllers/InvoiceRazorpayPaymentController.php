@@ -27,7 +27,7 @@ class InvoiceRazorpayPaymentController extends Controller
             }
 
             $api = new Api($settings['payment_settings']['razorpay_key'], $settings['payment_settings']['razorpay_secret']);
-            $currency = $settings['general_settings']['defaultCurrency'] ?? 'INR';
+            $currency = $settings['general_settings']['default_currency'] ?? 'INR';
             // Convert to smallest unit (paise) and ensure it's an integer
             $amount = floatval($validated['amount']);
             $amountInSmallestUnit = round($amount * 100);

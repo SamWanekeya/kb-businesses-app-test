@@ -101,7 +101,7 @@ export default function SignIn(): JSX.Element {
         (email: string) => {
             router.post(route('login'), {
                 email,
-                password: 'Hafinen@DemoAccount2026',
+                password: 'Kakbima@DemoAccount2026',
                 remember: true,
                 recaptcha_token: recaptchaToken,
             });
@@ -112,7 +112,7 @@ export default function SignIn(): JSX.Element {
     return (
         <AuthLayout
             title={isDemo ? translate('Demo account') : translate('Sign in to your account')}
-            description={isDemo ? translate('A great way to look at real business data and experiment with Hafinen features') : ''}
+            description={isDemo ? translate('A great way to look at real business data and experiment with Kakbima features') : ''}
         >
             {isDemo ? (
                 <form className="space-y-5" autoComplete="off" onSubmit={handleSubmit}>
@@ -123,41 +123,11 @@ export default function SignIn(): JSX.Element {
                                     <Button
                                         type="button"
                                         onClick={() => {
-                                            handleDemoSignIn('organization@hafinen.com');
+                                            handleDemoSignIn('organization@kakbima.dev');
                                         }}
                                         className="btn-primary hf-bg-primary h-12 w-full rounded-md py-2.5 font-medium text-white"
                                     >
                                         {translate('Administrator')}
-                                    </Button>
-                                    <Button
-                                        type="button"
-                                        onClick={() => {
-                                            handleDemoSignIn('human.resource.executive@hafinen.com');
-                                        }}
-                                        className="btn-primary hf-bg-primary h-12 w-full rounded-md py-2.5 font-medium text-white"
-                                    >
-                                        {translate('HR executive')}
-                                    </Button>
-                                </div>
-
-                                <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
-                                    <Button
-                                        type="button"
-                                        onClick={() => {
-                                            handleDemoSignIn('recruiter@hafinen.com');
-                                        }}
-                                        className="btn-primary hf-bg-primary h-12 w-full rounded-md py-2.5 font-medium text-white"
-                                    >
-                                        {translate('Recruiter')}
-                                    </Button>
-                                    <Button
-                                        type="button"
-                                        onClick={() => {
-                                            handleDemoSignIn('staff@hafinen.com');
-                                        }}
-                                        className="btn-primary hf-bg-primary h-12 w-full rounded-md py-2.5 font-medium text-white"
-                                    >
-                                        {translate('Staff')}
                                     </Button>
                                 </div>
                             </div>

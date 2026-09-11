@@ -19,7 +19,7 @@ export type ThemeContextValue = {
     /** Update mode */
     setMode: (mode: Appearance, persist?: boolean) => void;
 
-    /** Reset preview → stored mode */
+    /** Reset preview -> stored mode */
     resetPreview: () => void;
 };
 

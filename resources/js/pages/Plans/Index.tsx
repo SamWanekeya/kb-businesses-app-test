@@ -65,7 +65,7 @@ interface Props {
     userTrialUsed?: boolean;
     paymentMethods?: any[];
     currency?: string;
-    currencySymbol?: string;
+    currency_symbol?: string;
 }
 
 export default function Plans({
@@ -77,7 +77,7 @@ export default function Plans({
     userTrialUsed,
     paymentMethods = [],
     currency,
-    currencySymbol,
+    currency_symbol,
 }: Props) {
     const { t: translate } = useTranslation();
     const { flash, auth } = usePage().props;
@@ -771,7 +771,7 @@ export default function Plans({
                                     <div className="mb-4">
                                         <div className="flex items-center justify-center">
                                             <span className="font-mono text-4xl font-bold text-gray-900">
-                                                {currencySymbol}
+                                                {currency_symbol}
                                                 {plan.price}
                                             </span>
                                             <span className="ml-1 text-gray-500">/{translate(plan.duration.toLowerCase())}</span>
@@ -936,7 +936,7 @@ export default function Plans({
                         }}
                         plan={selectedPlan}
                         billingCycle={billingCycle}
-                        currencySymbol={currencySymbol}
+                        currency_symbol={currency_symbol}
                         paymentMethods={formatPaymentMethods(selectedPlan.paymentMethods)}
                     />
                 )}

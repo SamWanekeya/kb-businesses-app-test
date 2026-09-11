@@ -43,7 +43,7 @@ interface ReferredUsersProps {
         links: any[];
     };
     userType: string;
-    currencySymbol: string;
+    currency_symbol: string;
 }
 
 interface PageProps {
@@ -53,7 +53,7 @@ interface PageProps {
 export default function ReferredUsers() {
     const { t: translate } = useTranslation();
     const { props } = usePage<PageProps>();
-    const { referredUsers, userType, currencySymbol } = props;
+    const { referredUsers, userType, currency_symbol } = props;
 
     const getTotalCommission = (user: ReferredUser) => {
         return user.referrals?.reduce((total, referral) => total + (Number(referral.amount) || 0), 0) || 0;
@@ -138,7 +138,7 @@ export default function ReferredUsers() {
                                 <div>
                                     <p className="text-muted-foreground text-sm font-medium">{translate('Total Commission Earned')}</p>
                                     <p className="mt-2 text-2xl font-bold">
-                                        {currencySymbol}
+                                        {currency_symbol}
                                         {(referredUsers.data.reduce((total, user) => total + getTotalCommission(user), 0) || 0).toFixed(2)}
                                     </p>
                                 </div>
@@ -202,7 +202,7 @@ export default function ReferredUsers() {
                                                                     {planInfo.name}
                                                                 </Badge>
                                                                 <p className="text-muted-foreground text-sm">
-                                                                    {currencySymbol}
+                                                                    {currency_symbol}
                                                                     {planInfo.price}/{translate(planInfo.cycle)}
                                                                 </p>
                                                             </div>
@@ -215,7 +215,7 @@ export default function ReferredUsers() {
                                                 {getTotalCommission(user) > 0 && (
                                                     <div className="min-w-[80px] text-end">
                                                         <p className="text-sm font-semibold text-green-600">
-                                                            +{currencySymbol}
+                                                            +{currency_symbol}
                                                             {getTotalCommission(user)?.toFixed(2)}
                                                         </p>
                                                         <p className="text-muted-foreground mt-1 text-xs">{translate('Commission')}</p>
@@ -234,7 +234,7 @@ export default function ReferredUsers() {
                                                                 {referral.commission_percentage}% {translate('commission')}
                                                             </span>
                                                             <span className="text-sm font-semibold text-green-600">
-                                                                +{currencySymbol}
+                                                                +{currency_symbol}
                                                                 {referral.amount}
                                                             </span>
                                                         </div>

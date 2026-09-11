@@ -69,7 +69,7 @@ class SettingsController extends Controller
                     'recaptchaVersion',
                     'recaptchaSiteKey',
                     'recaptchaSecretKey',
-                    'enableLogging',
+                    'enable_logging',
                     'strictlyNecessaryCookies',
                     'cookieTitle',
                     'strictlyCookieTitle',

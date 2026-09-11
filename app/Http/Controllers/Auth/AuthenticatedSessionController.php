@@ -32,7 +32,7 @@ class AuthenticatedSessionController extends Controller
 
         Cookie::queue(
             cookie(
-                name: '__hf_lcl',
+                name: '__kb_lcl',
                 value: $user->lang,
                 minutes: $minutes,
                 path: '/',
@@ -44,7 +44,7 @@ class AuthenticatedSessionController extends Controller
 
         Cookie::queue(
             cookie(
-                name: '__hf_thm_md',
+                name: '__kb_thm_md',
                 value: $user->theme_mode,
                 minutes: $minutes,
                 path: '/',
@@ -83,13 +83,13 @@ class AuthenticatedSessionController extends Controller
      * Business rules:
      * - Bot traffic (as detected via user agent parsing) is not tracked and is redirected immediately.
      * - Ownership of the sign-in record (`created_by`) is derived based on role hierarchy:
-     *   - super_admin → self
-     *   - organization → creator or self
-     *   - others → resolved organization context or self
+     *   - super_admin -> self
+     *   - organization -> creator or self
+     *   - others -> resolved organization context or self
      *
      * External effects:
      * - Writes a new session (session regeneration).
-     * - Queues preference cookies (__hf_lcl, __hf_thm_md).
+     * - Queues preference cookies (__kb_lcl, __kb_thm_md).
      * - Performs an external HTTP request to ip-api.com for geolocation (best-effort, failure-tolerant).
      * - Parses user agent via WhichBrowser.
      * - Persists a SignInHistory database record.

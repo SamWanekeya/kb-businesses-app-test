@@ -670,7 +670,7 @@ export default function CrudFormModal({
 
     useEffect(() => {
         const checkChatGpt = () => {
-            const chatGptModal = document.querySelector('[data-hafinen-intelligence-modal]');
+            const chatGptModal = document.querySelector('[data-kakbima-intelligence-modal]');
             setIsChatGptOpen(!!chatGptModal);
         };
 

@@ -16,13 +16,13 @@ class CurrencySettingController extends Controller
     {
         try {
             $validated = $request->validate([
-                'decimalFormat' => 'required|string|in:0,1,2,3,4',
-                'defaultCurrency' => 'required|string|exists:currencies,code',
-                'decimalSeparator' => ['required', 'string', Rule::in(['.', ','])],
-                'thousandsSeparator' => 'required|string',
-                'floatNumber' => 'required|boolean',
-                'currencySymbolSpace' => 'required|boolean',
-                'currencySymbolPosition' => 'required|string|in:before,after',
+                'decimal_format' => 'required|string|in:0,1,2,3,4',
+                'default_currency' => 'required|string|exists:currencies,code',
+                'decimal_separator' => ['required', 'string', Rule::in(['.', ','])],
+                'thousands_separator' => 'required|string',
+                'float_number' => 'required|boolean',
+                'currency_symbol_space' => 'required|boolean',
+                'currency_symbol_position' => 'required|string|in:before,after',
             ]);
 
             // Update settings using helper function

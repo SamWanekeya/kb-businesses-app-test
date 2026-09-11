@@ -2,8 +2,8 @@
 import { BreadcrumbItem } from '@/types';
 import PageTemplate, { PageAction } from '@components/PageTemplate';
 import { usePage } from '@inertiajs/react';
-import { route } from '@utils/Routes';
 import { useHasPermission } from '@utils/Permissions';
+import { route } from '@utils/Routes';
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 

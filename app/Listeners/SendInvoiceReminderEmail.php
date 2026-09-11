@@ -74,8 +74,8 @@ class SendInvoiceReminderEmail
 
     private function formatCurrency($amount)
     {
-        $currencySymbol = getSetting('currencySymbol', '$');
+        $currency_symbol = getSetting('currency_symbol', '$');
 
-        return $currencySymbol . number_format($amount, 2);
+        return $currency_symbol . number_format($amount, 2);
     }
 }

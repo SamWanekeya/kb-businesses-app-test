@@ -62,11 +62,11 @@ class ReferralController extends Controller
         // Always use super admin currency for plan pricing
         $superAdmin = User::where('type', 'super_admin')->first();
         $superAdminSettings = settings($superAdmin->id);
-        $currency = $superAdminSettings ? ($superAdminSettings['defaultCurrency'] ?? 'USD') : 'USD';
-        $currencySymbol = '$';
+        $currency = $superAdminSettings ? ($superAdminSettings['default_currency'] ?? 'USD') : 'USD';
+        $currency_symbol = '$';
         if (!empty($currency)) {
             $currencyData = Currency::where('code', $currency)->first();
-            $currencySymbol = $currencyData ? $currencyData->symbol : '$';
+            $currency_symbol = $currencyData ? $currencyData->symbol : '$';
         }
 
         // $referredUsers = User::whereNotNull('referral_code_used')
@@ -116,7 +116,7 @@ class ReferralController extends Controller
             'totalCommissionEarned' => $totalCommissionEarned,
             'referredUsers' => $referredUsers,
             'currency' => $currency,
-            'currencySymbol' => $currencySymbol,
+            'currency_symbol' => $currency_symbol,
         ]);
     }
 
@@ -183,11 +183,11 @@ class ReferralController extends Controller
         // Always use super admin currency for plan pricing
         $superAdmin = User::where('type', 'super_admin')->first();
         $superAdminSettings = settings($superAdmin->id);
-        $currency = $superAdminSettings ? ($superAdminSettings['defaultCurrency'] ?? 'USD') : 'USD';
-        $currencySymbol = '$';
+        $currency = $superAdminSettings ? ($superAdminSettings['default_currency'] ?? 'USD') : 'USD';
+        $currency_symbol = '$';
         if (!empty($currency)) {
             $currencyData = Currency::where('code', $currency)->first();
-            $currencySymbol = $currencyData ? $currencyData->symbol : '$';
+            $currency_symbol = $currencyData ? $currencyData->symbol : '$';
         }
 
         return Inertia::render('Referral/Index', [
@@ -207,7 +207,7 @@ class ReferralController extends Controller
             'recentReferredUsers' => $recentReferredUsers,
             'referredUsers' => $referredUsers,
             'currency' => $currency,
-            'currencySymbol' => $currencySymbol,
+            'currency_symbol' => $currency_symbol,
         ]);
     }
 
@@ -281,11 +281,11 @@ class ReferralController extends Controller
         // Always use super admin currency for plan pricing
         $superAdmin = User::where('type', 'super_admin')->first();
         $superAdminSettings = settings($superAdmin->id);
-        $currency = $superAdminSettings ? ($superAdminSettings['defaultCurrency'] ?? 'USD') : 'USD';
-        $currencySymbol = '$';
+        $currency = $superAdminSettings ? ($superAdminSettings['default_currency'] ?? 'USD') : 'USD';
+        $currency_symbol = '$';
         if (!empty($currency)) {
             $currencyData = Currency::where('code', $currency)->first();
-            $currencySymbol = $currencyData ? $currencyData->symbol : '$';
+            $currency_symbol = $currencyData ? $currencyData->symbol : '$';
         }
         if ($user->isSuperAdministrator()) {
             // Super admin can see all referred users
@@ -312,7 +312,7 @@ class ReferralController extends Controller
             'referredUsers' => $referredUsers,
             'userType' => $user->isSuperAdministrator() ? 'super_admin' : 'organization',
             'currency' => $currency,
-            'currencySymbol' => $currencySymbol,
+            'currency_symbol' => $currency_symbol,
         ]);
     }
 

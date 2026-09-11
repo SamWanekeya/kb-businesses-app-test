@@ -40,7 +40,7 @@ class InvoiceStripePaymentController extends Controller
             $organizationId = $invoice->created_by;
             $organization = User::findOrFail($organizationId);
             $settings = $this->getInvoicePaymentSettings($organizationId);
-            $currency = $settings['general_settings']['defaultCurrency'] ?? 'usd';
+            $currency = $settings['general_settings']['default_currency'] ?? 'usd';
 
             if (!isset($settings['payment_settings']['stripe_secret']) || !isset($settings['payment_settings']['stripe_key'])) {
                 Log::error('Stripe payment failed: Configuration missing', ['invoice_id' => $invoice->id]);

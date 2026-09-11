@@ -117,7 +117,7 @@ class CashfreeController extends Controller
             'secret_key' => $settings['payment_settings']['cashfree_secret_key'] ?? null,
             'mode' => $mode,
             'base_url' => $baseUrl,
-            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'INR',
+            'currency' => $settings['general_settings']['default_currency'] ?? 'INR',
         ];
     }
 

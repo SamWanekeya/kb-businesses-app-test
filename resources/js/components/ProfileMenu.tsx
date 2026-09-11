@@ -52,9 +52,9 @@ export default function ProfileMenu() {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuItem asChild>
-                        <Link href={route('my-hafinen-account.success')}>
+                        <Link href={route('my-kakbima-account.success')}>
                             <User className="mr-2 h-4 w-4" />
-                            <span>{translate('My Hafinen account')}</span>
+                            <span>{translate('My Kakbima account')}</span>
                         </Link>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>

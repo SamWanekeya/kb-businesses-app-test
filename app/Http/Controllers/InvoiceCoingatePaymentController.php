@@ -34,7 +34,7 @@ class InvoiceCoingatePaymentController extends Controller
 
             $organizationId = $invoice->created_by;
             $settings = $this->getInvoicePaymentSettings($organizationId);
-            $currency = $settings['general_settings']['defaultCurrency'] ?? 'USD';
+            $currency = $settings['general_settings']['default_currency'] ?? 'USD';
 
             if (!isset($settings['payment_settings']['coingate_api_token']) || empty($settings['payment_settings']['coingate_api_token'])) {
                 Log::error('Coingate payment failed: Configuration missing', ['invoice_id' => $invoice->id]);

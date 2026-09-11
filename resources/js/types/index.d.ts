@@ -47,7 +47,7 @@ export interface NavItem {
  *
  * `permissions`:
  * - Flattened list of ability strings for fast UI checks.
- * - May be omitted on partial reloads → always null-safe in usage.
+ * - May be omitted on partial reloads -> always null-safe in usage.
  */
 export interface SharedData {
     auth?: {

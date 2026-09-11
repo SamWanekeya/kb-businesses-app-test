@@ -13,8 +13,8 @@ import { useCallback } from 'react';
  * - Output is at most two uppercase characters
  *
  * Edge cases:
- * - Empty or whitespace-only input → ''
- * - Single word → first character only
+ * - Empty or whitespace-only input -> ''
+ * - Single word -> first character only
  */
 export default function useInitials() {
     return useCallback((name: string): string => {

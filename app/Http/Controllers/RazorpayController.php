@@ -22,7 +22,7 @@ class RazorpayController extends Controller
         return [
             'key' => $settings['payment_settings']['razorpay_key'] ?? null,
             'secret' => $settings['payment_settings']['razorpay_secret'] ?? null,
-            'currency' => $settings['general_settings']['defaultCurrency'] ?? 'INR',
+            'currency' => $settings['general_settings']['default_currency'] ?? 'INR',
         ];
     }
 

@@ -20,7 +20,7 @@ interface PaymentMethod {
     icon: React.ReactNode;
     enabled: boolean;
     currency?: string;
-    currencySymbol?: string;
+    currency_symbol?: string;
 }
 
 interface PaymentProcessorProps {
@@ -33,12 +33,12 @@ interface PaymentProcessorProps {
     };
     billingCycle: 'monthly' | 'yearly';
     paymentMethods: PaymentMethod[];
-    currencySymbol?: string;
+    currency_symbol?: string;
     onSuccess: () => void;
     onCancel: () => void;
 }
 
-export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencySymbol = '$', onSuccess, onCancel }: PaymentProcessorProps) {
+export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_symbol = '$', onSuccess, onCancel }: PaymentProcessorProps) {
     const { t: translate } = useTranslation();
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('');
     const [couponCode, setCouponCode] = useState('');
@@ -451,7 +451,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
                         </div>
                         <div className="text-right">
                             <div className="text-lg font-bold">
-                                {currencySymbol} {plan.price}
+                                {currency_symbol} {plan.price}
                             </div>
                             <div className="text-muted-foreground text-sm">/{translate(billingCycle)}</div>
                         </div>
@@ -532,7 +532,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
                                 {translate('Coupon Applied')}: {appliedCoupon.code}
                             </span>
                             <span className="text-green-600">
-                                -{appliedCoupon.type === 'percentage' ? `${appliedCoupon.value}%` : `${currencySymbol}${appliedCoupon.value}`}
+                                -{appliedCoupon.type === 'percentage' ? `${appliedCoupon.value}%` : `${currency_symbol}${appliedCoupon.value}`}
                             </span>
                         </div>
                     </div>
@@ -546,7 +546,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
                         <div className="flex justify-between text-sm">
                             <span>{translate('Subtotal')}</span>
                             <span>
-                                {currencySymbol}
+                                {currency_symbol}
                                 {originalPrice}
                             </span>
                         </div>
@@ -554,7 +554,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
                             <div className="flex justify-between text-sm text-green-600">
                                 <span>{translate('Discount')}</span>
                                 <span>
-                                    -{currencySymbol}
+                                    -{currency_symbol}
                                     {discountAmount}
                                 </span>
                             </div>
@@ -563,7 +563,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
                             <div className="flex justify-between font-medium">
                                 <span>{translate('Total')}</span>
                                 <span>
-                                    {currencySymbol}
+                                    {currency_symbol}
                                     {finalPrice.toFixed(2)}
                                 </span>
                             </div>
@@ -578,7 +578,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currencyS
                     {translate('Cancel')}
                 </Button>
                 <Button onClick={handlePayNow} disabled={enabledPaymentMethods.length === 0 || processing} className="flex-1">
-                    {translate('Pay')} {currencySymbol} {finalPrice}
+                    {translate('Pay')} {currency_symbol} {finalPrice}
                 </Button>
             </div>
         </div>

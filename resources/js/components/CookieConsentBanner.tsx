@@ -5,8 +5,8 @@ import { Button } from '@components/UserInterface/Button';
 import { Card } from '@components/UserInterface/Card';
 import { Switch } from '@components/UserInterface/Switch';
 import { usePage } from '@inertiajs/react';
-import { route } from '@utils/Routes';
 import { getFromLocalStorage, storeToLocalStorage } from '@utils/Helpers/Storage';
+import { route } from '@utils/Routes';
 import { X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -33,7 +33,7 @@ export default function CookieConsentBanner() {
         const enable_logging = globalSettings.enable_logging === '1' || globalSettings.enable_logging === 1 || globalSettings.enable_logging === true;
 
         if (enable_logging) {
-            const consent = getFromLocalStorage('__hf_ck_cnst');
+            const consent = getFromLocalStorage('__kb_ck_cnst');
             if (!consent) {
                 setIsVisible(true);
             }
@@ -96,7 +96,7 @@ export default function CookieConsentBanner() {
             };
 
             // Store in localStorage for frontend reference
-            storeToLocalStorage('__hf_ck_cnst', { accepted: true, timestamp: Date.now() });
+            storeToLocalStorage('__kb_ck_cnst', { accepted: true, timestamp: Date.now() });
 
             // Send to backend to store in CSV
             if (!csrfToken) {
@@ -125,7 +125,7 @@ export default function CookieConsentBanner() {
         } catch (error) {
             console.error('Failed to save cookie consent:', error);
             // Still store locally even if server fails
-            storeToLocalStorage('__hf_ck_cnst', { accepted: true, timestamp: Date.now() });
+            storeToLocalStorage('__kb_ck_cnst', { accepted: true, timestamp: Date.now() });
             throw error;
         }
     };

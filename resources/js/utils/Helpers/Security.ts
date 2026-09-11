@@ -6,8 +6,8 @@
  * everything that is safe to run after React has loaded.
  *
  * Exports:
- *  - suppressConsoleMethods  → silences console output in production
- *  - ConsoleRestoreFn        → type for the restore callback
+ *  - suppressConsoleMethods  -> silences console output in production
+ *  - ConsoleRestoreFn        -> type for the restore callback
  */
 
 import { getEnvironmentVariable } from '@utils/Helpers/EnvironmentVariables';

@@ -28,7 +28,7 @@ class SignUpUserController extends Controller
      */
     public function register(SignUpRequest $request): RedirectResponse
     {
-        $locale = Cookie::get('__hf_lcl');
+        $locale = Cookie::get('__kb_lcl');
 
         $user = DB::transaction(function () use ($request, $locale) {
             $userData = [

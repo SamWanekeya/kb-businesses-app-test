@@ -693,7 +693,7 @@ class InvoiceController extends Controller
         $paymentSettings = getPaymentMethodConfig('stripe', $invoice->created_by);
 
         // Get currency from settings or default
-        $currency = getSetting('defaultCurrency', 'USD', $invoice->created_by);
+        $currency = getSetting('default_currency', 'USD', $invoice->created_by);
 
         return Inertia::render('Invoices/Payment', [
             'invoice' => $invoice,

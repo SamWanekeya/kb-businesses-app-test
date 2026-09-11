@@ -12,11 +12,11 @@ import { useTranslation } from 'react-i18next';
 
 interface ReferralSettingsProps {
     settings: any;
-    currencySymbol?: string;
+    currency_symbol?: string;
     globalSettings?: any;
 }
 
-export default function ReferralSettings({ settings, currencySymbol, globalSettings }: ReferralSettingsProps) {
+export default function ReferralSettings({ settings, currency_symbol, globalSettings }: ReferralSettingsProps) {
     const { t: translate } = useTranslation();
     const { data, setData, post, processing, errors } = useForm({
         is_enabled: settings.is_enabled,
@@ -88,7 +88,7 @@ export default function ReferralSettings({ settings, currencySymbol, globalSetti
 
                         <div>
                             <Label htmlFor="threshold_amount" required>
-                                {translate('Minimum Threshold Amount')} {currencySymbol}
+                                {translate('Minimum Threshold Amount')} {currency_symbol}
                             </Label>
                             <Input
                                 id="threshold_amount"

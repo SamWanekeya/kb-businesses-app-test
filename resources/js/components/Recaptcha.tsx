@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 
 import { usePage } from '@inertiajs/react';
-import { route } from '@utils/Routes';
 
 interface RecaptchaProps {
     onVerify: (token: string) => void;

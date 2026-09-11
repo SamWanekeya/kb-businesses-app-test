@@ -5,6 +5,7 @@ import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { Textarea } from '@components/UserInterface/Textarea';
 import useStackedModal from '@hooks/useStackedModal';
+import { usePage } from '@inertiajs/react';
 import languageData from '@lang/language.json';
 import { route } from '@utils/Routes';
 import { Check, Copy, Loader2, Sparkles, X } from 'lucide-react';
@@ -12,7 +13,6 @@ import { useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
-import { usePage } from '@inertiajs/react';
 
 interface ChatGptModalProps {
     isOpen: boolean;

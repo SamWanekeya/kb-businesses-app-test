@@ -120,7 +120,7 @@ export function lazyLoadImages(options: LazyLoadOptions = {}): void {
     const { selector = 'img[data-src]', rootMargin = '200px' } = options;
 
     /**
-     * Promotes `data-src` → `src` for a single image element and removes
+     * Promotes `data-src` -> `src` for a single image element and removes
      * the `data-src` attribute so the image is not processed twice.
      */
     function loadImage(img: HTMLImageElement): void {

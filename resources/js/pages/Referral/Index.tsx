@@ -3,12 +3,12 @@ import PageTemplate from '@components/PageTemplate';
 import { Button } from '@components/UserInterface/Button';
 import Toaster from '@components/UserInterface/Toaster';
 import { usePage } from '@inertiajs/react';
-import { route } from '@utils/Routes';
 import { cn } from '@lib/utils';
 import PayoutRequests from '@pages/Referral/Components/payout-requests';
 import ReferralDashboard from '@pages/Referral/Components/referral-dashboard';
 import ReferralSettings from '@pages/Referral/Components/referral-settings';
 import ReferredUsersSection from '@pages/Referral/Components/referred-users-section';
+import { route } from '@utils/Routes';
 import { BarChart3, DollarSign, Settings as SettingsIcon, Users } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 export default function Referral() {
     const { t: translate } = useTranslation();
     const { props } = usePage();
-    const { userType, settings, stats, payoutRequests, referralLink, usersWithPlans, currencySymbol, globalSettings } = props as any;
+    const { userType, settings, stats, payoutRequests, referralLink, usersWithPlans, currency_symbol, globalSettings } = props as any;
     const [activeSection, setActiveSection] = useState('dashboard');
 
     const breadcrumbs = [{ title: translate('Dashboard'), href: route('dashboard') }, { title: translate('Referral Program') }];
@@ -154,7 +154,7 @@ export default function Referral() {
                             stats={stats}
                             referralLink={referralLink}
                             recentReferredUsers={props.recentReferredUsers}
-                            currencySymbol={currencySymbol}
+                            currency_symbol={currency_symbol}
                         />
                     </section>
 
@@ -165,7 +165,7 @@ export default function Referral() {
                             usersWithPlans={props.usersWithPlans}
                             totalCommissionEarned={props.totalCommissionEarned}
                             userType={userType}
-                            currencySymbol={currencySymbol}
+                            currency_symbol={currency_symbol}
                         />
                     </section>
 
@@ -176,14 +176,14 @@ export default function Referral() {
                             payoutRequests={payoutRequests}
                             settings={settings}
                             stats={stats}
-                            currencySymbol={currencySymbol}
+                            currency_symbol={currency_symbol}
                         />
                     </section>
 
                     {userType === 'super_admin' && (
                         <section id="settings" ref={settingsRef} className="mb-8">
                             <h2 className="mb-4 text-xl font-semibold">{translate('Settings')}</h2>
-                            <ReferralSettings settings={settings} currencySymbol={currencySymbol} globalSettings={globalSettings} />
+                            <ReferralSettings settings={settings} currency_symbol={currency_symbol} globalSettings={globalSettings} />
                         </section>
                     )}
                 </div>

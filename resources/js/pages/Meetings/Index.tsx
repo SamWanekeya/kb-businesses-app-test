@@ -36,7 +36,7 @@ export default function Meetings() {
     const permissions = auth?.permissions || [];
     const isGoogleCalendarSynced = settings?.googleCalendarEnabled === '1';
 
-    // Parse backend selectedDate string → Date object (local, no timezone shift)
+    // Parse backend selectedDate string -> Date object (local, no timezone shift)
     const parseDate = (str: string) => {
         const [y, m, d] = str.split('-').map(Number);
         return new Date(y, m - 1, d);

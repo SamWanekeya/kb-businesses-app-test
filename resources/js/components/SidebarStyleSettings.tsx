@@ -29,7 +29,7 @@ export const getSidebarSettings = (): SidebarSettings => {
     }
 
     try {
-        const savedSettings = getFromLocalStorage('__hf_sidebar_stns');
+        const savedSettings = getFromLocalStorage('__kb_sidebar_stns');
         return savedSettings ? JSON.parse(savedSettings) : DEFAULT_SIDEBAR_SETTINGS;
     } catch (_error) {
         return DEFAULT_SIDEBAR_SETTINGS;
@@ -49,7 +49,7 @@ export default function SidebarStyleSettings() {
     const updateVariant = useCallback((variant: SidebarVariant) => {
         setSettings((prev) => {
             const newSettings = { ...prev, variant };
-            storeToLocalStorage('__hf_sidebar_stns', newSettings);
+            storeToLocalStorage('__kb_sidebar_stns', newSettings);
             return newSettings;
         });
     }, []);
@@ -58,7 +58,7 @@ export default function SidebarStyleSettings() {
     const updateCollapsible = useCallback((collapsible: SidebarCollapsible) => {
         setSettings((prev) => {
             const newSettings = { ...prev, collapsible };
-            storeToLocalStorage('__hf_sidebar_stns', newSettings);
+            storeToLocalStorage('__kb_sidebar_stns', newSettings);
             return newSettings;
         });
     }, []);

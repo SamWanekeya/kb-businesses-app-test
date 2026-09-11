@@ -29,14 +29,14 @@ export default function CurrencySettings() {
 
     // Currency Settings form state
     const [currencySettings, setCurrencySettings] = useState({
-        decimalFormat: systemSettings.decimalFormat || '2',
-        defaultCurrency: systemSettings.defaultCurrency || 'USD',
-        decimalSeparator: systemSettings.decimalSeparator || '.',
-        thousandsSeparator: systemSettings.thousandsSeparator || ',',
-        floatNumber: systemSettings.floatNumber === '0' ? false : true,
-        currencySymbolSpace: systemSettings.currencySymbolSpace === '1',
-        currencySymbolPosition: systemSettings.currencySymbolPosition || 'before',
-        currencyName: '',
+        decimal_format: systemSettings.decimal_format || '2',
+        default_currency: systemSettings.default_currency || 'USD',
+        decimal_separator: systemSettings.decimal_separator || '.',
+        thousands_separator: systemSettings.thousands_separator || ',',
+        float_number: systemSettings.float_number === '0' ? false : true,
+        currency_symbol_space: systemSettings.currency_symbol_space === '1',
+        currency_symbol_position: systemSettings.currency_symbol_position || 'before',
+        currency_name: '',
     });
 
     // Preview amount
@@ -47,15 +47,15 @@ export default function CurrencySettings() {
     // Set currency name based on selected currency
     useEffect(() => {
         if (currencies && currencies.length > 0) {
-            const selectedCurrency = currencies.find((c: CurrencyProps) => c.code === currencySettings.defaultCurrency);
+            const selectedCurrency = currencies.find((c: CurrencyProps) => c.code === currencySettings.default_currency);
             if (selectedCurrency) {
                 setCurrencySettings((prev) => ({
                     ...prev,
-                    currencyName: selectedCurrency.name,
+                    currency_name: selectedCurrency.name,
                 }));
             }
         }
-    }, [currencies, currencySettings.defaultCurrency]);
+    }, [currencies, currencySettings.default_currency]);
 
     // Handle currency settings form changes
     const handleCurrencySettingsChange = (field: string, value: string | boolean) => {
@@ -71,8 +71,8 @@ export default function CurrencySettings() {
 
         setCurrencySettings((prev) => ({
             ...prev,
-            defaultCurrency: value,
-            currencyName: selectedCurrency?.name || value,
+            default_currency: value,
+            currency_name: selectedCurrency?.name || value,
         }));
     };
 
@@ -83,10 +83,10 @@ export default function CurrencySettings() {
             let amount = previewAmount;
 
             // Format the number with the specified decimal places
-            const decimalPlaces = parseInt(currencySettings.decimalFormat);
+            const decimalPlaces = parseInt(currencySettings.decimal_format);
 
             // Handle float number setting
-            if (!currencySettings.floatNumber) {
+            if (!currencySettings.float_number) {
                 amount = Math.floor(amount);
             }
 
@@ -94,21 +94,21 @@ export default function CurrencySettings() {
             const parts = amount.toFixed(decimalPlaces).split('.');
 
             // Format the integer part with thousands separator
-            if (currencySettings.thousandsSeparator !== 'none') {
-                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, currencySettings.thousandsSeparator);
+            if (currencySettings.thousands_separator !== 'none') {
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, currencySettings.thousands_separator);
             }
 
             // Join with decimal separator
-            let formattedNumber = parts.join(currencySettings.decimalSeparator);
+            let formattedNumber = parts.join(currencySettings.decimal_separator);
 
             // Get currency symbol from the currencies array
-            const selectedCurrency = currencies.find((c: CurrencyProps) => c.code === currencySettings.defaultCurrency);
+            const selectedCurrency = currencies.find((c: CurrencyProps) => c.code === currencySettings.default_currency);
             const symbol = selectedCurrency?.symbol || '$';
 
             // Add currency symbol with proper positioning and spacing
-            const space = currencySettings.currencySymbolSpace ? ' ' : '';
+            const space = currencySettings.currency_symbol_space ? ' ' : '';
 
-            if (currencySettings.currencySymbolPosition === 'before') {
+            if (currencySettings.currency_symbol_position === 'before') {
                 return `${symbol}${space}${formattedNumber}`;
             } else {
                 return `${formattedNumber}${space}${symbol}`;
@@ -181,7 +181,7 @@ export default function CurrencySettings() {
                                         <div className="mb-3 flex flex-col items-center xl:mb-0 xl:items-start">
                                             <div className="mb-1 font-mono text-2xl font-semibold">{formattedPreview()}</div>
                                             <div className="text-muted-foreground text-xs">
-                                                {currencySettings.currencyName} ({currencySettings.defaultCurrency})
+                                                {currencySettings.currency_name} ({currencySettings.default_currency})
                                             </div>
                                         </div>
                                         <div className="w-full xl:w-auto xl:max-w-[200px]">
@@ -210,14 +210,14 @@ export default function CurrencySettings() {
                                     <div className="grid min-w-0 grid-cols-1 gap-6 xl:grid-cols-2">
                                         <div className="min-w-0 space-y-3">
                                             <div className="flex items-center justify-between">
-                                                <Label htmlFor="defaultCurrency" className="font-medium">
+                                                <Label htmlFor="default_currency" className="font-medium">
                                                     {translate('Default Currency')}
                                                 </Label>
                                                 <Badge variant="outline" className="font-mono">
-                                                    {currencySettings.defaultCurrency}
+                                                    {currencySettings.default_currency}
                                                 </Badge>
                                             </div>
-                                            <Select value={currencySettings.defaultCurrency} onValueChange={handleCurrencyChange}>
+                                            <Select value={currencySettings.default_currency} onValueChange={handleCurrencyChange}>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder={translate('Select currency')} />
                                                 </SelectTrigger>
@@ -249,7 +249,7 @@ export default function CurrencySettings() {
 
                                         <div className="min-w-0 space-y-3">
                                             <div className="flex items-center justify-between">
-                                                <Label htmlFor="decimalFormat" className="font-medium">
+                                                <Label htmlFor="decimal_format" className="font-medium">
                                                     {translate('Decimal Places')}
                                                 </Label>
                                                 <TooltipProvider>
@@ -264,8 +264,8 @@ export default function CurrencySettings() {
                                                 </TooltipProvider>
                                             </div>
                                             <Select
-                                                value={currencySettings.decimalFormat}
-                                                onValueChange={(value) => handleCurrencySettingsChange('decimalFormat', value)}
+                                                value={currencySettings.decimal_format}
+                                                onValueChange={(value) => handleCurrencySettingsChange('decimal_format', value)}
                                             >
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Select decimal format" />
@@ -282,7 +282,7 @@ export default function CurrencySettings() {
 
                                         <div className="space-y-3">
                                             <div className="flex items-center justify-between">
-                                                <Label htmlFor="currencySymbolPosition" className="font-medium">
+                                                <Label htmlFor="currency_symbol_position" className="font-medium">
                                                     {translate('Symbol Position')}
                                                 </Label>
                                                 <TooltipProvider>
@@ -299,28 +299,28 @@ export default function CurrencySettings() {
                                             <div className="grid grid-cols-2 gap-2">
                                                 <Button
                                                     type="button"
-                                                    variant={currencySettings.currencySymbolPosition === 'before' ? 'default' : 'outline'}
+                                                    variant={currencySettings.currency_symbol_position === 'before' ? 'default' : 'outline'}
                                                     className="justify-center"
-                                                    onClick={() => handleCurrencySettingsChange('currencySymbolPosition', 'before')}
+                                                    onClick={() => handleCurrencySettingsChange('currency_symbol_position', 'before')}
                                                 >
                                                     <span className="mr-2">$</span>100
-                                                    {currencySettings.currencySymbolPosition === 'before' && <Check className="ml-2 h-4 w-4" />}
+                                                    {currencySettings.currency_symbol_position === 'before' && <Check className="ml-2 h-4 w-4" />}
                                                 </Button>
                                                 <Button
                                                     type="button"
-                                                    variant={currencySettings.currencySymbolPosition === 'after' ? 'default' : 'outline'}
+                                                    variant={currencySettings.currency_symbol_position === 'after' ? 'default' : 'outline'}
                                                     className="justify-center"
-                                                    onClick={() => handleCurrencySettingsChange('currencySymbolPosition', 'after')}
+                                                    onClick={() => handleCurrencySettingsChange('currency_symbol_position', 'after')}
                                                 >
                                                     100<span className="ml-2">$</span>
-                                                    {currencySettings.currencySymbolPosition === 'after' && <Check className="ml-2 h-4 w-4" />}
+                                                    {currencySettings.currency_symbol_position === 'after' && <Check className="ml-2 h-4 w-4" />}
                                                 </Button>
                                             </div>
                                         </div>
 
                                         <div className="space-y-3">
                                             <div className="flex items-center justify-between">
-                                                <Label htmlFor="decimalSeparator" className="font-medium">
+                                                <Label htmlFor="decimal_separator" className="font-medium">
                                                     {translate('Decimal Separator')}
                                                 </Label>
                                                 <TooltipProvider>
@@ -337,28 +337,28 @@ export default function CurrencySettings() {
                                             <div className="grid grid-cols-2 gap-2">
                                                 <Button
                                                     type="button"
-                                                    variant={currencySettings.decimalSeparator === '.' ? 'default' : 'outline'}
+                                                    variant={currencySettings.decimal_separator === '.' ? 'default' : 'outline'}
                                                     className="justify-center"
-                                                    onClick={() => handleCurrencySettingsChange('decimalSeparator', '.')}
+                                                    onClick={() => handleCurrencySettingsChange('decimal_separator', '.')}
                                                 >
                                                     {translate('Dot')} (123.45)
-                                                    {currencySettings.decimalSeparator === '.' && <Check className="ml-2 h-4 w-4" />}
+                                                    {currencySettings.decimal_separator === '.' && <Check className="ml-2 h-4 w-4" />}
                                                 </Button>
                                                 <Button
                                                     type="button"
-                                                    variant={currencySettings.decimalSeparator === ',' ? 'default' : 'outline'}
+                                                    variant={currencySettings.decimal_separator === ',' ? 'default' : 'outline'}
                                                     className="justify-center"
-                                                    onClick={() => handleCurrencySettingsChange('decimalSeparator', ',')}
+                                                    onClick={() => handleCurrencySettingsChange('decimal_separator', ',')}
                                                 >
                                                     {translate('Comma')} (123,45)
-                                                    {currencySettings.decimalSeparator === ',' && <Check className="ml-2 h-4 w-4" />}
+                                                    {currencySettings.decimal_separator === ',' && <Check className="ml-2 h-4 w-4" />}
                                                 </Button>
                                             </div>
                                         </div>
 
                                         <div className="space-y-3">
                                             <div className="flex items-center justify-between">
-                                                <Label htmlFor="thousandsSeparator" className="font-medium">
+                                                <Label htmlFor="thousands_separator" className="font-medium">
                                                     {translate('Thousands Separator')}
                                                 </Label>
                                                 <TooltipProvider>
@@ -373,8 +373,8 @@ export default function CurrencySettings() {
                                                 </TooltipProvider>
                                             </div>
                                             <Select
-                                                value={currencySettings.thousandsSeparator}
-                                                onValueChange={(value) => handleCurrencySettingsChange('thousandsSeparator', value)}
+                                                value={currencySettings.thousands_separator}
+                                                onValueChange={(value) => handleCurrencySettingsChange('thousands_separator', value)}
                                             >
                                                 <SelectTrigger>
                                                     <SelectValue placeholder={translate('Select thousands separator')} />
@@ -391,7 +391,7 @@ export default function CurrencySettings() {
                                         <div className="space-y-3 rounded-md border p-4">
                                             <div className="flex items-center justify-between">
                                                 <div>
-                                                    <Label htmlFor="floatNumber" className="font-medium">
+                                                    <Label htmlFor="float_number" className="font-medium">
                                                         {translate('Show Decimals')}
                                                     </Label>
                                                     <p className="text-muted-foreground mt-1 text-xs">
@@ -399,9 +399,9 @@ export default function CurrencySettings() {
                                                     </p>
                                                 </div>
                                                 <Switch
-                                                    id="floatNumber"
-                                                    checked={currencySettings.floatNumber}
-                                                    onCheckedChange={(checked) => handleCurrencySettingsChange('floatNumber', checked)}
+                                                    id="float_number"
+                                                    checked={currencySettings.float_number}
+                                                    onCheckedChange={(checked) => handleCurrencySettingsChange('float_number', checked)}
                                                 />
                                             </div>
                                         </div>
@@ -409,7 +409,7 @@ export default function CurrencySettings() {
                                         <div className="space-y-3 rounded-md border p-4">
                                             <div className="flex items-center justify-between">
                                                 <div>
-                                                    <Label htmlFor="currencySymbolSpace" className="font-medium">
+                                                    <Label htmlFor="currency_symbol_space" className="font-medium">
                                                         {translate('Add Space')}
                                                     </Label>
                                                     <p className="text-muted-foreground mt-1 text-xs">
@@ -417,9 +417,9 @@ export default function CurrencySettings() {
                                                     </p>
                                                 </div>
                                                 <Switch
-                                                    id="currencySymbolSpace"
-                                                    checked={currencySettings.currencySymbolSpace}
-                                                    onCheckedChange={(checked) => handleCurrencySettingsChange('currencySymbolSpace', checked)}
+                                                    id="currency_symbol_space"
+                                                    checked={currencySettings.currency_symbol_space}
+                                                    onCheckedChange={(checked) => handleCurrencySettingsChange('currency_symbol_space', checked)}
                                                 />
                                             </div>
                                         </div>
