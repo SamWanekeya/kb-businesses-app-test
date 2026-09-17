@@ -29,7 +29,7 @@ interface Props {
     };
 }
 
-export default function AllUserLogs({ loginHistories, filters: pageFilters = {} }: Props) {
+export default function AllUserLogs({ loginHistories, filters: pageFilters }: Props) {
     const { t: translate } = useTranslation();
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
@@ -40,7 +40,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters = {} 
         { title: translate('Dashboard'), href: route('dashboard') },
         auth?.user?.type === 'super_admin'
             ? { title: translate('Organizations'), href: route('organizations.index') }
-            : { title: translate('User'), href: route('users.index') },
+            : { title: translate('User'), href: route('users-permissions.users.index') },
         { title: translate('User Logs') },
     ];
 
@@ -71,7 +71,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters = {} 
             params.per_page = pageFilters.per_page;
         }
 
-        router.get(route('users.all-logs'), params, { preserveState: true, preserveScroll: true });
+        router.get(route('users-permissions.users.all-logs'), params, { preserveState: true, preserveScroll: true });
     };
 
     const handleResetFilters = () => {
@@ -79,7 +79,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters = {} 
         setShowFilters(false);
 
         router.get(
-            route('users.all-logs'),
+            route('users-permissions.users.all-logs'),
             {
                 page: 1,
                 per_page: pageFilters.per_page,
@@ -169,7 +169,7 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters = {} 
                             params.search = searchTerm;
                         }
 
-                        router.get(route('users.all-logs'), params, { preserveState: true, preserveScroll: true });
+                        router.get(route('users-permissions.users.all-logs'), params, { preserveState: true, preserveScroll: true });
                     }}
                 />
             </div>
@@ -225,7 +225,9 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters = {} 
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
-                                                onClick={() => handleViewDetails(log)}
+                                                onClick={() => {
+                                                    handleViewDetails(log);
+                                                }}
                                                 className="text-blue-500 hover:text-blue-700"
                                             >
                                                 <Eye className="h-4 w-4" />
@@ -251,7 +253,9 @@ export default function AllUserLogs({ loginHistories, filters: pageFilters = {} 
                     total={loginHistories?.total || 0}
                     links={loginHistories?.links}
                     entityName={translate('logs')}
-                    onPageChange={(url) => router.get(url)}
+                    onPageChange={(url) => {
+                        router.get(url);
+                    }}
                 />
             </div>
 

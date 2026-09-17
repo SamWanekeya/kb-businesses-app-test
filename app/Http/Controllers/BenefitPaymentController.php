@@ -140,7 +140,7 @@ class BenefitPaymentController extends Controller
             $settings = getPaymentGatewaySettings();
 
             if (!$paymentId || !$transactionId) {
-                return redirect()->route('plans.index')->withErrors(['error' => __('Invalid payment response')]);
+                return redirect()->route('subscriptions.plans.index')->withErrors(['error' => __('Invalid payment response')]);
             }
 
             // Verify payment status with Benefit API
@@ -166,15 +166,15 @@ class BenefitPaymentController extends Controller
                             'payment_id' => $paymentId,
                         ]);
 
-                        return redirect()->route('plans.index')->with('success', __('Payment successful and plan activated'));
+                        return redirect()->route('subscriptions.plans.index')->with('success', __('Payment successful and plan activated'));
                     }
                 }
             }
 
-            return redirect()->route('plans.index')->withErrors(['error' => __('Payment failed or cancelled')]);
+            return redirect()->route('subscriptions.plans.index')->withErrors(['error' => __('Payment failed or cancelled')]);
 
         } catch (Exception $e) {
-            return redirect()->route('plans.index')->withErrors(['error' => __('Payment processing failed')]);
+            return redirect()->route('subscriptions.plans.index')->withErrors(['error' => __('Payment processing failed')]);
         }
     }
 
@@ -218,14 +218,14 @@ class BenefitPaymentController extends Controller
                         auth()->login($user);
                     }
 
-                    return redirect()->route('plans.index')->with('success', __('Payment completed successfully and plan activated'));
+                    return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully and plan activated'));
                 }
             }
 
-            return redirect()->route('plans.index')->with('error', __('Payment verification failed'));
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment verification failed'));
 
         } catch (Exception $e) {
-            return redirect()->route('plans.index')->with('error', __('Payment processing failed'));
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment processing failed'));
         }
     }
 

@@ -73,7 +73,9 @@ export default function LeadEdit() {
         }
 
         if (Object.keys(clientErrors).length > 0) {
-            Object.entries(clientErrors).forEach(([key, msg]) => setError(key as any, msg));
+            Object.entries(clientErrors).forEach(([key, msg]) => {
+                setError(key as any, msg);
+            });
             return;
         }
 
@@ -94,7 +96,9 @@ export default function LeadEdit() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('leads.index')),
+                    onClick: () => {
+                        router.visit(route('leads.index'));
+                    },
                 },
             ]}
             noPadding
@@ -116,7 +120,9 @@ export default function LeadEdit() {
                                     <Input
                                         id="name"
                                         value={data.name}
-                                        onChange={(e) => handleInputChange('name', e.target.value)}
+                                        onChange={(e) => {
+                                            handleInputChange('name', e.target.value);
+                                        }}
                                         className={errors.name ? 'border-red-500' : ''}
                                         placeholder={translate('eg. John Smith')}
                                     />
@@ -131,7 +137,9 @@ export default function LeadEdit() {
                                         id="email"
                                         type="email"
                                         value={data.email}
-                                        onChange={(e) => handleInputChange('email', e.target.value)}
+                                        onChange={(e) => {
+                                            handleInputChange('email', e.target.value);
+                                        }}
                                         className={errors.email ? 'border-red-500' : ''}
                                         placeholder={translate('eg. john@kakbima.dev')}
                                     />
@@ -145,7 +153,9 @@ export default function LeadEdit() {
                                     <Input
                                         id="phone"
                                         value={data.phone}
-                                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                                        onChange={(e) => {
+                                            handleInputChange('phone', e.target.value);
+                                        }}
                                         className={errors.phone ? 'border-red-500' : ''}
                                         placeholder={translate('eg. +1 234 567 8900')}
                                     />
@@ -159,7 +169,9 @@ export default function LeadEdit() {
                                     <Input
                                         id="position"
                                         value={data.position}
-                                        onChange={(e) => handleInputChange('position', e.target.value)}
+                                        onChange={(e) => {
+                                            handleInputChange('position', e.target.value);
+                                        }}
                                         className={errors.position ? 'border-red-500' : ''}
                                         placeholder={translate('eg. CEO, Manager, Developer')}
                                     />
@@ -173,7 +185,9 @@ export default function LeadEdit() {
                                     <Input
                                         id="organization"
                                         value={data.organization}
-                                        onChange={(e) => handleInputChange('organization', e.target.value)}
+                                        onChange={(e) => {
+                                            handleInputChange('organization', e.target.value);
+                                        }}
                                         className={errors.organization ? 'border-red-500' : ''}
                                         placeholder={translate('eg. Acme Corp')}
                                     />
@@ -187,7 +201,9 @@ export default function LeadEdit() {
                                     <Input
                                         id="account_name"
                                         value={data.account_name}
-                                        onChange={(e) => handleInputChange('account_name', e.target.value)}
+                                        onChange={(e) => {
+                                            handleInputChange('account_name', e.target.value);
+                                        }}
                                         className={errors.account_name ? 'border-red-500' : ''}
                                         placeholder={translate('eg. Acme Corp')}
                                     />
@@ -201,7 +217,9 @@ export default function LeadEdit() {
                                     <Input
                                         id="website"
                                         value={data.website}
-                                        onChange={(e) => handleInputChange('website', e.target.value)}
+                                        onChange={(e) => {
+                                            handleInputChange('website', e.target.value);
+                                        }}
                                         className={errors.website ? 'border-red-500' : ''}
                                         placeholder="eg. https://kakbima.dev"
                                     />
@@ -218,7 +236,9 @@ export default function LeadEdit() {
                                         step="0.01"
                                         min="0"
                                         value={data.value}
-                                        onChange={(e) => handleInputChange('value', e.target.value)}
+                                        onChange={(e) => {
+                                            handleInputChange('value', e.target.value);
+                                        }}
                                         className={errors.value ? 'border-red-500' : ''}
                                         placeholder={translate('eg. 5000')}
                                     />
@@ -238,7 +258,12 @@ export default function LeadEdit() {
                                 <Label className="text-sm font-medium" required>
                                     {translate('Account Industry')}
                                 </Label>
-                                <Select value={data.account_industry_id} onValueChange={(value) => handleInputChange('account_industry_id', value)}>
+                                <Select
+                                    value={data.account_industry_id}
+                                    onValueChange={(value) => {
+                                        handleInputChange('account_industry_id', value);
+                                    }}
+                                >
                                     <SelectTrigger className={errors.account_industry_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={translate('Select industry')} />
                                     </SelectTrigger>
@@ -265,7 +290,12 @@ export default function LeadEdit() {
                                 <Label className="text-sm font-medium" required>
                                     {translate('Lead Status')}
                                 </Label>
-                                <Select value={data.lead_status_id} onValueChange={(value) => handleInputChange('lead_status_id', value)}>
+                                <Select
+                                    value={data.lead_status_id}
+                                    onValueChange={(value) => {
+                                        handleInputChange('lead_status_id', value);
+                                    }}
+                                >
                                     <SelectTrigger className={errors.lead_status_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={translate('Select status')} />
                                     </SelectTrigger>
@@ -292,7 +322,12 @@ export default function LeadEdit() {
                                 <Label className="text-sm font-medium" required>
                                     {translate('Lead Source')}
                                 </Label>
-                                <Select value={data.lead_source_id} onValueChange={(value) => handleInputChange('lead_source_id', value)}>
+                                <Select
+                                    value={data.lead_source_id}
+                                    onValueChange={(value) => {
+                                        handleInputChange('lead_source_id', value);
+                                    }}
+                                >
                                     <SelectTrigger className={errors.lead_source_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={translate('Select source')} />
                                     </SelectTrigger>
@@ -319,7 +354,12 @@ export default function LeadEdit() {
                                 <Label className="text-sm font-medium" required>
                                     {translate('Campaign')}
                                 </Label>
-                                <Select value={data.campaign_id} onValueChange={(value) => handleInputChange('campaign_id', value)}>
+                                <Select
+                                    value={data.campaign_id}
+                                    onValueChange={(value) => {
+                                        handleInputChange('campaign_id', value);
+                                    }}
+                                >
                                     <SelectTrigger className={errors.campaign_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={translate('Select campaign')} />
                                     </SelectTrigger>
@@ -360,7 +400,9 @@ export default function LeadEdit() {
                                 <Textarea
                                     id="address"
                                     value={data.address}
-                                    onChange={(e) => handleInputChange('address', e.target.value)}
+                                    onChange={(e) => {
+                                        handleInputChange('address', e.target.value);
+                                    }}
                                     className={errors.address ? 'border-red-500' : ''}
                                     rows={2}
                                     placeholder={translate('eg. 123 Main St, City, Country')}
@@ -375,7 +417,9 @@ export default function LeadEdit() {
                                 <Textarea
                                     id="notes"
                                     value={data.notes}
-                                    onChange={(e) => handleInputChange('notes', e.target.value)}
+                                    onChange={(e) => {
+                                        handleInputChange('notes', e.target.value);
+                                    }}
                                     className={errors.notes ? 'border-red-500' : ''}
                                     rows={2}
                                     placeholder={translate('Enter any additional notes...')}
@@ -395,7 +439,12 @@ export default function LeadEdit() {
                                 <Label className="text-sm font-medium" required>
                                     {translate('Assign To')}
                                 </Label>
-                                <Select value={data.assigned_to} onValueChange={(value) => handleInputChange('assigned_to', value)}>
+                                <Select
+                                    value={data.assigned_to}
+                                    onValueChange={(value) => {
+                                        handleInputChange('assigned_to', value);
+                                    }}
+                                >
                                     <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={translate('Select user')} />
                                     </SelectTrigger>
@@ -411,7 +460,7 @@ export default function LeadEdit() {
                                 {users.length === 0 && (
                                     <p className="mt-1 text-xs">
                                         {translate('Click here to add')}{' '}
-                                        <a href={route('users.index')} className="font-medium underline">
+                                        <a href={route('users-permissions.users.index')} className="font-medium underline">
                                             {translate('Users')}
                                         </a>
                                     </p>
@@ -420,7 +469,12 @@ export default function LeadEdit() {
 
                             <div className="space-y-2">
                                 <Label className="text-sm font-medium">{translate('Status')}</Label>
-                                <Select value={data.status} onValueChange={(value) => handleInputChange('status', value)}>
+                                <Select
+                                    value={data.status}
+                                    onValueChange={(value) => {
+                                        handleInputChange('status', value);
+                                    }}
+                                >
                                     <SelectTrigger className={errors.status ? 'border-red-500' : ''}>
                                         <SelectValue />
                                     </SelectTrigger>
@@ -437,7 +491,14 @@ export default function LeadEdit() {
 
                 {/* Actions */}
                 <div className="mt-6 flex flex-col-reverse justify-end gap-3 sm:flex-row sm:gap-4">
-                    <Button type="button" variant="outline" onClick={() => router.visit(route('leads.index'))} className="w-full sm:w-auto">
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                            router.visit(route('leads.index'));
+                        }}
+                        className="w-full sm:w-auto"
+                    >
                         {translate('Cancel')}
                     </Button>
                     <Button type="submit" disabled={processing} className="w-full sm:w-auto">

@@ -1,23 +1,23 @@
 import { toast } from '@components/CustomToast';
 import IframePortal from '@components/IframePortal';
 import MediaPicker from '@components/MediaPicker';
-import { SettingsSection } from '@components/settings-section';
+import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent } from '@components/UserInterface/Card';
 import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { Switch } from '@components/UserInterface/Switch';
 import { useForm, usePage } from '@inertiajs/react';
-import Template1 from '@pages/sales-orders/Templates/Template1';
-import Template10 from '@pages/sales-orders/Templates/Template10';
-import Template2 from '@pages/sales-orders/Templates/Template2';
-import Template3 from '@pages/sales-orders/Templates/Template3';
-import Template4 from '@pages/sales-orders/Templates/Template4';
-import Template5 from '@pages/sales-orders/Templates/Template5';
-import Template6 from '@pages/sales-orders/Templates/Template6';
-import Template7 from '@pages/sales-orders/Templates/Template7';
-import Template8 from '@pages/sales-orders/Templates/Template8';
-import Template9 from '@pages/sales-orders/Templates/Template9';
+import Template1 from '@pages/SalesOrders/Templates/Template1';
+import Template10 from '@pages/SalesOrders/Templates/Template10';
+import Template2 from '@pages/SalesOrders/Templates/Template2';
+import Template3 from '@pages/SalesOrders/Templates/Template3';
+import Template4 from '@pages/SalesOrders/Templates/Template4';
+import Template5 from '@pages/SalesOrders/Templates/Template5';
+import Template6 from '@pages/SalesOrders/Templates/Template6';
+import Template7 from '@pages/SalesOrders/Templates/Template7';
+import Template8 from '@pages/SalesOrders/Templates/Template8';
+import Template9 from '@pages/SalesOrders/Templates/Template9';
 import { route } from '@utils/Routes';
 import axios from 'axios';
 import { Save } from 'lucide-react';
@@ -189,7 +189,9 @@ export default function SalesOrderTemplateSettings() {
 
         observer.observe(settingsRef.current);
 
-        return () => observer.disconnect();
+        return () => {
+            observer.disconnect();
+        };
     }, [data.salesOrderLogoUrl]);
 
     const SelectedTemplate = templateComponents[data.salesOrderTemplate as keyof typeof templateComponents];
@@ -233,7 +235,7 @@ export default function SalesOrderTemplateSettings() {
         if (!value) {
             setData('salesOrderLogoUrl', null);
         } else {
-            fetch(route('api.media.index'))
+            fetch(route('media-library.media.index'))
                 .then((res) => res.json())
                 .then((media) => {
                     const item = media.find((m: any) => m.id === Number(value));
@@ -294,7 +296,12 @@ export default function SalesOrderTemplateSettings() {
                             <div ref={settingsRef} className="space-y-4">
                                 <div className="space-y-2">
                                     <Label htmlFor="sales_order_template">{translate('Sales Order Template')}</Label>
-                                    <Select value={data.salesOrderTemplate} onValueChange={(value) => setData('salesOrderTemplate', value)}>
+                                    <Select
+                                        value={data.salesOrderTemplate}
+                                        onValueChange={(value) => {
+                                            setData('salesOrderTemplate', value);
+                                        }}
+                                    >
                                         <SelectTrigger>
                                             <SelectValue placeholder={translate('Select template')} />
                                         </SelectTrigger>
@@ -316,7 +323,9 @@ export default function SalesOrderTemplateSettings() {
                                     <Switch
                                         id="sales_order_qr_enabled"
                                         checked={data.salesOrderQrEnabled}
-                                        onCheckedChange={(checked) => setData('salesOrderQrEnabled', checked)}
+                                        onCheckedChange={(checked) => {
+                                            setData('salesOrderQrEnabled', checked);
+                                        }}
                                     />
                                 </div>
 
@@ -330,7 +339,9 @@ export default function SalesOrderTemplateSettings() {
                                                     name="salesOrderColor"
                                                     value={color}
                                                     checked={data.salesOrderColor === color}
-                                                    onChange={(e) => setData('salesOrderColor', e.target.value)}
+                                                    onChange={(e) => {
+                                                        setData('salesOrderColor', e.target.value);
+                                                    }}
                                                     className="sr-only"
                                                 />
                                                 <div

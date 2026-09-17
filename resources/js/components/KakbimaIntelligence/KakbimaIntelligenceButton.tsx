@@ -2,7 +2,7 @@ import { Button } from '@components/UserInterface/Button';
 import { Brain } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-interface ChatGptButtonProps {
+interface KakbimaIntelligenceButtonProps {
     onClick: () => void;
     text?: string;
     variant?: 'default' | 'outline' | 'secondary' | 'ghost';
@@ -10,7 +10,7 @@ interface ChatGptButtonProps {
     className?: string;
 }
 
-export function ChatGptButton({ onClick, text = 'Auto Generate', variant = 'outline', size = 'sm', className = '' }: ChatGptButtonProps) {
+export function KakbimaIntelligenceButton({ onClick, text = 'Auto Generate', variant = 'outline', size = 'sm', className = '' }: KakbimaIntelligenceButtonProps) {
     const { t: translate } = useTranslation();
 
     return (

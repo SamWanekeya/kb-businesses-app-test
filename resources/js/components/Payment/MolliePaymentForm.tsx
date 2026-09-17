@@ -55,7 +55,7 @@ export function MolliePaymentForm({
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <form action={route('mollie.payment')} method="POST" onSubmit={handleSubmit} className="space-y-4">
+                <form action={route('subscriptions.mollie.payment')} method="POST" onSubmit={handleSubmit} className="space-y-4">
                     <input type="hidden" name="_token" value={document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''} />
                     <input type="hidden" name="plan_id" value={planId} />
                     <input type="hidden" name="billing_cycle" value={billingCycle} />
@@ -68,7 +68,9 @@ export function MolliePaymentForm({
                                 id="firstName"
                                 name="customer_details[firstName]"
                                 value={customerDetails.firstName}
-                                onChange={(e) => setCustomerDetails((prev) => ({ ...prev, firstName: e.target.value }))}
+                                onChange={(e) => {
+                                    setCustomerDetails((prev) => ({ ...prev, firstName: e.target.value }));
+                                }}
                                 placeholder={translate('Enter first name')}
                                 required
                             />
@@ -79,7 +81,9 @@ export function MolliePaymentForm({
                                 id="lastName"
                                 name="customer_details[lastName]"
                                 value={customerDetails.lastName}
-                                onChange={(e) => setCustomerDetails((prev) => ({ ...prev, lastName: e.target.value }))}
+                                onChange={(e) => {
+                                    setCustomerDetails((prev) => ({ ...prev, lastName: e.target.value }));
+                                }}
                                 placeholder={translate('Enter last name')}
                                 required
                             />
@@ -93,7 +97,9 @@ export function MolliePaymentForm({
                             name="customer_details[email]"
                             type="email"
                             value={customerDetails.email}
-                            onChange={(e) => setCustomerDetails((prev) => ({ ...prev, email: e.target.value }))}
+                            onChange={(e) => {
+                                setCustomerDetails((prev) => ({ ...prev, email: e.target.value }));
+                            }}
                             placeholder={translate('Enter email address')}
                             required
                         />

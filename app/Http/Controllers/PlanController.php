@@ -249,7 +249,7 @@ class PlanController extends Controller
         // Create the plan
         Plan::create($validated);
 
-        return redirect()->route('plans.index')->with('success', __('Plan created successfully.'));
+        return redirect()->route('subscriptions.plans.index')->with('success', __('Plan created successfully.'));
     }
 
     /**
@@ -297,7 +297,7 @@ class PlanController extends Controller
         // Update the plan
         $plan->update($validated);
 
-        return redirect()->route('plans.index')->with('success', __('Plan updated successfully.'));
+        return redirect()->route('subscriptions.plans.index')->with('success', __('Plan updated successfully.'));
     }
 
     /**
@@ -344,7 +344,7 @@ class PlanController extends Controller
 
         $plan->delete();
 
-        return redirect()->route('plans.index')->with('success', __('Plan deleted successfully.'));
+        return redirect()->route('subscriptions.plans.index')->with('success', __('Plan deleted successfully.'));
     }
 
     public function requestPlan(Request $request)

@@ -48,7 +48,7 @@ export function InvoiceToyyibPayPaymentForm({
 
         try {
             const response = await axios.post(
-                route('invoice.toyyibpay.payment'),
+                route('invoice.subscriptions.toyyibpay.payment'),
                 {
                     invoice_id: invoiceId,
                     amount: amount,
@@ -115,7 +115,9 @@ export function InvoiceToyyibPayPaymentForm({
                     <Input
                         id="billName"
                         value={customerDetails.billName}
-                        onChange={(e) => setCustomerDetails((prev) => ({ ...prev, billName: e.target.value }))}
+                        onChange={(e) => {
+                            setCustomerDetails((prev) => ({ ...prev, billName: e.target.value }));
+                        }}
                         placeholder={translate('Enter bill name')}
                         required
                     />
@@ -126,7 +128,9 @@ export function InvoiceToyyibPayPaymentForm({
                     <Input
                         id="billTo"
                         value={customerDetails.billTo}
-                        onChange={(e) => setCustomerDetails((prev) => ({ ...prev, billTo: e.target.value }))}
+                        onChange={(e) => {
+                            setCustomerDetails((prev) => ({ ...prev, billTo: e.target.value }));
+                        }}
                         placeholder={translate('Enter customer name')}
                         required
                     />
@@ -138,7 +142,9 @@ export function InvoiceToyyibPayPaymentForm({
                         id="billEmail"
                         type="email"
                         value={customerDetails.billEmail}
-                        onChange={(e) => setCustomerDetails((prev) => ({ ...prev, billEmail: e.target.value }))}
+                        onChange={(e) => {
+                            setCustomerDetails((prev) => ({ ...prev, billEmail: e.target.value }));
+                        }}
                         placeholder={translate('Enter email address')}
                         required
                     />
@@ -149,7 +155,9 @@ export function InvoiceToyyibPayPaymentForm({
                     <Input
                         id="billPhone"
                         value={customerDetails.billPhone}
-                        onChange={(e) => setCustomerDetails((prev) => ({ ...prev, billPhone: e.target.value }))}
+                        onChange={(e) => {
+                            setCustomerDetails((prev) => ({ ...prev, billPhone: e.target.value }));
+                        }}
                         placeholder="60123456789"
                         required
                     />

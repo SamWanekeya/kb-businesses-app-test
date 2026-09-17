@@ -1,4 +1,4 @@
-import { CrudTable } from '@components/CrudTable';
+import CrudTable from '@components/CrudTable';
 import PageTemplate from '@components/PageTemplate';
 import Pagination from '@components/UserInterface/Pagination';
 import SearchAndFilterBar from '@components/UserInterface/SearchAndFilterBar';
@@ -135,7 +135,9 @@ export default function EmailTemplatesIndex() {
                     total={templates?.total || 0}
                     links={templates?.links}
                     entityName={translate('templates')}
-                    onPageChange={(url) => router.get(url)}
+                    onPageChange={(url) => {
+                        router.get(url);
+                    }}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
                         router.get(

@@ -1,7 +1,7 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
-import { PlanSubscriptionModal } from '@components/plan-subscription-modal';
+import PlanSubscriptionModal from '@components/PlanSubscriptionModal';
 import { Badge } from '@components/UserInterface/Badge';
 import { Button } from '@components/UserInterface/Button';
 import { Switch } from '@components/UserInterface/Switch';
@@ -70,7 +70,7 @@ interface Props {
 
 export default function Plans({
     plans: initialPlans,
-    billingCycle: initialBillingCycle = 'monthly',
+    billingCycle: initialBillingCycle,
     hasDefaultPlan,
     isAdmin = false,
     currentPlan,
@@ -129,7 +129,7 @@ export default function Plans({
     // Function to handle billing cycle change
     const handleBillingCycleChange = (value: 'monthly' | 'yearly') => {
         setBillingCycle(value);
-        router.get(route('plans.index'), { billing_cycle: value }, { preserveState: true });
+        router.get(route('subscriptions.plans.index'), { billing_cycle: value }, { preserveState: true });
     };
 
     // Organization plan actions
@@ -137,7 +137,7 @@ export default function Plans({
         const toastId = toast.loading(translate('Submitting plan request...'));
 
         router.post(
-            route('plans.request'),
+            route('subscriptions.plans.request'),
             {
                 plan_id: planId,
                 billing_cycle: billingCycle,
@@ -167,7 +167,7 @@ export default function Plans({
         const toastId = toast.loading(translate('Starting trial...'));
 
         router.post(
-            route('plans.trial'),
+            route('subscriptions.plans.trial'),
             {
                 plan_id: planId,
             },
@@ -534,7 +534,14 @@ export default function Plans({
         if (plan.is_trial_available && !userTrialUsed) {
             return (
                 <div className="space-y-2">
-                    <Button onClick={() => handleStartTrial(plan.id)} disabled={processing} variant="outline" className="w-full">
+                    <Button
+                        onClick={() => {
+                            handleStartTrial(plan.id);
+                        }}
+                        disabled={processing}
+                        variant="outline"
+                        className="w-full"
+                    >
                         <Zap className="mr-2 h-4 w-4" />
                         {translate('Start {{days}} Day Trial', { days: plan.trial_days })}
                     </Button>
@@ -547,7 +554,14 @@ export default function Plans({
 
         return (
             <div className="space-y-2">
-                <Button onClick={() => handlePlanRequest(plan.id)} disabled={processing} variant="outline" className="w-full">
+                <Button
+                    onClick={() => {
+                        handlePlanRequest(plan.id);
+                    }}
+                    disabled={processing}
+                    variant="outline"
+                    className="w-full"
+                >
                     <Clock className="mr-2 h-4 w-4" />
                     {translate('Request Plan')}
                 </Button>
@@ -604,7 +618,7 @@ export default function Plans({
     const togglePlanStatus = (planId: number) => {
         // Send request to toggle plan status
         router.post(
-            route('plans.toggle-status', planId),
+            route('subscriptions.plans.toggle-status', planId),
             {},
             {
                 preserveState: true,
@@ -631,7 +645,7 @@ export default function Plans({
     // Function to handle delete confirmation
     const handleDeleteConfirm = () => {
         if (planToDelete) {
-            router.delete(route('plans.destroy', planToDelete.id), {
+            router.delete(route('subscriptions.plans.destroy', planToDelete.id), {
                 onSuccess: (page) => {
                     setIsDeleteModalOpen(false);
                     setPlanToDelete(null);
@@ -684,7 +698,13 @@ export default function Plans({
                     <div className="flex flex-col items-center gap-4 sm:flex-row">
                         {/* Billing Cycle Toggle */}
                         <div className="rounded-lg bg-gray-100 p-1">
-                            <Tabs value={billingCycle} onValueChange={(v) => handleBillingCycleChange(v as 'monthly' | 'yearly')} className="w-full">
+                            <Tabs
+                                value={billingCycle}
+                                onValueChange={(v) => {
+                                    handleBillingCycleChange(v as 'monthly' | 'yearly');
+                                }}
+                                className="w-full"
+                            >
                                 <TabsList className="grid h-auto w-full grid-cols-2 bg-transparent p-0">
                                     <TabsTrigger
                                         value="monthly"
@@ -707,7 +727,9 @@ export default function Plans({
                         {isAdmin && (
                             <Button
                                 className="bg-primary hover:bg-primary/90 px-6 py-2 font-medium text-white"
-                                onClick={() => router.get(route('plans.create'))}
+                                onClick={() => {
+                                    router.get(route('subscriptions.plans.create'));
+                                }}
                             >
                                 <Plus className="mr-2 h-4 w-4" />
                                 {translate('Add Plan')}
@@ -863,7 +885,9 @@ export default function Plans({
                                                 <div className="flex items-center gap-2">
                                                     <Switch
                                                         checked={plan.status}
-                                                        onCheckedChange={() => togglePlanStatus(plan.id)}
+                                                        onCheckedChange={() => {
+                                                            togglePlanStatus(plan.id);
+                                                        }}
                                                         className={plan.status ? 'data-[state=checked]:bg-primary' : ''}
                                                     />
                                                     <span className="text-sm text-gray-700">
@@ -878,7 +902,9 @@ export default function Plans({
                                                                     variant="ghost"
                                                                     size="icon"
                                                                     className="text-amber-500 hover:text-amber-700"
-                                                                    onClick={() => router.get(route('plans.edit', plan.id))}
+                                                                    onClick={() => {
+                                                                        router.get(route('subscriptions.plans.edit', plan.id));
+                                                                    }}
                                                                 >
                                                                     <Edit className="h-4 w-4 text-gray-500" />
                                                                 </Button>
@@ -894,7 +920,9 @@ export default function Plans({
                                                                         variant="ghost"
                                                                         size="icon"
                                                                         className="text-red-500 hover:text-red-700"
-                                                                        onClick={() => handleDelete(plan)}
+                                                                        onClick={() => {
+                                                                            handleDelete(plan);
+                                                                        }}
                                                                     >
                                                                         <Trash2 className="h-4 w-4 text-gray-500" />
                                                                     </Button>
@@ -919,7 +947,9 @@ export default function Plans({
                 {isAdmin && (
                     <CrudDeleteModal
                         isOpen={isDeleteModalOpen}
-                        onClose={() => setIsDeleteModalOpen(false)}
+                        onClose={() => {
+                            setIsDeleteModalOpen(false);
+                        }}
                         onConfirm={handleDeleteConfirm}
                         itemName={planToDelete?.name || ''}
                         entityName="plan"

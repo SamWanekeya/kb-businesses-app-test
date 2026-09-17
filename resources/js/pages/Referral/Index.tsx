@@ -137,7 +137,9 @@ export default function Referral() {
                                 className={cn('w-full justify-start text-sm', {
                                     'bg-muted font-semibold': activeSection === item.href.replace('#', ''),
                                 })}
-                                onClick={() => handleNavClick(item.href)}
+                                onClick={() => {
+                                    handleNavClick(item.href);
+                                }}
                             >
                                 {item.icon}
                                 {item.title}

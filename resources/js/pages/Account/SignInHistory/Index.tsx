@@ -146,7 +146,7 @@ export default function SignInHistory() {
             key: 'date',
             label: translate('Sign in date'),
             sortable: true,
-            render: (value) => window.hfSettings.formatDateTimeSimple(value, true),
+            render: (value) => window.kbSettings.formatDateTimeSimple(value, true),
         },
         {
             key: 'Details',
@@ -300,7 +300,7 @@ export default function SignInHistory() {
                         <div className="flex justify-between border-b border-neutral-100 py-2">
                             <span className="text-neutral-600">{translate('Sign in date')}</span>
                             <span className="font-medium">
-                                {currentItem?.date ? window.hfSettings.formatDateTimeSimple(currentItem.date, true) : ''}
+                                {currentItem?.date ? window.kbSettings.formatDateTimeSimple(currentItem.date, true) : ''}
                             </span>
                         </div>
                         {(() => {

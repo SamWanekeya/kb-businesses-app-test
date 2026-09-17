@@ -117,12 +117,12 @@ class PayTRPaymentController extends Controller
 
     public function success(Request $request)
     {
-        return redirect()->route('plans.index')->with('success', __('Payment completed successfully!'));
+        return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully!'));
     }
 
     public function failure(Request $request)
     {
-        return redirect()->route('plans.index')->with('error', __('Payment failed. Please try again.'));
+        return redirect()->route('subscriptions.plans.index')->with('error', __('Payment failed. Please try again.'));
     }
 
     public function callback(Request $request)

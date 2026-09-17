@@ -109,7 +109,7 @@ export function InvoiceKhaltiPaymentForm({
 
     const handlePaymentSuccess = (token: string, amount: number) => {
         router.post(
-            route('invoice.khalti.payment'),
+            route('invoice.subscriptions.khalti.payment'),
             {
                 invoice_id: invoiceId,
                 amount: amount / 100, // Convert from paisa to rupees

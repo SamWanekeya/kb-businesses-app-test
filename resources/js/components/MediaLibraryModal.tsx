@@ -63,7 +63,7 @@ export default function MediaLibraryModal({
     const fetchMedia = useCallback(async () => {
         setLoading(true);
         try {
-            const response = await fetch(route('api.media.index'), {
+            const response = await fetch(route('media-library.media.index'), {
                 credentials: 'same-origin',
                 headers: {
                     Accept: 'application/json',
@@ -164,7 +164,7 @@ export default function MediaLibraryModal({
         });
 
         try {
-            const response = await fetch(route('api.media.batch'), {
+            const response = await fetch(route('media-library.media.batch'), {
                 method: 'POST',
                 body: formData,
                 credentials: 'same-origin',
@@ -264,13 +264,22 @@ export default function MediaLibraryModal({
                             <Input
                                 placeholder="Search media files..."
                                 value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onChange={(e) => {
+                                    setSearchTerm(e.target.value);
+                                }}
                                 className="pl-10"
                             />
                         </div>
 
                         {canCreateMedia && (
-                            <Button type="button" variant="outline" onClick={() => setIsUploadModalOpen(true)} size="sm">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => {
+                                    setIsUploadModalOpen(true);
+                                }}
+                                size="sm"
+                            >
                                 <Plus className="mr-2 h-4 w-4" />
                                 Upload
                             </Button>
@@ -326,7 +335,13 @@ export default function MediaLibraryModal({
                                     </div>
 
                                     {canCreateMedia && (
-                                        <Button type="button" onClick={() => setIsUploadModalOpen(true)} disabled={uploading}>
+                                        <Button
+                                            type="button"
+                                            onClick={() => {
+                                                setIsUploadModalOpen(true);
+                                            }}
+                                            disabled={uploading}
+                                        >
                                             <Plus className="mr-2 h-4 w-4" />
                                             Upload Images
                                         </Button>
@@ -344,7 +359,9 @@ export default function MediaLibraryModal({
                                                     ? 'ring-primary shadow-lg ring-2'
                                                     : 'border-border hover:border-primary/50 border hover:shadow-md'
                                             }`}
-                                            onClick={() => handleSelect(item)}
+                                            onClick={() => {
+                                                handleSelect(item);
+                                            }}
                                         >
                                             <div className="bg-muted relative flex aspect-square items-center justify-center">
                                                 {item.mime_type.startsWith('image/') ? (
@@ -411,7 +428,9 @@ export default function MediaLibraryModal({
                                     variant="outline"
                                     size="sm"
                                     disabled={currentPage === 1}
-                                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                                    onClick={() => {
+                                        setCurrentPage((prev) => Math.max(prev - 1, 1));
+                                    }}
                                 >
                                     Previous
                                 </Button>
@@ -433,7 +452,9 @@ export default function MediaLibraryModal({
                                             variant={currentPage === page ? 'default' : 'outline'}
                                             size="sm"
                                             className="h-8 w-8 p-0"
-                                            onClick={() => setCurrentPage(page)}
+                                            onClick={() => {
+                                                setCurrentPage(page);
+                                            }}
                                         >
                                             {page}
                                         </Button>
@@ -443,7 +464,9 @@ export default function MediaLibraryModal({
                                     variant="outline"
                                     size="sm"
                                     disabled={currentPage === totalPages}
-                                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                                    onClick={() => {
+                                        setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+                                    }}
                                 >
                                     Next
                                 </Button>
@@ -456,7 +479,9 @@ export default function MediaLibraryModal({
                                     size="icon"
                                     className="h-8 w-8 text-sm"
                                     disabled={currentPage === 1}
-                                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                                    onClick={() => {
+                                        setCurrentPage((prev) => Math.max(prev - 1, 1));
+                                    }}
                                 >
                                     <span dangerouslySetInnerHTML={{ __html: '&lsaquo;' }} />
                                 </Button>
@@ -468,7 +493,9 @@ export default function MediaLibraryModal({
                                     size="icon"
                                     className="h-8 w-8 text-sm"
                                     disabled={currentPage === totalPages}
-                                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                                    onClick={() => {
+                                        setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+                                    }}
                                 >
                                     <span dangerouslySetInnerHTML={{ __html: '&rsaquo;' }} />
                                 </Button>
@@ -539,7 +566,13 @@ export default function MediaLibraryModal({
                         </Button>
                         <div className="flex gap-2">
                             {multiple && selectedItems.length > 0 && (
-                                <Button variant="outline" onClick={() => setSelectedItems([])} size="sm">
+                                <Button
+                                    variant="outline"
+                                    onClick={() => {
+                                        setSelectedItems([]);
+                                    }}
+                                    size="sm"
+                                >
                                     Clear
                                 </Button>
                             )}

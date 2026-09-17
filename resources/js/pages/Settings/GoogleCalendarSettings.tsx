@@ -1,5 +1,5 @@
 import { toast } from '@components/CustomToast';
-import { SettingsSection } from '@components/settings-section';
+import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
@@ -111,7 +111,9 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                             <Switch
                                 id="googleCalendarEnabled"
                                 checked={formData.googleCalendarEnabled}
-                                onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, googleCalendarEnabled: checked }))}
+                                onCheckedChange={(checked) => {
+                                    setFormData((prev) => ({ ...prev, googleCalendarEnabled: checked }));
+                                }}
                             />
                         </div>
 
@@ -125,7 +127,9 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                                     id="googleCalendarId"
                                     type="text"
                                     value={formData.googleCalendarId}
-                                    onChange={(e) => setFormData((prev) => ({ ...prev, googleCalendarId: e.target.value }))}
+                                    onChange={(e) => {
+                                        setFormData((prev) => ({ ...prev, googleCalendarId: e.target.value }));
+                                    }}
                                     placeholder={translate("Enter your Google Calendar ID or 'primary'")}
                                     disabled={!formData.googleCalendarEnabled}
                                 />
@@ -137,7 +141,9 @@ export default function GoogleCalendarSettings({ settings = {} }: GoogleCalendar
                                     id="googleCalendarJson"
                                     type="file"
                                     accept=".json"
-                                    onChange={(e) => setJsonFile(e.target.files?.[0] || null)}
+                                    onChange={(e) => {
+                                        setJsonFile(e.target.files?.[0] || null);
+                                    }}
                                     disabled={!formData.googleCalendarEnabled}
                                 />
                                 {jsonFile && (

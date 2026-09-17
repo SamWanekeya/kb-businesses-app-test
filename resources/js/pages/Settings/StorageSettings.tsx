@@ -1,5 +1,5 @@
 import { toast } from '@components/CustomToast';
-import { SettingsSection } from '@components/settings-section';
+import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent } from '@components/UserInterface/Card';
 import { Checkbox } from '@components/UserInterface/Checkbox';
@@ -261,7 +261,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                         <Input
                             placeholder={translate('Search file types...')}
                             value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
+                            onChange={(e) => {
+                                setSearchTerm(e.target.value);
+                            }}
                             className="ps-10"
                         />
                     </div>
@@ -280,7 +282,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                             <Checkbox
                                 id={ext}
                                 checked={storageSettings.allowedFileTypes.split(',').includes(ext)}
-                                onCheckedChange={(checked) => handleFileTypeChange(ext, checked as boolean)}
+                                onCheckedChange={(checked) => {
+                                    handleFileTypeChange(ext, checked as boolean);
+                                }}
                             />
                             <Label htmlFor={ext} className="text-sm font-normal">
                                 {ext}
@@ -302,7 +306,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                     id="maxUploadSize"
                     type="number"
                     value={storageSettings.maxUploadSize}
-                    onChange={(e) => handleSettingChange('maxUploadSize', e.target.value)}
+                    onChange={(e) => {
+                        handleSettingChange('maxUploadSize', e.target.value);
+                    }}
                     placeholder="2048"
                 />
             </div>
@@ -317,7 +323,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                     <Input
                         id="awsAccessKeyId"
                         value={storageSettings.awsAccessKeyId}
-                        onChange={(e) => handleSettingChange('awsAccessKeyId', e.target.value)}
+                        onChange={(e) => {
+                            handleSettingChange('awsAccessKeyId', e.target.value);
+                        }}
                         placeholder="AKIAIOSFODNN7EXAMPLE"
                     />
                 </div>
@@ -328,7 +336,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                         id="awsSecretAccessKey"
                         type="password"
                         value={storageSettings.awsSecretAccessKey}
-                        onChange={(e) => handleSettingChange('awsSecretAccessKey', e.target.value)}
+                        onChange={(e) => {
+                            handleSettingChange('awsSecretAccessKey', e.target.value);
+                        }}
                         placeholder="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
                     />
                 </div>
@@ -338,7 +348,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                     <Input
                         id="awsDefaultRegion"
                         value={storageSettings.awsDefaultRegion}
-                        onChange={(e) => handleSettingChange('awsDefaultRegion', e.target.value)}
+                        onChange={(e) => {
+                            handleSettingChange('awsDefaultRegion', e.target.value);
+                        }}
                         placeholder="us-east-1"
                     />
                 </div>
@@ -348,7 +360,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                     <Input
                         id="awsBucket"
                         value={storageSettings.awsBucket}
-                        onChange={(e) => handleSettingChange('awsBucket', e.target.value)}
+                        onChange={(e) => {
+                            handleSettingChange('awsBucket', e.target.value);
+                        }}
                         placeholder="my-bucket-name"
                     />
                 </div>
@@ -358,7 +372,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                     <Input
                         id="awsUrl"
                         value={storageSettings.awsUrl}
-                        onChange={(e) => handleSettingChange('awsUrl', e.target.value)}
+                        onChange={(e) => {
+                            handleSettingChange('awsUrl', e.target.value);
+                        }}
                         placeholder="https://s3.amazonaws.com"
                     />
                 </div>
@@ -368,7 +384,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                     <Input
                         id="awsEndpoint"
                         value={storageSettings.awsEndpoint}
-                        onChange={(e) => handleSettingChange('awsEndpoint', e.target.value)}
+                        onChange={(e) => {
+                            handleSettingChange('awsEndpoint', e.target.value);
+                        }}
                         placeholder="https://s3.us-east-1.amazonaws.com"
                     />
                 </div>
@@ -383,7 +401,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                             id="awsMaxUploadSize"
                             type="number"
                             value={storageSettings.maxUploadSize}
-                            onChange={(e) => handleSettingChange('maxUploadSize', e.target.value)}
+                            onChange={(e) => {
+                                handleSettingChange('maxUploadSize', e.target.value);
+                            }}
                             placeholder="2048"
                         />
                     </div>
@@ -400,7 +420,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                     <Input
                         id="wasabiAccessKey"
                         value={storageSettings.wasabiAccessKey}
-                        onChange={(e) => handleSettingChange('wasabiAccessKey', e.target.value)}
+                        onChange={(e) => {
+                            handleSettingChange('wasabiAccessKey', e.target.value);
+                        }}
                         placeholder="AKIAIOSFODNN7EXAMPLE"
                     />
                 </div>
@@ -411,7 +433,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                         id="wasabiSecretKey"
                         type="password"
                         value={storageSettings.wasabiSecretKey}
-                        onChange={(e) => handleSettingChange('wasabiSecretKey', e.target.value)}
+                        onChange={(e) => {
+                            handleSettingChange('wasabiSecretKey', e.target.value);
+                        }}
                         placeholder="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
                     />
                 </div>
@@ -421,7 +445,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                     <Input
                         id="wasabiRegion"
                         value={storageSettings.wasabiRegion}
-                        onChange={(e) => handleSettingChange('wasabiRegion', e.target.value)}
+                        onChange={(e) => {
+                            handleSettingChange('wasabiRegion', e.target.value);
+                        }}
                         placeholder="us-east-1"
                     />
                 </div>
@@ -431,7 +457,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                     <Input
                         id="wasabiBucket"
                         value={storageSettings.wasabiBucket}
-                        onChange={(e) => handleSettingChange('wasabiBucket', e.target.value)}
+                        onChange={(e) => {
+                            handleSettingChange('wasabiBucket', e.target.value);
+                        }}
                         placeholder="my-wasabi-bucket"
                     />
                 </div>
@@ -441,7 +469,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                     <Input
                         id="wasabiUrl"
                         value={storageSettings.wasabiUrl}
-                        onChange={(e) => handleSettingChange('wasabiUrl', e.target.value)}
+                        onChange={(e) => {
+                            handleSettingChange('wasabiUrl', e.target.value);
+                        }}
                         placeholder="https://s3.wasabisys.com"
                     />
                 </div>
@@ -451,7 +481,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                     <Input
                         id="wasabiRoot"
                         value={storageSettings.wasabiRoot}
-                        onChange={(e) => handleSettingChange('wasabiRoot', e.target.value)}
+                        onChange={(e) => {
+                            handleSettingChange('wasabiRoot', e.target.value);
+                        }}
                         placeholder="/"
                     />
                 </div>
@@ -465,7 +497,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                         id="wasabiMaxUploadSize"
                         type="number"
                         value={storageSettings.maxUploadSize}
-                        onChange={(e) => handleSettingChange('maxUploadSize', e.target.value)}
+                        onChange={(e) => {
+                            handleSettingChange('maxUploadSize', e.target.value);
+                        }}
                         placeholder="2048"
                     />
                 </div>
@@ -490,7 +524,9 @@ export default function StorageSettings({ settings = {} }: StorageSettingsProps)
                         <Tabs
                             value={storageSettings.storageType}
                             className="w-full"
-                            onValueChange={(value) => setStorageSettings((prev) => ({ ...prev, storageType: value as StorageType }))}
+                            onValueChange={(value) => {
+                                setStorageSettings((prev) => ({ ...prev, storageType: value as StorageType }));
+                            }}
                         >
                             <TabsList className="grid w-full grid-cols-3 max-[1100px]:h-auto max-[1100px]:grid-cols-1">
                                 <TabsTrigger value="local" className="flex cursor-pointer items-center gap-2">

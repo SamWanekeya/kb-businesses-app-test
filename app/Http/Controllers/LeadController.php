@@ -147,7 +147,7 @@ class LeadController extends Controller
         $validated['status'] = $validated['status'] ?? 'active';
 
         $lead = Lead::create($validated);
-        if ($lead && !IsDemo()) {
+        if ($lead) {
             event(new LeadAssigned($lead));
         }
 
@@ -422,9 +422,7 @@ class LeadController extends Controller
                     $new = $lead->lead_status_id;
                     $oldStatusName = LeadStatus::find($old)?->name ?? 'N/A';
                     $newStatusName = LeadStatus::find($new)?->name ?? 'N/A';
-                    if (!IsDemo()) {
-                        event(new LeadStatusChanged($lead, $oldStatusName, $newStatusName));
-                    }
+                    event(new LeadStatusChanged($lead, $oldStatusName, $newStatusName));
                 }
                 $lead->update($validated);
 

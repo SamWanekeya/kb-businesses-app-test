@@ -83,7 +83,9 @@ export default function ProductCreate() {
         for (let s = 1; s < targetStep; s++) {
             const errs = validateStep(s);
             if (Object.keys(errs).length > 0) {
-                Object.entries(errs).forEach(([k, v]) => setError(k as any, v));
+                Object.entries(errs).forEach(([k, v]) => {
+                    setError(k as any, v);
+                });
                 setStep(s);
                 return;
             }
@@ -94,7 +96,9 @@ export default function ProductCreate() {
     const handleNext = () => {
         const errs = validateStep(step);
         if (Object.keys(errs).length > 0) {
-            Object.entries(errs).forEach(([k, v]) => setError(k as any, v));
+            Object.entries(errs).forEach(([k, v]) => {
+                setError(k as any, v);
+            });
             return;
         }
         setStep((s) => s + 1);
@@ -105,7 +109,9 @@ export default function ProductCreate() {
         const allErrs: Record<string, string> = {};
         [1, 2, 3, 4].forEach((s) => Object.assign(allErrs, validateStep(s)));
         if (Object.keys(allErrs).length > 0) {
-            Object.entries(allErrs).forEach(([k, v]) => setError(k as any, v));
+            Object.entries(allErrs).forEach(([k, v]) => {
+                setError(k as any, v);
+            });
             const firstErrStep = [1, 2, 3, 4].find((s) => Object.keys(validateStep(s)).length > 0);
             if (firstErrStep) setStep(firstErrStep);
             return;
@@ -135,7 +141,9 @@ export default function ProductCreate() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="me-1 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('products.index')),
+                    onClick: () => {
+                        router.visit(route('products.index'));
+                    },
                 },
             ]}
             noPadding
@@ -154,7 +162,9 @@ export default function ProductCreate() {
                                         <div key={s.number} className="flex flex-1 items-center">
                                             <button
                                                 type="button"
-                                                onClick={() => handleStepClick(s.number)}
+                                                onClick={() => {
+                                                    handleStepClick(s.number);
+                                                }}
                                                 className="flex items-center gap-2 rounded-lg px-2 py-1 transition-colors"
                                             >
                                                 <span
@@ -327,7 +337,7 @@ export default function ProductCreate() {
                                             onChange={(v) => {
                                                 setranslate('main_image_id', v);
                                                 if (v) {
-                                                    fetch(route('api.media.index'), {
+                                                    fetch(route('media-library.media.index'), {
                                                         credentials: 'same-origin',
                                                         headers: { Accept: 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
                                                     })
@@ -336,7 +346,9 @@ export default function ProductCreate() {
                                                             const item = media.find((m: any) => m.id === Number(v));
                                                             setMainImageUrl(item?.url || null);
                                                         })
-                                                        .catch(() => setMainImageUrl(null));
+                                                        .catch(() => {
+                                                            setMainImageUrl(null);
+                                                        });
                                                 } else {
                                                     setMainImageUrl(null);
                                                 }
@@ -405,7 +417,9 @@ export default function ProductCreate() {
                                 <Button
                                     type="button"
                                     variant="outline"
-                                    onClick={() => (step > 1 ? setStep((s) => s - 1) : router.visit(route('products.index')))}
+                                    onClick={() => {
+                                        step > 1 ? setStep((s) => s - 1) : router.visit(route('products.index'));
+                                    }}
                                 >
                                     {step > 1 ? translate('Previous') : translate('Cancel')}
                                 </Button>

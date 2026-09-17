@@ -192,7 +192,7 @@ class IyzipayPaymentController extends Controller
             $settings = getPaymentGatewaySettings();
 
             if (!$token) {
-                return redirect()->route('plans.index')->withErrors(['error' => __('Invalid payment response')]);
+                return redirect()->route('subscriptions.plans.index')->withErrors(['error' => __('Invalid payment response')]);
             }
 
             // Retrieve payment result from Iyzipay
@@ -219,15 +219,15 @@ class IyzipayPaymentController extends Controller
                             'payment_id' => $paymentResult->getPaymentId(),
                         ]);
 
-                        return redirect()->route('plans.index')->with('success', __('Payment successful! Your plan has been activated.'));
+                        return redirect()->route('subscriptions.plans.index')->with('success', __('Payment successful! Your plan has been activated.'));
                     }
                 }
             }
 
-            return redirect()->route('plans.index')->withErrors(['error' => __('Payment failed or cancelled')]);
+            return redirect()->route('subscriptions.plans.index')->withErrors(['error' => __('Payment failed or cancelled')]);
 
         } catch (Exception $e) {
-            return redirect()->route('plans.index')->withErrors(['error' => __('Payment processing failed')]);
+            return redirect()->route('subscriptions.plans.index')->withErrors(['error' => __('Payment processing failed')]);
         }
     }
 
@@ -241,14 +241,14 @@ class IyzipayPaymentController extends Controller
             $couponCode = $request->input('coupon_code');
 
             if (!$token || !$planId || !$userId) {
-                return redirect()->route('plans.index')->withErrors(['error' => __('Invalid payment response')]);
+                return redirect()->route('subscriptions.plans.index')->withErrors(['error' => __('Invalid payment response')]);
             }
 
             $plan = Plan::find($planId);
             $user = User::find($userId);
 
             if (!$plan || !$user) {
-                return redirect()->route('plans.index')->withErrors(['error' => __('Invalid plan or user')]);
+                return redirect()->route('subscriptions.plans.index')->withErrors(['error' => __('Invalid plan or user')]);
             }
 
             // Get settings without authentication dependency
@@ -273,13 +273,13 @@ class IyzipayPaymentController extends Controller
                     auth()->login($user);
                 }
 
-                return redirect()->route('plans.index')->with('success', __('Payment completed successfully and plan activated'));
+                return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully and plan activated'));
             }
 
-            return redirect()->route('plans.index')->withErrors(['error' => __('Payment failed or cancelled')]);
+            return redirect()->route('subscriptions.plans.index')->withErrors(['error' => __('Payment failed or cancelled')]);
 
         } catch (Exception $e) {
-            return redirect()->route('plans.index')->withErrors(['error' => __('Payment processing failed')]);
+            return redirect()->route('subscriptions.plans.index')->withErrors(['error' => __('Payment processing failed')]);
         }
     }
 }

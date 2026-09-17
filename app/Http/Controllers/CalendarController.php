@@ -13,14 +13,6 @@ class CalendarController extends Controller
 {
     public function index(Request $request)
     {
-        // Check if demo mode is enabled
-        if (IsDemo()) {
-            return Inertia::render('Calendar/Index', [
-                'events' => getDemoCalendarData(),
-                'settings' => settings(createdBy()),
-            ]);
-        }
-
         $events = collect();
 
         // Get meetings

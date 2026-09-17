@@ -57,7 +57,9 @@ export function PayTRPaymentForm({
         };
 
         window.addEventListener('message', handleMessage);
-        return () => window.removeEventListener('message', handleMessage);
+        return () => {
+            window.removeEventListener('message', handleMessage);
+        };
     }, [onSuccess, t]);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -103,7 +105,13 @@ export function PayTRPaymentForm({
                             <CreditCard className="h-5 w-5" />
                             {translate('PayTR Payment')}
                         </span>
-                        <Button variant="outline" size="sm" onClick={() => setShowIframe(false)}>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                                setShowIframe(false);
+                            }}
+                        >
                             {translate('Back')}
                         </Button>
                     </CardTitle>
@@ -135,7 +143,9 @@ export function PayTRPaymentForm({
                         <Input
                             id="name"
                             value={customerDetails.name}
-                            onChange={(e) => setCustomerDetails((prev) => ({ ...prev, name: e.target.value }))}
+                            onChange={(e) => {
+                                setCustomerDetails((prev) => ({ ...prev, name: e.target.value }));
+                            }}
                             placeholder={translate('Enter full name')}
                             required
                         />
@@ -147,7 +157,9 @@ export function PayTRPaymentForm({
                             id="email"
                             type="email"
                             value={customerDetails.email}
-                            onChange={(e) => setCustomerDetails((prev) => ({ ...prev, email: e.target.value }))}
+                            onChange={(e) => {
+                                setCustomerDetails((prev) => ({ ...prev, email: e.target.value }));
+                            }}
                             placeholder={translate('Enter email address')}
                             required
                         />
@@ -158,7 +170,9 @@ export function PayTRPaymentForm({
                         <Input
                             id="phone"
                             value={customerDetails.phone}
-                            onChange={(e) => setCustomerDetails((prev) => ({ ...prev, phone: e.target.value }))}
+                            onChange={(e) => {
+                                setCustomerDetails((prev) => ({ ...prev, phone: e.target.value }));
+                            }}
                             placeholder="+905xxxxxxxxx"
                             required
                         />
@@ -170,7 +184,9 @@ export function PayTRPaymentForm({
                         <Input
                             id="address"
                             value={customerDetails.address}
-                            onChange={(e) => setCustomerDetails((prev) => ({ ...prev, address: e.target.value }))}
+                            onChange={(e) => {
+                                setCustomerDetails((prev) => ({ ...prev, address: e.target.value }));
+                            }}
                             placeholder={translate('Enter address (optional)')}
                         />
                     </div>

@@ -1,5 +1,5 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
+import CrudFormModal from '@components/CrudFormModal';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Button } from '@components/UserInterface/Button';
@@ -12,8 +12,6 @@ import {
 } from '@components/UserInterface/DropdownMenu';
 import Pagination from '@components/UserInterface/Pagination';
 import SearchAndFilterBar from '@components/UserInterface/SearchAndFilterBar';
-import { useBrand } from '@contexts/BrandContext';
-import { THEME_COLORS } from '@hooks/use-appearance';
 import { router, usePage } from '@inertiajs/react';
 import { useHasPermission } from '@utils/Permissions';
 import { route } from '@utils/Routes';
@@ -23,8 +21,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function Documents() {
     const { t: translate } = useTranslation();
-    const { themeColor, customColor } = useBrand();
-    const color = themeColor === 'custom' ? customColor : THEME_COLORS[themeColor as keyof typeof THEME_COLORS];
+    const color = '#A12582';
     const { auth, rootFolders = [], parentFolders = [], filters: pageFilters = {} } = usePage().props;
     const permissions = auth?.permissions || [];
     const flash = (usePage().props as any).flash || {};
@@ -191,7 +188,12 @@ export default function Documents() {
                                     </div>
 
                                     {/* Three-dot menu */}
-                                    <div className="absolute top-2 right-2" onClick={(e) => e.stopPropagation()}>
+                                    <div
+                                        className="absolute top-2 right-2"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                        }}
+                                    >
                                         {useHasPermission('edit-document-folders') || useHasPermission('delete-document-folders') ? (
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
@@ -271,7 +273,9 @@ export default function Documents() {
                     total={rootFolders?.total || 0}
                     links={rootFolders?.links || []}
                     entityName={translate('documents')}
-                    onPageChange={(url) => router.get(url)}
+                    onPageChange={(url) => {
+                        router.get(url);
+                    }}
                     perPageOptions={[24, 48, 96]}
                     currentPerPage={pageFilters.per_page?.toString() || '24'}
                     onPerPageChange={(value) => {
@@ -291,7 +295,9 @@ export default function Documents() {
             {/* Create/Edit Folder Modal */}
             <CrudFormModal
                 isOpen={isFolderModalOpen}
-                onClose={() => setIsFolderModalOpen(false)}
+                onClose={() => {
+                    setIsFolderModalOpen(false);
+                }}
                 onSubmit={handleFolderFormSubmit}
                 formConfig={{ fields: folderFormFields, modalSize: 'md' }}
                 initialData={
@@ -309,7 +315,9 @@ export default function Documents() {
             {/* Delete Folder Modal */}
             <CrudDeleteModal
                 isOpen={isFolderDeleteModalOpen}
-                onClose={() => setIsFolderDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsFolderDeleteModalOpen(false);
+                }}
                 onConfirm={handleFolderDeleteConfirm}
                 itemName={currentFolder?.name || ''}
                 entityName={translate('folder')}

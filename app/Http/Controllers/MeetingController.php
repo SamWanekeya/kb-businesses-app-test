@@ -43,41 +43,28 @@ class MeetingController extends Controller
         $monthStart = Carbon::create($selectedYear, $selectedMonth, 1)->startOfMonth();
         $monthEnd = $monthStart->copy()->endOfMonth();
 
-        if (IsDemo()) {
-            // Pick 10 record to show a spread of demo data
-            $meetings = (clone $baseQuery)->take(10)->get();
-            // Every day of the visible month gets a dot
-            $meetingDates = collect();
-            $cursor = $monthStart->copy();
-            while ($cursor->lte($monthEnd)) {
+        // --- Date filter: filter meetings where selected date falls within start_date and end_date ---
+        $meetings = (clone $baseQuery)
+            ->whereDate('start_date', '<=', $selectedDate)
+            ->whereDate('end_date', '>=', $selectedDate)
+            ->get();
+
+        // --- Meeting dates for the selected month (for calendar dots, including multi-day) ---
+        $meetingRanges = Meeting::where('created_by', createdBy())
+            ->where('start_date', '<=', $monthEnd->format('Y-m-d'))
+            ->where('end_date', '>=', $monthStart->format('Y-m-d'))
+            ->get(['start_date', 'end_date']);
+
+        $meetingDates = collect();
+        foreach ($meetingRanges as $m) {
+            $cursor = Carbon::parse($m->start_date)->max($monthStart->copy());
+            $end = Carbon::parse($m->end_date)->min($monthEnd->copy());
+            while ($cursor->lte($end)) {
                 $meetingDates->push($cursor->format('Y-m-d'));
                 $cursor->addDay();
             }
-            $meetingDates = $meetingDates->toArray();
-        } else {
-            // --- Date filter: filter meetings where selected date falls within start_date and end_date ---
-            $meetings = (clone $baseQuery)
-                ->whereDate('start_date', '<=', $selectedDate)
-                ->whereDate('end_date', '>=', $selectedDate)
-                ->get();
-
-            // --- Meeting dates for the selected month (for calendar dots, including multi-day) ---
-            $meetingRanges = Meeting::where('created_by', createdBy())
-                ->where('start_date', '<=', $monthEnd->format('Y-m-d'))
-                ->where('end_date', '>=', $monthStart->format('Y-m-d'))
-                ->get(['start_date', 'end_date']);
-
-            $meetingDates = collect();
-            foreach ($meetingRanges as $m) {
-                $cursor = Carbon::parse($m->start_date)->max($monthStart->copy());
-                $end = Carbon::parse($m->end_date)->min($monthEnd->copy());
-                while ($cursor->lte($end)) {
-                    $meetingDates->push($cursor->format('Y-m-d'));
-                    $cursor->addDay();
-                }
-            }
-            $meetingDates = $meetingDates->unique()->values()->toArray();
         }
+        $meetingDates = $meetingDates->unique()->values()->toArray();
 
         // Build summary from the already-fetched collection (same as reference)
         $summary = [
@@ -329,7 +316,7 @@ class MeetingController extends Controller
         }
 
         // Fire meeting invitation event if email notification is enabled
-        if (isset($validated['attendees']) && !IsDemo()) {
+        if (isset($validated['attendees'])) {
             event(new MeetingInvitation($meeting));
         }
 

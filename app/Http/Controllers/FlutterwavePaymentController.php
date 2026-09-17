@@ -70,7 +70,7 @@ class FlutterwavePaymentController extends Controller
                     'payment_id' => $validated['payment_id'],
                 ]);
 
-                return redirect()->route('plans.index')->with('success', __('Payment successful! Your plan has been activated.'));
+                return redirect()->route('subscriptions.plans.index')->with('success', __('Payment successful! Your plan has been activated.'));
             }
 
             return back()->withErrors(['error' => __('Payment verification failed')]);

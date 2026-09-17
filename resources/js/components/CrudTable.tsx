@@ -190,7 +190,7 @@ export default function CrudTable({
                 );
 
             case 'date':
-                return value ? <span className="text-sm">{window.hfSettings.formatDateTimeSimple(value, false)}</span> : <span>-</span>;
+                return value ? <span className="text-sm">{window.kbSettings.formatDateTimeSimple(value, false)}</span> : <span>-</span>;
 
             case 'currency':
                 return (

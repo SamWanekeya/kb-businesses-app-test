@@ -70,7 +70,7 @@ class PayHerePaymentController extends Controller
                     'billing_cycle' => $validated['billing_cycle'],
                     'coupon_code' => $validated['coupon_code'] ?? '',
                 ]),
-                'cancel_url' => route('plans.index'),
+                'cancel_url' => route('subscriptions.plans.index'),
                 'notify_url' => route('payhere.callback'),
                 'order_id' => $orderId,
                 'items' => $plan->name,
@@ -141,14 +141,14 @@ class PayHerePaymentController extends Controller
                         auth()->login($user);
                     }
 
-                    return redirect()->route('plans.index')->with('success', __('Payment completed successfully and plan activated'));
+                    return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully and plan activated'));
                 }
             }
 
-            return redirect()->route('plans.index')->with('error', __('Payment verification failed'));
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment verification failed'));
 
         } catch (Exception $e) {
-            return redirect()->route('plans.index')->with('error', __('Payment processing failed'));
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment processing failed'));
         }
     }
 

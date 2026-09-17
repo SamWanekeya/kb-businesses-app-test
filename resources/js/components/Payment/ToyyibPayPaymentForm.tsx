@@ -89,7 +89,7 @@ export function ToyyibPayPaymentForm({
             // Create form and submit to handle redirect properly
             const form = document.createElementranslate('form');
             form.method = 'POST';
-            form.action = route('toyyibpay.payment');
+            form.action = route('subscriptions.toyyibpay.payment');
 
             // Add CSRF token
             const csrfInput = document.createElementranslate('input');

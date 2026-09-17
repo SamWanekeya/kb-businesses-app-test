@@ -102,7 +102,9 @@ export default function AccountCreate() {
             clientErrors['website'] = translate('Website must start with http:// or https://');
         }
         if (Object.keys(clientErrors).length > 0) {
-            Object.entries(clientErrors).forEach(([k, v]) => setError(k as any, v));
+            Object.entries(clientErrors).forEach(([k, v]) => {
+                setError(k as any, v);
+            });
             return;
         }
         const toastId = toast.loading(translate('Creating account...'));
@@ -122,7 +124,9 @@ export default function AccountCreate() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => window.history.back(),
+                    onClick: () => {
+                        window.history.back();
+                    },
                 },
             ]}
             noPadding
@@ -241,7 +245,7 @@ export default function AccountCreate() {
                             {users.length === 0 && (
                                 <p className="mt-1 text-xs">
                                     {translate('Click here to add')}{' '}
-                                    <a href={route('users.index')} className="font-medium underline">
+                                    <a href={route('users-permissions.users.index')} className="font-medium underline">
                                         {translate('Users')}
                                     </a>
                                 </p>
@@ -455,7 +459,13 @@ export default function AccountCreate() {
 
                 {/* ── Actions ── */}
                 <div className="flex justify-end gap-3 pt-1">
-                    <Button type="button" variant="outline" onClick={() => window.history.back()}>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                            window.history.back();
+                        }}
+                    >
                         {translate('Cancel')}
                     </Button>
                     <Button type="submit" disabled={processing}>

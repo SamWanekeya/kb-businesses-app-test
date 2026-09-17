@@ -133,7 +133,7 @@ return Application::configure(basePath: dirname(__DIR__))
 //                'invoices/payment/midtrans/callback',
 //                'invoices/payment/easebuzz/success',
 //                'invoices/payment/easebuzz/failure',
-                'api/media/batch',
+                'media-library/media/batch',
             ],
         );
 

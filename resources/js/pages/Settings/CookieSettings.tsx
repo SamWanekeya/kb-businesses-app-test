@@ -1,5 +1,5 @@
 import { toast } from '@components/CustomToast';
-import { SettingsSection } from '@components/settings-section';
+import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
@@ -136,7 +136,9 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                                 <Switch
                                     id="enable_logging"
                                     checked={cookieSettings.enable_logging}
-                                    onCheckedChange={(checked) => handleCookieSettingsChange('enable_logging', checked)}
+                                    onCheckedChange={(checked) => {
+                                        handleCookieSettingsChange('enable_logging', checked);
+                                    }}
                                 />
                             </div>
 
@@ -149,7 +151,9 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                                 <Switch
                                     id="strictlyNecessaryCookies"
                                     checked={cookieSettings.strictlyNecessaryCookies}
-                                    onCheckedChange={(checked) => handleCookieSettingsChange('strictlyNecessaryCookies', checked)}
+                                    onCheckedChange={(checked) => {
+                                        handleCookieSettingsChange('strictlyNecessaryCookies', checked);
+                                    }}
                                 />
                             </div>
                         </div>
@@ -164,7 +168,9 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                                     id="cookieTitle"
                                     type="text"
                                     value={cookieSettings.cookieTitle}
-                                    onChange={(e) => handleCookieSettingsChange('cookieTitle', e.target.value)}
+                                    onChange={(e) => {
+                                        handleCookieSettingsChange('cookieTitle', e.target.value);
+                                    }}
                                     placeholder={translate('Enter the main cookie consent title')}
                                 />
                             </div>
@@ -178,7 +184,9 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                                     id="strictlyCookieTitle"
                                     type="text"
                                     value={cookieSettings.strictlyCookieTitle}
-                                    onChange={(e) => handleCookieSettingsChange('strictlyCookieTitle', e.target.value)}
+                                    onChange={(e) => {
+                                        handleCookieSettingsChange('strictlyCookieTitle', e.target.value);
+                                    }}
                                     placeholder={translate('Enter the strictly necessary cookies title')}
                                 />
                             </div>
@@ -193,7 +201,9 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                                 <Textarea
                                     id="cookieDescription"
                                     value={cookieSettings.cookieDescription}
-                                    onChange={(e) => handleCookieSettingsChange('cookieDescription', e.target.value)}
+                                    onChange={(e) => {
+                                        handleCookieSettingsChange('cookieDescription', e.target.value);
+                                    }}
                                     placeholder={translate('Enter the cookie consent description')}
                                     rows={4}
                                 />
@@ -207,7 +217,9 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                                 <Textarea
                                     id="strictlyCookieDescription"
                                     value={cookieSettings.strictlyCookieDescription}
-                                    onChange={(e) => handleCookieSettingsChange('strictlyCookieDescription', e.target.value)}
+                                    onChange={(e) => {
+                                        handleCookieSettingsChange('strictlyCookieDescription', e.target.value);
+                                    }}
                                     placeholder={translate('Enter the strictly necessary cookies description')}
                                     rows={4}
                                 />
@@ -223,7 +235,9 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                                 <Textarea
                                     id="contactUsDescription"
                                     value={cookieSettings.contactUsDescription}
-                                    onChange={(e) => handleCookieSettingsChange('contactUsDescription', e.target.value)}
+                                    onChange={(e) => {
+                                        handleCookieSettingsChange('contactUsDescription', e.target.value);
+                                    }}
                                     placeholder={translate('Enter the contact us description for cookie inquiries')}
                                     rows={3}
                                 />
@@ -238,7 +252,9 @@ export default function CookieSettings({ settings = {} }: CookieSettingsProps) {
                                     id="contactUsUrl"
                                     type="url"
                                     value={cookieSettings.contactUsUrl}
-                                    onChange={(e) => handleCookieSettingsChange('contactUsUrl', e.target.value)}
+                                    onChange={(e) => {
+                                        handleCookieSettingsChange('contactUsUrl', e.target.value);
+                                    }}
                                     placeholder={translate('Enter the contact us URL for cookie inquiries')}
                                 />
                             </div>

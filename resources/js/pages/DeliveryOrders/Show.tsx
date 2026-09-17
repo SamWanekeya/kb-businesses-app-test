@@ -35,7 +35,7 @@ export default function DeliveryOrderShow() {
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();
     useEffect(() => {
-        const main = document.querySelector('main[data-slot="sidebar-inset"]') as HTMLElement | null;
+        const main = document.querySelector('main[data-slot="sidebar-inset"]');
         if (main) main.style.overflowX = 'visible';
         return () => {
             if (main) main.style.overflowX = '';
@@ -101,7 +101,9 @@ export default function DeliveryOrderShow() {
                     icon: <ArrowLeft className="h-4 w-4 sm:me-2" />,
                     labelClassName: 'hidden sm:inline',
                     variant: 'outline',
-                    onClick: () => router.visit(route('delivery-orders.index')),
+                    onClick: () => {
+                        router.visit(route('delivery-orders.index'));
+                    },
                 },
             ]}
             noPadding
@@ -330,7 +332,9 @@ export default function DeliveryOrderShow() {
                                     <Button
                                         variant="outline"
                                         className="w-full"
-                                        onClick={() => router.visit(route('delivery-orders.edit', deliveryOrder.id))}
+                                        onClick={() => {
+                                            router.visit(route('delivery-orders.edit', deliveryOrder.id));
+                                        }}
                                     >
                                         <Edit className="me-2 h-4 w-4" />
                                         {translate('Edit Delivery Order')}
@@ -447,14 +451,14 @@ export default function DeliveryOrderShow() {
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
                                     <p className="text-muted-foreground text-xs">{translate('Delivery Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">{formatDate(deliveryOrder.delivery_date)}</p>
+                                    <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(deliveryOrder.delivery_date)}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
                                     <p className="text-muted-foreground text-xs">{translate('Expected Delivery')}</p>
-                                    <p className="text-foreground text-sm font-medium">{formatDate(deliveryOrder.expected_delivery_date)}</p>
+                                    <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(deliveryOrder.expected_delivery_date)}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">

@@ -54,7 +54,7 @@ class PayfastPaymentController extends Controller
                 'merchant_id' => $settings['merchant_id'],
                 'merchant_key' => $settings['merchant_key'],
                 'return_url' => route('payfast.success'),
-                'cancel_url' => route('plans.index'),
+                'cancel_url' => route('subscriptions.plans.index'),
                 'notify_url' => route('payfast.callback'),
                 'name_first' => $validated['customer_details']['firstName'],
                 'name_last' => $validated['customer_details']['lastName'],
@@ -220,9 +220,9 @@ class PayfastPaymentController extends Controller
                 'plan_expires_at' => $expiresAt,
             ]);
 
-            return redirect()->route('plans.index')->with('success', __('Payment completed and plan activated!'));
+            return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed and plan activated!'));
         }
 
-        return redirect()->route('plans.index')->with('error', __('Payment verification failed'));
+        return redirect()->route('subscriptions.plans.index')->with('error', __('Payment verification failed'));
     }
 }

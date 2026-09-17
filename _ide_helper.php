@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 13.30.1.
+ * Generated for Laravel 13.32.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -3897,6 +3897,19 @@ namespace Illuminate\Support\Facades {
         {
             /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
             return $instance->forgetDrivers();
+        }
+
+        /**
+         * Get a Mercure hub instance for the given configuration.
+         *
+         * @param array $config
+         * @return \Symfony\Component\Mercure\HubInterface
+         * @static
+         */
+        public static function mercure($config)
+        {
+            /** @var \Illuminate\Broadcasting\BroadcastManager $instance */
+            return $instance->mercure($config);
         }
 
         /**
@@ -12207,6 +12220,19 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Assert if a mailable was sent exactly once.
+         *
+         * @param string $mailable
+         * @return void
+         * @static
+         */
+        public static function assertSentOnce($mailable)
+        {
+            /** @var \Illuminate\Support\Testing\Fakes\MailFake $instance */
+            $instance->assertSentOnce($mailable);
+        }
+
+        /**
          * Determine if a mailable was not sent or queued to be sent based on a truth-test callback.
          *
          * @param string|\Closure $mailable
@@ -12284,6 +12310,19 @@ namespace Illuminate\Support\Facades {
         {
             /** @var \Illuminate\Support\Testing\Fakes\MailFake $instance */
             $instance->assertQueuedTimes($mailable, $times);
+        }
+
+        /**
+         * Assert if a mailable was queued exactly once.
+         *
+         * @param string $mailable
+         * @return void
+         * @static
+         */
+        public static function assertQueuedOnce($mailable)
+        {
+            /** @var \Illuminate\Support\Testing\Fakes\MailFake $instance */
+            $instance->assertQueuedOnce($mailable);
         }
 
         /**
@@ -12862,6 +12901,19 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Assert if a notification was sent on-demand exactly once.
+         *
+         * @param string $notification
+         * @return void
+         * @static
+         */
+        public static function assertSentOnDemandOnce($notification)
+        {
+            /** @var \Illuminate\Support\Testing\Fakes\NotificationFake $instance */
+            $instance->assertSentOnDemandOnce($notification);
+        }
+
+        /**
          * Assert if a notification was sent a number of times.
          *
          * @param mixed $notifiable
@@ -12874,6 +12926,20 @@ namespace Illuminate\Support\Facades {
         {
             /** @var \Illuminate\Support\Testing\Fakes\NotificationFake $instance */
             $instance->assertSentToTimes($notifiable, $notification, $times);
+        }
+
+        /**
+         * Assert if a notification was sent exactly once.
+         *
+         * @param mixed $notifiable
+         * @param string $notification
+         * @return void
+         * @static
+         */
+        public static function assertSentToOnce($notifiable, $notification)
+        {
+            /** @var \Illuminate\Support\Testing\Fakes\NotificationFake $instance */
+            $instance->assertSentToOnce($notifiable, $notification);
         }
 
         /**
@@ -13544,8 +13610,8 @@ namespace Illuminate\Support\Facades {
         /**
          * Pause a queue by its connection and name.
          *
-         * @param string $connection
-         * @param string $queue
+         * @param \UnitEnum|string $connection
+         * @param \UnitEnum|string $queue
          * @return void
          * @static
          */
@@ -13558,8 +13624,8 @@ namespace Illuminate\Support\Facades {
         /**
          * Pause a queue by its connection and name for a given amount of time.
          *
-         * @param string $connection
-         * @param string $queue
+         * @param \UnitEnum|string $connection
+         * @param \UnitEnum|string $queue
          * @param \DateTimeInterface|\DateInterval|int $ttl
          * @return void
          * @static
@@ -13585,8 +13651,8 @@ namespace Illuminate\Support\Facades {
         /**
          * Resume a paused queue by its connection and name.
          *
-         * @param string $connection
-         * @param string $queue
+         * @param \UnitEnum|string $connection
+         * @param \UnitEnum|string $queue
          * @return void
          * @static
          */
@@ -14049,6 +14115,18 @@ namespace Illuminate\Support\Facades {
         {
             /** @var \Illuminate\Support\Testing\Fakes\QueueFake $instance */
             return $instance->reservedSize($queue);
+        }
+
+        /**
+         * Get the number of jobs across every queue.
+         *
+         * @return int
+         * @static
+         */
+        public static function totalSize()
+        {
+            /** @var \Illuminate\Support\Testing\Fakes\QueueFake $instance */
+            return $instance->totalSize();
         }
 
         /**
@@ -19144,7 +19222,7 @@ namespace Illuminate\Support\Facades {
          * Call the given Closure with this instance then return the instance.
          *
          * @param (callable($this): mixed)|null $callback
-         * @return ($callback is null ? \Illuminate\Support\HigherOrderTapProxy : $this)
+         * @return ($callback is null ? \Illuminate\Support\HigherOrderTapProxy<$this> : $this)
          * @static
          */
         public static function tap($callback = null)
@@ -21878,6 +21956,38 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Copy a file to another disk.
+         *
+         * @param string|\Illuminate\Contracts\Filesystem\Filesystem $disk
+         * @param string $from
+         * @param string|null $to
+         * @return bool
+         * @static
+         */
+        public static function copyToDisk($disk, $from, $to = null)
+        {
+            //Method inherited from \Illuminate\Filesystem\FilesystemAdapter 
+            /** @var \Illuminate\Filesystem\LocalFilesystemAdapter $instance */
+            return $instance->copyToDisk($disk, $from, $to);
+        }
+
+        /**
+         * Move a file to another disk.
+         *
+         * @param string|\Illuminate\Contracts\Filesystem\Filesystem $disk
+         * @param string $from
+         * @param string|null $to
+         * @return bool
+         * @static
+         */
+        public static function moveToDisk($disk, $from, $to = null)
+        {
+            //Method inherited from \Illuminate\Filesystem\FilesystemAdapter 
+            /** @var \Illuminate\Filesystem\LocalFilesystemAdapter $instance */
+            return $instance->moveToDisk($disk, $from, $to);
+        }
+
+        /**
          * Get the file size of a given file.
          *
          * @param string $path
@@ -24361,6 +24471,18 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Get the URL of the running Vite development server.
+         *
+         * @return string|null
+         * @static
+         */
+        public static function devServerUrl()
+        {
+            /** @var \Illuminate\Foundation\Vite $instance */
+            return $instance->devServerUrl();
+        }
+
+        /**
          * Get the URL for an asset.
          *
          * @param string $asset
@@ -24807,181 +24929,6 @@ namespace Maatwebsite\Excel\Facades {
         {
             /** @var \Maatwebsite\Excel\Fakes\ExcelFake $instance */
             return $instance->assertImported($filePath, $disk, $callback);
-        }
-
-            }
-    }
-
-namespace Milon\Barcode\Facades {
-    /**
-     * @method static string|false getBarcodePNGPath(string $code, string $type, int|float $w = 2, int|float $h = 30, array $color = [0, 0, 0], bool $showCode = false)
-     * @method static \Illuminate\Contracts\Routing\UrlGenerator|string getBarcodePNGUri(string $code, string $type, int|float $w = 2, int|float $h = 30, array $color = [0, 0, 0])
-     */
-    class DNS1DFacade {
-        /**
-         * Return a SVG string representation of barcode.
-         *
-         * @param $code (string) code to print
-         * @param $type (string) type of barcode: <ul><li>C39 : CODE 39 - ANSI MH10.8M-1983 - USD-3 - 3 of 9.</li><li>C39+ : CODE 39 with checksum</li><li>C39E : CODE 39 EXTENDED</li><li>C39E+ : CODE 39 EXTENDED + CHECKSUM</li><li>C93 : CODE 93 - USS-93</li><li>S25 : Standard 2 of 5</li><li>S25+ : Standard 2 of 5 + CHECKSUM</li><li>I25 : Interleaved 2 of 5</li><li>I25+ : Interleaved 2 of 5 + CHECKSUM</li><li>C128 : CODE 128</li><li>C128A : CODE 128 A</li><li>C128B : CODE 128 B</li><li>C128C : CODE 128 C</li><li>EAN2 : 2-Digits UPC-Based Extention</li><li>EAN5 : 5-Digits UPC-Based Extention</li><li>EAN8 : EAN 8</li><li>EAN13 : EAN 13</li><li>UPCA : UPC-A</li><li>UPCE : UPC-E</li><li>MSI : MSI (Variation of Plessey code)</li><li>MSI+ : MSI + CHECKSUM (modulo 11)</li><li>POSTNET : POSTNET</li><li>PLANET : PLANET</li><li>RMS4CC : RMS4CC (Royal Mail 4-state Customer Code) - CBC (Customer Bar Code)</li><li>KIX : KIX (Klant index - Customer index)</li><li>IMB: Intelligent Mail Barcode - Onecode - USPS-B-3200</li><li>CODABAR : CODABAR</li><li>CODE11 : CODE 11</li><li>PHARMA : PHARMACODE</li><li>PHARMA2T : PHARMACODE TWO-TRACKS</li></ul>
-         * @param $w (int) Minimum width of a single bar in user units.
-         * @param $h (int) Height of barcode in user units.
-         * @param $color (string) Foreground color (in SVG format) for bar elements (background is transparent).
-         * @return string SVG code.
-         * @protected
-         * @static
-         */
-        public static function getBarcodeSVG($code, $type, $w = 2, $h = 30, $color = 'black', $showCode = true, $inline = false)
-        {
-            /** @var \Milon\Barcode\DNS1D $instance */
-            return $instance->getBarcodeSVG($code, $type, $w, $h, $color, $showCode, $inline);
-        }
-
-        /**
-         * Return an HTML representation of barcode.
-         *
-         * @param $code (string) code to print
-         * @param $type (string) type of barcode: <ul><li>C39 : CODE 39 - ANSI MH10.8M-1983 - USD-3 - 3 of 9.</li><li>C39+ : CODE 39 with checksum</li><li>C39E : CODE 39 EXTENDED</li><li>C39E+ : CODE 39 EXTENDED + CHECKSUM</li><li>C93 : CODE 93 - USS-93</li><li>S25 : Standard 2 of 5</li><li>S25+ : Standard 2 of 5 + CHECKSUM</li><li>I25 : Interleaved 2 of 5</li><li>I25+ : Interleaved 2 of 5 + CHECKSUM</li><li>C128 : CODE 128</li><li>C128A : CODE 128 A</li><li>C128B : CODE 128 B</li><li>C128C : CODE 128 C</li><li>EAN2 : 2-Digits UPC-Based Extention</li><li>EAN5 : 5-Digits UPC-Based Extention</li><li>EAN8 : EAN 8</li><li>EAN13 : EAN 13</li><li>UPCA : UPC-A</li><li>UPCE : UPC-E</li><li>MSI : MSI (Variation of Plessey code)</li><li>MSI+ : MSI + CHECKSUM (modulo 11)</li><li>POSTNET : POSTNET</li><li>PLANET : PLANET</li><li>RMS4CC : RMS4CC (Royal Mail 4-state Customer Code) - CBC (Customer Bar Code)</li><li>KIX : KIX (Klant index - Customer index)</li><li>IMB: Intelligent Mail Barcode - Onecode - USPS-B-3200</li><li>CODABAR : CODABAR</li><li>CODE11 : CODE 11</li><li>PHARMA : PHARMACODE</li><li>PHARMA2T : PHARMACODE TWO-TRACKS</li></ul>
-         * @param $w (int) Width of a single bar element in pixels.
-         * @param $h (int) Height of a single bar element in pixels.
-         * @param $color (string) Foreground color for bar elements (background is transparent).
-         * @param $showcode (int) font size of the shown code, default 0.
-         * @return string HTML code.
-         * @protected
-         * @static
-         */
-        public static function getBarcodeHTML($code, $type, $w = 2, $h = 30, $color = 'black', $showCode = 0)
-        {
-            /** @var \Milon\Barcode\DNS1D $instance */
-            return $instance->getBarcodeHTML($code, $type, $w, $h, $color, $showCode);
-        }
-
-        /**
-         * Return a PNG image representation of barcode (requires GD or Imagick library).
-         *
-         * @param $code (string) code to print
-         * @param $type (string) type of barcode: <ul><li>C39 : CODE 39 - ANSI MH10.8M-1983 - USD-3 - 3 of 9.</li><li>C39+ : CODE 39 with checksum</li><li>C39E : CODE 39 EXTENDED</li><li>C39E+ : CODE 39 EXTENDED + CHECKSUM</li><li>C93 : CODE 93 - USS-93</li><li>S25 : Standard 2 of 5</li><li>S25+ : Standard 2 of 5 + CHECKSUM</li><li>I25 : Interleaved 2 of 5</li><li>I25+ : Interleaved 2 of 5 + CHECKSUM</li><li>C128 : CODE 128</li><li>C128A : CODE 128 A</li><li>C128B : CODE 128 B</li><li>C128C : CODE 128 C</li><li>EAN2 : 2-Digits UPC-Based Extention</li><li>EAN5 : 5-Digits UPC-Based Extention</li><li>EAN8 : EAN 8</li><li>EAN13 : EAN 13</li><li>UPCA : UPC-A</li><li>UPCE : UPC-E</li><li>MSI : MSI (Variation of Plessey code)</li><li>MSI+ : MSI + CHECKSUM (modulo 11)</li><li>POSTNET : POSTNET</li><li>PLANET : PLANET</li><li>RMS4CC : RMS4CC (Royal Mail 4-state Customer Code) - CBC (Customer Bar Code)</li><li>KIX : KIX (Klant index - Customer index)</li><li>IMB: Intelligent Mail Barcode - Onecode - USPS-B-3200</li><li>CODABAR : CODABAR</li><li>CODE11 : CODE 11</li><li>PHARMA : PHARMACODE</li><li>PHARMA2T : PHARMACODE TWO-TRACKS</li></ul>
-         * @param $w (int) Width of a single bar element in pixels.
-         * @param $h (int) Height of a single bar element in pixels.
-         * @param $color (array) RGB (0-255) foreground color for bar elements (background is transparent).
-         * @return string|false in case of error.
-         * @protected
-         * @static
-         */
-        public static function getBarcodePNG($code, $type, $w = 2, $h = 30, $color = [], $showCode = false)
-        {
-            /** @var \Milon\Barcode\DNS1D $instance */
-            return $instance->getBarcodePNG($code, $type, $w, $h, $color, $showCode);
-        }
-
-        /**
-         * @static
-         */
-        public static function setStorPath($path)
-        {
-            /** @var \Milon\Barcode\DNS1D $instance */
-            return $instance->setStorPath($path);
-        }
-
-        /**
-         * Return a JPG image representation of barcode (requires GD or Imagick library).
-         *
-         * @param $code (string) code to print
-         * @param $type (string) type of barcode: <ul><li>C39 : CODE 39 - ANSI MH10.8M-1983 - USD-3 - 3 of 9.</li><li>C39+ : CODE 39 with checksum</li><li>C39E : CODE 39 EXTENDED</li><li>C39E+ : CODE 39 EXTENDED + CHECKSUM</li><li>C93 : CODE 93 - USS-93</li><li>S25 : Standard 2 of 5</li><li>S25+ : Standard 2 of 5 + CHECKSUM</li><li>I25 : Interleaved 2 of 5</li><li>I25+ : Interleaved 2 of 5 + CHECKSUM</li><li>C128 : CODE 128</li><li>C128A : CODE 128 A</li><li>C128B : CODE 128 B</li><li>C128C : CODE 128 C</li><li>EAN2 : 2-Digits UPC-Based Extention</li><li>EAN5 : 5-Digits UPC-Based Extention</li><li>EAN8 : EAN 8</li><li>EAN13 : EAN 13</li><li>UPCA : UPC-A</li><li>UPCE : UPC-E</li><li>MSI : MSI (Variation of Plessey code)</li><li>MSI+ : MSI + CHECKSUM (modulo 11)</li><li>POSTNET : POSTNET</li><li>PLANET : PLANET</li><li>RMS4CC : RMS4CC (Royal Mail 4-state Customer Code) - CBC (Customer Bar Code)</li><li>KIX : KIX (Klant index - Customer index)</li><li>IMB: Intelligent Mail Barcode - Onecode - USPS-B-3200</li><li>CODABAR : CODABAR</li><li>CODE11 : CODE 11</li><li>PHARMA : PHARMACODE</li><li>PHARMA2T : PHARMACODE TWO-TRACKS</li></ul>
-         * @param $w (int) Width of a single bar element in pixels.
-         * @param $h (int) Height of a single bar element in pixels.
-         * @param $color (array) RGB (0-255) foreground color for bar elements (background is transparent).
-         * @return string|false in case of error.
-         * @protected
-         * @static
-         */
-        public static function getBarcodeJPG($code, $type, $w = 2, $h = 30, $color = [], $showCode = false)
-        {
-            /** @var \Milon\Barcode\DNS1D $instance */
-            return $instance->getBarcodeJPG($code, $type, $w, $h, $color, $showCode);
-        }
-
-            }
-    /**
-     * @method static string|false getBarcodePNGPath(string $code, string $type, int $w = 2, int $h = 30, array $color = [0, 0, 0], ?array $bgcolor = null)
-     */
-    class DNS2DFacade {
-        /**
-         * Return a SVG string representation of barcode.
-         *
-         * <li>$arrcode['code'] code to be printed on text label</li>
-         * <li>$arrcode['num_rows'] required number of rows</li>
-         * <li>$arrcode['num_cols'] required number of columns</li>
-         * <li>$arrcode['bcode'][$r][$c] value of the cell is $r row and $c column (0 = transparent, 1 = black)</li></ul>
-         *
-         * @param $code (string) code to print
-         * @param $type (string) type of barcode: <ul><li>DATAMATRIX : Datamatrix (ISO/IEC 16022)</li><li>PDF417 : PDF417 (ISO/IEC 15438:2006)</li><li>PDF417,a,e,t,s,f,o0,o1,o2,o3,o4,o5,o6 : PDF417 with parameters: a = aspect ratio (width/height); e = error correction level (0-8); t = total number of macro segments; s = macro segment index (0-99998); f = file ID; o0 = File Name (text); o1 = Segment Count (numeric); o2 = Time Stamp (numeric); o3 = Sender (text); o4 = Addressee (text); o5 = File Size (numeric); o6 = Checksum (numeric). NOTES: Parameters t, s and f are required for a Macro Control Block, all other parametrs are optional. To use a comma character ',' on text options, replace it with the character 255: "\xff".</li><li>QRCODE : QRcode Low error correction</li><li>QRCODE,L : QRcode Low error correction</li><li>QRCODE,M : QRcode Medium error correction</li><li>QRCODE,Q : QRcode Better error correction</li><li>QRCODE,H : QR-CODE Best error correction</li><li>RAW: raw mode - comma-separad list of array rows</li><li>RAW2: raw mode - array rows are surrounded by square parenthesis.</li><li>TEST : Test matrix</li></ul>
-         * @param $w (int) Width of a single rectangle element in user units.
-         * @param $h (int) Height of a single rectangle element in user units.
-         * @param $color (string) Foreground color (in SVG format) for bar elements (background is transparent).
-         * @return string SVG code.
-         * @protected
-         * @static
-         */
-        public static function getBarcodeSVG($code, $type, $w = 3, $h = 3, $color = 'black')
-        {
-            /** @var \Milon\Barcode\DNS2D $instance */
-            return $instance->getBarcodeSVG($code, $type, $w, $h, $color);
-        }
-
-        /**
-         * Return an HTML representation of barcode.
-         *
-         * <li>$arrcode['code'] code to be printed on text label</li>
-         * <li>$arrcode['num_rows'] required number of rows</li>
-         * <li>$arrcode['num_cols'] required number of columns</li>
-         * <li>$arrcode['bcode'][$r][$c] value of the cell is $r row and $c column (0 = transparent, 1 = black)</li></ul>
-         *
-         * @param $code (string) code to print
-         * @param $type (string) type of barcode: <ul><li>DATAMATRIX : Datamatrix (ISO/IEC 16022)</li><li>PDF417 : PDF417 (ISO/IEC 15438:2006)</li><li>PDF417,a,e,t,s,f,o0,o1,o2,o3,o4,o5,o6 : PDF417 with parameters: a = aspect ratio (width/height); e = error correction level (0-8); t = total number of macro segments; s = macro segment index (0-99998); f = file ID; o0 = File Name (text); o1 = Segment Count (numeric); o2 = Time Stamp (numeric); o3 = Sender (text); o4 = Addressee (text); o5 = File Size (numeric); o6 = Checksum (numeric). NOTES: Parameters t, s and f are required for a Macro Control Block, all other parametrs are optional. To use a comma character ',' on text options, replace it with the character 255: "\xff".</li><li>QRCODE : QRcode Low error correction</li><li>QRCODE,L : QRcode Low error correction</li><li>QRCODE,M : QRcode Medium error correction</li><li>QRCODE,Q : QRcode Better error correction</li><li>QRCODE,H : QR-CODE Best error correction</li><li>RAW: raw mode - comma-separad list of array rows</li><li>RAW2: raw mode - array rows are surrounded by square parenthesis.</li><li>TEST : Test matrix</li></ul>
-         * @param $w (int) Width of a single rectangle element in pixels.
-         * @param $h (int) Height of a single rectangle element in pixels.
-         * @param $color (string) Foreground color for bar elements (background is transparent).
-         * @return string HTML code.
-         * @protected
-         * @static
-         */
-        public static function getBarcodeHTML($code, $type, $w = 10, $h = 10, $color = 'black')
-        {
-            /** @var \Milon\Barcode\DNS2D $instance */
-            return $instance->getBarcodeHTML($code, $type, $w, $h, $color);
-        }
-
-        /**
-         * Return a PNG image representation of barcode (requires GD or Imagick library).
-         *
-         * <li>$arrcode['code'] code to be printed on text label</li>
-         * <li>$arrcode['num_rows'] required number of rows</li>
-         * <li>$arrcode['num_cols'] required number of columns</li>
-         * <li>$arrcode['bcode'][$r][$c] value of the cell is $r row and $c column (0 = transparent, 1 = black)</li></ul>
-         *
-         * @param $code (string) code to print
-         * @param $type (string) type of barcode: <ul><li>DATAMATRIX : Datamatrix (ISO/IEC 16022)</li><li>PDF417 : PDF417 (ISO/IEC 15438:2006)</li><li>PDF417,a,e,t,s,f,o0,o1,o2,o3,o4,o5,o6 : PDF417 with parameters: a = aspect ratio (width/height); e = error correction level (0-8); t = total number of macro segments; s = macro segment index (0-99998); f = file ID; o0 = File Name (text); o1 = Segment Count (numeric); o2 = Time Stamp (numeric); o3 = Sender (text); o4 = Addressee (text); o5 = File Size (numeric); o6 = Checksum (numeric). NOTES: Parameters t, s and f are required for a Macro Control Block, all other parametrs are optional. To use a comma character ',' on text options, replace it with the character 255: "\xff".</li><li>QRCODE : QRcode Low error correction</li><li>QRCODE,L : QRcode Low error correction</li><li>QRCODE,M : QRcode Medium error correction</li><li>QRCODE,Q : QRcode Better error correction</li><li>QRCODE,H : QR-CODE Best error correction</li><li>RAW: raw mode - comma-separad list of array rows</li><li>RAW2: raw mode - array rows are surrounded by square parenthesis.</li><li>TEST : Test matrix</li></ul>
-         * @param $w (int) Width of a single rectangle element in pixels.
-         * @param $h (int) Height of a single rectangle element in pixels.
-         * @param $color (array) RGB (0-255) foreground color for bar elements.
-         * @param $bgcolor (array) RGB (0-255) background color (transparent as default).
-         * @return string|false path or false in case of error.
-         * @protected
-         * @static
-         */
-        public static function getBarcodePNG($code, $type, $w = 3, $h = 3, $color = [], $bgcolor = null)
-        {
-            /** @var \Milon\Barcode\DNS2D $instance */
-            return $instance->getBarcodePNG($code, $type, $w, $h, $color, $bgcolor);
-        }
-
-        /**
-         * @static
-         */
-        public static function setStorPath($path)
-        {
-            /** @var \Milon\Barcode\DNS2D $instance */
-            return $instance->setStorPath($path);
         }
 
             }
@@ -30539,8 +30486,6 @@ namespace  {
     class View extends \Illuminate\Support\Facades\View {}
     class Vite extends \Illuminate\Support\Facades\Vite {}
     class Excel extends \Maatwebsite\Excel\Facades\Excel {}
-    class DNS1D extends \Milon\Barcode\Facades\DNS1DFacade {}
-    class DNS2D extends \Milon\Barcode\Facades\DNS2DFacade {}
 }
 
 

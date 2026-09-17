@@ -7,12 +7,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@components/UserInterface/Textarea';
 
 import { toast } from '@components/CustomToast';
-import { PaymentInputField } from '@components/Payment/PaymentInputField';
+import PaymentInputField from '@components/Payment/PaymentInputField';
 import { PaymentMethodCard } from '@components/Payment/PaymentMethodCard';
-import { SettingsSection } from '@components/settings-section';
+import SettingsSection from '@components/SettingsSection';
 import { Alert, AlertDescription } from '@components/UserInterface/Alert';
 import { useForm } from '@inertiajs/react';
-import { PAYMENT_METHODS, PAYMENT_METHOD_HELP_URLS, PAYMENT_METHOD_LABELS } from '@utils/Payment';
+import { PAYMENT_METHOD_HELP_URLS, PAYMENT_METHOD_LABELS, PAYMENT_METHODS } from '@utils/Payment';
 import { route } from '@utils/Routes';
 import { AlertCircle, Banknote, CreditCard, Save, Search, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
@@ -364,7 +364,9 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                     <Input
                                         placeholder={translate('Search payment methods...')}
                                         value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        onChange={(e) => {
+                                            setSearchTerm(e.target.value);
+                                        }}
                                         className="pr-10 pl-10"
                                     />
                                     {searchTerm && (
@@ -373,13 +375,20 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                             variant="ghost"
                                             size="sm"
                                             className="hover:bg-muted absolute top-1/2 right-2 h-6 w-6 -translate-y-1/2 transform p-0"
-                                            onClick={() => setSearchTerm('')}
+                                            onClick={() => {
+                                                setSearchTerm('');
+                                            }}
                                         >
                                             <X className="h-3 w-3" />
                                         </Button>
                                     )}
                                 </div>
-                                <Select value={statusFilter} onValueChange={(value: 'all' | 'enabled' | 'disabled') => setStatusFilter(value)}>
+                                <Select
+                                    value={statusFilter}
+                                    onValueChange={(value: 'all' | 'enabled' | 'disabled') => {
+                                        setStatusFilter(value);
+                                    }}
+                                >
                                     <SelectTrigger className="w-[140px]">
                                         <SelectValue />
                                     </SelectTrigger>
@@ -403,7 +412,9 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                                 variant="ghost"
                                                 size="sm"
                                                 className="ml-1 h-3 w-3 p-0 hover:bg-transparent"
-                                                onClick={() => setSearchTerm('')}
+                                                onClick={() => {
+                                                    setSearchTerm('');
+                                                }}
                                             >
                                                 <X className="h-2 w-2" />
                                             </Button>
@@ -417,7 +428,9 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                                 variant="ghost"
                                                 size="sm"
                                                 className="ml-1 h-3 w-3 p-0 hover:bg-transparent"
-                                                onClick={() => setStatusFilter('all')}
+                                                onClick={() => {
+                                                    setStatusFilter('all');
+                                                }}
                                             >
                                                 <X className="h-2 w-2" />
                                             </Button>
@@ -467,14 +480,18 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                     title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.BANK])}
                                     icon={<Banknote className="h-5 w-5" />}
                                     enabled={data.is_bank_payment_mode_enabled}
-                                    onToggle={(checked) => setData('is_bank_payment_mode_enabled', checked)}
+                                    onToggle={(checked) => {
+                                        setData('is_bank_payment_mode_enabled', checked);
+                                    }}
                                 >
                                     <div className="space-y-2">
                                         <Label htmlFor="bank_details">{translate('Bank Details')}</Label>
                                         <Textarea
                                             id="bank_details"
                                             value={data.bank_details}
-                                            onChange={(e) => setData('bank_details', e.target.value)}
+                                            onChange={(e) => {
+                                                setData('bank_details', e.target.value);
+                                            }}
                                             placeholder={translate('Bank: Your Bank Name\nAccount Number: 0000 0000\nRouting Number: 000000000')}
                                             rows={6}
                                         />
@@ -637,7 +654,9 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                     title={translate(PAYMENT_METHOD_LABELS[PAYMENT_METHODS.PAYSTACK])}
                                     icon={<CreditCard className="h-5 w-5" />}
                                     enabled={data.is_paystack_payment_mode_enabled}
-                                    onToggle={(checked) => setData('is_paystack_payment_mode_enabled', checked)}
+                                    onToggle={(checked) => {
+                                        setData('is_paystack_payment_mode_enabled', checked);
+                                    }}
                                     helpUrl={PAYMENT_METHOD_HELP_URLS[PAYMENT_METHODS.PAYSTACK]}
                                     helpText={translate('Get your Paystack API credentials from your')}
                                 >
@@ -646,7 +665,9 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                             id="paystack_public_key"
                                             label={translate('Public Key')}
                                             value={data.paystack_public_key}
-                                            onChange={(value) => setData('paystack_public_key', value)}
+                                            onChange={(value) => {
+                                                setData('paystack_public_key', value);
+                                            }}
                                             placeholder="pk_test_..."
                                             error={errors.paystack_public_key}
                                         />
@@ -654,7 +675,9 @@ export default function PaymentSettings({ settings = {} }: PaymentSettingsProps)
                                             id="paystack_secret_key"
                                             label={translate('Secret Key')}
                                             value={data.paystack_secret_key}
-                                            onChange={(value) => setData('paystack_secret_key', value)}
+                                            onChange={(value) => {
+                                                setData('paystack_secret_key', value);
+                                            }}
                                             placeholder="sk_test_..."
                                             isSecret
                                             error={errors.paystack_secret_key}

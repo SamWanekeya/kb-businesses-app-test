@@ -59,7 +59,7 @@ export function InvoiceSkrillPaymentForm({
                 email: email,
             };
 
-            router.post(route('invoice.skrill.payment'), paymentData, {
+            router.post(route('invoice.subscriptions.skrill.payment'), paymentData, {
                 onSuccess: () => {
                     // The controller will redirect to Skrill, so we don't need to call onSuccess here
                     // onSuccess will be called when user returns from Skrill
@@ -112,7 +112,9 @@ export function InvoiceSkrillPaymentForm({
                             id="email"
                             type="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) => {
+                                setEmail(e.target.value);
+                            }}
                             placeholder={translate('Enter your email address')}
                             required
                             disabled={isProcessing}

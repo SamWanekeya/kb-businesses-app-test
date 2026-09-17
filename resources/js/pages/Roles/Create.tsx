@@ -24,8 +24,8 @@ export default function RolesCreate() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard') },
-        { title: translate('Staff'), href: route('users.index') },
-        { title: translate('Roles'), href: route('roles.index') },
+        { title: translate('Staff'), href: route('users-permissions.users.index') },
+        { title: translate('Roles'), href: route('users-permissions.roles.index') },
         { title: translate('Add Role') },
     ];
 
@@ -45,7 +45,7 @@ export default function RolesCreate() {
         const toastId = toast.loading(translate('Creating a new role...'));
 
         router.post(
-            route('roles.store'),
+            route('users-permissions.roles.store'),
             {
                 label,
                 description,
@@ -68,7 +68,9 @@ export default function RolesCreate() {
             label: translate('Back'),
             icon: <ArrowLeft className="mr-2 h-4 w-4" />,
             variant: 'outline' as const,
-            onClick: () => router.get(route('roles.index')),
+            onClick: () => {
+                router.get(route('users-permissions.roles.index'));
+            },
         },
     ];
 
@@ -97,7 +99,9 @@ export default function RolesCreate() {
                                     id="label"
                                     required
                                     value={label}
-                                    onChange={(e) => setLabel(e.target.value)}
+                                    onChange={(e) => {
+                                        setLabel(e.target.value);
+                                    }}
                                     placeholder={translate('e.g. Legal Consultant, Junior Advocate, Associate Advocate')}
                                     className={errors.label ? 'border-red-500' : ''}
                                 />
@@ -108,7 +112,9 @@ export default function RolesCreate() {
                                 <Textarea
                                     id="description"
                                     value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
+                                    onChange={(e) => {
+                                        setDescription(e.target.value);
+                                    }}
                                     placeholder={translate('Enter role description...')}
                                     rows={3}
                                 />
@@ -142,7 +148,13 @@ export default function RolesCreate() {
 
                 {/* Submit */}
                 <div className="flex flex-col-reverse justify-end gap-3 pb-2 sm:flex-row">
-                    <Button type="button" variant="outline" onClick={() => router.get(route('roles.index'))}>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                            router.get(route('users-permissions.roles.index'));
+                        }}
+                    >
                         {translate('Cancel')}
                     </Button>
                     <Button type="submit" disabled={processing}>

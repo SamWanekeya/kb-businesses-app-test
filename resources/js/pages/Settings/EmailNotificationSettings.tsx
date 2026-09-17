@@ -1,5 +1,5 @@
 import { toast } from '@components/CustomToast';
-import { SettingsSection } from '@components/settings-section';
+import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent } from '@components/UserInterface/Card';
 import { Label } from '@components/UserInterface/Label';
@@ -99,7 +99,9 @@ export default function EmailNotificationSettings() {
                                 <Switch
                                     id={item.name}
                                     checked={notifications[item.name] || false}
-                                    onCheckedChange={(checked) => handleToggle(item.name, checked)}
+                                    onCheckedChange={(checked) => {
+                                        handleToggle(item.name, checked);
+                                    }}
                                 />
                             </div>
                         ))}

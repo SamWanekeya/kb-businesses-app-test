@@ -11,12 +11,10 @@ class AnnouncementController extends Controller
 {
     private function updateStatus()
     {
-        if (!IsDemo()) {
-            Announcement::where('created_by', createdBy())
-                ->where('status', 'active')
-                ->whereDate('end_date', '<', now())
-                ->update(['status' => 'expired']);
-        }
+        Announcement::where('created_by', createdBy())
+            ->where('status', 'active')
+            ->whereDate('end_date', '<', now())
+            ->update(['status' => 'expired']);
     }
 
     public function dashboard()

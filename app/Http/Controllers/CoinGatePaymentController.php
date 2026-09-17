@@ -28,11 +28,11 @@ class CoinGatePaymentController extends Controller
 
 
             if (!$settings['payment_settings']['is_coingate_payment_mode_enabled'] || !$settings['payment_settings']['coingate_api_token']) {
-                return redirect()->route('plans.index')->with('error', __('CoinGate payment is not available'));
+                return redirect()->route('subscriptions.plans.index')->with('error', __('CoinGate payment is not available'));
             }
 
             if (!isset($settings['payment_settings']['coingate_api_token']) || empty($settings['payment_settings']['coingate_api_token'])) {
-                return redirect()->route('plans.index')->with('error', __('CoinGate API token not configured'));
+                return redirect()->route('subscriptions.plans.index')->with('error', __('CoinGate API token not configured'));
             }
 
             // Calculate price
@@ -64,7 +64,7 @@ class CoinGatePaymentController extends Controller
                 'price_currency' => $settings['general_settings']['default_currency'] ?? 'USD',
                 'receive_currency' => $settings['general_settings']['default_currency'] ?? 'USD',
                 'callback_url' => route('coingate.callback'),
-                'cancel_url' => route('plans.index'),
+                'cancel_url' => route('subscriptions.plans.index'),
                 'success_url' => route('coingate.callback'),
                 'title' => 'Plan #' . $orderId,
             ];
@@ -83,11 +83,11 @@ class CoinGatePaymentController extends Controller
             } else {
                 $planOrder->update(['status' => 'cancelled']);
 
-                return redirect()->route('plans.index')->with('error', __('Payment initialization failed'));
+                return redirect()->route('subscriptions.plans.index')->with('error', __('Payment initialization failed'));
             }
 
         } catch (Exception $e) {
-            return redirect()->route('plans.index')->with('error', __('Payment failed: ') . $e->getMessage());
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment failed: ') . $e->getMessage());
         }
     }
 
@@ -98,14 +98,14 @@ class CoinGatePaymentController extends Controller
             $coingateData = session('coingate_data');
 
             if (!$coingateData) {
-                return redirect()->route('plans.index')->with('error', __('Payment session expired'));
+                return redirect()->route('subscriptions.plans.index')->with('error', __('Payment session expired'));
             }
 
             $orderId = is_object($coingateData) ? $coingateData->order_id : $coingateData['order_id'];
             $planOrder = PlanOrder::where('payment_id', $orderId)->first();
 
             if (!$planOrder) {
-                return redirect()->route('plans.index')->with('error', 'Order not found');
+                return redirect()->route('subscriptions.plans.index')->with('error', 'Order not found');
             }
 
             // Mark as successful and activate subscription
@@ -119,12 +119,12 @@ class CoinGatePaymentController extends Controller
             // Clear session
             session()->forget('coingate_data');
 
-            return redirect()->route('plans.index')->with('success', __('Plan activated successfully!'));
+            return redirect()->route('subscriptions.plans.index')->with('success', __('Plan activated successfully!'));
 
         } catch (Exception $e) {
             Log::error('CoinGate callback error: ' . $e->getMessage());
 
-            return redirect()->route('plans.index')->with('error', __('Payment processing failed'));
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment processing failed'));
         }
     }
 }

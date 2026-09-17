@@ -46,7 +46,9 @@ export default function LeadReports() {
         const raw = getComputedStyle(document.documentElement).getPropertyValue('--theme-color').trim();
         if (raw) setPrimaryColor(raw);
 
-        return () => window.removeEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
     }, []);
 
     const chartData = chartView === 'daily' ? dailyData : monthlyData;
@@ -115,7 +117,12 @@ export default function LeadReports() {
                                     <CardTitle className="text-base font-semibold">{translate('Lead Trends')}</CardTitle>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <Tabs value={chartView} onValueChange={(v) => setChartView(v as 'daily' | 'monthly')}>
+                                    <Tabs
+                                        value={chartView}
+                                        onValueChange={(v) => {
+                                            setChartView(v as 'daily' | 'monthly');
+                                        }}
+                                    >
                                         <TabsList className="h-7">
                                             <TabsTrigger value="daily" className="cursor-pointer px-3 py-1 text-xs">
                                                 {translate('Daily')}

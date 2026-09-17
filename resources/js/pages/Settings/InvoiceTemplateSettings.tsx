@@ -1,7 +1,7 @@
 import { toast } from '@components/CustomToast';
 import IframePortal from '@components/IframePortal';
 import MediaPicker from '@components/MediaPicker';
-import { SettingsSection } from '@components/settings-section';
+import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent } from '@components/UserInterface/Card';
 import { Label } from '@components/UserInterface/Label';
@@ -177,7 +177,9 @@ export default function InvoiceTemplateSettings() {
 
         observer.observe(settingsRef.current);
 
-        return () => observer.disconnect();
+        return () => {
+            observer.disconnect();
+        };
     }, [data.invoiceLogoUrl]);
 
     const SelectedTemplate = templateComponents[data.invoiceTemplate as keyof typeof templateComponents];
@@ -221,7 +223,7 @@ export default function InvoiceTemplateSettings() {
         if (!value) {
             setData('invoiceLogoUrl', null);
         } else {
-            fetch(route('api.media.index'))
+            fetch(route('media-library.media.index'))
                 .then((res) => res.json())
                 .then((media) => {
                     const item = media.find((m: any) => m.id === Number(value));
@@ -283,7 +285,12 @@ export default function InvoiceTemplateSettings() {
                             <div ref={settingsRef} className="space-y-4">
                                 <div className="space-y-2">
                                     <Label htmlFor="invoice_template">{translate('Invoice Template')}</Label>
-                                    <Select value={data.invoiceTemplate} onValueChange={(value) => setData('invoiceTemplate', value)}>
+                                    <Select
+                                        value={data.invoiceTemplate}
+                                        onValueChange={(value) => {
+                                            setData('invoiceTemplate', value);
+                                        }}
+                                    >
                                         <SelectTrigger>
                                             <SelectValue placeholder={translate('Select template')} />
                                         </SelectTrigger>
@@ -305,7 +312,9 @@ export default function InvoiceTemplateSettings() {
                                     <Switch
                                         id="invoice_qr_enabled"
                                         checked={data.invoiceQrEnabled}
-                                        onCheckedChange={(checked) => setData('invoiceQrEnabled', checked)}
+                                        onCheckedChange={(checked) => {
+                                            setData('invoiceQrEnabled', checked);
+                                        }}
                                     />
                                 </div>
 
@@ -319,7 +328,9 @@ export default function InvoiceTemplateSettings() {
                                                     name="invoiceColor"
                                                     value={color}
                                                     checked={data.invoiceColor === color}
-                                                    onChange={(e) => setData('invoiceColor', e.target.value)}
+                                                    onChange={(e) => {
+                                                        setData('invoiceColor', e.target.value);
+                                                    }}
                                                     className="sr-only"
                                                 />
                                                 <div

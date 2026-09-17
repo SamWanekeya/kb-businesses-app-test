@@ -27,7 +27,7 @@ export function CoinGatePaymentForm({ planId, couponCode, billingCycle, planPric
         // Create form and submit directly to avoid CORS
         const form = document.createElementranslate('form');
         form.method = 'POST';
-        form.action = route('coingate.payment');
+        form.action = route('subscriptions.coingate.payment');
 
         // Add CSRF token
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');

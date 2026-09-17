@@ -174,7 +174,9 @@ export default function DeliveryOrderCreate() {
                     setErrors(errs);
                     setProcessing(false);
                 },
-                onFinish: () => setProcessing(false),
+                onFinish: () => {
+                    setProcessing(false);
+                },
             },
         );
     };
@@ -191,7 +193,9 @@ export default function DeliveryOrderCreate() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('delivery-orders.index')),
+                    onClick: () => {
+                        router.visit(route('delivery-orders.index'));
+                    },
                 },
             ]}
         >
@@ -428,7 +432,7 @@ export default function DeliveryOrderCreate() {
                             {users.length === 0 && (
                                 <p className="mt-1 text-xs">
                                     {translate('Click here to add')}{' '}
-                                    <a href={route('users.index')} className="font-medium underline">
+                                    <a href={route('users-permissions.users.index')} className="font-medium underline">
                                         {translate('Users')}
                                     </a>
                                 </p>
@@ -447,9 +451,17 @@ export default function DeliveryOrderCreate() {
                         <Button
                             type="button"
                             size="sm"
-                            onClick={() =>
-                                setProductRows((p) => [...p, { id: crypto.randomUUID(), product_id: '', quantity: '1', unit_weight: '0' }])
-                            }
+                            onClick={() => {
+                                setProductRows((p) => [
+                                    ...p,
+                                    {
+                                        id: crypto.randomUUID(),
+                                        product_id: '',
+                                        quantity: '1',
+                                        unit_weight: '0',
+                                    },
+                                ]);
+                            }}
                         >
                             <Plus className="mr-1 h-4 w-4" /> {translate('Add Product')}
                         </Button>
@@ -488,7 +500,12 @@ export default function DeliveryOrderCreate() {
                                                         <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
                                                             {translate('Product')} <span className="text-red-500">*</span>
                                                         </span>
-                                                        <Select value={row.product_id} onValueChange={(v) => setRow(row.id, 'product_id', v)}>
+                                                        <Select
+                                                            value={row.product_id}
+                                                            onValueChange={(v) => {
+                                                                setRow(row.id, 'product_id', v);
+                                                            }}
+                                                        >
                                                             <SelectTrigger>
                                                                 <SelectValue placeholder={translate('Select product')} />
                                                             </SelectTrigger>
@@ -524,7 +541,9 @@ export default function DeliveryOrderCreate() {
                                                             type="number"
                                                             min="1"
                                                             value={row.quantity}
-                                                            onChange={(e) => setRow(row.id, 'quantity', e.target.value)}
+                                                            onChange={(e) => {
+                                                                setRow(row.id, 'quantity', e.target.value);
+                                                            }}
                                                             className={errors[`products.${i}.quantity`] ? 'border-red-500 text-left' : 'text-left'}
                                                         />
                                                         {errors[`products.${i}.quantity`] && (
@@ -540,7 +559,9 @@ export default function DeliveryOrderCreate() {
                                                             min="0"
                                                             step="0.01"
                                                             value={row.unit_weight}
-                                                            onChange={(e) => setRow(row.id, 'unit_weight', e.target.value)}
+                                                            onChange={(e) => {
+                                                                setRow(row.id, 'unit_weight', e.target.value);
+                                                            }}
                                                             className={errors[`products.${i}.unit_weight`] ? 'border-red-500 text-left' : 'text-left'}
                                                         />
                                                         {errors[`products.${i}.unit_weight`] && (
@@ -558,9 +579,9 @@ export default function DeliveryOrderCreate() {
                                                     <td className="col-span-1 block w-full border-t px-0 py-0 pt-2 text-right sm:col-span-2 xl:table-cell xl:w-10 xl:border-t-0 xl:px-4 xl:py-3 xl:pt-0 xl:text-left">
                                                         <button
                                                             type="button"
-                                                            onClick={() =>
-                                                                setProductRows((p) => (p.length <= 1 ? p : p.filter((r) => r.id !== row.id)))
-                                                            }
+                                                            onClick={() => {
+                                                                setProductRows((p) => (p.length <= 1 ? p : p.filter((r) => r.id !== row.id)));
+                                                            }}
                                                             disabled={productRows.length <= 1}
                                                             className="cursor-pointer rounded p-1 text-gray-500 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
                                                         >
@@ -673,7 +694,13 @@ export default function DeliveryOrderCreate() {
 
                 {/* ── Actions ── */}
                 <div className="flex justify-end gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
-                    <Button type="button" variant="outline" onClick={() => window.history.back()}>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                            window.history.back();
+                        }}
+                    >
                         {translate('Cancel')}
                     </Button>
                     <Button type="button" disabled={processing} onClick={handleSubmit}>

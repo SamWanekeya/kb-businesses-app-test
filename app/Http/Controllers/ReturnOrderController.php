@@ -145,7 +145,7 @@ class ReturnOrderController extends Controller
 
         $returnOrder->calculateTotals();
 
-        if ($returnOrder && !IsDemo()) {
+        if ($returnOrder) {
             event(new ReturnOrderCreated($returnOrder));
         }
 

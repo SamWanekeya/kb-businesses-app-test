@@ -74,7 +74,9 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
     const handleRefresh = () => {
         setIsRefreshing(true);
         router.reload({ only: ['dashboardData'] });
-        setTimeout(() => setIsRefreshing(false), 1000);
+        setTimeout(() => {
+            setIsRefreshing(false);
+        }, 1000);
     };
 
     const pageActions = [
@@ -268,7 +270,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                             {
                                 icon: Gift,
                                 label: translate('Referral'),
-                                href: route('referral.index'),
+                                href: route('referral-program.index'),
                                 color: 'text-violet-300 hover:text-violet-200',
                                 bg: 'hover:bg-violet-400/10',
                             },
@@ -297,7 +299,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                 {/* ── KPI Row ── */}
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
                     {/* Revenue */}
-                    <Link href={route('plan-orders.index')} className={`group ${fadeUp(100)}`}>
+                    <Link href={route('subscriptions/plan-orders.index')} className={`group ${fadeUp(100)}`}>
                         <Card className="h-full cursor-pointer border border-emerald-300 bg-emerald-50 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg dark:border-emerald-800 dark:bg-emerald-950/40">
                             <CardContent className="relative overflow-hidden p-4 sm:p-5">
                                 <span
@@ -361,7 +363,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                     </Link>
 
                     {/* Active Plans */}
-                    <Link href={route('plans.index')} className={`group ${fadeUp(200)}`}>
+                    <Link href={route('subscriptions.plans.index')} className={`group ${fadeUp(200)}`}>
                         <Card className="h-full cursor-pointer border border-violet-200 bg-violet-50 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-violet-900/50 dark:bg-violet-950/30">
                             <CardContent className="relative overflow-hidden p-4 sm:p-5">
                                 <span
@@ -422,7 +424,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                     </div>
 
                     {/* Pending Requests */}
-                    <Link href={route('plan-requests.index')} className={`group ${fadeUp(250)}`}>
+                    <Link href={route('subscriptions.plan-requests.index')} className={`group ${fadeUp(250)}`}>
                         <Card
                             className={`h-full cursor-pointer border shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
                                 stats.pendingRequests > 0
@@ -546,7 +548,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                     <p className="text-muted-foreground mt-0.5 text-xs">{translate('By revenue generated')}</p>
                                 </div>
                                 <Link
-                                    href={route('plans.index')}
+                                    href={route('subscriptions.plans.index')}
                                     className="text-primary flex shrink-0 items-center gap-1 text-xs font-medium transition-all duration-150 hover:gap-1.5"
                                 >
                                     {translate('View all')} <ChevronRight className="h-3.5 w-3.5" />
@@ -613,7 +615,12 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                     <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-600/20 ring-inset dark:bg-emerald-900/20 dark:text-emerald-400 dark:ring-emerald-500/30">
                                         {monthlyOrganizations.reduce((s, m) => s + m.count, 0)} {translate('total')}
                                     </span>
-                                    <Select value={String(selectedOrganizationsYear)} onValueChange={(v) => handleOrganizationsYearChange(Number(v))}>
+                                    <Select
+                                        value={String(selectedOrganizationsYear)}
+                                        onValueChange={(v) => {
+                                            handleOrganizationsYearChange(Number(v));
+                                        }}
+                                    >
                                         <SelectTrigger className="h-7 w-24 text-xs focus:ring-0 focus:ring-offset-0">
                                             <SelectValue />
                                         </SelectTrigger>
@@ -703,7 +710,12 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                                     <span className="inline-flex items-center gap-1 rounded-md bg-green-50 px-2 py-1 font-mono text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset dark:bg-green-900/20 dark:text-green-400 dark:ring-green-500/30">
                                         {formatCurrency(monthlyRevenue.reduce((s, m) => s + m.revenue, 0))}
                                     </span>
-                                    <Select value={String(selectedYear)} onValueChange={(v) => handleYearChange(Number(v))}>
+                                    <Select
+                                        value={String(selectedYear)}
+                                        onValueChange={(v) => {
+                                            handleYearChange(Number(v));
+                                        }}
+                                    >
                                         <SelectTrigger className="h-7 w-24 text-xs focus:ring-0 focus:ring-offset-0">
                                             <SelectValue />
                                         </SelectTrigger>

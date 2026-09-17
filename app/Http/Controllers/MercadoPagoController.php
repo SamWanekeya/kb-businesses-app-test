@@ -219,7 +219,7 @@ class MercadoPagoController extends Controller
                 // Parse external reference
                 $parts = explode('_', $externalReference);
                 if (count($parts) < 4) {
-                    return redirect()->route('plans.index')->with('error', __('Invalid payment reference format'));
+                    return redirect()->route('subscriptions.plans.index')->with('error', __('Invalid payment reference format'));
                 }
 
                 $planId = (int)$parts[1];
@@ -231,7 +231,7 @@ class MercadoPagoController extends Controller
                     $couponCode = $parts[5];
                 }
             } elseif (!isset($planId)) {
-                return redirect()->route('plans.index')->with('error', __('Invalid payment reference'));
+                return redirect()->route('subscriptions.plans.index')->with('error', __('Invalid payment reference'));
             }
 
             // Set default values if not set
@@ -240,13 +240,13 @@ class MercadoPagoController extends Controller
 
             // Verify user - skip for plan.mercado.callback route which might have a different user ID
             if ($userId !== auth()->id() && !request()->routeIs('plan.mercado.callback')) {
-                return redirect()->route('plans.index')->with('error', __('Unauthorized payment reference'));
+                return redirect()->route('subscriptions.plans.index')->with('error', __('Unauthorized payment reference'));
             }
 
             // Get plan
             $plan = Plan::find($planId);
             if (!$plan) {
-                return redirect()->route('plans.index')->with('error', __('Plan not found'));
+                return redirect()->route('subscriptions.plans.index')->with('error', __('Plan not found'));
             }
 
             // Create plan order
@@ -271,7 +271,7 @@ class MercadoPagoController extends Controller
                 ]);
             }
 
-            return redirect()->route('plans.index')->with('success', __('Payment successful! Your subscription has been activated.'));
+            return redirect()->route('subscriptions.plans.index')->with('success', __('Payment successful! Your subscription has been activated.'));
         } catch (Exception $e) {
             if ($request->expectsJson()) {
                 return response()->json([
@@ -280,7 +280,7 @@ class MercadoPagoController extends Controller
                 ], 500);
             }
 
-            return redirect()->route('plans.index')->with('error', __('Failed to process payment: :message', ['message' => $e->getMessage()]));
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Failed to process payment: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -296,7 +296,7 @@ class MercadoPagoController extends Controller
             ], 400);
         }
 
-        return redirect()->route('plans.index')->with('error', __('Payment failed. Please try again.'));
+        return redirect()->route('subscriptions.plans.index')->with('error', __('Payment failed. Please try again.'));
     }
 
     /**
@@ -312,7 +312,7 @@ class MercadoPagoController extends Controller
             ]);
         }
 
-        return redirect()->route('plans.index')->with('info', __('Your payment is pending. We will notify you once it is confirmed.'));
+        return redirect()->route('subscriptions.plans.index')->with('info', __('Your payment is pending. We will notify you once it is confirmed.'));
     }
 
     /**

@@ -150,7 +150,7 @@ class AccountController extends Controller
         $validated['status'] = $validated['status'] ?? 'active';
 
         $account = Account::create($validated);
-        if ($account && !IsDemo()) {
+        if ($account) {
             event(new AccountCreate($account));
         }
 

@@ -183,15 +183,15 @@ export default function AppSidebar() {
             children: [
                 {
                     title: translate('Plans'),
-                    href: route('subscriptions.plans.index'),
+                    href: route('subscriptions.subscriptions.plans.index'),
                 },
                 {
                     title: translate('Requests'),
-                    href: route('plan-requests.index'),
+                    href: route('subscriptions.plan-requests.index'),
                 },
                 {
                     title: translate('Orders'),
-                    href: route('plan-orders.index'),
+                    href: route('subscriptions/plan-orders.index'),
                 },
             ],
         },
@@ -924,13 +924,13 @@ export default function AppSidebar() {
         // 14. Subscriptions (Plans)
         const planChildren: NavItem[] = [];
         if (canManagePlans) {
-            planChildren.push({ title: translate('Plans'), href: route('subscriptions.plans.index') });
+            planChildren.push({ title: translate('Plans'), href: route('subscriptions.subscriptions.plans.index') });
         }
         if (canViewPlanRequests) {
-            planChildren.push({ title: translate('Plan requests'), href: route('plan-requests.index') });
+            planChildren.push({ title: translate('Plan requests'), href: route('subscriptions.plan-requests.index') });
         }
         if (canViewPlanOrders) {
-            planChildren.push({ title: translate('Plan orders'), href: route('plan-orders.index') });
+            planChildren.push({ title: translate('Plan orders'), href: route('subscriptions/plan-orders.index') });
         }
         if (planChildren.length > 0) {
             items.push({

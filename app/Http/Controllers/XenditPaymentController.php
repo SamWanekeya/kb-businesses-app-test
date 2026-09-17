@@ -43,7 +43,7 @@ class XenditPaymentController extends Controller
                     'billing_cycle' => $validated['billing_cycle'],
                     'coupon_code' => $validated['coupon_code'] ?? '',
                 ]),
-                'failure_redirect_url' => route('plans.index'),
+                'failure_redirect_url' => route('subscriptions.plans.index'),
             ];
 
             $response = Http::withHeaders([
@@ -95,14 +95,14 @@ class XenditPaymentController extends Controller
                         auth()->login($user);
                     }
 
-                    return redirect()->route('plans.index')->with('success', __('Payment completed successfully and plan activated'));
+                    return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully and plan activated'));
                 }
             }
 
-            return redirect()->route('plans.index')->with('error', __('Payment verification failed'));
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment verification failed'));
 
         } catch (Exception $e) {
-            return redirect()->route('plans.index')->with('error', __('Payment processing failed'));
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment processing failed'));
         }
     }
 
@@ -144,8 +144,8 @@ class XenditPaymentController extends Controller
                     'invoice_reminder' => ['email'],
                     'invoice_paid' => ['email'],
                 ],
-                'success_redirect_url' => route('plans.index'),
-                'failure_redirect_url' => route('plans.index'),
+                'success_redirect_url' => route('subscriptions.plans.index'),
+                'failure_redirect_url' => route('subscriptions.plans.index'),
             ];
 
             $response = Http::withHeaders([
@@ -169,7 +169,7 @@ class XenditPaymentController extends Controller
                 'payment_id' => $validated['external_id'],
             ]);
 
-            return redirect()->route('plans.index')->with('success', __('Xendit payment completed'));
+            return redirect()->route('subscriptions.plans.index')->with('success', __('Xendit payment completed'));
         } catch (Exception $e) {
             return handlePaymentError($e, 'xendit');
         }

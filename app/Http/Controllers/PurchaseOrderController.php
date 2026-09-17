@@ -162,7 +162,7 @@ class PurchaseOrderController extends Controller
         $purchaseOrder->calculateTotals();
 
         // Fire PurchaseOrderCreated event for sending email
-        if ($purchaseOrder && !IsDemo()) {
+        if ($purchaseOrder) {
             event(new PurchaseOrderCreated($purchaseOrder));
         }
 

@@ -149,16 +149,16 @@ class UserController extends BaseController
             $user->save();
 
             // Trigger email notification
-            if (isEmailTemplateEnabled('User Created', createdBy()) && !IsDemo()) {
+            if (isEmailTemplateEnabled('User Created', createdBy())) {
                 event(new UserCreated($user, $request->password));
             }
 
             // Check for email errors
             if (session()->has('email_error')) {
-                return redirect()->route('users.index')->with('warning', __('User created successfully, but welcome email failed: ') . session('email_error'));
+                return redirect()->route('users-permissions.users.index')->with('warning', __('User created successfully, but welcome email failed: ') . session('email_error'));
             }
 
-            return redirect()->route('users.index')->with('success', __('User created with roles'));
+            return redirect()->route('users-permissions.users.index')->with('success', __('User created with roles'));
         }
 
         return redirect()->back()->with('error', __('Unable to create User. Please try again!'));
@@ -189,7 +189,7 @@ class UserController extends BaseController
 
             $user->save();
 
-            return redirect()->route('users.index')->with('success', __('User updated with roles'));
+            return redirect()->route('users-permissions.users.index')->with('success', __('User updated with roles'));
         }
 
         return redirect()->back()->with('error', __('Unable to update User. Please try again!'));
@@ -203,7 +203,7 @@ class UserController extends BaseController
         if ($user) {
             $user->delete();
 
-            return redirect()->route('users.index')->with('success', __('User deleted with roles'));
+            return redirect()->route('users-permissions.users.index')->with('success', __('User deleted with roles'));
         }
 
         return redirect()->back()->with('error', __('Unable to delete User. Please try again!'));
@@ -221,7 +221,7 @@ class UserController extends BaseController
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return redirect()->route('users.index')->with('success', __('Password reset successfully'));
+        return redirect()->route('users-permissions.users.index')->with('success', __('Password reset successfully'));
     }
 
     /**
@@ -253,7 +253,7 @@ class UserController extends BaseController
         $user->status = $user->status === 'active' ? 'inactive' : 'active';
         $user->save();
 
-        return redirect()->route('users.index')->with('success', __('User status updated successfully'));
+        return redirect()->route('users-permissions.users.index')->with('success', __('User status updated successfully'));
     }
 
     /**

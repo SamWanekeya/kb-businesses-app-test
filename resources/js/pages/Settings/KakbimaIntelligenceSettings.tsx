@@ -1,5 +1,5 @@
 import { toast } from '@components/CustomToast';
-import { SettingsSection } from '@components/settings-section';
+import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
@@ -11,42 +11,39 @@ import { Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface ChatGptSettingsProps {
+interface KakbimaIntelligenceSettingsProps {
     settings?: Record<string, string>;
 }
 
-export default function ChatGptSettings({ settings = {} }: ChatGptSettingsProps) {
+export default function KakbimaIntelligenceSettings({ settings = {} }: KakbimaIntelligenceSettingsProps) {
     const { t: translate } = useTranslation();
     const pageProps = usePage().props;
     const [processing, setProcessing] = useState(false);
 
     // Default settings
     const defaultSettings = {
-        chat-gptKey: '',
-        chat-gptModel: 'gpt-3.5-turbo',
+        kakbima_intelligence_key: '',
+        kakbima_intelligence_model: 'gpt-3.5-turbo',
     };
 
     // Combine settings from props and page props
     const settingsData = Object.keys(settings).length > 0 ? settings : pageProps.settings || {};
 
     // Initialize state with merged settings
-    const [chat-gptSettings, setChatgptSettings] = useState(() => ({
-        chat-gptKey: settingsData.chat-gptKey || defaultSettings.chat-gptKey,
-        chat-gptModel: settingsData.chat-gptModel || defaultSettings.chat-gptModel,
+    const [kakbimaIntelligenceSettings, setKakbimaIntelligenceSettings] = useState(() => ({
+        kakbima_intelligence_key: settingsData.kakbima_intelligence_key || defaultSettings.kakbima_intelligence_key,
+        kakbima_intelligence_model: settingsData.kakbima_intelligence_model || defaultSettings.kakbima_intelligence_model,
     }));
 
     // Update state when settings change
     useEffect(() => {
         if (Object.keys(settingsData).length > 0) {
-            const mergedSettings = Object.keys(defaultSettings).reduce(
-                (acc, key) => {
-                    acc[key] = settingsData[key] || defaultSettings[key];
-                    return acc;
-                },
-                {} as Record<string, string>,
-            );
+            const mergedSettings = Object.keys(defaultSettings).reduce<Record<string, string>>((acc, key) => {
+                acc[key] = settingsData[key] || defaultSettings[key];
+                return acc;
+            }, {});
 
-            setChatgptSettings((prevSettings) => ({
+            setKakbimaIntelligenceSettings((prevSettings) => ({
                 ...prevSettings,
                 ...mergedSettings,
             }));
@@ -55,18 +52,18 @@ export default function ChatGptSettings({ settings = {} }: ChatGptSettingsProps)
 
     // Handle form changes
     const handleSettingsChange = (field: string, value: string) => {
-        setChatgptSettings((prev) => ({
+        setKakbimaIntelligenceSettings((prev) => ({
             ...prev,
             [field]: value,
         }));
     };
 
     // Handle form submission
-    const submitChatgptSettings = (e: React.FormEvent) => {
+    const submitKakbimaIntelligenceSettings = (e: React.FormEvent) => {
         e.preventDefault();
         setProcessing(true);
 
-        router.post(route('settings.chat-gpt.update'), chat-gptSettings, {
+        router.post(route('settings.kakbima-intelligence.update'), kakbimaIntelligenceSettings, {
             preserveScroll: true,
             onSuccess: (page) => {
                 setProcessing(false);
@@ -81,7 +78,7 @@ export default function ChatGptSettings({ settings = {} }: ChatGptSettingsProps)
             },
             onError: (errors) => {
                 setProcessing(false);
-                const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to update Chat GPT settings');
+                const errorMessage = errors.error || Object.values(errors).join(', ') || translate('Failed to update Kakbima Intelligence settings');
                 toast.error(errorMessage);
             },
         });
@@ -89,10 +86,10 @@ export default function ChatGptSettings({ settings = {} }: ChatGptSettingsProps)
 
     return (
         <SettingsSection
-            title={translate('Chat GPT Settings')}
-            description={translate('Configure Chat GPT integration settings for AI-powered features')}
+            title={translate('Kakbima Intelligence Settings')}
+            description={translate('Configure Kakbima Intelligence integration settings for AI-powered features')}
             action={
-                <Button type="submit" disabled={processing} form="chat-gpt-settings-form" size="sm">
+                <Button type="submit" disabled={processing} form="kakbima-intelligence-settings-form" size="sm">
                     <Save className="mr-2 h-4 w-4" />
                     {processing ? translate('Saving...') : translate('Save Changes')}
                 </Button>
@@ -100,26 +97,33 @@ export default function ChatGptSettings({ settings = {} }: ChatGptSettingsProps)
         >
             <Card>
                 <CardContent className="mt-6">
-                    <form id="chat-gpt-settings-form" onSubmit={submitChatgptSettings} className="space-y-6">
+                    <form id="kakbima-intelligence-settings-form" onSubmit={submitKakbimaIntelligenceSettings} className="space-y-6">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="grid gap-2 md:col-span-2">
-                                <Label htmlFor="chat-gptKey" required>
-                                    {translate('Chat GPT Key')}
+                                <Label htmlFor="kakbima_intelligence_key" required>
+                                    {translate('Kakbima Intelligence Key')}
                                 </Label>
                                 <Input
-                                    id="chat-gptKey"
+                                    id="kakbima_intelligence_key"
                                     type="password"
-                                    value={chat-gptSettings.chat-gptKey}
-                                    onChange={(e) => handleSettingsChange('chat-gptKey', e.target.value)}
+                                    value={kakbimaIntelligenceSettings.kakbima_intelligence_key}
+                                    onChange={(e) => {
+                                        handleSettingsChange('kakbima_intelligence_key', e.target.value);
+                                    }}
                                     placeholder={translate('Enter your OpenAI API key')}
                                 />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="chat-gptModel">{translate('Chat GPT Model Name')}</Label>
-                                <Select value={chat-gptSettings.chat-gptModel} onValueChange={(value) => handleSettingsChange('chat-gptModel', value)}>
+                                <Label htmlFor="kakbima_intelligence_model">{translate('Kakbima Intelligence Model Name')}</Label>
+                                <Select
+                                    value={kakbimaIntelligenceSettings.kakbima_intelligence_model}
+                                    onValueChange={(value) => {
+                                        handleSettingsChange('kakbima_intelligence_model', value);
+                                    }}
+                                >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={translate('Select Chat GPT model')} />
+                                        <SelectValue placeholder={translate('Select Kakbima Intelligence model')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="gpt-3.5-turbo">GPT-3.5 Turbo</SelectItem>

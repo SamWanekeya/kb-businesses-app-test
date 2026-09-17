@@ -57,7 +57,9 @@ export default function ContactShow() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('contacts.index')),
+                    onClick: () => {
+                        router.visit(route('contacts.index'));
+                    },
                 },
             ]}
             noPadding
@@ -90,7 +92,7 @@ export default function ContactShow() {
                             },
                             {
                                 label: translate('Created'),
-                                value: formatDate(contact.created_at),
+                                value: window.kbSettings.formatDateTimeSimple(contact.created_at),
                                 icon: Clock,
                                 iconCls: 'text-emerald-600',
                                 blobCls: 'bg-emerald-50 dark:bg-emerald-900/30',

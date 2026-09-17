@@ -9,7 +9,7 @@ export const usePlanRequestsConfig = (): CrudConfig => {
     return {
         entity: {
             name: 'planRequests',
-            endpoint: route('plan-requests.index'),
+            endpoint: route('subscriptions.plan-requests.index'),
             permissions: {
                 view: 'view-plan-requests',
                 create: 'create-plan-requests',
@@ -42,7 +42,7 @@ export const usePlanRequestsConfig = (): CrudConfig => {
                     key: 'created_at',
                     label: translate('Requested at'),
                     sortable: true,
-                    render: (value) => window.hfSettings.formatDateTime(value, false),
+                    render: (value) => window.kbSettings.formatDateTime(value, false),
                 },
             ],
             actions: [

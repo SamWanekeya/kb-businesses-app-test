@@ -1,69 +1,96 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') == 'dark'])>
-
+@php
+    $locale = Cookie::get('__kb_lcl') ?? "";
+    $rtlLocales = ['ar', 'ar-sa', 'ar-ae', 'ar-eg', 'ar-ma', 'ar-dz', 'ar-qa', 'ar-lb', 'he-il', 'fa', 'ur'];
+    $layoutDirection = in_array(strtolower($locale), $rtlLocales, true) ? 'rtl' : 'ltr';
+@endphp
+    <!DOCTYPE html>
+<html dir="{{ $layoutDirection }}" lang="{{ $locale }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    {{-- Inline script to detect system dark mode preference and apply it immediately --}}
-    <script>
+    <x-inertia::head>
+        <title>{{ config('app.name') }}</title>
+    </x-inertia::head>
+    {{-- Font preloading --}}
+    <link rel="preload" href="{{ asset('assets/fonts/font-face.min.css') }}" as="style" />
+    <link rel="stylesheet" href="{{ asset('assets/fonts/font-face.min.css') }}" />
+    {{-- Favicon --}}
+    <link rel="apple-touch-icon-precomposed" sizes="57x57"
+          href="{{ asset('assets/images/favicon/apple-touch-icon-57x57.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114"
+          href="{{ asset('assets/images/favicon/apple-touch-icon-114x114.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72"
+          href="{{ asset('assets/images/favicon/apple-touch-icon-72x72.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144"
+          href="{{ asset('assets/images/favicon/apple-touch-icon-144x144.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60"
+          href="{{ asset('assets/images/favicon/apple-touch-icon-60x60.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120"
+          href="{{ asset('assets/images/favicon/apple-touch-icon-120x120.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76"
+          href="{{ asset('assets/images/favicon/apple-touch-icon-76x76.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152"
+          href="{{ asset('assets/images/favicon/apple-touch-icon-152x152.png') }}" />
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon/favicon-196x196.png') }}" sizes="196x196" />
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon/favicon-96x96.png') }}" sizes="96x96" />
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon/favicon-32x32.png') }}" sizes="32x32" />
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon/favicon-16x16.png') }}" sizes="16x16" />
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon/favicon-128.png') }}" sizes="128x128" />
+    <meta name="application-name" content="&nbsp;" />
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="{{ asset('assets/images/favicon/mstile-144x144.png') }}" />
+    <meta name="msapplication-square70x70logo" content="{{ asset('assets/images/favicon/mstile-70x70.png') }}" />
+    <meta name="msapplication-square150x150logo" content="{{ asset('assets/images/favicon/mstile-150x150.png') }}" />
+    <meta name="msapplication-wide310x150logo" content="{{ asset('assets/images/favicon/mstile-310x150.png') }}" />
+    <meta name="msapplication-square310x310logo" content="{{ asset('assets/images/favicon/mstile-310x310.png') }}" />
+    <script @nonce>
         (function() {
-            const appearance = '{{ $appearance ?? 'system' }}';
-
-            if (appearance === 'system') {
-                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-                if (prefersDark) {
-                    document.documentElement.classList.add('dark');
+            try {
+                {{-- Synchronous cookie retrieval --}}
+                function getCookie(name) {
+                    const value = `; ${document.cookie}`;
+                    const parts = value.split(`; ${name}=`);
+                    if (parts.length === 2) return parts.pop().split(';').shift();
+                    return null;
                 }
+
+                const raw = getCookie('__kb_thm_md');
+                let appearance = 'system';
+                if (raw) {
+                    try {
+                        {{-- Attempt legacy JSON parse --}}
+                        const parsed = JSON.parse(raw);
+                        if (parsed && typeof parsed.appearance === 'string') {
+                            appearance = parsed.appearance;
+                        } else {
+                            appearance = raw;
+                        }
+                    } catch {
+                        {{-- Not JSON then use raw string --}}
+                            appearance = raw;
+                    }
+                }
+                {{-- Resolve system preference --}}
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const finalMode = appearance === 'system' ? (prefersDark ? 'dark' : 'light') : appearance;
+                {{-- Apply theme immediately --}}
+                document.documentElement.classList.toggle('dark', finalMode === 'dark');
+                document.documentElement.dataset.theme = finalMode;
+                if (document.body) {
+                    document.body.classList.toggle('dark', finalMode === 'dark');
+                }
+            } catch {
+                {{-- noop --}}
             }
         })();
-
-        // Define asset helper function
-        window.asset = function(path) {
-            return "{{ asset('') }}" + path;
-        };
-        // Define storage helper function
-        window.storage = function(path) {
-            return "{{ asset('storage') }}/" + path;
-        };
     </script>
-
-    {{-- Inline style to set the HTML background color based on our theme in app.css --}}
-    <style>
-        html {
-            background-color: oklch(1 0 0);
-        }
-
-        html.dark {
-            background-color: oklch(0.145 0 0);
-        }
-    </style>
-
-    <title inertia>{{ config('app.name', 'Laravel') }}</title>
-    <link rel="icon" type="image/x-icon" href="{{ asset('storage/media/logo/favicon.png') }}">
-
-    <!-- <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" /> -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-    @routes
+    {{-- Vite --}}
     @if (app()->environment('local'))
         @viteReactRefresh
     @endif
-    @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
-    <script>
-        // Ensure base URL is correctly set for assets
-        window.baseUrl = '{{ url('/') }}';
-    </script>
-    @inertiaHead
+    @vite(['resources/js/app.tsx', "resources/css/app.css"], 'static')
 </head>
-
-<body class="font-sans antialiased">
-    @inertia
+<body class="font-mulish antialiased">
+<x-inertia::app id="kakbima-saas" />
 </body>
-
 </html>

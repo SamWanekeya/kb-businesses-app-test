@@ -33,7 +33,7 @@ export function InvoiceMolliePaymentForm({
 
         try {
             const response = await axios.post(
-                route('invoice.mollie.payment'),
+                route('invoice.subscriptions.mollie.payment'),
                 {
                     invoice_id: invoiceId,
                     amount: amount,

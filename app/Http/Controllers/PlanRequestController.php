@@ -83,7 +83,7 @@ class PlanRequestController extends BaseController
         createPlanOrder($data);
 
 
-        return redirect()->route('plan-requests.index')->with('success', __('Plan request approved successfully!'));
+        return redirect()->route('subscriptions.plan-requests.index')->with('success', __('Plan request approved successfully!'));
     }
 
     public function reject(PlanRequest $planRequest)
@@ -94,6 +94,6 @@ class PlanRequestController extends BaseController
             'rejected_by' => Auth::id(),
         ]);
 
-        return redirect()->route('plan-requests.index')->with('success', __('Plan request rejected successfully!'));
+        return redirect()->route('subscriptions.plan-requests.index')->with('success', __('Plan request rejected successfully!'));
     }
 }

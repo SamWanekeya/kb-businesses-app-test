@@ -19,7 +19,7 @@ export default function ReturnOrderShow() {
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();
     useEffect(() => {
-        const main = document.querySelector('main[data-slot="sidebar-inset"]') as HTMLElement | null;
+        const main = document.querySelector('main[data-slot="sidebar-inset"]');
         if (main) main.style.overflowX = 'visible';
         return () => {
             if (main) main.style.overflowX = '';
@@ -79,7 +79,9 @@ export default function ReturnOrderShow() {
                     icon: <ArrowLeft className="h-4 w-4 sm:me-2" />,
                     labelClassName: 'hidden sm:inline',
                     variant: 'outline',
-                    onClick: () => router.visit(route('return-orders.index')),
+                    onClick: () => {
+                        router.visit(route('return-orders.index'));
+                    },
                 },
             ]}
             noPadding
@@ -100,7 +102,7 @@ export default function ReturnOrderShow() {
                                 },
                                 {
                                     label: translate('Return Date'),
-                                    value: formatDate(returnOrder.return_date),
+                                    value: window.kbSettings.formatDateTimeSimple(returnOrder.return_date),
                                     icon: Calendar,
                                     iconCls: 'text-orange-600',
                                     blobCls: 'bg-orange-50 dark:bg-orange-900/30',
@@ -352,7 +354,9 @@ export default function ReturnOrderShow() {
                                     <Button
                                         variant="outline"
                                         className="w-full"
-                                        onClick={() => router.visit(route('return-orders.edit', returnOrder.id))}
+                                        onClick={() => {
+                                            router.visit(route('return-orders.edit', returnOrder.id));
+                                        }}
                                     >
                                         <Edit className="me-2 h-4 w-4" />
                                         {translate('Edit Return Order')}

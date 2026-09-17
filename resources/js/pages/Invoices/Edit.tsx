@@ -168,9 +168,15 @@ export default function InvoiceEdit() {
         }));
     };
 
-    const addLine = () => setForm((p: any) => ({ ...p, products: [...p.products, emptyLine()] }));
-    const removeLine = (id: string) =>
-        setForm((p: any) => ({ ...p, products: p.products.length <= 1 ? p.products : p.products.filter((l: ProductLine) => l.id !== id) }));
+    const addLine = () => {
+        setForm((p: any) => ({ ...p, products: [...p.products, emptyLine()] }));
+    };
+    const removeLine = (id: string) => {
+        setForm((p: any) => ({
+            ...p,
+            products: p.products.length <= 1 ? p.products : p.products.filter((l: ProductLine) => l.id !== id),
+        }));
+    };
 
     const calcLine = (l: ProductLine) => {
         const gross = l.quantity * l.unit_price;
@@ -234,7 +240,7 @@ export default function InvoiceEdit() {
                 toast.dismiss(toastId);
                 const firstError = Object.values(errs)[0] as string;
                 if (firstError) toast.error(firstError);
-                setErrors(errs as Errors);
+                setErrors(errs);
             },
         });
     };
@@ -266,7 +272,9 @@ export default function InvoiceEdit() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('invoices.index')),
+                    onClick: () => {
+                        router.visit(route('invoices.index'));
+                    },
                 },
             ]}
         >
@@ -592,7 +600,9 @@ export default function InvoiceEdit() {
                                                     </span>
                                                     <Select
                                                         value={line.product_id}
-                                                        onValueChange={(v) => setLine(line.id, 'product_id', v)}
+                                                        onValueChange={(v) => {
+                                                            setLine(line.id, 'product_id', v);
+                                                        }}
                                                         disabled={isPaidOrCancelled}
                                                     >
                                                         <SelectTrigger>
@@ -624,7 +634,9 @@ export default function InvoiceEdit() {
                                                         min="1"
                                                         value={line.quantity}
                                                         disabled={isPaidOrCancelled}
-                                                        onChange={(e) => setLine(line.id, 'quantity', parseInt(e.target.value) || 1)}
+                                                        onChange={(e) => {
+                                                            setLine(line.id, 'quantity', parseInt(e.target.value) || 1);
+                                                        }}
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
@@ -637,7 +649,9 @@ export default function InvoiceEdit() {
                                                         step="0.01"
                                                         value={line.unit_price}
                                                         disabled={isPaidOrCancelled}
-                                                        onChange={(e) => setLine(line.id, 'unit_price', parseFloat(e.target.value) || 0)}
+                                                        onChange={(e) => {
+                                                            setLine(line.id, 'unit_price', parseFloat(e.target.value) || 0);
+                                                        }}
                                                         placeholder="0.00"
                                                     />
                                                 </td>
@@ -647,7 +661,9 @@ export default function InvoiceEdit() {
                                                     </span>
                                                     <Select
                                                         value={line.discount_type || 'none'}
-                                                        onValueChange={(v) => setLine(line.id, 'discount_type', v as DiscountType)}
+                                                        onValueChange={(v) => {
+                                                            setLine(line.id, 'discount_type', v);
+                                                        }}
                                                         disabled={isPaidOrCancelled}
                                                     >
                                                         <SelectTrigger className="w-full">
@@ -670,7 +686,9 @@ export default function InvoiceEdit() {
                                                         step="0.01"
                                                         value={line.discount_value}
                                                         disabled={isPaidOrCancelled || !line.discount_type || line.discount_type === 'none'}
-                                                        onChange={(e) => setLine(line.id, 'discount_value', parseFloat(e.target.value) || 0)}
+                                                        onChange={(e) => {
+                                                            setLine(line.id, 'discount_value', parseFloat(e.target.value) || 0);
+                                                        }}
                                                         className="disabled:opacity-40"
                                                         placeholder="0"
                                                     />
@@ -695,7 +713,9 @@ export default function InvoiceEdit() {
                                                     <td className="col-span-1 block w-full border-t px-0 py-0 pt-2 text-right sm:col-span-2 xl:table-cell xl:w-12 xl:border-t-0 xl:px-4 xl:py-3 xl:pt-0 xl:text-left">
                                                         <button
                                                             type="button"
-                                                            onClick={() => removeLine(line.id)}
+                                                            onClick={() => {
+                                                                removeLine(line.id);
+                                                            }}
                                                             disabled={form.products.length <= 1}
                                                             className="cursor-pointer rounded p-1.5 text-gray-500 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
                                                         >
@@ -741,7 +761,13 @@ export default function InvoiceEdit() {
                         {form.products.filter((l: ProductLine) => l.product_id).length} {translate('Product added')}
                     </span>
                     <div className="flex items-center gap-3">
-                        <Button type="button" variant="outline" onClick={() => router.visit(route('invoices.index'))}>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => {
+                                router.visit(route('invoices.index'));
+                            }}
+                        >
                             {translate('Cancel')}
                         </Button>
                         <Button type="submit" disabled={submitting}>

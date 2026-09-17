@@ -111,13 +111,13 @@ class YooKassaPaymentController extends Controller
                         'payment_id' => $orderId,
                     ]);
 
-                    return redirect()->route('plans.index')->with('success', 'Payment successful and plan activated');
+                    return redirect()->route('subscriptions.plans.index')->with('success', 'Payment successful and plan activated');
                 }
             }
 
-            return redirect()->route('plans.index')->with('error', __('Payment verification failed'));
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment verification failed'));
         } catch (Exception $e) {
-            return redirect()->route('plans.index')->with('error', __('Payment processing failed'));
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment processing failed'));
         }
     }
 

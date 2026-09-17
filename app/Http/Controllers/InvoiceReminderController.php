@@ -46,9 +46,7 @@ class InvoiceReminderController extends Controller
         }
 
         try {
-            if (!IsDemo()) {
-                event(new InvoiceReminderSent($invoice, $recipient, $recipientName));
-            }
+            event(new InvoiceReminderSent($invoice, $recipient, $recipientName));
 
             $emailError = session()->pull('email_error');
 

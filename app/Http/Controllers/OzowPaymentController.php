@@ -62,7 +62,7 @@ class OzowPaymentController extends Controller
             $apiKey = $settings['payment_settings']['ozow_api_key'];
             $isTest = $settings['payment_settings']['ozow_mode'] == 'sandbox' ? 'true' : 'false';
             $amount = $pricing['final_price'];
-            $cancelUrl = route('plans.index');
+            $cancelUrl = route('subscriptions.plans.index');
             $successUrl = route('ozow.success');
             $bankReference = time() . 'FKU';
             $transactionReference = time();
@@ -126,7 +126,7 @@ class OzowPaymentController extends Controller
 
     public function success(Request $request)
     {
-        return redirect()->route('plans.index')->with('success', __('Payment completed successfully'));
+        return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully'));
     }
 
     public function callback(Request $request)

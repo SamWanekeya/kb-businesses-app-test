@@ -10,7 +10,7 @@ import useInitials from '@hooks/useInitials';
 import { Link, router, usePage } from '@inertiajs/react';
 import { useHasPermission } from '@utils/Permissions';
 import { route } from '@utils/Routes';
-import { formatRelativeTime } from '@utils/helper';
+
 import {
     ArrowLeft,
     Building,
@@ -83,7 +83,9 @@ export default function AccountShow() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('accounts.index')),
+                    onClick: () => {
+                        router.visit(route('accounts.index'));
+                    },
                 },
             ]}
             noPadding
@@ -116,7 +118,7 @@ export default function AccountShow() {
                             },
                             {
                                 label: translate('Created'),
-                                value: formatDate(account.created_at),
+                                value: window.kbSettings.formatDateTimeSimple(account.created_at),
                                 icon: Clock,
                                 iconCls: 'text-emerald-600',
                                 blobCls: 'bg-emerald-50 dark:bg-emerald-900/30',
@@ -617,7 +619,9 @@ export default function AccountShow() {
                                                 <Textarea
                                                     placeholder={translate('Write a comment...')}
                                                     value={newComment}
-                                                    onChange={(e) => setNewComment(e.target.value)}
+                                                    onChange={(e) => {
+                                                        setNewComment(e.target.value);
+                                                    }}
                                                     className="resize-none border-0 bg-transparent focus-visible:ring-0"
                                                     rows={2}
                                                 />
@@ -760,7 +764,9 @@ export default function AccountShow() {
                                                                     <div className="space-y-3">
                                                                         <Textarea
                                                                             value={editCommentText}
-                                                                            onChange={(e) => setEditCommentText(e.target.value)}
+                                                                            onChange={(e) => {
+                                                                                setEditCommentText(e.target.value);
+                                                                            }}
                                                                             className="w-full resize-none border-emerald-300 focus-visible:ring-emerald-400"
                                                                             rows={3}
                                                                             autoFocus
@@ -769,7 +775,9 @@ export default function AccountShow() {
                                                                             <Button
                                                                                 size="sm"
                                                                                 variant="outline"
-                                                                                onClick={() => setEditingComment(null)}
+                                                                                onClick={() => {
+                                                                                    setEditingComment(null);
+                                                                                }}
                                                                             >
                                                                                 {translate('Cancel')}
                                                                             </Button>
@@ -838,7 +846,9 @@ export default function AccountShow() {
 
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={() => {
                     if (currentActivity?.id) {
                         router.delete(route('accounts.delete-activity', { account: account.id, activity: currentActivity.id }), {
@@ -852,7 +862,9 @@ export default function AccountShow() {
             />
             <CrudDeleteModal
                 isOpen={isDeleteAllModalOpen}
-                onClose={() => setIsDeleteAllModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteAllModalOpen(false);
+                }}
                 onConfirm={() => {
                     router.delete(route('accounts.delete-activities', account.id), { preserveScroll: true });
                     setIsDeleteAllModalOpen(false);

@@ -1,5 +1,5 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
+import CrudFormModal from '@components/CrudFormModal';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
@@ -143,7 +143,9 @@ export default function DocumentShow() {
             label: translate('Back'),
             icon: <ArrowLeft className="mr-2 h-4 w-4" />,
             variant: 'outline',
-            onClick: () => (document.folder?.id ? router.get(route('documents.folder', document.folder.id)) : router.get(route('documents.index'))),
+            onClick: () => {
+                document.folder?.id ? router.get(route('documents.folder', document.folder.id)) : router.get(route('documents.index'));
+            },
         },
     ];
 
@@ -380,7 +382,9 @@ export default function DocumentShow() {
                                             <TooltipTrigger asChild>
                                                 <button
                                                     className="flex h-7 w-7 items-center justify-center rounded-lg text-amber-500 transition-colors"
-                                                    onClick={() => setIsFormModalOpen(true)}
+                                                    onClick={() => {
+                                                        setIsFormModalOpen(true);
+                                                    }}
                                                 >
                                                     <Edit className="h-4 w-4 text-gray-500" />
                                                 </button>
@@ -395,7 +399,9 @@ export default function DocumentShow() {
                                             <TooltipTrigger asChild>
                                                 <button
                                                     className="flex h-7 w-7 items-center justify-center rounded-lg text-red-500 transition-colors"
-                                                    onClick={() => setIsDeleteModalOpen(true)}
+                                                    onClick={() => {
+                                                        setIsDeleteModalOpen(true);
+                                                    }}
                                                 >
                                                     <Trash2 className="h-4 w-4 text-gray-500" />
                                                 </button>
@@ -529,7 +535,9 @@ export default function DocumentShow() {
 
             <CrudFormModal
                 isOpen={isFormModalOpen}
-                onClose={() => setIsFormModalOpen(false)}
+                onClose={() => {
+                    setIsFormModalOpen(false);
+                }}
                 onSubmit={handleFormSubmit}
                 formConfig={{ fields: formFields, modalSize: 'xl' }}
                 initialData={{
@@ -551,7 +559,9 @@ export default function DocumentShow() {
 
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={document.name || ''}
                 entityName={translate('document')}

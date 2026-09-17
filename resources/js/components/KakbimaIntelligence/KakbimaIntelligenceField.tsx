@@ -1,10 +1,10 @@
-import { ChatGptButton } from '@components/ChatGpt/ChatGptButton';
-import { ChatGptModal } from '@components/ChatGpt/ChatGptModal';
+import { KakbimaIntelligenceButton } from '@components/KakbimaIntelligence/KakbimaIntelligenceButton';
+import { KakbimaIntelligenceModal } from '@components/KakbimaIntelligence/KakbimaIntelligenceModal';
 import { Input } from '@components/UserInterface/Input';
 import { Textarea } from '@components/UserInterface/Textarea';
 import { useState } from 'react';
 
-interface ChatGptFieldProps {
+interface KakbimaIntelligenceFieldProps {
     value: string;
     onChange: (value: string) => void;
     placeholder?: string;
@@ -19,7 +19,7 @@ interface ChatGptFieldProps {
     buttonVariant?: 'default' | 'outline' | 'secondary' | 'ghost';
 }
 
-export function ChatGptField({
+export function KakbimaIntelligenceField({
     value,
     onChange,
     placeholder,
@@ -32,7 +32,7 @@ export function ChatGptField({
     modalPlaceholder = 'Describe what you want to generate...',
     buttonText = 'Auto Generate',
     buttonVariant = 'outline',
-}: ChatGptFieldProps) {
+}: KakbimaIntelligenceFieldProps) {
     const [showModal, setShowModal] = useState(false);
 
     const handleGenerate = (content: string) => {
@@ -47,19 +47,30 @@ export function ChatGptField({
             <div className={`flex gap-2 ${className}`}>
                 <InputComponent
                     value={value}
-                    onChange={(e: any) => onChange(e.target.value)}
+                    onChange={(e: any) => {
+                        onChange(e.target.value);
+                    }}
                     placeholder={placeholder}
                     className="flex-1"
                     required={required}
                     disabled={disabled}
                     rows={type === 'textarea' ? rows : undefined}
                 />
-                <ChatGptButton onClick={() => setShowModal(true)} text={buttonText} variant={buttonVariant} className="shrink-0" />
+                <KakbimaIntelligenceButton
+                    onClick={() => {
+                        setShowModal(true);
+                    }}
+                    text={buttonText}
+                    variant={buttonVariant}
+                    className="shrink-0"
+                />
             </div>
 
-            <ChatGptModal
+            <KakbimaIntelligenceModal
                 isOpen={showModal}
-                onClose={() => setShowModal(false)}
+                onClose={() => {
+                    setShowModal(false);
+                }}
                 onGenerate={handleGenerate}
                 title={modalTitle}
                 placeholder={modalPlaceholder}

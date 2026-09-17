@@ -1,5 +1,5 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
+import CrudFormModal from '@components/CrudFormModal';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Button } from '@components/UserInterface/Button';
@@ -59,7 +59,16 @@ const progressBarColor = (pct: number) => {
 function Avatar({ name, src }: { name: string; src?: string }) {
     const [imgError, setImgError] = useState(false);
     if (src && !imgError) {
-        return <img src={src} alt={name} onError={() => setImgError(true)} className="h-7 w-7 rounded-full border-2 border-white object-cover" />;
+        return (
+            <img
+                src={src}
+                alt={name}
+                onError={() => {
+                    setImgError(true);
+                }}
+                className="h-7 w-7 rounded-full border-2 border-white object-cover"
+            />
+        );
     }
     return (
         <div className="bg-primary/20 text-primary flex h-7 w-7 items-center justify-center rounded-full border-2 border-white text-xs font-semibold uppercase">
@@ -447,7 +456,9 @@ export default function Projects() {
                     ).map((tab) => (
                         <button
                             key={tab.value}
-                            onClick={() => handleTabChange(tab.value)}
+                            onClick={() => {
+                                handleTabChange(tab.value);
+                            }}
                             className={`flex shrink-0 items-center gap-1.5 border-b-2 px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
                                 selectedStatus === tab.value
                                     ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
@@ -493,7 +504,9 @@ export default function Projects() {
                                         <div className="flex items-start justify-between gap-2">
                                             <h3
                                                 className="cursor-pointer truncate text-sm leading-snug font-semibold text-gray-900 transition-colors hover:text-emerald-600 dark:text-white dark:hover:text-emerald-400"
-                                                onClick={() => router.get(route('projects.show', project.id))}
+                                                onClick={() => {
+                                                    router.get(route('projects.show', project.id));
+                                                }}
                                             >
                                                 {project.name}
                                             </h3>
@@ -509,23 +522,40 @@ export default function Projects() {
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end" className="z-50 w-48" sideOffset={5}>
                                                     {useHasPermission('view-projects') && (
-                                                        <DropdownMenuItem onClick={() => handleAction('view', project)}>
+                                                        <DropdownMenuItem
+                                                            onClick={() => {
+                                                                handleAction('view', project);
+                                                            }}
+                                                        >
                                                             <Eye className="mr-2 h-4 w-4" /> {translate('View Project')}
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('toggle-status-projects') && (
-                                                        <DropdownMenuItem onClick={() => handleAction('toggle-status', project)}>
+                                                        <DropdownMenuItem
+                                                            onClick={() => {
+                                                                handleAction('toggle-status', project);
+                                                            }}
+                                                        >
                                                             <RefreshCw className="mr-2 h-4 w-4" /> {translate('Change Status')}
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('edit-projects') && (
-                                                        <DropdownMenuItem onClick={() => handleAction('edit', project)}>
+                                                        <DropdownMenuItem
+                                                            onClick={() => {
+                                                                handleAction('edit', project);
+                                                            }}
+                                                        >
                                                             <Edit className="mr-2 h-4 w-4" /> {translate('Edit')}
                                                         </DropdownMenuItem>
                                                     )}
                                                     <DropdownMenuSeparator />
                                                     {useHasPermission('delete-projects') && (
-                                                        <DropdownMenuItem onClick={() => handleAction('delete', project)} className="text-rose-600">
+                                                        <DropdownMenuItem
+                                                            onClick={() => {
+                                                                handleAction('delete', project);
+                                                            }}
+                                                            className="text-rose-600"
+                                                        >
                                                             <Trash2 className="mr-2 h-4 w-4" /> {translate('Delete')}
                                                         </DropdownMenuItem>
                                                     )}
@@ -611,7 +641,9 @@ export default function Projects() {
                     total={projects?.total || 0}
                     links={projects?.links}
                     entityName={translate('projects')}
-                    onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
+                    onPageChange={(url) => {
+                        router.get(url, {}, { preserveState: true, preserveScroll: true });
+                    }}
                     perPageOptions={[12, 24, 48, 96]}
                     currentPerPage={pageFilters.per_page?.toString() || '12'}
                     onPerPageChange={(value) => {
@@ -631,7 +663,9 @@ export default function Projects() {
             {/* Form Modal */}
             <CrudFormModal
                 isOpen={isFormModalOpen}
-                onClose={() => setIsFormModalOpen(false)}
+                onClose={() => {
+                    setIsFormModalOpen(false);
+                }}
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     ...(useHasPermission('export-projects') && { exportRoute: 'project.export' }),
@@ -693,7 +727,7 @@ export default function Projects() {
                             required: true,
                             searchable: true,
                             readOnly: formMode === 'view',
-                            emptyNote: { link: route('users.index'), linkText: translate('Users') },
+                            emptyNote: { link: route('users-permissions.users.index'), linkText: translate('Users') },
                             options: formMode === 'view' ? [] : users.map((u: any) => ({ value: u.id, label: `${u.name} (${u.email})` })),
                         },
                     ],
@@ -715,7 +749,9 @@ export default function Projects() {
             {/* Status Modal */}
             <CrudFormModal
                 isOpen={isStatusModalOpen}
-                onClose={() => setIsStatusModalOpen(false)}
+                onClose={() => {
+                    setIsStatusModalOpen(false);
+                }}
                 onSubmit={handleStatusChange}
                 formConfig={{
                     fields: [
@@ -742,7 +778,9 @@ export default function Projects() {
             {/* Delete Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
                 entityName="project"

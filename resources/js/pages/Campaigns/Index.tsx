@@ -1,5 +1,5 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudTable } from '@components/CrudTable';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
@@ -222,7 +222,9 @@ export default function Campaigns() {
             label: translate('Add Campaign'),
             icon: <Plus className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
             variant: 'default',
-            onClick: () => handleAddNew(),
+            onClick: () => {
+                handleAddNew();
+            },
             className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
             labelClassName: 'hidden min-[400px]:inline',
             tooltip: translate('Add Campaign'),
@@ -504,7 +506,9 @@ export default function Campaigns() {
                         total={campaigns?.total || 0}
                         links={campaigns?.links}
                         entityName={translate('campaigns')}
-                        onPageChange={(url) => router.get(url)}
+                        onPageChange={(url) => {
+                            router.get(url);
+                        }}
                         currentPerPage={pageFilters.per_page?.toString() || '10'}
                         onPerPageChange={(value) => {
                             router.get(
@@ -584,13 +588,21 @@ export default function Campaigns() {
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end" className="z-50 w-45" sideOffset={5}>
                                                     {useHasPermission('view-campaigns') && (
-                                                        <DropdownMenuItem onClick={() => router.visit(route('campaigns.show', campaign.id))}>
+                                                        <DropdownMenuItem
+                                                            onClick={() => {
+                                                                router.visit(route('campaigns.show', campaign.id));
+                                                            }}
+                                                        >
                                                             <Eye className="mr-2 h-4 w-4" />
                                                             <span>{translate('View Campaign')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('toggle-status-campaigns') && (
-                                                        <DropdownMenuItem onClick={() => handleAction('toggle-status', campaign)}>
+                                                        <DropdownMenuItem
+                                                            onClick={() => {
+                                                                handleAction('toggle-status', campaign);
+                                                            }}
+                                                        >
                                                             <Lock className="mr-2 h-4 w-4" />
                                                             <span>
                                                                 {campaign.status === 'active' ? translate('Deactivate') : translate('Activate')}
@@ -598,14 +610,23 @@ export default function Campaigns() {
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('edit-campaigns') && (
-                                                        <DropdownMenuItem onClick={() => router.visit(route('campaigns.edit', campaign.id))}>
+                                                        <DropdownMenuItem
+                                                            onClick={() => {
+                                                                router.visit(route('campaigns.edit', campaign.id));
+                                                            }}
+                                                        >
                                                             <Edit className="mr-2 h-4 w-4" />
                                                             <span>{translate('Edit')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     <DropdownMenuSeparator />
                                                     {useHasPermission('delete-campaigns') && (
-                                                        <DropdownMenuItem onClick={() => handleAction('delete', campaign)} className="text-rose-600">
+                                                        <DropdownMenuItem
+                                                            onClick={() => {
+                                                                handleAction('delete', campaign);
+                                                            }}
+                                                            className="text-rose-600"
+                                                        >
                                                             <Trash2 className="mr-2 h-4 w-4" />
                                                             <span>{translate('Delete')}</span>
                                                         </DropdownMenuItem>
@@ -683,7 +704,7 @@ export default function Campaigns() {
                                                 </div>
                                                 <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
                                                     <div
-                                                        className={`h-full rounded-full transition-all ${'bg-primary'}`}
+                                                        className={`bg-primary h-full rounded-full transition-all`}
                                                         style={{ width: `${spendPct}%` }}
                                                     />
                                                 </div>
@@ -751,7 +772,9 @@ export default function Campaigns() {
                             total={campaigns?.total || 0}
                             links={campaigns?.links}
                             entityName={translate('campaigns')}
-                            onPageChange={(url) => router.get(url)}
+                            onPageChange={(url) => {
+                                router.get(url);
+                            }}
                             perPageOptions={[12, 24, 48, 96]}
                             currentPerPage={pageFilters.per_page?.toString() || '12'}
                             onPerPageChange={(value) => {
@@ -780,7 +803,9 @@ export default function Campaigns() {
             {/* Delete Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
                 entityName={translate('campaign')}

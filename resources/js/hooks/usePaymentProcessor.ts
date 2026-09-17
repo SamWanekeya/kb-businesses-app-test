@@ -27,13 +27,13 @@ export default function usePaymentProcessor(options: UsePaymentProcessorOptions 
         setProcessing(true);
 
         const routes = {
-            // stripe: 'stripe.payment',
-            // paypal: 'paypal.payment',
-            bank: 'bank.payment',
+            // stripe: 'subscriptions.stripe.payment',
+            // paypal: 'subscriptions.paypal.payment',
+            bank: 'subscriptions.bank.payment',
             // razorpay: 'razorpay.payment',
             // mercadopago: 'mercadopago.payment',
-            paystack: 'paystack.payment',
-            // flutterwave: 'flutterwave.payment',
+            paystack: 'subscriptions.paystack.payment',
+            // flutterwave: 'subscriptions.flutterwave.payment',
         };
 
         const routeName = routes[paymentMethod as keyof typeof routes];

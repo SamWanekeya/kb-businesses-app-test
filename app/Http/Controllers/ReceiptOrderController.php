@@ -146,7 +146,7 @@ class ReceiptOrderController extends Controller
         $receiptOrder->calculateTotals();
 
         // Fire ReceiptOrderCreated event for sending email
-        if ($receiptOrder && !IsDemo()) {
+        if ($receiptOrder) {
             event(new ReceiptOrderCreated($receiptOrder));
         }
 

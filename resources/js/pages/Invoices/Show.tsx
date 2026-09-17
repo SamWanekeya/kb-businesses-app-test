@@ -1,5 +1,5 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
+import CrudFormModal from '@components/CrudFormModal';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import UserInitials from '@components/UserInitials';
@@ -60,11 +60,13 @@ export default function InvoiceShow() {
     useEffect(() => {
         fetch(route('invoices.reminder-history', invoice.id))
             .then((r) => r.json())
-            .then((data) => setReminderHistory(data.reminders || []))
+            .then((data) => {
+                setReminderHistory(data.reminders || []);
+            })
             .catch(() => {});
     }, [invoice.id]);
     useEffect(() => {
-        const main = document.querySelector('main[data-slot="sidebar-inset"]') as HTMLElement | null;
+        const main = document.querySelector('main[data-slot="sidebar-inset"]');
         if (main) main.style.overflowX = 'visible';
         return () => {
             if (main) main.style.overflowX = '';
@@ -188,7 +190,9 @@ export default function InvoiceShow() {
                     else if (page.props.flash?.error) toast.error(translate(page.props.flash.error));
                     fetch(route('invoices.reminder-history', invoice.id))
                         .then((r) => r.json())
-                        .then((data) => setReminderHistory(data.reminders || []))
+                        .then((data) => {
+                            setReminderHistory(data.reminders || []);
+                        })
                         .catch(() => {});
                 },
                 onError: (errors) => {
@@ -239,7 +243,9 @@ export default function InvoiceShow() {
                     labelClassName: 'hidden sm:inline',
                     icon: <ArrowLeft className="h-4 w-4 sm:mr-2" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('invoices.index')),
+                    onClick: () => {
+                        router.visit(route('invoices.index'));
+                    },
                 },
                 ...(!invoice.sales_order
                     ? [
@@ -247,7 +253,9 @@ export default function InvoiceShow() {
                               label: translate('Assign Sales Order'),
                               icon: <Plus className="mr-2 h-4 w-4" />,
                               variant: 'default',
-                              onClick: () => setIsAssignSalesOrderModalOpen(true),
+                              onClick: () => {
+                                  setIsAssignSalesOrderModalOpen(true);
+                              },
                           },
                       ]
                     : []),
@@ -534,7 +542,7 @@ export default function InvoiceShow() {
                                     <TableBody>
                                         {pendingPayments.map((payment: any, index: number) => (
                                             <TableRow key={index} className="border-b hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700">
-                                                <TableCell className="py-3">{formatDate(payment.created_at)}</TableCell>
+                                                <TableCell className="py-3">{window.kbSettings.formatDateTimeSimple(payment.created_at)}</TableCell>
                                                 <TableCell className="py-3 capitalize">{payment.payment_method}</TableCell>
                                                 <TableCell className="py-3 capitalize">{payment.payment_type}</TableCell>
                                                 <TableCell className="py-3 text-right font-mono font-semibold">
@@ -849,7 +857,9 @@ export default function InvoiceShow() {
                                                     <Textarea
                                                         placeholder={translate('Write a comment...')}
                                                         value={newComment}
-                                                        onChange={(e) => setNewComment(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setNewComment(e.target.value);
+                                                        }}
                                                         className="resize-none border-0 bg-transparent focus-visible:ring-0"
                                                         rows={2}
                                                     />
@@ -1001,7 +1011,9 @@ export default function InvoiceShow() {
                                                                         <div className="space-y-3">
                                                                             <Textarea
                                                                                 value={editCommentText}
-                                                                                onChange={(e) => setEditCommentText(e.target.value)}
+                                                                                onChange={(e) => {
+                                                                                    setEditCommentText(e.target.value);
+                                                                                }}
                                                                                 className="w-full resize-none border-emerald-300 focus-visible:ring-emerald-400"
                                                                                 rows={3}
                                                                                 autoFocus
@@ -1010,7 +1022,9 @@ export default function InvoiceShow() {
                                                                                 <Button
                                                                                     size="sm"
                                                                                     variant="outline"
-                                                                                    onClick={() => setEditingComment(null)}
+                                                                                    onClick={() => {
+                                                                                        setEditingComment(null);
+                                                                                    }}
                                                                                 >
                                                                                     {translate('Cancel')}
                                                                                 </Button>
@@ -1113,7 +1127,13 @@ export default function InvoiceShow() {
                                     </Button>
                                 )}
                                 {useHasPermission('edit-invoices') && (
-                                    <Button variant="outline" className="w-full" onClick={() => router.visit(route('invoices.edit', invoice.id))}>
+                                    <Button
+                                        variant="outline"
+                                        className="w-full"
+                                        onClick={() => {
+                                            router.visit(route('invoices.edit', invoice.id));
+                                        }}
+                                    >
                                         <Edit className="mr-2 h-4 w-4" />
                                         {translate('Edit Invoice')}
                                     </Button>
@@ -1225,14 +1245,14 @@ export default function InvoiceShow() {
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
                                     <p className="text-muted-foreground text-xs">{translate('Invoice Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">{formatDate(invoice.invoice_date)}</p>
+                                    <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(invoice.invoice_date)}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
                                     <p className="text-muted-foreground text-xs">{translate('Due Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">{formatDate(invoice.due_date)}</p>
+                                    <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(invoice.due_date)}</p>
                                 </div>
                             </div>
 
@@ -1363,7 +1383,9 @@ export default function InvoiceShow() {
             {/* Delete Activity Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={() => {
                     router.delete(route('invoices.delete-activity', { invoice: invoice.id, activity: currentActivity.id }), {
                         preserveScroll: true,
@@ -1377,7 +1399,9 @@ export default function InvoiceShow() {
             {/* Delete All Activities Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteAllModalOpen}
-                onClose={() => setIsDeleteAllModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteAllModalOpen(false);
+                }}
                 onConfirm={() => {
                     router.delete(route('invoices.delete-activities', invoice.id), {
                         preserveScroll: true,
@@ -1408,7 +1432,13 @@ export default function InvoiceShow() {
                             </div>
                         </div>
                         <DialogFooter className="mt-6">
-                            <Button type="button" variant="outline" onClick={() => setIsRejectPaymentModalOpen(false)}>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => {
+                                    setIsRejectPaymentModalOpen(false);
+                                }}
+                            >
                                 {translate('Cancel')}
                             </Button>
                             <Button type="submit" variant="destructive">

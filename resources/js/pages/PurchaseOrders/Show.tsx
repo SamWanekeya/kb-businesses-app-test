@@ -44,7 +44,7 @@ export default function PurchaseOrderShow() {
     const [editCommentText, setEditCommentText] = useState('');
 
     useEffect(() => {
-        const main = document.querySelector('main[data-slot="sidebar-inset"]') as HTMLElement | null;
+        const main = document.querySelector('main[data-slot="sidebar-inset"]');
         if (main) main.style.overflowX = 'visible';
         return () => {
             if (main) main.style.overflowX = '';
@@ -138,7 +138,9 @@ export default function PurchaseOrderShow() {
                     icon: <ArrowLeft className="h-4 w-4 sm:me-2" />,
                     labelClassName: 'hidden sm:inline',
                     variant: 'outline',
-                    onClick: () => router.visit(route('purchase-orders.index')),
+                    onClick: () => {
+                        router.visit(route('purchase-orders.index'));
+                    },
                 },
             ]}
             noPadding
@@ -508,7 +510,9 @@ export default function PurchaseOrderShow() {
                                                     <Textarea
                                                         placeholder={translate('Write a comment...')}
                                                         value={newComment}
-                                                        onChange={(e) => setNewComment(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setNewComment(e.target.value);
+                                                        }}
                                                         className="resize-none border-0 bg-transparent focus-visible:ring-0"
                                                         rows={2}
                                                     />
@@ -660,7 +664,9 @@ export default function PurchaseOrderShow() {
                                                                         <div className="space-y-3">
                                                                             <Textarea
                                                                                 value={editCommentText}
-                                                                                onChange={(e) => setEditCommentText(e.target.value)}
+                                                                                onChange={(e) => {
+                                                                                    setEditCommentText(e.target.value);
+                                                                                }}
                                                                                 className="w-full resize-none border-emerald-300 focus-visible:ring-emerald-400"
                                                                                 rows={3}
                                                                                 autoFocus
@@ -669,7 +675,9 @@ export default function PurchaseOrderShow() {
                                                                                 <Button
                                                                                     size="sm"
                                                                                     variant="outline"
-                                                                                    onClick={() => setEditingComment(null)}
+                                                                                    onClick={() => {
+                                                                                        setEditingComment(null);
+                                                                                    }}
                                                                                 >
                                                                                     {translate('Cancel')}
                                                                                 </Button>
@@ -748,7 +756,9 @@ export default function PurchaseOrderShow() {
                                     <Button
                                         variant="outline"
                                         className="w-full"
-                                        onClick={() => router.visit(route('purchase-orders.edit', purchaseOrder.id))}
+                                        onClick={() => {
+                                            router.visit(route('purchase-orders.edit', purchaseOrder.id));
+                                        }}
                                     >
                                         <Edit className="me-2 h-4 w-4" />
                                         {translate('Edit Purchase Order')}
@@ -910,7 +920,7 @@ export default function PurchaseOrderShow() {
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
                                     <p className="text-muted-foreground text-xs">{translate('Order Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">{formatDate(purchaseOrder.order_date)}</p>
+                                    <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(purchaseOrder.order_date)}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
@@ -918,7 +928,7 @@ export default function PurchaseOrderShow() {
                                 <div>
                                     <p className="text-muted-foreground text-xs">{translate('Expected Delivery')}</p>
                                     <p className="text-foreground text-sm font-medium">
-                                        {purchaseOrder.expected_delivery_date ? formatDate(purchaseOrder.expected_delivery_date) : translate('-')}
+                                        {purchaseOrder.expected_delivery_date ? window.kbSettings.formatDateTimeSimple(purchaseOrder.expected_delivery_date) : translate('-')}
                                     </p>
                                 </div>
                             </div>
@@ -1027,7 +1037,9 @@ export default function PurchaseOrderShow() {
 
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={() => {
                     router.delete(route('purchase-orders.delete-activity', { purchaseOrder: purchaseOrder.id, activity: currentActivity.id }), {
                         preserveScroll: true,
@@ -1040,7 +1052,9 @@ export default function PurchaseOrderShow() {
 
             <CrudDeleteModal
                 isOpen={isDeleteAllModalOpen}
-                onClose={() => setIsDeleteAllModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteAllModalOpen(false);
+                }}
                 onConfirm={() => {
                     router.delete(route('purchase-orders.delete-activities', purchaseOrder.id), { preserveScroll: true });
                     setIsDeleteAllModalOpen(false);

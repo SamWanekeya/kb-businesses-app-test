@@ -77,9 +77,9 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
         e.preventDefault();
 
         if (isEdit) {
-            put(route('plans.update', plan.id));
+            put(route('subscriptions.plans.update', plan.id));
         } else {
-            post(route('plans.store'));
+            post(route('subscriptions.plans.store'));
         }
     };
 
@@ -87,10 +87,10 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
         <PageTemplate
             title={translate(isEdit ? 'Edit Plan' : 'Create Plan')}
             description={translate(isEdit ? 'Update subscription plan details' : 'Add a new subscription plan')}
-            url={isEdit ? route('plans.update', plan.id) : '/plans/Create'}
+            url={isEdit ? route('subscriptions.plans.update', plan.id) : '/plans/Create'}
             breadcrumbs={[
                 { title: translate('Dashboard'), href: route('dashboard') },
-                { title: translate('Plans'), href: route('plans.index') },
+                { title: translate('Plans'), href: route('subscriptions.plans.index') },
                 { title: t(isEdit ? 'Edit Plan' : 'Create Plan') },
             ]}
             actions={[
@@ -98,7 +98,9 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('plans.index')),
+                    onClick: () => {
+                        router.visit(route('subscriptions.plans.index'));
+                    },
                 },
             ]}
         >
@@ -280,7 +282,9 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                 <Switch
                                     id="enable_kakbima_intelligence"
                                     checked={data.enable_kakbima_intelligence === 'on'}
-                                    onCheckedChange={(checked) => handleSwitchChange('enable_kakbima_intelligence', checked)}
+                                    onCheckedChange={(checked) => {
+                                        handleSwitchChange('enable_kakbima_intelligence', checked);
+                                    }}
                                 />
                             </div>
 
@@ -289,7 +293,9 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                 <Switch
                                     id="is_trial"
                                     checked={data.is_trial === 'on'}
-                                    onCheckedChange={(checked) => handleSwitchChange('is_trial', checked)}
+                                    onCheckedChange={(checked) => {
+                                        handleSwitchChange('is_trial', checked);
+                                    }}
                                 />
                             </div>
                         </div>
@@ -304,7 +310,9 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                                 <Switch
                                     id="is_plan_enabled"
                                     checked={data.is_plan_enabled === 'on'}
-                                    onCheckedChange={(checked) => handleSwitchChange('is_plan_enabled', checked)}
+                                    onCheckedChange={(checked) => {
+                                        handleSwitchChange('is_plan_enabled', checked);
+                                    }}
                                 />
                             </div>
 
@@ -323,7 +331,13 @@ export default function PlanForm({ plan, hasDefaultPlan = false, otherDefaultPla
                     </div>
 
                     <div className="flex justify-end gap-3">
-                        <Button type="button" variant="outline" onClick={() => router.get(route('plans.index'))}>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => {
+                                router.get(route('subscriptions.plans.index'));
+                            }}
+                        >
                             {translate('Cancel')}
                         </Button>
                         <Button type="submit" disabled={processing}>

@@ -205,7 +205,9 @@ export default function PublicQuote({
         try {
             await navigator.clipboard.writeText(window.location.href);
             setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
+            setTimeout(() => {
+                setCopied(false);
+            }, 2000);
         } catch (err) {}
     };
 
@@ -246,8 +248,8 @@ export default function PublicQuote({
 
     const quoteData = {
         ...quote,
-        valid_until: formatDate(quote.valid_until || new Date().toISOString()),
-        created_at: formatDate(quote.created_at || new Date().toISOString()),
+        valid_until: window.kbSettings.formatDateTimeSimple(quote.valid_until || new Date().toISOString()),
+        created_at: window.kbSettings.formatDateTimeSimple(quote.created_at || new Date().toISOString()),
         sub_total: subtotal,
         total_tax: totalTax,
         total_amount: grandTotal,
@@ -369,14 +371,14 @@ export default function PublicQuote({
                                     },
                                     {
                                         label: translate('Valid Until'),
-                                        value: formatDate(quote.valid_until),
+                                        value: window.kbSettings.formatDateTimeSimple(quote.valid_until),
                                         icon: Calendar,
                                         iconCls: 'text-orange-600',
                                         blobCls: 'bg-orange-50',
                                     },
                                     {
                                         label: translate('Created'),
-                                        value: formatDate(quote.created_at),
+                                        value: window.kbSettings.formatDateTimeSimple(quote.created_at),
                                         icon: Clock,
                                         iconCls: 'text-purple-600',
                                         blobCls: 'bg-purple-50',
@@ -467,14 +469,14 @@ export default function PublicQuote({
                                             <label className="text-muted-foreground text-sm font-medium">{translate('Valid Until')}</label>
                                             <div className="mt-1 flex items-center gap-2">
                                                 <Calendar className="h-4 w-4 flex-shrink-0 text-gray-400" />
-                                                <p className="text-sm">{formatDate(quote.valid_until)}</p>
+                                                <p className="text-sm">{window.kbSettings.formatDateTimeSimple(quote.valid_until)}</p>
                                             </div>
                                         </div>
                                         <div>
                                             <label className="text-muted-foreground text-sm font-medium">{translate('Created')}</label>
                                             <div className="mt-1 flex items-center gap-2">
                                                 <Calendar className="h-4 w-4 flex-shrink-0 text-gray-400" />
-                                                <p className="text-sm">{formatDate(quote.created_at)}</p>
+                                                <p className="text-sm">{window.kbSettings.formatDateTimeSimple(quote.created_at)}</p>
                                             </div>
                                         </div>
                                         <div>

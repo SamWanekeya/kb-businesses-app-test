@@ -147,7 +147,7 @@ export default function ProductReports() {
                                                             alt={product.name}
                                                             className="max-h-full max-w-full rounded-md object-contain"
                                                             onError={(e) => {
-                                                                const target = e.currentTarget as HTMLImageElement;
+                                                                const target = e.currentTarget;
 
                                                                 if (!target.src.startsWith('data:image/svg+xml')) {
                                                                     target.src =
@@ -221,7 +221,7 @@ export default function ProductReports() {
                                                             alt={product.name}
                                                             className="max-h-full max-w-full rounded-md object-contain"
                                                             onError={(e) => {
-                                                                const target = e.currentTarget as HTMLImageElement;
+                                                                const target = e.currentTarget;
 
                                                                 if (!target.src.startsWith('data:image/svg+xml')) {
                                                                     target.src =
@@ -293,7 +293,7 @@ export default function ProductReports() {
                                                         alt={product.name}
                                                         className="max-h-full max-w-full rounded-md object-contain"
                                                         onError={(e) => {
-                                                            const target = e.currentTarget as HTMLImageElement;
+                                                            const target = e.currentTarget;
 
                                                             if (!target.src.startsWith('data:image/svg+xml')) {
                                                                 target.src =

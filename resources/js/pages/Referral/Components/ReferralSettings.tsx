@@ -32,7 +32,7 @@ export default function ReferralSettings({ settings, currency_symbol, globalSett
             const toastId = toast.loading(translate('Updating referral settings...'));
         }
 
-        post(route('referral.settings.update'), {
+        post(route('referral-program.settings.update'), {
             preserveScroll: true,
             onSuccess: (page) => {
                 {
@@ -65,7 +65,13 @@ export default function ReferralSettings({ settings, currency_symbol, globalSett
             <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="flex items-center space-x-2">
-                        <Switch id="is_enabled" checked={data.is_enabled} onCheckedChange={(checked) => setData('is_enabled', checked)} />
+                        <Switch
+                            id="is_enabled"
+                            checked={data.is_enabled}
+                            onCheckedChange={(checked) => {
+                                setData('is_enabled', checked);
+                            }}
+                        />
                         <Label htmlFor="is_enabled">{translate('Enable Referral Program')}</Label>
                     </div>
 
@@ -81,7 +87,9 @@ export default function ReferralSettings({ settings, currency_symbol, globalSett
                                 min="0"
                                 max="100"
                                 value={data.commission_percentage}
-                                onChange={(e) => setData('commission_percentage', e.target.value)}
+                                onChange={(e) => {
+                                    setData('commission_percentage', e.target.value);
+                                }}
                             />
                             {errors.commission_percentage && <p className="text-sm text-red-500">{errors.commission_percentage}</p>}
                         </div>
@@ -96,7 +104,9 @@ export default function ReferralSettings({ settings, currency_symbol, globalSett
                                 step="0.01"
                                 min="0"
                                 value={data.threshold_amount}
-                                onChange={(e) => setData('threshold_amount', e.target.value)}
+                                onChange={(e) => {
+                                    setData('threshold_amount', e.target.value);
+                                }}
                             />
                             {errors.threshold_amount && <p className="text-sm text-red-500">{errors.threshold_amount}</p>}
                         </div>
@@ -109,7 +119,9 @@ export default function ReferralSettings({ settings, currency_symbol, globalSett
                         <Textarea
                             id="guidelines"
                             value={data.guidelines}
-                            onChange={(e) => setData('guidelines', e.target.value)}
+                            onChange={(e) => {
+                                setData('guidelines', e.target.value);
+                            }}
                             placeholder={translate('Enter referral program guidelines and terms...')}
                             rows={6}
                         />

@@ -1,5 +1,5 @@
 import { toast } from '@components/CustomToast';
-import { SettingsSection } from '@components/settings-section';
+import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
 import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
@@ -8,9 +8,9 @@ import { route } from '@utils/Routes';
 import { Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-// import languageData from '@lang/language.json';
+import languageData from '@lang/language.json';
 import { Card, CardContent } from '@components/UserInterface/Card';
-import ReactCountryFlag from 'react-country-flag';
+
 interface SystemSettingsProps {
     settings?: Record<string, string>;
     timezones?: Record<string, string>;
@@ -21,8 +21,6 @@ interface SystemSettingsProps {
 export default function SystemSettings({ settings = {}, timezones = {}, dateFormats = {}, timeFormats = {} }: SystemSettingsProps) {
     const { t: translate } = useTranslation();
     const pageProps = usePage().props;
-    const { globalSettings } = usePage().props;
-    const languageData = globalSettings?.available_languages || [];
 
     // Default settings
     const defaultSettings = {
@@ -51,13 +49,10 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
     useEffect(() => {
         if (Object.keys(settingsData).length > 0) {
             // Create merged settings object
-            const mergedSettings = Object.keys(defaultSettings).reduce(
-                (acc, key) => {
-                    acc[key] = settingsData[key] || defaultSettings[key];
-                    return acc;
-                },
-                {} as Record<string, any>,
-            );
+            const mergedSettings = Object.keys(defaultSettings).reduce<Record<string, any>>((acc, key) => {
+                acc[key] = settingsData[key] || defaultSettings[key];
+                return acc;
+            }, {});
 
             setSystemSettings((prevSettings) => ({
                 ...prevSettings,
@@ -132,43 +127,29 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
                                 <Label htmlFor="defaultLanguage">{translate('Default Language')}</Label>
                                 <Select
                                     value={systemSettings.defaultLanguage}
-                                    onValueChange={(value) => handleSystemSettingsChange('defaultLanguage', value)}
+                                    onValueChange={(value) => {
+                                        handleSystemSettingsChange('defaultLanguage', value);
+                                    }}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={translate('Select language')}>
-                                            {systemSettings.defaultLanguage &&
+                                        <SelectValue placeholder={translate('Select...')}>
+                                            {systemSettings.default_language &&
                                                 (() => {
-                                                    const selectedLang = languageData.find((lang) => lang.code === systemSettings.defaultLanguage);
+                                                    const selectedLang = languageData.find((lang) => lang.code === systemSettings.default_language);
                                                     return selectedLang ? (
                                                         <div className="flex items-center space-x-2">
-                                                            <ReactCountryFlag
-                                                                countryCode={selectedLang.countryCode}
-                                                                svg
-                                                                style={{
-                                                                    width: '1.2em',
-                                                                    height: '1.2em',
-                                                                }}
-                                                            />{' '}
-                                                            <span>{selectedLang.name}</span>{' '}
+                                                            <span>{selectedLang.name}</span>
                                                         </div>
                                                     ) : (
-                                                        translate('Select language')
+                                                        translate('Select...')
                                                     );
                                                 })()}
                                         </SelectValue>
                                     </SelectTrigger>
-                                    <SelectContent position="popper">
+                                    <SelectContent>
                                         {languageData.map((language) => (
                                             <SelectItem key={language.code} value={language.code}>
                                                 <div className="flex items-center space-x-2">
-                                                    <ReactCountryFlag
-                                                        countryCode={language.countryCode}
-                                                        svg
-                                                        style={{
-                                                            width: '1.2em',
-                                                            height: '1.2em',
-                                                        }}
-                                                    />{' '}
                                                     <span>{language.name}</span>
                                                 </div>
                                             </SelectItem>
@@ -179,7 +160,12 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
 
                             <div className="grid min-w-0 gap-2">
                                 <Label htmlFor="dateFormat">{translate('Date Format')}</Label>
-                                <Select value={systemSettings.dateFormat} onValueChange={(value) => handleSystemSettingsChange('dateFormat', value)}>
+                                <Select
+                                    value={systemSettings.dateFormat}
+                                    onValueChange={(value) => {
+                                        handleSystemSettingsChange('dateFormat', value);
+                                    }}
+                                >
                                     <SelectTrigger>
                                         <SelectValue placeholder={translate('Select date format')} />
                                     </SelectTrigger>
@@ -207,7 +193,12 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
 
                             <div className="grid min-w-0 gap-2">
                                 <Label htmlFor="timeFormat">{translate('Time Format')}</Label>
-                                <Select value={systemSettings.timeFormat} onValueChange={(value) => handleSystemSettingsChange('timeFormat', value)}>
+                                <Select
+                                    value={systemSettings.timeFormat}
+                                    onValueChange={(value) => {
+                                        handleSystemSettingsChange('timeFormat', value);
+                                    }}
+                                >
                                     <SelectTrigger>
                                         <SelectValue placeholder={translate('Select time format')} />
                                     </SelectTrigger>
@@ -236,7 +227,9 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
                                 <Label htmlFor="calendarStartDay">{translate('Calendar Start Day')}</Label>
                                 <Select
                                     value={systemSettings.calendarStartDay}
-                                    onValueChange={(value) => handleSystemSettingsChange('calendarStartDay', value)}
+                                    onValueChange={(value) => {
+                                        handleSystemSettingsChange('calendarStartDay', value);
+                                    }}
                                 >
                                     <SelectTrigger>
                                         <SelectValue placeholder={translate('Select start day')} />
@@ -252,7 +245,9 @@ export default function SystemSettings({ settings = {}, timezones = {}, dateForm
                                 <Label htmlFor="defaultTimezone">{translate('Default Timezone')}</Label>
                                 <Select
                                     value={systemSettings.defaultTimezone}
-                                    onValueChange={(value) => handleSystemSettingsChange('defaultTimezone', value)}
+                                    onValueChange={(value) => {
+                                        handleSystemSettingsChange('defaultTimezone', value);
+                                    }}
                                 >
                                     <SelectTrigger>
                                         <SelectValue placeholder={translate('Select timezone')} />

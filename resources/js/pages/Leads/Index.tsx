@@ -1,6 +1,6 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
-import { CrudTable } from '@components/CrudTable';
+import CrudFormModal from '@components/CrudFormModal';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import { ImportModal } from '@components/ImportModal';
 import PageTemplate from '@components/PageTemplate';
@@ -332,7 +332,9 @@ export default function Leads() {
             label: translate('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
             variant: 'outline',
-            onClick: () => handleExport(),
+            onClick: () => {
+                handleExport();
+            },
             className: 'h-8 w-8 min-[450px]:h-9 min-[450px]:w-auto px-0 min-[450px]:px-4',
             labelClassName: 'hidden min-[450px]:inline',
             tooltip: translate('Export'),
@@ -346,7 +348,9 @@ export default function Leads() {
             label: translate('Import'),
             icon: <FileUp className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
             variant: 'outline',
-            onClick: () => setIsImportModalOpen(true),
+            onClick: () => {
+                setIsImportModalOpen(true);
+            },
             className: 'h-8 w-8 min-[450px]:h-9 min-[450px]:w-auto px-0 min-[450px]:px-4',
             labelClassName: 'hidden min-[450px]:inline',
             tooltip: translate('Import'),
@@ -360,7 +364,9 @@ export default function Leads() {
             label: translate('Add Lead'),
             icon: <Plus className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
             variant: 'default',
-            onClick: () => handleAddNew(),
+            onClick: () => {
+                handleAddNew();
+            },
             disabled: hasEmptyDropdowns,
             className: 'h-8 w-8 min-[450px]:h-9 min-[450px]:w-auto px-0 min-[450px]:px-4',
             labelClassName: 'hidden min-[450px]:inline',
@@ -676,7 +682,9 @@ export default function Leads() {
                         total={leads?.total || leads?.data?.length || 0}
                         links={leads?.links}
                         entityName={translate('leads')}
-                        onPageChange={(url) => router.get(url)}
+                        onPageChange={(url) => {
+                            router.get(url);
+                        }}
                         //  {...(activeView !== 'kanban' && {
                         currentPerPage={pageFilters.per_page?.toString() || '10'}
                         onPerPageChange={(value) => {
@@ -729,7 +737,9 @@ export default function Leads() {
                                     </div>
                                     {useHasPermission('manage-lead-statuses') && (
                                         <button
-                                            onClick={() => router.visit(route('lead-statuses.index'))}
+                                            onClick={() => {
+                                                router.visit(route('lead-statuses.index'));
+                                            }}
                                             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
                                         >
                                             <Plus className="h-4 w-4" />
@@ -748,7 +758,9 @@ export default function Leads() {
                                         key={status.id}
                                         className="flex flex-shrink-0 flex-col rounded-xl border"
                                         style={{ width: '300px', minWidth: '300px', backgroundColor: colBg, borderColor: colBorder, height: '100%' }}
-                                        onDragOver={(e) => e.preventDefault()}
+                                        onDragOver={(e) => {
+                                            e.preventDefault();
+                                        }}
                                         onDrop={(e) => {
                                             e.preventDefault();
                                             const leadId = e.dataTransfer.getData('leadId');
@@ -764,7 +776,7 @@ export default function Leads() {
                                                 const toastId = toast.loading(translate('Updating...'));
                                                 router.put(
                                                     route('leads.update', leadId),
-                                                    { ...(currentLead as any), lead_status_id: status.id },
+                                                    { ...currentLead, lead_status_id: status.id },
                                                     {
                                                         onSuccess: () => {
                                                             toast.dismiss(toastId);
@@ -796,7 +808,9 @@ export default function Leads() {
                                             </div>
                                             {useHasPermission('create-leads') && (
                                                 <button
-                                                    onClick={() => handleAddLead(status.id.toString())}
+                                                    onClick={() => {
+                                                        handleAddLead(status.id.toString());
+                                                    }}
                                                     className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-white/60 hover:text-gray-800"
                                                     title={translate('Add Lead')}
                                                 >
@@ -827,7 +841,9 @@ export default function Leads() {
                                                             e.dataTransfer.setData('leadId', lead.id.toString());
                                                             e.currentTarget.classList.add('opacity-50');
                                                         }}
-                                                        onDragEnd={(e) => e.currentTarget.classList.remove('opacity-50')}
+                                                        onDragEnd={(e) => {
+                                                            e.currentTarget.classList.remove('opacity-50');
+                                                        }}
                                                         className={useHasPermission('edit-leads') ? 'cursor-grab active:cursor-grabbing' : ''}
                                                     >
                                                         <div className="rounded-lg border border-gray-100 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
@@ -838,7 +854,9 @@ export default function Leads() {
                                                                     <div className="min-w-0 flex-1">
                                                                         <h4
                                                                             className="hover:text-primary cursor-pointer truncate text-sm leading-tight font-semibold text-gray-900 transition-colors dark:text-gray-100"
-                                                                            onClick={() => handleAction('view', lead)}
+                                                                            onClick={() => {
+                                                                                handleAction('view', lead);
+                                                                            }}
                                                                         >
                                                                             {lead.name}
                                                                         </h4>
@@ -862,13 +880,21 @@ export default function Leads() {
                                                                             </DropdownMenuTrigger>
                                                                             <DropdownMenuContent align="end" className="w-40">
                                                                                 {useHasPermission('view-leads') && (
-                                                                                    <DropdownMenuItem onClick={() => handleAction('view', lead)}>
+                                                                                    <DropdownMenuItem
+                                                                                        onClick={() => {
+                                                                                            handleAction('view', lead);
+                                                                                        }}
+                                                                                    >
                                                                                         <Eye className="tex mr-2 h-4 w-4" />
                                                                                         {translate('View')}
                                                                                     </DropdownMenuItem>
                                                                                 )}
                                                                                 {useHasPermission('edit-leads') && (
-                                                                                    <DropdownMenuItem onClick={() => handleAction('edit', lead)}>
+                                                                                    <DropdownMenuItem
+                                                                                        onClick={() => {
+                                                                                            handleAction('edit', lead);
+                                                                                        }}
+                                                                                    >
                                                                                         <Edit className="mr-2 h-4 w-4" />
                                                                                         {translate('Edit')}
                                                                                     </DropdownMenuItem>
@@ -877,14 +903,18 @@ export default function Leads() {
                                                                                     <>
                                                                                         <DropdownMenuSeparator />
                                                                                         <DropdownMenuItem
-                                                                                            onClick={() => handleAction('convert-to-account', lead)}
+                                                                                            onClick={() => {
+                                                                                                handleAction('convert-to-account', lead);
+                                                                                            }}
                                                                                             className="text-green-600"
                                                                                         >
                                                                                             <Building2 className="mr-2 h-4 w-4" />
                                                                                             {translate('To Account')}
                                                                                         </DropdownMenuItem>
                                                                                         <DropdownMenuItem
-                                                                                            onClick={() => handleAction('convert-to-contact', lead)}
+                                                                                            onClick={() => {
+                                                                                                handleAction('convert-to-contact', lead);
+                                                                                            }}
                                                                                             className="text-blue-600"
                                                                                         >
                                                                                             <Users className="mr-2 h-4 w-4" />
@@ -896,7 +926,9 @@ export default function Leads() {
                                                                                     <>
                                                                                         <DropdownMenuSeparator />
                                                                                         <DropdownMenuItem
-                                                                                            onClick={() => handleAction('delete', lead)}
+                                                                                            onClick={() => {
+                                                                                                handleAction('delete', lead);
+                                                                                            }}
                                                                                             className="text-red-600"
                                                                                         >
                                                                                             <Trash2 className="mr-2 h-4 w-4" />
@@ -1162,7 +1194,9 @@ export default function Leads() {
                             total={leads?.total || leads?.data?.length || 0}
                             links={leads?.links}
                             entityName={translate('leads')}
-                            onPageChange={(url) => router.get(url)}
+                            onPageChange={(url) => {
+                                router.get(url);
+                            }}
                             perPageOptions={[12, 24, 48, 96]}
                             currentPerPage={pageFilters.per_page?.toString() || '12'}
                             onPerPageChange={(value) => {
@@ -1208,7 +1242,9 @@ export default function Leads() {
             {/* Delete Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
                 entityName={translate('lead')}
@@ -1217,7 +1253,9 @@ export default function Leads() {
             {/* Convert Modal */}
             <CrudFormModal
                 isOpen={isConvertModalOpen}
-                onClose={() => setIsConvertModalOpen(false)}
+                onClose={() => {
+                    setIsConvertModalOpen(false);
+                }}
                 onSubmit={handleConvertSubmit}
                 formConfig={{
                     fields:

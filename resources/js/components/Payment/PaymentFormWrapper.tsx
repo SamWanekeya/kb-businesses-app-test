@@ -188,7 +188,9 @@ export function PaymentFormWrapper({ planId, planPrice, couponCode = '', billing
                                     name="payment-method"
                                     value={method.id}
                                     checked={selectedMethod === method.id}
-                                    onChange={(e) => setSelectedMethod(e.target.value)}
+                                    onChange={(e) => {
+                                        setSelectedMethod(e.target.value);
+                                    }}
                                     className="mr-3"
                                 />
                                 <span className="font-medium">{method.name}</span>

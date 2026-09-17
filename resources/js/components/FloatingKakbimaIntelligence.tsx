@@ -1,39 +1,39 @@
 import { useEffect, useState } from 'react';
 
-import ChatGptModal from '@components/ChatGpt/ChatGptModal';
+import KakbimaIntelligenceModal from '@components/KakbimaIntelligence/KakbimaIntelligenceModal';
 import { Button } from '@components/UserInterface/Button';
 import { usePage } from '@inertiajs/react';
 import { Brain } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 
-export default function FloatingChatGpt() {
+export default function FloatingKakbimaIntelligence() {
     const { t: translate } = useTranslation();
     const { auth } = usePage().props;
     const [isOpen, setIsOpen] = useState(false);
     const [generatedContent, setGeneratedContent] = useState('');
 
-    // Check if user can access ChatGPT
+    // Check if user can access Kakbima Intelligence
     const isSuperAdmin = auth?.user?.type === 'super_admin';
     const isOrganization = auth?.user?.type === 'organization';
 
-    let canUseChatGPT = false;
+    let canUseKakbima Intelligence = false;
 
     if (isSuperAdmin) {
-        canUseChatGPT = true;
+        canUseKakbima Intelligence = true;
     } else if (isOrganization) {
         // For organization users, check their own plan
         const hasActivePlan = auth?.user?.is_plan_active === 1 && auth?.user?.plan;
-        canUseChatGPT = hasActivePlan && auth?.user?.plan?.enable_kakbima_intelligence === 'on';
+        canUseKakbima Intelligence = hasActivePlan && auth?.user?.plan?.enable_kakbima_intelligence === 'on';
     } else {
         // For other users, check the plan of the organization user who created them
         const creator = auth?.user?.creator;
         const hasActivePlan = creator?.is_plan_active === 1 && creator?.plan;
-        canUseChatGPT = hasActivePlan && creator?.plan?.enable_kakbima_intelligence === 'on';
+        canUseKakbima Intelligence = hasActivePlan && creator?.plan?.enable_kakbima_intelligence === 'on';
     }
 
     // Don’t render if user doesn’t have access
-    if (!canUseChatGPT) {
+    if (!canUseKakbima Intelligence) {
         return null;
     }
 
@@ -88,7 +88,7 @@ export default function FloatingChatGpt() {
                 </Button>
             </div>
 
-            <ChatGptModal isOpen={isOpen} onClose={handleModalClose} onGenerate={handleGenerate} title={translate('Kakbima Intelligence')} />
+            <KakbimaIntelligenceModal isOpen={isOpen} onClose={handleModalClose} onGenerate={handleGenerate} title={translate('Kakbima Intelligence')} />
         </>,
         document.body,
     );

@@ -123,27 +123,27 @@ class SystemSettingsController extends Controller
     }
 
     /**
-     * Update the chat-gpt settings.
+     * Update the kakbima-intelligence settings.
      *
      * @param Request $request
      *
      * @return RedirectResponse
      */
-    public function updateChatgpt(Request $request)
+    public function updateKakbimaIntelligence(Request $request)
     {
         try {
             $validated = $request->validate([
-                'chat-gptKey' => 'required|string',
-                'chat-gptModel' => 'required|string',
+                'kakbima_intelligence_key' => 'required|string',
+                'kakbima_intelligence_model' => 'required|string',
             ]);
 
             foreach ($validated as $key => $value) {
                 updateSetting($key, $value);
             }
 
-            return redirect()->back()->with('success', __('Chat GPT settings updated successfully.'));
+            return redirect()->back()->with('success', __('Kakbima Intelligence settings updated successfully.'));
         } catch (Exception $e) {
-            return redirect()->back()->with('error', __('Failed to update Chat GPT settings: :error', ['error' => $e->getMessage()]));
+            return redirect()->back()->with('error', __('Failed to update Kakbima Intelligence settings: :error', ['error' => $e->getMessage()]));
         }
     }
 

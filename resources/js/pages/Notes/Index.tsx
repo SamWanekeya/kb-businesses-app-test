@@ -1,5 +1,5 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
+import CrudFormModal from '@components/CrudFormModal';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Button } from '@components/UserInterface/Button';
@@ -22,6 +22,7 @@ import { route } from '@utils/Routes';
 import { Calendar, Edit, Eye, MoreHorizontal, NotebookPen, Plus, Share2, Trash2, User, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
 export default function Notes() {
     const { t: translate } = useTranslation();
     const {
@@ -307,13 +308,21 @@ export default function Notes() {
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
                                                     {useHasPermission('view-notes') && (
-                                                        <DropdownMenuItem onClick={() => handleAction('view', note)}>
+                                                        <DropdownMenuItem
+                                                            onClick={() => {
+                                                                handleAction('view', note);
+                                                            }}
+                                                        >
                                                             <Eye className="mr-2 h-4 w-4" />
                                                             {translate('View')}
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('edit-notes') && note.created_by === auth.user.id && (
-                                                        <DropdownMenuItem onClick={() => handleAction('edit', note)}>
+                                                        <DropdownMenuItem
+                                                            onClick={() => {
+                                                                handleAction('edit', note);
+                                                            }}
+                                                        >
                                                             <Edit className="mr-2 h-4 w-4" />
                                                             {translate('Edit')}
                                                         </DropdownMenuItem>
@@ -321,7 +330,12 @@ export default function Notes() {
                                                     {useHasPermission('delete-notes') && note.created_by === auth.user.id && (
                                                         <>
                                                             <DropdownMenuSeparator />
-                                                            <DropdownMenuItem onClick={() => handleAction('delete', note)} className="text-red-600">
+                                                            <DropdownMenuItem
+                                                                onClick={() => {
+                                                                    handleAction('delete', note);
+                                                                }}
+                                                                className="text-red-600"
+                                                            >
                                                                 <Trash2 className="mr-2 h-4 w-4" />
                                                                 {translate('Delete')}
                                                             </DropdownMenuItem>
@@ -360,13 +374,21 @@ export default function Notes() {
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
                                                     {useHasPermission('view-notes') && (
-                                                        <DropdownMenuItem onClick={() => handleAction('view', note)}>
+                                                        <DropdownMenuItem
+                                                            onClick={() => {
+                                                                handleAction('view', note);
+                                                            }}
+                                                        >
                                                             <Eye className="mr-2 h-4 w-4 text-gray-500" />
                                                             {translate('View')}
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('edit-notes') && note.created_by === auth.user.id && (
-                                                        <DropdownMenuItem onClick={() => handleAction('edit', note)}>
+                                                        <DropdownMenuItem
+                                                            onClick={() => {
+                                                                handleAction('edit', note);
+                                                            }}
+                                                        >
                                                             <Edit className="mr-2 h-4 w-4 text-gray-500" />
                                                             {translate('Edit')}
                                                         </DropdownMenuItem>
@@ -374,7 +396,12 @@ export default function Notes() {
                                                     {useHasPermission('delete-notes') && note.created_by === auth.user.id && (
                                                         <>
                                                             <DropdownMenuSeparator />
-                                                            <DropdownMenuItem onClick={() => handleAction('delete', note)} className="text-red-600">
+                                                            <DropdownMenuItem
+                                                                onClick={() => {
+                                                                    handleAction('delete', note);
+                                                                }}
+                                                                className="text-red-600"
+                                                            >
                                                                 <Trash2 className="mr-2 h-4 w-4 text-gray-500" />
                                                                 {translate('Delete')}
                                                             </DropdownMenuItem>
@@ -448,7 +475,9 @@ export default function Notes() {
                                                         <Button
                                                             variant="ghost"
                                                             size="icon"
-                                                            onClick={() => handleAction('view', note)}
+                                                            onClick={() => {
+                                                                handleAction('view', note);
+                                                            }}
                                                             className="h-8 w-8 text-blue-500 hover:text-blue-700"
                                                         >
                                                             <Eye className="h-4 w-4 text-gray-500" />
@@ -463,7 +492,9 @@ export default function Notes() {
                                                         <Button
                                                             variant="ghost"
                                                             size="icon"
-                                                            onClick={() => handleAction('edit', note)}
+                                                            onClick={() => {
+                                                                handleAction('edit', note);
+                                                            }}
                                                             className="h-8 w-8 text-amber-500 hover:text-amber-700"
                                                         >
                                                             <Edit className="h-4 w-4 text-gray-500" />
@@ -478,7 +509,9 @@ export default function Notes() {
                                                         <Button
                                                             variant="ghost"
                                                             size="icon"
-                                                            onClick={() => handleAction('delete', note)}
+                                                            onClick={() => {
+                                                                handleAction('delete', note);
+                                                            }}
                                                             className="h-8 w-8 text-red-500 hover:text-red-700"
                                                         >
                                                             <Trash2 className="h-4 w-4 text-gray-500" />
@@ -538,7 +571,9 @@ export default function Notes() {
                                                         <Button
                                                             variant="ghost"
                                                             size="icon"
-                                                            onClick={() => handleAction('view', note)}
+                                                            onClick={() => {
+                                                                handleAction('view', note);
+                                                            }}
                                                             className="h-8 w-8 text-blue-500 hover:text-blue-700"
                                                         >
                                                             <Eye className="h-4 w-4 text-gray-500" />
@@ -553,7 +588,9 @@ export default function Notes() {
                                                         <Button
                                                             variant="ghost"
                                                             size="icon"
-                                                            onClick={() => handleAction('edit', note)}
+                                                            onClick={() => {
+                                                                handleAction('edit', note);
+                                                            }}
                                                             className="h-8 w-8 text-amber-500 hover:text-amber-700"
                                                         >
                                                             <Edit className="h-4 w-4 text-gray-500" />
@@ -568,7 +605,9 @@ export default function Notes() {
                                                         <Button
                                                             variant="ghost"
                                                             size="icon"
-                                                            onClick={() => handleAction('delete', note)}
+                                                            onClick={() => {
+                                                                handleAction('delete', note);
+                                                            }}
                                                             className="h-8 w-8 text-red-500 hover:text-red-700"
                                                         >
                                                             <Trash2 className="h-4 w-4 text-gray-500" />
@@ -591,7 +630,9 @@ export default function Notes() {
                             total={myNotes?.total || 0}
                             links={myNotes?.links}
                             entityName={translate('notes')}
-                            onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
+                            onPageChange={(url) => {
+                                router.get(url, {}, { preserveState: true, preserveScroll: true });
+                            }}
                         />
                     </div>
                 </div>
@@ -599,7 +640,9 @@ export default function Notes() {
 
             <CrudFormModal
                 isOpen={isFormModalOpen}
-                onClose={() => setIsFormModalOpen(false)}
+                onClose={() => {
+                    setIsFormModalOpen(false);
+                }}
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
@@ -647,7 +690,9 @@ export default function Notes() {
 
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.title || ''}
                 entityName={translate('note')}

@@ -1,6 +1,6 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
-import { CrudTable } from '@components/CrudTable';
+import CrudFormModal from '@components/CrudFormModal';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
@@ -202,7 +202,9 @@ export default function DeliveryOrders() {
             label: translate('Add Delivery Order'),
             icon: <Plus className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
             variant: 'default',
-            onClick: () => handleAddNew(),
+            onClick: () => {
+                handleAddNew();
+            },
             className: 'h-8 w-8 min-[500px]:h-9 min-[500px]:w-auto px-0 min-[500px]:px-4',
             labelClassName: 'hidden min-[500px]:inline',
             tooltip: translate('Add Delivery Order'),
@@ -432,7 +434,9 @@ export default function DeliveryOrders() {
                     total={deliveryOrders?.total || 0}
                     links={deliveryOrders?.links}
                     entityName={translate('delivery orders')}
-                    onPageChange={(url) => router.get(url)}
+                    onPageChange={(url) => {
+                        router.get(url);
+                    }}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
                         router.get(
@@ -456,7 +460,9 @@ export default function DeliveryOrders() {
 
             <CrudFormModal
                 isOpen={isStatusModalOpen}
-                onClose={() => setIsStatusModalOpen(false)}
+                onClose={() => {
+                    setIsStatusModalOpen(false);
+                }}
                 onSubmit={handleStatusChange}
                 formConfig={{
                     fields: [
@@ -482,7 +488,9 @@ export default function DeliveryOrders() {
 
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
                 entityName={translate('delivery order')}

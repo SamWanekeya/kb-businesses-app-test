@@ -233,7 +233,9 @@ export default function ReturnOrderCreate() {
                     setErrors(errs);
                     setProcessing(false);
                 },
-                onFinish: () => setProcessing(false),
+                onFinish: () => {
+                    setProcessing(false);
+                },
             },
         );
     };
@@ -251,7 +253,9 @@ export default function ReturnOrderCreate() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('return-orders.index')),
+                    onClick: () => {
+                        router.visit(route('return-orders.index'));
+                    },
                 },
             ]}
         >
@@ -476,7 +480,7 @@ export default function ReturnOrderCreate() {
                                 {users.length === 0 && (
                                     <p className="mt-1 text-xs">
                                         {translate('Click here to add')}{' '}
-                                        <a href={route('users.index')} className="font-medium underline">
+                                        <a href={route('users-permissions.users.index')} className="font-medium underline">
                                             {translate('Users')}
                                         </a>
                                     </p>
@@ -598,7 +602,9 @@ export default function ReturnOrderCreate() {
                                                                         <Button
                                                                             type="button"
                                                                             size="sm"
-                                                                            onClick={() => addToReturn(item)}
+                                                                            onClick={() => {
+                                                                                addToReturn(item);
+                                                                            }}
                                                                             className="flex h-8 w-8 items-center justify-center bg-emerald-500 p-2 text-white hover:bg-emerald-600 min-[1200px]:h-auto min-[1200px]:w-auto min-[1200px]:px-3 min-[1200px]:py-1.5"
                                                                         >
                                                                             <Plus className="h-4 w-4 min-[1200px]:mr-1" />
@@ -676,7 +682,9 @@ export default function ReturnOrderCreate() {
                                                             min="1"
                                                             max={item.maximum_quantity}
                                                             value={item.return_quantity}
-                                                            onChange={(e) => setReturnQuantity(item.product_id, parseInt(e.target.value) || 1)}
+                                                            onChange={(e) => {
+                                                                setReturnQuantity(item.product_id, parseInt(e.target.value) || 1);
+                                                            }}
                                                             className={`w-20 ${quantityError ? 'border-red-500' : ''}`}
                                                         />
                                                         {quantityError && (
@@ -701,7 +709,9 @@ export default function ReturnOrderCreate() {
                                                     <td className="py-4">
                                                         <button
                                                             type="button"
-                                                            onClick={() => removeReturnItem(item.product_id)}
+                                                            onClick={() => {
+                                                                removeReturnItem(item.product_id);
+                                                            }}
                                                             className="cursor-pointer text-red-500 transition-colors hover:text-red-700"
                                                         >
                                                             <Trash2 className="h-4 w-4 text-gray-500" />
@@ -769,7 +779,13 @@ export default function ReturnOrderCreate() {
 
                 {/* Actions */}
                 <div className="flex justify-end gap-3 pb-6">
-                    <Button type="button" variant="outline" onClick={() => window.history.back()}>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                            window.history.back();
+                        }}
+                    >
                         {translate('Cancel')}
                     </Button>
                     <Button type="button" disabled={processing || returnItems.length === 0} onClick={handleSubmit}>

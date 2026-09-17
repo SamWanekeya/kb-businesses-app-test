@@ -1,5 +1,5 @@
 import CookieConsentBanner from '@components/CookieConsentBanner';
-import FloatingChatGpt from '@components/FloatingChatGpt';
+import FloatingKakbimaIntelligence from '@components/FloatingKakbimaIntelligence';
 import { SidebarProvider } from '@components/UserInterface/Sidebar';
 import { getFromLocalStorage } from '@utils/Helpers/Storage';
 import { useState } from 'react';
@@ -24,7 +24,7 @@ interface AppShellProps {
  * Only one shell should be mounted per SPA instance to avoid duplicated
  * global integrations and sidebar conflicts.
  *
- * `FloatingChatGpt` and `CookieConsentBanner` are mounted regardless of variant.
+ * `FloatingKakbimaIntelligence` and `CookieConsentBanner` are mounted regardless of variant.
  *
  * Usage is limited to full-page layouts. Do not wrap feature-level components.
  */
@@ -52,7 +52,7 @@ export default function AppShell({ children, variant = 'header' }: AppShellProps
         return (
             <div className="flex min-h-screen w-full flex-col">
                 {children}
-                <FloatingChatGpt />
+                <FloatingKakbimaIntelligence />
                 <CookieConsentBanner />
             </div>
         );
@@ -62,7 +62,7 @@ export default function AppShell({ children, variant = 'header' }: AppShellProps
         <SidebarProvider defaultOpen={isOpen} open={isOpen} onOpenChange={handleSidebarChange}>
             <div className="flex w-full">
                 {children}
-                <FloatingChatGpt />
+                <FloatingKakbimaIntelligence />
                 <CookieConsentBanner />
             </div>
         </SidebarProvider>

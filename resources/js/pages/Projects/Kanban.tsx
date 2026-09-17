@@ -1,5 +1,5 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
+import CrudFormModal from '@components/CrudFormModal';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
@@ -195,7 +195,9 @@ export default function ProjectKanban() {
             label: translate('Back'),
             icon: <ArrowLeft className="mr-2 h-4 w-4" />,
             variant: 'outline',
-            onClick: () => router.get(route('projects.show', project.id)),
+            onClick: () => {
+                router.get(route('projects.show', project.id));
+            },
         },
     ];
 
@@ -286,7 +288,9 @@ export default function ProjectKanban() {
                             </div>
                             {useHasPermission('manage-task-statuses') && (
                                 <button
-                                    onClick={() => router.visit(route('task-statuses.index'))}
+                                    onClick={() => {
+                                        router.visit(route('task-statuses.index'));
+                                    }}
                                     className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
                                 >
                                     <Plus className="h-4 w-4" />
@@ -305,7 +309,9 @@ export default function ProjectKanban() {
                                 key={status.id}
                                 className="flex flex-shrink-0 flex-col rounded-xl border"
                                 style={{ width: '300px', minWidth: '300px', backgroundColor: colBg, borderColor: colBorder, height: '100%' }}
-                                onDragOver={(e) => e.preventDefault()}
+                                onDragOver={(e) => {
+                                    e.preventDefault();
+                                }}
                                 onDrop={(e) => {
                                     e.preventDefault();
                                     const taskId = e.dataTransfer.getData('taskId');
@@ -353,7 +359,9 @@ export default function ProjectKanban() {
                                     </div>
                                     {useHasPermission('create-project-tasks') && (
                                         <button
-                                            onClick={() => handleAddTask(status.id)}
+                                            onClick={() => {
+                                                handleAddTask(status.id);
+                                            }}
                                             className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-white/60 hover:text-gray-800"
                                             title={translate('Add Task')}
                                         >
@@ -384,7 +392,9 @@ export default function ProjectKanban() {
                                                     e.dataTransfer.setData('taskId', task.id.toString());
                                                     e.currentTarget.classList.add('opacity-50');
                                                 }}
-                                                onDragEnd={(e) => e.currentTarget.classList.remove('opacity-50')}
+                                                onDragEnd={(e) => {
+                                                    e.currentTarget.classList.remove('opacity-50');
+                                                }}
                                                 className={useHasPermission('edit-project-tasks') ? 'cursor-grab active:cursor-grabbing' : ''}
                                             >
                                                 <div className="rounded-lg border border-gray-100 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
@@ -394,7 +404,9 @@ export default function ProjectKanban() {
                                                             <div className="min-w-0 flex-1">
                                                                 <h4
                                                                     className="hover:text-primary cursor-pointer truncate text-sm leading-tight font-semibold text-gray-900 transition-colors dark:text-gray-100"
-                                                                    onClick={() => handleAction('view', task)}
+                                                                    onClick={() => {
+                                                                        handleAction('view', task);
+                                                                    }}
                                                                 >
                                                                     {task.title}
                                                                 </h4>
@@ -410,12 +422,20 @@ export default function ProjectKanban() {
                                                                     </Button>
                                                                 </DropdownMenuTrigger>
                                                                 <DropdownMenuContent align="end" className="w-32">
-                                                                    <DropdownMenuItem onClick={() => handleAction('view', task)}>
+                                                                    <DropdownMenuItem
+                                                                        onClick={() => {
+                                                                            handleAction('view', task);
+                                                                        }}
+                                                                    >
                                                                         <Eye className="mr-2 h-4 w-4" />
                                                                         {translate('View')}
                                                                     </DropdownMenuItem>
                                                                     {useHasPermission('edit-project-tasks') && (
-                                                                        <DropdownMenuItem onClick={() => handleAction('edit', task)}>
+                                                                        <DropdownMenuItem
+                                                                            onClick={() => {
+                                                                                handleAction('edit', task);
+                                                                            }}
+                                                                        >
                                                                             <Edit className="mr-2 h-4 w-4" />
                                                                             {translate('Edit')}
                                                                         </DropdownMenuItem>
@@ -424,7 +444,9 @@ export default function ProjectKanban() {
                                                                         <>
                                                                             <DropdownMenuSeparator />
                                                                             <DropdownMenuItem
-                                                                                onClick={() => handleAction('delete', task)}
+                                                                                onClick={() => {
+                                                                                    handleAction('delete', task);
+                                                                                }}
                                                                                 className="text-red-600"
                                                                             >
                                                                                 <Trash2 className="mr-2 h-4 w-4" />
@@ -522,7 +544,9 @@ export default function ProjectKanban() {
 
             <CrudFormModal
                 isOpen={isFormModalOpen}
-                onClose={() => setIsFormModalOpen(false)}
+                onClose={() => {
+                    setIsFormModalOpen(false);
+                }}
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
@@ -586,7 +610,9 @@ export default function ProjectKanban() {
 
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.title || ''}
                 entityName="task"

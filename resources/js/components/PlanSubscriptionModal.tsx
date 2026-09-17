@@ -1,4 +1,4 @@
-import PaymentProcessor from '@components/Payment/PaymentProcessor';
+import { PaymentProcessor } from '@components/Payment/PaymentProcessor';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
 import { useTranslation } from 'react-i18next';
 

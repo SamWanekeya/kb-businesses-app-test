@@ -10,7 +10,17 @@ use App\Http\Controllers\Auth\SignUpUserController;
 use App\Http\Controllers\Auth\VerifyEmailTokenController;
 use Illuminate\Support\Facades\Route;
 
-// Guest routes
+/*
+|--------------------------------------------------------------------------
+| Authentication Routes
+|--------------------------------------------------------------------------
+|
+| Routes for signing in, signing up, verifying email addresses,
+| recovering passwords, and signing out of Kakbima.
+|
+*/
+
+// Routes accessible only to unauthenticated users.
 Route::middleware(['web', 'guest'])->group(function () {
     Route::get('sign-in', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
@@ -20,8 +30,8 @@ Route::middleware(['web', 'guest'])->group(function () {
 
     Route::get('sign-up', [SignUpUserController::class, 'create'])
         ->name('register');
-    Route::post('sign-up', [SignUpUserController::class, 'register']);
 
+    Route::post('sign-up', [SignUpUserController::class, 'register']);
     Route::get('account-recovery', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');
 
@@ -36,11 +46,12 @@ Route::middleware(['web', 'guest'])->group(function () {
         ->name('password.store');
 });
 
+// Verify the user's email address using the verification token.
 Route::get('verify-email/{token}', VerifyEmailTokenController::class)
     ->middleware(['web', 'throttle:6,1'])
     ->name('verification-verify.token');
 
-// Auth routes
+// Routes available only to authenticated users.
 Route::middleware(['web', 'auth'])->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');

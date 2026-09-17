@@ -1,6 +1,6 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
-import { CrudTable } from '@components/CrudTable';
+import CrudFormModal from '@components/CrudFormModal';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import UserInitials from '@components/UserInitials';
@@ -265,7 +265,9 @@ export default function Contacts() {
             icon: <Plus className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
             variant: isDisabled ? 'outline' : 'default',
             disabled: isDisabled,
-            onClick: () => handleAddNew(),
+            onClick: () => {
+                handleAddNew();
+            },
             className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
             labelClassName: 'hidden min-[400px]:inline',
             tooltip: isDisabled
@@ -487,7 +489,9 @@ export default function Contacts() {
                         total={contacts?.total || 0}
                         links={contacts?.links}
                         entityName={translate('contacts')}
-                        onPageChange={(url) => router.get(url)}
+                        onPageChange={(url) => {
+                            router.get(url);
+                        }}
                         currentPerPage={pageFilters.per_page?.toString() || '10'}
                         onPerPageChange={(value) => {
                             router.get(
@@ -532,26 +536,43 @@ export default function Contacts() {
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end" className="z-50 w-40" sideOffset={5}>
                                                 {useHasPermission('view-contacts') && (
-                                                    <DropdownMenuItem onClick={() => handleAction('view', contact)}>
+                                                    <DropdownMenuItem
+                                                        onClick={() => {
+                                                            handleAction('view', contact);
+                                                        }}
+                                                    >
                                                         <Eye className="mr-2 h-4 w-4" />
                                                         <span>{translate('View Contact')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {useHasPermission('toggle-status-contacts') && (
-                                                    <DropdownMenuItem onClick={() => handleAction('toggle-status', contact)}>
+                                                    <DropdownMenuItem
+                                                        onClick={() => {
+                                                            handleAction('toggle-status', contact);
+                                                        }}
+                                                    >
                                                         <Lock className="mr-2 h-4 w-4" />
                                                         <span>{contact.status === 'active' ? translate('Deactivate') : translate('Activate')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {useHasPermission('edit-contacts') && (
-                                                    <DropdownMenuItem onClick={() => handleAction('edit', contact)}>
+                                                    <DropdownMenuItem
+                                                        onClick={() => {
+                                                            handleAction('edit', contact);
+                                                        }}
+                                                    >
                                                         <Edit className="mr-2 h-4 w-4" />
                                                         <span>{translate('Edit')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 <DropdownMenuSeparator />
                                                 {useHasPermission('delete-contacts') && (
-                                                    <DropdownMenuItem onClick={() => handleAction('delete', contact)} className="text-rose-600">
+                                                    <DropdownMenuItem
+                                                        onClick={() => {
+                                                            handleAction('delete', contact);
+                                                        }}
+                                                        className="text-rose-600"
+                                                    >
                                                         <Trash2 className="mr-2 h-4 w-4" />
                                                         <span>{translate('Delete')}</span>
                                                     </DropdownMenuItem>
@@ -646,7 +667,9 @@ export default function Contacts() {
                             total={contacts?.total || 0}
                             links={contacts?.links}
                             entityName={translate('contacts')}
-                            onPageChange={(url) => router.get(url)}
+                            onPageChange={(url) => {
+                                router.get(url);
+                            }}
                             perPageOptions={[12, 24, 48, 96]}
                             currentPerPage={pageFilters.per_page?.toString() || '12'}
                             onPerPageChange={(value) => {
@@ -674,7 +697,9 @@ export default function Contacts() {
             {/* Form Modal */}
             <CrudFormModal
                 isOpen={isFormModalOpen}
-                onClose={() => setIsFormModalOpen(false)}
+                onClose={() => {
+                    setIsFormModalOpen(false);
+                }}
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
@@ -723,7 +748,7 @@ export default function Contacts() {
                             emptyNote:
                                 users.length === 0
                                     ? {
-                                          link: route('users.index'),
+                                          link: route('users-permissions.users.index'),
                                           linkText: translate('Users'),
                                       }
                                     : undefined,
@@ -757,7 +782,9 @@ export default function Contacts() {
             {/* Delete Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
                 entityName={translate('contact')}

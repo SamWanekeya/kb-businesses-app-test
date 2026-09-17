@@ -1,4 +1,4 @@
-import { CrudTable } from '@components/CrudTable';
+import CrudTable from '@components/CrudTable';
 import PageTemplate from '@components/PageTemplate';
 import { Input } from '@components/UserInterface/Input';
 import Pagination from '@components/UserInterface/Pagination';
@@ -42,7 +42,7 @@ interface Props {
     };
 }
 
-export default function NotificationTemplatesIndex({ templates, filters: pageFilters = {} }: Props) {
+export default function NotificationTemplatesIndex({ templates, filters: pageFilters }: Props) {
     const { t: translate } = useTranslation();
     const [searchTerm, setSearchTerm] = useState(pageFilters.search || '');
     const [activeType, setActiveType] = useState(pageFilters.type || 'slack');
@@ -56,7 +56,9 @@ export default function NotificationTemplatesIndex({ templates, filters: pageFil
             return;
         }
         const timer = setTimeout(() => formRef.current?.requestSubmit(), 500);
-        return () => clearTimeout(timer);
+        return () => {
+            clearTimeout(timer);
+        };
     }, [searchTerm]);
 
     const handleSearch = (e: React.FormEvent) => {
@@ -134,13 +136,17 @@ export default function NotificationTemplatesIndex({ templates, filters: pageFil
                                 <Input
                                     placeholder={translate('Search...')}
                                     value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    onChange={(e) => {
+                                        setSearchTerm(e.target.value);
+                                    }}
                                     className="h-8 w-full px-9"
                                 />
                                 {searchTerm && (
                                     <X
                                         className="text-muted-foreground absolute top-2 right-2.5 h-4 w-4 cursor-pointer"
-                                        onClick={() => setSearchTerm('')}
+                                        onClick={() => {
+                                            setSearchTerm('');
+                                        }}
                                     />
                                 )}
                             </div>
@@ -205,7 +211,9 @@ export default function NotificationTemplatesIndex({ templates, filters: pageFil
                             { preserveState: true, preserveScroll: true },
                         );
                     }}
-                    onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
+                    onPageChange={(url) => {
+                        router.get(url, {}, { preserveState: true, preserveScroll: true });
+                    }}
                 />
             </div>
         </PageTemplate>

@@ -34,7 +34,9 @@ export default function ProjectShow() {
         labelClassName: 'hidden min-[450px]:inline',
         tooltip: translate('Back'),
         tooltipClassName: 'min-[450px]:hidden',
-        onClick: () => window.history.back(),
+        onClick: () => {
+            window.history.back();
+        },
     });
 
     if (useHasPermission('view-project-tasks')) {
@@ -46,7 +48,9 @@ export default function ProjectShow() {
             labelClassName: 'hidden min-[1100px]:inline',
             tooltip: translate('Kanban View'),
             tooltipClassName: 'min-[1100px]:hidden',
-            onClick: () => router.get(route('projects.kanban', project.id)),
+            onClick: () => {
+                router.get(route('projects.kanban', project.id));
+            },
         });
 
         pageActions.push({
@@ -57,7 +61,9 @@ export default function ProjectShow() {
             labelClassName: 'hidden min-[1100px]:inline',
             tooltip: translate('Gantt View'),
             tooltipClassName: 'min-[1100px]:hidden',
-            onClick: () => router.get(route('projects.gantt', project.id)),
+            onClick: () => {
+                router.get(route('projects.gantt', project.id));
+            },
         });
     }
 

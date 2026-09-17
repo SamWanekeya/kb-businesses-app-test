@@ -1,4 +1,4 @@
-import { CrudTable } from '@components/CrudTable';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterface/Card';
@@ -33,7 +33,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
 
     const handleCreatePayout = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route('referral.payout-request.create'), {
+        post(route('referral-program.payout-request.create'), {
             onSuccess: (page) => {
                 setShowCreateDialog(false);
                 reset();
@@ -54,7 +54,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
     const handleAction = (action: string, item: any) => {
         if (action === 'approve') {
             router.post(
-                route('referral.payout-request.approve', item.id),
+                route('referral-program.payout-request.approve', item.id),
                 {},
                 {
                     onSuccess: (page) => {
@@ -79,7 +79,7 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
 
     const handleRejectConfirm = (notes: string) => {
         router.post(
-            route('referral.payout-request.reject', currentItem.id),
+            route('referral-program.payout-request.reject', currentItem.id),
             { notes },
             {
                 onSuccess: (page) => {
@@ -199,7 +199,9 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                                             min={settings.threshold_amount}
                                             max={stats.availableBalance}
                                             value={data.amount}
-                                            onChange={(e) => setData('amount', e.target.value)}
+                                            onChange={(e) => {
+                                                setData('amount', e.target.value);
+                                            }}
                                             placeholder={`Min: $${settings.threshold_amount}`}
                                         />
                                         {errors.amount && <p className="text-sm text-red-500">{errors.amount}</p>}
@@ -221,7 +223,13 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                                         </p>
                                     </div>
                                     <DialogFooter>
-                                        <Button type="button" variant="outline" onClick={() => setShowCreateDialog(false)}>
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            onClick={() => {
+                                                setShowCreateDialog(false);
+                                            }}
+                                        >
                                             {translate('Cancel')}
                                         </Button>
                                         <Button type="submit" disabled={processing}>
@@ -285,7 +293,13 @@ export default function PayoutRequests({ userType, payoutRequests, settings, sta
                             </div>
                         </div>
                         <DialogFooter>
-                            <Button type="button" variant="outline" onClick={() => setIsRejectModalOpen(false)}>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => {
+                                    setIsRejectModalOpen(false);
+                                }}
+                            >
                                 {translate('Cancel')}
                             </Button>
                             <Button type="submit" variant="destructive">

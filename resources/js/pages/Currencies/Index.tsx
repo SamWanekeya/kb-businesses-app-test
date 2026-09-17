@@ -1,7 +1,7 @@
 // pages/currencies/index.tsx
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
-import { CrudTable } from '@components/CrudTable';
+import CrudFormModal from '@components/CrudFormModal';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Dialog } from '@components/UserInterface/Dialog';
@@ -205,7 +205,9 @@ export default function Currencies() {
             label: translate('Add Currency'),
             icon: <Plus className="mr-0 h-4 w-4 min-[340px]:mr-2" />,
             variant: 'default',
-            onClick: () => handleAddNew(),
+            onClick: () => {
+                handleAddNew();
+            },
             className: 'h-8 w-8 min-[340px]:h-9 min-[340px]:w-auto px-0 min-[340px]:px-4',
             labelClassName: 'hidden min-[340px]:inline',
             tooltip: translate('Add Currency'),
@@ -325,7 +327,9 @@ export default function Currencies() {
                     total={currencies?.total || 0}
                     links={currencies?.links}
                     entityName={translate('currencies')}
-                    onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
+                    onPageChange={(url) => {
+                        router.get(url, {}, { preserveState: true, preserveScroll: true });
+                    }}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
                         const params: any = {
@@ -350,7 +354,9 @@ export default function Currencies() {
             {/* Form Modal */}
             <CrudFormModal
                 isOpen={isFormModalOpen}
-                onClose={() => setIsFormModalOpen(false)}
+                onClose={() => {
+                    setIsFormModalOpen(false);
+                }}
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
@@ -403,7 +409,9 @@ export default function Currencies() {
             {/* Delete Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
                 entityName="currency"

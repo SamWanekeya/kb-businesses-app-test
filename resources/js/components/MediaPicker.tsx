@@ -61,7 +61,7 @@ export default function MediaPicker({
         if (returnType === 'id' && value) {
             const ids = Array.isArray(value) ? value : [value].filter(Boolean);
             if (ids.length > 0) {
-                fetch(route('api.media.index'), {
+                fetch(route('media-library.media.index'), {
                     credentials: 'same-origin',
                     headers: {
                         Accept: 'application/json',
@@ -131,11 +131,20 @@ export default function MediaPicker({
                 <Input
                     className="min-w-0 flex-1"
                     value={displayValue}
-                    onChange={(e) => onChange(e.target.value)}
+                    onChange={(e) => {
+                        onChange(e.target.value);
+                    }}
                     placeholder={placeholder}
                     readOnly={multiple}
                 />
-                <Button type="button" variant="outline" onClick={() => setIsModalOpen(true)} className="shrink-0 max-[400px]:px-2.5">
+                <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                        setIsModalOpen(true);
+                    }}
+                    className="shrink-0 max-[400px]:px-2.5"
+                >
                     <ImageIcon className="mr-0 h-4 w-4 min-[405px]:mr-2" />
                     <span className="max-[405px]:hidden">Browse</span>
                 </Button>
@@ -195,7 +204,9 @@ export default function MediaPicker({
 
             <MediaLibraryModal
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={() => {
+                    setIsModalOpen(false);
+                }}
                 onSelect={handleSelect}
                 multiple={multiple}
                 returnType={returnType}

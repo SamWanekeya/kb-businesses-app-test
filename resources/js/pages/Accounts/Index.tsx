@@ -1,5 +1,5 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudTable } from '@components/CrudTable';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import UserInitials from '@components/UserInitials';
@@ -222,7 +222,9 @@ export default function Accounts() {
                       toast.error(
                           translate('Account limit reached. Your plan allows maximum {{max}} accounts.', { max: planLimits.maximum_accounts }),
                       )
-                : () => router.visit(route('accounts.create')),
+                : () => {
+                      router.visit(route('accounts.create'));
+                  },
             className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
             labelClassName: 'hidden min-[400px]:inline',
             tooltip: translate('Add Account'),
@@ -491,7 +493,9 @@ export default function Accounts() {
                         total={accounts?.total || 0}
                         links={accounts?.links}
                         entityName={translate('accounts')}
-                        onPageChange={(url) => router.get(url)}
+                        onPageChange={(url) => {
+                            router.get(url);
+                        }}
                         currentPerPage={pageFilters.per_page?.toString() || '10'}
                         onPerPageChange={(value) => {
                             router.get(
@@ -537,26 +541,43 @@ export default function Accounts() {
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end" className="z-50 w-40" sideOffset={5}>
                                                 {useHasPermission('view-accounts') && (
-                                                    <DropdownMenuItem onClick={() => handleAction('view', account)}>
+                                                    <DropdownMenuItem
+                                                        onClick={() => {
+                                                            handleAction('view', account);
+                                                        }}
+                                                    >
                                                         <Eye className="mr-2 h-4 w-4" />
                                                         <span>{translate('View Account')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {useHasPermission('toggle-status-accounts') && (
-                                                    <DropdownMenuItem onClick={() => handleAction('toggle-status', account)}>
+                                                    <DropdownMenuItem
+                                                        onClick={() => {
+                                                            handleAction('toggle-status', account);
+                                                        }}
+                                                    >
                                                         <Lock className="mr-2 h-4 w-4" />
                                                         <span>{account.status === 'active' ? translate('Deactivate') : translate('Activate')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {useHasPermission('edit-accounts') && (
-                                                    <DropdownMenuItem onClick={() => handleAction('edit', account)}>
+                                                    <DropdownMenuItem
+                                                        onClick={() => {
+                                                            handleAction('edit', account);
+                                                        }}
+                                                    >
                                                         <Edit className="mr-2 h-4 w-4" />
                                                         <span>{translate('Edit')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 <DropdownMenuSeparator />
                                                 {useHasPermission('delete-accounts') && (
-                                                    <DropdownMenuItem onClick={() => handleAction('delete', account)} className="text-rose-600">
+                                                    <DropdownMenuItem
+                                                        onClick={() => {
+                                                            handleAction('delete', account);
+                                                        }}
+                                                        className="text-rose-600"
+                                                    >
                                                         <Trash2 className="mr-2 h-4 w-4" />
                                                         <span>{translate('Delete')}</span>
                                                     </DropdownMenuItem>
@@ -680,7 +701,9 @@ export default function Accounts() {
                             total={accounts?.total || 0}
                             links={accounts?.links}
                             entityName={translate('accounts')}
-                            onPageChange={(url) => router.get(url)}
+                            onPageChange={(url) => {
+                                router.get(url);
+                            }}
                             perPageOptions={[12, 24, 48, 96]}
                             currentPerPage={pageFilters.per_page?.toString() || '12'}
                             onPerPageChange={(value) => {
@@ -709,7 +732,9 @@ export default function Accounts() {
             {/* Delete Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
                 entityName={translate('account')}

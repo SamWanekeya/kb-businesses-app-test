@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Services\StorageConfigService;
 use Exception;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 use Log;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Storage;
@@ -49,6 +51,8 @@ class MediaController extends Controller
                     try {
                         $thumbUrl = $this->getFullUrl($media->getUrl('thumb'));
                     } catch (Exception $e) {
+                // Fail silently but log once for investigation
+                Log::error($e);
                         // If thumb conversion fails, use original
                     }
 
@@ -64,6 +68,8 @@ class MediaController extends Controller
                         'created_at' => $media->created_at,
                     ];
                 } catch (Exception $e) {
+                // Fail silently but log once for investigation
+                Log::error($e);
                     // Skip media files with unavailable storage disks
                     return null;
                 }
@@ -154,6 +160,8 @@ class MediaController extends Controller
                 try {
                     $media->getUrl('thumb');
                 } catch (Exception $e) {
+                // Fail silently but log once for investigation
+                Log::error($e);
                     // Thumbnail generation failed, but continue
                 }
 
@@ -163,6 +171,8 @@ class MediaController extends Controller
                 try {
                     $thumbUrl = $this->getFullUrl($media->getUrl('thumb'));
                 } catch (Exception $e) {
+                // Fail silently but log once for investigation
+                Log::error($e);
                     // If thumb conversion fails, use original
                 }
 
@@ -178,6 +188,8 @@ class MediaController extends Controller
                     'created_at' => $media->created_at,
                 ];
             } catch (Exception $e) {
+                // Fail silently but log once for investigation
+                Log::error($e);
                 if (isset($mediaItem)) {
                     $mediaItem->delete();
                 }
@@ -220,7 +232,8 @@ class MediaController extends Controller
 
             return null; // No error
         } catch (Exception $e) {
-            Log::error('Storage validation failed', ['error' => $e->getMessage()]);
+                // Fail silently but log once for investigation
+                Log::error($e);
 
             return response()->json([
                 'message' => __('Storage configuration error'),
@@ -370,6 +383,8 @@ class MediaController extends Controller
 
             return response()->download($filePath, $media->file_name);
         } catch (Exception $e) {
+                // Fail silently but log once for investigation
+                Log::error($e);
             abort(404, __('File storage unavailable'));
         }
     }
@@ -392,6 +407,8 @@ class MediaController extends Controller
         try {
             $media->delete();
         } catch (Exception $e) {
+                // Fail silently but log once for investigation
+                Log::error($e);
             // If storage disk is unavailable, force delete from database
             $media->forceDelete();
         }
@@ -406,5 +423,42 @@ class MediaController extends Controller
         }
 
         return response()->json(['message' => __('Media deleted successfully')]);
+    }
+
+    /**
+     * Render the Inertia media library page with storage limits.
+     */
+    public function mediaLibrary(Request $request): Response
+    {
+        $planLimits = null;
+        $user = $request->user();
+
+        if ($user && $user->type === 'organization') {
+            $plan = $user->getCurrentPlan();
+
+            if ($plan && $plan->storage_limit > 0) {
+                // Pata watumiaji wote waliofunguliwa na shirika hili, pamoja na shirika lenyewe
+                $organizationUsers = User::where('created_by', $user->id)
+                    ->pluck('id')
+                    ->push($user->id);
+
+                // Hesabu jumla ya nafasi iliyotumika sasa hivi
+                $currentStorageUsage = Media::whereIn('user_id', $organizationUsers)
+                    ->sum('size');
+
+                // Badilisha kikomo cha GB kwenda kwenye Bytes
+                $storageLimit = $plan->storage_limit * 1024 * 1024 * 1024;
+
+                $planLimits = [
+                    'current_storage' => $currentStorageUsage,
+                    'maximum_storage' => $storageLimit,
+                    'can_create' => $currentStorageUsage < $storageLimit,
+                ];
+            }
+        }
+
+        return Inertia::render('MediaLibrary', [
+            'planLimits' => $planLimits,
+        ]);
     }
 }

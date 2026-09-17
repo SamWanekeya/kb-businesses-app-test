@@ -46,7 +46,9 @@ export default function CampaignCreate() {
         if (!data.assigned_to) errs.assigned_to = translate('Assign To is required');
 
         if (Object.keys(errs).length > 0) {
-            Object.entries(errs).forEach(([k, v]) => setError(k as any, v));
+            Object.entries(errs).forEach(([k, v]) => {
+                setError(k as any, v);
+            });
             return;
         }
 
@@ -77,7 +79,9 @@ export default function CampaignCreate() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('campaigns.index')),
+                    onClick: () => {
+                        router.visit(route('campaigns.index'));
+                    },
                 },
             ]}
             noPadding
@@ -239,7 +243,7 @@ export default function CampaignCreate() {
                             {users.length === 0 && (
                                 <p className="mt-1 text-xs">
                                     {translate('Click here to add')}{' '}
-                                    <a href={route('users.index')} className="font-medium underline">
+                                    <a href={route('users-permissions.users.index')} className="font-medium underline">
                                         {translate('Users')}
                                     </a>
                                 </p>
@@ -311,7 +315,13 @@ export default function CampaignCreate() {
 
                 {/* Actions */}
                 <div className="flex justify-end gap-3 pb-6">
-                    <Button type="button" variant="outline" onClick={() => router.visit(route('campaigns.index'))}>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                            router.visit(route('campaigns.index'));
+                        }}
+                    >
                         {translate('Cancel')}
                     </Button>
                     <Button type="submit" disabled={processing}>

@@ -1,7 +1,7 @@
 // pages/users/index.tsx
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
-import { CrudTable } from '@components/CrudTable';
+import CrudFormModal from '@components/CrudFormModal';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
@@ -55,7 +55,7 @@ export default function Users() {
 
     const applyFilters = () => {
         router.get(
-            route('users.index'),
+            route('users-permissions.users.index'),
             {
                 view: activeView,
                 page: 1,
@@ -72,7 +72,7 @@ export default function Users() {
     const handleSort = (field: string) => {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
         router.get(
-            route('users.index'),
+            route('users-permissions.users.index'),
             {
                 view: activeView,
                 page: 1,
@@ -126,7 +126,7 @@ export default function Users() {
         if (formMode === 'create') {
             const toastId = toast.loading(translate('Creating user...'));
 
-            router.post(route('users.store'), formData, {
+            router.post(route('users-permissions.users.store'), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
                     toast.dismiss(toastId);
@@ -150,7 +150,7 @@ export default function Users() {
         } else if (formMode === 'edit') {
             const toastId = toast.loading(translate('Updating user...'));
 
-            router.put(route('users.update', currentItem.id), formData, {
+            router.put(route('users-permissions.users.update', currentItem.id), formData, {
                 onSuccess: (page) => {
                     setIsFormModalOpen(false);
                     toast.dismiss(toastId);
@@ -177,7 +177,7 @@ export default function Users() {
     const handleDeleteConfirm = () => {
         const toastId = toast.loading(translate('Deleting user...'));
 
-        router.delete(route('users.destroy', currentItem.id), {
+        router.delete(route('users-permissions.users.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
                 toast.dismiss(toastId);
@@ -203,7 +203,7 @@ export default function Users() {
     const handleResetPasswordConfirm = (data: { password: string; password_confirmation: string }) => {
         const toastId = toast.loading(translate('Resetting password...'));
 
-        router.put(route('users.reset-password', currentItem.id), data, {
+        router.put(route('users-permissions.users.reset-password', currentItem.id), data, {
             onSuccess: (page) => {
                 setIsResetPasswordModalOpen(false);
                 toast.dismiss(toastId);
@@ -229,7 +229,7 @@ export default function Users() {
         toast.loading(`${newStatus === 'active' ? translate('Activating') : translate('Deactivating')} user...`);
 
         router.put(
-            route('users.toggle-status', user.id),
+            route('users-permissions.users.toggle-status', user.id),
             {},
             {
                 onSuccess: (page) => {
@@ -264,7 +264,7 @@ export default function Users() {
     const handleResetFilters = () => {
         setSelectedRole('all');
         setSearchTerm('');
-        router.get(route('users.index'), { view: activeView });
+        router.get(route('users-permissions.users.index'), { view: activeView });
     };
 
     // Define page actions
@@ -275,7 +275,9 @@ export default function Users() {
         pageActions.push({
             icon: <History className="mx-auto h-4 w-4" />,
             variant: 'outline',
-            onClick: () => router.visit(route('sign-in-history.index')),
+            onClick: () => {
+                router.visit(route('sign-in-history.index'));
+            },
             tooltip: translate('Sign in History'),
         });
     }
@@ -295,7 +297,9 @@ export default function Users() {
             tooltip: translate('Add User'),
             tooltipClassName: 'min-[300px]:hidden',
             onClick: canCreate
-                ? () => handleAddNew()
+                ? () => {
+                      handleAddNew();
+                  }
                 : () =>
                       toast.error(
                           translate('User limit exceeded. Your plan allows maximum {{max}} users. Please upgrade your plan.', {
@@ -308,7 +312,7 @@ export default function Users() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard') },
-        { title: translate('Staff'), href: route('users.index') },
+        { title: translate('Staff'), href: route('users-permissions.users.index') },
         { title: translate('Users') },
     ];
 
@@ -438,7 +442,7 @@ export default function Users() {
                     activeView={activeView}
                     onViewChange={(view) => {
                         setActiveView(view);
-                        router.get(route('users.index'), {
+                        router.get(route('users-permissions.users.index'), {
                             view,
                             page: 1,
                             search: searchTerm || undefined,
@@ -479,11 +483,13 @@ export default function Users() {
                         total={users?.total || 0}
                         links={users?.links}
                         entityName={translate('users')}
-                        onPageChange={(url) => router.get(url)}
+                        onPageChange={(url) => {
+                            router.get(url);
+                        }}
                         currentPerPage={pageFilters.per_page?.toString() || '10'}
                         onPerPageChange={(value) => {
                             router.get(
-                                route('users.index'),
+                                route('users-permissions.users.index'),
                                 {
                                     view: activeView,
                                     page: 1,
@@ -551,7 +557,9 @@ export default function Users() {
                                                         <Button
                                                             variant="ghost"
                                                             size="sm"
-                                                            onClick={() => handleAction('view', user)}
+                                                            onClick={() => {
+                                                                handleAction('view', user);
+                                                            }}
                                                             className="h-8 w-8 p-0 text-blue-500 hover:bg-transparent hover:text-blue-600 dark:hover:bg-transparent"
                                                         >
                                                             <Eye className="h-4 w-4 text-gray-500" />
@@ -566,7 +574,9 @@ export default function Users() {
                                                         <Button
                                                             variant="ghost"
                                                             size="sm"
-                                                            onClick={() => handleAction('edit', user)}
+                                                            onClick={() => {
+                                                                handleAction('edit', user);
+                                                            }}
                                                             className="h-8 w-8 p-0 text-amber-500 hover:bg-transparent hover:text-amber-600 dark:hover:bg-transparent"
                                                         >
                                                             <Edit className="h-4 w-4 text-gray-500" />
@@ -581,7 +591,9 @@ export default function Users() {
                                                         <Button
                                                             variant="ghost"
                                                             size="sm"
-                                                            onClick={() => handleAction('reset-password', user)}
+                                                            onClick={() => {
+                                                                handleAction('reset-password', user);
+                                                            }}
                                                             className="h-8 w-8 p-0 text-blue-500 hover:bg-transparent hover:text-blue-600 dark:hover:bg-transparent"
                                                         >
                                                             <KeyRound className="h-4 w-4 text-gray-500" />
@@ -596,7 +608,9 @@ export default function Users() {
                                                         <Button
                                                             variant="ghost"
                                                             size="sm"
-                                                            onClick={() => handleAction('toggle-status', user)}
+                                                            onClick={() => {
+                                                                handleAction('toggle-status', user);
+                                                            }}
                                                             className="h-8 w-8 p-0 text-amber-500 hover:bg-transparent hover:text-amber-600 dark:hover:bg-transparent"
                                                         >
                                                             {user.status === 'active' ? (
@@ -617,7 +631,9 @@ export default function Users() {
                                                         <Button
                                                             variant="ghost"
                                                             size="sm"
-                                                            onClick={() => handleAction('delete', user)}
+                                                            onClick={() => {
+                                                                handleAction('delete', user);
+                                                            }}
                                                             className="h-8 w-8 p-0 text-red-500 hover:bg-transparent hover:text-red-600 dark:hover:bg-transparent"
                                                         >
                                                             <Trash2 className="h-4 w-4 text-gray-500" />
@@ -678,12 +694,14 @@ export default function Users() {
                                 total={users?.total || 0}
                                 links={users?.links}
                                 entityName={translate('users')}
-                                onPageChange={(url) => router.get(url)}
+                                onPageChange={(url) => {
+                                    router.get(url);
+                                }}
                                 perPageOptions={[12, 24, 48, 96]}
                                 currentPerPage={pageFilters.per_page?.toString() || '12'}
                                 onPerPageChange={(value) => {
                                     router.get(
-                                        route('users.index'),
+                                        route('users-permissions.users.index'),
                                         {
                                             view: activeView,
                                             page: 1,
@@ -710,7 +728,9 @@ export default function Users() {
             {/* Form Modal */}
             <CrudFormModal
                 isOpen={isFormModalOpen}
-                onClose={() => setIsFormModalOpen(false)}
+                onClose={() => {
+                    setIsFormModalOpen(false);
+                }}
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
@@ -747,7 +767,7 @@ export default function Users() {
                             emptyNote:
                                 !roles || roles.length === 0
                                     ? {
-                                          link: route('roles.index'),
+                                          link: route('users-permissions.roles.index'),
                                           linkText: translate('Roles'),
                                       }
                                     : undefined,
@@ -770,7 +790,9 @@ export default function Users() {
             {/* Delete Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
                 entityName="user"
@@ -779,7 +801,9 @@ export default function Users() {
             {/* Reset Password Modal */}
             <CrudFormModal
                 isOpen={isResetPasswordModalOpen}
-                onClose={() => setIsResetPasswordModalOpen(false)}
+                onClose={() => {
+                    setIsResetPasswordModalOpen(false);
+                }}
                 onSubmit={handleResetPasswordConfirm}
                 formConfig={{
                     fields: [

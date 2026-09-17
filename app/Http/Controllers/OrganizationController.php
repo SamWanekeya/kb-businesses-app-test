@@ -144,9 +144,7 @@ class OrganizationController extends Controller
         $this->createDefaultTaskStatuses($organization->id);
 
         // Trigger email notification
-        if (!IsDemo()) {
-            event(new UserCreated($organization, $validated['password'] ?? ''));
-        }
+        event(new UserCreated($organization, $validated['password'] ?? ''));
 
         // Check for email errors
         if (session()->has('email_error')) {

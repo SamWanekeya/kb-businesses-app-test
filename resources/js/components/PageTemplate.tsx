@@ -11,7 +11,7 @@ import AppLayout from '@layouts/AppLayout';
 import { JSX, ReactNode, useCallback, useMemo } from 'react';
 
 import { BreadcrumbItemTypes } from '@/types';
-import FloatingChatGpt from '@components/FloatingChatGpt';
+import FloatingKakbimaIntelligence from '@components/FloatingKakbimaIntelligence';
 import { Button } from '@components/UserInterface/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/UserInterface/Tooltip';
 import { CircleQuestionMark } from 'lucide-react';
@@ -142,7 +142,7 @@ export default function PageTemplate({ title, description, url, actions, childre
                 {children}
             </div>
 
-            <FloatingChatGpt />
+            <FloatingKakbimaIntelligence />
         </AppLayout>
     );
 }

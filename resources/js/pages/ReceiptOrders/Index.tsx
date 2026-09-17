@@ -1,6 +1,6 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
-import { CrudTable } from '@components/CrudTable';
+import CrudFormModal from '@components/CrudFormModal';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
@@ -209,7 +209,9 @@ export default function ReceiptOrders() {
             label: translate('Add Receipt Order'),
             icon: <Plus className="mr-0 h-4 w-4 min-[470px]:mr-2" />,
             variant: 'default',
-            onClick: () => handleAddNew(),
+            onClick: () => {
+                handleAddNew();
+            },
             className: 'h-8 w-8 min-[470px]:h-9 min-[470px]:w-auto px-0 min-[470px]:px-4',
             labelClassName: 'hidden min-[470px]:inline',
             tooltip: translate('Add Receipt Order'),
@@ -427,7 +429,9 @@ export default function ReceiptOrders() {
                     total={receiptOrders?.total || 0}
                     links={receiptOrders?.links}
                     entityName={translate('receipt orders')}
-                    onPageChange={(url) => router.get(url)}
+                    onPageChange={(url) => {
+                        router.get(url);
+                    }}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
                         router.get(
@@ -450,7 +454,9 @@ export default function ReceiptOrders() {
 
             <CrudFormModal
                 isOpen={isStatusModalOpen}
-                onClose={() => setIsStatusModalOpen(false)}
+                onClose={() => {
+                    setIsStatusModalOpen(false);
+                }}
                 onSubmit={handleStatusChange}
                 formConfig={{
                     fields: [
@@ -477,7 +483,9 @@ export default function ReceiptOrders() {
 
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
                 entityName={translate('receipt order')}

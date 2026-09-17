@@ -182,9 +182,9 @@ class ToyyibPayPaymentController extends Controller
         $order_id = $request->input('order_id');
 
         if ($status_id == '1') {
-            return redirect()->route('plans.index')->with('success', __('Payment completed successfully!'));
+            return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully!'));
         } else {
-            return redirect()->route('plans.index')->with('error', __('Payment was not completed. Please try again.'));
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment was not completed. Please try again.'));
         }
     }
 }

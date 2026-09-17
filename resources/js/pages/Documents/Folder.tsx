@@ -1,5 +1,5 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
+import CrudFormModal from '@components/CrudFormModal';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Button } from '@components/UserInterface/Button';
@@ -12,8 +12,6 @@ import {
 } from '@components/UserInterface/DropdownMenu';
 import Pagination from '@components/UserInterface/Pagination';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
-import { useBrand } from '@contexts/BrandContext';
-import { THEME_COLORS } from '@hooks/use-appearance';
 import { router, usePage } from '@inertiajs/react';
 import { useHasPermission } from '@utils/Permissions';
 import { route } from '@utils/Routes';
@@ -53,8 +51,7 @@ export default function DocumentFolderView() {
         parentFolders = [],
     } = usePage().props;
     const permissions = auth?.permissions || [];
-    const { themeColor, customColor } = useBrand();
-    const resolvedThemeColor = themeColor === 'custom' ? customColor : THEME_COLORS[themeColor as keyof typeof THEME_COLORS] || '#10b77f';
+    const resolvedThemeColor = '#10b77f';
 
     const [isDocModalOpen, setIsDocModalOpen] = useState(false);
     const [isDocDeleteModalOpen, setIsDocDeleteModalOpen] = useState(false);
@@ -205,8 +202,9 @@ export default function DocumentFolderView() {
             label: translate('Back'),
             icon: <ArrowLeft className="mr-2 h-4 w-4" />,
             variant: 'outline',
-            onClick: () =>
-                folder.parent_folder?.id ? router.get(route('documents.folder', folder.parent_folder.id)) : router.get(route('documents.index')),
+            onClick: () => {
+                folder.parent_folder?.id ? router.get(route('documents.folder', folder.parent_folder.id)) : router.get(route('documents.index'));
+            },
         },
     ];
     if (useHasPermission('create-document-folders')) {
@@ -380,7 +378,12 @@ export default function DocumentFolderView() {
                                                 {sf.name}
                                             </span>
                                         </div>
-                                        <div className="absolute top-1.5 right-1.5" onClick={(e) => e.stopPropagation()}>
+                                        <div
+                                            className="absolute top-1.5 right-1.5"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                            }}
+                                        >
                                             {useHasPermission('edit-document-folders') || useHasPermission('delete-document-folders') ? (
                                                 <DropdownMenu>
                                                     <DropdownMenuTrigger asChild>
@@ -455,7 +458,12 @@ export default function DocumentFolderView() {
                                                     {doc.name}
                                                 </span>
                                             </div>
-                                            <div className="absolute top-1.5 right-1.5" onClick={(e) => e.stopPropagation()}>
+                                            <div
+                                                className="absolute top-1.5 right-1.5"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                }}
+                                            >
                                                 {useHasPermission('view-documents') ||
                                                 useHasPermission('edit-documents') ||
                                                 useHasPermission('delete-documents') ? (
@@ -536,7 +544,9 @@ export default function DocumentFolderView() {
                                 total={total}
                                 links={docsPagination.links}
                                 entityName={translate('items')}
-                                onPageChange={(url) => router.get(url)}
+                                onPageChange={(url) => {
+                                    router.get(url);
+                                }}
                             />
                         )}
                     </div>
@@ -626,7 +636,9 @@ export default function DocumentFolderView() {
             {/* Upload Document Modal */}
             <CrudFormModal
                 isOpen={isDocModalOpen}
-                onClose={() => setIsDocModalOpen(false)}
+                onClose={() => {
+                    setIsDocModalOpen(false);
+                }}
                 onSubmit={handleDocFormSubmit}
                 formConfig={{
                     fields: [
@@ -689,7 +701,7 @@ export default function DocumentFolderView() {
                             type: 'select',
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('users.index'), linkText: translate('Users') },
+                            emptyNote: { link: route('users-permissions.users.index'), linkText: translate('Users') },
                             options: users.map((u: any) => ({ value: u.id, label: `${u.name} (${u.email})` })),
                         },
                         {
@@ -734,7 +746,9 @@ export default function DocumentFolderView() {
 
             <CrudFormModal
                 isOpen={isFolderModalOpen}
-                onClose={() => setIsFolderModalOpen(false)}
+                onClose={() => {
+                    setIsFolderModalOpen(false);
+                }}
                 onSubmit={handleFolderFormSubmit}
                 formConfig={{ fields: folderFields, modalSize: 'md' }}
                 initialData={
@@ -754,14 +768,18 @@ export default function DocumentFolderView() {
 
             <CrudDeleteModal
                 isOpen={isDocDeleteModalOpen}
-                onClose={() => setIsDocDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDocDeleteModalOpen(false);
+                }}
                 onConfirm={handleDocDeleteConfirm}
                 itemName={currentDoc?.name || ''}
                 entityName={translate('document')}
             />
             <CrudDeleteModal
                 isOpen={isFolderDeleteModalOpen}
-                onClose={() => setIsFolderDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsFolderDeleteModalOpen(false);
+                }}
                 onConfirm={handleFolderDeleteConfirm}
                 itemName={currentSubFolder?.name || folder.name}
                 entityName={translate('folder')}

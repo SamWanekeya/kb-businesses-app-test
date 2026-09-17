@@ -9,7 +9,6 @@ import languageData from '@lang/language.json';
 import { route } from '@utils/Routes';
 import { Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import ReactCountryFlag from 'react-country-flag';
 import { useTranslation } from 'react-i18next';
 
 interface OrganizationSystemSettingsProps {
@@ -52,13 +51,10 @@ export default function OrganizationSystemSettings({
     useEffect(() => {
         if (Object.keys(settingsData).length > 0) {
             // Create merged settings object
-            const mergedSettings = Object.keys(defaultSettings).reduce(
-                (acc, key) => {
-                    acc[key] = settingsData[key] || defaultSettings[key];
-                    return acc;
-                },
-                {} as Record<string, string>,
-            );
+            const mergedSettings = Object.keys(defaultSettings).reduce<Record<string, string>>((acc, key) => {
+                acc[key] = settingsData[key] || defaultSettings[key];
+                return acc;
+            }, {});
 
             setSystemSettings((prevSettings) => ({
                 ...prevSettings,
@@ -129,27 +125,21 @@ export default function OrganizationSystemSettings({
                                 <Label htmlFor="defaultLanguage">{translate('Default Language')}</Label>
                                 <Select
                                     value={systemSettings.defaultLanguage}
-                                    onValueChange={(value) => handleSystemSettingsChange('defaultLanguage', value)}
+                                    onValueChange={(value) => {
+                                        handleSystemSettingsChange('defaultLanguage', value);
+                                    }}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={translate('Select language')}>
-                                            {systemSettings.defaultLanguage &&
+                                        <SelectValue placeholder={translate('Select...')}>
+                                            {systemSettings.default_language &&
                                                 (() => {
-                                                    const selectedLang = languageData.find((lang) => lang.code === systemSettings.defaultLanguage);
+                                                    const selectedLang = languageData.find((lang) => lang.code === systemSettings.default_language);
                                                     return selectedLang ? (
                                                         <div className="flex items-center space-x-2">
-                                                            <ReactCountryFlag
-                                                                countryCode={selectedLang.countryCode}
-                                                                svg
-                                                                style={{
-                                                                    width: '1.2em',
-                                                                    height: '1.2em',
-                                                                }}
-                                                            />{' '}
-                                                            <span>{selectedLang.name}</span>{' '}
+                                                            <span>{selectedLang.name}</span>
                                                         </div>
                                                     ) : (
-                                                        translate('Select language')
+                                                        translate('Select...')
                                                     );
                                                 })()}
                                         </SelectValue>
@@ -158,14 +148,6 @@ export default function OrganizationSystemSettings({
                                         {languageData.map((language) => (
                                             <SelectItem key={language.code} value={language.code}>
                                                 <div className="flex items-center space-x-2">
-                                                    <ReactCountryFlag
-                                                        countryCode={language.countryCode}
-                                                        svg
-                                                        style={{
-                                                            width: '1.2em',
-                                                            height: '1.2em',
-                                                        }}
-                                                    />{' '}
                                                     <span>{language.name}</span>
                                                 </div>
                                             </SelectItem>
@@ -176,7 +158,12 @@ export default function OrganizationSystemSettings({
 
                             <div className="grid gap-2">
                                 <Label htmlFor="dateFormat">{translate('Date Format')}</Label>
-                                <Select value={systemSettings.dateFormat} onValueChange={(value) => handleSystemSettingsChange('dateFormat', value)}>
+                                <Select
+                                    value={systemSettings.dateFormat}
+                                    onValueChange={(value) => {
+                                        handleSystemSettingsChange('dateFormat', value);
+                                    }}
+                                >
                                     <SelectTrigger>
                                         <SelectValue placeholder={translate('Select date format')} />
                                     </SelectTrigger>
@@ -204,7 +191,12 @@ export default function OrganizationSystemSettings({
 
                             <div className="grid gap-2">
                                 <Label htmlFor="timeFormat">{translate('Time Format')}</Label>
-                                <Select value={systemSettings.timeFormat} onValueChange={(value) => handleSystemSettingsChange('timeFormat', value)}>
+                                <Select
+                                    value={systemSettings.timeFormat}
+                                    onValueChange={(value) => {
+                                        handleSystemSettingsChange('timeFormat', value);
+                                    }}
+                                >
                                     <SelectTrigger>
                                         <SelectValue placeholder={translate('Select time format')} />
                                     </SelectTrigger>
@@ -233,7 +225,9 @@ export default function OrganizationSystemSettings({
                                 <Label htmlFor="defaultTimezone">{translate('Default Timezone')}</Label>
                                 <Select
                                     value={systemSettings.defaultTimezone}
-                                    onValueChange={(value) => handleSystemSettingsChange('defaultTimezone', value)}
+                                    onValueChange={(value) => {
+                                        handleSystemSettingsChange('defaultTimezone', value);
+                                    }}
                                 >
                                     <SelectTrigger>
                                         <SelectValue placeholder={translate('Select timezone')} />

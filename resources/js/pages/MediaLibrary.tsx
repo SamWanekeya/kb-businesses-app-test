@@ -62,22 +62,24 @@ export default function MediaLibraryDemo() {
 
     const [infoModalOpen, setInfoModalOpen] = useState(false);
     const [selectedMediaInfo, setSelectedMediaInfo] = useState<MediaItem | null>(null);
-    // Check if ChatGPT modal is open
-    const [isChatGptOpen, setIsChatGptOpen] = useState(false);
+    // Check if Kakbima Intelligence modal is open
+    const [isKakbimaIntelligenceOpen, setIsKakbimaIntelligenceOpen] = useState(false);
     useEffect(() => {
-        const checkChatGpt = () => {
-            const chatGptModal =
-                document.querySelector('[data-chat-gpt-modal]') ||
-                document.querySelector('.chat-gpt-modal') ||
-                document.querySelector('[class*="chat-gpt"]') ||
-                document.querySelector('[id*="chat-gpt"]');
-            setIsChatGptOpen(!!chatGptModal);
+        const checkKakbimaIntelligence = () => {
+            const kakbimaIntelligenceModal =
+                document.querySelector('[data-kakbima-intelligence-modal]') ||
+                document.querySelector('.kakbima-intelligence-modal') ||
+                document.querySelector('[class*="kakbima-intelligence"]') ||
+                document.querySelector('[id*="kakbima-intelligence"]');
+            setIsKakbimaIntelligenceOpen(!!kakbimaIntelligenceModal);
         };
 
-        const observer = new MutationObserver(checkChatGpt);
+        const observer = new MutationObserver(checkKakbimaIntelligence);
         observer.observe(document.body, { childList: true, subtree: true });
 
-        return () => observer.disconnect();
+        return () => {
+            observer.disconnect();
+        };
     }, []);
 
     const itemsPerPage = 12;
@@ -85,7 +87,7 @@ export default function MediaLibraryDemo() {
     const fetchMedia = useCallback(async () => {
         setLoading(true);
         try {
-            const response = await fetch(route('api.media.index'), {
+            const response = await fetch(route('media-library.media.index'), {
                 credentials: 'same-origin',
                 headers: {
                     Accept: 'application/json',
@@ -144,7 +146,7 @@ export default function MediaLibraryDemo() {
         });
 
         try {
-            const response = await fetch(route('api.media.batch'), {
+            const response = await fetch(route('media-library.media.batch'), {
                 method: 'POST',
                 body: formData,
                 credentials: 'same-origin',
@@ -212,7 +214,7 @@ export default function MediaLibraryDemo() {
             if (!id) {
                 return;
             }
-            const response = await fetch(route('api.media.destroy', id), {
+            const response = await fetch(route('media-library.media.destroy', id), {
                 method: 'DELETE',
                 credentials: 'same-origin',
                 headers: {
@@ -377,7 +379,9 @@ export default function MediaLibraryDemo() {
                   icon: <Plus className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
                   variant: canCreate ? ('default' as const) : ('outline' as const),
                   onClick: canCreate
-                      ? () => setIsUploadModalOpen(true)
+                      ? () => {
+                            setIsUploadModalOpen(true);
+                        }
                       : () =>
                             toast.error(
                                 translate('Storage limit exceeded. Your plan allows maximum {{max}} storage. Please upgrade your plan.', {
@@ -418,7 +422,9 @@ export default function MediaLibraryDemo() {
                                     <Input
                                         placeholder={translate('Search media files...')}
                                         value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        onChange={(e) => {
+                                            setSearchTerm(e.target.value);
+                                        }}
                                         className="pl-10"
                                     />
                                 </div>
@@ -482,7 +488,12 @@ export default function MediaLibraryDemo() {
                                         : translate('Get started by uploading your first file')}
                                 </p>
                                 {!searchTerm && (
-                                    <Button onClick={() => setIsUploadModalOpen(true)} size="lg">
+                                    <Button
+                                        onClick={() => {
+                                            setIsUploadModalOpen(true);
+                                        }}
+                                        size="lg"
+                                    >
                                         <Plus className="mr-2 h-4 w-4" />
                                         {translate('Upload Files')}
                                     </Button>
@@ -495,7 +506,9 @@ export default function MediaLibraryDemo() {
                                         <div
                                             key={item.id}
                                             className="group bg-card relative cursor-pointer overflow-hidden rounded-lg border transition-all duration-200 hover:shadow-md"
-                                            onClick={() => handleShowInfo(item)}
+                                            onClick={() => {
+                                                handleShowInfo(item);
+                                            }}
                                         >
                                             {/* File Preview Container */}
                                             <div className="bg-muted relative flex aspect-square items-center justify-center">
@@ -575,7 +588,9 @@ export default function MediaLibraryDemo() {
                                                     variant="outline"
                                                     size="sm"
                                                     disabled={currentPage === 1}
-                                                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                                                    onClick={() => {
+                                                        setCurrentPage((prev) => Math.max(prev - 1, 1));
+                                                    }}
                                                 >
                                                     {translate('Previous')}
                                                 </Button>
@@ -599,7 +614,9 @@ export default function MediaLibraryDemo() {
                                                                 variant={currentPage === page ? 'default' : 'outline'}
                                                                 size="sm"
                                                                 className="h-8 w-10"
-                                                                onClick={() => setCurrentPage(page)}
+                                                                onClick={() => {
+                                                                    setCurrentPage(page);
+                                                                }}
                                                             >
                                                                 {page}
                                                             </Button>
@@ -611,7 +628,9 @@ export default function MediaLibraryDemo() {
                                                     variant="outline"
                                                     size="sm"
                                                     disabled={currentPage === totalPages}
-                                                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                                                    onClick={() => {
+                                                        setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+                                                    }}
                                                 >
                                                     {translate('Next')}
                                                 </Button>
@@ -624,7 +643,9 @@ export default function MediaLibraryDemo() {
                                                     size="icon"
                                                     className="h-8 w-8"
                                                     disabled={currentPage === 1}
-                                                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                                                    onClick={() => {
+                                                        setCurrentPage((prev) => Math.max(prev - 1, 1));
+                                                    }}
                                                 >
                                                     <ChevronLeft className="h-4 w-4" />
                                                 </Button>
@@ -665,7 +686,9 @@ export default function MediaLibraryDemo() {
                                                                 variant={currentPage === item ? 'default' : 'outline'}
                                                                 size="icon"
                                                                 className="h-8 w-8"
-                                                                onClick={() => setCurrentPage(item)}
+                                                                onClick={() => {
+                                                                    setCurrentPage(item);
+                                                                }}
                                                             >
                                                                 {item}
                                                             </Button>
@@ -678,7 +701,9 @@ export default function MediaLibraryDemo() {
                                                     size="icon"
                                                     className="h-8 w-8"
                                                     disabled={currentPage === totalPages}
-                                                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                                                    onClick={() => {
+                                                        setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+                                                    }}
                                                 >
                                                     <ChevronRight className="h-4 w-4" />
                                                 </Button>
@@ -692,7 +717,7 @@ export default function MediaLibraryDemo() {
                 </Card>
 
                 {/* Upload Modal */}
-                <Dialog open={isUploadModalOpen} onOpenChange={setIsUploadModalOpen} modal={!isChatGptOpen}>
+                <Dialog open={isUploadModalOpen} onOpenChange={setIsUploadModalOpen} modal={!isKakbimaIntelligenceOpen}>
                     <DialogContent className="max-w-lg">
                         <DialogHeader>
                             <DialogTitle className="flex items-center gap-2">
@@ -757,7 +782,7 @@ export default function MediaLibraryDemo() {
                 </Dialog>
 
                 {/* Info Modal */}
-                <Dialog open={infoModalOpen} onOpenChange={setInfoModalOpen} modal={!isChatGptOpen}>
+                <Dialog open={infoModalOpen} onOpenChange={setInfoModalOpen} modal={!isKakbimaIntelligenceOpen}>
                     <DialogContent className="max-h-[95vh] max-w-7xl overflow-hidden">
                         <DialogHeader>
                             <DialogTitle className="flex items-center gap-2">
@@ -839,7 +864,7 @@ export default function MediaLibraryDemo() {
                                                 <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
                                                     {translate('Uploaded')}
                                                 </span>
-                                                <p className="text-foreground text-sm font-medium">{formatDate(selectedMediaInfo.created_at)}</p>
+                                                <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(selectedMediaInfo.created_at)}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -915,7 +940,9 @@ export default function MediaLibraryDemo() {
                 {/* Delete Modal */}
                 <CrudDeleteModal
                     isOpen={isDeleteModalOpen}
-                    onClose={() => setIsDeleteModalOpen(false)}
+                    onClose={() => {
+                        setIsDeleteModalOpen(false);
+                    }}
                     onConfirm={deleteMedia}
                     itemName={selectedMediaInfo?.name || ''}
                     entityName="Media"

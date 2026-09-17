@@ -79,7 +79,7 @@ class TapPaymentController extends Controller
                     $settings = getPaymentGatewaySettings();
 
                     if (!isset($settings['payment_settings']['tap_secret_key'])) {
-                        return redirect()->route('plans.index')->with('error', __('Tap not configured'));
+                        return redirect()->route('subscriptions.plans.index')->with('error', __('Tap not configured'));
                     }
 
                     // Initialize Tap Payment library
@@ -108,17 +108,17 @@ class TapPaymentController extends Controller
                             auth()->login($user);
                         }
 
-                        return redirect()->route('plans.index')->with('success', __('Payment completed successfully and plan activated'));
+                        return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully and plan activated'));
                     } else {
-                        return redirect()->route('plans.index')->with('error', __('Payment not captured or failed'));
+                        return redirect()->route('subscriptions.plans.index')->with('error', __('Payment not captured or failed'));
                     }
                 }
             }
 
-            return redirect()->route('plans.index')->with('error', __('Payment verification failed'));
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment verification failed'));
 
         } catch (Exception $e) {
-            return redirect()->route('plans.index')->with('error', __('Payment processing failed'));
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment processing failed'));
         }
     }
 

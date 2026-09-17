@@ -53,7 +53,7 @@ const DialogOverlay = React.forwardRef<
                     return;
                 }
 
-                // Allow ChatGPT button clicks.
+                // Allow Kakbima Intelligence button clicks.
                 if (target.closest('[data-kakbima-intelligence-button]')) {
                     e.stopPropagation();
                     return;

@@ -17,12 +17,12 @@ import {
     FileText,
     HardDrive,
     Mail,
+    MessagesCircle,
     MessageSquare,
     Palette,
     Settings as SettingsIcon,
     Shield,
     ShoppingBag,
-    Slack,
     Webhook,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -37,7 +37,7 @@ import EmailSettings from '@pages/Settings/EmailSettings';
 import PaymentSettings from '@pages/Settings/PaymentSettings';
 
 import CacheSettings from '@pages/Settings/CacheSettings';
-import ChatGptSettings from '@pages/Settings/ChatGptSettings';
+import KakbimaIntelligenceSettings from '@pages/Settings/KakbimaIntelligenceSettings';
 import CookieSettings from '@pages/Settings/CookieSettings';
 import GoogleCalendarSettings from '@pages/Settings/GoogleCalendarSettings';
 import InvoiceTemplateSettings from '@pages/Settings/InvoiceTemplateSettings';
@@ -108,7 +108,7 @@ export default function Settings() {
         {
             title: translate('Slack Settings'),
             href: '#slack-notification-settings',
-            icon: <Slack className="mr-2 h-4 w-4" />,
+            icon: <MessagesCircle className="mr-2 h-4 w-4" />,
             permission: 'manage-twilio-notifications',
         },
         {
@@ -152,10 +152,10 @@ export default function Settings() {
             permission: 'manage-recaptcha-settings',
         },
         {
-            title: translate('Chat GPT Settings'),
-            href: '#chat-gpt-settings',
+            title: translate('Kakbima Intelligence Settings'),
+            href: '#kakbima-intelligence-settings',
             icon: <Bot className="mr-2 h-4 w-4" />,
-            permission: 'manage-chat-gpt-settings',
+            permission: 'manage-kakbima-intelligence-settings',
         },
         {
             title: translate('Cookie Settings'),
@@ -234,7 +234,7 @@ export default function Settings() {
     const slackNotificationSettingsRef = useRef<HTMLDivElement>(null);
 
     const recaptchaSettingsRef = useRef<HTMLDivElement>(null);
-    const chat-gptSettingsRef = useRef<HTMLDivElement>(null);
+    const kakbimaIntelligenceSettingsRef = useRef<HTMLDivElement>(null);
     const cookieSettingsRef = useRef<HTMLDivElement>(null);
     const seoSettingsRef = useRef<HTMLDivElement>(null);
     const cacheSettingsRef = useRef<HTMLDivElement>(null);
@@ -265,7 +265,7 @@ export default function Settings() {
             const slackNotificationSettingsPosition = slackNotificationSettingsRef.current?.offsetTop || 0;
 
             const recaptchaSettingsPosition = recaptchaSettingsRef.current?.offsetTop || 0;
-            const chat-gptSettingsPosition = chat-gptSettingsRef.current?.offsetTop || 0;
+            const kakbimaIntelligenceSettingsPosition = kakbimaIntelligenceSettingsRef.current?.offsetTop || 0;
             const cookieSettingsPosition = cookieSettingsRef.current?.offsetTop || 0;
             const seoSettingsPosition = seoSettingsRef.current?.offsetTop || 0;
             const cacheSettingsPosition = cacheSettingsRef.current?.offsetTop || 0;
@@ -287,8 +287,8 @@ export default function Settings() {
                 setActiveSection('seo-settings');
             } else if (scrollPosition >= cookieSettingsPosition && cookieSettingsPosition > 0) {
                 setActiveSection('cookie-settings');
-            } else if (scrollPosition >= chat-gptSettingsPosition && chat-gptSettingsPosition > 0) {
-                setActiveSection('chat-gpt-settings');
+            } else if (scrollPosition >= kakbimaIntelligenceSettingsPosition && kakbimaIntelligenceSettingsPosition > 0) {
+                setActiveSection('kakbima-intelligence-settings');
             } else if (scrollPosition >= recaptchaSettingsPosition && recaptchaSettingsPosition > 0) {
                 setActiveSection('recaptcha-settings');
             } else if (scrollPosition >= invoiceTemplatesPosition && invoiceTemplatesPosition > 0) {
@@ -388,7 +388,9 @@ export default function Settings() {
                                                 'bg-muted text-card-foreground font-medium': activeSection === item.href.replace('#', ''),
                                             },
                                         )}
-                                        onClick={() => handleNavClick(item.href)}
+                                        onClick={() => {
+                                            handleNavClick(item.href);
+                                        }}
                                     >
                                         {item.icon}
                                         {item.title}
@@ -501,10 +503,10 @@ export default function Settings() {
                         </section>
                     )}
 
-                    {/* Chat GPT Settings Section */}
-                    {(useHasPermission('manage-chat-gpt-settings') || auth?.user?.type === 'super_admin') && (
-                        <section id="chat-gpt-settings" ref={chat-gptSettingsRef} className="mb-8">
-                            <ChatGptSettings settings={systemSettings} />
+                    {/* Kakbima Intelligence Settings Section */}
+                    {(useHasPermission('manage-kakbima-intelligence-settings') || auth?.user?.type === 'super_admin') && (
+                        <section id="kakbima-intelligence-settings" ref={kakbimaIntelligenceSettingsRef} className="mb-8">
+                            <KakbimaIntelligenceSettings settings={systemSettings} />
                         </section>
                     )}
 

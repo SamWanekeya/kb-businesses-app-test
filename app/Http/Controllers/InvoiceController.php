@@ -28,13 +28,10 @@ class InvoiceController extends Controller
 {
     public function index(Request $request)
     {
-        // Update overdue invoices if not in demo mode
-        if (!IsDemo()) {
-            Invoice::where('created_by', createdBy())
-                ->whereIn('status', ['sent', 'pending', 'partially_paid'])
-                ->whereDate('due_date', '<', now())
-                ->update(['status' => 'overdue']);
-        }
+        Invoice::where('created_by', createdBy())
+            ->whereIn('status', ['sent', 'pending', 'partially_paid'])
+            ->whereDate('due_date', '<', now())
+            ->update(['status' => 'overdue']);
 
         $query = Invoice::query()
             ->with(['salesOrder', 'quote', 'opportunity', 'account', 'contact', 'creator', 'assignedUser', 'products.tax'])
@@ -315,7 +312,7 @@ class InvoiceController extends Controller
         $invoice->calculateTotals();
 
         // Fire InvoiceCreated event for sending email
-        if ($invoice && !IsDemo()) {
+        if ($invoice) {
             event(new InvoiceCreated($invoice));
         }
 
@@ -664,14 +661,14 @@ class InvoiceController extends Controller
 
         // Redirect to payment method
         switch ($validated['payment_method']) {
-            case 'stripe':
-                return redirect()->route('stripe.payment');
-            case 'paypal':
-                return redirect()->route('paypal.payment');
+            //            case 'stripe':
+            //                return redirect()->route('subscriptions.stripe.payment');
+            //            case 'paypal':
+            //                return redirect()->route('subscriptions.paypal.payment');
             case 'bank':
-                return redirect()->route('bank.payment');
-            case 'skrill':
-                return redirect()->route('skrill.payment');
+                return redirect()->route('subscriptions.bank.payment');
+                //            case 'skrill':
+                //                return redirect()->route('subscriptions.skrill.payment');
             default:
                 return back()->withErrors(['error' => __('Invalid payment method')]);
         }

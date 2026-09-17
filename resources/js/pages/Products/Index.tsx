@@ -1,5 +1,5 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudTable } from '@components/CrudTable';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import { ImportModal } from '@components/ImportModal';
 import PageTemplate from '@components/PageTemplate';
@@ -212,7 +212,9 @@ export default function Products() {
             labelClassName: 'hidden min-[500px]:inline',
             tooltip: translate('Import'),
             tooltipClassName: 'min-[500px]:hidden',
-            onClick: () => setIsImportModalOpen(true),
+            onClick: () => {
+                setIsImportModalOpen(true);
+            },
         });
     }
 
@@ -226,7 +228,9 @@ export default function Products() {
             labelClassName: 'hidden min-[500px]:inline',
             tooltip: translate('Add Product'),
             tooltipClassName: 'min-[500px]:hidden',
-            onClick: () => router.visit(route('products.create')),
+            onClick: () => {
+                router.visit(route('products.create'));
+            },
         });
     }
 
@@ -250,7 +254,7 @@ export default function Products() {
                                 alt={row.name}
                                 className="max-h-full max-w-full rounded-lg object-contain"
                                 onError={(e) => {
-                                    const target = e.currentTarget as HTMLImageElement;
+                                    const target = e.currentTarget;
                                     if (!target.src.startsWith('data:image/svg+xml')) {
                                         target.src =
                                             'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xMDAgNjBMMTQwIDgwVjE0MEwxMDAgMTYwTDYwIDE0MFY4MEwxMDAgNjBaIiBzdHJva2U9IiM5Q0EzQUYiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0iI0U1RTdFQiIvPgo8Y2lyY2xlIGN4PSI4NSIgY3k9Ijk1IiByPSI4IiBmaWxsPSIjOUNBM0FGIi8+CjxwYXRoIGQ9Ik03MCAxMzBMODUgMTE1TDEwMCAxMzBMMTMwIDEwMEwxMzAgMTMwSDcwWiIgZmlsbD0iIzlDQTNBRiIvPgo8L3N2Zz4=';
@@ -522,7 +526,9 @@ export default function Products() {
                         total={products?.total || 0}
                         links={products?.links}
                         entityName={translate('products')}
-                        onPageChange={(url) => router.get(url)}
+                        onPageChange={(url) => {
+                            router.get(url);
+                        }}
                         currentPerPage={pageFilters.per_page?.toString() || '10'}
                         onPerPageChange={(value) => {
                             router.get(
@@ -559,7 +565,9 @@ export default function Products() {
                                 <div
                                     key={product.id}
                                     className="flex cursor-pointer flex-col overflow-hidden rounded-xl border border-gray-300 bg-white shadow-sm transition-shadow duration-200 hover:shadow-lg dark:border-gray-600 dark:bg-gray-900"
-                                    onClick={() => router.visit(route('products.show', product.id))}
+                                    onClick={() => {
+                                        router.visit(route('products.show', product.id));
+                                    }}
                                 >
                                     {/* Image Area */}
                                     <div
@@ -575,7 +583,7 @@ export default function Products() {
                                             alt={product.name}
                                             className="h-full w-full object-contain p-5"
                                             onError={(e) => {
-                                                const target = e.currentTarget as HTMLImageElement;
+                                                const target = e.currentTarget;
                                                 if (!target.src.startsWith('data:image/svg+xml')) {
                                                     target.src =
                                                         'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xMDAgNjBMMTQwIDgwVjE0MEwxMDAgMTYwTDYwIDE0MFY4MEwxMDAgNjBaIiBzdHJva2U9IiM5Q0EzQUYiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0iI0U1RTdFQiIvPgo8Y2lyY2xlIGN4PSI4NSIgY3k9Ijk1IiByPSI4IiBmaWxsPSIjOUNBM0FGIi8+CjxwYXRoIGQ9Ik03MCAxMzBMODUgMTE1TDEwMCAxMzBMMTMwIDEwMEwxMzAgMTMwSDcwWiIgZmlsbD0iIzlDQTNBRiIvPgo8L3N2Zz4=';
@@ -753,7 +761,9 @@ export default function Products() {
                             total={products?.total || 0}
                             links={products?.links}
                             entityName={translate('products')}
-                            onPageChange={(url) => router.get(url)}
+                            onPageChange={(url) => {
+                                router.get(url);
+                            }}
                             currentPerPage={pageFilters.per_page?.toString() || '10'}
                             onPerPageChange={(value) => {
                                 router.get(
@@ -781,7 +791,9 @@ export default function Products() {
             {/* Delete Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
                 entityName={translate('product')}
@@ -790,7 +802,9 @@ export default function Products() {
             {/* Import Modal */}
             <ImportModal
                 isOpen={isImportModalOpen}
-                onClose={() => setIsImportModalOpen(false)}
+                onClose={() => {
+                    setIsImportModalOpen(false);
+                }}
                 title={translate('Import Products from CSV/Excel')}
                 importRoute="product.import"
                 parseRoute="product.parse"

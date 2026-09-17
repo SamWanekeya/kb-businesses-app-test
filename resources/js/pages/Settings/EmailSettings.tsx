@@ -1,5 +1,5 @@
 import { toast } from '@components/CustomToast';
-import { SettingsSection } from '@components/settings-section';
+import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
@@ -189,7 +189,9 @@ export default function EmailSettings() {
                                         <Input
                                             id="driver"
                                             value={emailSettings.driver}
-                                            onChange={(e) => handleEmailSettingsChange('driver', e.target.value)}
+                                            onChange={(e) => {
+                                                handleEmailSettingsChange('driver', e.target.value);
+                                            }}
                                             placeholder="smtp"
                                         />
                                     </div>
@@ -204,7 +206,9 @@ export default function EmailSettings() {
                                         <Input
                                             id="host"
                                             value={emailSettings.host}
-                                            onChange={(e) => handleEmailSettingsChange('host', e.target.value)}
+                                            onChange={(e) => {
+                                                handleEmailSettingsChange('host', e.target.value);
+                                            }}
                                             placeholder="smtp.kakbima.dev"
                                         />
                                     </div>
@@ -229,7 +233,9 @@ export default function EmailSettings() {
                                         <Input
                                             id="port"
                                             value={emailSettings.port}
-                                            onChange={(e) => handleEmailSettingsChange('port', e.target.value)}
+                                            onChange={(e) => {
+                                                handleEmailSettingsChange('port', e.target.value);
+                                            }}
                                             placeholder="587"
                                         />
                                     </div>
@@ -244,7 +250,9 @@ export default function EmailSettings() {
                                         <Input
                                             id="username"
                                             value={emailSettings.username}
-                                            onChange={(e) => handleEmailSettingsChange('username', e.target.value)}
+                                            onChange={(e) => {
+                                                handleEmailSettingsChange('username', e.target.value);
+                                            }}
                                             placeholder="user@kakbima.dev"
                                         />
                                     </div>
@@ -260,7 +268,9 @@ export default function EmailSettings() {
                                             id="password"
                                             type="password"
                                             value={emailSettings.password}
-                                            onChange={(e) => handleEmailSettingsChange('password', e.target.value)}
+                                            onChange={(e) => {
+                                                handleEmailSettingsChange('password', e.target.value);
+                                            }}
                                             placeholder="••••••••••••"
                                         />
                                     </div>
@@ -274,7 +284,9 @@ export default function EmailSettings() {
                                         </div>
                                         <Select
                                             value={emailSettings.encryption}
-                                            onValueChange={(value) => handleEmailSettingsChange('encryption', value)}
+                                            onValueChange={(value) => {
+                                                handleEmailSettingsChange('encryption', value);
+                                            }}
                                         >
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Select encryption" />
@@ -297,7 +309,9 @@ export default function EmailSettings() {
                                         <Input
                                             id="fromAddress"
                                             value={emailSettings.fromAddress}
-                                            onChange={(e) => handleEmailSettingsChange('fromAddress', e.target.value)}
+                                            onChange={(e) => {
+                                                handleEmailSettingsChange('fromAddress', e.target.value);
+                                            }}
                                             placeholder="noreply@kakbima.dev"
                                         />
                                     </div>
@@ -312,7 +326,9 @@ export default function EmailSettings() {
                                         <Input
                                             id="fromName"
                                             value={emailSettings.fromName}
-                                            onChange={(e) => handleEmailSettingsChange('fromName', e.target.value)}
+                                            onChange={(e) => {
+                                                handleEmailSettingsChange('fromName', e.target.value);
+                                            }}
                                             placeholder="System"
                                         />
                                     </div>
@@ -340,7 +356,9 @@ export default function EmailSettings() {
                                         id="testEmail"
                                         type="email"
                                         value={testEmail}
-                                        onChange={(e) => setTestEmail(e.target.value)}
+                                        onChange={(e) => {
+                                            setTestEmail(e.target.value);
+                                        }}
                                         placeholder="test@kakbima.dev"
                                         required
                                     />

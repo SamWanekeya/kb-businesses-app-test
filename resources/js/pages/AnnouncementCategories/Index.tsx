@@ -50,7 +50,9 @@ export default function AnnouncementCategories() {
         descriptionRefsMobile.current.forEach((el) => {
             if (el) observer.observe(el);
         });
-        return () => observer.disconnect();
+        return () => {
+            observer.disconnect();
+        };
     }, [checkOverflow, categories?.data]);
 
     const [formData, setFormData] = useState({ name: '', description: '', status: 'active' });
@@ -242,7 +244,9 @@ export default function AnnouncementCategories() {
                                     id="name"
                                     type="text"
                                     value={formData.name}
-                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                    onChange={(e) => {
+                                        setFormData({ ...formData, name: e.target.value });
+                                    }}
                                     placeholder={translate('e.g. Product Updates, Organization News, Events')}
                                     className={formErrors.name ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
@@ -255,7 +259,9 @@ export default function AnnouncementCategories() {
                                 <Textarea
                                     id="description"
                                     value={formData.description}
-                                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                    onChange={(e) => {
+                                        setFormData({ ...formData, description: e.target.value });
+                                    }}
                                     placeholder={translate('Enter category description...')}
                                     rows={3}
                                     className={formErrors.description ? 'border-red-500' : ''}
@@ -267,7 +273,9 @@ export default function AnnouncementCategories() {
                                 <Label htmlFor="status">{translate('Status')}</Label>
                                 <Select
                                     value={formData.status}
-                                    onValueChange={(value) => setFormData({ ...formData, status: value })}
+                                    onValueChange={(value) => {
+                                        setFormData({ ...formData, status: value });
+                                    }}
                                     disabled={!canCreate && !canEdit}
                                 >
                                     <SelectTrigger className={formErrors.status ? 'border-red-500' : ''}>
@@ -306,7 +314,9 @@ export default function AnnouncementCategories() {
                                         type="text"
                                         placeholder={translate('Search announcement categories...')}
                                         value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        onChange={(e) => {
+                                            setSearchTerm(e.target.value);
+                                        }}
                                         onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)}
                                         className="pl-10"
                                     />
@@ -402,7 +412,9 @@ export default function AnnouncementCategories() {
                                                                         {(overflowingDescriptions.has(item.id) ||
                                                                             expandedDescriptions.has(item.id)) && (
                                                                             <button
-                                                                                onClick={() => toggleDescription(item.id)}
+                                                                                onClick={() => {
+                                                                                    toggleDescription(item.id);
+                                                                                }}
                                                                                 className="mt-1 inline-flex items-center text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400"
                                                                             >
                                                                                 {expandedDescriptions.has(item.id) ? (
@@ -439,7 +451,9 @@ export default function AnnouncementCategories() {
                                                                             <Button
                                                                                 variant="ghost"
                                                                                 size="sm"
-                                                                                onClick={() => handleAction('edit', item)}
+                                                                                onClick={() => {
+                                                                                    handleAction('edit', item);
+                                                                                }}
                                                                                 className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"
                                                                             >
                                                                                 <Edit className="h-4 w-4 text-gray-500" />
@@ -456,7 +470,9 @@ export default function AnnouncementCategories() {
                                                                             <Button
                                                                                 variant="ghost"
                                                                                 size="sm"
-                                                                                onClick={() => handleAction('toggle-status', item)}
+                                                                                onClick={() => {
+                                                                                    handleAction('toggle-status', item);
+                                                                                }}
                                                                                 className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"
                                                                             >
                                                                                 <Lock className="h-4 w-4 text-gray-500" />
@@ -477,7 +493,9 @@ export default function AnnouncementCategories() {
                                                                             <Button
                                                                                 variant="ghost"
                                                                                 size="sm"
-                                                                                onClick={() => handleAction('delete', item)}
+                                                                                onClick={() => {
+                                                                                    handleAction('delete', item);
+                                                                                }}
                                                                                 className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"
                                                                             >
                                                                                 <Trash2 className="h-4 w-4 text-gray-500" />
@@ -520,7 +538,9 @@ export default function AnnouncementCategories() {
                                                                 </div>
                                                                 {(overflowingDescriptions.has(item.id) || expandedDescriptions.has(item.id)) && (
                                                                     <button
-                                                                        onClick={() => toggleDescription(item.id)}
+                                                                        onClick={() => {
+                                                                            toggleDescription(item.id);
+                                                                        }}
                                                                         className="mt-1 inline-flex items-center text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400"
                                                                     >
                                                                         {expandedDescriptions.has(item.id) ? (
@@ -548,7 +568,9 @@ export default function AnnouncementCategories() {
                                                                     <Button
                                                                         variant="ghost"
                                                                         size="sm"
-                                                                        onClick={() => handleAction('edit', item)}
+                                                                        onClick={() => {
+                                                                            handleAction('edit', item);
+                                                                        }}
                                                                         className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"
                                                                     >
                                                                         <Edit className="h-4 w-4 text-gray-500" />
@@ -565,7 +587,9 @@ export default function AnnouncementCategories() {
                                                                     <Button
                                                                         variant="ghost"
                                                                         size="sm"
-                                                                        onClick={() => handleAction('toggle-status', item)}
+                                                                        onClick={() => {
+                                                                            handleAction('toggle-status', item);
+                                                                        }}
                                                                         className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"
                                                                     >
                                                                         <Lock className="h-4 w-4 text-gray-500" />
@@ -584,7 +608,9 @@ export default function AnnouncementCategories() {
                                                                     <Button
                                                                         variant="ghost"
                                                                         size="sm"
-                                                                        onClick={() => handleAction('delete', item)}
+                                                                        onClick={() => {
+                                                                            handleAction('delete', item);
+                                                                        }}
                                                                         className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"
                                                                     >
                                                                         <Trash2 className="h-4 w-4 text-gray-500" />
@@ -618,7 +644,9 @@ export default function AnnouncementCategories() {
                                             links={categories?.links}
                                             entityName={translate('announcement categories')}
                                             hidePerPage={true}
-                                            onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
+                                            onPageChange={(url) => {
+                                                router.get(url, {}, { preserveState: true, preserveScroll: true });
+                                            }}
                                         />
                                     </div>
                                 )}
@@ -648,7 +676,9 @@ export default function AnnouncementCategories() {
             </div>
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
                 entityName={translate('announcement category')}

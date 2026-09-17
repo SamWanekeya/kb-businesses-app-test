@@ -1,10 +1,10 @@
 // pages/organizations/index.tsx
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
-import { CrudTable } from '@components/CrudTable';
+import CrudFormModal from '@components/CrudFormModal';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
-import { UpgradePlanModal } from '@components/UpgradePlanModal';
+import UpgradePlanModal from '@components/UpgradePlanModal';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
 import { Button } from '@components/UserInterface/Button';
 import { Card } from '@components/UserInterface/Card';
@@ -122,7 +122,7 @@ export default function Organizations() {
 
         switch (action) {
             case 'sign-in-as':
-                router.get(route('impersonate.start', organization.id));
+                router.get(route('on-behalf-of.start', organization.id));
                 break;
             case 'organization-info':
                 setIsViewModalOpen(true);
@@ -355,7 +355,9 @@ export default function Organizations() {
         pageActions.push({
             icon: <History className="mx-auto h-4 w-4" />,
             variant: 'outline',
-            onClick: () => router.visit(route('sign-in-history.index')),
+            onClick: () => {
+                router.visit(route('sign-in-history.index'));
+            },
             tooltip: translate('Sign in History'),
         });
     }
@@ -364,7 +366,9 @@ export default function Organizations() {
         label: translate('Add Organization'),
         icon: <Plus className="mr-0 h-4 w-4 min-[480px]:mr-2" />,
         variant: 'default',
-        onClick: () => handleAddNew(),
+        onClick: () => {
+            handleAddNew();
+        },
         className: 'h-8 w-8 min-[480px]:h-9 min-[480px]:w-auto px-0 min-[480px]:px-4',
         labelClassName: 'hidden min-[480px]:inline',
         tooltip: translate('Add Organization'),
@@ -496,14 +500,18 @@ export default function Organizations() {
                             label: translate('Start Date'),
                             type: 'date',
                             value: startDate,
-                            onChange: (date) => setStartDate(date),
+                            onChange: (date) => {
+                                setStartDate(date);
+                            },
                         },
                         {
                             name: 'end_date',
                             label: translate('End Date'),
                             type: 'date',
                             value: endDate,
-                            onChange: (date) => setEndDate(date),
+                            onChange: (date) => {
+                                setEndDate(date);
+                            },
                         },
                     ]}
                     hasActiveFilters={hasActiveFilters}
@@ -561,7 +569,9 @@ export default function Organizations() {
                         total={organizations?.total || 0}
                         links={organizations?.links}
                         entityName={translate('organizations')}
-                        onPageChange={(url) => router.get(url)}
+                        onPageChange={(url) => {
+                            router.get(url);
+                        }}
                         currentPerPage={pageFilters.per_page?.toString() || '10'}
                         onPerPageChange={(value) => {
                             router.get(
@@ -641,7 +651,9 @@ export default function Organizations() {
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
-                                                onClick={() => handleAction('upgrade-plan', organization)}
+                                                onClick={() => {
+                                                    handleAction('upgrade-plan', organization);
+                                                }}
                                                 className="text-primary hover:text-primary hover:bg-primary/10 h-6 px-2 text-xs"
                                             >
                                                 {translate('Upgrade')}
@@ -664,7 +676,9 @@ export default function Organizations() {
                                                     <Button
                                                         variant="ghost"
                                                         size="sm"
-                                                        onClick={() => handleAction('sign-in-as', organization)}
+                                                        onClick={() => {
+                                                            handleAction('sign-in-as', organization);
+                                                        }}
                                                         className="h-8 w-8 p-0 text-blue-600 dark:hover:bg-blue-900/20"
                                                     >
                                                         <ArrowUpRight className="h-4 w-4 text-gray-500" />
@@ -678,7 +692,9 @@ export default function Organizations() {
                                                     <Button
                                                         variant="ghost"
                                                         size="sm"
-                                                        onClick={() => handleAction('organization-info', organization)}
+                                                        onClick={() => {
+                                                            handleAction('organization-info', organization);
+                                                        }}
                                                         className="h-8 w-8 p-0 text-gray-600 hover:bg-gray-50 hover:text-gray-700 dark:hover:bg-gray-800"
                                                     >
                                                         <Info className="h-4 w-4 text-gray-500" />
@@ -692,7 +708,9 @@ export default function Organizations() {
                                                     <Button
                                                         variant="ghost"
                                                         size="sm"
-                                                        onClick={() => handleAction('edit', organization)}
+                                                        onClick={() => {
+                                                            handleAction('edit', organization);
+                                                        }}
                                                         className="h-8 w-8 p-0 text-amber-600 dark:hover:bg-amber-900/20"
                                                     >
                                                         <Edit className="h-4 w-4 text-gray-500" />
@@ -728,11 +746,19 @@ export default function Organizations() {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end" className="z-50 w-48" sideOffset={5}>
-                                                <DropdownMenuItem onClick={() => handleAction('reset-password', organization)}>
+                                                <DropdownMenuItem
+                                                    onClick={() => {
+                                                        handleAction('reset-password', organization);
+                                                    }}
+                                                >
                                                     <KeyRound className="mr-2 h-4 w-4 text-gray-500" />
                                                     <span>{translate('Reset Password')}</span>
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem onClick={() => handleAction('toggle-status', organization)}>
+                                                <DropdownMenuItem
+                                                    onClick={() => {
+                                                        handleAction('toggle-status', organization);
+                                                    }}
+                                                >
                                                     {organization.status === 'active' ? (
                                                         <Lock className="mr-2 h-4 w-4 text-gray-500" />
                                                     ) : (
@@ -746,7 +772,9 @@ export default function Organizations() {
                                                 </DropdownMenuItem>
                                                 <DropdownMenuSeparator />
                                                 <DropdownMenuItem
-                                                    onClick={() => handleAction('delete', organization)}
+                                                    onClick={() => {
+                                                        handleAction('delete', organization);
+                                                    }}
                                                     className="text-red-600 focus:text-red-600"
                                                 >
                                                     <Trash2 className="mr-2 h-4 w-4 text-gray-500" />
@@ -796,7 +824,9 @@ export default function Organizations() {
                                 total={organizations?.total || 0}
                                 links={organizations?.links}
                                 entityName={translate('organizations')}
-                                onPageChange={(url) => router.get(url)}
+                                onPageChange={(url) => {
+                                    router.get(url);
+                                }}
                                 perPageOptions={[12, 24, 48, 96]}
                                 currentPerPage={pageFilters.per_page?.toString() || '12'}
                                 onPerPageChange={(value) => {
@@ -828,7 +858,9 @@ export default function Organizations() {
             {/* Form Modal */}
             <CrudFormModal
                 isOpen={isFormModalOpen}
-                onClose={() => setIsFormModalOpen(false)}
+                onClose={() => {
+                    setIsFormModalOpen(false);
+                }}
                 onSubmit={(data) => {
                     // If sign_in_enabled is false, remove password field
                     if (data.sign_in_enabled === false) {
@@ -883,7 +915,9 @@ export default function Organizations() {
             {/* Delete Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentOrganization?.name || ''}
                 entityName="organization"
@@ -892,7 +926,9 @@ export default function Organizations() {
             {/* Reset Password Modal */}
             <CrudFormModal
                 isOpen={isResetPasswordModalOpen}
-                onClose={() => setIsResetPasswordModalOpen(false)}
+                onClose={() => {
+                    setIsResetPasswordModalOpen(false);
+                }}
                 onSubmit={handleResetPasswordConfirm}
                 formConfig={{
                     fields: [
@@ -914,7 +950,9 @@ export default function Organizations() {
             {/* Upgrade Plan Modal */}
             <UpgradePlanModal
                 isOpen={isUpgradePlanModalOpen}
-                onClose={() => setIsUpgradePlanModalOpen(false)}
+                onClose={() => {
+                    setIsUpgradePlanModalOpen(false);
+                }}
                 onConfirm={handleUpgradePlanConfirm}
                 plans={availablePlans}
                 currentPlanId={currentOrganization?.plan_id}

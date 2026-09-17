@@ -162,7 +162,7 @@ class ProjectTaskController extends Controller
         }
 
         $task = ProjectTask::create($validated);
-        if (isEmailTemplateEnabled('Task Assigned', createdBy()) && $task && $task->assigned_to && !IsDemo()) {
+        if (isEmailTemplateEnabled('Task Assigned', createdBy()) && $task && $task->assigned_to) {
             event(new TaskAssigned($task));
         }
 
@@ -351,120 +351,24 @@ class ProjectTaskController extends Controller
             ->where('created_by', createdBy())
             ->firstOrFail();
 
-        if (IsDemo()) {
-            $tasks = [
-                [
-                    'id' => 1,
-                    'title' => 'Project Planning',
-                    'description' => 'Initial project planning and requirements gathering',
-                    'start_date' => now()->subDays(10)->format('Y-m-d'),
-                    'due_date' => now()->subDays(5)->format('Y-m-d'),
-                    'priority' => 'high',
-                    'progress' => 100,
-                    'task_status' => ['id' => 1, 'name' => 'Done', 'color' => '#10b981'],
-                    'assigned_user' => ['id' => 1, 'name' => 'John Doe', 'email' => 'john@kakbima.dev'],
-                ],
-                [
-                    'id' => 2,
-                    'title' => 'Design Phase',
-                    'description' => 'UI/UX design and mockups',
-                    'start_date' => now()->subDays(5)->format('Y-m-d'),
-                    'due_date' => now()->addDays(2)->format('Y-m-d'),
-                    'priority' => 'high',
-                    'progress' => 75,
-                    'task_status' => ['id' => 2, 'name' => 'In Progress', 'color' => '#A12582'],
-                    'assigned_user' => ['id' => 2, 'name' => 'Jane Smith', 'email' => 'jane@kakbima.dev'],
-                ],
-                [
-                    'id' => 3,
-                    'title' => 'Backend Development',
-                    'description' => 'API development and database setup',
-                    'start_date' => now()->format('Y-m-d'),
-                    'due_date' => now()->addDays(15)->format('Y-m-d'),
-                    'priority' => 'urgent',
-                    'progress' => 30,
-                    'task_status' => ['id' => 2, 'name' => 'In Progress', 'color' => '#A12582'],
-                    'assigned_user' => ['id' => 3, 'name' => 'Mike Johnson', 'email' => 'mike@kakbima.dev'],
-                ],
-                [
-                    'id' => 4,
-                    'title' => 'Frontend Development',
-                    'description' => 'React components and pages',
-                    'start_date' => now()->addDays(3)->format('Y-m-d'),
-                    'due_date' => now()->addDays(20)->format('Y-m-d'),
-                    'priority' => 'high',
-                    'progress' => 0,
-                    'task_status' => ['id' => 3, 'name' => 'To Do', 'color' => '#6b7280'],
-                    'assigned_user' => ['id' => 4, 'name' => 'Sarah Williams', 'email' => 'sarah@kakbima.dev'],
-                ],
-                [
-                    'id' => 5,
-                    'title' => 'Testing & QA',
-                    'description' => 'Quality assurance and bug fixes',
-                    'start_date' => now()->addDays(18)->format('Y-m-d'),
-                    'due_date' => now()->addDays(25)->format('Y-m-d'),
-                    'priority' => 'medium',
-                    'progress' => 0,
-                    'task_status' => ['id' => 3, 'name' => 'To Do', 'color' => '#6b7280'],
-                    'assigned_user' => ['id' => 5, 'name' => 'Tom Brown', 'email' => 'tom@kakbima.dev'],
-                ],
-                [
-                    'id' => 6,
-                    'title' => 'Deployment',
-                    'description' => 'Production deployment and monitoring',
-                    'start_date' => now()->addDays(25)->format('Y-m-d'),
-                    'due_date' => now()->addDays(30)->format('Y-m-d'),
-                    'priority' => 'high',
-                    'progress' => 0,
-                    'task_status' => ['id' => 3, 'name' => 'To Do', 'color' => '#6b7280'],
-                    'assigned_user' => ['id' => 1, 'name' => 'John Doe', 'email' => 'john@kakbima.dev'],
-                ],
-            ];
+        $taskQuery = ProjectTask::with(['assignedUser', 'taskStatus'])
+            ->where('project_id', $projectId)
+            ->where('created_by', createdBy());
 
-            $tasks = collect($tasks);
-
-            if (!empty($request->search)) {
-                $search = strtolower($request->search);
-                $tasks = $tasks->filter(function ($task) use ($search) {
-                    return str_contains(strtolower($task['title']), $search) ||
-                        str_contains(strtolower($task['description']), $search);
-                });
-            }
-
-            if (!empty($request->status) && $request->status !== 'all') {
-                $tasks = $tasks->filter(function ($task) use ($request) {
-                    return $task['task_status']['id'] == $request->status;
-                });
-            }
-
-            if (!empty($request->priority) && $request->priority !== 'all') {
-                $tasks = $tasks->filter(function ($task) use ($request) {
-                    return $task['priority'] == $request->priority;
-                });
-            }
-
-            $tasks = $tasks->values()->toArray();
-
-        } else {
-            $taskQuery = ProjectTask::with(['assignedUser', 'taskStatus'])
-                ->where('project_id', $projectId)
-                ->where('created_by', createdBy());
-
-            if (!empty($request->search)) {
-                $taskQuery->where(fn ($q) => $q->where('title', 'like', '%' . $request->search . '%')
-                    ->orWhere('description', 'like', '%' . $request->search . '%'));
-            }
-
-            if (!empty($request->status) && $request->status !== 'all') {
-                $taskQuery->where('task_status_id', $request->status);
-            }
-
-            if (!empty($request->priority) && $request->priority !== 'all') {
-                $taskQuery->where('priority', $request->priority);
-            }
-
-            $tasks = $taskQuery->orderBy('start_date')->get();
+        if (!empty($request->search)) {
+            $taskQuery->where(fn ($q) => $q->where('title', 'like', '%' . $request->search . '%')
+                ->orWhere('description', 'like', '%' . $request->search . '%'));
         }
+
+        if (!empty($request->status) && $request->status !== 'all') {
+            $taskQuery->where('task_status_id', $request->status);
+        }
+
+        if (!empty($request->priority) && $request->priority !== 'all') {
+            $taskQuery->where('priority', $request->priority);
+        }
+
+        $tasks = $taskQuery->orderBy('start_date')->get();
 
         $users = User::where('created_by', createdBy())
             ->where('status', 'active')

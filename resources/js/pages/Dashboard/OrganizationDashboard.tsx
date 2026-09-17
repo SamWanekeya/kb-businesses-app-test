@@ -114,7 +114,9 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
     const handleRefresh = () => {
         setIsRefreshing(true);
         router.reload();
-        setTimeout(() => setIsRefreshing(false), 1000);
+        setTimeout(() => {
+            setIsRefreshing(false);
+        }, 1000);
     };
 
     const getStatusColor = (status: string) => {
@@ -716,7 +718,9 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                         {recentActivities.announcements.map((a, i) => (
                                             <div
                                                 key={i}
-                                                onClick={() => router.get(route('announcements.show', a.id))}
+                                                onClick={() => {
+                                                    router.get(route('announcements.show', a.id));
+                                                }}
                                                 className={`hover:bg-muted/50 flex cursor-pointer items-center gap-3 px-5 py-3.5 transition-colors duration-150 dark:hover:bg-slate-800/60`}
                                             >
                                                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/40">
@@ -903,7 +907,12 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                     </div>
                                     <div className="flex items-center gap-2">
                                         {useHasPermission('view-invoices') && (
-                                            <Tabs value={salesTab} onValueChange={(v) => setSalesTab(v as 'sales' | 'revenue')}>
+                                            <Tabs
+                                                value={salesTab}
+                                                onValueChange={(v) => {
+                                                    setSalesTab(v as 'sales' | 'revenue');
+                                                }}
+                                            >
                                                 <TabsList className="h-7">
                                                     <TabsTrigger value="sales" className="cursor-pointer px-3 py-1 text-xs">
                                                         {translate('Sales')}
@@ -924,7 +933,12 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                                 {window.appSettings?.formatCurrency(charts.revenueChart?.reduce((s, m) => s + m.revenue, 0) || 0)}
                                             </span>
                                         )}
-                                        <Select value={String(chartYear)} onValueChange={(v) => handleChartYearChange(Number(v))}>
+                                        <Select
+                                            value={String(chartYear)}
+                                            onValueChange={(v) => {
+                                                handleChartYearChange(Number(v));
+                                            }}
+                                        >
                                             <SelectTrigger className="h-7 w-24 text-xs focus:ring-0 focus:ring-offset-0">
                                                 <SelectValue />
                                             </SelectTrigger>
@@ -1065,7 +1079,12 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                                         <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-600/20 ring-inset dark:bg-emerald-900/20 dark:text-emerald-400 dark:ring-emerald-500/30">
                                             {charts.leadConversions?.reduce((s, m) => s + (m.conversions || 0), 0) || 0} {translate('conversions')}
                                         </span>
-                                        <Select value={String(leadYear)} onValueChange={(v) => handleLeadYearChange(Number(v))}>
+                                        <Select
+                                            value={String(leadYear)}
+                                            onValueChange={(v) => {
+                                                handleLeadYearChange(Number(v));
+                                            }}
+                                        >
                                             <SelectTrigger className="h-7 w-24 text-xs focus:ring-0 focus:ring-offset-0">
                                                 <SelectValue />
                                             </SelectTrigger>

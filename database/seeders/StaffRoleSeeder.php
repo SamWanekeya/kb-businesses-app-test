@@ -28,7 +28,7 @@ class StaffRoleSeeder extends Seeder
         }
 
         // Define role templates with permissions
-        if (IsDemo()) {
+        if (config('app.demo')) {
             $roleTemplates = [
                 [
                     'name' => 'sales-manager',
@@ -912,7 +912,7 @@ class StaffRoleSeeder extends Seeder
                 $role->syncPermissions($permissionObjects);
 
                 // Create 2-3 staff users for each role (total 10-15 per organization)
-                if (IsDemo()) {
+                if (config('app.demo')) {
                     $staffCount = rand(2, 3);
                 } else {
                     $staffCount = 1;

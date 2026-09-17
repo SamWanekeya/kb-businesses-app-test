@@ -84,7 +84,7 @@ export default function ReferredUsers() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard') },
-        { title: translate('Referral Program'), href: route('referral.index') },
+        { title: translate('Referral Program'), href: route('referral-program.index') },
         { title: translate('Referral Users') },
     ];
 
@@ -98,7 +98,9 @@ export default function ReferredUsers() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="me-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.get(route('referral.index')),
+                    onClick: () => {
+                        router.get(route('referral-program.index'));
+                    },
                 },
             ]}
         >

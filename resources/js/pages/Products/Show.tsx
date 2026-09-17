@@ -15,8 +15,12 @@ export default function ProductShow() {
     const images: any[] = additionalImages || [];
     const [adIndex, setAdIndex] = useState(0);
 
-    const handlePrev = () => setAdIndex((i) => (i - 1 + images.length) % images.length);
-    const handleNext = () => setAdIndex((i) => (i + 1) % images.length);
+    const handlePrev = () => {
+        setAdIndex((i) => (i - 1 + images.length) % images.length);
+    };
+    const handleNext = () => {
+        setAdIndex((i) => (i + 1) % images.length);
+    };
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard') },
@@ -31,7 +35,9 @@ export default function ProductShow() {
             label: translate('Back'),
             icon: <ArrowLeft className="me-2 h-4 w-4" />,
             variant: 'outline',
-            onClick: () => router.visit(route('products.index')),
+            onClick: () => {
+                router.visit(route('products.index'));
+            },
         },
     ];
 
@@ -111,7 +117,9 @@ export default function ProductShow() {
                                     {images.map((img: any, idx: number) => (
                                         <button
                                             key={img.id}
-                                            onClick={() => setAdIndex(idx)}
+                                            onClick={() => {
+                                                setAdIndex(idx);
+                                            }}
                                             className={`h-14 w-14 flex-shrink-0 overflow-hidden rounded border-2 transition-all ${
                                                 adIndex === idx ? 'border-primary' : 'border-border hover:border-muted-foreground'
                                             }`}

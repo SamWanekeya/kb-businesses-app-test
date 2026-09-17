@@ -1,5 +1,5 @@
 // pages/plans/plan-request.tsx
-import { CrudTable } from '@components/CrudTable';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import Pagination from '@components/UserInterface/Pagination';
@@ -36,7 +36,7 @@ export default function PlanRequestsPage() {
 
     const applyFilters = () => {
         router.get(
-            route('plan-requests.index'),
+            route('subscriptions.plan-requests.index'),
             {
                 page: 1,
                 search: searchTerm || undefined,
@@ -52,7 +52,7 @@ export default function PlanRequestsPage() {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
 
         router.get(
-            route('plan-requests.index'),
+            route('subscriptions.plan-requests.index'),
             {
                 sort_field: field,
                 sort_direction: direction,
@@ -72,7 +72,7 @@ export default function PlanRequestsPage() {
             }
 
             router.post(
-                route('plan-requests.approve', item.id),
+                route('subscriptions.plan-requests.approve', item.id),
                 {},
                 {
                     onSuccess: (page) => {
@@ -103,7 +103,7 @@ export default function PlanRequestsPage() {
             }
 
             router.post(
-                route('plan-requests.reject', item.id),
+                route('subscriptions.plan-requests.reject', item.id),
                 {},
                 {
                     onSuccess: (page) => {
@@ -140,12 +140,12 @@ export default function PlanRequestsPage() {
     const handleResetFilters = () => {
         setSearchTerm('');
         setSelectedStatus('all');
-        router.get(route('plan-requests.index'));
+        router.get(route('subscriptions.plan-requests.index'));
     };
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard') },
-        { title: translate('Plans'), href: route('plans.index') },
+        { title: translate('Plans'), href: route('subscriptions.plans.index') },
         { title: translate('Plan Requests') },
     ];
 
@@ -311,11 +311,13 @@ export default function PlanRequestsPage() {
                     total={planRequests?.total || 0}
                     links={planRequests?.links}
                     entityName={translate('plan requests')}
-                    onPageChange={(url) => router.get(url)}
+                    onPageChange={(url) => {
+                        router.get(url);
+                    }}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
                         router.get(
-                            route('plan-requests.index'),
+                            route('subscriptions.plan-requests.index'),
                             {
                                 page: 1,
                                 per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,

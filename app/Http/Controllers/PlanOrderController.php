@@ -89,10 +89,10 @@ class PlanOrderController extends BaseController
         try {
             $planOrder->approve(Auth::id());
 
-            return redirect()->route('plan-orders.index')
+            return redirect()->route('subscriptions/plan-orders.index')
                 ->with('success', __('Plan order approved successfully!'));
         } catch (Exception $e) {
-            return redirect()->route('plan-orders.index')
+            return redirect()->route('subscriptions/plan-orders.index')
                 ->with('error', __('Failed to approve plan order: ') . $e->getMessage());
         }
     }
@@ -106,10 +106,10 @@ class PlanOrderController extends BaseController
 
             $planOrder->reject(Auth::id(), $request->notes);
 
-            return redirect()->route('plan-orders.index')
+            return redirect()->route('subscriptions/plan-orders.index')
                 ->with('success', __('Plan order rejected successfully!'));
         } catch (Exception $e) {
-            return redirect()->route('plan-orders.index')
+            return redirect()->route('subscriptions/plan-orders.index')
                 ->with('error', __('Failed to reject plan order: ') . $e->getMessage());
         }
     }

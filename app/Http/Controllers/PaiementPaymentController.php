@@ -108,7 +108,7 @@ class PaiementPaymentController extends Controller
 
     public function success(Request $request)
     {
-        return redirect()->route('plans.index')->with('success', __('Payment completed successfully'));
+        return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully'));
     }
 
     public function callback(Request $request)

@@ -1,6 +1,6 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
-import { CrudTable } from '@components/CrudTable';
+import CrudFormModal from '@components/CrudFormModal';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
@@ -300,7 +300,9 @@ export default function Cases() {
             label: translate('Add Case'),
             icon: <Plus className="mr-0 h-4 w-4 min-[360px]:mr-2" />,
             variant: 'default',
-            onClick: () => handleAddNew(),
+            onClick: () => {
+                handleAddNew();
+            },
             className: 'h-8 w-8 min-[360px]:h-9 min-[360px]:w-auto px-0 min-[360px]:px-4',
             labelClassName: 'hidden min-[360px]:inline',
             tooltip: translate('Add Case'),
@@ -594,7 +596,9 @@ export default function Cases() {
                         total={cases?.total || 0}
                         links={cases?.links}
                         entityName={translate('cases')}
-                        onPageChange={(url) => router.get(url)}
+                        onPageChange={(url) => {
+                            router.get(url);
+                        }}
                         currentPerPage={pageFilters.per_page?.toString() || '10'}
                         onPerPageChange={(value) => {
                             router.get(
@@ -665,26 +669,43 @@ export default function Cases() {
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end" className="z-50 w-40" sideOffset={5}>
                                                     {useHasPermission('view-cases') && (
-                                                        <DropdownMenuItem onClick={() => handleAction('view', caseItem)}>
+                                                        <DropdownMenuItem
+                                                            onClick={() => {
+                                                                handleAction('view', caseItem);
+                                                            }}
+                                                        >
                                                             <Eye className="mr-2 h-4 w-4" />
                                                             <span>{translate('View Case')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('toggle-status-cases') && (
-                                                        <DropdownMenuItem onClick={() => handleAction('toggle-status', caseItem)}>
+                                                        <DropdownMenuItem
+                                                            onClick={() => {
+                                                                handleAction('toggle-status', caseItem);
+                                                            }}
+                                                        >
                                                             <RefreshCw className="mr-2 h-4 w-4" />
                                                             <span>{translate('Change Status')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     {useHasPermission('edit-cases') && (
-                                                        <DropdownMenuItem onClick={() => handleAction('edit', caseItem)}>
+                                                        <DropdownMenuItem
+                                                            onClick={() => {
+                                                                handleAction('edit', caseItem);
+                                                            }}
+                                                        >
                                                             <Edit className="mr-2 h-4 w-4" />
                                                             <span>{translate('Edit')}</span>
                                                         </DropdownMenuItem>
                                                     )}
                                                     <DropdownMenuSeparator />
                                                     {useHasPermission('delete-cases') && (
-                                                        <DropdownMenuItem onClick={() => handleAction('delete', caseItem)} className="text-rose-600">
+                                                        <DropdownMenuItem
+                                                            onClick={() => {
+                                                                handleAction('delete', caseItem);
+                                                            }}
+                                                            className="text-rose-600"
+                                                        >
                                                             <Trash2 className="mr-2 h-4 w-4" />
                                                             <span>{translate('Delete')}</span>
                                                         </DropdownMenuItem>
@@ -794,7 +815,9 @@ export default function Cases() {
                             total={cases?.total || 0}
                             links={cases?.links}
                             entityName={translate('cases')}
-                            onPageChange={(url) => router.get(url)}
+                            onPageChange={(url) => {
+                                router.get(url);
+                            }}
                             perPageOptions={[12, 24, 48, 96]}
                             currentPerPage={pageFilters.per_page?.toString() || '12'}
                             onPerPageChange={(value) => {
@@ -824,7 +847,9 @@ export default function Cases() {
             {/* Form Modal */}
             <CrudFormModal
                 isOpen={isFormModalOpen}
-                onClose={() => setIsFormModalOpen(false)}
+                onClose={() => {
+                    setIsFormModalOpen(false);
+                }}
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
@@ -911,7 +936,7 @@ export default function Cases() {
                             type: formMode === 'view' ? 'text' : 'select',
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('users.index'), linkText: translate('Users') },
+                            emptyNote: { link: route('users-permissions.users.index'), linkText: translate('Users') },
                             options:
                                 formMode === 'view'
                                     ? []
@@ -936,7 +961,9 @@ export default function Cases() {
             {/* Status Modal */}
             <CrudFormModal
                 isOpen={isStatusModalOpen}
-                onClose={() => setIsStatusModalOpen(false)}
+                onClose={() => {
+                    setIsStatusModalOpen(false);
+                }}
                 onSubmit={handleStatusChange}
                 formConfig={{
                     fields: [
@@ -964,7 +991,9 @@ export default function Cases() {
             {/* Delete Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.subject || ''}
                 entityName={translate('case')}

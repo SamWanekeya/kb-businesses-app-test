@@ -1,37 +1,31 @@
-import { toast } from '@components/CustomToast';
 import { Button } from '@components/UserInterface/Button';
 import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
 import { Textarea } from '@components/UserInterface/Textarea';
+import { useEffect, useState } from 'react';
+
+import { toast } from '@components/CustomToast';
 import useStackedModal from '@hooks/useStackedModal';
 import { usePage } from '@inertiajs/react';
 import languageData from '@lang/language.json';
 import { route } from '@utils/Routes';
 import { Check, Copy, Loader2, Sparkles, X } from 'lucide-react';
-import { useState } from 'react';
-import ReactCountryFlag from 'react-country-flag';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 
-interface ChatGptModalProps {
+interface KakbimaIntelligenceModalProps {
     isOpen: boolean;
     onClose: () => void;
     onGenerate: (content: string) => void;
     title?: string;
-    placeholder?: string;
 }
 
-export function ChatGptModal({
-    isOpen,
-    onClose,
-    onGenerate,
-    title = 'AI Content Generator',
-    placeholder = 'Describe what you want to generate...',
-}: ChatGptModalProps) {
+export default function KakbimaIntelligenceModal({ isOpen, onClose, onGenerate, title = 'AI Content Generator' }: KakbimaIntelligenceModalProps) {
     const { t: translate } = useTranslation();
-    const { csrf_token } = usePage().props;
-    const { modalId, zIndex } = useStackedModal('chat-gpt-modal', isOpen);
+    const { csrfToken } = usePage().props;
+
+    useStackedModal('kakbima-intelligence-modal', isOpen);
     const [prompt, setPrompt] = useState('');
     const [generatedContent, setGeneratedContent] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -42,19 +36,42 @@ export function ChatGptModal({
     const [selectedText, setSelectedText] = useState('');
     const [copied, setCopied] = useState(false);
 
+    useEffect(() => {
+        if (isOpen) {
+            // Force remove inert from document to allow Kakbima Intelligence modal interaction
+            const removeInert = () => {
+                document.body.removeAttribute('inert');
+                document.documentElement.removeAttribute('inert');
+                const allElements = document.querySelectorAll('[inert]');
+                allElements.forEach((el) => {
+                    el.removeAttribute('inert');
+                });
+            };
+
+            removeInert();
+            // Keep removing inert as Radix might re-add it
+            const interval = setInterval(removeInert, 100);
+
+            return () => {
+                clearInterval(interval);
+            };
+        }
+    }, [isOpen]);
+
     const handleGenerate = async () => {
         if (!prompt.trim()) {
             toast.error(translate('Please enter a prompt'));
             return;
         }
+        const toastId = toast.loading(translate('Generating response...'));
 
         setIsLoading(true);
         try {
-            const response = await fetch(route('chat-gpt.generate'), {
+            const response = await fetch(route('kakbima-intelligence.generate'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrf_token,
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify({
                     prompt,
@@ -67,17 +84,21 @@ export function ChatGptModal({
 
             const data = await response.json();
 
-            if (response.ok) {
-                if (data.success == false) {
-                    toast.error(data.message);
-                    return;
-                }
+            // Check both HTTP status and success flag from controller
+            if (response.ok && data.success !== false) {
                 setGeneratedContent(data.content);
+                toast.success(translate('Content generated successfully'));
             } else {
-                toast.error(data.message || translate('Failed to generate content'));
+                // Show error message from controller or default message
+                const errorMessage = data.message;
+                toast.error(translate(errorMessage));
             }
-        } catch (error) {
-            toast.error(translate('Error connecting to AI service'));
+        } catch (errors) {
+            toast.dismiss(toastId);
+
+            Object.values(errors).forEach((message) => {
+                toast.error(translate(message));
+            });
         } finally {
             setIsLoading(false);
         }
@@ -91,21 +112,28 @@ export function ChatGptModal({
     };
 
     const handleClose = () => {
-        setPromptranslate('');
-        setGeneratedContentranslate('');
-        setSelectedTextranslate('');
+        setPrompt('');
+        setGeneratedContent('');
+        setSelectedText('');
         setCopied(false);
         onClose();
     };
 
     const copyToClipboard = async (text: string) => {
+        const toastId = toast.loading(translate('Copying response...'));
         try {
             await navigator.clipboard.writeText(text);
             setCopied(true);
             toast.success(translate('Copied to clipboard'));
-            setTimeout(() => setCopied(false), 2000);
-        } catch (error) {
-            toast.error(translate('Failed to copy'));
+            setTimeout(() => {
+                setCopied(false);
+            }, 2000);
+        } catch (errors) {
+            toast.dismiss(toastId);
+
+            Object.values(errors).forEach((message) => {
+                toast.error(translate(message));
+            });
         }
     };
 
@@ -124,21 +152,30 @@ export function ChatGptModal({
     }
 
     const modalContent = (
-        <div className="fixed inset-0 flex items-center justify-center" style={{ zIndex }}>
-            <div className="fixed inset-0 bg-black/50" />
+        <div
+            className="fixed inset-0 flex items-center justify-center"
+            style={{ zIndex: 99999 }}
+            data-kakbima-intelligence-modal
+            onClick={(e) => {
+                if (e.target === e.currentTarget) {
+                    handleClose();
+                }
+            }}
+        >
+            <div className="fixed inset-0 bg-black/30" />
             <div
-                className="pointer-events-auto mx-4 w-full max-w-2xl rounded-lg border bg-white shadow-xl dark:bg-gray-800"
-                style={{ zIndex: zIndex + 1 }}
+                className="bg-whitedark:bg-neutral-800 relative mx-4 w-full max-w-2xl rounded-lg border shadow-xl dark:bg-neutral-800"
+                style={{ zIndex: 100000 }}
+                onClick={(e) => {
+                    e.stopPropagation();
+                }}
             >
                 <div className="flex items-center justify-between border-b p-6">
                     <h2 className="flex items-center gap-2 text-lg font-semibold">
-                        <Sparkles className="text-primary h-5 w-5" />
+                        <Sparkles className="h-5 w-5 text-blue-500" />
                         {translate(title)}
                     </h2>
-                    <button
-                        onClick={handleClose}
-                        className="cursor-pointer rounded-full p-1 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
+                    <button onClick={handleClose} className="rounded-full p-1 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-700">
                         <X className="h-5 w-5" />
                     </button>
                 </div>
@@ -149,16 +186,11 @@ export function ChatGptModal({
                             <Label>{translate('Language')}</Label>
                             <Select value={language} onValueChange={setLanguage}>
                                 <SelectTrigger>
-                                    <SelectValue />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
-                                <SelectContent style={{ zIndex: zIndex + 10 }}>
+                                <SelectContent style={{ zIndex: 100010 }}>
                                     {languageData.map((lang) => (
                                         <SelectItem key={lang.code} value={lang.code}>
-                                            <ReactCountryFlag
-                                                countryCode={lang.countryCode}
-                                                svg
-                                                style={{ width: '1em', height: '1em', marginRight: '8px' }}
-                                            />
                                             {lang.name}
                                         </SelectItem>
                                     ))}
@@ -166,12 +198,12 @@ export function ChatGptModal({
                             </Select>
                         </div>
                         <div>
-                            <Label>{translate('AI Creativity')}</Label>
+                            <Label>{translate('Ai creativity')}</Label>
                             <Select value={creativity} onValueChange={setCreativity}>
                                 <SelectTrigger>
-                                    <SelectValue />
+                                    <SelectValue placeholder={translate('Select...')} />
                                 </SelectTrigger>
-                                <SelectContent style={{ zIndex: zIndex + 10 }}>
+                                <SelectContent style={{ zIndex: 100010 }}>
                                     <SelectItem value="low">{translate('Low')} (0.3)</SelectItem>
                                     <SelectItem value="medium">{translate('Medium')} (0.7)</SelectItem>
                                     <SelectItem value="high">{translate('High')} (0.9)</SelectItem>
@@ -182,22 +214,41 @@ export function ChatGptModal({
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <Label>{translate('Number of Results')}</Label>
-                            <Input type="number" value={numResults} onChange={(e) => setNumResults(Number(e.target.value))} min={1} max={5} />
+                            <Label>{translate('Number of results')}</Label>
+                            <Input
+                                type="number"
+                                inputMode="decimal"
+                                value={numResults}
+                                onChange={(e) => {
+                                    setNumResults(Number(e.target.value));
+                                }}
+                                min={1}
+                                max={5}
+                            />
                         </div>
                         <div>
-                            <Label>{translate('Max Result Length')}</Label>
-                            <Input type="number" value={maxLength} onChange={(e) => setMaxLength(Number(e.target.value))} min={50} max={500} />
+                            <Label>{translate('Maximum result length')}</Label>
+                            <Input
+                                type="number"
+                                inputMode="decimal"
+                                value={maxLength}
+                                onChange={(e) => {
+                                    setMaxLength(Number(e.target.value));
+                                }}
+                                min={50}
+                                max={500}
+                            />
                         </div>
                     </div>
 
                     <div>
-                        <Label htmlFor="prompt">{translate('Add Text')}</Label>
+                        <Label htmlFor="prompt">{translate('Add a new text')}</Label>
                         <Textarea
                             id="prompt"
                             value={prompt}
-                            onChange={(e) => setPrompt(e.target.value)}
-                            placeholder={translate(placeholder)}
+                            onChange={(e) => {
+                                setPrompt(e.target.value);
+                            }}
                             rows={3}
                             className="mt-1"
                         />
@@ -220,31 +271,33 @@ export function ChatGptModal({
                     {generatedContent && (
                         <div>
                             <div className="mb-2 flex items-center justify-between">
-                                <Label htmlFor="generated">{translate('Output Text')}</Label>
+                                <Label htmlFor="generated">{translate('Output text')}</Label>
                                 <div className="flex gap-2">
                                     {selectedText && (
-                                        <Button size="sm" variant="outline" onClick={() => copyToClipboard(selectedText)}>
+                                        <Button size="lg" variant="outline" onClick={() => copyToClipboard(selectedText)}>
                                             {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                                            {translate('Copy Selected')}
+                                            {translate('Copy selected')}
                                         </Button>
                                     )}
-                                    <Button size="sm" variant="outline" onClick={() => copyToClipboard(generatedContent)}>
+                                    <Button size="lg" variant="outline" onClick={() => copyToClipboard(generatedContent)}>
                                         {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                                        {translate('Copy Text')}
+                                        {translate('Copy text')}
                                     </Button>
                                 </div>
                             </div>
                             <Textarea
                                 id="generated-content"
                                 value={generatedContent}
-                                onChange={(e) => setGeneratedContent(e.target.value)}
+                                onChange={(e) => {
+                                    setGeneratedContent(e.target.value);
+                                }}
                                 onSelect={handleTextSelection}
                                 rows={6}
                                 className="mt-1"
                             />
                             <div className="mt-2 flex gap-2">
                                 <Button onClick={handleUse} className="flex-1">
-                                    {translate('Use This Content')}
+                                    {translate('Use this content')}
                                 </Button>
                                 <Button variant="outline" onClick={handleGenerate} disabled={isLoading}>
                                     {translate('Regenerate')}

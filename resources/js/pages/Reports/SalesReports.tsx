@@ -84,7 +84,12 @@ export default function SalesReports() {
                                     <CardTitle className="text-base font-semibold">{translate('Sales Trends')}</CardTitle>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <Tabs value={chartView} onValueChange={(v) => setChartView(v as 'daily' | 'monthly')}>
+                                    <Tabs
+                                        value={chartView}
+                                        onValueChange={(v) => {
+                                            setChartView(v as 'daily' | 'monthly');
+                                        }}
+                                    >
                                         <TabsList className="h-7">
                                             <TabsTrigger value="daily" className="cursor-pointer px-3 py-1 text-xs">
                                                 {translate('Daily')}
@@ -279,7 +284,7 @@ export default function SalesReports() {
                                                         alt={product.name}
                                                         className="max-h-full max-w-full rounded-lg object-contain"
                                                         onError={(e) => {
-                                                            const target = e.currentTarget as HTMLImageElement;
+                                                            const target = e.currentTarget;
 
                                                             if (!target.src.startsWith('data:image/svg+xml')) {
                                                                 target.src =

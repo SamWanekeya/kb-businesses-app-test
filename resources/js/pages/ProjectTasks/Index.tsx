@@ -1,5 +1,5 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
+import CrudFormModal from '@components/CrudFormModal';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
@@ -27,7 +27,9 @@ function ParentTaskSelect({ tasksRef, value, onChange }: { tasksRef: React.Mutab
     const [tasks, setTasks] = useState<any[]>(() => [...tasksRef.current]);
 
     useEffect(() => {
-        tasksRef.current.__notify = () => setTasks([...tasksRef.current]);
+        tasksRef.current.__notify = () => {
+            setTasks([...tasksRef.current]);
+        };
         // Sync on mount in case data was loaded before this mounted
         setTasks([...tasksRef.current]);
         return () => {
@@ -165,9 +167,15 @@ export default function ProjectTasks() {
                 if (item.project?.id) {
                     fetch(route('api.projects.details', item.project.id) + '?exclude_id=' + item.id)
                         .then((res) => res.json())
-                        .then((data) => setParentTasks(data.parent_tasks || []))
-                        .catch(() => setParentTasks([]))
-                        .finally(() => setIsFormModalOpen(true));
+                        .then((data) => {
+                            setParentTasks(data.parent_tasks || []);
+                        })
+                        .catch(() => {
+                            setParentTasks([]);
+                        })
+                        .finally(() => {
+                            setIsFormModalOpen(true);
+                        });
                 } else {
                     setParentTasks([]);
                     setIsFormModalOpen(true);
@@ -274,7 +282,9 @@ export default function ProjectTasks() {
             labelClassName: 'hidden min-[390px]:inline',
             tooltip: translate('Add Task'),
             tooltipClassName: 'min-[390px]:hidden',
-            onClick: () => handleAddTask(''),
+            onClick: () => {
+                handleAddTask('');
+            },
         });
     }
 
@@ -388,7 +398,9 @@ export default function ProjectTasks() {
                             </div>
                             {useHasPermission('manage-task-statuses') && (
                                 <button
-                                    onClick={() => router.visit(route('task-statuses.index'))}
+                                    onClick={() => {
+                                        router.visit(route('task-statuses.index'));
+                                    }}
                                     className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
                                 >
                                     <Plus className="h-4 w-4" />
@@ -407,7 +419,9 @@ export default function ProjectTasks() {
                                 key={status.id}
                                 className="flex flex-shrink-0 flex-col rounded-xl border"
                                 style={{ width: '300px', minWidth: '300px', backgroundColor: colBg, borderColor: colBorder, height: '100%' }}
-                                onDragOver={(e) => e.preventDefault()}
+                                onDragOver={(e) => {
+                                    e.preventDefault();
+                                }}
                                 onDrop={(e) => {
                                     e.preventDefault();
                                     const taskId = e.dataTransfer.getData('taskId');
@@ -451,7 +465,9 @@ export default function ProjectTasks() {
                                     </div>
                                     {useHasPermission('create-project-tasks') && (
                                         <button
-                                            onClick={() => handleAddTask(status.id.toString())}
+                                            onClick={() => {
+                                                handleAddTask(status.id.toString());
+                                            }}
                                             className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-white/60 hover:text-gray-800"
                                             title={translate('Add Task')}
                                         >
@@ -482,7 +498,9 @@ export default function ProjectTasks() {
                                                     e.dataTransfer.setData('taskId', task.id.toString());
                                                     e.currentTarget.classList.add('opacity-50');
                                                 }}
-                                                onDragEnd={(e) => e.currentTarget.classList.remove('opacity-50')}
+                                                onDragEnd={(e) => {
+                                                    e.currentTarget.classList.remove('opacity-50');
+                                                }}
                                                 className={useHasPermission('move-project-task') ? 'cursor-grab active:cursor-grabbing' : ''}
                                             >
                                                 <div className="rounded-lg border border-gray-100 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
@@ -492,7 +510,9 @@ export default function ProjectTasks() {
                                                             <div className="min-w-0 flex-1">
                                                                 <h4
                                                                     className="hover:text-primary cursor-pointer truncate text-sm leading-tight font-semibold text-gray-900 transition-colors dark:text-gray-100"
-                                                                    onClick={() => handleAction('view', task)}
+                                                                    onClick={() => {
+                                                                        handleAction('view', task);
+                                                                    }}
                                                                 >
                                                                     {task.title}
                                                                 </h4>
@@ -515,13 +535,21 @@ export default function ProjectTasks() {
                                                                     </DropdownMenuTrigger>
                                                                     <DropdownMenuContent align="end" className="w-32">
                                                                         {useHasPermission('view-project-tasks') && (
-                                                                            <DropdownMenuItem onClick={() => handleAction('view', task)}>
+                                                                            <DropdownMenuItem
+                                                                                onClick={() => {
+                                                                                    handleAction('view', task);
+                                                                                }}
+                                                                            >
                                                                                 <Eye className="mr-2 h-4 w-4" />
                                                                                 {translate('View')}
                                                                             </DropdownMenuItem>
                                                                         )}
                                                                         {useHasPermission('edit-project-tasks') && (
-                                                                            <DropdownMenuItem onClick={() => handleAction('edit', task)}>
+                                                                            <DropdownMenuItem
+                                                                                onClick={() => {
+                                                                                    handleAction('edit', task);
+                                                                                }}
+                                                                            >
                                                                                 <Edit className="mr-2 h-4 w-4" />
                                                                                 {translate('Edit')}
                                                                             </DropdownMenuItem>
@@ -530,7 +558,9 @@ export default function ProjectTasks() {
                                                                             <>
                                                                                 <DropdownMenuSeparator />
                                                                                 <DropdownMenuItem
-                                                                                    onClick={() => handleAction('delete', task)}
+                                                                                    onClick={() => {
+                                                                                        handleAction('delete', task);
+                                                                                    }}
                                                                                     className="text-red-600"
                                                                                 >
                                                                                     <Trash2 className="mr-2 h-4 w-4" />
@@ -618,7 +648,9 @@ export default function ProjectTasks() {
 
             <CrudFormModal
                 isOpen={isFormModalOpen}
-                onClose={() => setIsFormModalOpen(false)}
+                onClose={() => {
+                    setIsFormModalOpen(false);
+                }}
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     ...(useHasPermission('export-project-tasks') && { exportRoute: 'project-task.export' }),
@@ -650,7 +682,9 @@ export default function ProjectTasks() {
                                 if (formMode === 'create' && value) {
                                     fetch(route('api.projects.details', value))
                                         .then((res) => res.json())
-                                        .then((data) => setParentTasks(data.parent_tasks || []))
+                                        .then((data) => {
+                                            setParentTasks(data.parent_tasks || []);
+                                        })
                                         .catch(() => {});
                                 }
                             },
@@ -721,7 +755,7 @@ export default function ProjectTasks() {
                             type: formMode === 'view' ? 'text' : 'select',
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('users.index'), linkText: translate('Users') },
+                            emptyNote: { link: route('users-permissions.users.index'), linkText: translate('Users') },
                             options: formMode === 'view' ? [] : users.map((u: any) => ({ value: String(u.id), label: `${u.name} (${u.email})` })),
                             readOnly: formMode === 'view',
                         },
@@ -748,7 +782,9 @@ export default function ProjectTasks() {
 
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.title || ''}
                 entityName={translate('task')}

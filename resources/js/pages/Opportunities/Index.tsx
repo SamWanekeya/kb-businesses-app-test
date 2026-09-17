@@ -1,5 +1,5 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudTable } from '@components/CrudTable';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
@@ -289,7 +289,9 @@ export default function Opportunities() {
             label: translate('Add Opportunity'),
             icon: <Plus className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
             variant: 'default',
-            onClick: () => handleAddNew(),
+            onClick: () => {
+                handleAddNew();
+            },
             className: 'h-8 w-8 min-[450px]:h-9 min-[450px]:w-auto px-0 min-[450px]:px-4',
             labelClassName: 'hidden min-[450px]:inline',
             tooltip: translate('Add Opportunity'),
@@ -595,7 +597,9 @@ export default function Opportunities() {
                         total={opportunities?.total || opportunities?.data?.length || 0}
                         links={opportunities?.links}
                         entityName={translate('opportunities')}
-                        onPageChange={(url) => router.get(url)}
+                        onPageChange={(url) => {
+                            router.get(url);
+                        }}
                         {...(activeView !== 'kanban' && {
                             currentPerPage: pageFilters.per_page?.toString() || '10',
                             onPerPageChange: (value) => {
@@ -651,7 +655,9 @@ export default function Opportunities() {
                                     </div>
                                     {useHasPermission('manage-opportunity-stages') && (
                                         <button
-                                            onClick={() => router.visit(route('opportunity-stages.index'))}
+                                            onClick={() => {
+                                                router.visit(route('opportunity-stages.index'));
+                                            }}
                                             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex cursor-pointer items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
                                         >
                                             <Plus className="h-4 w-4" />
@@ -747,7 +753,9 @@ export default function Opportunities() {
                                             </div>
                                             {useHasPermission('create-opportunities') && (
                                                 <button
-                                                    onClick={() => handleAddOpportunity(stage.id.toString())}
+                                                    onClick={() => {
+                                                        handleAddOpportunity(stage.id.toString());
+                                                    }}
                                                     className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-white/60 hover:text-gray-800"
                                                     title={translate('Add Opportunity')}
                                                 >
@@ -794,7 +802,9 @@ export default function Opportunities() {
                                                                     <div className="min-w-0 flex-1">
                                                                         <h4
                                                                             className="hover:text-primary cursor-pointer truncate text-sm leading-tight font-semibold text-gray-900 transition-colors dark:text-gray-100"
-                                                                            onClick={() => handleAction('view', opportunity)}
+                                                                            onClick={() => {
+                                                                                handleAction('view', opportunity);
+                                                                            }}
                                                                         >
                                                                             {opportunity.name}
                                                                         </h4>
@@ -815,7 +825,9 @@ export default function Opportunities() {
                                                                             <DropdownMenuContent align="end" className="w-40">
                                                                                 {useHasPermission('view-opportunities') && (
                                                                                     <DropdownMenuItem
-                                                                                        onClick={() => handleAction('view', opportunity)}
+                                                                                        onClick={() => {
+                                                                                            handleAction('view', opportunity);
+                                                                                        }}
                                                                                     >
                                                                                         <Eye className="mr-2 h-4 w-4" />
                                                                                         {translate('View')}
@@ -823,7 +835,9 @@ export default function Opportunities() {
                                                                                 )}
                                                                                 {useHasPermission('edit-opportunities') && (
                                                                                     <DropdownMenuItem
-                                                                                        onClick={() => handleAction('edit', opportunity)}
+                                                                                        onClick={() => {
+                                                                                            handleAction('edit', opportunity);
+                                                                                        }}
                                                                                     >
                                                                                         <Edit className="mr-2 h-4 w-4" />
                                                                                         {translate('Edit')}
@@ -833,7 +847,9 @@ export default function Opportunities() {
                                                                                     <>
                                                                                         <DropdownMenuSeparator />
                                                                                         <DropdownMenuItem
-                                                                                            onClick={() => handleAction('delete', opportunity)}
+                                                                                            onClick={() => {
+                                                                                                handleAction('delete', opportunity);
+                                                                                            }}
                                                                                             className="text-red-600"
                                                                                         >
                                                                                             <Trash2 className="mr-2 h-4 w-4" />
@@ -983,13 +999,21 @@ export default function Opportunities() {
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end" className="z-50 w-48" sideOffset={5}>
                                                 {useHasPermission('view-opportunities') && (
-                                                    <DropdownMenuItem onClick={() => handleAction('view', opportunity)}>
+                                                    <DropdownMenuItem
+                                                        onClick={() => {
+                                                            handleAction('view', opportunity);
+                                                        }}
+                                                    >
                                                         <Eye className="mr-2 h-4 w-4" />
                                                         <span>{translate('View Opportunity')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {useHasPermission('toggle-status-opportunities') && (
-                                                    <DropdownMenuItem onClick={() => handleAction('toggle-status', opportunity)}>
+                                                    <DropdownMenuItem
+                                                        onClick={() => {
+                                                            handleAction('toggle-status', opportunity);
+                                                        }}
+                                                    >
                                                         <Lock className="mr-2 h-4 w-4" />
                                                         <span>
                                                             {opportunity.status === 'active' ? translate('Deactivate') : translate('Activate')}
@@ -998,13 +1022,23 @@ export default function Opportunities() {
                                                 )}
                                                 <DropdownMenuSeparator />
                                                 {useHasPermission('edit-opportunities') && (
-                                                    <DropdownMenuItem onClick={() => handleAction('edit', opportunity)} className="text-amber-600">
+                                                    <DropdownMenuItem
+                                                        onClick={() => {
+                                                            handleAction('edit', opportunity);
+                                                        }}
+                                                        className="text-amber-600"
+                                                    >
                                                         <Edit className="mr-2 h-4 w-4" />
                                                         <span>{translate('Edit')}</span>
                                                     </DropdownMenuItem>
                                                 )}
                                                 {useHasPermission('delete-opportunities') && (
-                                                    <DropdownMenuItem onClick={() => handleAction('delete', opportunity)} className="text-rose-600">
+                                                    <DropdownMenuItem
+                                                        onClick={() => {
+                                                            handleAction('delete', opportunity);
+                                                        }}
+                                                        className="text-rose-600"
+                                                    >
                                                         <Trash2 className="mr-2 h-4 w-4" />
                                                         <span>{translate('Delete')}</span>
                                                     </DropdownMenuItem>
@@ -1079,7 +1113,9 @@ export default function Opportunities() {
                                             <Button
                                                 variant="outline"
                                                 size="sm"
-                                                onClick={() => handleAction('edit', opportunity)}
+                                                onClick={() => {
+                                                    handleAction('edit', opportunity);
+                                                }}
                                                 className="h-9 flex-1 border-gray-300 text-sm dark:border-gray-600 dark:text-gray-200"
                                             >
                                                 <Edit className="mr-2 h-4 w-4 text-gray-500" />
@@ -1091,7 +1127,9 @@ export default function Opportunities() {
                                             <Button
                                                 variant="outline"
                                                 size="sm"
-                                                onClick={() => handleAction('view', opportunity)}
+                                                onClick={() => {
+                                                    handleAction('view', opportunity);
+                                                }}
                                                 className="h-9 flex-1 border-gray-300 text-sm dark:border-gray-600 dark:text-gray-200"
                                             >
                                                 <Eye className="mr-2 h-4 w-4 text-gray-500" />
@@ -1103,7 +1141,9 @@ export default function Opportunities() {
                                             <Button
                                                 variant="outline"
                                                 size="sm"
-                                                onClick={() => handleAction('delete', opportunity)}
+                                                onClick={() => {
+                                                    handleAction('delete', opportunity);
+                                                }}
                                                 className="h-9 flex-1 border-gray-300 text-sm dark:border-gray-600 dark:text-gray-200"
                                             >
                                                 <Trash2 className="mr-2 h-4 w-4 text-gray-500" />
@@ -1124,7 +1164,9 @@ export default function Opportunities() {
                             total={opportunities?.total || opportunities?.data?.length || 0}
                             links={opportunities?.links}
                             entityName={translate('opportunities')}
-                            onPageChange={(url) => router.get(url)}
+                            onPageChange={(url) => {
+                                router.get(url);
+                            }}
                             perPageOptions={[12, 24, 48, 96]}
                             currentPerPage={pageFilters.per_page?.toString() || '12'}
                             onPerPageChange={(value) => {
@@ -1154,7 +1196,9 @@ export default function Opportunities() {
             {/* Delete Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
                 entityName={translate('opportunity')}

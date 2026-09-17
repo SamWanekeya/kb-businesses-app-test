@@ -80,7 +80,7 @@ class EasebuzzPaymentController extends Controller
                 'email' => $user->email,
                 'phone' => '9999999999',
                 'surl' => route('easebuzz.success'),
-                'furl' => route('plans.index'),
+                'furl' => route('subscriptions.plans.index'),
                 'udf1' => $validated['billing_cycle'],
                 'udf2' => $validated['coupon_code'] ?? '',
             ];
@@ -156,15 +156,15 @@ class EasebuzzPaymentController extends Controller
                             auth()->login($user);
                         }
 
-                        return redirect()->route('plans.index')->with('success', __('Payment completed successfully and plan activated'));
+                        return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully and plan activated'));
                     }
                 }
             }
 
-            return redirect()->route('plans.index')->with('error', __('Payment verification failed'));
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment verification failed'));
 
         } catch (Exception $e) {
-            return redirect()->route('plans.index')->with('error', __('Payment processing failed'));
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment processing failed'));
         }
     }
 

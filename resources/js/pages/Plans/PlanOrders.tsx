@@ -1,5 +1,5 @@
 // pages/plans/plan-orders.tsx
-import { CrudTable } from '@components/CrudTable';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
@@ -48,7 +48,7 @@ export default function PlanOrdersPage() {
 
     const applyFilters = () => {
         router.get(
-            route('plan-orders.index'),
+            route('subscriptions/plan-orders.index'),
             {
                 page: 1,
                 search: searchTerm || undefined,
@@ -66,7 +66,7 @@ export default function PlanOrdersPage() {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
 
         router.get(
-            route('plan-orders.index'),
+            route('subscriptions/plan-orders.index'),
             {
                 sort_field: field,
                 sort_direction: direction,
@@ -88,7 +88,7 @@ export default function PlanOrdersPage() {
             }
 
             router.post(
-                route('plan-orders.approve', item.id),
+                route('subscriptions/plan-orders.approve', item.id),
                 {},
                 {
                     onSuccess: (page) => {
@@ -128,7 +128,7 @@ export default function PlanOrdersPage() {
         }
 
         router.post(
-            route('plan-orders.reject', currentItem.id),
+            route('subscriptions/plan-orders.reject', currentItem.id),
             { notes },
             {
                 onSuccess: (page) => {
@@ -170,12 +170,12 @@ export default function PlanOrdersPage() {
         setSelectedStatus('all');
         setDateFrom('');
         setDateTo('');
-        router.get(route('plan-orders.index'));
+        router.get(route('subscriptions/plan-orders.index'));
     };
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard') },
-        { title: translate('Plans'), href: route('plans.index') },
+        { title: translate('Plans'), href: route('subscriptions.plans.index') },
         { title: translate('Plan Orders') },
     ];
 
@@ -271,7 +271,9 @@ export default function PlanOrdersPage() {
                         href={resolveImageUrl(value)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                        }}
                         title={translate('View Receipt')}
                     >
                         <FileText className="h-4 w-4 text-green-600 hover:text-green-800" />
@@ -397,11 +399,13 @@ export default function PlanOrdersPage() {
                     total={planOrders?.total || 0}
                     links={planOrders?.links}
                     entityName={translate('plan orders')}
-                    onPageChange={(url) => router.get(url)}
+                    onPageChange={(url) => {
+                        router.get(url);
+                    }}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
                         router.get(
-                            route('plan-orders.index'),
+                            route('subscriptions/plan-orders.index'),
                             {
                                 page: 1,
                                 per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,
@@ -419,7 +423,12 @@ export default function PlanOrdersPage() {
 
             {/* View Modal */}
             <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
-                <DialogContent className="max-h-[90vh] max-w-xl overflow-y-auto p-0" onOpenAutoFocus={(e) => e.preventDefault()}>
+                <DialogContent
+                    className="max-h-[90vh] max-w-xl overflow-y-auto p-0"
+                    onOpenAutoFocus={(e) => {
+                        e.preventDefault();
+                    }}
+                >
                     <DialogHeader className="border-b px-6 pt-6 pb-4">
                         <div className="flex items-center gap-3">
                             <div className="bg-primary/10 rounded-lg p-2">
@@ -608,7 +617,13 @@ export default function PlanOrdersPage() {
                             </div>
                         </div>
                         <DialogFooter className="mt-6">
-                            <Button type="button" variant="outline" onClick={() => setIsRejectModalOpen(false)}>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => {
+                                    setIsRejectModalOpen(false);
+                                }}
+                            >
                                 {translate('Cancel')}
                             </Button>
                             <Button type="submit" variant="destructive">

@@ -1,8 +1,8 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudTable } from '@components/CrudTable';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
-import { PermissionBadges } from '@components/PermissionBadges';
+import PermissionBadges from '@components/PermissionBadges';
 import Pagination from '@components/UserInterface/Pagination';
 import SearchAndFilterBar from '@components/UserInterface/SearchAndFilterBar';
 import { router, usePage } from '@inertiajs/react';
@@ -31,7 +31,7 @@ export default function RolesPage() {
 
     const applyFilters = () => {
         router.get(
-            route('roles.index'),
+            route('users-permissions.roles.index'),
             {
                 page: 1,
                 search: searchTerm || undefined,
@@ -46,7 +46,7 @@ export default function RolesPage() {
     const handleSort = (field: string) => {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
         router.get(
-            route('roles.index'),
+            route('users-permissions.roles.index'),
             {
                 page: 1,
                 search: searchTerm || undefined,
@@ -68,17 +68,17 @@ export default function RolesPage() {
     }, [searchTerm]);
 
     const handleResetFilters = () => {
-        router.get(route('roles.index'));
+        router.get(route('users-permissions.roles.index'));
     };
 
     const handleAction = (action: string, item: any) => {
         setCurrentItem(item);
         switch (action) {
             case 'view':
-                router.get(route('roles.show', item.id));
+                router.get(route('users-permissions.roles.show', item.id));
                 break;
             case 'edit':
-                router.get(route('roles.edit', item.id));
+                router.get(route('users-permissions.roles.edit', item.id));
                 break;
             case 'delete':
                 setIsDeleteModalOpen(true);
@@ -89,7 +89,7 @@ export default function RolesPage() {
     const handleDeleteConfirm = () => {
         const toastId = toast.loading(translate('Deleting role...'));
 
-        router.delete(route('roles.destroy', currentItem.id), {
+        router.delete(route('users-permissions.roles.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
                 toast.dismiss(toastId);
@@ -109,7 +109,7 @@ export default function RolesPage() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard') },
-        { title: translate('Staff'), href: route('roles.index') },
+        { title: translate('Staff'), href: route('users-permissions.roles.index') },
         { title: translate('Roles') },
     ];
 
@@ -119,7 +119,9 @@ export default function RolesPage() {
             label: translate('Add Role'),
             icon: <Plus className="mr-0 h-4 w-4 min-[420px]:mr-2" />,
             variant: 'default' as const,
-            onClick: () => router.get(route('roles.create')),
+            onClick: () => {
+                router.get(route('users-permissions.roles.create'));
+            },
             className: 'h-8 w-8 min-[420px]:h-9 min-[420px]:w-auto px-0 min-[420px]:px-4',
             labelClassName: 'hidden min-[420px]:inline',
             tooltip: translate('Add Role'),
@@ -193,7 +195,7 @@ export default function RolesPage() {
                     onResetFilters={handleResetFilters}
                     // currentPerPage={pageFilters.per_page?.toString() || '10'}
                     // onPerPageChange={(value) => {
-                    //     router.get(route('roles.index'), {
+                    //     router.get(route('users-permissions.roles.index'), {
                     //         page: 1,
                     //         search: searchTerm || undefined,
                     //         sort_field: pageFilters.sort_field || undefined,
@@ -229,11 +231,13 @@ export default function RolesPage() {
                     total={roles?.total || 0}
                     links={roles?.links}
                     entityName={translate('roles')}
-                    onPageChange={(url) => router.get(url)}
+                    onPageChange={(url) => {
+                        router.get(url);
+                    }}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
                         router.get(
-                            route('roles.index'),
+                            route('users-permissions.roles.index'),
                             {
                                 page: 1,
                                 search: searchTerm || undefined,
@@ -249,7 +253,9 @@ export default function RolesPage() {
 
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.label || ''}
                 entityName="role"

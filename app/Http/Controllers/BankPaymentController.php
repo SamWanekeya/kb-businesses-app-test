@@ -19,10 +19,10 @@ class BankPaymentController extends Controller
             $plan = Plan::findOrFail($validated['plan_id']);
 
             $receiptPath = null;
-            if ($request->hasFile('receipt') && !IsDemo()) {
+            if ($request->hasFile('receipt')) {
                 $file = $request->file('receipt');
                 $fileNameToStore = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '_' . time() . '.' . $file->getClientOriginalExtension();
-                $upload = upload_file($request, 'receipt', $fileNameToStore, 'bank-receipts');
+                $upload = uploadFile($request, 'receipt', $fileNameToStore, 'bank-receipts');
                 if ($upload['status'] == true) {
                     $receiptPath = $upload['url'];
                 }

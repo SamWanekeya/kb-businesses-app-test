@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@components/UserInterf
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/UserInterface/Tooltip';
 import useInitials from '@hooks/useInitials';
 import { Head, Link, router, usePage } from '@inertiajs/react';
-import { formatRelativeTime } from '@utils/helper';
+
 import { useHasPermission } from '@utils/Permissions';
 import { route } from '@utils/Routes';
 import { ArrowLeft, Calendar, ExternalLink, MessageCircle, Trash2 } from 'lucide-react';
@@ -38,7 +38,7 @@ interface StreamsShowProps {
     streams: Stream[];
 }
 
-export default function Show({ module, moduleTitle, streams = [] }: StreamsShowProps) {
+export default function Show({ module, moduleTitle, streams }: StreamsShowProps) {
     const { t: translate } = useTranslation();
     const { auth, flash } = usePage().props;
     const permissions = auth?.permissions || [];
@@ -118,7 +118,9 @@ export default function Show({ module, moduleTitle, streams = [] }: StreamsShowP
                     label: translate('Back'),
                     icon: <ArrowLeft className="me-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('stream.index')),
+                    onClick: () => {
+                        router.visit(route('stream.index'));
+                    },
                 },
             ]}
             breadcrumbs={breadcrumbs}
@@ -194,7 +196,7 @@ export default function Show({ module, moduleTitle, streams = [] }: StreamsShowP
                                                             ) : null;
                                                         })()}
                                                         <span className="text-muted-foreground text-xs whitespace-nowrap">
-                                                            {formatRelativeTime(activity.created_at)}
+                                                            {window.kbSettings.formatDateTimeSimple(activity.created_at)}
                                                         </span>
                                                     </div>
                                                     {useHasPermission('delete-stream') && (
@@ -265,7 +267,9 @@ export default function Show({ module, moduleTitle, streams = [] }: StreamsShowP
 
                     <CrudDeleteModal
                         isOpen={isDeleteModalOpen}
-                        onClose={() => setIsDeleteModalOpen(false)}
+                        onClose={() => {
+                            setIsDeleteModalOpen(false);
+                        }}
                         onConfirm={() => {
                             if (currentActivity) {
                                 router.delete(route(`stream.delete-${module.replace(/_/g, '-')}`, currentActivity.id), {

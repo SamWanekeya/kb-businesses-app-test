@@ -175,7 +175,7 @@ class SalesOrderController extends Controller
         $salesOrder->calculateTotals();
 
         // Fire SalesOrderCreated event for sending email
-        if ($salesOrder && !IsDemo()) {
+        if ($salesOrder) {
             event(new SalesOrderCreated($salesOrder));
         }
 

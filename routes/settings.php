@@ -23,16 +23,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*
-|--------------------------------------------------------------------------
-| Payment Routes
-|--------------------------------------------------------------------------
-|
-| Payment methods and Stripe payment routes are accessible without
-| the subscription check.
-|
-*/
-
+// Payment Routes
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/payment-methods', [PaymentSettingController::class, 'getPaymentMethods'])
         ->name('payment.methods');
@@ -41,42 +32,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('payment.enabled-methods');
 
     Route::post('/stripe-payment', [StripePaymentController::class, 'processPayment'])
-        ->name('settings.stripe.payment');
+        ->name('settings.subscriptions.stripe.payment');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Settings Routes
-|--------------------------------------------------------------------------
-|
-| The following routes require authentication, email verification,
-| and an active subscription.
-|
-*/
-
+// These routes require authentication, email verification, and an active subscription.
 Route::middleware(['auth', 'verified', 'check.subscription'])->group(function () {
-
-    /*
-    |--------------------------------------------------------------------------
-    | Payment Settings
-    |--------------------------------------------------------------------------
-    |
-    | Routes for managing administrator payment settings.
-    |
-    */
-
     Route::post('/payment-settings', [PaymentSettingController::class, 'store'])
         ->name('payment.settings');
-
-    /*
-    |--------------------------------------------------------------------------
-    | Organization Payment Settings
-    |--------------------------------------------------------------------------
-    |
-    | Routes for managing organization-level payment settings and
-    | retrieving the payment methods configured for the organization.
-    |
-    */
 
     Route::post('/organization-payment-settings', [OrganizationPaymentSettingController::class, 'store'])
         ->name('organization.payment.settings');
@@ -84,26 +46,8 @@ Route::middleware(['auth', 'verified', 'check.subscription'])->group(function ()
     Route::get('/organization-payment-methods', [OrganizationPaymentSettingController::class, 'getOrganizationPaymentMethods'])
         ->name('organization.payment.methods');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Invoice Payment
-    |--------------------------------------------------------------------------
-    |
-    | Routes for processing Stripe payments for invoices.
-    |
-    */
-
     Route::post('/invoice-stripe-payment', [InvoiceStripePaymentController::class, 'processPayment'])
-        ->name('settings.invoice.stripe.payment');
-
-    /*
-    |--------------------------------------------------------------------------
-    | My Account Settings
-    |--------------------------------------------------------------------------
-    |
-    | Routes for managing the authenticated user's profile and password.
-    |
-    */
+        ->name('settings.invoice.subscriptions.stripe.payment');
 
     Route::get('my-kakbima-account', ProfileController::class)
         ->name('my-kakbima-account.success');
@@ -111,7 +55,6 @@ Route::middleware(['auth', 'verified', 'check.subscription'])->group(function ()
     Route::patch('my-kakbima-account', [ProfileController::class, 'update'])
         ->name('my-kakbima-account.update');
 
-    // Supports file uploads with method spoofing.
     Route::post('my-kakbima-account', [ProfileController::class, 'update']);
 
     Route::delete('my-kakbima-account', [ProfileController::class, 'destroy'])
@@ -120,28 +63,10 @@ Route::middleware(['auth', 'verified', 'check.subscription'])->group(function ()
     Route::put('my-kakbima-account/password', [PasswordController::class, 'update'])
         ->name('my-kakbima-account.password.update');
 
-    /*
-    |--------------------------------------------------------------------------
-    | General Settings
-    |--------------------------------------------------------------------------
-    |
-    | Routes for accessing and managing general application settings.
-    |
-    */
-
     Route::get('settings', [SettingsController::class, 'index'])
         ->name('settings');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Email Settings
-    |--------------------------------------------------------------------------
-    |
-    | Routes for managing application email configuration and testing
-    | outgoing email.
-    |
-    */
-
+    // Routes for managing application email configuration and testing
     Route::prefix('settings/email')
         ->name('settings.email.')
         ->controller(EmailSettingController::class)
@@ -152,15 +77,6 @@ Route::middleware(['auth', 'verified', 'check.subscription'])->group(function ()
             Route::post('/test', 'sendTestEmail')->name('test');
         });
 
-    /*
-    |--------------------------------------------------------------------------
-    | System Settings
-    |--------------------------------------------------------------------------
-    |
-    | Routes for managing system-wide application settings.
-    |
-    */
-
     Route::post('settings/system', [SystemSettingsController::class, 'update'])
         ->name('settings.system.update');
 
@@ -170,8 +86,8 @@ Route::middleware(['auth', 'verified', 'check.subscription'])->group(function ()
     Route::post('settings/recaptcha', [SystemSettingsController::class, 'updateRecaptcha'])
         ->name('settings.recaptcha.update');
 
-    Route::post('settings/chat-gpt', [SystemSettingsController::class, 'updateChatgpt'])
-        ->name('settings.chat-gpt.update');
+    Route::post('settings/kakbima-intelligence', [SystemSettingsController::class, 'updateKakbimaIntelligence'])
+        ->name('settings.kakbima-intelligence.update');
 
     Route::post('settings/cookie', [SystemSettingsController::class, 'updateCookie'])
         ->name('settings.cookie.update');
@@ -182,75 +98,20 @@ Route::middleware(['auth', 'verified', 'check.subscription'])->group(function ()
     Route::post('settings/cache/clear', [SystemSettingsController::class, 'clearCache'])
         ->name('settings.cache.clear');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Organization System Settings
-    |--------------------------------------------------------------------------
-    |
-    | Routes for managing organization-level system settings.
-    |
-    */
-
     Route::post('settings/organization/system', [OrganizationSystemSettingsController::class, 'update'])
         ->name('settings.organization.system.update');
-
-    /*
-    |--------------------------------------------------------------------------
-    | Currency Settings
-    |--------------------------------------------------------------------------
-    |
-    | Routes for managing application currency settings.
-    |
-    */
 
     Route::post('settings/currency', [CurrencySettingController::class, 'update'])
         ->name('settings.currency.update');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Invoice Template Settings
-    |--------------------------------------------------------------------------
-    |
-    | Routes for managing invoice template settings.
-    |
-    */
-
     Route::post('settings/invoice-template', [SystemSettingsController::class, 'updateInvoiceTemplate'])
         ->name('settings.invoice-template');
-
-    /*
-    |--------------------------------------------------------------------------
-    | Quote Template Settings
-    |--------------------------------------------------------------------------
-    |
-    | Routes for managing quote template settings.
-    |
-    */
 
     Route::post('settings/quote-template', [SystemSettingsController::class, 'updateQuoteTemplate'])
         ->name('settings.quote-template');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Sales Order Template Settings
-    |--------------------------------------------------------------------------
-    |
-    | Routes for managing sales order template settings.
-    |
-    */
-
     Route::post('settings/sales-order-template', [SystemSettingsController::class, 'updateSalesOrderTemplate'])
         ->name('settings.sales-order-template');
-
-    /*
-    |--------------------------------------------------------------------------
-    | Email Notification Settings
-    |--------------------------------------------------------------------------
-    |
-    | Routes for managing email notification preferences and retrieving
-    | the notifications available for configuration.
-    |
-    */
 
     Route::get('settings/email-notifications', [SystemSettingsController::class, 'getEmailNotifications'])
         ->name('settings.email-notifications.get');
@@ -260,16 +121,6 @@ Route::middleware(['auth', 'verified', 'check.subscription'])->group(function ()
 
     Route::post('settings/email-notifications', [SystemSettingsController::class, 'updateEmailNotifications'])
         ->name('settings.email-notifications.update');
-
-    /*
-    |--------------------------------------------------------------------------
-    | Twilio Notification Settings
-    |--------------------------------------------------------------------------
-    |
-    | Routes for managing Twilio/SMS notification preferences and
-    | retrieving the available notification events and configuration.
-    |
-    */
 
     Route::get('settings/twilio-notifications', [SystemSettingsController::class, 'getTwilioNotifications'])
         ->name('settings.twilio-notifications.get');
@@ -286,16 +137,6 @@ Route::middleware(['auth', 'verified', 'check.subscription'])->group(function ()
     Route::post('settings/sms/test', [SystemSettingsController::class, 'sendTestSMS'])
         ->name('settings.sms.test');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Slack Notification Settings
-    |--------------------------------------------------------------------------
-    |
-    | Routes for managing Slack notification preferences and retrieving
-    | the available notification events and configuration.
-    |
-    */
-
     Route::get('settings/slack-notifications', [SystemSettingsController::class, 'getSlackNotifications'])
         ->name('settings.slack-notifications.get');
 
@@ -311,15 +152,6 @@ Route::middleware(['auth', 'verified', 'check.subscription'])->group(function ()
     Route::post('settings/slack/test', [SystemSettingsController::class, 'sendTestSlack'])
         ->name('settings.slack.test');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Webhook Settings
-    |--------------------------------------------------------------------------
-    |
-    | Routes for managing application webhooks.
-    |
-    */
-
     Route::get('settings/webhooks', [WebhookController::class, 'index'])
         ->name('settings.webhooks.index');
 
@@ -331,15 +163,6 @@ Route::middleware(['auth', 'verified', 'check.subscription'])->group(function ()
 
     Route::delete('settings/webhooks/{webhook}', [WebhookController::class, 'destroy'])
         ->name('settings.webhooks.destroy');
-
-    /*
-    |--------------------------------------------------------------------------
-    | Google Calendar Settings
-    |--------------------------------------------------------------------------
-    |
-    | Routes for managing Google Calendar integration and synchronization.
-    |
-    */
 
     Route::post('settings/google-calendar', [SystemSettingsController::class, 'updateGoogleCalendar'])
         ->name('settings.google-calendar.update');

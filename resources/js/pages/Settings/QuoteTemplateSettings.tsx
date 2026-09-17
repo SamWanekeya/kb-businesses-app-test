@@ -1,7 +1,7 @@
 import { toast } from '@components/CustomToast';
 import IframePortal from '@components/IframePortal';
 import MediaPicker from '@components/MediaPicker';
-import { SettingsSection } from '@components/settings-section';
+import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent } from '@components/UserInterface/Card';
 import { Label } from '@components/UserInterface/Label';
@@ -192,7 +192,9 @@ export default function QuoteTemplateSettings() {
 
         observer.observe(settingsRef.current);
 
-        return () => observer.disconnect();
+        return () => {
+            observer.disconnect();
+        };
     }, [data.quoteLogoUrl]);
 
     const SelectedTemplate = templateComponents[data.quoteTemplate as keyof typeof templateComponents];
@@ -236,7 +238,7 @@ export default function QuoteTemplateSettings() {
         if (!value) {
             setData('quoteLogoUrl', null);
         } else {
-            fetch(route('api.media.index'))
+            fetch(route('media-library.media.index'))
                 .then((res) => res.json())
                 .then((media) => {
                     const item = media.find((m: any) => m.id === Number(value));
@@ -297,7 +299,12 @@ export default function QuoteTemplateSettings() {
                             <div ref={settingsRef} className="space-y-4">
                                 <div className="space-y-2">
                                     <Label htmlFor="quote_template">{translate('Quote Template')}</Label>
-                                    <Select value={data.quoteTemplate} onValueChange={(value) => setData('quoteTemplate', value)}>
+                                    <Select
+                                        value={data.quoteTemplate}
+                                        onValueChange={(value) => {
+                                            setData('quoteTemplate', value);
+                                        }}
+                                    >
                                         <SelectTrigger>
                                             <SelectValue placeholder={translate('Select template')} />
                                         </SelectTrigger>
@@ -319,7 +326,9 @@ export default function QuoteTemplateSettings() {
                                     <Switch
                                         id="quote_qr_enabled"
                                         checked={data.quoteQrEnabled}
-                                        onCheckedChange={(checked) => setData('quoteQrEnabled', checked)}
+                                        onCheckedChange={(checked) => {
+                                            setData('quoteQrEnabled', checked);
+                                        }}
                                     />
                                 </div>
 
@@ -333,7 +342,9 @@ export default function QuoteTemplateSettings() {
                                                     name="quoteColor"
                                                     value={color}
                                                     checked={data.quoteColor === color}
-                                                    onChange={(e) => setData('quoteColor', e.target.value)}
+                                                    onChange={(e) => {
+                                                        setData('quoteColor', e.target.value);
+                                                    }}
                                                     className="sr-only"
                                                 />
                                                 <div

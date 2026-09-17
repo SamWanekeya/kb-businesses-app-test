@@ -16,8 +16,8 @@ export default function RolesShow() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard') },
-        { title: translate('Staff'), href: route('users.index') },
-        { title: translate('Roles'), href: route('roles.index') },
+        { title: translate('Staff'), href: route('users-permissions.users.index') },
+        { title: translate('Roles'), href: route('users-permissions.roles.index') },
         { title: role.label || translate('View Role') },
     ];
 
@@ -26,7 +26,9 @@ export default function RolesShow() {
             label: translate('Back'),
             icon: <ArrowLeft className="mr-2 h-4 w-4" />,
             variant: 'outline' as const,
-            onClick: () => router.get(route('roles.index')),
+            onClick: () => {
+                router.get(route('users-permissions.roles.index'));
+            },
         },
     ];
 

@@ -9,10 +9,10 @@ import { Loader2, Tag } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { PaystackPaymentForm } from '@components/Payment/PaystackPaymentForm';
 import { router } from '@inertiajs/react';
 import axios from 'axios';
 import { BankTransferForm } from './BankTransferForm';
-import { PaystackPaymentForm } from './paystack-payment-form';
 
 interface PaymentMethod {
     id: string;
@@ -69,7 +69,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
 
         setCouponLoading(true);
         try {
-            const { data } = await axios.post(route('coupons.validate'), {
+            const { data } = await axios.post(route('subscriptions.coupons.validate'), {
                 coupon_code: couponCode,
                 plan_id: plan.id,
                 amount: originalPrice,
@@ -118,7 +118,7 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
         setProcessing(true);
 
         router.post(
-            route('zero.payment'),
+            route('subscriptions.zero.payment'),
             {
                 plan_id: plan.id,
                 billing_cycle: billingCycle,
@@ -473,7 +473,9 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
                                     className={`cursor-pointer transition-colors ${
                                         selectedPaymentMethod === method.id ? 'border-primary bg-primary/5' : 'hover:border-gray-300'
                                     }`}
-                                    onClick={() => setSelectedPaymentMethod(method.id)}
+                                    onClick={() => {
+                                        setSelectedPaymentMethod(method.id);
+                                    }}
                                 >
                                     <CardContent className="p-3">
                                         <div className="flex items-center gap-3">
@@ -505,7 +507,9 @@ export function PaymentProcessor({ plan, billingCycle, paymentMethods, currency_
                                 <Input
                                     id="coupon"
                                     value={couponCode}
-                                    onChange={(e) => setCouponCode(e.target.value)}
+                                    onChange={(e) => {
+                                        setCouponCode(e.target.value);
+                                    }}
                                     placeholder={translate('Enter coupon code')}
                                     className="pr-10"
                                     disabled={!!appliedCoupon}

@@ -187,7 +187,7 @@ class OpportunityController extends Controller
             $opportunity->calculateTotals();
         }
 
-        if ($opportunity && !IsDemo()) {
+        if ($opportunity) {
             event(new OpportunityCreated($opportunity));
         }
 
@@ -321,7 +321,7 @@ class OpportunityController extends Controller
 
                 $opportunity->fill($validated);
 
-                if (isEmailTemplateEnabled('Opportunity Status Changed', createdBy()) && $opportunity && $opportunity->assigned_to && $opportunity->isDirty('opportunity_stage_id') && !IsDemo()) {
+                if (isEmailTemplateEnabled('Opportunity Status Changed', createdBy()) && $opportunity && $opportunity->assigned_to && $opportunity->isDirty('opportunity_stage_id')) {
                     $old = $opportunity->getOriginal('opportunity_stage_id');
                     $new = $opportunity->opportunity_stage_id;
 
@@ -438,7 +438,7 @@ class OpportunityController extends Controller
 
         $opportunity->fill($validated);
 
-        if (isEmailTemplateEnabled('Opportunity Status Changed', createdBy()) && $opportunity && $opportunity->assigned_to && $opportunity->isDirty('opportunity_stage_id') && !IsDemo()) {
+        if (isEmailTemplateEnabled('Opportunity Status Changed', createdBy()) && $opportunity && $opportunity->assigned_to && $opportunity->isDirty('opportunity_stage_id')) {
             $old = $opportunity->getOriginal('opportunity_stage_id');
             $new = $opportunity->opportunity_stage_id;
 

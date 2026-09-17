@@ -757,7 +757,9 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
                     id="amount"
                     type="number"
                     value={amount}
-                    onChange={(e) => onAmountChange(parseFloat(e.target.value) || 0)}
+                    onChange={(e) => {
+                        onAmountChange(parseFloat(e.target.value) || 0);
+                    }}
                     max={dueAmount}
                     min="0.01"
                     step="0.01"
@@ -786,7 +788,9 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
                                 className={`cursor-pointer transition-colors ${
                                     selectedPaymentMethod === method.id ? 'border-primary bg-primary/5' : 'hover:border-gray-300'
                                 }`}
-                                onClick={() => setSelectedPaymentMethod(method.id)}
+                                onClick={() => {
+                                    setSelectedPaymentMethod(method.id);
+                                }}
                             >
                                 <CardContent className="p-3">
                                     <div className="flex items-center gap-3">

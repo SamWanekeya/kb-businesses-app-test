@@ -15,7 +15,9 @@ export default function ShowDocumentType() {
         label: translate('Back'),
         icon: <ArrowLeft className="mr-2 h-4 w-4" />,
         variant: 'outline',
-        onClick: () => router.get(route('document-types.index')),
+        onClick: () => {
+            router.get(route('document-types.index'));
+        },
     });
 
     const breadcrumbs = [

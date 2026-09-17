@@ -1,6 +1,6 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
-import { CrudTable } from '@components/CrudTable';
+import CrudFormModal from '@components/CrudFormModal';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
@@ -191,7 +191,9 @@ export default function Quotes() {
             label: translate('Add Quote'),
             icon: <Plus className="mr-0 h-4 w-4 min-[380px]:mr-2" />,
             variant: 'default',
-            onClick: () => router.visit(route('quotes.create')),
+            onClick: () => {
+                router.visit(route('quotes.create'));
+            },
             className: 'h-8 w-8 min-[380px]:h-9 min-[380px]:w-auto px-0 min-[380px]:px-4',
             labelClassName: 'hidden min-[380px]:inline',
             tooltip: translate('Add Quote'),
@@ -400,7 +402,9 @@ export default function Quotes() {
                     total={quotes?.total || 0}
                     links={quotes?.links}
                     entityName={translate('quotes')}
-                    onPageChange={(url) => router.get(url)}
+                    onPageChange={(url) => {
+                        router.get(url);
+                    }}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
                         router.get(
@@ -424,7 +428,9 @@ export default function Quotes() {
 
             <CrudFormModal
                 isOpen={isStatusModalOpen}
-                onClose={() => setIsStatusModalOpen(false)}
+                onClose={() => {
+                    setIsStatusModalOpen(false);
+                }}
                 onSubmit={handleStatusChange}
                 formConfig={{
                     fields: [
@@ -451,7 +457,9 @@ export default function Quotes() {
 
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
                 entityName={translate('quote')}

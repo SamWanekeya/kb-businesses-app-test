@@ -1,5 +1,5 @@
 import { toast } from '@components/CustomToast';
-import { SettingsSection } from '@components/settings-section';
+import SettingsSection from '@components/SettingsSection';
 import { Badge } from '@components/UserInterface/Badge';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent, CardHeader } from '@components/UserInterface/Card';
@@ -99,7 +99,7 @@ export default function CurrencySettings() {
             }
 
             // Join with decimal separator
-            let formattedNumber = parts.join(currencySettings.decimal_separator);
+            const formattedNumber = parts.join(currencySettings.decimal_separator);
 
             // Get currency symbol from the currencies array
             const selectedCurrency = currencies.find((c: CurrencyProps) => c.code === currencySettings.default_currency);
@@ -190,12 +190,16 @@ export default function CurrencySettings() {
                                                     type="number"
                                                     className="h-8 text-right text-sm"
                                                     value={previewAmount}
-                                                    onChange={(e) => setPreviewAmount(parseFloat(e.target.value) || 0)}
+                                                    onChange={(e) => {
+                                                        setPreviewAmount(parseFloat(e.target.value) || 0);
+                                                    }}
                                                     placeholder="Test amount"
                                                 />
                                                 <Button
                                                     variant="outline"
-                                                    onClick={() => setPreviewAmount(1234.56)}
+                                                    onClick={() => {
+                                                        setPreviewAmount(1234.56);
+                                                    }}
                                                     type="button"
                                                     size="sm"
                                                     className="h-8 text-xs"
@@ -265,7 +269,9 @@ export default function CurrencySettings() {
                                             </div>
                                             <Select
                                                 value={currencySettings.decimal_format}
-                                                onValueChange={(value) => handleCurrencySettingsChange('decimal_format', value)}
+                                                onValueChange={(value) => {
+                                                    handleCurrencySettingsChange('decimal_format', value);
+                                                }}
                                             >
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Select decimal format" />
@@ -301,7 +307,9 @@ export default function CurrencySettings() {
                                                     type="button"
                                                     variant={currencySettings.currency_symbol_position === 'before' ? 'default' : 'outline'}
                                                     className="justify-center"
-                                                    onClick={() => handleCurrencySettingsChange('currency_symbol_position', 'before')}
+                                                    onClick={() => {
+                                                        handleCurrencySettingsChange('currency_symbol_position', 'before');
+                                                    }}
                                                 >
                                                     <span className="mr-2">$</span>100
                                                     {currencySettings.currency_symbol_position === 'before' && <Check className="ml-2 h-4 w-4" />}
@@ -310,7 +318,9 @@ export default function CurrencySettings() {
                                                     type="button"
                                                     variant={currencySettings.currency_symbol_position === 'after' ? 'default' : 'outline'}
                                                     className="justify-center"
-                                                    onClick={() => handleCurrencySettingsChange('currency_symbol_position', 'after')}
+                                                    onClick={() => {
+                                                        handleCurrencySettingsChange('currency_symbol_position', 'after');
+                                                    }}
                                                 >
                                                     100<span className="ml-2">$</span>
                                                     {currencySettings.currency_symbol_position === 'after' && <Check className="ml-2 h-4 w-4" />}
@@ -339,7 +349,9 @@ export default function CurrencySettings() {
                                                     type="button"
                                                     variant={currencySettings.decimal_separator === '.' ? 'default' : 'outline'}
                                                     className="justify-center"
-                                                    onClick={() => handleCurrencySettingsChange('decimal_separator', '.')}
+                                                    onClick={() => {
+                                                        handleCurrencySettingsChange('decimal_separator', '.');
+                                                    }}
                                                 >
                                                     {translate('Dot')} (123.45)
                                                     {currencySettings.decimal_separator === '.' && <Check className="ml-2 h-4 w-4" />}
@@ -348,7 +360,9 @@ export default function CurrencySettings() {
                                                     type="button"
                                                     variant={currencySettings.decimal_separator === ',' ? 'default' : 'outline'}
                                                     className="justify-center"
-                                                    onClick={() => handleCurrencySettingsChange('decimal_separator', ',')}
+                                                    onClick={() => {
+                                                        handleCurrencySettingsChange('decimal_separator', ',');
+                                                    }}
                                                 >
                                                     {translate('Comma')} (123,45)
                                                     {currencySettings.decimal_separator === ',' && <Check className="ml-2 h-4 w-4" />}
@@ -374,7 +388,9 @@ export default function CurrencySettings() {
                                             </div>
                                             <Select
                                                 value={currencySettings.thousands_separator}
-                                                onValueChange={(value) => handleCurrencySettingsChange('thousands_separator', value)}
+                                                onValueChange={(value) => {
+                                                    handleCurrencySettingsChange('thousands_separator', value);
+                                                }}
                                             >
                                                 <SelectTrigger>
                                                     <SelectValue placeholder={translate('Select thousands separator')} />
@@ -401,7 +417,9 @@ export default function CurrencySettings() {
                                                 <Switch
                                                     id="float_number"
                                                     checked={currencySettings.float_number}
-                                                    onCheckedChange={(checked) => handleCurrencySettingsChange('float_number', checked)}
+                                                    onCheckedChange={(checked) => {
+                                                        handleCurrencySettingsChange('float_number', checked);
+                                                    }}
                                                 />
                                             </div>
                                         </div>
@@ -419,7 +437,9 @@ export default function CurrencySettings() {
                                                 <Switch
                                                     id="currency_symbol_space"
                                                     checked={currencySettings.currency_symbol_space}
-                                                    onCheckedChange={(checked) => handleCurrencySettingsChange('currency_symbol_space', checked)}
+                                                    onCheckedChange={(checked) => {
+                                                        handleCurrencySettingsChange('currency_symbol_space', checked);
+                                                    }}
                                                 />
                                             </div>
                                         </div>

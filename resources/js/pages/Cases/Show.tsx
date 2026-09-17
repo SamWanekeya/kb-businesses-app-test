@@ -180,7 +180,9 @@ export default function CaseShow() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('cases.index')),
+                    onClick: () => {
+                        router.visit(route('cases.index'));
+                    },
                 },
             ]}
             noPadding

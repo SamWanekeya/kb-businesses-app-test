@@ -12,36 +12,35 @@
     "require": {
         "php": "^8.5",
         "authorizenet/authorizenet": "2.0.4",
-        "aws/aws-sdk-php": "3.394.6",
-        "cashfree/cashfree-pg": "6.0.5",
+		"cashfree/cashfree-pg": "6.0.5",
         "coingate/coingate-php": "v4.1.0",
         "fedapay/fedapay-php": "0.4.8",
         "google/apiclient": "v2.19.4",
-        "inertiajs/inertia-laravel": "v3.3.2",
+        "inertiajs/inertia-laravel": "v3.3.4",
         "iyzico/iyzipay-php": "v2.0.61",
         "lab404/laravel-impersonate": "1.7.8",
-        "laravel/framework": "v13.30.1",
-        "laravel/tinker": "v3.0.2",
-        "league/flysystem-aws-s3-v3": "3.35.3",
-        "maatwebsite/excel": "4.0.2",
+        "laravel/framework": "v13.32.0",
+		"league/flysystem-aws-s3-v3": "3.35.3",
+        "maatwebsite/excel": "4.0.3",
         "mercadopago/dx-php": "3.16.0",
-        "milon/barcode": "v13.1",
-        "mollie/mollie-api-php": "v3.13.2",
+        "mollie/mollie-api-php": "v3.14.0",
         "openai-php/client": "v0.20.1",
         "paytabscom/laravel_paytabs": "1.10.0",
         "razorpay/razorpay": "2.9.3",
-        "spatie/laravel-medialibrary": "11.23.6",
+        "spatie/laravel-medialibrary": "11.23.8",
         "spatie/laravel-permission": "8.3.0",
-        "stripe/stripe-php": "v21.3.1",
+        "stripe/stripe-php": "v21.3.2",
+        "symfony/http-client": "v8.1.7",
+        "symfony/mailgun-mailer": "v8.1.6",		
         "tightenco/ziggy": "v2.6.4",
-        "twilio/sdk": "8.12.0",
+        "twilio/sdk": "8.12.1",
         "whichbrowser/parser": "v2.1.8",
         "yoomoney/yookassa-sdk-php": "3.15.1"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "v3.7.0",
         "fakerphp/faker": "v1.24.1",
-        "friendsofphp/php-cs-fixer": "v3.95.24",
+        "friendsofphp/php-cs-fixer": "v3.95.25",
         "nunomaduro/collision": "v8.9.5"
     },
     "autoload": {
@@ -57,12 +56,12 @@
     },
     "scripts": {
         "post-autoload-dump": [
+            "Google\\Task\\Composer::cleanup",
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
             "@php artisan ide-helper:generate",
             "@php artisan ide-helper:meta"
         ],
@@ -88,7 +87,10 @@
     "extra": {
         "laravel": {
             "dont-discover": []
-        }
+        },
+        "google/apiclient-services": [
+            "Calendar"
+        ]
     },
     "config": {
         "optimize-autoloader": true,

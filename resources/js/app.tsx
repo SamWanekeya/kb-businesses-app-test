@@ -107,9 +107,9 @@ function useInertiaDiagnostics(): void {
 
         let lastPageName: string | null = null;
 
-        const unsubscribe = router.on('navigate', (event: any) => {
-            const newPage = event.detail?.page?.component || 'unknown';
-            const props = event.detail?.page?.props || {};
+        const unsubscribe = router.on('navigate', (event) => {
+            const newPage = event.detail.page.component || 'unknown';
+            const props = event.detail.page.props || {};
 
             console.groupCollapsed(`Inertia Navigation to ${newPage}`);
             console.log('Props keys:', Object.keys(props));
@@ -117,7 +117,7 @@ function useInertiaDiagnostics(): void {
             console.groupEnd();
 
             if (lastPageName === newPage) {
-                console.warn(`Inertia re-rendered the same page (${newPage}) — possible hydration issue.`);
+                console.warn(`Inertia re-rendered the same page (${newPage}) — possible hydration issue.`,);
             }
 
             lastPageName = newPage;
@@ -126,7 +126,9 @@ function useInertiaDiagnostics(): void {
         console.info('%c[Diagnostics] Inertia navigation monitoring active', 'color: #60a5fa');
 
         return () => {
-            if (typeof unsubscribe === 'function') unsubscribe();
+            if (typeof unsubscribe === 'function') {
+                unsubscribe();
+            }
         };
     }, []);
 }

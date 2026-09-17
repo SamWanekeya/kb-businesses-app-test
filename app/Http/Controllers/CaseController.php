@@ -172,7 +172,7 @@ class CaseController extends Controller
         $validated['case_type'] = $validated['case_type'] ?? 'support';
 
         $case = CaseModel::create($validated);
-        if ($case && !IsDemo()) {
+        if ($case) {
             event(new CaseCreated($case));
         }
 

@@ -136,7 +136,7 @@ class HandleInertiaRequests extends Middleware
                         $guestZiggy['routes'],
                         function ($key) {
                             // Hide any routes starting with 'payment.', 'settings.', 'my-kakbima-account.', etc.
-                            return !preg_match('/^(payment|settings|my-kakbima-account|verification|subscriptions|coupons|bank|paystack|media-library|permissions|plan-orders|organizations|plan-requests|referral-program|currencies|chat-gpt|sign-in-history|on-behalf-of|dashboard)\./', $key);
+                            return !preg_match('/^(payment|settings|my-kakbima-account|verification|subscriptions|coupons|bank|paystack|media-library|permissions|plan-orders|organizations|plan-requests|referral-program|currencies|kakbima-intelligence|sign-in-history|on-behalf-of|dashboard)\./', $key);
                         },
                         ARRAY_FILTER_USE_KEY
                     );

@@ -59,7 +59,9 @@ export default function CampaignShow() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline' as const,
-                    onClick: () => router.visit(route('campaigns.index')),
+                    onClick: () => {
+                        router.visit(route('campaigns.index'));
+                    },
                 },
             ]}
             noPadding
@@ -171,11 +173,11 @@ export default function CampaignShow() {
                                 </div>
                                 <div>
                                     <label className="text-muted-foreground text-xs font-medium">{translate('Start Date')}</label>
-                                    <p className="mt-1 text-sm font-medium">{formatDate(campaign.start_date)}</p>
+                                    <p className="mt-1 text-sm font-medium">{window.kbSettings.formatDateTimeSimple(campaign.start_date)}</p>
                                 </div>
                                 <div>
                                     <label className="text-muted-foreground text-xs font-medium">{translate('End Date')}</label>
-                                    <p className="mt-1 text-sm font-medium">{formatDate(campaign.end_date)}</p>
+                                    <p className="mt-1 text-sm font-medium">{window.kbSettings.formatDateTimeSimple(campaign.end_date)}</p>
                                 </div>
                                 <div>
                                     <label className="text-muted-foreground text-xs font-medium">{translate('Assigned To')}</label>
@@ -226,12 +228,12 @@ export default function CampaignShow() {
                                 <div className="flex items-center gap-1">
                                     <span>{translate('Created')}: </span>
                                     <Calendar className="h-3 w-3" />
-                                    <span className="font-medium text-gray-600">{formatDate(campaign.created_at)}</span>
+                                    <span className="font-medium text-gray-600">{window.kbSettings.formatDateTimeSimple(campaign.created_at)}</span>
                                 </div>
                                 <div className="flex items-center gap-1">
                                     <span>{translate('Updated')}: </span>
                                     <Calendar className="h-3 w-3" />{' '}
-                                    <span className="font-medium text-gray-600">{formatDate(campaign.updated_at)}</span>
+                                    <span className="font-medium text-gray-600">{window.kbSettings.formatDateTimeSimple(campaign.updated_at)}</span>
                                 </div>
                             </div>
                         </CardContent>

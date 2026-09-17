@@ -106,7 +106,9 @@ export default function QuoteEdit() {
                 clearErrors('shipping_contact_id' as any);
                 if (details.products?.length) {
                     clearErrors('products' as any);
-                    details.products.forEach((_: any, i: number) => clearErrors(`products.${i}.product_id` as any));
+                    details.products.forEach((_: any, i: number) => {
+                        clearErrors(`products.${i}.product_id` as any);
+                    });
                 }
             }
         } catch {}
@@ -125,11 +127,12 @@ export default function QuoteEdit() {
         toast.success(translate('Billing address copied to shipping'));
     };
 
-    const addProductRow = () =>
+    const addProductRow = () => {
         setData('products', [
             ...data.products,
             { id: crypto.randomUUID(), product_id: '', quantity: '1', unit_price: '0', discount_type: 'none', discount_value: '0' },
         ]);
+    };
 
     const removeProductRow = (rowId: string) => {
         if (data.products.length <= 1) return;
@@ -204,7 +207,9 @@ export default function QuoteEdit() {
         });
 
         if (Object.keys(errs).length > 0) {
-            Object.entries(errs).forEach(([k, v]) => setError(k as any, v));
+            Object.entries(errs).forEach(([k, v]) => {
+                setError(k as any, v);
+            });
             return;
         }
 
@@ -226,7 +231,9 @@ export default function QuoteEdit() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('quotes.index')),
+                    onClick: () => {
+                        router.visit(route('quotes.index'));
+                    },
                 },
             ]}
             noPadding
@@ -468,7 +475,12 @@ export default function QuoteEdit() {
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Product')} <span className="text-red-500">*</span>
                                                     </span>
-                                                    <Select value={row.product_id} onValueChange={(v) => updateProductRow(row.id, 'product_id', v)}>
+                                                    <Select
+                                                        value={row.product_id}
+                                                        onValueChange={(v) => {
+                                                            updateProductRow(row.id, 'product_id', v);
+                                                        }}
+                                                    >
                                                         <SelectTrigger className={errors[`products.${i}.product_id`] ? 'border-red-500' : ''}>
                                                             <SelectValue placeholder={translate('Select product')} />
                                                         </SelectTrigger>
@@ -500,7 +512,9 @@ export default function QuoteEdit() {
                                                         type="number"
                                                         min="1"
                                                         value={row.quantity}
-                                                        onChange={(e) => updateProductRow(row.id, 'quantity', e.target.value)}
+                                                        onChange={(e) => {
+                                                            updateProductRow(row.id, 'quantity', e.target.value);
+                                                        }}
                                                         className={errors[`products.${i}.quantity`] ? 'border-red-500' : ''}
                                                     />
                                                     {errors[`products.${i}.quantity`] && (
@@ -516,7 +530,9 @@ export default function QuoteEdit() {
                                                         step="0.01"
                                                         min="0"
                                                         value={row.unit_price}
-                                                        onChange={(e) => updateProductRow(row.id, 'unit_price', e.target.value)}
+                                                        onChange={(e) => {
+                                                            updateProductRow(row.id, 'unit_price', e.target.value);
+                                                        }}
                                                         placeholder="0.00"
                                                         className={errors[`products.${i}.unit_price`] ? 'border-red-500' : ''}
                                                     />
@@ -530,7 +546,9 @@ export default function QuoteEdit() {
                                                     </span>
                                                     <Select
                                                         value={row.discount_type}
-                                                        onValueChange={(v) => updateProductRow(row.id, 'discount_type', v)}
+                                                        onValueChange={(v) => {
+                                                            updateProductRow(row.id, 'discount_type', v);
+                                                        }}
                                                     >
                                                         <SelectTrigger>
                                                             <SelectValue />
@@ -551,7 +569,9 @@ export default function QuoteEdit() {
                                                         step="0.01"
                                                         min="0"
                                                         value={row.discount_value}
-                                                        onChange={(e) => updateProductRow(row.id, 'discount_value', e.target.value)}
+                                                        onChange={(e) => {
+                                                            updateProductRow(row.id, 'discount_value', e.target.value);
+                                                        }}
                                                         disabled={row.discount_type === 'none'}
                                                         className="disabled:opacity-40"
                                                         placeholder="0"
@@ -581,7 +601,9 @@ export default function QuoteEdit() {
                                                 <td className="col-span-1 block w-full border-t px-0 py-0 pt-2 text-right sm:col-span-2 xl:table-cell xl:w-12 xl:border-t-0 xl:px-4 xl:py-3 xl:pt-0 xl:text-left">
                                                     <button
                                                         type="button"
-                                                        onClick={() => removeProductRow(row.id)}
+                                                        onClick={() => {
+                                                            removeProductRow(row.id);
+                                                        }}
                                                         disabled={data.products.length <= 1}
                                                         className="cursor-pointer rounded p-1.5 text-gray-500 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
                                                     >
@@ -767,7 +789,13 @@ export default function QuoteEdit() {
 
                 {/* Actions */}
                 <div className="flex justify-end gap-3 pb-6">
-                    <Button type="button" variant="outline" onClick={() => router.visit(route('quotes.index'))}>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                            router.visit(route('quotes.index'));
+                        }}
+                    >
                         {translate('Cancel')}
                     </Button>
                     <Button type="submit" disabled={processing}>

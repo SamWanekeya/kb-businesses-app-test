@@ -50,7 +50,9 @@ export default function OpportunityStages() {
         descriptionRefsMobile.current.forEach((el) => {
             if (el) observer.observe(el);
         });
-        return () => observer.disconnect();
+        return () => {
+            observer.disconnect();
+        };
     }, [checkOverflow, opportunityStages?.data]);
 
     const [formData, setFormData] = useState({
@@ -258,7 +260,9 @@ export default function OpportunityStages() {
                                     id="name"
                                     type="text"
                                     value={formData.name}
-                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                    onChange={(e) => {
+                                        setFormData({ ...formData, name: e.target.value });
+                                    }}
                                     placeholder={translate('eg. Prospecting, Qualification, Proposal')}
                                     className={formErrors.name ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
@@ -276,14 +280,18 @@ export default function OpportunityStages() {
                                         id="color"
                                         type="color"
                                         value={formData.color}
-                                        onChange={(e) => setFormData({ ...formData, color: e.target.value })}
+                                        onChange={(e) => {
+                                            setFormData({ ...formData, color: e.target.value });
+                                        }}
                                         className={`h-10 w-14 cursor-pointer p-1 ${formErrors.color ? 'border-red-500' : ''}`}
                                         disabled={!canCreate && !canEdit}
                                     />
                                     <Input
                                         type="text"
                                         value={formData.color}
-                                        onChange={(e) => setFormData({ ...formData, color: e.target.value })}
+                                        onChange={(e) => {
+                                            setFormData({ ...formData, color: e.target.value });
+                                        }}
                                         pattern="^#[0-9A-Fa-f]{6}$"
                                         className="font-mono text-sm uppercase"
                                         placeholder="#000000"
@@ -303,7 +311,9 @@ export default function OpportunityStages() {
                                     min={0}
                                     max={100}
                                     value={formData.probability}
-                                    onChange={(e) => setFormData({ ...formData, probability: parseFloat(e.target.value) || 0 })}
+                                    onChange={(e) => {
+                                        setFormData({ ...formData, probability: parseFloat(e.target.value) || 0 });
+                                    }}
                                     placeholder={translate('eg. 25')}
                                     className={formErrors.probability ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
@@ -316,7 +326,9 @@ export default function OpportunityStages() {
                                 <Textarea
                                     id="description"
                                     value={formData.description}
-                                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                    onChange={(e) => {
+                                        setFormData({ ...formData, description: e.target.value });
+                                    }}
                                     placeholder={translate('Enter stage description...')}
                                     rows={3}
                                     className={formErrors.description ? 'border-red-500' : ''}
@@ -329,7 +341,9 @@ export default function OpportunityStages() {
                                 <Label htmlFor="status">{translate('Status')}</Label>
                                 <Select
                                     value={formData.status}
-                                    onValueChange={(value) => setFormData({ ...formData, status: value })}
+                                    onValueChange={(value) => {
+                                        setFormData({ ...formData, status: value });
+                                    }}
                                     disabled={!canCreate && !canEdit}
                                 >
                                     <SelectTrigger className={formErrors.status ? 'border-red-500' : ''}>
@@ -371,7 +385,9 @@ export default function OpportunityStages() {
                                         type="text"
                                         placeholder={translate('Search opportunity stages...')}
                                         value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        onChange={(e) => {
+                                            setSearchTerm(e.target.value);
+                                        }}
                                         onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)}
                                         className="pl-10"
                                     />
@@ -490,7 +506,9 @@ export default function OpportunityStages() {
                                                                         {(overflowingDescriptions.has(item.id) ||
                                                                             expandedDescriptions.has(item.id)) && (
                                                                             <button
-                                                                                onClick={() => toggleDescription(item.id)}
+                                                                                onClick={() => {
+                                                                                    toggleDescription(item.id);
+                                                                                }}
                                                                                 className="mt-1 inline-flex items-center text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400"
                                                                             >
                                                                                 {expandedDescriptions.has(item.id) ? (
@@ -530,7 +548,9 @@ export default function OpportunityStages() {
                                                                             <Button
                                                                                 variant="ghost"
                                                                                 size="sm"
-                                                                                onClick={() => handleAction('edit', item)}
+                                                                                onClick={() => {
+                                                                                    handleAction('edit', item);
+                                                                                }}
                                                                                 className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"
                                                                             >
                                                                                 <Edit className="h-4 w-4 text-gray-500" />
@@ -547,7 +567,9 @@ export default function OpportunityStages() {
                                                                             <Button
                                                                                 variant="ghost"
                                                                                 size="sm"
-                                                                                onClick={() => handleAction('toggle-status', item)}
+                                                                                onClick={() => {
+                                                                                    handleAction('toggle-status', item);
+                                                                                }}
                                                                                 className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"
                                                                             >
                                                                                 <Lock className="h-4 w-4 text-gray-500" />
@@ -568,7 +590,9 @@ export default function OpportunityStages() {
                                                                             <Button
                                                                                 variant="ghost"
                                                                                 size="sm"
-                                                                                onClick={() => handleAction('delete', item)}
+                                                                                onClick={() => {
+                                                                                    handleAction('delete', item);
+                                                                                }}
                                                                                 className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"
                                                                             >
                                                                                 <Trash2 className="h-4 w-4 text-gray-500" />
@@ -616,7 +640,9 @@ export default function OpportunityStages() {
                                                                 </div>
                                                                 {(overflowingDescriptions.has(item.id) || expandedDescriptions.has(item.id)) && (
                                                                     <button
-                                                                        onClick={() => toggleDescription(item.id)}
+                                                                        onClick={() => {
+                                                                            toggleDescription(item.id);
+                                                                        }}
                                                                         className="mt-1 inline-flex items-center text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400"
                                                                     >
                                                                         {expandedDescriptions.has(item.id) ? (
@@ -644,7 +670,9 @@ export default function OpportunityStages() {
                                                                     <Button
                                                                         variant="ghost"
                                                                         size="sm"
-                                                                        onClick={() => handleAction('edit', item)}
+                                                                        onClick={() => {
+                                                                            handleAction('edit', item);
+                                                                        }}
                                                                         className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"
                                                                     >
                                                                         <Edit className="h-4 w-4" />
@@ -661,7 +689,9 @@ export default function OpportunityStages() {
                                                                     <Button
                                                                         variant="ghost"
                                                                         size="sm"
-                                                                        onClick={() => handleAction('toggle-status', item)}
+                                                                        onClick={() => {
+                                                                            handleAction('toggle-status', item);
+                                                                        }}
                                                                         className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"
                                                                     >
                                                                         <Lock className="h-4 w-4" />
@@ -680,7 +710,9 @@ export default function OpportunityStages() {
                                                                     <Button
                                                                         variant="ghost"
                                                                         size="sm"
-                                                                        onClick={() => handleAction('delete', item)}
+                                                                        onClick={() => {
+                                                                            handleAction('delete', item);
+                                                                        }}
                                                                         className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"
                                                                     >
                                                                         <Trash2 className="h-4 w-4" />
@@ -721,7 +753,9 @@ export default function OpportunityStages() {
                                             links={opportunityStages?.links}
                                             entityName={translate('opportunity stages')}
                                             hidePerPage={true}
-                                            onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
+                                            onPageChange={(url) => {
+                                                router.get(url, {}, { preserveState: true, preserveScroll: true });
+                                            }}
                                         />
                                     </div>
                                 )}
@@ -750,7 +784,9 @@ export default function OpportunityStages() {
 
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
                 entityName={translate('opportunity stage')}

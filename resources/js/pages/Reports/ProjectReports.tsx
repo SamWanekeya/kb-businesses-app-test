@@ -28,7 +28,9 @@ export default function ProjectReports() {
         const raw = getComputedStyle(document.documentElement).getPropertyValue('--theme-color').trim();
         if (raw) setPrimaryColor(raw);
 
-        return () => window.removeEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
     }, []);
 
     const chartData = chartView === 'daily' ? dailyData : monthlyData;
@@ -86,7 +88,12 @@ export default function ProjectReports() {
                             <CardTitle className="text-base font-semibold">{translate('Project Trend')}</CardTitle>
                             <div className="flex gap-2">
                                 <div className="flex items-center gap-2">
-                                    <Tabs value={chartView} onValueChange={(v) => setChartView(v as 'daily' | 'monthly')}>
+                                    <Tabs
+                                        value={chartView}
+                                        onValueChange={(v) => {
+                                            setChartView(v as 'daily' | 'monthly');
+                                        }}
+                                    >
                                         <TabsList className="h-7">
                                             <TabsTrigger value="daily" className="cursor-pointer px-3 py-1 text-xs">
                                                 {translate('Daily')}

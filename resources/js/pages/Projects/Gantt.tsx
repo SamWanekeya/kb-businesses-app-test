@@ -1,4 +1,4 @@
-import { CrudFormModal } from '@components/CrudFormModal';
+import CrudFormModal from '@components/CrudFormModal';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import SearchAndFilterBar from '@components/UserInterface/SearchAndFilterBar';
@@ -240,7 +240,13 @@ const GanttChart = ({ tasks, timeScale, onTaskClick }: { tasks: any[]; timeScale
                     const barColor = task.task_status?.color || '#6b7280';
 
                     return (
-                        <g key={task.id} className="bar-wrapper cursor-pointer" onClick={() => onTaskClick(task)}>
+                        <g
+                            key={task.id}
+                            className="bar-wrapper cursor-pointer"
+                            onClick={() => {
+                                onTaskClick(task);
+                            }}
+                        >
                             <rect x={x} y={y} width={width} height="20" rx="3" ry="3" fill={barColor} style={{ cursor: 'pointer' }} />
                             {task.progress > 0 && (
                                 <rect x={x} y={y} width={(width * task.progress) / 100} height="20" rx="3" ry="3" fill="rgba(0,0,0,0.2)" />
@@ -355,7 +361,9 @@ export default function ProjectGantt() {
             label: translate('Back'),
             icon: <ArrowLeft className="mr-2 h-4 w-4" />,
             variant: 'outline',
-            onClick: () => router.get(route('projects.show', project.id)),
+            onClick: () => {
+                router.get(route('projects.show', project.id));
+            },
         },
     ];
 
@@ -465,7 +473,9 @@ export default function ProjectGantt() {
                             ].map((scale) => (
                                 <button
                                     key={scale.value}
-                                    onClick={() => setTimeScale(scale.value)}
+                                    onClick={() => {
+                                        setTimeScale(scale.value);
+                                    }}
                                     className={`cursor-pointer rounded px-3 py-1 text-xs font-medium transition-colors ${
                                         timeScale === scale.value ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
                                     }`}
@@ -485,7 +495,9 @@ export default function ProjectGantt() {
 
             <CrudFormModal
                 isOpen={isFormModalOpen}
-                onClose={() => setIsFormModalOpen(false)}
+                onClose={() => {
+                    setIsFormModalOpen(false);
+                }}
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
@@ -553,7 +565,7 @@ export default function ProjectGantt() {
                                       type: 'select',
                                       required: true,
                                       searchable: true,
-                                      emptyNote: { link: route('users.index'), linkText: translate('Users') },
+                                      emptyNote: { link: route('users-permissions.users.index'), linkText: translate('Users') },
                                       options: [...users.map((user: any) => ({ value: user.id, label: `${user.name} (${user.email})` }))],
                                   },
                               ]
@@ -570,14 +582,23 @@ export default function ProjectGantt() {
             {selectedTask && (
                 <div
                     className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black"
-                    onClick={() => setSelectedTask(null)}
+                    onClick={() => {
+                        setSelectedTask(null);
+                    }}
                     style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
                 >
-                    <div className="mx-4 w-full max-w-md rounded-lg bg-white p-6 dark:bg-gray-800" onClick={(e) => e.stopPropagation()}>
+                    <div
+                        className="mx-4 w-full max-w-md rounded-lg bg-white p-6 dark:bg-gray-800"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                        }}
+                    >
                         <div className="mb-4 flex items-center justify-between">
                             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{selectedTask.title}</h3>
                             <button
-                                onClick={() => setSelectedTask(null)}
+                                onClick={() => {
+                                    setSelectedTask(null);
+                                }}
                                 className="cursor-pointer text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                             >
                                 ✕

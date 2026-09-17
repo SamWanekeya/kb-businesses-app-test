@@ -63,7 +63,7 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
 
         const form = document.createElementranslate('form');
         form.method = 'POST';
-        form.action = route('invoice.stripe.payment');
+        form.action = route('invoice.subscriptions.stripe.payment');
 
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
         if (csrfToken) {
@@ -102,7 +102,9 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
                     id="cardholder-name"
                     type="text"
                     value={cardholderName}
-                    onChange={(e) => setCardholderName(e.target.value)}
+                    onChange={(e) => {
+                        setCardholderName(e.target.value);
+                    }}
                     placeholder={translate('Enter cardholder name')}
                     required
                 />

@@ -28,7 +28,7 @@ export default function SalesOrderShow() {
     const [editCommentText, setEditCommentText] = useState('');
     const getInitials = useInitials();
     useEffect(() => {
-        const main = document.querySelector('main[data-slot="sidebar-inset"]') as HTMLElement | null;
+        const main = document.querySelector('main[data-slot="sidebar-inset"]');
         if (main) main.style.overflowX = 'visible';
         return () => {
             if (main) main.style.overflowX = '';
@@ -102,7 +102,9 @@ export default function SalesOrderShow() {
                     labelClassName: 'hidden sm:inline',
                     icon: <ArrowLeft className="h-4 w-4 sm:mr-2" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('sales-orders.index')),
+                    onClick: () => {
+                        router.visit(route('sales-orders.index'));
+                    },
                 },
             ]}
             noPadding
@@ -431,7 +433,9 @@ export default function SalesOrderShow() {
                                                     <Textarea
                                                         placeholder={translate('Write a comment...')}
                                                         value={newComment}
-                                                        onChange={(e) => setNewComment(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setNewComment(e.target.value);
+                                                        }}
                                                         className="resize-none border-0 bg-transparent focus-visible:ring-0"
                                                         rows={2}
                                                     />
@@ -583,7 +587,9 @@ export default function SalesOrderShow() {
                                                                         <div className="space-y-3">
                                                                             <Textarea
                                                                                 value={editCommentText}
-                                                                                onChange={(e) => setEditCommentText(e.target.value)}
+                                                                                onChange={(e) => {
+                                                                                    setEditCommentText(e.target.value);
+                                                                                }}
                                                                                 className="w-full resize-none border-emerald-300 focus-visible:ring-emerald-400"
                                                                                 rows={3}
                                                                                 autoFocus
@@ -592,7 +598,9 @@ export default function SalesOrderShow() {
                                                                                 <Button
                                                                                     size="sm"
                                                                                     variant="outline"
-                                                                                    onClick={() => setEditingComment(null)}
+                                                                                    onClick={() => {
+                                                                                        setEditingComment(null);
+                                                                                    }}
                                                                                 >
                                                                                     {translate('Cancel')}
                                                                                 </Button>
@@ -672,7 +680,9 @@ export default function SalesOrderShow() {
                                     <Button
                                         variant="outline"
                                         className="w-full"
-                                        onClick={() => router.visit(route('sales-orders.edit', salesOrder.id))}
+                                        onClick={() => {
+                                            router.visit(route('sales-orders.edit', salesOrder.id));
+                                        }}
                                     >
                                         <Edit className="mr-2 h-4 w-4" />
                                         {translate('Edit Sales Order')}
@@ -822,14 +832,14 @@ export default function SalesOrderShow() {
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
                                     <p className="text-muted-foreground text-xs">{translate('Order Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">{formatDate(salesOrder.order_date)}</p>
+                                    <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(salesOrder.order_date)}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
                                     <p className="text-muted-foreground text-xs">{translate('Delivery Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">{formatDate(salesOrder.delivery_date)}</p>
+                                    <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(salesOrder.delivery_date)}</p>
                                 </div>
                             </div>
                             {salesOrder.assigned_user && (
@@ -936,7 +946,9 @@ export default function SalesOrderShow() {
             {/* Delete Activity Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={() => {
                     router.delete(route('sales-orders.delete-activity', { salesOrder: salesOrder.id, activity: currentActivity.id }), {
                         preserveScroll: true,
@@ -950,7 +962,9 @@ export default function SalesOrderShow() {
             {/* Delete All Activities Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteAllModalOpen}
-                onClose={() => setIsDeleteAllModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteAllModalOpen(false);
+                }}
                 onConfirm={() => {
                     router.delete(route('sales-orders.delete-activities', salesOrder.id), {
                         preserveScroll: true,

@@ -40,7 +40,7 @@ class StripePaymentController extends Controller
                 'payment_method' => $validated['payment_method_id'],
                 'confirmation_method' => 'manual',
                 'confirm' => true,
-                'return_url' => route('plans.index'),
+                'return_url' => route('subscriptions.plans.index'),
                 'description' => 'Subscription to ' . $plan->name . ' plan - ' . ucfirst($validated['billing_cycle']) . ' billing',
                 'shipping' => [
                     'name' => $validated['cardholder_name'],

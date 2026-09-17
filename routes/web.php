@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Http\Controllers\AccountCommentController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AccountIndustryController;
@@ -15,7 +14,6 @@ use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\CampaignTypeController;
 use App\Http\Controllers\CaseController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ChatGptController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CookieConsentController;
 use App\Http\Controllers\CouponController;
@@ -25,7 +23,6 @@ use App\Http\Controllers\DeliveryOrderController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DocumentFolderController;
 use App\Http\Controllers\DocumentTypeController;
-use App\Http\Controllers\EmailTemplateController;
 use App\Http\Controllers\GoogleCalendarController;
 use App\Http\Controllers\ImpersonateController;
 use App\Http\Controllers\InvoiceBankPaymentController;
@@ -33,6 +30,7 @@ use App\Http\Controllers\InvoiceCommentController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\InvoicePaystackPaymentController;
 use App\Http\Controllers\InvoiceReminderController;
+use App\Http\Controllers\KakbimaIntelligenceController;
 use App\Http\Controllers\LeadCommentController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\LeadSourceController;
@@ -74,132 +72,171 @@ use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\UserController;
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-//// Cashfree webhook (public route)
+// Temporary solution to run migrations in production
+//Route::get('/update-database', function () {
+//    Artisan::call('migrate', ['--force' => true]);
+//
+//    return 'Database migrations updated!';
+//});
+
+// Temporary solution update permissions based on new features in production
+//Route::get('/update-permissions', function () {
+//    Artisan::call('db:seed', ['--class' => 'PermissionSeeder', '--force' => true,]);
+//
+//    return 'PermissionSeeder executed!';
+//});
+
+// Temporary solution to run RoleSeeder
+//Route::get('/seed-roles', function () {
+//    Artisan::call('db:seed', ['--class' => 'RoleSeeder', '--force' => true,]);
+//
+//    return 'RoleSeeder executed!';
+//});
+
+// Temporary solution to clear and rebuild the cache for permissions and roles
+//Route::get('/reset-permission-cache', function () {
+//    app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
+//
+//    return 'Permission cache reset!';
+//});
+
+Route::get('/', function () {
+    return redirect()->route('dashboard.index');
+});
+
+require __DIR__ . '/settings.php';
+require __DIR__ . '/auth.php';
+
+// Public payment provider webhooks and callbacks.
+// These endpoints remain outside the authenticated application boundary for external provider notifications.
 //Route::post('cashfree/webhook', [CashfreeController::class, 'webhook'])->name('cashfree.webhook');
 //
-//// Benefit webhook (public route)
+// Public payment provider webhooks and callbacks.
 //Route::post('benefit/webhook', [BenefitPaymentController::class, 'webhook'])->name('benefit.webhook');
 //Route::get('subscriptions/payments/benefit/success', [BenefitPaymentController::class, 'success'])->name('benefit.success');
 //Route::post('subscriptions/payments/benefit/callback', [BenefitPaymentController::class, 'callback'])->name('benefit.callback');
 //
-//// FedaPay callback (public route)
+// Public payment provider webhooks and callbacks.
 //Route::match(['GET', 'POST'], 'subscriptions/payments/fedapay/callback', [FedaPayPaymentController::class, 'callback'])->name('fedapay.callback');
 //
-//// YooKassa success/callback (public routes)
+// Public payment provider webhooks and callbacks.
 //Route::get('subscriptions/payments/yookassa/success', [YooKassaPaymentController::class, 'success'])->name('yookassa.success');
 //Route::post('subscriptions/payments/yookassa/callback', [YooKassaPaymentController::class, 'callback'])->name('yookassa.callback');
 //
-//// Nepalste success/callback (public routes)
+// Public payment provider webhooks and callbacks.
 //Route::get('subscriptions/payments/nepalste/success', [NepalstePaymentController::class, 'success'])->name('nepalste.success');
 //Route::post('subscriptions/payments/nepalste/callback', [NepalstePaymentController::class, 'callback'])->name('nepalste.callback');
 //
-//// PayTR callback (public route)
+// Public payment provider webhooks and callbacks.
 //Route::post('subscriptions/payments/paytr/callback', [PayTRPaymentController::class, 'callback'])->name('paytr.callback');
 //
-//// PayTabs callback (public route)
+// Public payment provider webhooks and callbacks.
 //Route::match(['GET', 'POST'], 'subscriptions/payments/paytabs/callback', [PayTabsPaymentController::class, 'callback'])->name('paytabs.callback');
 //Route::get('subscriptions/payments/paytabs/success', [PayTabsPaymentController::class, 'success'])->name('paytabs.success');
 //
-//// Tap payment routes (public routes)
+// Public payment provider webhooks and callbacks.
 //Route::get('subscriptions/payments/tap/success', [TapPaymentController::class, 'success'])->name('tap.success');
 //Route::post('subscriptions/payments/tap/callback', [TapPaymentController::class, 'callback'])->name('tap.callback');
 //
-//// Aamarpay payment routes (public routes)
+// Public payment provider webhooks and callbacks.
 //Route::match(['GET', 'POST'], 'subscriptions/payments/aamarpay/success', [AamarpayPaymentController::class, 'success'])->name('aamarpay.success');
 //Route::post('subscriptions/payments/aamarpay/callback', [AamarpayPaymentController::class, 'callback'])->name('aamarpay.callback');
 //
-//// Iyzipay payment routes (public routes)
+// Public payment provider webhooks and callbacks.
 //Route::post('subscriptions/payments/iyzipay/callback', [IyzipayPaymentController::class, 'callback'])->name('iyzipay.callback');
 //Route::match(['GET', 'POST'], 'subscriptions/payments/iyzipay/success', [IyzipayPaymentController::class, 'success'])->name('iyzipay.success');
 //
-//// Invoice Iyzipay payment routes (public routes)
+// Public invoice payment provider callbacks.
 //Route::match(['GET', 'POST'], 'invoices/payment/iyzipay/callback', [InvoiceIyzipayPaymentController::class, 'callback'])->name('invoice.iyzipay.callback')->withoutMiddleware(VerifyCsrfToken::class);
 //
-//// PayFast payment routes (public routes)
+// Public payment provider webhooks and callbacks.
 //Route::get('subscriptions/payments/payfast/success', [PayfastPaymentController::class, 'success'])->name('payfast.success');
 //Route::post('subscriptions/payments/payfast/callback', [PayfastPaymentController::class, 'callback'])->name('payfast.callback');
 //
-//// CoinGate callback (public route)
+// Public payment provider webhooks and callbacks.
 //Route::match(['GET', 'POST'], 'subscriptions/payments/coingate/callback', [CoinGatePaymentController::class, 'callback'])->name('coingate.callback');
 //
-//// Xendit payment routes (public routes)
+// Public payment provider webhooks and callbacks.
 //Route::get('subscriptions/payments/xendit/success', [XenditPaymentController::class, 'success'])->name('xendit.success');
 //Route::post('subscriptions/payments/xendit/callback', [XenditPaymentController::class, 'callback'])->name('xendit.callback');
 
-Route::get('/translations/{locale}', [TranslationController::class, 'getTranslations'])->name('translations');
-Route::get('/refresh-language/{locale}', [TranslationController::class, 'refreshLanguage'])->name('refresh-language');
+Route::get('/translations/{locale?}', [TranslationController::class, 'getTranslations'])->name('translations');
 Route::get('/initial-locale', [TranslationController::class, 'getInitialLocale'])->name('initial-locale');
-Route::post('/change-language', [TranslationController::class, 'changeLanguage'])->name('change-language');
+Route::get('/clear-translations-cache', [TranslationController::class, 'clearTranslationsCache'])->middleware('auth');
 
+// Email template routes retained without authentication while the feature is under development and testing.
+//Route::get('email-templates', [EmailTemplateController::class, 'index'])->name('email-templates.index');
+//Route::get('email-templates/{emailTemplate}', [EmailTemplateController::class, 'show'])->name('email-templates.show');
+//Route::put('email-templates/{emailTemplate}/settings', [EmailTemplateController::class, 'updateSettings'])->name('email-templates.update-settings');
+//Route::put('email-templates/{emailTemplate}/content', [EmailTemplateController::class, 'updateContent'])->name('email-templates.update-content');
+
+// Authenticated application routes
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Plans routes - accessible without plan check
-    Route::get('plans', [PlanController::class, 'index'])->name('plans.index');
-    Route::post('plans/request', [PlanController::class, 'requestPlan'])->name('plans.request');
-    Route::post('plans/trial', [PlanController::class, 'startTrial'])->name('plans.trial');
-    Route::post('plans/subscribe', [PlanController::class, 'subscribe'])->name('plans.subscribe');
-    Route::post('plans/coupons/validate', [CouponController::class, 'validate'])->name('coupons.validate');
+    // Subscription plan discovery, trial, subscription, and coupon validation remain available to authenticated users without plan gating.
+    Route::get('subscriptions/plans', [PlanController::class, 'index'])->name('subscriptions.plans.index');
+    Route::post('subscriptions/plans/request', [PlanController::class, 'requestPlan'])->name('subscriptions.plans.request');
+    Route::post('subscriptions/plans/trial', [PlanController::class, 'startTrial'])->name('subscriptions.plans.trial');
+    Route::post('subscriptions/plans/subscribe', [PlanController::class, 'subscribe'])->name('subscriptions.plans.subscribe');
+    Route::post('subscriptions/plans/coupons/validate', [CouponController::class, 'validate'])->name('subscriptions.coupons.validate');
 
-    // Payment routes - accessible without plan check
-    //    Route::post('subscriptions/payments/zero', [ZeroPaymentController::class, 'processPayment'])->name('zero.payment');
-    //    Route::post('subscriptions/payments/stripe', [StripePaymentController::class, 'processPayment'])->name('stripe.payment');
-    //    Route::post('subscriptions/payments/paypal', [PayPalPaymentController::class, 'processPayment'])->name('paypal.payment');
-    Route::post('subscriptions/payments/bank', [BankPaymentController::class, 'processPayment'])->name('bank.payment');
-    Route::post('subscriptions/payments/paystack', [PaystackPaymentController::class, 'processPayment'])->name('paystack.payment');
-    //    Route::post('subscriptions/payments/flutterwave', [FlutterwavePaymentController::class, 'processPayment'])->name('flutterwave.payment');
-    //    Route::post('subscriptions/payments/paytabs', [PayTabsPaymentController::class, 'processPayment'])->name('paytabs.payment');
-    //    Route::post('subscriptions/payments/skrill', [SkrillPaymentController::class, 'processPayment'])->name('skrill.payment');
-    //    Route::post('subscriptions/payments/coingate', [CoinGatePaymentController::class, 'processPayment'])->name('coingate.payment');
-    //    Route::post('subscriptions/payments/payfast', [PayfastPaymentController::class, 'processPayment'])->name('payfast.payment');
-    //    Route::post('subscriptions/payments/mollie', [MolliePaymentController::class, 'processPayment'])->name('mollie.payment');
-    //    Route::post('subscriptions/payments/toyyibpay', [ToyyibPayPaymentController::class, 'processPayment'])->name('toyyibpay.payment');
-    //    Route::post('subscriptions/payments/iyzipay', [IyzipayPaymentController::class, 'processPayment'])->name('iyzipay.payment');
-    //    Route::post('subscriptions/payments/benefit', [BenefitPaymentController::class, 'processPayment'])->name('benefit.payment');
-    //    Route::post('subscriptions/payments/ozow', [OzowPaymentController::class, 'processPayment'])->name('ozow.payment');
-    //    Route::post('subscriptions/payments/easebuzz', [EasebuzzPaymentController::class, 'processPayment'])->name('easebuzz.payment');
-    //    Route::post('subscriptions/payments/khalti', [KhaltiPaymentController::class, 'processPayment'])->name('khalti.payment');
-    //    Route::post('subscriptions/payments/authorizenet', [AuthorizeNetPaymentController::class, 'processPayment'])->name('authorizenet.payment');
-    //    Route::post('subscriptions/payments/fedapay', [FedaPayPaymentController::class, 'processPayment'])->name('fedapay.payment');
-    //    Route::post('subscriptions/payments/payhere', [PayHerePaymentController::class, 'processPayment'])->name('payhere.payment');
-    //    Route::post('subscriptions/payments/cinetpay', [CinetPayPaymentController::class, 'processPayment'])->name('cinetpay.payment');
-    //    Route::post('subscriptions/payments/paiement', [PaiementPaymentController::class, 'processPayment'])->name('paiement.payment');
-    //    Route::post('subscriptions/payments/nepalste', [NepalstePaymentController::class, 'processPayment'])->name('nepalste.payment');
-    //    Route::post('subscriptions/payments/yookassa', [YooKassaPaymentController::class, 'processPayment'])->name('yookassa.payment');
-    //    Route::post('subscriptions/payments/aamarpay', [AamarpayPaymentController::class, 'processPayment'])->name('aamarpay.payment');
-    //    Route::post('subscriptions/payments/midtrans', [MidtransPaymentController::class, 'processPayment'])->name('midtrans.payment');
+    // Subscription payment processing routes remain outside the subscription access check so users can establish or change plan access.
+    //    Route::post('subscriptions/payments/zero', [ZeroPaymentController::class, 'processPayment'])->name('subscriptions.zero.payment');
+    //    Route::post('subscriptions/payments/stripe', [StripePaymentController::class, 'processPayment'])->name('subscriptions.stripe.payment');
+    //    Route::post('subscriptions/payments/paypal', [PayPalPaymentController::class, 'processPayment'])->name('subscriptions.paypal.payment');
+    Route::post('subscriptions/payments/bank', [BankPaymentController::class, 'processPayment'])->name('subscriptions.bank.payment');
+    Route::post('subscriptions/payments/paystack', [PaystackPaymentController::class, 'processPayment'])->name('subscriptions.paystack.payment');
+    //    Route::post('subscriptions/payments/flutterwave', [FlutterwavePaymentController::class, 'processPayment'])->name('subscriptions.flutterwave.payment');
+    //    Route::post('subscriptions/payments/paytabs', [PayTabsPaymentController::class, 'processPayment'])->name('subscriptions.paytabs.payment');
+    //    Route::post('subscriptions/payments/skrill', [SkrillPaymentController::class, 'processPayment'])->name('subscriptions.skrill.payment');
+    //    Route::post('subscriptions/payments/coingate', [CoinGatePaymentController::class, 'processPayment'])->name('subscriptions.coingate.payment');
+    //    Route::post('subscriptions/payments/payfast', [PayfastPaymentController::class, 'processPayment'])->name('subscriptions.payfast.payment');
+    //    Route::post('subscriptions/payments/mollie', [MolliePaymentController::class, 'processPayment'])->name('subscriptions.mollie.payment');
+    //    Route::post('subscriptions/payments/toyyibpay', [ToyyibPayPaymentController::class, 'processPayment'])->name('subscriptions.toyyibpay.payment');
+    //    Route::post('subscriptions/payments/iyzipay', [IyzipayPaymentController::class, 'processPayment'])->name('subscriptions.iyzipay.payment');
+    //    Route::post('subscriptions/payments/benefit', [BenefitPaymentController::class, 'processPayment'])->name('subscriptions.benefit.payment');
+    //    Route::post('subscriptions/payments/ozow', [OzowPaymentController::class, 'processPayment'])->name('subscriptions.ozow.payment');
+    //    Route::post('subscriptions/payments/easebuzz', [EasebuzzPaymentController::class, 'processPayment'])->name('subscriptions.easebuzz.payment');
+    //    Route::post('subscriptions/payments/khalti', [KhaltiPaymentController::class, 'processPayment'])->name('subscriptions.khalti.payment');
+    //    Route::post('subscriptions/payments/authorizenet', [AuthorizeNetPaymentController::class, 'processPayment'])->name('subscriptions.authorizenet.payment');
+    //    Route::post('subscriptions/payments/fedapay', [FedaPayPaymentController::class, 'processPayment'])->name('subscriptions.fedapay.payment');
+    //    Route::post('subscriptions/payments/payhere', [PayHerePaymentController::class, 'processPayment'])->name('subscriptions.payhere.payment');
+    //    Route::post('subscriptions/payments/cinetpay', [CinetPayPaymentController::class, 'processPayment'])->name('subscriptions.cinetpay.payment');
+    //    Route::post('subscriptions/payments/paiement', [PaiementPaymentController::class, 'processPayment'])->name('subscriptions.paiement.payment');
+    //    Route::post('subscriptions/payments/nepalste', [NepalstePaymentController::class, 'processPayment'])->name('subscriptions.nepalste.payment');
+    //    Route::post('subscriptions/payments/yookassa', [YooKassaPaymentController::class, 'processPayment'])->name('subscriptions.yookassa.payment');
+    //    Route::post('subscriptions/payments/aamarpay', [AamarpayPaymentController::class, 'processPayment'])->name('subscriptions.aamarpay.payment');
+    //    Route::post('subscriptions/payments/midtrans', [MidtransPaymentController::class, 'processPayment'])->name('subscriptions.midtrans.payment');
 
-    // Payment gateway specific routes
-    //    Route::post('razorpay/create-order', [RazorpayController::class, 'createOrder'])->name('razorpay.create-order');
-    //    Route::post('razorpay/verify-payment', [RazorpayController::class, 'verifyPayment'])->name('razorpay.verify-payment');
-    //    Route::post('cashfree/create-session', [CashfreeController::class, 'createPaymentSession'])->name('cashfree.create-session');
-    //    Route::post('cashfree/verify-payment', [CashfreeController::class, 'verifyPayment'])->name('cashfree.verify-payment');
-    //    Route::post('mercadopago/create-preference', [MercadoPagoController::class, 'createPreference'])->name('mercadopago.create-preference');
-    //    Route::post('mercadopago/process-payment', [MercadoPagoController::class, 'processPayment'])->name('mercadopago.process-payment');
+    // Provider-specific payment initialization and verification endpoints retained for gateway integrations under development or testing.
+    //    Route::post('subscriptions/razorpay/create-order', [RazorpayController::class, 'createOrder'])->name('razorpay.create-order');
+    //    Route::post('subscriptions/razorpay/verify-payment', [RazorpayController::class, 'verifyPayment'])->name('razorpay.verify-payment');
+    //    Route::post('subscriptions/cashfree/create-session', [CashfreeController::class, 'createPaymentSession'])->name('cashfree.create-session');
+    //    Route::post('subscriptions/cashfree/verify-payment', [CashfreeController::class, 'verifyPayment'])->name('cashfree.verify-payment');
+    //    Route::post('subscriptions/mercadopago/create-preference', [MercadoPagoController::class, 'createPreference'])->name('mercadopago.create-preference');
+    //    Route::post('subscriptions/mercadopago/process-payment', [MercadoPagoController::class, 'processPayment'])->name('mercadopago.process-payment');
 
-    // Other payment creation routes
-    //    Route::post('tap/create-payment', [TapPaymentController::class, 'createPayment'])->name('tap.create-payment');
-    //    Route::post('xendit/create-payment', [XenditPaymentController::class, 'createPayment'])->name('xendit.create-payment');
+    // Additional payment creation endpoints retained for supported and in-progress payment gateway integrations.
+    //    Route::post('subscriptions/tap/create-payment', [TapPaymentController::class, 'createPayment'])->name('tap.create-payment');
+    //    Route::post('subscriptions/xendit/create-payment', [XenditPaymentController::class, 'createPayment'])->name('xendit.create-payment');
     //    Route::post('subscriptions/payments/paytr/create-token', [PayTRPaymentController::class, 'createPaymentToken'])->name('paytr.create-token');
-    //    Route::post('iyzipay/create-form', [IyzipayPaymentController::class, 'createPaymentForm'])->name('iyzipay.create-form');
-    //    Route::post('benefit/create-session', [BenefitPaymentController::class, 'createPaymentSession'])->name('benefit.create-session');
-    //    Route::post('ozow/create-payment', [OzowPaymentController::class, 'createPayment'])->name('ozow.create-payment');
-    //    Route::post('easebuzz/create-payment', [EasebuzzPaymentController::class, 'createPayment'])->name('easebuzz.create-payment');
-    //    Route::post('khalti/create-payment', [KhaltiPaymentController::class, 'createPayment'])->name('khalti.create-payment');
-    //    Route::post('authorizenet/create-form', [AuthorizeNetPaymentController::class, 'createPaymentForm'])->name('authorizenet.create-form');
-    //    Route::post('fedapay/create-payment', [FedaPayPaymentController::class, 'createPayment'])->name('fedapay.create-payment');
-    //    Route::post('payhere/create-payment', [PayHerePaymentController::class, 'createPayment'])->name('payhere.create-payment');
-    //    Route::post('cinetpay/create-payment', [CinetPayPaymentController::class, 'createPayment'])->name('cinetpay.create-payment');
-    //    Route::post('paiement/create-payment', [PaiementPaymentController::class, 'createPayment'])->name('paiement.create-payment');
-    //    Route::post('nepalste/create-payment', [NepalstePaymentController::class, 'createPayment'])->name('nepalste.create-payment');
-    //    Route::post('yookassa/create-payment', [YooKassaPaymentController::class, 'createPayment'])->name('yookassa.create-payment');
-    //    Route::post('aamarpay/create-payment', [AamarpayPaymentController::class, 'createPayment'])->name('aamarpay.create-payment');
-    //    Route::post('midtrans/create-payment', [MidtransPaymentController::class, 'createPayment'])->name('midtrans.create-payment');
+    //    Route::post('subscriptions/iyzipay/create-form', [IyzipayPaymentController::class, 'createPaymentForm'])->name('iyzipay.create-form');
+    //    Route::post('subscriptions/benefit/create-session', [BenefitPaymentController::class, 'createPaymentSession'])->name('benefit.create-session');
+    //    Route::post('subscriptions/ozow/create-payment', [OzowPaymentController::class, 'createPayment'])->name('ozow.create-payment');
+    //    Route::post('subscriptions/easebuzz/create-payment', [EasebuzzPaymentController::class, 'createPayment'])->name('easebuzz.create-payment');
+    //    Route::post('subscriptions/khalti/create-payment', [KhaltiPaymentController::class, 'createPayment'])->name('khalti.create-payment');
+    //    Route::post('subscriptions/authorizenet/create-form', [AuthorizeNetPaymentController::class, 'createPaymentForm'])->name('authorizenet.create-form');
+    //    Route::post('subscriptions/fedapay/create-payment', [FedaPayPaymentController::class, 'createPayment'])->name('fedapay.create-payment');
+    //    Route::post('subscriptions/payhere/create-payment', [PayHerePaymentController::class, 'createPayment'])->name('payhere.create-payment');
+    //    Route::post('subscriptions/cinetpay/create-payment', [CinetPayPaymentController::class, 'createPayment'])->name('cinetpay.create-payment');
+    //    Route::post('subscriptions/paiement/create-payment', [PaiementPaymentController::class, 'createPayment'])->name('paiement.create-payment');
+    //    Route::post('subscriptions/nepalste/create-payment', [NepalstePaymentController::class, 'createPayment'])->name('nepalste.create-payment');
+    //    Route::post('subscriptions/yookassa/create-payment', [YooKassaPaymentController::class, 'createPayment'])->name('yookassa.create-payment');
+    //    Route::post('subscriptions/aamarpay/create-payment', [AamarpayPaymentController::class, 'createPayment'])->name('aamarpay.create-payment');
+    //    Route::post('subscriptions/midtrans/create-payment', [MidtransPaymentController::class, 'createPayment'])->name('midtrans.create-payment');
 
-    // Payment success/callback routes
+    // Payment completion, failure, callback, and webhook endpoints retained for gateway integrations under development or testing.
     //    Route::post('subscriptions/payments/skrill/callback', [SkrillPaymentController::class, 'callback'])->name('skrill.callback');
     //    Route::get('subscriptions/payments/paytr/success', [PayTRPaymentController::class, 'success'])->name('paytr.success');
     //    Route::get('subscriptions/payments/paytr/failure', [PayTRPaymentController::class, 'failure'])->name('paytr.failure');
@@ -217,121 +254,89 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //    Route::get('subscriptions/payments/paiement/success', [PaiementPaymentController::class, 'success'])->name('paiement.success');
     //    Route::post('subscriptions/payments/paiement/callback', [PaiementPaymentController::class, 'callback'])->name('paiement.callback');
     //    Route::post('subscriptions/payments/midtrans/callback', [MidtransPaymentController::class, 'callback'])->name('midtrans.callback');
-    //    Route::get('mercadopago/success', [MercadoPagoController::class, 'success'])->name('mercadopago.success');
-    //    Route::get('mercadopago/failure', [MercadoPagoController::class, 'failure'])->name('mercadopago.failure');
-    //    Route::get('mercadopago/pending', [MercadoPagoController::class, 'pending'])->name('mercadopago.pending');
-    //    Route::post('mercadopago/webhook', [MercadoPagoController::class, 'webhook'])->name('mercadopago.webhook');
-    //    Route::post('authorizenet/test-connection', [AuthorizeNetPaymentController::class, 'testConnection'])->name('authorizenet.test-connection');
+    //    Route::get('subscriptions/mercadopago/success', [MercadoPagoController::class, 'success'])->name('mercadopago.success');
+    //    Route::get('subscriptions/mercadopago/failure', [MercadoPagoController::class, 'failure'])->name('mercadopago.failure');
+    //    Route::get('subscriptions/mercadopago/pending', [MercadoPagoController::class, 'pending'])->name('mercadopago.pending');
+    //    Route::post('subscriptions/mercadopago/webhook', [MercadoPagoController::class, 'webhook'])->name('mercadopago.webhook');
+    //    Route::post('subscriptions/authorizenet/test-connection', [AuthorizeNetPaymentController::class, 'testConnection'])->name('authorizenet.test-connection');
 
-    // All other routes require plan access check
+    // Access to the core application is enforced by the check.subscription middleware.
     Route::middleware('check.subscription')->group(function () {
-        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
         Route::get('dashboard/redirect', [DashboardController::class, 'redirectToFirstAvailablePage'])->name('dashboard.redirect');
 
-        Route::get('media-library', function () {
-            $planLimits = null;
-            if (auth()->user()->type === 'organization') {
-                $user = auth()->user();
-                $plan = $user->getCurrentPlan();
+        // Media library operations and storage configuration endpoints.
+        Route::get('media-library', [MediaController::class, 'mediaLibrary'])
+            ->middleware('permission:manage-media')
+            ->name('media-library');
+        Route::get('media-library/media', [MediaController::class, 'index'])->middleware('permission:manage-media')->name('media-library.media.index');
+        Route::post('media-library/media/batch', [MediaController::class, 'batchStore'])->middleware('permission:create-media')->name('media-library.media.batch');
+        Route::get('media-library/media/{id}/download', [MediaController::class, 'download'])->middleware('permission:download-media')->name('media-library.media.download');
+        Route::delete('media-library/media/{id}', [MediaController::class, 'destroy'])->middleware('permission:delete-media')->name('media-library.media.destroy');
+        Route::get('media-library/storage-settings', [SystemSettingsController::class, 'getStorageSettings'])->name('media-library.storage-settings');
 
-                if ($plan && $plan->storage_limit > 0) {
-                    $organizationUsers = User::where('created_by', $user->id)->pluck('id')->push($user->id);
-                    $currentStorageUsage = Media::whereIn('user_id', $organizationUsers)->sum('size');
-                    $storageLimit = $plan->storage_limit * 1024 * 1024 * 1024;
-                    $planLimits = [
-                        'current_storage' => $currentStorageUsage,
-                        'maximum_storage' => $storageLimit,
-                        'can_create' => $currentStorageUsage < $storageLimit,
-                    ];
-                }
-            }
-
-            return Inertia::render('media-library', [
-                'planLimits' => $planLimits,
-            ]);
-        })->middleware('permission:manage-media')->name('media-library');
-
-
-        // Media Library API routes
-        Route::get('api/media', [MediaController::class, 'index'])->middleware('permission:manage-media')->name('api.media.index');
-        Route::post('api/media/batch', [MediaController::class, 'batchStore'])->middleware('permission:create-media')->name('api.media.batch');
-        Route::get('api/media/{id}/download', [MediaController::class, 'download'])->middleware('permission:download-media')->name('api.media.download');
-        Route::delete('api/media/{id}', [MediaController::class, 'destroy'])->middleware('permission:delete-media')->name('api.media.destroy');
-
-        // Storage settings API
-        Route::get('api/storage-settings', [SystemSettingsController::class, 'getStorageSettings'])->name('api.storage-settings');
-
-        // Notification Templates routes
+        // Notification template management is restricted to users with the required template management permission.
         Route::middleware('permission:manage-notification-templates')->group(function () {
             Route::get('notification-templates', [NotificationTemplateController::class, 'index'])->name('notification-templates.index');
             Route::get('notification-templates/{notificationTemplate}', [NotificationTemplateController::class, 'show'])->name('notification-templates.show');
             Route::put('notification-templates/{notificationTemplate}/content', [NotificationTemplateController::class, 'updateContent'])->name('notification-templates.update-content');
         });
 
-        // Permissions routes with granular permissions
+        // Permission administration is protected by management access, with action-level permissions enforced within the group.
         Route::middleware('permission:manage-permissions')->group(function () {
             Route::get('permissions', [PermissionController::class, 'index'])->middleware('permission:manage-permissions')->name('permissions.index');
-            Route::get('permissions/Create', [PermissionController::class, 'create'])->middleware('permission:create-permissions')->name('permissions.create');
+            Route::get('permissions/create', [PermissionController::class, 'create'])->middleware('permission:create-permissions')->name('permissions.create');
             Route::post('permissions', [PermissionController::class, 'store'])->middleware('permission:create-permissions')->name('permissions.store');
             Route::get('permissions/{permission}', [PermissionController::class, 'show'])->middleware('permission:view-permissions')->name('permissions.show');
-            Route::get('permissions/{permission}/Edit', [PermissionController::class, 'edit'])->middleware('permission:edit-permissions')->name('permissions.edit');
+            Route::get('permissions/{permission}/edit', [PermissionController::class, 'edit'])->middleware('permission:edit-permissions')->name('permissions.edit');
             Route::put('permissions/{permission}', [PermissionController::class, 'update'])->middleware('permission:edit-permissions')->name('permissions.update');
             Route::patch('permissions/{permission}', [PermissionController::class, 'update'])->middleware('permission:edit-permissions');
             Route::delete('permissions/{permission}', [PermissionController::class, 'destroy'])->middleware('permission:delete-permissions')->name('permissions.destroy');
         });
 
-        // Roles routes with granular permissions
+        // Role administration is protected by management access, with action-level permissions enforced within the group.
         Route::middleware('permission:manage-roles')->group(function () {
-            Route::get('roles', [RoleController::class, 'index'])->middleware('permission:manage-roles')->name('roles.index');
-            Route::get('roles/Create', [RoleController::class, 'create'])->middleware('permission:create-roles')->name('roles.create');
-            Route::post('roles', [RoleController::class, 'store'])->middleware('permission:create-roles')->name('roles.store');
-            Route::get('roles/{role}', [RoleController::class, 'show'])->middleware('permission:view-roles')->name('roles.show');
-            Route::get('roles/{role}/Edit', [RoleController::class, 'edit'])->middleware('permission:edit-roles')->name('roles.edit');
-            Route::put('roles/{role}', [RoleController::class, 'update'])->middleware('permission:edit-roles')->name('roles.update');
-            Route::patch('roles/{role}', [RoleController::class, 'update'])->middleware('permission:edit-roles');
-            Route::delete('roles/{role}', [RoleController::class, 'destroy'])->middleware('permission:delete-roles')->name('roles.destroy');
+            Route::get('users-permissions/roles', [RoleController::class, 'index'])->middleware('permission:manage-roles')->name('users-permissions.roles.index');
+            Route::get('users-permissions/roles/create', [RoleController::class, 'create'])->middleware('permission:create-roles')->name('users-permissions.roles.create');
+            Route::post('users-permissions/roles', [RoleController::class, 'store'])->middleware('permission:create-roles')->name('users-permissions.roles.store');
+            Route::get('users-permissions/roles/{role}', [RoleController::class, 'show'])->middleware('permission:view-roles')->name('users-permissions.roles.show');
+            Route::get('users-permissions/roles/{role}/edit', [RoleController::class, 'edit'])->middleware('permission:edit-roles')->name('users-permissions.roles.edit');
+            Route::put('users-permissions/roles/{role}', [RoleController::class, 'update'])->middleware('permission:edit-roles')->name('users-permissions.roles.update');
+            Route::patch('users-permissions/roles/{role}', [RoleController::class, 'update'])->middleware('permission:edit-roles');
+            Route::delete('users-permissions/roles/{role}', [RoleController::class, 'destroy'])->middleware('permission:delete-roles')->name('users-permissions.roles.destroy');
         });
 
-        // Users routes with granular permissions
+        // User administration is protected by management access, with action-level permissions enforced within the group.
         Route::middleware('permission:manage-users')->group(function () {
-            Route::get('users', [UserController::class, 'index'])->middleware('permission:manage-users')->name('users.index');
-            Route::get('users/Create', [UserController::class, 'create'])->middleware('permission:create-users')->name('users.create');
-            Route::post('users', [UserController::class, 'store'])->middleware('permission:create-users')->name('users.store');
-            Route::get('users/{user}', [UserController::class, 'show'])->middleware('permission:view-users')->name('users.show');
-            Route::get('users/{user}/Edit', [UserController::class, 'edit'])->middleware('permission:edit-users')->name('users.edit');
-            Route::put('users/{user}', [UserController::class, 'update'])->middleware('permission:edit-users')->name('users.update');
-            Route::patch('users/{user}', [UserController::class, 'update'])->middleware('permission:edit-users');
-            Route::delete('users/{user}', [UserController::class, 'destroy'])->middleware('permission:delete-users')->name('users.destroy');
-
-            // Additional user routes
-            Route::put('users/{user}/reset-password', [UserController::class, 'resetPassword'])->middleware('permission:reset-password-users')->name('users.reset-password');
-            Route::put('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->middleware('permission:toggle-status-users')->name('users.toggle-status');
-            Route::get('users-logs', [UserController::class, 'allUserLogs'])->middleware('permission:view-users')->name('users.all-logs');
+            Route::get('users-permissions/users', [UserController::class, 'index'])->middleware('permission:manage-users')->name('users-permissions.users.index');
+            Route::post('users-permissions/users', [UserController::class, 'store'])->middleware('permission:create-users')->name('users-permissions.users.store');
+            Route::get('users-permissions/users/{user}', [UserController::class, 'show'])->middleware('permission:view-users')->name('users-permissions.users.show');
+            Route::put('users-permissions/users/{user}', [UserController::class, 'update'])->middleware('permission:edit-users')->name('users-permissions.users.update');
+            Route::patch('users-permissions/users/{user}', [UserController::class, 'update'])->middleware('permission:edit-users');
+            Route::delete('users-permissions/users/{user}', [UserController::class, 'destroy'])->middleware('permission:delete-users')->name('users-permissions.users.destroy');
+            Route::put('users-permissions/users/{user}/reset-password', [UserController::class, 'resetPassword'])->middleware('permission:reset-password-users')->name('users-permissions.users.reset-password');
+            Route::put('users-permissions/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->middleware('permission:toggle-status-users')->name('users-permissions.users.toggle-status');
+            Route::get('users-logs', [UserController::class, 'allUserLogs'])->middleware('permission:view-users')->name('users-permissions.users.all-logs');
         });
 
-        // Plans management routes (admin only)
+        // Subscription plan administration and status management.
         Route::middleware('permission:manage-plans')->group(function () {
-            Route::get('plans/Create', [PlanController::class, 'create'])->middleware('permission:create-plans')->name('plans.create');
-            Route::post('plans', [PlanController::class, 'store'])->middleware('permission:create-plans')->name('plans.store');
-            Route::get('plans/{plan}/Edit', [PlanController::class, 'edit'])->middleware('permission:edit-plans')->name('plans.edit');
-            Route::put('plans/{plan}', [PlanController::class, 'update'])->middleware('permission:edit-plans')->name('plans.update');
-            Route::delete('plans/{plan}', [PlanController::class, 'destroy'])->middleware('permission:delete-plans')->name('plans.destroy');
-            Route::post('plans/{plan}/toggle-status', [PlanController::class, 'toggleStatus'])->name('plans.toggle-status');
+            Route::get('subscriptions/plans/create', [PlanController::class, 'create'])->middleware('permission:create-plans')->name('subscriptions.plans.create');
+            Route::post('subscriptions/plans', [PlanController::class, 'store'])->middleware('permission:create-plans')->name('subscriptions.plans.store');
+            Route::get('subscriptions/plans/{plan}/edit', [PlanController::class, 'edit'])->middleware('permission:edit-plans')->name('subscriptions.plans.edit');
+            Route::put('subscriptions/plans/{plan}', [PlanController::class, 'update'])->middleware('permission:edit-plans')->name('subscriptions.plans.update');
+            Route::delete('subscriptions/plans/{plan}', [PlanController::class, 'destroy'])->middleware('permission:delete-plans')->name('subscriptions.plans.destroy');
+            Route::post('subscriptions/plans/{plan}/toggle-status', [PlanController::class, 'toggleStatus'])->name('subscriptions.plans.toggle-status');
         });
 
-        // Plan Orders routes
+        // Subscription plan order review and approval workflow.
         Route::middleware('permission:manage-plan-orders')->group(function () {
-            Route::get('plan-orders', [PlanOrderController::class, 'index'])->middleware('permission:manage-plan-orders')->name('plan-orders.index');
-            Route::post('plan-orders/{planOrder}/approve', [PlanOrderController::class, 'approve'])->middleware('permission:approve-plan-orders')->name('plan-orders.approve');
-            Route::post('plan-orders/{planOrder}/reject', [PlanOrderController::class, 'reject'])->middleware('permission:reject-plan-orders')->name('plan-orders.reject');
+            Route::get('subscriptions/plan-orders', [PlanOrderController::class, 'index'])->middleware('permission:manage-plan-orders')->name('subscriptions/plan-orders.index');
+            Route::post('subscriptions/plan-orders/{planOrder}/approve', [PlanOrderController::class, 'approve'])->middleware('permission:approve-plan-orders')->name('subscriptions/plan-orders.approve');
+            Route::post('subscriptions/plan-orders/{planOrder}/reject', [PlanOrderController::class, 'reject'])->middleware('permission:reject-plan-orders')->name('subscriptions/plan-orders.reject');
         });
 
-        // Plan Requests routes (placeholder)
-        Route::get('plan-requests', function () {
-            return Inertia::render('Plans/PlanRequests');
-        })->name('plan-requests.index');
-
-        // Organizations routes
+        // Organization administration, account access, and subscription management.
         Route::middleware('permission:manage-organizations')->group(function () {
             Route::get('organizations', [OrganizationController::class, 'index'])->middleware('permission:manage-organizations')->name('organizations.index');
             Route::post('organizations', [OrganizationController::class, 'store'])->middleware('permission:create-organizations')->name('organizations.store');
@@ -343,8 +348,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('organizations/{organization}/upgrade-plan', [OrganizationController::class, 'upgradePlan'])->middleware('permission:upgrade-plan-organizations')->name('organizations.upgrade-plan');
         });
 
-
-        // Coupons routes
+        // Coupon creation, maintenance, validation, and status management.
         Route::middleware('permission:manage-coupons')->group(function () {
             Route::get('coupons', [CouponController::class, 'index'])->middleware('permission:manage-coupons')->name('coupons.index');
             Route::get('coupons/{coupon}', [CouponController::class, 'show'])->middleware('permission:view-coupons')->name('coupons.show');
@@ -354,24 +358,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('coupons/{coupon}', [CouponController::class, 'destroy'])->middleware('permission:delete-coupons')->name('coupons.destroy');
         });
 
-        // Plan Requests routes
+        // Subscription plan request review and approval workflow.
         Route::middleware('permission:manage-plan-requests')->group(function () {
-            Route::get('plan-requests', [PlanRequestController::class, 'index'])->middleware('permission:manage-plan-requests')->name('plan-requests.index');
-            Route::post('plan-requests/{planRequest}/approve', [PlanRequestController::class, 'approve'])->middleware('permission:approve-plan-requests')->name('plan-requests.approve');
-            Route::post('plan-requests/{planRequest}/reject', [PlanRequestController::class, 'reject'])->middleware('permission:reject-plan-requests')->name('plan-requests.reject');
+            Route::get('subscriptions/plan-requests', [PlanRequestController::class, 'index'])->middleware('permission:manage-plan-requests')->name('subscriptions.plan-requests.index');
+            Route::post('subscriptions/plan-requests/{planRequest}/approve', [PlanRequestController::class, 'approve'])->middleware('permission:approve-plan-requests')->name('subscriptions.plan-requests.approve');
+            Route::post('subscriptions/plan-requests/{planRequest}/reject', [PlanRequestController::class, 'reject'])->middleware('permission:reject-plan-requests')->name('subscriptions.plan-requests.reject');
         });
 
-        // Referral routes
+        // Referral program configuration, referred-user access, and payout management.
         Route::middleware('permission:manage-referral')->group(function () {
-            Route::get('referral', [ReferralController::class, 'index'])->middleware('permission:manage-referral')->name('referral.index');
-            Route::get('referral/referred-users', [ReferralController::class, 'getReferredUsers'])->middleware('permission:manage-users-referral')->name('referral.referred-users');
-            Route::post('referral/settings', [ReferralController::class, 'updateSettings'])->middleware('permission:manage-setting-referral')->name('referral.settings.update');
-            Route::post('referral/payout-request', [ReferralController::class, 'createPayoutRequest'])->middleware('permission:manage-payout-referral')->name('referral.payout-request.create');
-            Route::post('referral/payout-request/{payoutRequest}/approve', [ReferralController::class, 'approvePayoutRequest'])->middleware('permission:approve-payout-referral')->name('referral.payout-request.approve');
-            Route::post('referral/payout-request/{payoutRequest}/reject', [ReferralController::class, 'rejectPayoutRequest'])->middleware('permission:reject-payout-referral')->name('referral.payout-request.reject');
+            Route::get('referral-program', [ReferralController::class, 'index'])->middleware('permission:manage-referral')->name('referral-program.index');
+            Route::get('referral-program/referred-users', [ReferralController::class, 'getReferredUsers'])->middleware('permission:manage-users-referral')->name('referral-program.referred-users');
+            Route::post('referral-program/settings', [ReferralController::class, 'updateSettings'])->middleware('permission:manage-setting-referral')->name('referral-program.settings.update');
+            Route::post('referral-program/payout-request', [ReferralController::class, 'createPayoutRequest'])->middleware('permission:manage-payout-referral')->name('referral-program.payout-request.create');
+            Route::post('referral-program/payout-request/{payoutRequest}/approve', [ReferralController::class, 'approvePayoutRequest'])->middleware('permission:approve-payout-referral')->name('referral-program.payout-request.approve');
+            Route::post('referral-program/payout-request/{payoutRequest}/reject', [ReferralController::class, 'rejectPayoutRequest'])->middleware('permission:reject-payout-referral')->name('referral-program.payout-request.reject');
         });
 
-        // Currencies routes
+        // Currency configuration and maintenance.
         Route::middleware('permission:manage-currencies')->group(function () {
             Route::get('currencies', [CurrencyController::class, 'index'])->middleware('permission:manage-currencies')->name('currencies.index');
             Route::post('currencies', [CurrencyController::class, 'store'])->middleware('permission:create-currencies')->name('currencies.store');
@@ -379,7 +383,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('currencies/{currency}', [CurrencyController::class, 'destroy'])->middleware('permission:delete-currencies')->name('currencies.destroy');
         });
 
-        // Taxes routes
+        // Tax configuration and status management.
         Route::middleware('permission:manage-taxes')->group(function () {
             Route::get('taxes', [TaxController::class, 'index'])->middleware('permission:manage-taxes')->name('taxes.index');
             Route::post('taxes', [TaxController::class, 'store'])->middleware('permission:create-taxes')->name('taxes.store');
@@ -388,7 +392,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('taxes/{tax}/toggle-status', [TaxController::class, 'toggleStatus'])->middleware('permission:toggle-status-taxes')->name('taxes.toggle-status');
         });
 
-        // Brands routes
+        // Brand configuration and status management.
         Route::middleware('permission:manage-brands')->group(function () {
             Route::get('brands', [BrandController::class, 'index'])->middleware('permission:manage-brands')->name('brands.index');
             Route::post('brands', [BrandController::class, 'store'])->middleware('permission:create-brands')->name('brands.store');
@@ -397,7 +401,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('brands/{brand}/toggle-status', [BrandController::class, 'toggleStatus'])->middleware('permission:toggle-status-brands')->name('brands.toggle-status');
         });
 
-        // Categories routes
+        // Product category configuration and status management.
         Route::middleware('permission:manage-categories')->group(function () {
             Route::get('categories', [CategoryController::class, 'index'])->middleware('permission:manage-categories')->name('categories.index');
             Route::post('categories', [CategoryController::class, 'store'])->middleware('permission:create-categories')->name('categories.store');
@@ -406,25 +410,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('categories/{category}/toggle-status', [CategoryController::class, 'toggleStatus'])->middleware('permission:toggle-status-categories')->name('categories.toggle-status');
         });
 
-        // Products routes
+        // Product catalog management, status changes, and bulk import/export operations.
         Route::middleware('permission:manage-products')->group(function () {
             Route::get('products', [ProductController::class, 'index'])->middleware('permission:manage-products')->name('products.index');
-            Route::get('products/Create', [ProductController::class, 'create'])->middleware('permission:create-products')->name('products.create');
+            Route::get('products/create', [ProductController::class, 'create'])->middleware('permission:create-products')->name('products.create');
             Route::get('products/{product}', [ProductController::class, 'show'])->middleware('permission:view-products')->name('products.show');
-            Route::get('products/{product}/Edit', [ProductController::class, 'edit'])->middleware('permission:edit-products')->name('products.edit');
+            Route::get('products/{product}/edit', [ProductController::class, 'edit'])->middleware('permission:edit-products')->name('products.edit');
             Route::post('products', [ProductController::class, 'store'])->middleware('permission:create-products')->name('products.store');
             Route::put('products/{product}', [ProductController::class, 'update'])->middleware('permission:edit-products')->name('products.update');
             Route::delete('products/{product}/', [ProductController::class, 'destroy'])->middleware('permission:delete-products')->name('products.destroy');
             Route::put('products/{product}/toggle-status', [ProductController::class, 'toggleStatus'])->middleware('permission:toggle-status-products')->name('products.toggle-status');
 
-            // Product Import/Export routes
+            // Product import, export, and template download operations.
             Route::get('products/file/export/', [ProductController::class, 'fileExport'])->middleware('permission:export-products')->name('product.export');
             Route::post('products/file/parse', [ProductController::class, 'parseFile'])->middleware('permission:import-products')->name('product.parse');
             Route::post('products/file/import', [ProductController::class, 'fileImport'])->middleware('permission:import-products')->name('product.import');
             Route::get('products/download/template', [ProductController::class, 'downloadTemplate'])->name('product.download.template');
         });
 
-        // Reports routes
+        // CRM reporting endpoints covering leads, sales, products, customers, and projects.
         Route::middleware('permission:manage-reports')->group(function () {
             Route::get('reports/leads', [ReportsController::class, 'leads'])->name('reports.leads');
             Route::get('reports/sales', [ReportsController::class, 'sales'])->name('reports.sales');
@@ -433,8 +437,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('reports/projects', [ReportsController::class, 'projects'])->name('reports.projects');
         });
 
-        // Account Types routes
+        // Account type configuration and status management.
         Route::middleware('permission:manage-account-types')->group(function () {
+            // CRM configuration and sales operations
             Route::get('account-types', [AccountTypeController::class, 'index'])->middleware('permission:manage-account-types')->name('account-types.index');
             Route::post('account-types', [AccountTypeController::class, 'store'])->middleware('permission:create-account-types')->name('account-types.store');
             Route::put('account-types/{accountType}', [AccountTypeController::class, 'update'])->middleware('permission:edit-account-types')->name('account-types.update');
@@ -442,7 +447,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('account-types/{accountType}/toggle-status', [AccountTypeController::class, 'toggleStatus'])->middleware('permission:toggle-status-account-types')->name('account-types.toggle-status');
         });
 
-        // Account Industries routes
+        // Account industry configuration and status management.
         Route::middleware('permission:manage-account-industries')->group(function () {
             Route::get('account-industries', [AccountIndustryController::class, 'index'])->middleware('permission:manage-account-industries')->name('account-industries.index');
             Route::post('account-industries', [AccountIndustryController::class, 'store'])->middleware('permission:create-account-industries')->name('account-industries.store');
@@ -451,11 +456,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('account-industries/{accountIndustry}/toggle-status', [AccountIndustryController::class, 'toggleStatus'])->middleware('permission:toggle-status-account-industries')->name('account-industries.toggle-status');
         });
 
-        // Accounts routes
+        // Customer account management, lifecycle actions, activity history, comments, and data export.
         Route::middleware('permission:manage-accounts')->group(function () {
             Route::get('accounts', [AccountController::class, 'index'])->middleware('permission:manage-accounts')->name('accounts.index');
-            Route::get('accounts/Create', [AccountController::class, 'create'])->middleware('permission:create-accounts')->name('accounts.create');
-            Route::get('accounts/{account}/Edit', [AccountController::class, 'edit'])->middleware('permission:edit-accounts')->name('accounts.edit');
+            Route::get('accounts/create', [AccountController::class, 'create'])->middleware('permission:create-accounts')->name('accounts.create');
+            Route::get('accounts/{account}/edit', [AccountController::class, 'edit'])->middleware('permission:edit-accounts')->name('accounts.edit');
             Route::get('accounts/{account}', [AccountController::class, 'show'])->middleware('permission:view-accounts')->name('accounts.show');
             Route::post('accounts', [AccountController::class, 'store'])->middleware('permission:create-accounts')->name('accounts.store');
             Route::put('accounts/{account}', [AccountController::class, 'update'])->middleware('permission:edit-accounts')->name('accounts.update');
@@ -464,15 +469,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('accounts/{account}/activities', [AccountController::class, 'deleteActivities'])->middleware('permission:delete-accounts')->name('accounts.delete-activities');
             Route::delete('accounts/{account}/activities/{activity}', [AccountController::class, 'deleteActivity'])->middleware('permission:delete-accounts')->name('accounts.delete-activity');
 
-            // Account Export route
+            // Account data export.
             Route::get('accounts/file/export/', [AccountController::class, 'fileExport'])->middleware('permission:export-accounts')->name('account.export');
 
-            // Account Comments routes
+            // Account comments and activity comment management.
             Route::post('accounts/{account}/comments', [AccountCommentController::class, 'store'])->middleware('permission:create-accounts')->name('accounts.comments.store');
             Route::put('accounts/{account}/activities/{activity}/comment', [AccountCommentController::class, 'updateActivity'])->middleware('permission:edit-accounts')->name('accounts.comments.update-activity');
         });
 
-        // Contacts routes
+        // Contact management, status changes, and data export.
         Route::middleware('permission:manage-contacts')->group(function () {
             Route::get('contacts', [ContactController::class, 'index'])->middleware('permission:manage-contacts')->name('contacts.index');
             Route::get('contacts/{contact}', [ContactController::class, 'show'])->middleware('permission:view-contacts')->name('contacts.show');
@@ -481,11 +486,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('contacts/{contact}', [ContactController::class, 'destroy'])->middleware('permission:delete-contacts')->name('contacts.destroy');
             Route::put('contacts/{contact}/toggle-status', [ContactController::class, 'toggleStatus'])->middleware('permission:toggle-status-contacts')->name('contacts.toggle-status');
 
-            // Contact Export route
+            // Contact data export.
             Route::get('contacts/file/export/', [ContactController::class, 'fileExport'])->middleware('permission:export-contacts')->name('contact.export');
         });
 
-        // Lead Status routes
+        // Lead status configuration and status management.
         Route::middleware('permission:manage-lead-statuses')->group(function () {
             Route::get('lead-statuses', [LeadStatusController::class, 'index'])->middleware('permission:manage-lead-statuses')->name('lead-statuses.index');
             Route::post('lead-statuses', [LeadStatusController::class, 'store'])->middleware('permission:create-lead-statuses')->name('lead-statuses.store');
@@ -494,7 +499,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('lead-statuses/{leadStatus}/toggle-status', [LeadStatusController::class, 'toggleStatus'])->middleware('permission:toggle-status-lead-statuses')->name('lead-statuses.toggle-status');
         });
 
-        // Lead Source routes
+        // Lead source configuration and status management.
         Route::middleware('permission:manage-lead-sources')->group(function () {
             Route::get('lead-sources', [LeadSourceController::class, 'index'])->middleware('permission:manage-lead-sources')->name('lead-sources.index');
             Route::post('lead-sources', [LeadSourceController::class, 'store'])->middleware('permission:create-lead-sources')->name('lead-sources.store');
@@ -503,11 +508,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('lead-sources/{leadSource}/toggle-status', [LeadSourceController::class, 'toggleStatus'])->middleware('permission:toggle-status-lead-sources')->name('lead-sources.toggle-status');
         });
 
-        // Lead routes
+        // Lead management, lifecycle conversion, activity history, comments, and data import/export.
         Route::middleware('permission:manage-leads')->group(function () {
             Route::get('leads', [LeadController::class, 'index'])->middleware('permission:manage-leads')->name('leads.index');
-            Route::get('leads/Create', [LeadController::class, 'create'])->middleware('permission:create-leads')->name('leads.create');
-            Route::get('leads/{lead}/Edit', [LeadController::class, 'edit'])->middleware('permission:edit-leads')->name('leads.edit');
+            Route::get('leads/create', [LeadController::class, 'create'])->middleware('permission:create-leads')->name('leads.create');
+            Route::get('leads/{lead}/edit', [LeadController::class, 'edit'])->middleware('permission:edit-leads')->name('leads.edit');
             Route::get('leads/{lead}', [LeadController::class, 'show'])->middleware('permission:view-leads')->name('leads.show');
             Route::post('leads', [LeadController::class, 'store'])->middleware('permission:create-leads')->name('leads.store');
             Route::put('leads/{lead}', [LeadController::class, 'update'])->middleware('permission:edit-leads')->name('leads.update');
@@ -516,25 +521,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('leads/{lead}/convert-to-account', [LeadController::class, 'convertToAccount'])->middleware('permission:convert-leads')->name('leads.convert-to-account');
             Route::put('leads/{lead}/convert-to-contact', [LeadController::class, 'convertToContact'])->middleware('permission:convert-leads')->name('leads.convert-to-contact');
 
-            Route::post('leads/{lead}/update-field', [LeadController::class, 'updateField'])->middleware('permission:edit-leads')->name('leads.update-field');
             Route::put('leads/{lead}/update-status', [LeadController::class, 'updateStatus'])->middleware('permission:edit-leads')->name('leads.update-status');
             Route::delete('leads/{lead}/activities', [LeadController::class, 'deleteActivities'])->middleware('permission:delete-leads')->name('leads.delete-activities');
             Route::delete('leads/{lead}/activities/{activity}', [LeadController::class, 'deleteActivity'])->middleware('permission:delete-leads')->name('leads.delete-activity');
 
-            // Lead Import/Export routes
+            // Lead import, export, and template download operations.
             Route::get('leads/file/export/', [LeadController::class, 'fileExport'])->middleware('permission:export-leads')->name('lead.export');
             Route::post('leads/file/parse', [LeadController::class, 'parseFile'])->middleware('permission:import-leads')->name('lead.parse');
             Route::post('leads/file/import', [LeadController::class, 'fileImport'])->middleware('permission:import-leads')->name('lead.import');
             Route::get('leads/download/template', [LeadController::class, 'downloadTemplate'])->name('lead.download.template');
 
-            // Lead Comments routes
+            // Lead comment and activity comment management.
             Route::post('leads/{lead}/comments', [LeadCommentController::class, 'store'])->middleware('permission:create-leads')->name('leads.comments.store');
             Route::put('leads/{lead}/comments/{comment}', [LeadCommentController::class, 'update'])->middleware('permission:edit-leads')->name('leads.comments.update');
             Route::put('leads/{lead}/activities/{activity}/comment', [LeadCommentController::class, 'updateActivity'])->middleware('permission:edit-leads')->name('leads.comments.update-activity');
             Route::delete('leads/{lead}/comments/{comment}', [LeadCommentController::class, 'destroy'])->middleware('permission:delete-leads')->name('leads.comments.destroy');
         });
 
-        // Opportunity Stage routes
+        // Opportunity stage configuration and status management.
         Route::middleware('permission:manage-opportunity-stages')->group(function () {
             Route::get('opportunity-stages', [OpportunityStageController::class, 'index'])->middleware('permission:manage-opportunity-stages')->name('opportunity-stages.index');
             Route::post('opportunity-stages', [OpportunityStageController::class, 'store'])->middleware('permission:create-opportunity-stages')->name('opportunity-stages.store');
@@ -543,7 +547,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('opportunity-stages/{opportunityStage}/toggle-status', [OpportunityStageController::class, 'toggleStatus'])->middleware('permission:toggle-status-opportunity-stages')->name('opportunity-stages.toggle-status');
         });
 
-        // Opportunity Source routes
+        // Opportunity source configuration and status management.
         Route::middleware('permission:manage-opportunity-sources')->group(function () {
             Route::get('opportunity-sources', [OpportunitySourceController::class, 'index'])->middleware('permission:manage-opportunity-sources')->name('opportunity-sources.index');
             Route::post('opportunity-sources', [OpportunitySourceController::class, 'store'])->middleware('permission:create-opportunity-sources')->name('opportunity-sources.store');
@@ -552,11 +556,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('opportunity-sources/{opportunitySource}/toggle-status', [OpportunitySourceController::class, 'toggleStatus'])->middleware('permission:toggle-status-opportunity-sources')->name('opportunity-sources.toggle-status');
         });
 
-        // Opportunity routes
+        // Opportunity management, pipeline status changes, activity history, comments, and data export.
         Route::middleware('permission:manage-opportunities')->group(function () {
             Route::get('opportunities', [OpportunityController::class, 'index'])->middleware('permission:manage-opportunities')->name('opportunities.index');
-            Route::get('opportunities/Create', [OpportunityController::class, 'create'])->middleware('permission:create-opportunities')->name('opportunities.create');
-            Route::get('opportunities/{opportunity}/Edit', [OpportunityController::class, 'edit'])->middleware('permission:edit-opportunities')->name('opportunities.edit');
+            Route::get('opportunities/create', [OpportunityController::class, 'create'])->middleware('permission:create-opportunities')->name('opportunities.create');
+            Route::get('opportunities/{opportunity}/edit', [OpportunityController::class, 'edit'])->middleware('permission:edit-opportunities')->name('opportunities.edit');
             Route::get('opportunities/{opportunity}', [OpportunityController::class, 'show'])->middleware('permission:view-opportunities')->name('opportunities.show');
             Route::post('opportunities', [OpportunityController::class, 'store'])->middleware('permission:create-opportunities')->name('opportunities.store');
             Route::put('opportunities/{opportunity}', [OpportunityController::class, 'update'])->middleware('permission:edit-opportunities')->name('opportunities.update');
@@ -566,15 +570,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('opportunities/{opportunity}/activities', [OpportunityController::class, 'deleteActivities'])->middleware('permission:delete-opportunities')->name('opportunities.delete-activities');
             Route::delete('opportunities/{opportunity}/activities/{activity}', [OpportunityController::class, 'deleteActivity'])->middleware('permission:delete-opportunities')->name('opportunities.delete-activity');
 
-            // Opportunity Export route
+            // Opportunity data export.
             Route::get('opportunities/file/export/', [OpportunityController::class, 'fileExport'])->middleware('permission:export-opportunities')->name('opportunity.export');
 
-            // Opportunity Comments routes
+            // Opportunity comments and activity comment management.
             Route::post('opportunities/{opportunity}/comments', [OpportunityCommentController::class, 'store'])->middleware('permission:create-opportunities')->name('opportunities.comments.store');
             Route::put('opportunities/{opportunity}/activities/{activity}/comment', [OpportunityCommentController::class, 'updateActivity'])->middleware('permission:edit-opportunities')->name('opportunities.comments.update-activity');
         });
 
-        // Campaign Type routes
+        // Campaign type configuration and status management.
         Route::middleware('permission:manage-campaign-types')->group(function () {
             Route::get('campaign-types', [CampaignTypeController::class, 'index'])->middleware('permission:manage-campaign-types')->name('campaign-types.index');
             Route::post('campaign-types', [CampaignTypeController::class, 'store'])->middleware('permission:create-campaign-types')->name('campaign-types.store');
@@ -583,7 +587,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('campaign-types/{campaignType}/toggle-status', [CampaignTypeController::class, 'toggleStatus'])->middleware('permission:toggle-status-campaign-types')->name('campaign-types.toggle-status');
         });
 
-        // Target List routes
+        // Target list management and status changes.
         Route::middleware('permission:manage-target-lists')->group(function () {
             Route::get('target-lists', [TargetListController::class, 'index'])->middleware('permission:manage-target-lists')->name('target-lists.index');
             Route::post('target-lists', [TargetListController::class, 'store'])->middleware('permission:create-target-lists')->name('target-lists.store');
@@ -592,11 +596,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('target-lists/{targetList}/toggle-status', [TargetListController::class, 'toggleStatus'])->middleware('permission:toggle-status-target-lists')->name('target-lists.toggle-status');
         });
 
-        // Campaign routes
+        // Campaign management, status changes, and campaign record access.
         Route::middleware('permission:manage-campaigns')->group(function () {
             Route::get('campaigns', [CampaignController::class, 'index'])->middleware('permission:manage-campaigns')->name('campaigns.index');
-            Route::get('campaigns/Create', [CampaignController::class, 'create'])->middleware('permission:create-campaigns')->name('campaigns.create');
-            Route::get('campaigns/{campaign}/Edit', [CampaignController::class, 'edit'])->middleware('permission:edit-campaigns')->name('campaigns.edit');
+            Route::get('campaigns/create', [CampaignController::class, 'create'])->middleware('permission:create-campaigns')->name('campaigns.create');
+            Route::get('campaigns/{campaign}/edit', [CampaignController::class, 'edit'])->middleware('permission:edit-campaigns')->name('campaigns.edit');
             Route::post('campaigns', [CampaignController::class, 'store'])->middleware('permission:create-campaigns')->name('campaigns.store');
             Route::put('campaigns/{campaign}', [CampaignController::class, 'update'])->middleware('permission:edit-campaigns')->name('campaigns.update');
             Route::delete('campaigns/{campaign}', [CampaignController::class, 'destroy'])->middleware('permission:delete-campaigns')->name('campaigns.destroy');
@@ -604,7 +608,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('campaigns/{campaign}/toggle-status', [CampaignController::class, 'toggleStatus'])->middleware('permission:toggle-status-campaigns')->name('campaigns.toggle-status');
         });
 
-        // Shipping Provider Type routes
+        // Shipping provider type configuration and status management.
         Route::middleware('permission:manage-shipping-provider-types')->group(function () {
             Route::get('shipping-provider-types', [ShippingProviderTypeController::class, 'index'])->middleware('permission:manage-shipping-provider-types')->name('shipping-provider-types.index');
             Route::get('shipping-provider-types/{id}', [ShippingProviderTypeController::class, 'show'])->middleware('permission:view-shipping-provider-types')->name('shipping-provider-types.show');
@@ -614,26 +618,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('shipping-provider-types/{shippingProviderType}/toggle-status', [ShippingProviderTypeController::class, 'toggleStatus'])->middleware('permission:toggle-status-shipping-provider-types')->name('shipping-provider-types.toggle-status');
         });
 
-        // Cases routes
+        // Case management, status changes, and data export.
         Route::middleware('permission:manage-cases')->group(function () {
             Route::get('cases', [CaseController::class, 'index'])->middleware('permission:manage-cases')->name('cases.index');
-            Route::get('cases/Create', [CaseController::class, 'create'])->middleware('permission:create-cases')->name('cases.create');
+            Route::get('cases/create', [CaseController::class, 'create'])->middleware('permission:create-cases')->name('cases.create');
             Route::get('cases/{case}', [CaseController::class, 'show'])->middleware('permission:view-cases')->name('cases.show');
-            Route::get('cases/{case}/Edit', [CaseController::class, 'edit'])->middleware('permission:edit-cases')->name('cases.edit');
+            Route::get('cases/{case}/edit', [CaseController::class, 'edit'])->middleware('permission:edit-cases')->name('cases.edit');
             Route::post('cases', [CaseController::class, 'store'])->middleware('permission:create-cases')->name('cases.store');
             Route::put('cases/{case}', [CaseController::class, 'update'])->middleware('permission:edit-cases')->name('cases.update');
             Route::delete('cases/{case}', [CaseController::class, 'destroy'])->middleware('permission:delete-cases')->name('cases.destroy');
             Route::put('cases/{case}/toggle-status', [CaseController::class, 'toggleStatus'])->middleware('permission:toggle-status-cases')->name('cases.toggle-status');
 
-            // Case Export route
+            // Case data export.
             Route::get('cases/file/export/', [CaseController::class, 'fileExport'])->middleware('permission:export-cases')->name('case.export');
         });
 
-        // Quote routes
+        // Quote management, opportunity association, user assignment, activity history, comments, and data export.
         Route::middleware('permission:manage-quotes')->group(function () {
             Route::get('quotes', [QuoteController::class, 'index'])->middleware('permission:manage-quotes')->name('quotes.index');
-            Route::get('quotes/Create', [QuoteController::class, 'create'])->middleware('permission:create-quotes')->name('quotes.create');
-            Route::get('quotes/{quote}/Edit', [QuoteController::class, 'edit'])->middleware('permission:edit-quotes')->name('quotes.edit');
+            Route::get('quotes/create', [QuoteController::class, 'create'])->middleware('permission:create-quotes')->name('quotes.create');
+            Route::get('quotes/{quote}/edit', [QuoteController::class, 'edit'])->middleware('permission:edit-quotes')->name('quotes.edit');
             Route::get('quotes/{quote}', [QuoteController::class, 'show'])->middleware('permission:view-quotes')->name('quotes.show');
             Route::post('quotes', [QuoteController::class, 'store'])->middleware('permission:create-quotes')->name('quotes.store');
             Route::put('quotes/{quote}', [QuoteController::class, 'update'])->middleware('permission:edit-quotes')->name('quotes.update');
@@ -642,24 +646,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('quotes/{quote}/assign-user', [QuoteController::class, 'assignUser'])->middleware('permission:edit-quotes')->name('quotes.assign-user');
             Route::put('quotes/{quote}/add-opportunity', [QuoteController::class, 'addOpportunity'])->middleware('permission:edit-quotes')->name('quotes.add-opportunity');
 
-            // Quote Export route
+            // Quote data export.
             Route::get('quotes/file/export/', [QuoteController::class, 'fileExport'])->middleware('permission:export-quotes')->name('quote.export');
 
-            // Quote Comments routes
+            // Quote comments and activity comment management.
             Route::post('quotes/{quote}/comments', [QuoteCommentController::class, 'store'])->middleware('permission:create-quotes')->name('quotes.comments.store');
             Route::put('quotes/{quote}/activities/{activity}/comment', [QuoteCommentController::class, 'updateActivity'])->middleware('permission:edit-quotes')->name('quotes.comments.update-activity');
 
-            // Quote Activity delete routes
+            // Quote activity history cleanup.
             Route::delete('quotes/{quote}/activities', [QuoteController::class, 'deleteActivities'])->middleware('permission:delete-quotes')->name('quotes.delete-activities');
             Route::delete('quotes/{quote}/activities/{activity}', [QuoteController::class, 'deleteActivity'])->middleware('permission:delete-quotes')->name('quotes.delete-activity');
             Route::get('api/opportunities/{opportunity}/details', [QuoteController::class, 'getOpportunityDetails'])->name('api.opportunities.details');
         });
 
-        // Sales Order routes
+        // Sales order management, user assignment, activity history, comments, and data export.
         Route::middleware('permission:manage-sales-orders')->group(function () {
             Route::get('sales-orders', [SalesOrderController::class, 'index'])->middleware('permission:manage-sales-orders')->name('sales-orders.index');
-            Route::get('sales-orders/Create', [SalesOrderController::class, 'create'])->middleware('permission:create-sales-orders')->name('sales-orders.create');
-            Route::get('sales-orders/{salesOrder}/Edit', [SalesOrderController::class, 'edit'])->middleware('permission:edit-sales-orders')->name('sales-orders.edit');
+            Route::get('sales-orders/create', [SalesOrderController::class, 'create'])->middleware('permission:create-sales-orders')->name('sales-orders.create');
+            Route::get('sales-orders/{salesOrder}/edit', [SalesOrderController::class, 'edit'])->middleware('permission:edit-sales-orders')->name('sales-orders.edit');
             Route::get('sales-orders/{salesOrder}', [SalesOrderController::class, 'show'])->middleware('permission:view-sales-orders')->name('sales-orders.show');
             Route::post('sales-orders', [SalesOrderController::class, 'store'])->middleware('permission:create-sales-orders')->name('sales-orders.store');
             Route::put('sales-orders/{salesOrder}', [SalesOrderController::class, 'update'])->middleware('permission:edit-sales-orders')->name('sales-orders.update');
@@ -668,14 +672,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::put('sales-orders/{salesOrder}/assign-user', [SalesOrderController::class, 'assignUser'])->middleware('permission:edit-sales-orders')->name('sales-orders.assign-user');
 
-            // Sales Order Export route
+            // Sales order data export.
             Route::get('sales-orders/file/export/', [SalesOrderController::class, 'fileExport'])->middleware('permission:export-sales-orders')->name('sales-order.export');
 
-            // Sales Order Comments routes
+            // Sales order comments and activity comment management.
             Route::post('sales-orders/{salesOrder}/comments', [SalesOrderCommentController::class, 'store'])->middleware('permission:create-sales-orders')->name('sales-orders.comments.store');
             Route::put('sales-orders/{salesOrder}/activities/{activity}/comment', [SalesOrderCommentController::class, 'updateActivity'])->middleware('permission:edit-sales-orders')->name('sales-orders.comments.update-activity');
 
-            // Sales Order Activity delete routes
+            // Sales order activity history cleanup.
             Route::delete('sales-orders/{salesOrder}/activities', [SalesOrderController::class, 'deleteActivities'])->middleware('permission:delete-sales-orders')->name('sales-orders.delete-activities');
             Route::delete('sales-orders/{salesOrder}/activities/{activity}', [SalesOrderController::class, 'deleteActivity'])->middleware('permission:delete-sales-orders')->name('sales-orders.delete-activity');
         });
@@ -692,11 +696,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('api/receipt-orders/purchase-orders/{purchaseOrder}/details', [ReceiptOrderController::class, 'getPurchaseOrderDetails'])->name('api.receipt-orders.purchase-orders.details');
         Route::get('api/receipt-orders/return-orders/{returnOrder}/details', [ReceiptOrderController::class, 'getReturnOrderDetails'])->name('api.receipt-orders.return-orders.details');
 
-        // Invoice routes
+        // Invoice management, reminders, user assignment, activity history, comments, and data export.
         Route::middleware('permission:manage-invoices')->group(function () {
             Route::get('invoices', [InvoiceController::class, 'index'])->middleware('permission:manage-invoices')->name('invoices.index');
-            Route::get('invoices/Create', [InvoiceController::class, 'create'])->middleware('permission:create-invoices')->name('invoices.create');
-            Route::get('invoices/{invoice}/Edit', [InvoiceController::class, 'edit'])->middleware('permission:edit-invoices')->name('invoices.edit');
+            Route::get('invoices/create', [InvoiceController::class, 'create'])->middleware('permission:create-invoices')->name('invoices.create');
+            Route::get('invoices/{invoice}/edit', [InvoiceController::class, 'edit'])->middleware('permission:edit-invoices')->name('invoices.edit');
             Route::get('invoices/{invoice}', [InvoiceController::class, 'show'])->middleware('permission:view-invoices')->name('invoices.show');
             Route::post('invoices', [InvoiceController::class, 'store'])->middleware('permission:create-invoices')->name('invoices.store');
             Route::put('invoices/{invoice}', [InvoiceController::class, 'update'])->middleware('permission:edit-invoices')->name('invoices.update');
@@ -707,23 +711,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::put('invoices/{invoice}/assign-user', [InvoiceController::class, 'assignUser'])->middleware('permission:edit-invoices')->name('invoices.assign-user');
 
-            // Invoice Export route
+            // Invoice data export.
             Route::get('invoices/file/export/', [InvoiceController::class, 'fileExport'])->middleware('permission:export-invoices')->name('invoice.export');
 
-            // Invoice Comments routes
+            // Invoice comments and activity comment management.
             Route::post('invoices/{invoice}/comments', [InvoiceCommentController::class, 'store'])->middleware('permission:create-invoices')->name('invoices.comments.store');
             Route::put('invoices/{invoice}/activities/{activity}/comment', [InvoiceCommentController::class, 'updateActivity'])->middleware('permission:edit-invoices')->name('invoices.comments.update-activity');
 
-            // Invoice Activity delete routes
+            // Invoice activity history cleanup.
             Route::delete('invoices/{invoice}/activities', [InvoiceController::class, 'deleteActivities'])->middleware('permission:delete-invoices')->name('invoices.delete-activities');
             Route::delete('invoices/{invoice}/activities/{activity}', [InvoiceController::class, 'deleteActivity'])->middleware('permission:delete-invoices')->name('invoices.delete-activity');
         });
 
-        // Delivery Order routes
+        // Delivery order management, user assignment, status changes, and data export.
         Route::middleware('permission:manage-delivery-orders')->group(function () {
             Route::get('delivery-orders', [DeliveryOrderController::class, 'index'])->middleware('permission:manage-delivery-orders')->name('delivery-orders.index');
-            Route::get('delivery-orders/Create', [DeliveryOrderController::class, 'create'])->middleware('permission:create-delivery-orders')->name('delivery-orders.create');
-            Route::get('delivery-orders/{deliveryOrder}/Edit', [DeliveryOrderController::class, 'edit'])->middleware('permission:edit-delivery-orders')->name('delivery-orders.edit');
+            Route::get('delivery-orders/create', [DeliveryOrderController::class, 'create'])->middleware('permission:create-delivery-orders')->name('delivery-orders.create');
+            Route::get('delivery-orders/{deliveryOrder}/edit', [DeliveryOrderController::class, 'edit'])->middleware('permission:edit-delivery-orders')->name('delivery-orders.edit');
             Route::get('delivery-orders/{deliveryOrder}', [DeliveryOrderController::class, 'show'])->middleware('permission:view-delivery-orders')->name('delivery-orders.show');
             Route::post('delivery-orders', [DeliveryOrderController::class, 'store'])->middleware('permission:create-delivery-orders')->name('delivery-orders.store');
             Route::put('delivery-orders/{deliveryOrder}', [DeliveryOrderController::class, 'update'])->middleware('permission:edit-delivery-orders')->name('delivery-orders.update');
@@ -732,29 +736,29 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::put('delivery-orders/{deliveryOrder}/assign-user', [DeliveryOrderController::class, 'assignUser'])->middleware('permission:edit-delivery-orders')->name('delivery-orders.assign-user');
 
-            // Delivery Order Export route
+            // Delivery order data export.
             Route::get('delivery-orders/file/export/', [DeliveryOrderController::class, 'fileExport'])->middleware('permission:export-delivery-orders')->name('delivery-order.export');
         });
 
-        // Return Order routes
+        // Return order management, status changes, and data export.
         Route::middleware('permission:manage-return-orders')->group(function () {
             Route::get('return-orders', [ReturnOrderController::class, 'index'])->middleware('permission:manage-return-orders')->name('return-orders.index');
-            Route::get('return-orders/Create', [ReturnOrderController::class, 'create'])->middleware('permission:create-return-orders')->name('return-orders.create');
-            Route::get('return-orders/{returnOrder}/Edit', [ReturnOrderController::class, 'edit'])->middleware('permission:edit-return-orders')->name('return-orders.edit');
+            Route::get('return-orders/create', [ReturnOrderController::class, 'create'])->middleware('permission:create-return-orders')->name('return-orders.create');
+            Route::get('return-orders/{returnOrder}/edit', [ReturnOrderController::class, 'edit'])->middleware('permission:edit-return-orders')->name('return-orders.edit');
             Route::get('return-orders/{returnOrder}', [ReturnOrderController::class, 'show'])->middleware('permission:view-return-orders')->name('return-orders.show');
             Route::post('return-orders', [ReturnOrderController::class, 'store'])->middleware('permission:create-return-orders')->name('return-orders.store');
             Route::put('return-orders/{returnOrder}', [ReturnOrderController::class, 'update'])->middleware('permission:edit-return-orders')->name('return-orders.update');
             Route::delete('return-orders/{returnOrder}', [ReturnOrderController::class, 'destroy'])->middleware('permission:delete-return-orders')->name('return-orders.destroy');
 
-            // Return Order Export route
+            // Return order data export.
             Route::get('return-orders/file/export/', [ReturnOrderController::class, 'fileExport'])->middleware('permission:export-return-orders')->name('return-order.export');
         });
 
-        // Purchase Order routes
+        // Purchase order management, sales order association, user assignment, activity history, comments, and data export.
         Route::middleware('permission:manage-purchase-orders')->group(function () {
             Route::get('purchase-orders', [PurchaseOrderController::class, 'index'])->middleware('permission:manage-purchase-orders')->name('purchase-orders.index');
-            Route::get('purchase-orders/Create', [PurchaseOrderController::class, 'create'])->middleware('permission:create-purchase-orders')->name('purchase-orders.create');
-            Route::get('purchase-orders/{purchaseOrder}/Edit', [PurchaseOrderController::class, 'edit'])->middleware('permission:edit-purchase-orders')->name('purchase-orders.edit');
+            Route::get('purchase-orders/create', [PurchaseOrderController::class, 'create'])->middleware('permission:create-purchase-orders')->name('purchase-orders.create');
+            Route::get('purchase-orders/{purchaseOrder}/edit', [PurchaseOrderController::class, 'edit'])->middleware('permission:edit-purchase-orders')->name('purchase-orders.edit');
             Route::get('purchase-orders/{purchaseOrder}', [PurchaseOrderController::class, 'show'])->middleware('permission:view-purchase-orders')->name('purchase-orders.show');
             Route::post('purchase-orders', [PurchaseOrderController::class, 'store'])->middleware('permission:create-purchase-orders')->name('purchase-orders.store');
             Route::put('purchase-orders/{purchaseOrder}', [PurchaseOrderController::class, 'update'])->middleware('permission:edit-purchase-orders')->name('purchase-orders.update');
@@ -767,15 +771,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('purchase-orders/{purchaseOrder}/activities', [PurchaseOrderController::class, 'deleteActivities'])->middleware('permission:delete-purchase-orders')->name('purchase-orders.delete-activities');
             Route::delete('purchase-orders/{purchaseOrder}/activities/{activity}', [PurchaseOrderController::class, 'deleteActivity'])->middleware('permission:delete-purchase-orders')->name('purchase-orders.delete-activity');
 
-            // Purchase Order Export route
+            // Purchase order data export.
             Route::get('purchase-orders/file/export/', [PurchaseOrderController::class, 'fileExport'])->middleware('permission:export-purchase-orders')->name('purchase-order.export');
         });
 
-        // Receipt Order routes
+        // Receipt order management, user assignment, status changes, and data export.
         Route::middleware('permission:manage-receipt-orders')->group(function () {
             Route::get('receipt-orders', [ReceiptOrderController::class, 'index'])->middleware('permission:manage-receipt-orders')->name('receipt-orders.index');
-            Route::get('receipt-orders/Create', [ReceiptOrderController::class, 'create'])->middleware('permission:create-receipt-orders')->name('receipt-orders.create');
-            Route::get('receipt-orders/{receiptOrder}/Edit', [ReceiptOrderController::class, 'edit'])->middleware('permission:edit-receipt-orders')->name('receipt-orders.edit');
+            Route::get('receipt-orders/create', [ReceiptOrderController::class, 'create'])->middleware('permission:create-receipt-orders')->name('receipt-orders.create');
+            Route::get('receipt-orders/{receiptOrder}/edit', [ReceiptOrderController::class, 'edit'])->middleware('permission:edit-receipt-orders')->name('receipt-orders.edit');
             Route::get('receipt-orders/{receiptOrder}', [ReceiptOrderController::class, 'show'])->middleware('permission:view-receipt-orders')->name('receipt-orders.show');
             Route::post('receipt-orders', [ReceiptOrderController::class, 'store'])->middleware('permission:create-receipt-orders')->name('receipt-orders.store');
             Route::put('receipt-orders/{receiptOrder}', [ReceiptOrderController::class, 'update'])->middleware('permission:edit-receipt-orders')->name('receipt-orders.update');
@@ -784,11 +788,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::put('receipt-orders/{receiptOrder}/assign-user', [ReceiptOrderController::class, 'assignUser'])->middleware('permission:edit-receipt-orders')->name('receipt-orders.assign-user');
 
-            // Receipt Order Export route
+            // Receipt order data export.
             Route::get('receipt-orders/file/export/', [ReceiptOrderController::class, 'fileExport'])->middleware('permission:export-receipt-orders')->name('receipt-order.export');
         });
 
-        // Project routes
+        // Project management, status changes, and data export.
         Route::middleware('permission:manage-projects')->group(function () {
             Route::get('projects', [ProjectController::class, 'index'])->middleware('permission:manage-projects')->name('projects.index');
             Route::get('projects/{project}', [ProjectController::class, 'show'])->middleware('permission:view-projects')->name('projects.show');
@@ -797,11 +801,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('projects/{project}', [ProjectController::class, 'destroy'])->middleware('permission:delete-projects')->name('projects.destroy');
             Route::put('projects/{project}/toggle-status', [ProjectController::class, 'toggleStatus'])->middleware('permission:toggle-status-projects')->name('projects.toggle-status');
 
-            // Project Export route
+            // Project data export.
             Route::get('projects/file/export/', [ProjectController::class, 'fileExport'])->middleware('permission:export-projects')->name('project.export');
         });
 
-        // Project Task routes
+        // Project task management, status changes, project views, task relationships, and data export.
         Route::middleware('permission:manage-project-tasks')->group(function () {
             Route::get('project-tasks', [ProjectTaskController::class, 'index'])->middleware('permission:manage-project-tasks')->name('project-tasks.index');
             Route::get('project-tasks/{task}', [ProjectTaskController::class, 'show'])->middleware('permission:view-project-tasks')->name('project-tasks.show');
@@ -815,11 +819,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('api/project-tasks/parent-tasks/{projectId}', [ProjectTaskController::class, 'getParentTasks'])->name('api.project-tasks.parent-tasks');
             Route::get('api/projects/{projectId}/details', [ProjectTaskController::class, 'getProjectDetails'])->name('api.projects.details');
 
-            // Project Task Export route
+            // Project task data export.
             Route::get('project-tasks/file/export/', [ProjectTaskController::class, 'fileExport'])->middleware('permission:export-project-tasks')->name('project-task.export');
         });
 
-        // Task Status routes
+        // Project task status configuration and status management.
         Route::middleware('permission:manage-task-statuses')->group(function () {
             Route::get('task-statuses', [TaskStatusController::class, 'index'])->middleware('permission:manage-task-statuses')->name('task-statuses.index');
             Route::post('task-statuses', [TaskStatusController::class, 'store'])->middleware('permission:create-task-statuses')->name('task-statuses.store');
@@ -828,7 +832,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('task-statuses/{taskStatus}/toggle-status', [TaskStatusController::class, 'toggleStatus'])->middleware('permission:toggle-status-task-statuses')->name('task-statuses.toggle-status');
         });
 
-        // Meeting routes
+        // Meeting management and supporting endpoints for parent records and attendee selection.
         Route::middleware('permission:manage-meetings')->group(function () {
             Route::get('meetings', [MeetingController::class, 'index'])->middleware('permission:manage-meetings')->name('meetings.index');
             Route::get('meetings/{meeting}', [MeetingController::class, 'show'])->middleware('permission:view-meetings')->name('meetings.show');
@@ -840,7 +844,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('api/attendee-types/{type}', [MeetingController::class, 'getAttendeeRecords'])->name('api.attendee-types.records');
         });
 
-        // Call routes
+        // Call management and supporting endpoints for parent records and attendee selection.
         Route::middleware('permission:manage-calls')->group(function () {
             Route::get('calls', [CallController::class, 'index'])->middleware('permission:manage-calls')->name('calls.index');
             Route::get('calls/{call}', [CallController::class, 'show'])->middleware('permission:view-calls')->name('calls.show');
@@ -852,55 +856,55 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('api/calls/attendee-types/{type}', [CallController::class, 'getAttendeeRecords'])->name('api.calls.attendee-types.records');
         });
 
-        // Calendar route
+        // Calendar access for scheduled intermediary/underwriter activities.
         Route::get('calendar', [CalendarController::class, 'index'])->name('calendar.index');
 
-        // Google Calendar API routes
+        // Google Calendar synchronization and connection status endpoints.
         Route::get('api/google-calendar/events', [GoogleCalendarController::class, 'getEvents'])->name('google-calendar.events');
         Route::post('api/google-calendar/sync', [GoogleCalendarController::class, 'syncEvents'])->name('google-calendar.sync');
         Route::get('api/google-calendar/status', [GoogleCalendarController::class, 'checkStatus'])->name('google-calendar.status');
 
-        // Document Folder management
+        // Document folder management and status controls.
         Route::middleware('permission:manage-document-folders')->group(function () {
             Route::get('document-folders', [DocumentFolderController::class, 'index'])->middleware('permission:manage-document-folders')->name('document-folders.index');
             Route::get('document-folders/{documentFolder}', [DocumentFolderController::class, 'show'])->middleware('permission:view-document-folders')->name('document-folders.show');
             Route::put('document-folders/{documentFolder}/toggle-status', [DocumentFolderController::class, 'toggleStatus'])->middleware('permission:toggle-status-document-folders')->name('document-folders.toggle-status');
         });
 
-        // Streams management
+        // Activity stream access and cleanup across CRM records.
         Route::middleware('permission:manage-stream')->group(function () {
             Route::get('stream', [StreamController::class, 'index'])->middleware('permission:manage-stream')->name('stream.index');
 
-            // Account Activities
+            // Account activity stream access and cleanup.
             Route::get('stream/account-activities', [StreamController::class, 'accountActivities'])->middleware('permission:view-stream')->name('stream.account-activities');
             Route::delete('stream/account-activities/{id}', [StreamController::class, 'deleteAccountActivity'])->middleware('permission:delete-stream')->name('stream.delete-account-activities');
 
-            // Invoice Activities
+            // Invoice activity stream access and cleanup.
             Route::get('stream/invoice-activities', [StreamController::class, 'invoiceActivities'])->middleware('permission:view-stream')->name('stream.invoice-activities');
             Route::delete('stream/invoice-activities/{id}', [StreamController::class, 'deleteInvoiceActivity'])->middleware('permission:delete-stream')->name('stream.delete-invoice-activities');
 
-            // Lead Activities
+            // Lead activity stream access and cleanup.
             Route::get('stream/lead-activities', [StreamController::class, 'leadActivities'])->middleware('permission:view-stream')->name('stream.lead-activities');
             Route::delete('stream/lead-activities/{id}', [StreamController::class, 'deleteLeadActivity'])->middleware('permission:delete-stream')->name('stream.delete-lead-activities');
 
-            // Opportunity Activities
+            // Opportunity activity stream access and cleanup.
             Route::get('stream/opportunity-activities', [StreamController::class, 'opportunityActivities'])->middleware('permission:view-stream')->name('stream.opportunity-activities');
             Route::delete('stream/opportunity-activities/{id}', [StreamController::class, 'deleteOpportunityActivity'])->middleware('permission:delete-stream')->name('stream.delete-opportunity-activities');
 
-            // Purchase Order Activities
+            // Purchase order activity stream access and cleanup.
             Route::get('stream/purchase-order-activities', [StreamController::class, 'purchaseOrderActivities'])->middleware('permission:view-stream')->name('stream.purchase-order-activities');
             Route::delete('stream/purchase-order-activities/{id}', [StreamController::class, 'deletePurchaseOrderActivity'])->middleware('permission:delete-stream')->name('stream.delete-purchase-order-activities');
 
-            // Quote Activities
+            // Quote activity stream access and cleanup.
             Route::get('stream/quote-activities', [StreamController::class, 'quoteActivities'])->middleware('permission:view-stream')->name('stream.quote-activities');
             Route::delete('stream/quote-activities/{id}', [StreamController::class, 'deleteQuoteActivity'])->middleware('permission:delete-stream')->name('stream.delete-quote-activities');
 
-            // Sales Order Activities
+            // Sales order activity stream access and cleanup.
             Route::get('stream/sales-order-activities', [StreamController::class, 'salesOrderActivities'])->middleware('permission:view-stream')->name('stream.sales-order-activities');
             Route::delete('stream/sales-order-activities/{id}', [StreamController::class, 'deleteSalesOrderActivity'])->middleware('permission:delete-stream')->name('stream.delete-sales-order-activities');
         });
 
-        // Notes routes
+        // Shared note management.
         Route::middleware('permission:manage-notes')->group(function () {
             Route::get('notes', [NoteController::class, 'index'])->middleware('permission:manage-notes')->name('notes.index');
             Route::post('notes', [NoteController::class, 'store'])->middleware('permission:create-notes')->name('notes.store');
@@ -908,7 +912,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('notes/{note}', [NoteController::class, 'destroy'])->middleware('permission:delete-notes')->name('notes.destroy');
         });
 
-        // Announcement Categories routes
+        // Announcement category configuration and status management.
         Route::middleware('permission:manage-announcement-categories')->group(function () {
             Route::get('announcement-categories', [AnnouncementCategoryController::class, 'index'])->middleware('permission:manage-announcement-categories')->name('announcement-categories.index');
             Route::post('announcement-categories', [AnnouncementCategoryController::class, 'store'])->middleware('permission:create-announcement-categories')->name('announcement-categories.store');
@@ -917,7 +921,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('announcement-categories/{category}/toggle-status', [AnnouncementCategoryController::class, 'toggleStatus'])->middleware('permission:toggle-status-announcement-categories')->name('announcement-categories.toggle-status');
         });
 
-        // Announcements routes
+        // Announcement publishing, maintenance, status management, and dashboard access.
         Route::middleware('permission:manage-announcements')->group(function () {
             Route::get('announcements/dashboard', [AnnouncementController::class, 'dashboard'])->middleware('permission:manage-announcements')->name('announcements.dashboard');
             Route::get('announcements', [AnnouncementController::class, 'index'])->middleware('permission:manage-announcements')->name('announcements.index');
@@ -928,7 +932,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('announcements/{announcement}/toggle-status', [AnnouncementController::class, 'toggleStatus'])->middleware('permission:toggle-status-announcements')->name('announcements.toggle-status');
         });
 
-        // Document Type management
+        // Document type configuration and status management.
         Route::middleware('permission:manage-document-types')->group(function () {
             Route::get('document-types', [DocumentTypeController::class, 'index'])->middleware('permission:manage-document-types')->name('document-types.index');
             Route::get('document-types/{documentType}', [DocumentTypeController::class, 'show'])->middleware('permission:view-document-types')->name('document-types.show');
@@ -938,7 +942,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('document-types/{documentType}/toggle-status', [DocumentTypeController::class, 'toggleStatus'])->middleware('permission:toggle-status-document-types')->name('document-types.toggle-status');
         });
 
-        // Document management
+        // Document and folder management, downloads, and status controls.
         Route::middleware('permission:manage-documents')->group(function () {
             Route::get('documents', [DocumentController::class, 'index'])->middleware('permission:manage-documents')->name('documents.index');
             Route::get('documents/{document}', [DocumentController::class, 'show'])->middleware('permission:view-documents')->name('documents.show');
@@ -953,69 +957,57 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('documents/folder/{folder}', [DocumentFolderController::class, 'show'])->middleware('permission:view-documents')->name('documents.folder');
         });
 
-        // ChatGPT routes
-        Route::post('api/chat-gpt/generate', [ChatGptController::class, 'generate'])->name('chat-gpt.generate');
+        // Internal intelligence generation endpoint.
+        Route::post('api/kakbima-intelligence/generate', [KakbimaIntelligenceController::class, 'generate'])->name('kakbima-intelligence.generate');
 
-        // Sign in History routes
+        // Sign-in history access and retention management.
         Route::middleware('permission:manage-sign-in-history')->group(function () {
             Route::get('sign-in-history', [SignInHistoryController::class, 'index'])->middleware('permission:show-sign-in-history')->name('sign-in-history.index');
-            Route::delete('sign-in-history/{loginDetail}', [SignInHistoryController::class, 'destroy'])->middleware('permission:delete-sign-in-history')->name('sign-in-history.destroy');
+            Route::delete('sign-in-history/{signInDetails}', [SignInHistoryController::class, 'destroy'])->middleware('permission:delete-sign-in-history')->name('sign-in-history.destroy');
         });
 
-        // Super Administrator only
-        Route::middleware('App\Http\Middleware\SuperAdminMiddleware')->group(function () {
-            // Impersonation routes
-            Route::get('impersonate/{userId}', [ImpersonateController::class, 'start'])->name('impersonate.start');
-        });
-
-        Route::middleware(['role:super_admin'])->group(function () {
-            // Email Templates routes (no middleware for testing)
-            Route::get('email-templates', [EmailTemplateController::class, 'index'])->name('email-templates.index');
-            Route::get('email-templates/{emailTemplate}', [EmailTemplateController::class, 'show'])->name('email-templates.show');
-            Route::put('email-templates/{emailTemplate}/settings', [EmailTemplateController::class, 'updateSettings'])->name('email-templates.update-settings');
-            Route::put('email-templates/{emailTemplate}/content', [EmailTemplateController::class, 'updateContent'])->name('email-templates.update-content');
+        // Super-admin impersonation controls and session entry.
+        Route::middleware(['ensure_super_admin'])->group(function () {
+            Route::get('on-behalf-of/{userId}', [ImpersonateController::class, 'start'])->name('on-behalf-of.start');
         });
     }); // End check.subscription middleware group
-    Route::post('impersonate/leave', [ImpersonateController::class, 'leave'])->name('impersonate.leave');
+    Route::post('on-behalf-of/leave', [ImpersonateController::class, 'leave'])->name('on-behalf-of.leave');
 });
-
-require __DIR__ . '/settings.php';
-require __DIR__ . '/auth.php';
 
 //Route::match(['GET', 'POST'], 'subscriptions/payments/easebuzz/success', [EasebuzzPaymentController::class, 'success'])->name('easebuzz.success');
 //Route::post('subscriptions/payments/easebuzz/callback', [EasebuzzPaymentController::class, 'callback'])->name('easebuzz.callback');
 
-// Public invoice routes (outside authentication)
+// Public invoice access and customer-facing payment page endpoints.
 Route::get('invoices/public/{invoice}', [InvoiceController::class, 'publicView'])->name('invoices.public');
 Route::get('invoice-payment/{method}', [InvoiceController::class, 'showPaymentPage'])->name('invoice.payment.page');
 
-// Public quote routes (outside authentication)
+// Public quote and sales order access for customer-facing workflows.
 Route::get('quotes/public/{quote}', [QuoteController::class, 'publicView'])->name('quotes.public');
 Route::get('sales-orders/public/{salesOrder}', [SalesOrderController::class, 'publicView'])->name('sales-orders.public');
 
-//Route::post('invoices/payment/stripe', [InvoiceStripePaymentController::class, 'processPayment'])->name('invoice.stripe.payment');
+//Route::post('invoices/payment/stripe', [InvoiceStripePaymentController::class, 'processPayment'])->name('invoice.subscriptions.stripe.payment');
 //Route::post('invoices/payment/stripe/confirm', [InvoiceStripePaymentController::class, 'confirmPayment'])->name('invoice.stripe.confirm');
-//Route::post('invoices/payment/paypal', [InvoicePayPalPaymentController::class, 'processPayment'])->name('invoice.paypal.payment');
+//Route::post('invoices/payment/paypal', [InvoicePayPalPaymentController::class, 'processPayment'])->name('invoice.subscriptions.paypal.payment');
 //Route::post('invoices/payment/razorpay/create-order', [InvoiceRazorpayPaymentController::class, 'createOrder'])->name('invoice.razorpay.create-order');
 //Route::post('invoices/payment/razorpay', [InvoiceRazorpayPaymentController::class, 'processPayment'])->name('invoice.razorpay.payment');
 //Route::post('invoices/payment/mercadopago/create-preference', [InvoiceMercadoPagoPaymentController::class, 'createPreference'])->name('invoice.mercadopago.create-preference');
 //Route::get('invoices/payment/mercadopago/success', [InvoiceMercadoPagoPaymentController::class, 'success'])->name('invoice.mercadopago.success');
 //Route::get('invoices/payment/mercadopago/failure', [InvoiceMercadoPagoPaymentController::class, 'failure'])->name('invoice.mercadopago.failure');
 //Route::get('invoices/payment/mercadopago/pending', [InvoiceMercadoPagoPaymentController::class, 'pending'])->name('invoice.mercadopago.pending');
-Route::post('invoices/payment/paystack', [InvoicePaystackPaymentController::class, 'processPayment'])->name('invoice.paystack.payment');
-//Route::post('invoices/payment/flutterwave', [InvoiceFlutterwavePaymentController::class, 'processPayment'])->name('invoice.flutterwave.payment');
-//Route::post('invoices/payment/paytabs', [InvoicePayTabsPaymentController::class, 'processPayment'])->name('invoice.paytabs.payment');
+Route::post('invoices/payment/paystack', [InvoicePaystackPaymentController::class, 'processPayment'])->name('invoice.subscriptions.paystack.payment');
+//Route::post('invoices/payment/flutterwave', [InvoiceFlutterwavePaymentController::class, 'processPayment'])->name('invoice.subscriptions.flutterwave.payment');
+//Route::post('invoices/payment/paytabs', [InvoicePayTabsPaymentController::class, 'processPayment'])->name('invoice.subscriptions.paytabs.payment');
 //Route::get('invoices/payment/paytabs/success', [InvoicePayTabsPaymentController::class, 'success'])->name('invoice.paytabs.success');
 //Route::match(['GET', 'POST'], 'invoices/payment/paytabs/callback', [InvoicePayTabsPaymentController::class, 'callback'])->name('invoice.paytabs.callback');
-//Route::post('invoices/payment/skrill', [InvoiceSkrillPaymentController::class, 'processPayment'])->name('invoice.skrill.payment');
+//Route::post('invoices/payment/skrill', [InvoiceSkrillPaymentController::class, 'processPayment'])->name('invoice.subscriptions.skrill.payment');
 //Route::post('invoices/payment/skrill/callback', [InvoiceSkrillPaymentController::class, 'callback'])->name('invoice.skrill.callback');
-//Route::post('invoices/payment/coingate', [InvoiceCoingatePaymentController::class, 'processPayment'])->name('invoice.coingate.payment');
+//Route::post('invoices/payment/coingate', [InvoiceCoingatePaymentController::class, 'processPayment'])->name('invoice.subscriptions.coingate.payment');
 //Route::match(['GET', 'POST'], 'invoices/payment/coingate/callback', [InvoiceCoingatePaymentController::class, 'callback'])->name('invoice.coingate.callback');
-Route::post('invoices/payment/bank', [InvoiceBankPaymentController::class, 'processPayment'])->name('invoice.bank.payment');
-//Route::post('invoices/payment/benefit', [InvoiceBenefitPaymentController::class, 'processPayment'])->name('invoice.benefit.payment');
+Route::post('invoices/payment/bank', [InvoiceBankPaymentController::class, 'processPayment'])->name('invoice.subscriptions.bank.payment');
+//Route::post('invoices/payment/benefit', [InvoiceBenefitPaymentController::class, 'processPayment'])->name('invoice.subscriptions.benefit.payment');
 //Route::get('invoices/payment/benefit/success', [InvoiceBenefitPaymentController::class, 'success'])->name('invoice.benefit.success');
 //Route::post('invoices/payment/benefit/callback', [InvoiceBenefitPaymentController::class, 'callback'])->name('invoice.benefit.callback');
-//Route::post('invoices/payment/payfast', [InvoicePayfastPaymentController::class, 'processPayment'])->name('invoice.payfast.payment');
+//Route::post('invoices/payment/payfast', [InvoicePayfastPaymentController::class, 'processPayment'])->name('invoice.subscriptions.payfast.payment');
 //Route::get('invoices/payment/payfast/success', [InvoicePayfastPaymentController::class, 'success'])->name('invoice.payfast.success');
 //Route::post('invoices/payment/payfast/callback', [InvoicePayfastPaymentController::class, 'callback'])->name('invoice.payfast.callback');
 //Route::post('invoices/payment/tap', [InvoiceTapPaymentController::class, 'processPayment'])->name('invoice.tap.payment');
@@ -1028,17 +1020,17 @@ Route::post('invoices/payment/bank', [InvoiceBankPaymentController::class, 'proc
 //Route::get('invoices/payment/paytr/success', [InvoicePayTRPaymentController::class, 'success'])->name('invoice.paytr.success');
 //Route::get('invoices/payment/paytr/failure', [InvoicePayTRPaymentController::class, 'failure'])->name('invoice.paytr.failure');
 //Route::post('invoices/payment/paytr/callback', [InvoicePayTRPaymentController::class, 'callback'])->name('invoice.paytr.callback');
-//Route::post('invoices/payment/mollie', [InvoiceMolliePaymentController::class, 'processPayment'])->name('invoice.mollie.payment');
+//Route::post('invoices/payment/mollie', [InvoiceMolliePaymentController::class, 'processPayment'])->name('invoice.subscriptions.mollie.payment');
 //Route::get('invoices/payment/mollie/success', [InvoiceMolliePaymentController::class, 'success'])->name('invoice.mollie.success');
 //Route::post('invoices/payment/mollie/callback', [InvoiceMolliePaymentController::class, 'callback'])->name('invoice.mollie.callback');
-//Route::post('invoices/payment/toyyibpay', [InvoiceToyyibPayPaymentController::class, 'processPayment'])->name('invoice.toyyibpay.payment');
+//Route::post('invoices/payment/toyyibpay', [InvoiceToyyibPayPaymentController::class, 'processPayment'])->name('invoice.subscriptions.toyyibpay.payment');
 //Route::match(['GET', 'POST'], 'invoices/payment/toyyibpay/success', [InvoiceToyyibPayPaymentController::class, 'success'])->name('invoice.toyyibpay.success');
 //Route::post('invoices/payment/toyyibpay/callback', [InvoiceToyyibPayPaymentController::class, 'callback'])->name('invoice.toyyibpay.callback');
 //Route::post('invoices/payment/iyzipay/create-form', [InvoiceIyzipayPaymentController::class, 'createPaymentForm'])->name('invoice.iyzipay.create-form');
-//Route::post('invoices/payment/aamarpay/Create', [InvoiceAamarpayPaymentController::class, 'createPayment'])->name('invoice.aamarpay.create');
+//Route::post('invoices/payment/aamarpay/create', [InvoiceAamarpayPaymentController::class, 'createPayment'])->name('invoice.aamarpay.create');
 //Route::match(['GET', 'POST'], 'invoices/payment/aamarpay/success', [InvoiceAamarpayPaymentController::class, 'success'])->name('invoice.aamarpay.success');
 //Route::post('invoices/payment/aamarpay/callback', [InvoiceAamarpayPaymentController::class, 'callback'])->name('invoice.aamarpay.callback');
-//Route::post('invoices/payment/midtrans/Create', [InvoiceMidtransPaymentController::class, 'createPayment'])->name('invoice.midtrans.create');
+//Route::post('invoices/payment/midtrans/create', [InvoiceMidtransPaymentController::class, 'createPayment'])->name('invoice.midtrans.create');
 //Route::match(['GET', 'POST'], 'invoices/payment/midtrans/success', [InvoiceMidtransPaymentController::class, 'success'])->name('invoice.midtrans.success');
 //Route::post('invoices/payment/midtrans/callback', [InvoiceMidtransPaymentController::class, 'callback'])->name('invoice.midtrans.callback');
 //Route::post('invoices/payment/yookassa/create-payment', [InvoiceYooKassaPaymentController::class, 'createPayment'])->name('invoice.yookassa.create-payment');
@@ -1055,9 +1047,9 @@ Route::post('invoices/payment/bank', [InvoiceBankPaymentController::class, 'proc
 //Route::post('invoices/payment/payhere/callback', [InvoicePayHerePaymentController::class, 'callback'])->name('invoice.payhere.callback');
 //Route::post('invoices/payment/fedapay/create-payment', [InvoiceFedaPayPaymentController::class, 'createPayment'])->name('invoice.fedapay.create-payment');
 //Route::match(['GET', 'POST'], 'invoices/payment/fedapay/callback', [InvoiceFedaPayPaymentController::class, 'callback'])->name('invoice.fedapay.callback');
-//Route::post('invoices/payment/authorizenet', [InvoiceAuthorizeNetPaymentController::class, 'processPayment'])->name('invoice.authorizenet.payment');
+//Route::post('invoices/payment/authorizenet', [InvoiceAuthorizeNetPaymentController::class, 'processPayment'])->name('invoice.subscriptions.authorizenet.payment');
 //Route::post('invoices/payment/khalti/create-payment', [InvoiceKhaltiPaymentController::class, 'createPayment'])->name('invoice.khalti.create-payment');
-//Route::post('invoices/payment/khalti', [InvoiceKhaltiPaymentController::class, 'processPayment'])->name('invoice.khalti.payment');
+//Route::post('invoices/payment/khalti', [InvoiceKhaltiPaymentController::class, 'processPayment'])->name('invoice.subscriptions.khalti.payment');
 //Route::post('invoices/payment/easebuzz/create-payment', [InvoiceEasebuzzPaymentController::class, 'createPayment'])->name('invoice.easebuzz.create-payment');
 //Route::match(['GET', 'POST'], 'invoices/payment/easebuzz/success', [InvoiceEasebuzzPaymentController::class, 'success'])->name('invoice.easebuzz.success');
 //Route::match(['GET', 'POST'], 'invoices/payment/easebuzz/failure', [InvoiceEasebuzzPaymentController::class, 'failure'])->name('invoice.easebuzz.failure');
@@ -1069,17 +1061,21 @@ Route::post('invoices/payment/bank', [InvoiceBankPaymentController::class, 'proc
 //Route::post('invoices/payment/cashfree/verify-payment', [InvoiceCashfreePaymentController::class, 'verifyPayment'])->name('invoice.cashfree.verify-payment');
 //Route::post('invoices/payment/cashfree/webhook', [InvoiceCashfreePaymentController::class, 'webhook'])->name('invoice.cashfree.webhook')->withoutMiddleware(VerifyCsrfToken::class);
 
-// Invoice payment management routes (authenticated)
+// Authenticated invoice payment approval and rejection workflow. All application routes below require an authenticated and verified user. Subscription-gated modules are isolated in the nested group.
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('invoices/payments/{paymentId}/approve', [InvoiceController::class, 'approvePayment'])->name('invoice.payments.approve');
     Route::post('invoices/payments/{paymentId}/reject', [InvoiceController::class, 'rejectPayment'])->name('invoice.payments.reject');
 });
 
-// Cookie consent routes
+// Cookie consent persistence and user-accessible consent record download.
 Route::post('/cookie-consent/store', [CookieConsentController::class, 'store'])->name('cookie.consent.store');
 Route::get('/cookie-consent/download', [CookieConsentController::class, 'download'])->name('cookie.consent.download');
 
-// Invoice template preview route (authenticated)
+// Authenticated invoice template preview. All application routes below require an authenticated and verified user. Subscription-gated modules are isolated in the nested group.
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('invoices/preview/{templateId}/{color}', [InvoiceController::class, 'previewTemplate'])->name('invoice.preview');
+});
+
+Route::fallback(function () {
+    return redirect()->route('login');
 });

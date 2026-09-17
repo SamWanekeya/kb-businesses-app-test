@@ -51,7 +51,12 @@ export default function Index({ modules }: StreamsIndexProps) {
                     {Object.entries(modules || {}).map(([key, title]) => {
                         const IconComponent = getModuleIcon(key);
                         return (
-                            <div key={key} onClick={() => handleViewStream(key)}>
+                            <div
+                                key={key}
+                                onClick={() => {
+                                    handleViewStream(key);
+                                }}
+                            >
                                 <Card className="cursor-pointer transition-shadow hover:shadow-lg">
                                     <CardHeader className="flex flex-row items-center space-y-0 pb-2">
                                         <IconComponent className="text-primary mr-3 h-6 w-6" />

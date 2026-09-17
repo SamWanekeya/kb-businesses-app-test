@@ -72,7 +72,7 @@ class NepalstePaymentController extends Controller
                 'purchase_order_id' => $orderId,
                 'purchase_order_name' => $plan->name,
                 'return_url' => route('nepalste.success', ['order_id' => $orderId, 'plan_id' => $plan->id, 'billing_cycle' => $validated['billing_cycle']]),
-                'website_url' => route('plans.index'),
+                'website_url' => route('subscriptions.plans.index'),
             ];
 
             $baseUrl = $settings['payment_settings']['nepalste_mode'] === 'live'
@@ -208,16 +208,16 @@ class NepalstePaymentController extends Controller
                         'payment_id' => $orderId,
                     ]);
 
-                    return redirect()->route('plans.index')->with('success', 'Payment successful and plan activated');
+                    return redirect()->route('subscriptions.plans.index')->with('success', 'Payment successful and plan activated');
                 }
             }
 
-            return redirect()->route('plans.index')->with('error', 'Payment verification failed');
+            return redirect()->route('subscriptions.plans.index')->with('error', 'Payment verification failed');
 
         } catch (Exception $e) {
             Log::error('Nepalste success error: ' . $e->getMessage());
 
-            return redirect()->route('plans.index')->with('error', 'Payment processing failed');
+            return redirect()->route('subscriptions.plans.index')->with('error', 'Payment processing failed');
         }
     }
 

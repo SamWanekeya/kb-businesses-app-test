@@ -1,5 +1,5 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
+import CrudFormModal from '@components/CrudFormModal';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import UserInitials from '@components/UserInitials';
@@ -203,7 +203,9 @@ export default function Meetings() {
             labelClassName: 'hidden min-[350px]:inline',
             tooltip: translate('Add Meeting'),
             tooltipClassName: 'min-[350px]:hidden',
-            onClick: () => handleAddNew(),
+            onClick: () => {
+                handleAddNew();
+            },
         });
     }
 
@@ -309,7 +311,9 @@ export default function Meetings() {
                         return (
                             <button
                                 key={day}
-                                onClick={() => navigateToDate(date)}
+                                onClick={() => {
+                                    navigateToDate(date);
+                                }}
                                 className={`relative mx-auto flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-xs font-medium transition-colors ${isSelected ? 'bg-primary text-primary-foreground' : isTodayDate ? 'text-primary font-bold' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'}`}
                             >
                                 {day}
@@ -373,7 +377,9 @@ export default function Meetings() {
                     return (
                         <button
                             key={f}
-                            onClick={() => navigateToDate(d)}
+                            onClick={() => {
+                                navigateToDate(d);
+                            }}
                             className={`flex w-full cursor-pointer items-center justify-between rounded-md px-3 py-2.5 text-sm transition-colors ${
                                 isActive
                                     ? 'bg-primary/10 text-primary font-medium'
@@ -424,7 +430,13 @@ export default function Meetings() {
                                 {isToday(selectedDateObj) && <span className="ms-1 font-bold">({translate('Today')})</span>}
                             </span>
                             {!isToday(selectedDateObj) && (
-                                <Button variant="outline" size="sm" onClick={() => navigateToDate(new Date())}>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => {
+                                        navigateToDate(new Date());
+                                    }}
+                                >
                                     {translate('Today')}
                                 </Button>
                             )}
@@ -493,7 +505,9 @@ export default function Meetings() {
                                                             <Tooltip>
                                                                 <TooltipTrigger asChild>
                                                                     <button
-                                                                        onClick={() => handleAction('view', meeting)}
+                                                                        onClick={() => {
+                                                                            handleAction('view', meeting);
+                                                                        }}
                                                                         className="cursor-pointer rounded p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-200"
                                                                     >
                                                                         <Eye className="h-4 w-4" />
@@ -508,7 +522,9 @@ export default function Meetings() {
                                                             <Tooltip>
                                                                 <TooltipTrigger asChild>
                                                                     <button
-                                                                        onClick={() => handleAction('edit', meeting)}
+                                                                        onClick={() => {
+                                                                            handleAction('edit', meeting);
+                                                                        }}
                                                                         className="cursor-pointer rounded p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-200"
                                                                     >
                                                                         <Edit className="h-4 w-4" />
@@ -523,7 +539,9 @@ export default function Meetings() {
                                                             <Tooltip>
                                                                 <TooltipTrigger asChild>
                                                                     <button
-                                                                        onClick={() => handleAction('toggle-status', meeting)}
+                                                                        onClick={() => {
+                                                                            handleAction('toggle-status', meeting);
+                                                                        }}
                                                                         className="cursor-pointer rounded p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-200"
                                                                     >
                                                                         <RefreshCw className="h-4 w-4" />
@@ -538,7 +556,9 @@ export default function Meetings() {
                                                             <Tooltip>
                                                                 <TooltipTrigger asChild>
                                                                     <button
-                                                                        onClick={() => handleAction('delete', meeting)}
+                                                                        onClick={() => {
+                                                                            handleAction('delete', meeting);
+                                                                        }}
                                                                         className="cursor-pointer rounded p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-200"
                                                                     >
                                                                         <Trash2 className="h-4 w-4" />
@@ -648,7 +668,9 @@ export default function Meetings() {
 
             <CrudFormModal
                 isOpen={isFormModalOpen}
-                onClose={() => setIsFormModalOpen(false)}
+                onClose={() => {
+                    setIsFormModalOpen(false);
+                }}
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
@@ -754,7 +776,7 @@ export default function Meetings() {
                                         const attendeeType = attendees[arrayIndex]?.type;
                                         if (!attendeeType) return null;
                                         const routes: Record<string, string> = {
-                                            user: route('users.index'),
+                                            user: route('users-permissions.users.index'),
                                             contact: route('contacts.index'),
                                             lead: route('leads.index'),
                                         };
@@ -774,7 +796,7 @@ export default function Meetings() {
                             type: 'select' as const,
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('users.index'), linkText: translate('Users') },
+                            emptyNote: { link: route('users-permissions.users.index'), linkText: translate('Users') },
                             options: [...users.map((user: any) => ({ value: user.id, label: `${user.name} (${user.email})` }))],
                         },
                         {
@@ -821,7 +843,9 @@ export default function Meetings() {
             {/* Status Modal */}
             <CrudFormModal
                 isOpen={isStatusModalOpen}
-                onClose={() => setIsStatusModalOpen(false)}
+                onClose={() => {
+                    setIsStatusModalOpen(false);
+                }}
                 onSubmit={handleStatusChange}
                 formConfig={{
                     fields: [
@@ -846,7 +870,9 @@ export default function Meetings() {
 
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.title || ''}
                 entityName={translate('meeting')}

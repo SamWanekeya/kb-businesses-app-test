@@ -30,7 +30,7 @@ export default [
 
         settings: {
             react: {
-                version: '19.2.6',
+                version: '19.3.0',
             },
         },
 
@@ -68,9 +68,9 @@ export default [
                     patterns: [
                         {
                             group: [
-                                '@/utils/**/index',
+                                '@utils/**/index',
                                 '@components/**/index',
-                                '@/hooks/**/index',
+                                '@hooks/**/index',
                             ],
                             message:
                                 'Barrel imports are not allowed. Import directly from the file instead.',

@@ -186,7 +186,7 @@ class MolliePaymentController extends Controller
             $credentials = $this->getMollieCredentials();
 
             if (!$credentials['api_key']) {
-                return redirect()->route('plans.index')->with('error', __('Payment configuration error.'));
+                return redirect()->route('subscriptions.plans.index')->with('error', __('Payment configuration error.'));
             }
 
             // Find the most recent pending order for this user
@@ -209,22 +209,22 @@ class MolliePaymentController extends Controller
                             $planOrder->update(['status' => 'approved']);
                             $planOrder->activateSubscription();
 
-                            return redirect()->route('plans.index')->with('success', __('Payment completed successfully! Your plan has been activated.'));
+                            return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully! Your plan has been activated.'));
                         } elseif ($payment->status === 'pending') {
-                            return redirect()->route('plans.index')->with('info', __('Payment is being processed. Your plan will be activated shortly.'));
+                            return redirect()->route('subscriptions.plans.index')->with('info', __('Payment is being processed. Your plan will be activated shortly.'));
                         } else {
-                            return redirect()->route('plans.index')->with('error', __('Payment was not successful. Please try again.'));
+                            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment was not successful. Please try again.'));
                         }
                     } catch (Exception $e) {
-                        return redirect()->route('plans.index')->with('info', __('Payment is being processed. Your plan will be activated shortly.'));
+                        return redirect()->route('subscriptions.plans.index')->with('info', __('Payment is being processed. Your plan will be activated shortly.'));
                     }
                 }
             }
 
-            return redirect()->route('plans.index')->with('info', __('Payment is being processed. Your plan will be activated shortly.'));
+            return redirect()->route('subscriptions.plans.index')->with('info', __('Payment is being processed. Your plan will be activated shortly.'));
 
         } catch (Exception $e) {
-            return redirect()->route('plans.index')->with('error', __('Payment verification failed. Please contact support.'));
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment verification failed. Please contact support.'));
         }
     }
 

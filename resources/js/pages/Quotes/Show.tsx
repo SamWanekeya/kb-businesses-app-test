@@ -29,7 +29,7 @@ export default function QuoteShow() {
     const getInitials = useInitials();
 
     useEffect(() => {
-        const main = document.querySelector('main[data-slot="sidebar-inset"]') as HTMLElement | null;
+        const main = document.querySelector('main[data-slot="sidebar-inset"]');
         if (main) main.style.overflowX = 'visible';
         return () => {
             if (main) main.style.overflowX = '';
@@ -99,7 +99,9 @@ export default function QuoteShow() {
                     icon: <ArrowLeft className="h-4 w-4 sm:me-2" />,
                     labelClassName: 'hidden sm:inline',
                     variant: 'outline',
-                    onClick: () => router.visit(route('quotes.index')),
+                    onClick: () => {
+                        router.visit(route('quotes.index'));
+                    },
                 },
             ]}
             noPadding
@@ -408,7 +410,9 @@ export default function QuoteShow() {
                                                     <Textarea
                                                         placeholder={translate('Write a comment...')}
                                                         value={newComment}
-                                                        onChange={(e) => setNewComment(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setNewComment(e.target.value);
+                                                        }}
                                                         className="resize-none border-0 bg-transparent focus-visible:ring-0"
                                                         rows={2}
                                                     />
@@ -560,7 +564,9 @@ export default function QuoteShow() {
                                                                         <div className="space-y-3">
                                                                             <Textarea
                                                                                 value={editCommentText}
-                                                                                onChange={(e) => setEditCommentText(e.target.value)}
+                                                                                onChange={(e) => {
+                                                                                    setEditCommentText(e.target.value);
+                                                                                }}
                                                                                 className="w-full resize-none border-emerald-300 focus-visible:ring-emerald-400"
                                                                                 rows={3}
                                                                                 autoFocus
@@ -569,7 +575,9 @@ export default function QuoteShow() {
                                                                                 <Button
                                                                                     size="sm"
                                                                                     variant="outline"
-                                                                                    onClick={() => setEditingComment(null)}
+                                                                                    onClick={() => {
+                                                                                        setEditingComment(null);
+                                                                                    }}
                                                                                 >
                                                                                     {translate('Cancel')}
                                                                                 </Button>
@@ -646,7 +654,13 @@ export default function QuoteShow() {
                             </div>
                             <div className="space-y-2">
                                 {useHasPermission('edit-quotes') && (
-                                    <Button variant="outline" className="w-full" onClick={() => router.visit(route('quotes.edit', quote.id))}>
+                                    <Button
+                                        variant="outline"
+                                        className="w-full"
+                                        onClick={() => {
+                                            router.visit(route('quotes.edit', quote.id));
+                                        }}
+                                    >
                                         <Edit className="me-2 h-4 w-4" />
                                         {translate('Edit Quote')}
                                     </Button>
@@ -797,14 +811,14 @@ export default function QuoteShow() {
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
                                     <p className="text-muted-foreground text-xs">{translate('Quote Date')}</p>
-                                    <p className="text-foreground text-sm font-medium">{formatDate(quote.quote_date || quote.created_at)}</p>
+                                    <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(quote.quote_date || quote.created_at)}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <Calendar className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" />
                                 <div>
                                     <p className="text-muted-foreground text-xs">{translate('Valid Until')}</p>
-                                    <p className="text-foreground text-sm font-medium">{formatDate(quote.valid_until)}</p>
+                                    <p className="text-foreground text-sm font-medium">{window.kbSettings.formatDateTimeSimple(quote.valid_until)}</p>
                                 </div>
                             </div>
                             {quote.assigned_user && (
@@ -925,7 +939,9 @@ export default function QuoteShow() {
             {/* Delete Activity Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={() => {
                     router.delete(route('quotes.delete-activity', { quote: quote.id, activity: currentActivity.id }), {
                         preserveScroll: true,
@@ -939,7 +955,9 @@ export default function QuoteShow() {
             {/* Delete All Activities Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteAllModalOpen}
-                onClose={() => setIsDeleteAllModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteAllModalOpen(false);
+                }}
                 onConfirm={() => {
                     router.delete(route('quotes.delete-activities', quote.id), {
                         preserveScroll: true,

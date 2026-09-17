@@ -10,7 +10,12 @@ export default function View({ record }: ViewProps) {
     const { t: translate } = useTranslation();
 
     return (
-        <DialogContent className="max-h-[90vh] max-w-xl overflow-y-auto p-0" onOpenAutoFocus={(e) => e.preventDefault()}>
+        <DialogContent
+            className="max-h-[90vh] max-w-xl overflow-y-auto p-0"
+            onOpenAutoFocus={(e) => {
+                e.preventDefault();
+            }}
+        >
             <DialogHeader className="border-b px-6 pt-6 pb-4">
                 <div className="flex items-center gap-3">
                     <div className="bg-primary/10 rounded-lg p-2">

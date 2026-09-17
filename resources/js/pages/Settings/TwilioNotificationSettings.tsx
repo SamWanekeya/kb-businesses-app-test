@@ -1,5 +1,5 @@
 import { toast } from '@components/CustomToast';
-import { SettingsSection } from '@components/settings-section';
+import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
 import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
@@ -184,7 +184,9 @@ export default function TwilioNotificationSettings() {
                                     </Label>
                                     <Input
                                         value={twilioSettings.twilio_sid}
-                                        onChange={(e) => handleConfigChange('twilio_sid', e.target.value)}
+                                        onChange={(e) => {
+                                            handleConfigChange('twilio_sid', e.target.value);
+                                        }}
                                         placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
                                         className="font-mono"
                                     />
@@ -197,7 +199,9 @@ export default function TwilioNotificationSettings() {
                                     <Input
                                         type="password"
                                         value={twilioSettings.twilio_token}
-                                        onChange={(e) => handleConfigChange('twilio_token', e.target.value)}
+                                        onChange={(e) => {
+                                            handleConfigChange('twilio_token', e.target.value);
+                                        }}
                                         placeholder="••••••••••••••••••••"
                                         className="font-mono"
                                     />
@@ -209,7 +213,9 @@ export default function TwilioNotificationSettings() {
                                     </Label>
                                     <Input
                                         value={twilioSettings.twilio_from}
-                                        onChange={(e) => handleConfigChange('twilio_from', e.target.value)}
+                                        onChange={(e) => {
+                                            handleConfigChange('twilio_from', e.target.value);
+                                        }}
                                         placeholder="+1234567890"
                                         className="font-mono"
                                     />
@@ -231,7 +237,9 @@ export default function TwilioNotificationSettings() {
                                             <Switch
                                                 id={item.name}
                                                 checked={notifications[item.name] || false}
-                                                onCheckedChange={(checked) => handleToggle(item.name, checked)}
+                                                onCheckedChange={(checked) => {
+                                                    handleToggle(item.name, checked);
+                                                }}
                                             />
                                         </div>
                                     ))}
@@ -253,7 +261,9 @@ export default function TwilioNotificationSettings() {
                                 <Label className="block text-sm font-medium text-gray-700">{translate('Send Test To')}</Label>
                                 <Input
                                     value={testPhone}
-                                    onChange={(e) => setTestPhone(e.target.value)}
+                                    onChange={(e) => {
+                                        setTestPhone(e.target.value);
+                                    }}
                                     placeholder="+1234567890"
                                     className="font-mono"
                                     required

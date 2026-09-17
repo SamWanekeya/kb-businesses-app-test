@@ -196,8 +196,8 @@ export default function PublicSalesOrder({
     const salesOrderData = {
         ...salesOrder,
         sales_order_number: salesOrder.order_number,
-        order_date: formatDate(salesOrder.order_date || new Date().toISOString()),
-        delivery_date: formatDate(salesOrder.delivery_date || new Date().toISOString()),
+        order_date: window.kbSettings.formatDateTimeSimple(salesOrder.order_date || new Date().toISOString()),
+        delivery_date: window.kbSettings.formatDateTimeSimple(salesOrder.delivery_date || new Date().toISOString()),
         sub_total: subtotal,
         total_tax: totalTax,
         total_amount: grandTotal,
@@ -221,7 +221,9 @@ export default function PublicSalesOrder({
         try {
             await navigator.clipboard.writeText(window.location.href);
             setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
+            setTimeout(() => {
+                setCopied(false);
+            }, 2000);
         } catch (err) {}
     };
 
@@ -334,14 +336,14 @@ export default function PublicSalesOrder({
                                     },
                                     {
                                         label: translate('Order Date'),
-                                        value: formatDate(salesOrder.order_date),
+                                        value: window.kbSettings.formatDateTimeSimple(salesOrder.order_date),
                                         icon: Calendar,
                                         iconCls: 'text-orange-600',
                                         blobCls: 'bg-orange-50',
                                     },
                                     {
                                         label: translate('Delivery Date'),
-                                        value: formatDate(salesOrder.delivery_date),
+                                        value: window.kbSettings.formatDateTimeSimple(salesOrder.delivery_date),
                                         icon: Clock,
                                         iconCls: 'text-purple-600',
                                         blobCls: 'bg-purple-50',
@@ -440,21 +442,21 @@ export default function PublicSalesOrder({
                                             <label className="text-muted-foreground text-sm font-medium">{translate('Order Date')}</label>
                                             <div className="mt-1 flex items-center gap-2">
                                                 <Calendar className="h-4 w-4 flex-shrink-0 text-gray-400" />
-                                                <p className="text-sm">{formatDate(salesOrder.order_date)}</p>
+                                                <p className="text-sm">{window.kbSettings.formatDateTimeSimple(salesOrder.order_date)}</p>
                                             </div>
                                         </div>
                                         <div>
                                             <label className="text-muted-foreground text-sm font-medium">{translate('Delivery Date')}</label>
                                             <div className="mt-1 flex items-center gap-2">
                                                 <Calendar className="h-4 w-4 flex-shrink-0 text-gray-400" />
-                                                <p className="text-sm">{formatDate(salesOrder.delivery_date)}</p>
+                                                <p className="text-sm">{window.kbSettings.formatDateTimeSimple(salesOrder.delivery_date)}</p>
                                             </div>
                                         </div>
                                         <div>
                                             <label className="text-muted-foreground text-sm font-medium">{translate('Created At')}</label>
                                             <div className="mt-1 flex items-center gap-2">
                                                 <Calendar className="h-4 w-4 flex-shrink-0 text-gray-400" />
-                                                <p className="text-sm">{formatDate(salesOrder.created_at)}</p>
+                                                <p className="text-sm">{window.kbSettings.formatDateTimeSimple(salesOrder.created_at)}</p>
                                             </div>
                                         </div>
                                     </div>

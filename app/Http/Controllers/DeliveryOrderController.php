@@ -138,7 +138,7 @@ class DeliveryOrderController extends Controller
         $deliveryOrder->calculateTotalWeight();
 
         // Fire DeliveryOrderCreated event for sending email
-        if ($deliveryOrder && !IsDemo()) {
+        if ($deliveryOrder) {
             event(new DeliveryOrderCreated($deliveryOrder));
         }
 

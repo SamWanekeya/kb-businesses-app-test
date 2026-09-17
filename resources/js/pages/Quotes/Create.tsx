@@ -102,7 +102,9 @@ export default function QuoteCreate() {
                 clearErrors('shipping_provider_type_id' as any);
                 if (details.products?.length) {
                     clearErrors('products' as any);
-                    details.products.forEach((_: any, i: number) => clearErrors(`products.${i}.product_id` as any));
+                    details.products.forEach((_: any, i: number) => {
+                        clearErrors(`products.${i}.product_id` as any);
+                    });
                 }
             }
         } catch {}
@@ -121,8 +123,18 @@ export default function QuoteCreate() {
         toast.success(translate('Billing address copied to shipping'));
     };
 
-    const addProductRow = () =>
-        setData('products', [...data.products, { product_id: '', quantity: '1', unit_price: '0', discount_type: 'none', discount_value: '0' }]);
+    const addProductRow = () => {
+        setData('products', [
+            ...data.products,
+            {
+                product_id: '',
+                quantity: '1',
+                unit_price: '0',
+                discount_type: 'none',
+                discount_value: '0',
+            },
+        ]);
+    };
 
     const removeProductRow = (i: number) => {
         if (data.products.length <= 1) return;
@@ -196,7 +208,9 @@ export default function QuoteCreate() {
         });
 
         if (Object.keys(errs).length > 0) {
-            Object.entries(errs).forEach(([k, v]) => setError(k as any, v));
+            Object.entries(errs).forEach(([k, v]) => {
+                setError(k as any, v);
+            });
             return;
         }
 
@@ -218,7 +232,9 @@ export default function QuoteCreate() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => window.history.back(),
+                    onClick: () => {
+                        window.history.back();
+                    },
                 },
             ]}
             noPadding
@@ -429,7 +445,7 @@ export default function QuoteCreate() {
                             {users.length === 0 && (
                                 <p className="mt-1 text-xs">
                                     {translate('Click here to add')}{' '}
-                                    <a href={route('users.index')} className="font-medium underline">
+                                    <a href={route('users-permissions.users.index')} className="font-medium underline">
                                         {translate('Users')}
                                     </a>
                                 </p>
@@ -496,7 +512,12 @@ export default function QuoteCreate() {
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Product')} <span className="text-red-500">*</span>
                                                     </span>
-                                                    <Select value={row.product_id} onValueChange={(v) => updateProductRow(i, 'product_id', v)}>
+                                                    <Select
+                                                        value={row.product_id}
+                                                        onValueChange={(v) => {
+                                                            updateProductRow(i, 'product_id', v);
+                                                        }}
+                                                    >
                                                         <SelectTrigger className={errors[`products.${i}.product_id`] ? 'border-red-500' : ''}>
                                                             <SelectValue placeholder={translate('Select product')} />
                                                         </SelectTrigger>
@@ -535,7 +556,9 @@ export default function QuoteCreate() {
                                                         type="number"
                                                         min="1"
                                                         value={row.quantity}
-                                                        onChange={(e) => updateProductRow(i, 'quantity', e.target.value)}
+                                                        onChange={(e) => {
+                                                            updateProductRow(i, 'quantity', e.target.value);
+                                                        }}
                                                         className={errors[`products.${i}.quantity`] ? 'border-red-500' : ''}
                                                     />
                                                     {errors[`products.${i}.quantity`] && (
@@ -551,7 +574,9 @@ export default function QuoteCreate() {
                                                         step="0.01"
                                                         min="0"
                                                         value={row.unit_price}
-                                                        onChange={(e) => updateProductRow(i, 'unit_price', e.target.value)}
+                                                        onChange={(e) => {
+                                                            updateProductRow(i, 'unit_price', e.target.value);
+                                                        }}
                                                         placeholder="0.00"
                                                         className={errors[`products.${i}.unit_price`] ? 'border-red-500' : ''}
                                                     />
@@ -563,7 +588,12 @@ export default function QuoteCreate() {
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Discount Type')}
                                                     </span>
-                                                    <Select value={row.discount_type} onValueChange={(v) => updateProductRow(i, 'discount_type', v)}>
+                                                    <Select
+                                                        value={row.discount_type}
+                                                        onValueChange={(v) => {
+                                                            updateProductRow(i, 'discount_type', v);
+                                                        }}
+                                                    >
                                                         <SelectTrigger>
                                                             <SelectValue />
                                                         </SelectTrigger>
@@ -583,7 +613,9 @@ export default function QuoteCreate() {
                                                         step="0.01"
                                                         min="0"
                                                         value={row.discount_value}
-                                                        onChange={(e) => updateProductRow(i, 'discount_value', e.target.value)}
+                                                        onChange={(e) => {
+                                                            updateProductRow(i, 'discount_value', e.target.value);
+                                                        }}
                                                         disabled={row.discount_type === 'none'}
                                                         className="disabled:opacity-40"
                                                         placeholder="0"
@@ -613,7 +645,9 @@ export default function QuoteCreate() {
                                                 <td className="col-span-1 block w-full border-t px-0 py-0 pt-2 text-right sm:col-span-2 xl:table-cell xl:w-12 xl:border-t-0 xl:px-4 xl:py-3 xl:pt-0 xl:text-left">
                                                     <button
                                                         type="button"
-                                                        onClick={() => removeProductRow(i)}
+                                                        onClick={() => {
+                                                            removeProductRow(i);
+                                                        }}
                                                         disabled={data.products.length <= 1}
                                                         className="cursor-pointer rounded p-1.5 text-gray-500 disabled:cursor-not-allowed disabled:opacity-30"
                                                     >
@@ -799,7 +833,13 @@ export default function QuoteCreate() {
 
                 {/* Actions */}
                 <div className="flex justify-end gap-3 pb-6">
-                    <Button type="button" variant="outline" onClick={() => window.history.back()}>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                            window.history.back();
+                        }}
+                    >
                         {translate('Cancel')}
                     </Button>
                     <Button type="submit" disabled={processing}>

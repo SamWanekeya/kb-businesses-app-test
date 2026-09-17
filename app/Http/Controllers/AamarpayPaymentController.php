@@ -164,14 +164,14 @@ class AamarpayPaymentController extends Controller
                         auth()->login($user);
                     }
 
-                    return redirect()->route('plans.index')->with('success', __('Payment completed successfully and plan activated'));
+                    return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully and plan activated'));
                 }
             }
 
-            return redirect()->route('plans.index')->with('error', __('Payment failed or cancelled'));
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment failed or cancelled'));
 
         } catch (Exception $e) {
-            return redirect()->route('plans.index')->with('error', __('Payment processing failed'));
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment processing failed'));
         }
     }
 

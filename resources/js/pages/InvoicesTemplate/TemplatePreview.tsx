@@ -5,7 +5,7 @@ export default function TemplatePreview() {
 
     const currency = settings?.default_currency || '$';
     // window.appSettings?.formatCurrency(parseFloat(value))
-    const formatCurrency = (amount: number) => `${amount.toFixed(2)}`;
+    const formatCurrency = (amount: number) => amount.toFixed(2);
     const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString();
 
     return (
@@ -86,7 +86,7 @@ export default function TemplatePreview() {
                                     </td>
                                     <td className="text-right">
                                         <div>Number: {invoice.invoice_number}</div>
-                                        <div>Issue Date: {formatDate(invoice.invoice_date)}</div>
+                                        <div>Issue Date: {window.kbSettings.formatDateTimeSimple(invoice.invoice_date)}</div>
                                     </td>
                                 </tr>
                             </tbody>

@@ -55,7 +55,7 @@ export function SkrillPaymentForm({
                 email: email,
             };
 
-            router.post(route('skrill.payment'), paymentData, {
+            router.post(route('subscriptions.skrill.payment'), paymentData, {
                 onSuccess: () => {
                     toast.success(translate('Payment successful!'));
                     onSuccess();
@@ -89,7 +89,9 @@ export function SkrillPaymentForm({
                             id="email"
                             type="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) => {
+                                setEmail(e.target.value);
+                            }}
                             placeholder={translate('Enter your email address')}
                             required
                         />

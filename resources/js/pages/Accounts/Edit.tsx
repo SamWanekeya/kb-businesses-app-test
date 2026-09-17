@@ -102,7 +102,9 @@ export default function AccountEdit() {
             clientErrors['website'] = translate('Website must start with http:// or https://');
         }
         if (Object.keys(clientErrors).length > 0) {
-            Object.entries(clientErrors).forEach(([k, v]) => setError(k as any, v));
+            Object.entries(clientErrors).forEach(([k, v]) => {
+                setError(k as any, v);
+            });
             return;
         }
         const toastId = toast.loading(translate('Updating account...'));
@@ -131,7 +133,9 @@ export default function AccountEdit() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('accounts.index')),
+                    onClick: () => {
+                        router.visit(route('accounts.index'));
+                    },
                 },
             ]}
             noPadding
@@ -250,7 +254,7 @@ export default function AccountEdit() {
                             {users.length === 0 && (
                                 <p className="mt-1 text-xs">
                                     {translate('Click here to add')}{' '}
-                                    <a href={route('users.index')} className="font-medium underline">
+                                    <a href={route('users-permissions.users.index')} className="font-medium underline">
                                         {translate('Users')}
                                     </a>
                                 </p>
@@ -464,7 +468,13 @@ export default function AccountEdit() {
 
                 {/* ── Actions ── */}
                 <div className="flex justify-end gap-3 pt-1">
-                    <Button type="button" variant="outline" onClick={() => router.visit(route('accounts.index'))}>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                            router.visit(route('accounts.index'));
+                        }}
+                    >
                         {translate('Cancel')}
                     </Button>
                     <Button type="submit" disabled={processing}>

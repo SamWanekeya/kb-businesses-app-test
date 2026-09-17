@@ -225,7 +225,9 @@ export default function ReceiptOrderCreate() {
                     setErrors(errs);
                     setProcessing(false);
                 },
-                onFinish: () => setProcessing(false),
+                onFinish: () => {
+                    setProcessing(false);
+                },
             },
         );
     };
@@ -242,7 +244,9 @@ export default function ReceiptOrderCreate() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('receipt-orders.index')),
+                    onClick: () => {
+                        router.visit(route('receipt-orders.index'));
+                    },
                 },
             ]}
         >
@@ -468,7 +472,7 @@ export default function ReceiptOrderCreate() {
                             {users.length === 0 && (
                                 <p className="mt-1 text-xs">
                                     {translate('Click here to add')}{' '}
-                                    <a href={route('users.index')} className="font-medium underline">
+                                    <a href={route('users-permissions.users.index')} className="font-medium underline">
                                         {translate('Users')}
                                     </a>
                                 </p>
@@ -522,7 +526,12 @@ export default function ReceiptOrderCreate() {
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Product')} <span className="text-red-500">*</span>
                                                     </span>
-                                                    <Select value={row.product_id} onValueChange={(v) => setRow(row.id, 'product_id', v)}>
+                                                    <Select
+                                                        value={row.product_id}
+                                                        onValueChange={(v) => {
+                                                            setRow(row.id, 'product_id', v);
+                                                        }}
+                                                    >
                                                         <SelectTrigger>
                                                             <SelectValue placeholder={translate('Select product')} />
                                                         </SelectTrigger>
@@ -559,7 +568,9 @@ export default function ReceiptOrderCreate() {
                                                         type="number"
                                                         min="1"
                                                         value={row.quantity}
-                                                        onChange={(e) => setRow(row.id, 'quantity', parseInt(e.target.value) || 1)}
+                                                        onChange={(e) => {
+                                                            setRow(row.id, 'quantity', parseInt(e.target.value) || 1);
+                                                        }}
                                                     />
                                                 </td>
 
@@ -572,7 +583,9 @@ export default function ReceiptOrderCreate() {
                                                         min="0"
                                                         step="0.01"
                                                         value={row.unit_price}
-                                                        onChange={(e) => setRow(row.id, 'unit_price', parseFloat(e.target.value) || 0)}
+                                                        onChange={(e) => {
+                                                            setRow(row.id, 'unit_price', parseFloat(e.target.value) || 0);
+                                                        }}
                                                     />
                                                 </td>
 
@@ -580,7 +593,12 @@ export default function ReceiptOrderCreate() {
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Discount Type')}
                                                     </span>
-                                                    <Select value={row.discount_type} onValueChange={(v) => setRow(row.id, 'discount_type', v)}>
+                                                    <Select
+                                                        value={row.discount_type}
+                                                        onValueChange={(v) => {
+                                                            setRow(row.id, 'discount_type', v);
+                                                        }}
+                                                    >
                                                         <SelectTrigger>
                                                             <SelectValue />
                                                         </SelectTrigger>
@@ -602,7 +620,9 @@ export default function ReceiptOrderCreate() {
                                                         step="0.01"
                                                         value={row.discount_value}
                                                         disabled={row.discount_type === 'none'}
-                                                        onChange={(e) => setRow(row.id, 'discount_value', parseFloat(e.target.value) || 0)}
+                                                        onChange={(e) => {
+                                                            setRow(row.id, 'discount_value', parseFloat(e.target.value) || 0);
+                                                        }}
                                                         className="disabled:opacity-40"
                                                         placeholder="0"
                                                     />
@@ -634,7 +654,9 @@ export default function ReceiptOrderCreate() {
                                                 <td className="col-span-1 block w-full border-t px-0 py-0 pt-2 text-right sm:col-span-2 xl:table-cell xl:w-10 xl:border-t-0 xl:px-4 xl:py-3 xl:pt-0 xl:text-left">
                                                     <button
                                                         type="button"
-                                                        onClick={() => setProductRows((p) => (p.length <= 1 ? p : p.filter((r) => r.id !== row.id)))}
+                                                        onClick={() => {
+                                                            setProductRows((p) => (p.length <= 1 ? p : p.filter((r) => r.id !== row.id)));
+                                                        }}
                                                         disabled={productRows.length <= 1}
                                                         className="cursor-pointer rounded p-1 text-gray-500 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
                                                     >
@@ -686,7 +708,13 @@ export default function ReceiptOrderCreate() {
 
                 {/* Actions */}
                 <div className="flex justify-end gap-3 px-6 py-4">
-                    <Button type="button" variant="outline" onClick={() => window.history.back()}>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                            window.history.back();
+                        }}
+                    >
                         {translate('Cancel')}
                     </Button>
                     <Button type="button" disabled={processing} onClick={handleSubmit}>

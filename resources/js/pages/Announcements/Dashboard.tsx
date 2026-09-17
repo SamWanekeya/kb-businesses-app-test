@@ -81,7 +81,9 @@ export default function AnnouncementDashboard() {
                               labelClassName: 'hidden min-[400px]:inline',
                               tooltip: translate('List View'),
                               tooltipClassName: 'min-[400px]:hidden',
-                              onClick: () => router.get(route('announcements.index')),
+                              onClick: () => {
+                                  router.get(route('announcements.index'));
+                              },
                           },
                       ]
                     : []),
@@ -102,7 +104,9 @@ export default function AnnouncementDashboard() {
                             {tabData.map((tab) => (
                                 <button
                                     key={tab.value}
-                                    onClick={() => handleTabChange(tab.value as any)}
+                                    onClick={() => {
+                                        handleTabChange(tab.value as any);
+                                    }}
                                     className={`flex cursor-pointer items-center gap-1.5 border-b-2 px-4 py-3 text-sm font-medium transition-colors ${
                                         activeTab === tab.value
                                             ? 'border-primary text-primary'
@@ -164,7 +168,9 @@ export default function AnnouncementDashboard() {
                                                             <Tooltip>
                                                                 <TooltipTrigger asChild>
                                                                     <button
-                                                                        onClick={() => router.get(route('announcements.show', a.id))}
+                                                                        onClick={() => {
+                                                                            router.get(route('announcements.show', a.id));
+                                                                        }}
                                                                         className="cursor-pointer text-gray-400"
                                                                     >
                                                                         <Eye className="h-4 w-4" />

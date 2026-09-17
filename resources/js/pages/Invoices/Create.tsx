@@ -128,9 +128,15 @@ export default function InvoiceCreate() {
         }));
     };
 
-    const addLine = () => setForm((p) => ({ ...p, products: [...p.products, emptyLine()] }));
-    const removeLine = (id: string) =>
-        setForm((p) => ({ ...p, products: p.products.length <= 1 ? p.products : p.products.filter((l) => l.id !== id) }));
+    const addLine = () => {
+        setForm((p) => ({ ...p, products: [...p.products, emptyLine()] }));
+    };
+    const removeLine = (id: string) => {
+        setForm((p) => ({
+            ...p,
+            products: p.products.length <= 1 ? p.products : p.products.filter((l) => l.id !== id),
+        }));
+    };
 
     const handleSalesOrderChange = useCallback(async (soId: string) => {
         setranslate('sales_order_id', soId);
@@ -293,7 +299,7 @@ export default function InvoiceCreate() {
                 toast.dismiss(toastId);
                 const firstError = Object.values(errs)[0] as string;
                 if (firstError) toast.error(firstError);
-                setErrors(errs as Errors);
+                setErrors(errs);
             },
         });
     };
@@ -325,7 +331,9 @@ export default function InvoiceCreate() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('invoices.index')),
+                    onClick: () => {
+                        router.visit(route('invoices.index'));
+                    },
                 },
             ]}
         >
@@ -552,7 +560,7 @@ export default function InvoiceCreate() {
                             {users.length === 0 && (
                                 <p className="mt-1 text-xs">
                                     {translate('Click here to add')}{' '}
-                                    <a href={route('users.index')} className="font-medium underline">
+                                    <a href={route('users-permissions.users.index')} className="font-medium underline">
                                         {translate('Users')}
                                     </a>
                                 </p>
@@ -694,7 +702,12 @@ export default function InvoiceCreate() {
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Product')} <span className="text-red-500">*</span>
                                                     </span>
-                                                    <Select value={line.product_id} onValueChange={(v) => setLine(line.id, 'product_id', v)}>
+                                                    <Select
+                                                        value={line.product_id}
+                                                        onValueChange={(v) => {
+                                                            setLine(line.id, 'product_id', v);
+                                                        }}
+                                                    >
                                                         <SelectTrigger>
                                                             <SelectValue placeholder={translate('Select product')} />
                                                         </SelectTrigger>
@@ -723,7 +736,9 @@ export default function InvoiceCreate() {
                                                         type="number"
                                                         min="1"
                                                         value={line.quantity}
-                                                        onChange={(e) => setLine(line.id, 'quantity', parseInt(e.target.value) || 1)}
+                                                        onChange={(e) => {
+                                                            setLine(line.id, 'quantity', parseInt(e.target.value) || 1);
+                                                        }}
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
@@ -735,7 +750,9 @@ export default function InvoiceCreate() {
                                                         min="0"
                                                         step="0.01"
                                                         value={line.unit_price}
-                                                        onChange={(e) => setLine(line.id, 'unit_price', parseFloat(e.target.value) || 0)}
+                                                        onChange={(e) => {
+                                                            setLine(line.id, 'unit_price', parseFloat(e.target.value) || 0);
+                                                        }}
                                                         placeholder="0.00"
                                                     />
                                                 </td>
@@ -745,7 +762,9 @@ export default function InvoiceCreate() {
                                                     </span>
                                                     <Select
                                                         value={line.discount_type || 'none'}
-                                                        onValueChange={(v) => setLine(line.id, 'discount_type', v as DiscountType)}
+                                                        onValueChange={(v) => {
+                                                            setLine(line.id, 'discount_type', v);
+                                                        }}
                                                     >
                                                         <SelectTrigger className="w-full">
                                                             <SelectValue />
@@ -766,7 +785,9 @@ export default function InvoiceCreate() {
                                                         min="0"
                                                         step="0.01"
                                                         value={line.discount_value}
-                                                        onChange={(e) => setLine(line.id, 'discount_value', parseFloat(e.target.value) || 0)}
+                                                        onChange={(e) => {
+                                                            setLine(line.id, 'discount_value', parseFloat(e.target.value) || 0);
+                                                        }}
                                                         className="disabled:opacity-40"
                                                         placeholder="0"
                                                         disabled={!line.discount_type || line.discount_type === 'none'}
@@ -791,7 +812,9 @@ export default function InvoiceCreate() {
                                                 <td className="col-span-1 block w-full border-t px-0 py-0 pt-2 text-right sm:col-span-2 xl:table-cell xl:w-12 xl:border-t-0 xl:px-4 xl:py-3 xl:pt-0 xl:text-left">
                                                     <button
                                                         type="button"
-                                                        onClick={() => removeLine(line.id)}
+                                                        onClick={() => {
+                                                            removeLine(line.id);
+                                                        }}
                                                         disabled={form.products.length <= 1}
                                                         className="cursor-pointer rounded p-1.5 text-gray-500 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
                                                     >
@@ -836,7 +859,13 @@ export default function InvoiceCreate() {
                         {form.products.filter((l) => l.product_id).length} {translate('Product added')}
                     </span>
                     <div className="flex items-center gap-3">
-                        <Button type="button" variant="outline" onClick={() => router.visit(route('invoices.index'))}>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => {
+                                router.visit(route('invoices.index'));
+                            }}
+                        >
                             {translate('Cancel')}
                         </Button>
                         <Button type="submit" disabled={submitting}>

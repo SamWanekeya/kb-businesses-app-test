@@ -1,7 +1,7 @@
 import { Button } from '@components/UserInterface/Button';
-import { DatePicker } from '@components/UserInterface/DatePicker';
+import DatePicker from '@components/UserInterface/DatePicker';
 import { router } from '@inertiajs/react';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface ReportFiltersProps {
@@ -12,8 +12,6 @@ interface ReportFiltersProps {
     };
     additionalFilters?: ReactNode;
 }
-
-import { ReactNode } from 'react';
 
 export function ReportFilters({ filters, additionalFilters }: ReportFiltersProps) {
     const { t: translate } = useTranslation();
@@ -49,7 +47,9 @@ export function ReportFilters({ filters, additionalFilters }: ReportFiltersProps
                             <DatePicker
                                 id="date_from"
                                 selected={dateFrom}
-                                onChange={(e) => setDateFrom(e)}
+                                onChange={(e) => {
+                                    setDateFrom(e);
+                                }}
                                 placeholder={translate('From Date')}
                                 className="!w-full"
                                 required
@@ -62,7 +62,9 @@ export function ReportFilters({ filters, additionalFilters }: ReportFiltersProps
                             <DatePicker
                                 id="date_to"
                                 selected={dateTo}
-                                onChange={(e) => setDateTo(e)}
+                                onChange={(e) => {
+                                    setDateTo(e);
+                                }}
                                 placeholder={translate('To Date')}
                                 className="!w-full"
                                 required

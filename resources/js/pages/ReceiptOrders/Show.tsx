@@ -19,7 +19,7 @@ export default function ShowReceiptOrder() {
     const permissions = auth?.permissions || [];
     const getInitials = useInitials();
     useEffect(() => {
-        const main = document.querySelector('main[data-slot="sidebar-inset"]') as HTMLElement | null;
+        const main = document.querySelector('main[data-slot="sidebar-inset"]');
         if (main) main.style.overflowX = 'visible';
         return () => {
             if (main) main.style.overflowX = '';
@@ -85,7 +85,9 @@ export default function ShowReceiptOrder() {
                     labelClassName: 'hidden sm:inline',
                     icon: <ArrowLeft className="h-4 w-4 sm:me-2" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('receipt-orders.index')),
+                    onClick: () => {
+                        router.visit(route('receipt-orders.index'));
+                    },
                 },
             ]}
         >
@@ -105,14 +107,14 @@ export default function ShowReceiptOrder() {
                                 },
                                 {
                                     label: translate('Receipt Date'),
-                                    value: formatDate(receiptOrder.receipt_date),
+                                    value: window.kbSettings.formatDateTimeSimple(receiptOrder.receipt_date),
                                     icon: Calendar,
                                     iconCls: 'text-orange-600',
                                     blobCls: 'bg-orange-50 dark:bg-orange-900/30',
                                 },
                                 {
                                     label: translate('Expected Date'),
-                                    value: formatDate(receiptOrder.expected_date),
+                                    value: window.kbSettings.formatDateTimeSimple(receiptOrder.expected_date),
                                     icon: Calendar,
                                     iconCls: 'text-purple-600',
                                     blobCls: 'bg-purple-50 dark:bg-purple-900/30',
@@ -387,7 +389,9 @@ export default function ShowReceiptOrder() {
                                     <Button
                                         variant="outline"
                                         className="w-full"
-                                        onClick={() => router.visit(route('receipt-orders.edit', receiptOrder.id))}
+                                        onClick={() => {
+                                            router.visit(route('receipt-orders.edit', receiptOrder.id));
+                                        }}
                                     >
                                         <Edit className="mr-2 h-4 w-4" />
                                         {translate('Edit Receipt Order')}

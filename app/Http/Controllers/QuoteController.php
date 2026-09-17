@@ -173,7 +173,7 @@ class QuoteController extends Controller
         $quote->calculateTotals();
 
         // Fire QuoteCreated event for sending email and notification
-        if ($quote && !IsDemo()) {
+        if ($quote) {
             event(new QuoteCreated($quote));
         }
 
@@ -341,7 +341,7 @@ class QuoteController extends Controller
         $quote->update(['status' => $newStatus]);
 
         // Fire QuoteStatusChanged event if email notification is enabled
-        if (isEmailTemplateEnabled('Quote Status Changed', createdBy()) && !IsDemo()) {
+        if (isEmailTemplateEnabled('Quote Status Changed', createdBy())) {
             event(new QuoteStatusChanged($quote, $oldStatus, $newStatus));
         }
 
@@ -392,7 +392,7 @@ class QuoteController extends Controller
 
         $quote->fill($validated);
         // Check if status is changing and fire event if email notification is enabled
-        if (isEmailTemplateEnabled('Quote Status Changed', createdBy()) && $quote->isDirty('status') && !IsDemo()) {
+        if (isEmailTemplateEnabled('Quote Status Changed', createdBy()) && $quote->isDirty('status')) {
             $oldStatus = $quote->getOriginal('status');
             $newStatus = $quote->status;
 

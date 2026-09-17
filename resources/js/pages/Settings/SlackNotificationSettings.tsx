@@ -1,5 +1,5 @@
 import { toast } from '@components/CustomToast';
-import { SettingsSection } from '@components/settings-section';
+import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
 import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
@@ -7,7 +7,7 @@ import { Switch } from '@components/UserInterface/Switch';
 import { router } from '@inertiajs/react';
 import { route } from '@utils/Routes';
 import axios from 'axios';
-import { Bell, Link, Save, Send, Slack } from 'lucide-react';
+import { Bell, Link, Save, Send, MessagesCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -171,7 +171,9 @@ export default function SlackNotificationSettings() {
                                     <Input
                                         value={slackWebhookUrl}
                                         required={true}
-                                        onChange={(e) => setSlackWebhookUrl(e.target.value)}
+                                        onChange={(e) => {
+                                            setSlackWebhookUrl(e.target.value);
+                                        }}
                                         placeholder="https://hooks.slack.com/services/..."
                                         className="font-mono"
                                     />
@@ -193,7 +195,9 @@ export default function SlackNotificationSettings() {
                                             <Switch
                                                 id={item.name}
                                                 checked={notifications[item.name] || false}
-                                                onCheckedChange={(checked) => handleToggle(item.name, checked)}
+                                                onCheckedChange={(checked) => {
+                                                    handleToggle(item.name, checked);
+                                                }}
                                             />
                                         </div>
                                     ))}
@@ -234,7 +238,7 @@ export default function SlackNotificationSettings() {
                         {/* Setup Instructions */}
                         <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-6">
                             <div className="mb-2 flex items-center gap-2">
-                                <Slack className="h-4 w-4 text-blue-600" />
+                                <MessagesCircle className="h-4 w-4 text-blue-600" />
                                 <h3 className="text-sm font-medium text-blue-900">{translate('Slack Setup Instructions')}</h3>
                             </div>
                             <ol className="space-y-2 text-xs text-blue-800">

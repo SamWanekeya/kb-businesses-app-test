@@ -108,7 +108,7 @@ export function MidtransPaymentForm({
 
     const handlePaymentSuccess = (result: any, orderId: string) => {
         router.post(
-            route('midtrans.payment'),
+            route('subscriptions.midtrans.payment'),
             {
                 plan_id: planId,
                 billing_cycle: billingCycle,

@@ -123,10 +123,10 @@ class FedaPayPaymentController extends Controller
                     'payment_id' => $transactionId,
                 ]);
 
-                return redirect()->route('plans.index')->with('success', __('Payment successful and plan activated'));
+                return redirect()->route('subscriptions.plans.index')->with('success', __('Payment successful and plan activated'));
             }
 
-            return redirect()->route('plans.index')->with('error', __('Payment was not completed'));
+            return redirect()->route('subscriptions.plans.index')->with('error', __('Payment was not completed'));
 
         } catch (Exception $e) {
             return response()->json(['error' => __('Callback processing failed')], 500);

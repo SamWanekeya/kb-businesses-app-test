@@ -1,6 +1,6 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
-import { CrudTable } from '@components/CrudTable';
+import CrudFormModal from '@components/CrudFormModal';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import Pagination from '@components/UserInterface/Pagination';
@@ -274,7 +274,9 @@ export default function Announcements() {
                           {
                               label: translate('Dashboard View'),
                               icon: <PanelsTopLeft className="mr-0 h-4 w-4 min-[550px]:mr-2" />,
-                              onClick: () => router.get(route('announcements.dashboard')),
+                              onClick: () => {
+                                  router.get(route('announcements.dashboard'));
+                              },
                               className: 'h-8 w-8 min-[550px]:h-9 min-[550px]:w-auto px-0 min-[550px]:px-4',
                               labelClassName: 'hidden min-[550px]:inline',
                               tooltip: translate('Dashboard View'),
@@ -347,7 +349,9 @@ export default function Announcements() {
                     ).map((tab) => (
                         <button
                             key={tab.value}
-                            onClick={() => handleTabChange(tab.value)}
+                            onClick={() => {
+                                handleTabChange(tab.value);
+                            }}
                             className={`flex items-center gap-1.5 border-b-2 px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
                                 selectedStatus === tab.value
                                     ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
@@ -390,7 +394,9 @@ export default function Announcements() {
                     total={announcements?.total || 0}
                     links={announcements?.links}
                     entityName={translate('announcements')}
-                    onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
+                    onPageChange={(url) => {
+                        router.get(url, {}, { preserveState: true, preserveScroll: true });
+                    }}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
                         router.get(
@@ -412,7 +418,9 @@ export default function Announcements() {
 
             <CrudFormModal
                 isOpen={isFormModalOpen}
-                onClose={() => setIsFormModalOpen(false)}
+                onClose={() => {
+                    setIsFormModalOpen(false);
+                }}
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
@@ -483,7 +491,9 @@ export default function Announcements() {
             {/* Status Modal */}
             <CrudFormModal
                 isOpen={isStatusModalOpen}
-                onClose={() => setIsStatusModalOpen(false)}
+                onClose={() => {
+                    setIsStatusModalOpen(false);
+                }}
                 onSubmit={handleStatusChange}
                 formConfig={{
                     fields: [
@@ -508,7 +518,9 @@ export default function Announcements() {
 
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.title || ''}
                 entityName={translate('announcement')}

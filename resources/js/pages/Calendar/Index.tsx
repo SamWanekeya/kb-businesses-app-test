@@ -4,11 +4,11 @@ import { Button } from '@components/UserInterface/Button';
 import { Card } from '@components/UserInterface/Card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@components/UserInterface/Select';
-import allLocales from '@fullcalendar/core/locales-all';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import dayGridPlugin from '@fullcalendar/react/daygrid';
+import interactionPlugin from '@fullcalendar/react/interaction';
 import FullCalendar from '@fullcalendar/react';
-import timeGridPlugin from '@fullcalendar/timegrid';
+import '@fullcalendar/react/skeleton.css';
+import timeGridPlugin from '@fullcalendar/react/timegrid';
 import { router, usePage } from '@inertiajs/react';
 import { formatTitleCase } from '@utils/Helpers/StringFormatters';
 import { useHasPermission } from '@utils/Permissions';
@@ -43,7 +43,9 @@ export default function CalendarIndex() {
             setViewMode(window.innerWidth < 769 ? 'timeGridDay' : 'dayGridMonth');
         };
         window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
     }, []);
 
     const isGoogleCalendarSynced = settings?.is_googlecalendar_sync === '1' || settings?.is_googlecalendar_sync === true;
@@ -328,7 +330,7 @@ export default function CalendarIndex() {
                         </div>
                         <FullCalendar
                             key={`${viewMode}-${calendarLocale}`}
-                            locales={allLocales}
+                            // locales={allLocales}
                             locale={calendarLocale}
                             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                             initialView={viewMode}
@@ -412,7 +414,7 @@ export default function CalendarIndex() {
                                         <div
                                             key={i}
                                             className="hover:bg-muted/50 flex h-[72px] cursor-pointer items-start gap-3 border-b p-4 transition-colors last:border-0"
-                                            onClick={() =>
+                                            onClick={() => {
                                                 handleEventClick({
                                                     jsEvent: {
                                                         preventDefault: () => {},
@@ -421,8 +423,8 @@ export default function CalendarIndex() {
                                                         ...event,
                                                         extendedProps: event,
                                                     },
-                                                })
-                                            }
+                                                });
+                                            }}
                                         >
                                             <div
                                                 className={`mt-0.5 shrink-0 rounded-md p-2 ${

@@ -208,7 +208,9 @@ export default function DocumentTypes() {
                                     id="type_name"
                                     type="text"
                                     value={formData.type_name}
-                                    onChange={(e) => setFormData({ ...formData, type_name: e.target.value })}
+                                    onChange={(e) => {
+                                        setFormData({ ...formData, type_name: e.target.value });
+                                    }}
                                     placeholder={translate('e.g. Contract, NDA, Invoice, Report')}
                                     className={formErrors.type_name ? 'border-red-500' : ''}
                                     disabled={!canCreate && !canEdit}
@@ -220,7 +222,9 @@ export default function DocumentTypes() {
                                 <Label htmlFor="status">{translate('Status')}</Label>
                                 <Select
                                     value={formData.status}
-                                    onValueChange={(value) => setFormData({ ...formData, status: value })}
+                                    onValueChange={(value) => {
+                                        setFormData({ ...formData, status: value });
+                                    }}
                                     disabled={!canCreate && !canEdit}
                                 >
                                     <SelectTrigger className={formErrors.status ? 'border-red-500' : ''}>
@@ -259,7 +263,9 @@ export default function DocumentTypes() {
                                         type="text"
                                         placeholder={translate('Search document types...')}
                                         value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        onChange={(e) => {
+                                            setSearchTerm(e.target.value);
+                                        }}
                                         onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)}
                                         className="pl-10"
                                     />
@@ -361,7 +367,9 @@ export default function DocumentTypes() {
                                                                             <Button
                                                                                 variant="ghost"
                                                                                 size="sm"
-                                                                                onClick={() => handleAction('edit', item)}
+                                                                                onClick={() => {
+                                                                                    handleAction('edit', item);
+                                                                                }}
                                                                                 className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"
                                                                             >
                                                                                 <Edit className="h-4 w-4 text-gray-500" />
@@ -378,7 +386,9 @@ export default function DocumentTypes() {
                                                                             <Button
                                                                                 variant="ghost"
                                                                                 size="sm"
-                                                                                onClick={() => handleAction('toggle-status', item)}
+                                                                                onClick={() => {
+                                                                                    handleAction('toggle-status', item);
+                                                                                }}
                                                                                 className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"
                                                                             >
                                                                                 <Lock className="h-4 w-4 text-gray-500" />
@@ -399,7 +409,9 @@ export default function DocumentTypes() {
                                                                             <Button
                                                                                 variant="ghost"
                                                                                 size="sm"
-                                                                                onClick={() => handleAction('delete', item)}
+                                                                                onClick={() => {
+                                                                                    handleAction('delete', item);
+                                                                                }}
                                                                                 className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"
                                                                             >
                                                                                 <Trash2 className="h-4 w-4 text-gray-500" />
@@ -449,7 +461,9 @@ export default function DocumentTypes() {
                                                                     <Button
                                                                         variant="ghost"
                                                                         size="sm"
-                                                                        onClick={() => handleAction('edit', item)}
+                                                                        onClick={() => {
+                                                                            handleAction('edit', item);
+                                                                        }}
                                                                         className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"
                                                                     >
                                                                         <Edit className="h-4 w-4 text-gray-500" />
@@ -466,7 +480,9 @@ export default function DocumentTypes() {
                                                                     <Button
                                                                         variant="ghost"
                                                                         size="sm"
-                                                                        onClick={() => handleAction('toggle-status', item)}
+                                                                        onClick={() => {
+                                                                            handleAction('toggle-status', item);
+                                                                        }}
                                                                         className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"
                                                                     >
                                                                         <Lock className="h-4 w-4 text-gray-500" />
@@ -485,7 +501,9 @@ export default function DocumentTypes() {
                                                                     <Button
                                                                         variant="ghost"
                                                                         size="sm"
-                                                                        onClick={() => handleAction('delete', item)}
+                                                                        onClick={() => {
+                                                                            handleAction('delete', item);
+                                                                        }}
                                                                         className="h-8 w-8 p-0 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700"
                                                                     >
                                                                         <Trash2 className="h-4 w-4 text-gray-500" />
@@ -509,7 +527,9 @@ export default function DocumentTypes() {
                                             links={documentTypes?.links}
                                             entityName={translate('document types')}
                                             hidePerPage={true}
-                                            onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
+                                            onPageChange={(url) => {
+                                                router.get(url, {}, { preserveState: true, preserveScroll: true });
+                                            }}
                                         />
                                     </div>
                                 )}
@@ -537,7 +557,9 @@ export default function DocumentTypes() {
             </div>
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.type_name || ''}
                 entityName={translate('document type')}

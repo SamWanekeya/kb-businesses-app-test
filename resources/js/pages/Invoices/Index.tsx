@@ -1,6 +1,6 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
-import { CrudTable } from '@components/CrudTable';
+import CrudFormModal from '@components/CrudFormModal';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/UserInterface/Avatar';
@@ -360,7 +360,9 @@ export default function Invoices() {
             label: translate('Add Invoice'),
             icon: <Plus className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
             variant: 'default',
-            onClick: () => handleAddNew(),
+            onClick: () => {
+                handleAddNew();
+            },
             className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
             labelClassName: 'hidden min-[400px]:inline',
             tooltip: translate('Add Invoice'),
@@ -662,7 +664,9 @@ export default function Invoices() {
                                         size="sm"
                                         variant="outline"
                                         className="border-red-600 text-red-600 hover:bg-red-50"
-                                        onClick={() => handleRejectPayment(payment)}
+                                        onClick={() => {
+                                            handleRejectPayment(payment);
+                                        }}
                                     >
                                         <XCircle className="mr-1 h-4 w-4" />
                                         {translate('Reject')}
@@ -701,7 +705,9 @@ export default function Invoices() {
                     total={invoices?.total || 0}
                     links={invoices?.links}
                     entityName={translate('invoices')}
-                    onPageChange={(url) => router.get(url)}
+                    onPageChange={(url) => {
+                        router.get(url);
+                    }}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
                         router.get(
@@ -724,7 +730,9 @@ export default function Invoices() {
 
             <CrudFormModal
                 isOpen={isStatusModalOpen}
-                onClose={() => setIsStatusModalOpen(false)}
+                onClose={() => {
+                    setIsStatusModalOpen(false);
+                }}
                 onSubmit={handleStatusChange}
                 formConfig={{
                     fields: [
@@ -753,7 +761,9 @@ export default function Invoices() {
 
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
                 entityName={translate('invoice')}
@@ -776,13 +786,20 @@ export default function Invoices() {
                             <Textarea
                                 id="reject-notes"
                                 value={rejectNotes}
-                                onChange={(e) => setRejectNotes(e.target.value)}
+                                onChange={(e) => {
+                                    setRejectNotes(e.target.value);
+                                }}
                                 placeholder={translate('Enter reason for rejection...')}
                                 className="mt-1"
                             />
                         </div>
                         <div className="flex justify-end space-x-2">
-                            <Button variant="outline" onClick={() => setShowRejectModal(false)}>
+                            <Button
+                                variant="outline"
+                                onClick={() => {
+                                    setShowRejectModal(false);
+                                }}
+                            >
                                 {translate('Cancel')}
                             </Button>
                             <Button variant="destructive" onClick={handleRejectConfirm}>

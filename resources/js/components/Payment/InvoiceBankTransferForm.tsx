@@ -66,7 +66,7 @@ export function InvoiceBankTransferForm({ invoiceId, amount, paymentType, bankDe
         formData.append('amount', amount.toString());
         formData.append('receipt', receipt);
 
-        router.post(route('invoice.bank.payment'), formData, {
+        router.post(route('invoice.subscriptions.bank.payment'), formData, {
             onSuccess: () => {
                 toast.success(translate('Payment request submitted successfully'));
                 onSuccess();
@@ -92,7 +92,13 @@ export function InvoiceBankTransferForm({ invoiceId, amount, paymentType, bankDe
                             <span className="font-medium">
                                 {translate('Amount')}: ${amount}
                             </span>
-                            <Button variant="outline" size="sm" onClick={() => copyToClipboard(amount.toString())}>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                    copyToClipboard(amount.toString());
+                                }}
+                            >
                                 <Copy className="mr-1 h-3 w-3" />
                                 {translate('Copy')}
                             </Button>

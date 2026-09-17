@@ -102,7 +102,9 @@ export default function OpportunityShow() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('opportunities.index')),
+                    onClick: () => {
+                        router.visit(route('opportunities.index'));
+                    },
                 },
             ]}
             noPadding
@@ -135,7 +137,7 @@ export default function OpportunityShow() {
                             },
                             {
                                 label: translate('Close Date'),
-                                value: formatDate(opportunity.close_date),
+                                value: window.kbSettings.formatDateTimeSimple(opportunity.close_date),
                                 icon: Clock,
                                 iconCls: 'text-purple-600',
                                 blobCls: 'bg-purple-50 dark:bg-purple-900/30',
@@ -722,7 +724,9 @@ export default function OpportunityShow() {
                                                 <Textarea
                                                     placeholder={translate('Write a comment...')}
                                                     value={newComment}
-                                                    onChange={(e) => setNewComment(e.target.value)}
+                                                    onChange={(e) => {
+                                                        setNewComment(e.target.value);
+                                                    }}
                                                     className="resize-none border-0 bg-transparent focus-visible:ring-0"
                                                     rows={2}
                                                 />
@@ -865,7 +869,9 @@ export default function OpportunityShow() {
                                                                     <div className="space-y-3">
                                                                         <Textarea
                                                                             value={editCommentText}
-                                                                            onChange={(e) => setEditCommentText(e.target.value)}
+                                                                            onChange={(e) => {
+                                                                                setEditCommentText(e.target.value);
+                                                                            }}
                                                                             className="w-full resize-none border-emerald-300 focus-visible:ring-emerald-400"
                                                                             rows={3}
                                                                             autoFocus
@@ -874,7 +880,9 @@ export default function OpportunityShow() {
                                                                             <Button
                                                                                 size="sm"
                                                                                 variant="outline"
-                                                                                onClick={() => setEditingComment(null)}
+                                                                                onClick={() => {
+                                                                                    setEditingComment(null);
+                                                                                }}
                                                                             >
                                                                                 {translate('Cancel')}
                                                                             </Button>
@@ -931,7 +939,9 @@ export default function OpportunityShow() {
             {/* Delete Activity Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={() => {
                     router.delete(route('opportunities.delete-activity', { opportunity: opportunity.id, activity: currentActivity.id }), {
                         preserveScroll: true,
@@ -945,7 +955,9 @@ export default function OpportunityShow() {
             {/* Delete All Activities Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteAllModalOpen}
-                onClose={() => setIsDeleteAllModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteAllModalOpen(false);
+                }}
                 onConfirm={() => {
                     router.delete(route('opportunities.delete-activities', opportunity.id), {
                         preserveScroll: true,

@@ -84,7 +84,9 @@ function SearchSelect({
         <div className="relative">
             <button
                 type="button"
-                onClick={() => setOpen((p) => !p)}
+                onClick={() => {
+                    setOpen((p) => !p);
+                }}
                 className={`flex w-full items-center justify-between rounded-md border bg-white px-3 py-2 text-left text-sm focus:ring-1 focus:ring-gray-400 focus:outline-none ${error ? 'border-red-500' : 'border-gray-300'}`}
             >
                 <span className={selected ? 'text-gray-900' : 'text-gray-400'}>{selected?.label || placeholder || translate('Select...')}</span>
@@ -98,7 +100,9 @@ function SearchSelect({
                             className="w-full rounded border border-gray-200 px-2 py-1 text-sm focus:outline-none"
                             placeholder={translate('Search...')}
                             value={search}
-                            onChange={(e) => setSearch(e.target.value)}
+                            onChange={(e) => {
+                                setSearch(e.target.value);
+                            }}
                         />
                     </div>
                     <div className="max-h-48 overflow-y-auto">
@@ -186,7 +190,16 @@ export default function SalesOrderEdit() {
                   discount_type: (p.pivot?.discount_type === 'none' ? '' : p.pivot?.discount_type) || ('' as DiscountType),
                   discount_value: parseFloat(p.pivot?.discount_value) || 0,
               }))
-            : [{ id: crypto.randomUUID(), product_id: '', quantity: 1, unit_price: 0, discount_type: '' as DiscountType, discount_value: 0 }],
+            : [
+                  {
+                      id: crypto.randomUUID(),
+                      product_id: '',
+                      quantity: 1,
+                      unit_price: 0,
+                      discount_type: '',
+                      discount_value: 0,
+                  },
+              ],
     });
     const [errors, setErrors] = useState<Errors>({});
     const [submitting, setSubmitting] = useState(false);
@@ -226,20 +239,29 @@ export default function SalesOrderEdit() {
         }
     };
 
-    const addLine = () =>
+    const addLine = () => {
         setForm((p) => ({
             ...p,
             products: [
                 ...p.products,
-                { id: crypto.randomUUID(), product_id: '', quantity: 1, unit_price: 0, discount_type: '' as DiscountType, discount_value: 0 },
+                {
+                    id: crypto.randomUUID(),
+                    product_id: '',
+                    quantity: 1,
+                    unit_price: 0,
+                    discount_type: '',
+                    discount_value: 0,
+                },
             ],
         }));
+    };
 
-    const removeLine = (id: string) =>
+    const removeLine = (id: string) => {
         setForm((p) => ({
             ...p,
             products: p.products.length <= 1 ? p.products : p.products.filter((l) => l.id !== id),
         }));
+    };
 
     const handleQuoteChange = useCallback(async (quoteId: string) => {
         setranslate('quote_id', quoteId);
@@ -375,7 +397,7 @@ export default function SalesOrderEdit() {
             onError: (errs) => {
                 setSubmitting(false);
                 toast.dismiss(toastId);
-                setErrors(errs as Errors);
+                setErrors(errs);
             },
         });
     };
@@ -409,7 +431,9 @@ export default function SalesOrderEdit() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('sales-orders.index', salesOrder.id)),
+                    onClick: () => {
+                        router.visit(route('sales-orders.index', salesOrder.id));
+                    },
                 },
             ]}
         >
@@ -652,7 +676,12 @@ export default function SalesOrderEdit() {
                                                     <span className="text-muted-foreground mb-1 block text-xs font-semibold xl:hidden">
                                                         {translate('Product')} <span className="text-red-500">*</span>
                                                     </span>
-                                                    <Select value={line.product_id} onValueChange={(v) => setLine(line.id, 'product_id', v)}>
+                                                    <Select
+                                                        value={line.product_id}
+                                                        onValueChange={(v) => {
+                                                            setLine(line.id, 'product_id', v);
+                                                        }}
+                                                    >
                                                         <SelectTrigger
                                                             className={errors[`products.${idx}.product_id`] ? 'w-full border-red-500' : 'w-full'}
                                                         >
@@ -686,7 +715,9 @@ export default function SalesOrderEdit() {
                                                         type="number"
                                                         min="1"
                                                         value={line.quantity}
-                                                        onChange={(e) => setLine(line.id, 'quantity', parseInt(e.target.value) || 1)}
+                                                        onChange={(e) => {
+                                                            setLine(line.id, 'quantity', parseInt(e.target.value) || 1);
+                                                        }}
                                                     />
                                                 </td>
                                                 <td className="col-span-1 block w-full px-0 py-0 xl:table-cell xl:w-32 xl:px-4 xl:py-3">
@@ -698,7 +729,9 @@ export default function SalesOrderEdit() {
                                                         min="0"
                                                         step="0.01"
                                                         value={line.unit_price}
-                                                        onChange={(e) => setLine(line.id, 'unit_price', parseFloat(e.target.value) || 0)}
+                                                        onChange={(e) => {
+                                                            setLine(line.id, 'unit_price', parseFloat(e.target.value) || 0);
+                                                        }}
                                                         placeholder="0.00"
                                                     />
                                                 </td>
@@ -708,9 +741,9 @@ export default function SalesOrderEdit() {
                                                     </span>
                                                     <Select
                                                         value={line.discount_type || 'none'}
-                                                        onValueChange={(val) =>
-                                                            setLine(line.id, 'discount_type', (val === 'none' ? '' : val) as DiscountType)
-                                                        }
+                                                        onValueChange={(val) => {
+                                                            setLine(line.id, 'discount_type', val === 'none' ? '' : val);
+                                                        }}
                                                     >
                                                         <SelectTrigger className="w-full">
                                                             <SelectValue placeholder={translate('None')} />
@@ -732,7 +765,9 @@ export default function SalesOrderEdit() {
                                                         step="0.01"
                                                         value={line.discount_value}
                                                         disabled={!line.discount_type}
-                                                        onChange={(e) => setLine(line.id, 'discount_value', parseFloat(e.target.value) || 0)}
+                                                        onChange={(e) => {
+                                                            setLine(line.id, 'discount_value', parseFloat(e.target.value) || 0);
+                                                        }}
                                                         className="disabled:opacity-40"
                                                         placeholder="0"
                                                     />
@@ -761,7 +796,9 @@ export default function SalesOrderEdit() {
                                                 <td className="col-span-1 block w-full border-t px-0 py-0 pt-2 text-right sm:col-span-2 xl:table-cell xl:w-12 xl:border-t-0 xl:px-4 xl:py-3 xl:pt-0 xl:text-left">
                                                     <button
                                                         type="button"
-                                                        onClick={() => removeLine(line.id)}
+                                                        onClick={() => {
+                                                            removeLine(line.id);
+                                                        }}
                                                         disabled={form.products.length <= 1}
                                                         className="cursor-pointer rounded p-1.5 text-gray-500 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
                                                     >
@@ -805,7 +842,9 @@ export default function SalesOrderEdit() {
                             <CardTitle className="text-base font-semibold">{translate('Billing & Shipping Address')}</CardTitle>
                             <button
                                 type="button"
-                                onClick={() => setShowShipping((p) => !p)}
+                                onClick={() => {
+                                    setShowShipping((p) => !p);
+                                }}
                                 className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700"
                             >
                                 {showShipping ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
@@ -926,7 +965,13 @@ export default function SalesOrderEdit() {
 
                 {/* Submit */}
                 <div className="flex items-center justify-end gap-3 pb-6">
-                    <Button type="button" variant="outline" onClick={() => router.visit(route('sales-orders.show', salesOrder.id))}>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                            router.visit(route('sales-orders.show', salesOrder.id));
+                        }}
+                    >
                         {translate('Cancel')}
                     </Button>
                     <Button type="submit" disabled={submitting}>

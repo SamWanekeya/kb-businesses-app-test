@@ -56,7 +56,7 @@ export function InvoiceFlutterwavePaymentForm({
                     if (data.status === 'successful') {
                         // Process payment on server
                         axios
-                            .post(route('invoice.flutterwave.payment'), {
+                            .post(route('invoice.subscriptions.flutterwave.payment'), {
                                 invoice_id: invoiceId,
                                 amount: amount,
                                 payment_type: paymentType,

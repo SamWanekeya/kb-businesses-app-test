@@ -1,6 +1,6 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
 import { toast } from '@components/CustomToast';
-import { SettingsSection } from '@components/settings-section';
+import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent } from '@components/UserInterface/Card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/UserInterface/Dialog';
@@ -174,7 +174,9 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                                                                     variant="ghost"
                                                                     size="icon"
                                                                     className="h-8 w-8"
-                                                                    onClick={() => handleEdit(webhook)}
+                                                                    onClick={() => {
+                                                                        handleEdit(webhook);
+                                                                    }}
                                                                 >
                                                                     <Edit className="h-4 w-4 text-gray-500" />
                                                                 </Button>
@@ -191,7 +193,9 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                                                                     variant="ghost"
                                                                     size="icon"
                                                                     className="h-8 w-8"
-                                                                    onClick={() => handleDeleteClick(webhook)}
+                                                                    onClick={() => {
+                                                                        handleDeleteClick(webhook);
+                                                                    }}
                                                                 >
                                                                     <Trash2 className="h-4 w-4 text-gray-500" />
                                                                 </Button>
@@ -221,7 +225,9 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                                         </Label>
                                         <Select
                                             value={formData.module}
-                                            onValueChange={(value) => setFormData((prev) => ({ ...prev, module: value }))}
+                                            onValueChange={(value) => {
+                                                setFormData((prev) => ({ ...prev, module: value }));
+                                            }}
                                         >
                                             <SelectTrigger>
                                                 <SelectValue placeholder={translate('Select module')} />
@@ -242,7 +248,9 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                                         <Label htmlFor="method">{translate('Method')}</Label>
                                         <Select
                                             value={formData.method}
-                                            onValueChange={(value) => setFormData((prev) => ({ ...prev, method: value }))}
+                                            onValueChange={(value) => {
+                                                setFormData((prev) => ({ ...prev, method: value }));
+                                            }}
                                         >
                                             <SelectTrigger>
                                                 <SelectValue placeholder={translate('Select method')} />
@@ -262,12 +270,20 @@ export default function WebhookSettings({ webhooks = [] }: WebhookSettingsProps)
                                             id="url"
                                             placeholder="https://kakbima.dev/webhook"
                                             value={formData.url}
-                                            onChange={(e) => setFormData((prev) => ({ ...prev, url: e.target.value }))}
+                                            onChange={(e) => {
+                                                setFormData((prev) => ({ ...prev, url: e.target.value }));
+                                            }}
                                         />
                                     </div>
 
                                     <div className="flex justify-end gap-2">
-                                        <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            onClick={() => {
+                                                setIsDialogOpen(false);
+                                            }}
+                                        >
                                             {translate('Cancel')}
                                         </Button>
                                         <Button type="submit">{translate('Save')}</Button>

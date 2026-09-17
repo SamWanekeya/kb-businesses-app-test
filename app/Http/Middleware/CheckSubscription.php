@@ -38,7 +38,7 @@ class CheckSubscription
     public function handle(Request $request, Closure $next): Response
     {
         // Allow access to subscription pages
-        if ($request->routeIs('subscriptions.plans.index')) {
+        if ($request->routeIs('subscriptions.subscriptions.plans.index')) {
             return $next($request);
         }
 
@@ -68,7 +68,7 @@ class CheckSubscription
         }
 
         return redirect()
-            ->route('subscriptions.plans.index')
+            ->route('subscriptions.subscriptions.plans.index')
             ->with('error', $result->message);
     }
 

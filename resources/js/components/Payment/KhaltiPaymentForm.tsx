@@ -113,7 +113,7 @@ export function KhaltiPaymentForm({
 
     const handlePaymentSuccess = (token: string, amount: number) => {
         router.post(
-            route('khalti.payment'),
+            route('subscriptions.khalti.payment'),
             {
                 plan_id: planId,
                 billing_cycle: billingCycle,

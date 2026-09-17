@@ -1,7 +1,7 @@
 // pages/coupons/index.tsx
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
-import { CrudTable } from '@components/CrudTable';
+import CrudFormModal from '@components/CrudFormModal';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import { Button } from '@components/UserInterface/Button';
@@ -291,7 +291,9 @@ export default function CouponsPage() {
             label: translate('Add Coupon'),
             icon: <Plus className="mr-0 h-4 w-4 min-[380px]:mr-2" />,
             variant: 'default',
-            onClick: () => handleAddNew(),
+            onClick: () => {
+                handleAddNew();
+            },
             className: 'h-8 w-8 min-[380px]:h-9 min-[380px]:w-auto px-0 min-[380px]:px-4',
             labelClassName: 'hidden min-[380px]:inline',
             tooltip: translate('Add Coupon'),
@@ -378,7 +380,12 @@ export default function CouponsPage() {
             label: translate('Status'),
             render: (_, row) => (
                 <div className="flex items-center">
-                    <Switch checked={!!row.status} onCheckedChange={() => handleToggleStatus(row)} />
+                    <Switch
+                        checked={!!row.status}
+                        onCheckedChange={() => {
+                            handleToggleStatus(row);
+                        }}
+                    />
                 </div>
             ),
         },
@@ -502,7 +509,9 @@ export default function CouponsPage() {
                     total={coupons?.total || 0}
                     links={coupons?.links}
                     entityName={translate('coupons')}
-                    onPageChange={(url) => router.get(url)}
+                    onPageChange={(url) => {
+                        router.get(url);
+                    }}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
                         router.get(
@@ -526,7 +535,9 @@ export default function CouponsPage() {
             {/* Form Modal */}
             <CrudFormModal
                 isOpen={isFormModalOpen}
-                onClose={() => setIsFormModalOpen(false)}
+                onClose={() => {
+                    setIsFormModalOpen(false);
+                }}
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
@@ -603,7 +614,9 @@ export default function CouponsPage() {
                                                 />
                                                 <Button
                                                     type="button"
-                                                    onClick={() => handleChange(field.name, generateCouponCode())}
+                                                    onClick={() => {
+                                                        handleChange(field.name, generateCouponCode());
+                                                    }}
                                                     variant="default"
                                                 >
                                                     {translate('Generate')}
@@ -616,7 +629,9 @@ export default function CouponsPage() {
                                                 type="text"
                                                 placeholder={field.placeholder}
                                                 value={formData[field.name] || ''}
-                                                onChange={(e) => handleChange(field.name, e.target.value)}
+                                                onChange={(e) => {
+                                                    handleChange(field.name, e.target.value);
+                                                }}
                                             />
                                         )}
                                     </div>
@@ -667,7 +682,9 @@ export default function CouponsPage() {
             {/* Delete Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.name || ''}
                 entityName="coupon"

@@ -82,7 +82,9 @@ export default function LeadShow() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('leads.index')),
+                    onClick: () => {
+                        router.visit(route('leads.index'));
+                    },
                 },
             ]}
             noPadding
@@ -719,7 +721,9 @@ export default function LeadShow() {
                                                 <Textarea
                                                     placeholder={translate('Write a comment...')}
                                                     value={newComment}
-                                                    onChange={(e) => setNewComment(e.target.value)}
+                                                    onChange={(e) => {
+                                                        setNewComment(e.target.value);
+                                                    }}
                                                     className="resize-none border-0 bg-transparent focus-visible:ring-0"
                                                     rows={2}
                                                 />
@@ -875,7 +879,9 @@ export default function LeadShow() {
                                                                     <div className="space-y-3">
                                                                         <Textarea
                                                                             value={editCommentText}
-                                                                            onChange={(e) => setEditCommentText(e.target.value)}
+                                                                            onChange={(e) => {
+                                                                                setEditCommentText(e.target.value);
+                                                                            }}
                                                                             className="w-full resize-none border-emerald-300 focus-visible:ring-emerald-400"
                                                                             rows={3}
                                                                             autoFocus
@@ -884,7 +890,9 @@ export default function LeadShow() {
                                                                             <Button
                                                                                 size="sm"
                                                                                 variant="outline"
-                                                                                onClick={() => setEditingComment(null)}
+                                                                                onClick={() => {
+                                                                                    setEditingComment(null);
+                                                                                }}
                                                                             >
                                                                                 {translate('Cancel')}
                                                                             </Button>
@@ -955,7 +963,9 @@ export default function LeadShow() {
             {/* Delete Activity Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={() => {
                     router.delete(route('leads.delete-activity', { lead: lead.id, activity: currentActivity.id }), {
                         preserveScroll: true,
@@ -969,7 +979,9 @@ export default function LeadShow() {
             {/* Delete All Activities Modal */}
             <CrudDeleteModal
                 isOpen={isDeleteAllModalOpen}
-                onClose={() => setIsDeleteAllModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteAllModalOpen(false);
+                }}
                 onConfirm={() => {
                     router.delete(route('leads.delete-activities', lead.id), {
                         preserveScroll: true,

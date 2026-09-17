@@ -11,7 +11,7 @@ export default function UserShow() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard') },
-        { title: translate('Users'), href: route('users.index') },
+        { title: translate('Users'), href: route('users-permissions.users.index') },
         { title: user.name },
     ];
 
@@ -33,7 +33,9 @@ export default function UserShow() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => window.history.back(),
+                    onClick: () => {
+                        window.history.back();
+                    },
                 },
             ]}
         >
@@ -87,7 +89,7 @@ export default function UserShow() {
                                 </div>
                                 <div>
                                     <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{translate('Created At')}</label>
-                                    <p className="mt-2 text-base font-medium text-gray-700">{formatDate(user.created_at)}</p>
+                                    <p className="mt-2 text-base font-medium text-gray-700">{window.kbSettings.formatDateTimeSimple(user.created_at)}</p>
                                 </div>
                                 <div>
                                     <label className="text-xs font-bold tracking-wide text-gray-500 uppercase">{translate('Created By')}</label>

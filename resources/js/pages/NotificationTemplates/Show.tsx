@@ -35,16 +35,13 @@ export default function NotificationTemplateShow({ template, languages, variable
     const { flash } = usePage().props;
     const [currentLang, setCurrentLang] = useState(Object.keys(languages)[0] || 'en');
     const [templateLangs, setTemplateLangs] = useState(
-        template.notification_template_langs.reduce(
-            (acc, lang) => {
-                acc[lang.lang] = {
-                    title: lang.title,
-                    content: lang.content,
-                };
-                return acc;
-            },
-            {} as Record<string, { title: string; content: string }>,
-        ),
+        template.notification_template_langs.reduce<Record<string, { title: string; content: string }>>((acc, lang) => {
+            acc[lang.lang] = {
+                title: lang.title,
+                content: lang.content,
+            };
+            return acc;
+        }, {}),
     );
 
     const handleTitleChange = (lang: string, title: string) => {
@@ -88,7 +85,9 @@ export default function NotificationTemplateShow({ template, languages, variable
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('notification-templates.index')),
+                    onClick: () => {
+                        router.visit(route('notification-templates.index'));
+                    },
                 },
             ]}
         >
@@ -178,7 +177,9 @@ export default function NotificationTemplateShow({ template, languages, variable
                                                 <Input
                                                     id={`title-${code}`}
                                                     value={templateLangs[code]?.title || ''}
-                                                    onChange={(e) => handleTitleChange(code, e.target.value)}
+                                                    onChange={(e) => {
+                                                        handleTitleChange(code, e.target.value);
+                                                    }}
                                                     placeholder={translate(
                                                         'Enter notification title (you can use variables like {organization_name})',
                                                     )}
@@ -193,7 +194,9 @@ export default function NotificationTemplateShow({ template, languages, variable
                                                 <Textarea
                                                     id={`content-${code}`}
                                                     value={templateLangs[code]?.content || ''}
-                                                    onChange={(e) => handleContentChange(code, e.target.value)}
+                                                    onChange={(e) => {
+                                                        handleContentChange(code, e.target.value);
+                                                    }}
                                                     placeholder={translate('Write your notification content here. You can use variables...')}
                                                     className="focus:ring-primary min-h-[200px] focus:ring-2"
                                                     rows={8}

@@ -68,7 +68,7 @@ export function BankTransferForm({ planId, planPrice, couponCode, billingCycle, 
         formData.append('amount', planPrice.toString());
         formData.append('receipt', receipt);
 
-        router.post(route('bank.payment'), formData, {
+        router.post(route('subscriptions.bank.payment'), formData, {
             onSuccess: () => {
                 toast.success(translate('Payment request submitted successfully'));
                 onSuccess();
@@ -94,7 +94,13 @@ export function BankTransferForm({ planId, planPrice, couponCode, billingCycle, 
                             <span className="font-medium">
                                 {translate('Amount')}: {window.appSettings.formatCurrency(planPrice)}
                             </span>
-                            <Button variant="outline" size="sm" onClick={() => copyToClipboard(planPrice.toString())}>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                    copyToClipboard(planPrice.toString());
+                                }}
+                            >
                                 <Copy className="mr-1 h-3 w-3" />
                                 {translate('Copy')}
                             </Button>

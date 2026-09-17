@@ -1,5 +1,5 @@
 import { toast } from '@components/CustomToast';
-import { usePaymentProcessor } from '@hooks/usePaymentProcessor';
+import usePaymentProcessor from '@hooks/usePaymentProcessor';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 

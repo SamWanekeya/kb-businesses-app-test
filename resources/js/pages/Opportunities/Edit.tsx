@@ -122,7 +122,9 @@ export default function OpportunityEdit() {
         }
 
         if (Object.keys(clientErrors).length > 0) {
-            Object.entries(clientErrors).forEach(([key, msg]) => setError(key as any, msg));
+            Object.entries(clientErrors).forEach(([key, msg]) => {
+                setError(key as any, msg);
+            });
             return;
         }
 
@@ -143,7 +145,9 @@ export default function OpportunityEdit() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => router.visit(route('opportunities.index')),
+                    onClick: () => {
+                        router.visit(route('opportunities.index'));
+                    },
                 },
             ]}
             noPadding
@@ -164,7 +168,9 @@ export default function OpportunityEdit() {
                                 <Input
                                     id="name"
                                     value={data.name}
-                                    onChange={(e) => handleInputChange('name', e.target.value)}
+                                    onChange={(e) => {
+                                        handleInputChange('name', e.target.value);
+                                    }}
                                     className={errors.name ? 'border-red-500' : ''}
                                     placeholder={translate('eg. Enterprise Software Deal')}
                                 />
@@ -178,7 +184,9 @@ export default function OpportunityEdit() {
                                 <Textarea
                                     id="description"
                                     value={data.description}
-                                    onChange={(e) => handleInputChange('description', e.target.value)}
+                                    onChange={(e) => {
+                                        handleInputChange('description', e.target.value);
+                                    }}
                                     className={errors.description ? 'border-red-500' : ''}
                                     rows={3}
                                     placeholder={translate('Enter opportunity description...')}
@@ -206,7 +214,9 @@ export default function OpportunityEdit() {
                                             id="close_date"
                                             type="date"
                                             value={data.close_date}
-                                            onChange={(e) => handleInputChange('close_date', e.target.value)}
+                                            onChange={(e) => {
+                                                handleInputChange('close_date', e.target.value);
+                                            }}
                                             className={`cursor-pointer ${errors.close_date ? 'border-red-500' : ''}`}
                                         />
                                     </div>
@@ -215,7 +225,12 @@ export default function OpportunityEdit() {
 
                                 <div className="space-y-2">
                                     <Label className="text-sm font-medium">{translate('Status')}</Label>
-                                    <Select value={data.status} onValueChange={(v) => handleInputChange('status', v)}>
+                                    <Select
+                                        value={data.status}
+                                        onValueChange={(v) => {
+                                            handleInputChange('status', v);
+                                        }}
+                                    >
                                         <SelectTrigger className={errors.status ? 'border-red-500' : ''}>
                                             <SelectValue />
                                         </SelectTrigger>
@@ -235,7 +250,9 @@ export default function OpportunityEdit() {
                                 <Textarea
                                     id="notes"
                                     value={data.notes}
-                                    onChange={(e) => handleInputChange('notes', e.target.value)}
+                                    onChange={(e) => {
+                                        handleInputChange('notes', e.target.value);
+                                    }}
                                     className={errors.notes ? 'border-red-500' : ''}
                                     rows={3}
                                     placeholder={translate('Enter any additional notes...')}
@@ -255,7 +272,12 @@ export default function OpportunityEdit() {
                                 <Label className="text-sm font-medium" required>
                                     {translate('Account')}
                                 </Label>
-                                <Select value={data.account_id} onValueChange={(v) => handleInputChange('account_id', v)}>
+                                <Select
+                                    value={data.account_id}
+                                    onValueChange={(v) => {
+                                        handleInputChange('account_id', v);
+                                    }}
+                                >
                                     <SelectTrigger className={errors.account_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={translate('Select account')} />
                                     </SelectTrigger>
@@ -282,7 +304,12 @@ export default function OpportunityEdit() {
                                 <Label className="text-sm font-medium" required>
                                     {translate('Contact')}
                                 </Label>
-                                <Select value={data.contact_id} onValueChange={(v) => handleInputChange('contact_id', v)}>
+                                <Select
+                                    value={data.contact_id}
+                                    onValueChange={(v) => {
+                                        handleInputChange('contact_id', v);
+                                    }}
+                                >
                                     <SelectTrigger className={errors.contact_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={translate('Select contact')} />
                                     </SelectTrigger>
@@ -309,7 +336,12 @@ export default function OpportunityEdit() {
                                 <Label className="text-sm font-medium" required>
                                     {translate('Stage')}
                                 </Label>
-                                <Select value={data.opportunity_stage_id} onValueChange={(v) => handleInputChange('opportunity_stage_id', v)}>
+                                <Select
+                                    value={data.opportunity_stage_id}
+                                    onValueChange={(v) => {
+                                        handleInputChange('opportunity_stage_id', v);
+                                    }}
+                                >
                                     <SelectTrigger className={errors.opportunity_stage_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={translate('Select stage')} />
                                     </SelectTrigger>
@@ -336,7 +368,12 @@ export default function OpportunityEdit() {
                                 <Label className="text-sm font-medium" required>
                                     {translate('Source')}
                                 </Label>
-                                <Select value={data.opportunity_source_id} onValueChange={(v) => handleInputChange('opportunity_source_id', v)}>
+                                <Select
+                                    value={data.opportunity_source_id}
+                                    onValueChange={(v) => {
+                                        handleInputChange('opportunity_source_id', v);
+                                    }}
+                                >
                                     <SelectTrigger className={errors.opportunity_source_id ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={translate('Select source')} />
                                     </SelectTrigger>
@@ -416,7 +453,9 @@ export default function OpportunityEdit() {
                                                         <td className="w-48 px-3 py-2">
                                                             <Select
                                                                 value={row.product_id}
-                                                                onValueChange={(v) => updateProductRow(i, 'product_id', v)}
+                                                                onValueChange={(v) => {
+                                                                    updateProductRow(i, 'product_id', v);
+                                                                }}
                                                             >
                                                                 <SelectTrigger className={errors[`products.${i}.product_id`] ? 'border-red-500' : ''}>
                                                                     <SelectValue placeholder={translate('Select product')} />
@@ -453,7 +492,9 @@ export default function OpportunityEdit() {
                                                                 type="number"
                                                                 min="1"
                                                                 value={row.quantity}
-                                                                onChange={(e) => updateProductRow(i, 'quantity', e.target.value)}
+                                                                onChange={(e) => {
+                                                                    updateProductRow(i, 'quantity', e.target.value);
+                                                                }}
                                                                 className={`w-full text-left ${errors[`products.${i}.quantity`] ? 'border-red-500' : ''}`}
                                                                 placeholder="1"
                                                             />
@@ -467,7 +508,9 @@ export default function OpportunityEdit() {
                                                                 step="0.01"
                                                                 min="0"
                                                                 value={row.unit_price}
-                                                                onChange={(e) => updateProductRow(i, 'unit_price', e.target.value)}
+                                                                onChange={(e) => {
+                                                                    updateProductRow(i, 'unit_price', e.target.value);
+                                                                }}
                                                                 className={`w-full text-left ${errors[`products.${i}.unit_price`] ? 'border-red-500' : ''}`}
                                                                 placeholder="0.00"
                                                             />
@@ -488,7 +531,9 @@ export default function OpportunityEdit() {
                                                         <td className="px-3 py-2 text-left">
                                                             <button
                                                                 type="button"
-                                                                onClick={() => removeProductRow(i)}
+                                                                onClick={() => {
+                                                                    removeProductRow(i);
+                                                                }}
                                                                 disabled={data.products.length <= 1}
                                                                 className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors disabled:cursor-not-allowed disabled:opacity-30"
                                                             >
@@ -519,7 +564,9 @@ export default function OpportunityEdit() {
                                                     </span>
                                                     <button
                                                         type="button"
-                                                        onClick={() => removeProductRow(i)}
+                                                        onClick={() => {
+                                                            removeProductRow(i);
+                                                        }}
                                                         disabled={data.products.length <= 1}
                                                         className="flex h-8 w-8 items-center justify-center rounded-md text-red-500 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-30"
                                                     >
@@ -531,7 +578,12 @@ export default function OpportunityEdit() {
                                                         <label className="text-muted-foreground mb-1 block text-xs font-medium">
                                                             {translate('Product')} *
                                                         </label>
-                                                        <Select value={row.product_id} onValueChange={(v) => updateProductRow(i, 'product_id', v)}>
+                                                        <Select
+                                                            value={row.product_id}
+                                                            onValueChange={(v) => {
+                                                                updateProductRow(i, 'product_id', v);
+                                                            }}
+                                                        >
                                                             <SelectTrigger
                                                                 className={errors[`products.${i}.product_id`] ? 'w-full border-red-500' : 'w-full'}
                                                             >
@@ -573,7 +625,9 @@ export default function OpportunityEdit() {
                                                                 type="number"
                                                                 min="1"
                                                                 value={row.quantity}
-                                                                onChange={(e) => updateProductRow(i, 'quantity', e.target.value)}
+                                                                onChange={(e) => {
+                                                                    updateProductRow(i, 'quantity', e.target.value);
+                                                                }}
                                                                 className={`w-full text-left ${errors[`products.${i}.quantity`] ? 'border-red-500' : ''}`}
                                                                 placeholder="1"
                                                             />
@@ -590,7 +644,9 @@ export default function OpportunityEdit() {
                                                                 step="0.01"
                                                                 min="0"
                                                                 value={row.unit_price}
-                                                                onChange={(e) => updateProductRow(i, 'unit_price', e.target.value)}
+                                                                onChange={(e) => {
+                                                                    updateProductRow(i, 'unit_price', e.target.value);
+                                                                }}
                                                                 className={`w-full text-left ${errors[`products.${i}.unit_price`] ? 'border-red-500' : ''}`}
                                                                 placeholder="0.00"
                                                             />
@@ -649,7 +705,12 @@ export default function OpportunityEdit() {
                                 <Label className="text-sm font-medium" required>
                                     {translate('Assign To')}
                                 </Label>
-                                <Select value={data.assigned_to} onValueChange={(v) => handleInputChange('assigned_to', v)}>
+                                <Select
+                                    value={data.assigned_to}
+                                    onValueChange={(v) => {
+                                        handleInputChange('assigned_to', v);
+                                    }}
+                                >
                                     <SelectTrigger className={errors.assigned_to ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={translate('Select user')} />
                                     </SelectTrigger>
@@ -665,7 +726,7 @@ export default function OpportunityEdit() {
                                 {users.length === 0 && (
                                     <p className="mt-1 text-xs">
                                         {translate('Click here to add')}{' '}
-                                        <a href={route('users.index')} className="font-medium underline">
+                                        <a href={route('users-permissions.users.index')} className="font-medium underline">
                                             {translate('Users')}
                                         </a>
                                     </p>
@@ -677,7 +738,14 @@ export default function OpportunityEdit() {
 
                 {/* Actions */}
                 <div className="mt-6 flex flex-col-reverse justify-end gap-3 sm:flex-row sm:gap-4">
-                    <Button type="button" variant="outline" onClick={() => router.visit(route('opportunities.index'))} className="w-full sm:w-auto">
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                            router.visit(route('opportunities.index'));
+                        }}
+                        className="w-full sm:w-auto"
+                    >
                         {translate('Cancel')}
                     </Button>
                     <Button type="submit" disabled={processing} className="w-full sm:w-auto">

@@ -66,7 +66,9 @@ const IframePortal = forwardRef<IframePortalHandles, IframePortalProps>(({ child
         const observer = new ResizeObserver(resize);
         observer.observe(doc.body);
 
-        return () => observer.disconnect();
+        return () => {
+            observer.disconnect();
+        };
     }, []);
 
     return (

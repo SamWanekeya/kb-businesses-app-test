@@ -665,16 +665,16 @@ export default function CrudFormModal({
 
     const modalId = `crud-modal-${mode}-${title?.replace(/\s+/g, '').toLowerCase()}-${Date.now()}`;
 
-    // Check if ChatGPT modal is open
-    const [isChatGptOpen, setIsChatGptOpen] = useState(false);
+    // Check if Kakbima Intelligence modal is open
+    const [isKakbimaIntelligenceOpen, setIsKakbimaIntelligenceOpen] = useState(false);
 
     useEffect(() => {
-        const checkChatGpt = () => {
-            const chatGptModal = document.querySelector('[data-kakbima-intelligence-modal]');
-            setIsChatGptOpen(!!chatGptModal);
+        const checkKakbimaIntelligence = () => {
+            const kakbimaIntelligenceModal = document.querySelector('[data-kakbima-intelligence-modal]');
+            setIsKakbimaIntelligenceOpen(!!kakbimaIntelligenceModal);
         };
 
-        const observer = new MutationObserver(checkChatGpt);
+        const observer = new MutationObserver(checkKakbimaIntelligence);
         observer.observe(document.body, { childList: true, subtree: true });
 
         return () => {
@@ -688,7 +688,7 @@ export default function CrudFormModal({
             onOpenChange={(open) => {
                 if (!open) onClose();
             }}
-            modal={!isChatGptOpen}
+            modal={!isKakbimaIntelligenceOpen}
         >
             <DialogContent className={`${getModalSizeClass()} max-h-[90vh]`} modalId={modalId}>
                 <DialogHeader>

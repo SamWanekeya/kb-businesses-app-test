@@ -104,7 +104,9 @@ export default function CouponDetailsPage() {
                     label: translate('Back'),
                     icon: <ArrowLeft className="mr-2 h-4 w-4" />,
                     variant: 'outline',
-                    onClick: () => window.history.back(),
+                    onClick: () => {
+                        window.history.back();
+                    },
                 },
             ]}
         >

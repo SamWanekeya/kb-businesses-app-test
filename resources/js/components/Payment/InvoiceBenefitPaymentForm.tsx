@@ -47,7 +47,7 @@ export function InvoiceBenefitPaymentForm({
         setError(null);
 
         try {
-            const response = await fetch(route('invoice.benefit.payment'), {
+            const response = await fetch(route('invoice.subscriptions.benefit.payment'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

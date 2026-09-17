@@ -27,7 +27,9 @@ export default function ReferralDashboard({ userType, stats, referralLink, recen
             await navigator.clipboard.writeText(referralLink);
             setCopied(true);
             toast.success(translate('Referral link copied to clipboard'));
-            setTimeout(() => setCopied(false), 2000);
+            setTimeout(() => {
+                setCopied(false);
+            }, 2000);
         }
     };
 

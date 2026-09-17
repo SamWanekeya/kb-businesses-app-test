@@ -51,7 +51,9 @@ export default function AnnouncementShow() {
             label: translate('Delete'),
             icon: <Trash2 className="mr-2 h-4 w-4" />,
             variant: 'destructive',
-            onClick: () => setIsDeleteModalOpen(true),
+            onClick: () => {
+                setIsDeleteModalOpen(true);
+            },
         });
     }
 
@@ -59,7 +61,9 @@ export default function AnnouncementShow() {
         label: translate('Back'),
         icon: <ArrowLeft className="h-4 w-4" />,
         variant: 'outline',
-        onClick: () => window.history.back(),
+        onClick: () => {
+            window.history.back();
+        },
     });
 
     const getStatusBadge = (status: string) => {
@@ -131,7 +135,9 @@ export default function AnnouncementShow() {
 
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={announcement.title || ''}
                 entityName={translate('announcement')}

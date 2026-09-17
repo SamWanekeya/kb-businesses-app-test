@@ -2,7 +2,7 @@ import { toast } from '@components/CustomToast';
 import { Button } from '@components/UserInterface/Button';
 import { Input } from '@components/UserInterface/Input';
 import { Label } from '@components/UserInterface/Label';
-import { usePaymentProcessor } from '@hooks/usePaymentProcessor';
+import usePaymentProcessor from '@hooks/usePaymentProcessor';
 import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { Loader2 } from 'lucide-react';
@@ -110,7 +110,9 @@ const CheckoutForm = ({
                     id="cardholder-name"
                     type="text"
                     value={cardholderName}
-                    onChange={(e) => setCardholderName(e.target.value)}
+                    onChange={(e) => {
+                        setCardholderName(e.target.value);
+                    }}
                     placeholder={translate('Enter cardholder name')}
                     required
                 />

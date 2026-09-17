@@ -176,17 +176,17 @@ class PayTabsPaymentController extends Controller
                             assignPlanToUser($user, $plan, $planOrder->billing_cycle);
                         }
 
-                        return redirect()->route('plans.index')->with('success', __('Payment completed successfully!'));
+                        return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully!'));
                     } catch (Exception $e) {
-                        return redirect()->route('plans.index')->with('error', __('Payment verification failed.'));
+                        return redirect()->route('subscriptions.plans.index')->with('error', __('Payment verification failed.'));
                     }
                 }
 
-                return redirect()->route('plans.index')->with('success', __('Payment completed successfully!'));
+                return redirect()->route('subscriptions.plans.index')->with('success', __('Payment completed successfully!'));
             }
         }
 
         // No fallback - only assign plan with proper payment verification
-        return redirect()->route('plans.index')->with('error', __('Payment verification failed.'));
+        return redirect()->route('subscriptions.plans.index')->with('error', __('Payment verification failed.'));
     }
 }

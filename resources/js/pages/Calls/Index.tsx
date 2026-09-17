@@ -1,6 +1,6 @@
 import CrudDeleteModal from '@components/CrudDeleteModal';
-import { CrudFormModal } from '@components/CrudFormModal';
-import { CrudTable } from '@components/CrudTable';
+import CrudFormModal from '@components/CrudFormModal';
+import CrudTable from '@components/CrudTable';
 import { toast } from '@components/CustomToast';
 import PageTemplate from '@components/PageTemplate';
 import UserInitials from '@components/UserInitials';
@@ -258,7 +258,9 @@ export default function Calls() {
             label: translate('Add Call'),
             icon: <Plus className="mr-2 h-4 w-4" />,
             variant: 'default',
-            onClick: () => handleAddNew(),
+            onClick: () => {
+                handleAddNew();
+            },
         });
     }
 
@@ -533,7 +535,9 @@ export default function Calls() {
                     total={calls?.total || 0}
                     links={calls?.links}
                     entityName={translate('calls')}
-                    onPageChange={(url) => router.get(url, {}, { preserveState: true, preserveScroll: true })}
+                    onPageChange={(url) => {
+                        router.get(url, {}, { preserveState: true, preserveScroll: true });
+                    }}
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
                         router.get(
@@ -555,7 +559,9 @@ export default function Calls() {
 
             <CrudFormModal
                 isOpen={isFormModalOpen}
-                onClose={() => setIsFormModalOpen(false)}
+                onClose={() => {
+                    setIsFormModalOpen(false);
+                }}
                 onSubmit={handleFormSubmit}
                 formConfig={{
                     fields: [
@@ -654,7 +660,7 @@ export default function Calls() {
                                         const attendeeType = attendees[arrayIndex]?.type;
                                         if (!attendeeType) return null;
                                         const routes: Record<string, string> = {
-                                            user: route('users.index'),
+                                            user: route('users-permissions.users.index'),
                                             contact: route('contacts.index'),
                                             lead: route('leads.index'),
                                         };
@@ -674,7 +680,7 @@ export default function Calls() {
                             type: 'select' as const,
                             required: true,
                             searchable: true,
-                            emptyNote: { link: route('users.index'), linkText: translate('Users') },
+                            emptyNote: { link: route('users-permissions.users.index'), linkText: translate('Users') },
                             options: [...users.map((user: any) => ({ value: user.id, label: `${user.name} (${user.email})` }))],
                         },
                         {
@@ -721,7 +727,9 @@ export default function Calls() {
             {/* Status Modal */}
             <CrudFormModal
                 isOpen={isStatusModalOpen}
-                onClose={() => setIsStatusModalOpen(false)}
+                onClose={() => {
+                    setIsStatusModalOpen(false);
+                }}
                 onSubmit={handleStatusChange}
                 formConfig={{
                     fields: [
@@ -746,7 +754,9 @@ export default function Calls() {
 
             <CrudDeleteModal
                 isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                }}
                 onConfirm={handleDeleteConfirm}
                 itemName={currentItem?.title || ''}
                 entityName={translate('call')}

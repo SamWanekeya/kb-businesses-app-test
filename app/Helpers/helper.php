@@ -1286,104 +1286,6 @@ if (!function_exists('parseBrowserData')) {
     }
 }
 
-if (!function_exists('getDemoCalendarData')) {
-    function getDemoCalendarData()
-    {
-        $events = [];
-
-        $rangeStart = Carbon::create(2025, 12, 1);
-        $rangeEnd = Carbon::create(2026, 12, 31);
-
-        // Fixed templates (no randomness)
-        $demoEvents = [
-            ['type' => 'meeting', 'title' => 'Team Standup', 'duration' => 30],
-            ['type' => 'meeting', 'title' => 'Client Presentation', 'duration' => 60],
-            ['type' => 'meeting', 'title' => 'Product Review', 'duration' => 45],
-            ['type' => 'call', 'title' => 'Sales Call', 'duration' => 30],
-            ['type' => 'call', 'title' => 'Follow-up Call', 'duration' => 20],
-            ['type' => 'call', 'title' => 'Support Call', 'duration' => 25],
-            ['type' => 'task', 'title' => 'Prepare Report', 'duration' => 0],
-            ['type' => 'task', 'title' => 'Review Documents', 'duration' => 0],
-            ['type' => 'task', 'title' => 'Update Website', 'duration' => 0],
-        ];
-
-        // Predefined static values
-        $statusesTask = ['pending', 'in_progress', 'completed'];
-        $statusesEvent = ['scheduled', 'completed', 'cancelled'];
-        $timeSlots = ['09:00', '10:00', '11:30', '14:00', '15:30', '16:30'];
-        $locations = ['Conference Room A', 'Zoom', 'Office'];
-
-        $eventId = 1;
-        $currentDate = $rangeStart->copy();
-
-        while ($currentDate->lte($rangeEnd)) {
-
-            // Rotate event templates deterministically
-            $template = $demoEvents[$eventId % count($demoEvents)];
-            $type = $template['type'];
-
-            if ($type === 'task') {
-                $events[] = [
-                    'id' => "task-{$eventId}",
-                    'title' => $template['title'],
-                    'start' => $currentDate->format('Y-m-d'),
-                    'type' => 'task',
-                    'backgroundColor' => '#f59e0b',
-                    'borderColor' => '#d97706',
-                    'task_id' => $eventId,
-                    'project_id' => ($eventId % 5) + 1,
-                    'description' => 'Demo task description',
-                    'status' => $statusesTask[$eventId % count($statusesTask)],
-                    'parent_name' => 'Demo Project ' . (($eventId % 3) + 1),
-                ];
-            } else {
-                $time = $timeSlots[$eventId % count($timeSlots)];
-
-                $startDateTime = Carbon::parse(
-                    $currentDate->format('Y-m-d') . ' ' . $time
-                );
-
-                $endDateTime = $startDateTime->copy()->addMinutes($template['duration']);
-
-                $event = [
-                    'id' => "{$type}-{$eventId}",
-                    'title' => $template['title'],
-                    'start' => $startDateTime->format('Y-m-d H:i:s'),
-                    'end' => $endDateTime->format('Y-m-d H:i:s'),
-                    'type' => $type,
-                    'description' => "Demo {$type} description",
-                    'status' => $statusesEvent[$eventId % count($statusesEvent)],
-                    'parent_name' => $type === 'meeting'
-                        ? 'Demo Lead ' . (($eventId % 5) + 1)
-                        : 'Demo Contact ' . (($eventId % 5) + 1),
-                    'startDateTime' => $startDateTime->format('H:i:s'),
-                    'endDateTime' => $endDateTime->format('H:i:s'),
-                ];
-
-                if ($type === 'meeting') {
-                    $event['backgroundColor'] = '#A12582';
-                    $event['borderColor'] = '#2563eb';
-                    $event['meeting_id'] = $eventId;
-                    $event['location'] = $locations[$eventId % count($locations)];
-                } else {
-                    $event['backgroundColor'] = '#10b77f';
-                    $event['borderColor'] = '#059669';
-                    $event['call_id'] = $eventId;
-                }
-
-                $events[] = $event;
-            }
-
-            $eventId++;
-
-            // Move forward in a fixed pattern (every 3 days)
-            $currentDate->addDays(3);
-        }
-
-        return $events;
-    }
-}
-
 if (!function_exists('isDisabledDeleteRole')) {
     function isDisabledDeleteRole()
     {
@@ -1412,8 +1314,8 @@ if (!function_exists('getSuperAdminSettings')) {
     }
 }
 
-if (!function_exists('upload_file')) {
-    function upload_file($request, $key_name, $name, $path, $custom_validation = [])
+if (!function_exists('uploadFile')) {
+    function uploadFile($request, $key_name, $name, $path, $custom_validation = [])
     {
         try {
             $storage_settings = getSuperAdminSettings();
@@ -1524,8 +1426,8 @@ if (!function_exists('upload_file')) {
     }
 }
 
-if (!function_exists('check_file')) {
-    function check_file($path)
+if (!function_exists('checkFile')) {
+    function checkFile($path)
     {
         try {
             if (empty($path)) {
@@ -1608,7 +1510,7 @@ if (!function_exists('check_file')) {
             return false;
         } catch (Exception $e) {
             // Log error for debugging
-            Log::error('check_file error: ' . $e->getMessage(), [
+            Log::error('checkFile error: ' . $e->getMessage(), [
                 'path' => $path,
                 'trace' => $e->getTraceAsString(),
             ]);
@@ -1703,8 +1605,8 @@ if (!function_exists('get_file')) {
     }
 }
 
-if (!function_exists('delete_file')) {
-    function delete_file($path)
+if (!function_exists('deleteFile')) {
+    function deleteFile($path)
     {
         try {
             // Return false if path is empty
@@ -1713,7 +1615,7 @@ if (!function_exists('delete_file')) {
             }
 
             // Check if file exists first
-            if (!check_file($path)) {
+            if (!checkFile($path)) {
                 return false;
             }
 
@@ -1792,7 +1694,7 @@ if (!function_exists('delete_file')) {
             return false;
         } catch (Exception $e) {
             // Log error for debugging
-            Log::error('delete_file error: ' . $e->getMessage(), [
+            Log::error('deleteFile error: ' . $e->getMessage(), [
                 'path' => $path,
                 'trace' => $e->getTraceAsString(),
             ]);

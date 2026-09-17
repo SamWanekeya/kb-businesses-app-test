@@ -26,8 +26,8 @@ export default function RolesEdit() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard') },
-        { title: translate('Staff'), href: route('users.index') },
-        { title: translate('Roles'), href: route('roles.index') },
+        { title: translate('Staff'), href: route('users-permissions.users.index') },
+        { title: translate('Roles'), href: route('users-permissions.roles.index') },
         { title: translate('Edit Role') },
     ];
 
@@ -47,7 +47,7 @@ export default function RolesEdit() {
         const toastId = toast.loading(translate('Updating user permissions...'));
 
         router.put(
-            route('roles.update', role.id),
+            route('users-permissions.roles.update', role.id),
             {
                 label,
                 description,
@@ -70,7 +70,9 @@ export default function RolesEdit() {
             label: translate('Back'),
             icon: <ArrowLeft className="mr-2 h-4 w-4" />,
             variant: 'outline' as const,
-            onClick: () => router.get(route('roles.index')),
+            onClick: () => {
+                router.get(route('users-permissions.roles.index'));
+            },
         },
     ];
 
@@ -99,7 +101,9 @@ export default function RolesEdit() {
                                     id="label"
                                     required
                                     value={label}
-                                    onChange={(e) => setLabel(e.target.value)}
+                                    onChange={(e) => {
+                                        setLabel(e.target.value);
+                                    }}
                                     placeholder={translate('e.g. Legal Consultant, Junior Advocate, Associate Advocate')}
                                     disabled={!isEditable}
                                     className={errors.label ? 'border-red-500' : ''}
@@ -112,7 +116,9 @@ export default function RolesEdit() {
                                 <Textarea
                                     id="description"
                                     value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
+                                    onChange={(e) => {
+                                        setDescription(e.target.value);
+                                    }}
                                     placeholder={translate('Enter role description...')}
                                     rows={3}
                                 />
@@ -146,7 +152,13 @@ export default function RolesEdit() {
 
                 {/* Submit */}
                 <div className="flex flex-col-reverse justify-end gap-3 pb-2 sm:flex-row">
-                    <Button type="button" variant="outline" onClick={() => router.get(route('roles.index'))}>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                            router.get(route('users-permissions.roles.index'));
+                        }}
+                    >
                         {translate('Cancel')}
                     </Button>
                     <Button type="submit" disabled={processing}>

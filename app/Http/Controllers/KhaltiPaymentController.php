@@ -98,7 +98,7 @@ class KhaltiPaymentController extends Controller
                 'amount' => (int)($pricing['final_price'] * 100), // Khalti uses paisa as integer
                 'product_identity' => 'plan_' . $plan->id,
                 'product_name' => $plan->name,
-                'product_url' => route('plans.index'),
+                'product_url' => route('subscriptions.plans.index'),
             ]);
 
         } catch (Exception $e) {

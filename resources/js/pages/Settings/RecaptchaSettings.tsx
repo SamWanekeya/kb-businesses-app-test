@@ -1,5 +1,5 @@
 import { toast } from '@components/CustomToast';
-import { SettingsSection } from '@components/settings-section';
+import SettingsSection from '@components/SettingsSection';
 import { Button } from '@components/UserInterface/Button';
 import { Card, CardContent } from '@components/UserInterface/Card';
 import { Input } from '@components/UserInterface/Input';
@@ -114,7 +114,9 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
                                 <Switch
                                     id="recaptchaEnabled"
                                     checked={recaptchaSettings.recaptchaEnabled}
-                                    onCheckedChange={(checked) => handleSettingsChange('recaptchaEnabled', checked)}
+                                    onCheckedChange={(checked) => {
+                                        handleSettingsChange('recaptchaEnabled', checked);
+                                    }}
                                 />
                             </div>
                         </div>
@@ -124,7 +126,9 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
                                 <Label htmlFor="recaptchaVersion">{translate('Google Recaptcha Version')}</Label>
                                 <Select
                                     value={recaptchaSettings.recaptchaVersion}
-                                    onValueChange={(value) => handleSettingsChange('recaptchaVersion', value)}
+                                    onValueChange={(value) => {
+                                        handleSettingsChange('recaptchaVersion', value);
+                                    }}
                                 >
                                     <SelectTrigger>
                                         <SelectValue placeholder={translate('Select version')} />
@@ -145,7 +149,9 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
                                     name="recaptchaSiteKey"
                                     type="text"
                                     value={recaptchaSettings.recaptchaSiteKey}
-                                    onChange={(e) => handleSettingsChange('recaptchaSiteKey', e.target.value)}
+                                    onChange={(e) => {
+                                        handleSettingsChange('recaptchaSiteKey', e.target.value);
+                                    }}
                                     placeholder={translate('Enter your Google ReCaptcha site key')}
                                 />
                             </div>
@@ -159,7 +165,9 @@ export default function RecaptchaSettings({ settings = {} }: RecaptchaSettingsPr
                                     name="recaptchaSecretKey"
                                     type="password"
                                     value={recaptchaSettings.recaptchaSecretKey}
-                                    onChange={(e) => handleSettingsChange('recaptchaSecretKey', e.target.value)}
+                                    onChange={(e) => {
+                                        handleSettingsChange('recaptchaSecretKey', e.target.value);
+                                    }}
                                     placeholder={translate('Enter your Google ReCaptcha secret key')}
                                 />
                             </div>

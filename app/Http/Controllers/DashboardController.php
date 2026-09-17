@@ -17,6 +17,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -26,20 +27,23 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $user = auth()->user();
+        $user = auth()?->user();
 
         // Super admin always gets dashboard
         if ($user->type === 'super_admin') {
             return $this->renderDashboard();
         }
 
-        // Check if user has dashboard permission (skip if permission doesn't exist)
+        // Check if user has dashboard permission (skip if permission doesn’t exist)
         try {
-            if ($user->hasPermissionTo('manage-dashboard')) {
+            if ($user->can('manage-dashboard')) {
                 return $this->renderDashboard();
             }
         } catch (Exception $e) {
-            // Permission doesn't exist, continue to dashboard for authenticated users
+            // Fail silently but log once for investigation
+            Log::error($e);
+
+            // Permission doesn’t exist, continue to dashboard for authenticated users
             return $this->renderDashboard();
         }
 
@@ -53,11 +57,11 @@ class DashboardController extends Controller
 
         // Define available routes with their permissions
         $routes = [
-            ['route' => 'users.index', 'permission' => 'manage-users'],
-            ['route' => 'roles.index', 'permission' => 'manage-roles'],
+            ['route' => 'users-permissions.users.index', 'permission' => 'manage-users'],
+            ['route' => 'users-permissions.roles.index', 'permission' => 'manage-roles'],
 
-            ['route' => 'plans.index', 'permission' => 'manage-plans'],
-            ['route' => 'referral.index', 'permission' => 'manage-referral'],
+            ['route' => 'subscriptions.plans.index', 'permission' => 'manage-plans'],
+            ['route' => 'referral-program.index', 'permission' => 'manage-referral'],
             ['route' => 'settings.index', 'permission' => 'manage-settings'],
         ];
 
@@ -168,7 +172,7 @@ class DashboardController extends Controller
                         'id' => $organization->id,
                         'name' => $organization->name,
                         'email' => $organization->email,
-                        'avatar' => check_file($organization->getRawOriginal('avatar')) ? get_file($organization->getRawOriginal('avatar')) : null,
+                        'avatar' => checkFile($organization->getRawOriginal('avatar')) ? get_file($organization->getRawOriginal('avatar')) : null,
                         'registered_at' => $organization->created_at->diffForHumans(),
                         'status' => 'active',
                     ];
@@ -267,9 +271,9 @@ class DashboardController extends Controller
             }
         } catch (Exception $e) {
         }
-        $monthlyGrowth = IsDemo() ? 50 : ($previousMonthLeads > 0
+        $monthlyGrowth = $previousMonthLeads > 0
             ? round((($currentMonthLeads - $previousMonthLeads) / $previousMonthLeads) * 100, 1)
-            : ($currentMonthLeads > 0 ? 100 : 0));
+            : ($currentMonthLeads > 0 ? 100 : 0);
 
         $totalConvertedLeads = 0;
         try {
@@ -286,85 +290,60 @@ class DashboardController extends Controller
         $salesTrendsData = [];
         $leadConversionsData = [];
         $revenueChartData = [];
-        if (IsDemo()) {
-            $demoSales = [3, 7, 5, 9, 6, 11, 8, 12, 10, 15, 13, 18];
-            $demoLeads = [5, 9, 7, 12, 8, 14, 10, 16, 13, 18, 15, 20];
-            $demoConversions = [3, 6, 5, 9, 6, 11, 8, 13, 10, 14, 12, 17];
-            $demoRevenue = [1200, 2100, 1800, 3200, 2800, 4100, 3600, 4800, 4200, 5500, 4900, 6200];
-            for ($i = 1; $i <= 12; $i++) {
-                $salesTrendsData[] = [
-                    'month' => date('F', mktime(0, 0, 0, $i, 1)),
-                    'short' => date('M', mktime(0, 0, 0, $i, 1)),
-                    'sales' => $demoSales[$i - 1],
-                ];
-                $leadConversionsData[] = [
-                    'month' => date('F', mktime(0, 0, 0, $i, 1)),
-                    'short' => date('M', mktime(0, 0, 0, $i, 1)),
-                    'leads' => $demoLeads[$i - 1],
-                    'conversions' => $demoConversions[$i - 1],
-                ];
-                $revenueChartData[] = [
-                    'month' => date('F', mktime(0, 0, 0, $i, 1)),
-                    'short' => date('M', mktime(0, 0, 0, $i, 1)),
-                    'revenue' => $demoRevenue[$i - 1],
-                ];
+        $chartYear = (int)request('chart_year', now()->year);
+        $leadYear = (int)request('lead_year', now()->year);
+        for ($m = 1; $m <= 12; $m++) {
+            $date = Carbon::create($chartYear, $m, 1);
+            $monthlySales = 0;
+            $monthlyLeads = 0;
+            $monthlyConversions = 0;
+            $monthlyRevenue = 0;
+
+            try {
+                if (class_exists('\App\Models\SalesOrder')) {
+                    $monthlySales = SalesOrder::where('created_by', $organizationId)
+                        ->whereMonth('created_at', $m)
+                        ->whereYear('created_at', $chartYear)
+                        ->count();
+                }
+            } catch (Exception $e) {
             }
-        } else {
-            $chartYear = (int)request('chart_year', now()->year);
-            $leadYear = (int)request('lead_year', now()->year);
-            for ($m = 1; $m <= 12; $m++) {
-                $date = Carbon::create($chartYear, $m, 1);
-                $monthlySales = 0;
-                $monthlyLeads = 0;
-                $monthlyConversions = 0;
-                $monthlyRevenue = 0;
 
-                try {
-                    if (class_exists('\App\Models\SalesOrder')) {
-                        $monthlySales = SalesOrder::where('created_by', $organizationId)
-                            ->whereMonth('created_at', $m)
-                            ->whereYear('created_at', $chartYear)
-                            ->count();
-                    }
-                } catch (Exception $e) {
+            try {
+                if (class_exists('\App\Models\Lead')) {
+                    $monthlyLeads = Lead::where('created_by', $organizationId)
+                        ->whereMonth('created_at', $m)
+                        ->whereYear('created_at', $leadYear)
+                        ->count();
+
+                    $monthlyConversions = Lead::where('created_by', $organizationId)
+                        ->where('is_converted', 1)
+                        ->whereMonth('updated_at', $m)
+                        ->whereYear('updated_at', $leadYear)
+                        ->count();
                 }
-
-                try {
-                    if (class_exists('\App\Models\Lead')) {
-                        $monthlyLeads = Lead::where('created_by', $organizationId)
-                            ->whereMonth('created_at', $m)
-                            ->whereYear('created_at', $leadYear)
-                            ->count();
-
-                        $monthlyConversions = Lead::where('created_by', $organizationId)
-                            ->where('is_converted', 1)
-                            ->whereMonth('updated_at', $m)
-                            ->whereYear('updated_at', $leadYear)
-                            ->count();
-                    }
-                } catch (Exception $e) {
-                }
-
-                try {
-                    if (class_exists('\App\Models\Invoice')) {
-                        $monthlyRevenue = Invoice::where('created_by', $organizationId)
-                            ->whereIn('status', ['paid', 'partial_paid'])
-                            ->whereMonth('created_at', $m)
-                            ->whereYear('created_at', $chartYear)
-                            ->sum('total_amount') ?? 0;
-                    }
-                } catch (Exception $e) {
-                }
-
-                $salesTrendsData[] = ['month' => $date->format('F'), 'short' => $date->format('M'), 'sales' => $monthlySales];
-                $leadConversionsData[] = [
-                    'month' => $date->format('F'),
-                    'short' => $date->format('M'),
-                    'leads' => $monthlyLeads,
-                    'conversions' => $monthlyConversions,
-                ];
-                $revenueChartData[] = ['month' => $date->format('F'), 'short' => $date->format('M'), 'revenue' => (float)$monthlyRevenue];
+            } catch (Exception $e) {
             }
+
+            try {
+                if (class_exists('\App\Models\Invoice')) {
+                    $monthlyRevenue = Invoice::where('created_by', $organizationId)
+                        ->whereIn('status', ['paid', 'partial_paid'])
+                        ->whereMonth('created_at', $m)
+                        ->whereYear('created_at', $chartYear)
+                        ->sum('total_amount') ?? 0;
+                }
+            } catch (Exception $e) {
+            }
+
+            $salesTrendsData[] = ['month' => $date->format('F'), 'short' => $date->format('M'), 'sales' => $monthlySales];
+            $leadConversionsData[] = [
+                'month' => $date->format('F'),
+                'short' => $date->format('M'),
+                'leads' => $monthlyLeads,
+                'conversions' => $monthlyConversions,
+            ];
+            $revenueChartData[] = ['month' => $date->format('F'), 'short' => $date->format('M'), 'revenue' => (float)$monthlyRevenue];
         }
 
         $customerTypes = collect();
@@ -475,21 +454,13 @@ class DashboardController extends Controller
         }
 
         // Calculate actual storage usage from media files
-        if (IsDemo()) {
-            $storageUsed = $storageLimit / 4;
-        } else {
-            try {
-                $organizationUsers = User::where('created_by', $organizationId)->pluck('id')->push($organizationId);
-                $storageUsed = Media::whereIn('user_id', $organizationUsers)->sum('size');
-            } catch (Exception $e) {
-            }
+        try {
+            $organizationUsers = User::where('created_by', $organizationId)->pluck('id')->push($organizationId);
+            $storageUsed = Media::whereIn('user_id', $organizationUsers)->sum('size');
+        } catch (Exception $e) {
         }
 
-        if (IsDemo()) {
-            $storageUsagePercent = 25;
-        } else {
-            $storageUsagePercent = $storageLimit > 0 ? ($storageUsed / $storageLimit) * 100 : 0;
-        }
+        $storageUsagePercent = $storageLimit > 0 ? ($storageUsed / $storageLimit) * 100 : 0;
 
         $dashboardData = [
             'stats' => [

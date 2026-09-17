@@ -226,8 +226,8 @@ export default function PublicInvoice({
 
     const invoiceData = {
         ...invoice,
-        invoice_date: formatDate(invoice.invoice_date || new Date().toISOString()),
-        due_date: formatDate(invoice.due_date || new Date().toISOString()),
+        invoice_date: window.kbSettings.formatDateTimeSimple(invoice.invoice_date || new Date().toISOString()),
+        due_date: window.kbSettings.formatDateTimeSimple(invoice.due_date || new Date().toISOString()),
         sub_total: subtotal,
         total_tax: totalTax,
         total_amount: grandTotal,
@@ -251,7 +251,9 @@ export default function PublicInvoice({
         try {
             await navigator.clipboard.writeText(window.location.href);
             setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
+            setTimeout(() => {
+                setCopied(false);
+            }, 2000);
         } catch (err) {}
     };
 
@@ -292,7 +294,9 @@ export default function PublicInvoice({
                             </button>
                             {invoice.status !== 'paid' && (
                                 <button
-                                    onClick={() => setShowPaymentModal(true)}
+                                    onClick={() => {
+                                        setShowPaymentModal(true);
+                                    }}
                                     className="inline-flex transform cursor-pointer items-center rounded-xl px-6 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
                                     style={{
                                         background: `linear-gradient(135deg, ${currentThemeColor}, ${currentThemeColor}dd)`,
@@ -428,7 +432,7 @@ export default function PublicInvoice({
                                         <div>
                                             <p className="text-sm font-bold text-gray-500">{translate('Invoice Date')}</p>
                                             <h3 className="mt-2 text-lg leading-tight font-bold" style={{ color: template.secondary }}>
-                                                {formatDate(invoice.invoice_date)}
+                                                {window.kbSettings.formatDateTimeSimple(invoice.invoice_date)}
                                             </h3>
                                         </div>
                                         <div className="rounded-full p-4" style={{ backgroundColor: `${template.secondary}15` }}>
@@ -443,7 +447,7 @@ export default function PublicInvoice({
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <p className="text-sm font-bold text-gray-500">{translate('Due Date')}</p>
-                                            <h3 className="mt-2 text-lg leading-tight font-bold text-amber-600">{formatDate(invoice.due_date)}</h3>
+                                            <h3 className="mt-2 text-lg leading-tight font-bold text-amber-600">{window.kbSettings.formatDateTimeSimple(invoice.due_date)}</h3>
                                         </div>
                                         <div className="rounded-full bg-amber-100 p-4">
                                             <FileText className="h-5 w-5 text-amber-600" />
@@ -505,12 +509,12 @@ export default function PublicInvoice({
                                             <div className="flex items-center justify-between border-b border-gray-200 py-2 dark:border-gray-600">
                                                 <span className="font-medium text-gray-600 dark:text-gray-300">{translate('Invoice Date')}:</span>
                                                 <span className="font-semibold text-gray-900 dark:text-gray-100">
-                                                    {formatDate(invoice.invoice_date)}
+                                                    {window.kbSettings.formatDateTimeSimple(invoice.invoice_date)}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-between border-b border-gray-200 py-2 dark:border-gray-600">
                                                 <span className="font-medium text-gray-600 dark:text-gray-300">{translate('Due Date')}:</span>
-                                                <span className="font-semibold text-gray-900 dark:text-gray-100">{formatDate(invoice.due_date)}</span>
+                                                <span className="font-semibold text-gray-900 dark:text-gray-100">{window.kbSettings.formatDateTimeSimple(invoice.due_date)}</span>
                                             </div>
                                             {invoice.payment_method && (
                                                 <div className="flex items-center justify-between py-2">
@@ -721,7 +725,7 @@ export default function PublicInvoice({
                                         <tbody>
                                             {invoice.payments.map((payment: any, index: number) => (
                                                 <tr key={index} className="border-b hover:bg-gray-50">
-                                                    <td className="px-6 py-4">{formatDate(payment.processed_at || payment.created_at)}</td>
+                                                    <td className="px-6 py-4">{window.kbSettings.formatDateTimeSimple(payment.processed_at || payment.created_at)}</td>
                                                     <td className="px-4 py-4 capitalize">{payment.payment_method}</td>
                                                     <td className="px-4 py-4 text-right font-semibold">{formatCurrency(payment.amount)}</td>
                                                     <td className="px-4 py-4 capitalize">
@@ -753,7 +757,9 @@ export default function PublicInvoice({
                 {showPaymentModal && (
                     <InvoicePaymentModal
                         isOpen={showPaymentModal}
-                        onClose={() => setShowPaymentModal(false)}
+                        onClose={() => {
+                            setShowPaymentModal(false);
+                        }}
                         invoice={invoice}
                         amount={paymentAmount}
                         onAmountChange={setPaymentAmount}

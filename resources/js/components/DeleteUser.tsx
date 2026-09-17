@@ -18,9 +18,15 @@ export default function DeleteUser() {
     const deleteUser = () => {
         router.delete(route('profile.destroy'), {
             preserveScroll: true,
-            onSuccess: () => closeModal(),
-            onError: () => closeModal(),
-            onFinish: () => closeModal(),
+            onSuccess: () => {
+                closeModal();
+            },
+            onError: () => {
+                closeModal();
+            },
+            onFinish: () => {
+                closeModal();
+            },
         });
     };
 

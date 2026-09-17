@@ -45,16 +45,13 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
     const [fromName, setFromName] = useState(template.from);
     const [currentLang, setCurrentLang] = useState(languages[0]?.code || 'en');
     const [templateLangs, setTemplateLangs] = useState(
-        template.email_template_langs.reduce(
-            (acc, lang) => {
-                acc[lang.lang] = {
-                    subject: lang.subject,
-                    content: lang.content,
-                };
-                return acc;
-            },
-            {} as Record<string, { subject: string; content: string }>,
-        ),
+        template.email_template_langs.reduce<Record<string, { subject: string; content: string }>>((acc, lang) => {
+            acc[lang.lang] = {
+                subject: lang.subject,
+                content: lang.content,
+            };
+            return acc;
+        }, {}),
     );
 
     const handleSubjectChange = (lang: string, subject: string) => {
@@ -102,7 +99,9 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                     icon: <ArrowLeft className="h-4 w-4 ltr:mr-2 rtl:ml-2 rtl:rotate-180" />,
                     variant: 'outline',
                     labelClassName: 'max-[400px]:hidden',
-                    onClick: () => router.visit(route('email-templates.index')),
+                    onClick: () => {
+                        router.visit(route('email-templates.index'));
+                    },
                 },
             ]}
         >
@@ -142,7 +141,9 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                 <Input
                                     id="from"
                                     value={fromName}
-                                    onChange={(e) => setFromName(e.target.value)}
+                                    onChange={(e) => {
+                                        setFromName(e.target.value);
+                                    }}
                                     placeholder={translate('Enter from name (e.g., {app_name}, Support Team)')}
                                     className="focus:ring-primary focus:ring-2"
                                 />
@@ -216,7 +217,9 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                                 <Input
                                                     id={`subject-${language.code}`}
                                                     value={templateLangs[language.code]?.subject || ''}
-                                                    onChange={(e) => handleSubjectChange(language.code, e.target.value)}
+                                                    onChange={(e) => {
+                                                        handleSubjectChange(language.code, e.target.value);
+                                                    }}
                                                     placeholder={translate('Enter email subject (you can use variables like {app_name})')}
                                                     className="focus:ring-primary focus:ring-2"
                                                 />
@@ -226,7 +229,9 @@ export default function EmailTemplateShow({ template, languages, variables }: Pr
                                                 <RichTextField
                                                     label="Email Content"
                                                     value={templateLangs[language.code]?.content || ''}
-                                                    onChange={(content) => handleContentChange(language.code, content)}
+                                                    onChange={(content) => {
+                                                        handleContentChange(language.code, content);
+                                                    }}
                                                     placeholder={translate(
                                                         'Write your email content here. You can use HTML formatting and variables...',
                                                     )}

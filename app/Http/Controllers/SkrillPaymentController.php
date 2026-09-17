@@ -38,8 +38,8 @@ class SkrillPaymentController extends Controller
             $paymentData = [
                 'pay_to_email' => $settings['merchant_id'],
                 'transaction_id' => $validated['transaction_id'],
-                'return_url' => route('plans.index'),
-                'cancel_url' => route('plans.index'),
+                'return_url' => route('subscriptions.plans.index'),
+                'cancel_url' => route('subscriptions.plans.index'),
                 'status_url' => route('skrill.callback'),
                 'language' => 'EN',
                 'amount' => $pricing['final_price'],
