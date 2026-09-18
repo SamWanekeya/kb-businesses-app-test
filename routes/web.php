@@ -366,13 +366,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
 
         // Referral program configuration, referred-user access, and payout management.
-        Route::middleware('permission:manage-referral')->group(function () {
-            Route::get('referral-program', [ReferralController::class, 'index'])->middleware('permission:manage-referral')->name('referral-program.index');
-            Route::get('referral-program/referred-users', [ReferralController::class, 'getReferredUsers'])->middleware('permission:manage-users-referral')->name('referral-program.referred-users');
-            Route::post('referral-program/settings', [ReferralController::class, 'updateSettings'])->middleware('permission:manage-setting-referral')->name('referral-program.settings.update');
-            Route::post('referral-program/payout-request', [ReferralController::class, 'createPayoutRequest'])->middleware('permission:manage-payout-referral')->name('referral-program.payout-request.create');
-            Route::post('referral-program/payout-request/{payoutRequest}/approve', [ReferralController::class, 'approvePayoutRequest'])->middleware('permission:approve-payout-referral')->name('referral-program.payout-request.approve');
-            Route::post('referral-program/payout-request/{payoutRequest}/reject', [ReferralController::class, 'rejectPayoutRequest'])->middleware('permission:reject-payout-referral')->name('referral-program.payout-request.reject');
+        Route::middleware('permission:manage-referral-program')->group(function () {
+            Route::get('referral-program', [ReferralController::class, 'index'])->middleware('permission:manage-referral-program')->name('referral-program.index');
+            Route::get('referral-program/referred-users', [ReferralController::class, 'getReferredUsers'])->middleware('permission:manage-users-referral-program')->name('referral-program.referred-users');
+            Route::post('referral-program/settings', [ReferralController::class, 'updateSettings'])->middleware('permission:manage-setting-referral-program')->name('referral-program.settings.update');
+            Route::post('referral-program/payout-request', [ReferralController::class, 'createPayoutRequest'])->middleware('permission:manage-payout-referral-program')->name('referral-program.payout-request.create');
+            Route::post('referral-program/payout-request/{payoutRequest}/approve', [ReferralController::class, 'approvePayoutRequest'])->middleware('permission:approve-payout-referral-program')->name('referral-program.payout-request.approve');
+            Route::post('referral-program/payout-request/{payoutRequest}/reject', [ReferralController::class, 'rejectPayoutRequest'])->middleware('permission:reject-payout-referral-program')->name('referral-program.payout-request.reject');
         });
 
         // Currency configuration and maintenance.

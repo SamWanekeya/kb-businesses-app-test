@@ -11,7 +11,7 @@ return [
         'plan-requests',
         'plan-orders',
         'currencies',
-        'referral',
+        'referral-program',
         'coupons',
         'appointments',
         'organizations',

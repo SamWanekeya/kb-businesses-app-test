@@ -163,7 +163,7 @@ export default function AppSidebar() {
     const canManagePlans = useHasPermission('manage-plans');
     const canViewPlanRequests = useHasPermission('view-plan-requests');
     const canViewPlanOrders = useHasPermission('view-plan-orders');
-    const canManageReferral = useHasPermission('manage-referral');
+    const canManageReferral = useHasPermission('manage-referral-program');
     const canManageSettings = useHasPermission('manage-settings');
 
     const getSuperAdminNavItems = (): NavItem[] => [

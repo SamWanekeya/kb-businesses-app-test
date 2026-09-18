@@ -61,7 +61,7 @@ class DashboardController extends Controller
             ['route' => 'users-permissions.roles.index', 'permission' => 'manage-roles'],
 
             ['route' => 'subscriptions.plans.index', 'permission' => 'manage-plans'],
-            ['route' => 'referral-program.index', 'permission' => 'manage-referral'],
+            ['route' => 'referral-program.index', 'permission' => 'manage-referral-program'],
             ['route' => 'settings.index', 'permission' => 'manage-settings'],
         ];
 

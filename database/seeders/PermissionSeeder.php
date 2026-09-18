@@ -134,14 +134,13 @@ class PermissionSeeder extends Seeder
             ['name' => 'edit-currencies', 'module' => 'currencies', 'label' => 'Edit Currencies', 'description' => 'Can edit currencies'],
             ['name' => 'delete-currencies', 'module' => 'currencies', 'label' => 'Delete Currencies', 'description' => 'Can delete currencies'],
 
-
             // Referral management
-            ['name' => 'manage-referral', 'module' => 'referral', 'label' => 'Manage Referral', 'description' => 'Can manage referral program'],
-            ['name' => 'manage-users-referral', 'module' => 'referral', 'label' => 'Manage User Referral', 'description' => 'Can manage user referral program'],
-            ['name' => 'manage-setting-referral', 'module' => 'referral', 'label' => 'Manage Referral Setting', 'description' => 'Can manage Referral Setting'],
-            ['name' => 'manage-payout-referral', 'module' => 'referral', 'label' => 'Manage Referral Payout', 'description' => 'Can manage Referral Payout program'],
-            ['name' => 'approve-payout-referral', 'module' => 'referral', 'label' => 'Manage Referral', 'description' => 'Can approve payout request'],
-            ['name' => 'reject-payout-referral', 'module' => 'referral', 'label' => 'Manage Referral', 'description' => 'Can approve payout request'],
+            ['name' => 'manage-referral-program', 'module' => 'referral-program', 'label' => 'Manage referral program', 'description' => 'Can manage referral program'],
+            ['name' => 'manage-users-referral-program', 'module' => 'referral-program', 'label' => 'Manage user referral program', 'description' => 'Can manage user referral program'],
+            ['name' => 'manage-setting-referral-program', 'module' => 'referral-program', 'label' => 'Manage referral program setting', 'description' => 'Can manage referral program setting'],
+            ['name' => 'manage-payout-referral-program', 'module' => 'referral-program', 'label' => 'Manage referral program payout', 'description' => 'Can manage referral program payout program'],
+            ['name' => 'approve-payout-referral-program', 'module' => 'referral-program', 'label' => 'Manage referral program', 'description' => 'Can approve payout request'],
+            ['name' => 'reject-payout-referral-program', 'module' => 'referral-program', 'label' => 'Manage referral program', 'description' => 'Can approve payout request'],
 
             // Media management
             ['name' => 'manage-media', 'module' => 'media', 'label' => 'Manage Media', 'description' => 'Can manage media'],
