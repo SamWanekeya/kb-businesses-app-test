@@ -11,7 +11,7 @@
     <link rel="preload" href="{{ asset('assets/fonts/font-face.min.css') }}" as="style" />
     <link rel="stylesheet" href="{{ asset('assets/fonts/font-face.min.css') }}" />
 </head>
-<body style="background-color: #293139; padding: 20px; font-family: 'Rubik', sans-serif; font-size: 14px; line-height: 1.43;">
+<body style="background-color: #293139; padding: 20px; font-family: 'Mulish', sans-serif; font-size: 14px; line-height: 1.43;">
 <div style="max-width: 600px; margin: 0px auto; background-color: #fff; box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.05);">
     <table dir="ltr" style="width: 100%;">
         <tbody>

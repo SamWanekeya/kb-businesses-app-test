@@ -17,23 +17,23 @@ export default function FloatingKakbimaIntelligence() {
     const isSuperAdmin = auth?.user?.type === 'super_admin';
     const isOrganization = auth?.user?.type === 'organization';
 
-    let canUseKakbima Intelligence = false;
+    let canUseKakbimaIntelligence = false;
 
     if (isSuperAdmin) {
-        canUseKakbima Intelligence = true;
+        canUseKakbimaIntelligence = true;
     } else if (isOrganization) {
         // For organization users, check their own plan
         const hasActivePlan = auth?.user?.is_plan_active === 1 && auth?.user?.plan;
-        canUseKakbima Intelligence = hasActivePlan && auth?.user?.plan?.enable_kakbima_intelligence === 'on';
+        canUseKakbimaIntelligence = hasActivePlan && auth?.user?.plan?.enable_kakbima_intelligence === 'on';
     } else {
         // For other users, check the plan of the organization user who created them
         const creator = auth?.user?.creator;
         const hasActivePlan = creator?.is_plan_active === 1 && creator?.plan;
-        canUseKakbima Intelligence = hasActivePlan && creator?.plan?.enable_kakbima_intelligence === 'on';
+        canUseKakbimaIntelligence = hasActivePlan && creator?.plan?.enable_kakbima_intelligence === 'on';
     }
 
     // Don’t render if user doesn’t have access
-    if (!canUseKakbima Intelligence) {
+    if (!canUseKakbimaIntelligence) {
         return null;
     }
 

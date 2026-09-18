@@ -1,56 +1,17 @@
 @import 'tailwindcss';
+@import './template-preview.css';
+@import './template-animations.css';
 
 @plugin 'tailwindcss-animate';
 @plugin 'tailwind-scrollbar';
-
-/* @import 'sonner/dist/styles.css'; */
-@import './rtl.css';
-@import './template-preview.css';
-@import './template-animations.css';
-@import './invoice-print.css';
-@import './dashboard-responsive.css';
 
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 
 @custom-variant dark (&:is(.dark *));
 
-/* Toast positioning fixes */
-/* [data-sonner-toaster] {
-  pointer-events: none;
-}
-
-[data-sonner-toaster] [data-sonner-toast] {
-  pointer-events: auto;
-} */
-
-/* Ensure close button is always positioned correctly */
-/* [data-sonner-toast][data-styled='true'] [data-close-button] {
-  position: absolute !important;
-  top: 0 !important;
-  height: 20px !important;
-  width: 20px !important;
-  z-index: 1 !important;
-}
-
-html[dir='ltr'] [data-sonner-toast][data-styled='true'] [data-close-button],
-[data-sonner-toaster][dir='ltr'] [data-sonner-toast][data-styled='true'] [data-close-button] {
-  left: 0 !important;
-  right: unset !important;
-  transform: translate(-35%, -35%) !important;
-}
-
-html[dir='rtl'] [data-sonner-toast][data-styled='true'] [data-close-button],
-[data-sonner-toaster][dir='rtl'] [data-sonner-toast][data-styled='true'] [data-close-button] {
-  left: unset !important;
-  right: 0 !important;
-  transform: translate(35%, -35%) !important;
-} */
-
 @theme {
-    --font-sans:
-        /* 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; */
-        'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-mulish: 'Mulish';
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -114,7 +75,7 @@ html[dir='rtl'] [data-sonner-toast][data-styled='true'] [data-close-button],
     ::before,
     ::backdrop,
     ::file-selector-button {
-        border-color: var(--color-gray-200, currentColor);
+        border-color: var(--color-neutral-200, currentColor);
     }
 }
 
@@ -125,8 +86,11 @@ html[dir='rtl'] [data-sonner-toast][data-styled='true'] [data-close-button],
     --card-foreground: oklch(0.145 0 0);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
+
+    /* Purple primary theme */
+    --primary: oklch(0.433 0.147 329.6);
     --primary-foreground: oklch(0.985 0 0);
+
     --secondary: oklch(0.97 0 0);
     --secondary-foreground: oklch(0.205 0 0);
     --muted: oklch(0.97 0 0);
@@ -144,51 +108,71 @@ html[dir='rtl'] [data-sonner-toast][data-styled='true'] [data-close-button],
     --chart-4: oklch(0.828 0.189 84.429);
     --chart-5: oklch(0.769 0.188 70.08);
     --radius: 0.625rem;
-    /* --sidebar: oklch(0.985 0 0); */
-    --sidebar: oklch(1 0 0);
-
+    --sidebar: oklch(0.985 0 0);
     --sidebar-foreground: oklch(0.145 0 0);
     --sidebar-primary: oklch(0.205 0 0);
     --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
+
+    /* Light purple sidebar accent */
+    --sidebar-accent: #f3dceb;
+    --sidebar-accent-foreground: #871e6e;
+
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.87 0 0);
 }
 
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.145 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.145 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.985 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.396 0.141 25.723);
-    --destructive-foreground: oklch(0.637 0.237 25.331);
-    --border: oklch(0.269 0 0);
-    --input: oklch(0.269 0 0);
-    --ring: oklch(0.439 0 0);
-    --chart-1: oklch(0.488 0.243 264.376);
-    --chart-2: oklch(0.696 0.17 162.48);
-    --chart-3: oklch(0.769 0.188 70.08);
-    --chart-4: oklch(0.627 0.265 303.9);
-    --chart-5: oklch(0.645 0.246 16.439);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.985 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(0.269 0 0);
-    --sidebar-ring: oklch(0.439 0 0);
+    /* Base layers */
+    --background: oklch(0.13 0 0); /* near-black neutral */
+    --foreground: oklch(0.96 0 0); /* soft off-white */
+
+    --card: oklch(0.16 0 0); /* slightly lighter for elevation */
+    --card-foreground: oklch(0.96 0 0);
+
+    --popover: oklch(0.19 0 0);
+    --popover-foreground: oklch(0.96 0 0);
+
+    /* Primary accent (fallback if hf-color not set) */
+    --primary: oklch(0.433 0.147 329.6); /* balanced purple fallback */
+    --primary-foreground: oklch(0.98 0 0);
+
+    /* Secondary surfaces */
+    --secondary: oklch(0.22 0 0);
+    --secondary-foreground: oklch(0.92 0 0);
+
+    /* Muted / subdued */
+    --muted: oklch(0.25 0 0);
+    --muted-foreground: oklch(0.7 0 0);
+
+    /* Accent */
+    --accent: oklch(0.28 0 0);
+    --accent-foreground: oklch(0.96 0 0);
+
+    /* Destructive */
+    --destructive: oklch(0.45 0.14 25); /* calm red */
+    --destructive-foreground: oklch(0.94 0 0);
+
+    /* Borders, inputs, rings */
+    --border: oklch(0.27 0 0);
+    --input: oklch(0.27 0 0);
+    --ring: oklch(0.38 0 0);
+
+    /* Charts */
+    --chart-1: oklch(0.433 0.147 329.6);
+    --chart-2: oklch(0.66 0.16 220);
+    --chart-3: oklch(0.72 0.15 70);
+    --chart-4: oklch(0.58 0.22 300);
+    --chart-5: oklch(0.6 0.2 30);
+
+    /* Sidebar */
+    --sidebar: oklch(0.16 0 0);
+    --sidebar-foreground: oklch(0.96 0 0);
+    --sidebar-primary: oklch(0.433 0.147 329.6);
+    --sidebar-primary-foreground: oklch(0.98 0 0);
+    --sidebar-accent: oklch(0.22 0 0);
+    --sidebar-accent-foreground: #871e6e;
+    --sidebar-border: oklch(0.27 0 0);
+    --sidebar-ring: oklch(0.38 0 0);
 }
 
 @layer base {
@@ -206,22 +190,13 @@ html[dir='rtl'] [data-sonner-toast][data-styled='true'] [data-close-button],
         scrollbar-color: #9ca3af #f3f4f6;
     }
 
-    /* *::-webkit-scrollbar {
+    *::-webkit-scrollbar {
         width: 6px;
         height: 6px;
     }
 
     *::-webkit-scrollbar-track {
         background: #f3f4f6;
-        border-radius: 3px;
-    } */
-    *::-webkit-scrollbar {
-        width: 4px;
-        height: 4px;
-    }
-
-    *::-webkit-scrollbar-track {
-        background: transparent;
         border-radius: 3px;
     }
 
@@ -236,19 +211,19 @@ html[dir='rtl'] [data-sonner-toast][data-styled='true'] [data-close-button],
 
     /* Dark mode scrollbar */
     .dark * {
-        scrollbar-color: #4b5563 #1f2937;
+        scrollbar-color: oklch(0.45 0.02 260) oklch(0.16 0.02 260);
     }
 
     .dark *::-webkit-scrollbar-track {
-        background: #1f2937;
+        background: oklch(0.16 0.02 260);
     }
 
     .dark *::-webkit-scrollbar-thumb {
-        background: #4b5563;
+        background: oklch(0.45 0.02 260);
     }
 
     .dark *::-webkit-scrollbar-thumb:hover {
-        background: #6b7280;
+        background: oklch(0.55 0.03 260);
     }
 
     /* Ensure all text inputs have proper dark mode styling */
@@ -274,56 +249,46 @@ html[dir='rtl'] [data-sonner-toast][data-styled='true'] [data-close-button],
 
 /* Theme color variables */
 :root {
-    --theme-color: #a12582;
+    --hf-color: #a12582;
+    --hf-color-hover: #871e6e;
+    --hf-color-active: #71185c;
 }
 
 /* Apply theme color to various elements */
-.theme-color {
-    color: var(--theme-color);
+.hf-bg-primary:hover {
+    background-color: var(--hf-color-hover);
 }
 
-.theme-bg {
-    background-color: var(--theme-color);
+.hf-bg-primary:active {
+    background-color: var(--hf-color-active);
 }
 
-.theme-border {
-    border-color: var(--theme-color);
+button:not(:disabled),
+[type='button']:not(:disabled),
+[type='reset']:not(:disabled),
+[type='submit']:not(:disabled) {
+    cursor: pointer;
 }
 
-.theme-ring {
-    --tw-ring-color: var(--theme-color);
-}
-
-/* Override primary colors with theme color */
-:root {
-    --primary: var(--theme-color);
-    --chart-1: var(--theme-color);
-}
-
-.dark {
-    --primary: var(--theme-color);
-    --chart-1: var(--theme-color);
+button[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 /* Apply theme color to buttons and interactive elements */
 .btn-primary,
 .bg-primary,
-button[type='submit'],
 .active-nav-item {
-    background-color: var(--theme-color);
-}
-
-a:hover,
-.text-primary {
-    color: var(--theme-color);
+    background-color: var(--hf-color);
 }
 
 .border-primary {
-    border-color: var(--theme-color);
+    opacity: 1;
+    border-color: var(--hf-color);
 }
 
 .ring-primary {
-    --tw-ring-color: var(--theme-color);
+    --tw-ring-color: var(--hf-color);
 }
 
 /* Dark mode table styles */
@@ -397,12 +362,7 @@ a:hover,
     color: var(--foreground);
 }
 
-.dark button[disabled] {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-/* Iyzipay Checkout Form Styles */
+/* IyziPay Checkout Form Styles */
 .iyzipay-checkout-form {
     width: 100%;
     min-height: 400px;
@@ -423,7 +383,7 @@ a:hover,
 @media (prefers-color-scheme: dark) {
     .iyzipay-checkout-form {
         border-color: #374151;
-        background-color: #1f2937;
+        background-color: oklch(0.205 0 0);
     }
 }
 
@@ -463,4 +423,22 @@ a:hover,
     100% {
         transform: rotate(360deg);
     }
+}
+
+/* Kakbima Intelligence Modal and Button - Always accessible */
+[data-kakbima-intelligence-button],
+[data-kakbima-intelligence-modal] {
+    pointer-events: auto !important;
+}
+
+/* Remove inert from Kakbima Intelligence elements */
+[data-kakbima-intelligence-button][inert],
+[data-kakbima-intelligence-modal][inert] {
+    pointer-events: auto !important;
+    user-select: auto !important;
+}
+
+/* Ensure Kakbima Intelligence button is always clickable even when behind modal overlay */
+[data-kakbima-intelligence-button] * {
+    pointer-events: auto !important;
 }
