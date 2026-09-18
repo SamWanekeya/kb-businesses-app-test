@@ -12,7 +12,7 @@ export default function DocumentFolderShow() {
 
     const breadcrumbs = [
         { title: translate('Dashboard'), href: route('dashboard') },
-        { title: translate('Document Folders'), href: route('document-folders.index') },
+        { title: translate('Document Folders'), href: route('documents.document-folders.index') },
         { title: documentFolder.name },
     ];
 

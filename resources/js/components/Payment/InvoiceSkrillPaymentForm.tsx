@@ -59,7 +59,7 @@ export function InvoiceSkrillPaymentForm({
                 email: email,
             };
 
-            router.post(route('invoice.subscriptions.skrill.payment'), paymentData, {
+            router.post(route('customer-facing.invoice.skrill.payment'), paymentData, {
                 onSuccess: () => {
                     // The controller will redirect to Skrill, so we don't need to call onSuccess here
                     // onSuccess will be called when user returns from Skrill

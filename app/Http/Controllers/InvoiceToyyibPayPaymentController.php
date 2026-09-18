@@ -60,8 +60,8 @@ class InvoiceToyyibPayPaymentController extends Controller
                 'billPriceSetting' => 1,
                 'billPayorInfo' => 1,
                 'billAmount' => intval($validated['amount'] * 100),
-                'billReturnUrl' => route('invoice.toyyibpay.success') . '?invoice_id=' . $invoice->id . '&amount=' . $validated['amount'] . '&payment_type=' . $validated['payment_type'] . '&payment_id=' . $paymentId,
-                'billCallbackUrl' => route('invoice.toyyibpay.callback'),
+                'billReturnUrl' => route('customer-facing.invoice.toyyibpay.success') . '?invoice_id=' . $invoice->id . '&amount=' . $validated['amount'] . '&payment_type=' . $validated['payment_type'] . '&payment_id=' . $paymentId,
+                'billCallbackUrl' => route('customer-facing.invoice.toyyibpay.callback'),
                 'billExternalReferenceNo' => $paymentId,
                 'billTo' => $validated['billTo'],
                 'billEmail' => $validated['billEmail'],
@@ -143,7 +143,7 @@ class InvoiceToyyibPayPaymentController extends Controller
             $statusId = $request->input('status_id');
 
             if (!$invoiceId || !$amount || !$paymentType || !$paymentId) {
-                return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Invalid payment parameters'));
+                return redirect()->route('customer-facing.invoices.public', ['invoice' => 'unknown'])->with('error', __('Invalid payment parameters'));
             }
 
             $invoice = Invoice::findOrFail($invoiceId);
@@ -168,9 +168,9 @@ class InvoiceToyyibPayPaymentController extends Controller
                     ]);
                 }
 
-                return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('success', __('Payment completed successfully!'));
+                return redirect()->route('customer-facing.invoices.public', ['invoice' => encrypt($invoiceId)])->with('success', __('Payment completed successfully!'));
             } else {
-                return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('error', __('Payment was not completed. Please try again.'));
+                return redirect()->route('customer-facing.invoices.public', ['invoice' => encrypt($invoiceId)])->with('error', __('Payment was not completed. Please try again.'));
             }
 
         } catch (Exception $e) {
@@ -179,7 +179,7 @@ class InvoiceToyyibPayPaymentController extends Controller
                 'request' => $request->all(),
             ]);
 
-            return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment verification failed.'));
+            return redirect()->route('customer-facing.invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment verification failed.'));
         }
     }
 

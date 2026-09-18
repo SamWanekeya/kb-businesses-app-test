@@ -46,7 +46,7 @@ class InvoiceKhaltiPaymentController extends Controller
                 'amount' => (int)($validated['amount'] * 100), // Khalti uses paisa as integer
                 'product_identity' => 'invoice_' . $invoice->id,
                 'product_name' => 'Invoice Payment - ' . $invoice->invoice_number,
-                'product_url' => route('invoices.public', $invoice->id),
+                'product_url' => route('customer-facing.invoices.public', $invoice->id),
             ]);
 
         } catch (Exception $e) {

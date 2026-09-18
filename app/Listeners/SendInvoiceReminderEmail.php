@@ -34,7 +34,7 @@ class SendInvoiceReminderEmail
         }
 
         $encryptedId = encrypt($invoice->id);
-        $paymentLink = route('invoices.public', $encryptedId);
+        $paymentLink = route('customer-facing.invoices.public', $encryptedId);
 
         // Prepare email variables
         $variables = [

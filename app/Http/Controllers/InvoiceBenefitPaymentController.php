@@ -61,8 +61,8 @@ class InvoiceBenefitPaymentController extends Controller
                     "phone" => ["country_code" => "973", "number" => "33123456"],
                 ],
                 "source" => ["id" => "src_bh.benefit"],
-                "post" => ["url" => route('invoice.benefit.callback')],
-                "redirect" => ["url" => route('invoice.benefit.success', [
+                "post" => ["url" => route('customer-facing.invoice.benefit.callback')],
+                "redirect" => ["url" => route('customer-facing.invoice.benefit.success', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
@@ -134,7 +134,7 @@ class InvoiceBenefitPaymentController extends Controller
             $tapId = $request->input('tap_id');
 
             if (!$invoiceId || !$amount || !$paymentType) {
-                return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Invalid payment parameters'));
+                return redirect()->route('customer-facing.invoices.public', ['invoice' => 'unknown'])->with('error', __('Invalid payment parameters'));
             }
 
             $invoice = Invoice::findOrFail($invoiceId);
@@ -154,7 +154,7 @@ class InvoiceBenefitPaymentController extends Controller
                 'payment_id' => $tapId ?? $orderId,
             ]);
 
-            return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('success', __('Payment completed successfully!'));
+            return redirect()->route('customer-facing.invoices.public', ['invoice' => encrypt($invoiceId)])->with('success', __('Payment completed successfully!'));
 
         } catch (Exception $e) {
             Log::error('Benefit success callback error', [
@@ -162,7 +162,7 @@ class InvoiceBenefitPaymentController extends Controller
                 'request' => $request->all(),
             ]);
 
-            return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment verification failed'));
+            return redirect()->route('customer-facing.invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment verification failed'));
         }
     }
 

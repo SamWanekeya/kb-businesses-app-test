@@ -189,7 +189,7 @@ export default function DeliveryOrders() {
             label: translate('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[500px]:mr-2" />,
             variant: 'outline',
-            onClick: () => (window.location.href = route('delivery-order.export')),
+            onClick: () => (window.location.href = route('delivery-orders.export')),
             className: 'h-8 w-8 min-[500px]:h-9 min-[500px]:w-auto px-0 min-[500px]:px-4',
             labelClassName: 'hidden min-[500px]:inline',
             tooltip: translate('Export'),

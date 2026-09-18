@@ -53,7 +53,7 @@ class InvoiceYooKassaPaymentController extends Controller
                 ],
                 'confirmation' => [
                     'type' => 'redirect',
-                    'return_url' => route('invoice.yookassa.success', [
+                    'return_url' => route('customer-facing.invoice.yookassa.success', [
                         'invoice_id' => $invoice->id,
                         'order_id' => $orderID,
                         'amount' => $validated['amount'],
@@ -121,17 +121,17 @@ class InvoiceYooKassaPaymentController extends Controller
                         'payment_id' => $orderId,
                     ]);
 
-                    return redirect()->route('invoices.public', $invoice->id)->with('success', __('Payment successful'));
+                    return redirect()->route('customer-facing.invoices.public', $invoice->id)->with('success', __('Payment successful'));
                 }
             }
 
-            return redirect()->route('invoices.public', $invoiceId)->with('error', __('Payment verification failed'));
+            return redirect()->route('customer-facing.invoices.public', $invoiceId)->with('error', __('Payment verification failed'));
         } catch (Exception $e) {
             Log::error('YooKassa success callback error', [
                 'error' => $e->getMessage(),
             ]);
 
-            return redirect()->route('invoices.public', $request->input('invoice_id'))->with('error', __('Payment processing failed'));
+            return redirect()->route('customer-facing.invoices.public', $request->input('invoice_id'))->with('error', __('Payment processing failed'));
         }
     }
 

@@ -265,7 +265,7 @@ export default function ProjectTasks() {
             label: translate('Export'),
             icon: <FileDown className="min-[390px]: mr-0 mr-2 h-4 w-4" />,
             variant: 'outline',
-            onClick: () => (window.location.href = route('project-task.export')),
+            onClick: () => (window.location.href = route('project-tasks.export')),
             className: 'h-8 w-8 min-[390px]:h-9 min-[390px]:w-auto px-0 min-[390px]:px-4',
             labelClassName: 'hidden min-[390px]:inline',
             tooltip: translate('Export'),
@@ -653,7 +653,7 @@ export default function ProjectTasks() {
                 }}
                 onSubmit={handleFormSubmit}
                 formConfig={{
-                    ...(useHasPermission('export-project-tasks') && { exportRoute: 'project-task.export' }),
+                    ...(useHasPermission('export-project-tasks') && { exportRoute: 'project-tasks.export' }),
                     fields: [
                         {
                             name: 'title',

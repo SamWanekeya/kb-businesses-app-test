@@ -42,7 +42,7 @@ export function InvoiceXenditPaymentForm({
         setError(null);
 
         try {
-            const response = await fetch(route('invoice.xendit.payment'), {
+            const response = await fetch(route('customer-facing.invoice.xendit.payment'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

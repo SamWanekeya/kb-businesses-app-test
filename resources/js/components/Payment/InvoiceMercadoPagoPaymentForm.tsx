@@ -34,7 +34,7 @@ export function InvoiceMercadoPagoPaymentForm({
 
             // Create preference and redirect to MercadoPago checkout
             const response = await axios.post(
-                route('invoice.mercadopago.create-preference'),
+                route('customer-facing.invoice.mercadopago.create-preference'),
                 {
                     invoice_id: invoiceId,
                     amount: amount,

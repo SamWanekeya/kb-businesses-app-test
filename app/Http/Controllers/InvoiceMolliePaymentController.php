@@ -42,7 +42,7 @@ class InvoiceMolliePaymentController extends Controller
                     'value' => number_format($validated['amount'], 2, '.', ''),
                 ],
                 'description' => "Invoice #{$invoice->invoice_number} - " . ucfirst($validated['payment_type']) . ' payment',
-                'redirectUrl' => route('invoice.mollie.success') . '?invoice_id=' . $invoice->id . '&amount=' . $validated['amount'] . '&payment_type=' . $validated['payment_type'] . '&temp_id=' . $tempPaymentId,
+                'redirectUrl' => route('customer-facing.invoice.mollie.success') . '?invoice_id=' . $invoice->id . '&amount=' . $validated['amount'] . '&payment_type=' . $validated['payment_type'] . '&temp_id=' . $tempPaymentId,
                 'metadata' => [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
@@ -52,7 +52,7 @@ class InvoiceMolliePaymentController extends Controller
             ];
 
             if (!str_contains(config('app.url'), 'localhost')) {
-                $paymentData['webhookUrl'] = route('invoice.mollie.callback');
+                $paymentData['webhookUrl'] = route('customer-facing.invoice.mollie.callback');
             }
 
             $payment = $mollie->payments->create($paymentData);
@@ -127,14 +127,14 @@ class InvoiceMolliePaymentController extends Controller
             if (!$invoiceId || !$amount || !$paymentType) {
                 Log::error('Mollie invoice success: Missing parameters');
 
-                return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Invalid payment parameters'));
+                return redirect()->route('customer-facing.invoices.public', ['invoice' => 'unknown'])->with('error', __('Invalid payment parameters'));
             }
 
             $invoice = Invoice::findOrFail($invoiceId);
             $credentials = $this->getMollieCredentials($invoice->created_by);
 
             if (!$credentials['api_key']) {
-                return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('error', __('Payment configuration error.'));
+                return redirect()->route('customer-facing.invoices.public', ['invoice' => encrypt($invoiceId)])->with('error', __('Payment configuration error.'));
             }
 
             // Find the Mollie payment by temp_id in metadata
@@ -155,7 +155,7 @@ class InvoiceMolliePaymentController extends Controller
             if (!$molliePayment) {
                 Log::warning('Mollie payment not found, waiting for webhook', ['temp_id' => $tempId]);
 
-                return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('info', __('Payment is being processed. Your invoice will be updated shortly.'));
+                return redirect()->route('customer-facing.invoices.public', ['invoice' => encrypt($invoiceId)])->with('info', __('Payment is being processed. Your invoice will be updated shortly.'));
             }
 
             if ($molliePayment->isPaid()) {
@@ -177,11 +177,11 @@ class InvoiceMolliePaymentController extends Controller
                     ]);
                 }
 
-                return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('success', __('Payment completed successfully!'));
+                return redirect()->route('customer-facing.invoices.public', ['invoice' => encrypt($invoiceId)])->with('success', __('Payment completed successfully!'));
             } elseif ($molliePayment->status === 'pending' || $molliePayment->status === 'open') {
-                return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('info', __('Payment is being processed. Your invoice will be updated shortly.'));
+                return redirect()->route('customer-facing.invoices.public', ['invoice' => encrypt($invoiceId)])->with('info', __('Payment is being processed. Your invoice will be updated shortly.'));
             } else {
-                return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('error', __('Payment failed. Please try again.'));
+                return redirect()->route('customer-facing.invoices.public', ['invoice' => encrypt($invoiceId)])->with('error', __('Payment failed. Please try again.'));
             }
 
         } catch (Exception $e) {
@@ -194,10 +194,10 @@ class InvoiceMolliePaymentController extends Controller
             // Try to redirect to invoice if we have the ID
             $invoiceId = $request->input('invoice_id');
             if ($invoiceId) {
-                return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('error', __('Payment verification failed.'));
+                return redirect()->route('customer-facing.invoices.public', ['invoice' => encrypt($invoiceId)])->with('error', __('Payment verification failed.'));
             }
 
-            return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment verification failed.'));
+            return redirect()->route('customer-facing.invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment verification failed.'));
         }
     }
 

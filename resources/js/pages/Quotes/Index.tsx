@@ -177,7 +177,7 @@ export default function Quotes() {
             icon: <FileDown className="mr-0 h-4 w-4 min-[380px]:mr-2" />,
             variant: 'outline',
             onClick: () => {
-                window.location.href = route('quote.export');
+                window.location.href = route('quotes.export');
             },
             className: 'h-8 w-8 min-[380px]:h-9 min-[380px]:w-auto px-0 min-[380px]:px-4',
             labelClassName: 'hidden min-[380px]:inline',

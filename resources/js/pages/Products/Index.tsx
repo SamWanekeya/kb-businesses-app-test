@@ -197,7 +197,7 @@ export default function Products() {
             tooltip: translate('Export'),
             tooltipClassName: 'min-[500px]:hidden',
             onClick: () => {
-                window.location.href = route('product.export');
+                window.location.href = route('products.export');
             },
         });
     }
@@ -806,8 +806,8 @@ export default function Products() {
                     setIsImportModalOpen(false);
                 }}
                 title={translate('Import Products from CSV/Excel')}
-                importRoute="product.import"
-                parseRoute="product.parse"
+                importRoute="products.import"
+                parseRoute="products.parse"
                 samplePath={samplePath}
                 importNotes={translate('Ensure that the values entered for Category, Brand, Tax match the existing records in your system.')}
                 databaseFields={[

@@ -286,7 +286,7 @@ export default function Cases() {
             label: translate('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[360px]:mr-2" />,
             variant: 'outline',
-            onClick: () => (window.location.href = route('case.export')),
+            onClick: () => (window.location.href = route('cases.export')),
             className: 'h-8 w-8 min-[360px]:h-9 min-[360px]:w-auto px-0 min-[360px]:px-4',
             labelClassName: 'hidden min-[360px]:inline',
             tooltip: translate('Export'),

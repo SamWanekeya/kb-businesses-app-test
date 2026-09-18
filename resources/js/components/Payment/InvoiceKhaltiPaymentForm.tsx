@@ -43,7 +43,7 @@ export function InvoiceKhaltiPaymentForm({
         setError(null);
 
         try {
-            const response = await fetch(route('invoice.khalti.create-payment'), {
+            const response = await fetch(route('customer-facing.invoice.khalti.create-payment'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ export function InvoiceKhaltiPaymentForm({
 
     const handlePaymentSuccess = (token: string, amount: number) => {
         router.post(
-            route('invoice.subscriptions.khalti.payment'),
+            route('customer-facing.invoice.khalti.payment'),
             {
                 invoice_id: invoiceId,
                 amount: amount / 100, // Convert from paisa to rupees

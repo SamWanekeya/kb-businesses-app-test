@@ -135,7 +135,7 @@ export function InvoiceAuthorizeNetPaymentForm({
         setError(null);
 
         router.post(
-            route('invoice.subscriptions.authorizenet.payment'),
+            route('customer-facing.invoice.authorizenet.payment'),
             {
                 invoice_id: invoiceId,
                 amount: amount,

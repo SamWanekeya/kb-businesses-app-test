@@ -52,9 +52,9 @@ class InvoiceMercadoPagoPaymentController extends Controller
             $preference->items = [$item];
 
             $preference->back_urls = [
-                "success" => route('invoice.mercadopago.success'),
-                "failure" => route('invoice.mercadopago.failure'),
-                "pending" => route('invoice.mercadopago.pending'),
+                "success" => route('customer-facing.invoice.mercadopago.success'),
+                "failure" => route('customer-facing.invoice.mercadopago.failure'),
+                "pending" => route('customer-facing.invoice.mercadopago.pending'),
             ];
 
             $externalReference = "invoice_{$invoice->id}_{$validated['amount']}_{$validated['payment_type']}_" . time();
@@ -108,13 +108,13 @@ class InvoiceMercadoPagoPaymentController extends Controller
             $externalReference = $request->external_reference;
 
             if (!$externalReference) {
-                return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Invalid payment reference'));
+                return redirect()->route('customer-facing.invoices.public', ['invoice' => 'unknown'])->with('error', __('Invalid payment reference'));
             }
 
             // Parse external reference: invoice_{id}_{amount}_{type}_{timestamp}
             $parts = explode('_', $externalReference);
             if (count($parts) < 4) {
-                return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Invalid payment reference format'));
+                return redirect()->route('customer-facing.invoices.public', ['invoice' => 'unknown'])->with('error', __('Invalid payment reference format'));
             }
 
             $invoiceId = (int)$parts[1];
@@ -139,11 +139,11 @@ class InvoiceMercadoPagoPaymentController extends Controller
                     'payment_id' => $paymentId,
                 ]);
 
-                return redirect()->route('invoices.public', $invoice)->with('success', __('Payment successful'));
+                return redirect()->route('customer-facing.invoices.public', $invoice)->with('success', __('Payment successful'));
             } elseif ($status === 'pending') {
-                return redirect()->route('invoices.public', $invoice)->with('info', __('Your payment is pending. We will notify you once it is confirmed.'));
+                return redirect()->route('customer-facing.invoices.public', $invoice)->with('info', __('Your payment is pending. We will notify you once it is confirmed.'));
             } else {
-                return redirect()->route('invoices.public', $invoice)->with('error', __('Payment failed'));
+                return redirect()->route('customer-facing.invoices.public', $invoice)->with('error', __('Payment failed'));
             }
 
         } catch (Exception $e) {
@@ -152,7 +152,7 @@ class InvoiceMercadoPagoPaymentController extends Controller
                 'status' => $status,
             ]);
 
-            return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment processing failed'));
+            return redirect()->route('customer-facing.invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment processing failed'));
         }
     }
 

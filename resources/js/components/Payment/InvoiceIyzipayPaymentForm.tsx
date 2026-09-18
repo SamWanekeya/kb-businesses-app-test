@@ -43,7 +43,7 @@ export function InvoiceIyzipayPaymentForm({
 
         try {
             // Create payment form
-            const response = await fetch(route('invoice.iyzipay.create-form'), {
+            const response = await fetch(route('customer-facing.invoice.iyzipay.create-form'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

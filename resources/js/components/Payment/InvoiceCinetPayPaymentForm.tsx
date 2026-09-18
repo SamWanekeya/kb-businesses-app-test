@@ -42,7 +42,7 @@ export function InvoiceCinetPayPaymentForm({
         setError(null);
 
         try {
-            const response = await fetch(route('invoice.cinetpay.create-payment'), {
+            const response = await fetch(route('customer-facing.invoice.cinetpay.create-payment'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

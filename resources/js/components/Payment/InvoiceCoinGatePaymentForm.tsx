@@ -38,7 +38,7 @@ export function InvoiceCoingatePaymentForm({
         // Create form and submit directly to avoid CORS
         const form = document.createElementranslate('form');
         form.method = 'POST';
-        form.action = route('invoice.subscriptions.coingate.payment');
+        form.action = route('customer-facing.invoice.coingate.payment');
 
         // Add CSRF token
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');

@@ -72,8 +72,8 @@ class InvoicePayTRPaymentController extends Controller
                 'user_name' => $validated['user_name'],
                 'user_address' => $validated['user_address'] ?? 'Turkey',
                 'user_phone' => $validated['user_phone'],
-                'merchant_ok_url' => route('invoice.paytr.success') . '?invoice_id=' . $invoice->id . '&amount=' . $validated['amount'] . '&payment_type=' . $validated['payment_type'] . '&merchant_oid=' . $merchant_oid,
-                'merchant_fail_url' => route('invoice.paytr.failure') . '?invoice_id=' . $invoice->id,
+                'merchant_ok_url' => route('customer-facing.invoice.paytr.success') . '?invoice_id=' . $invoice->id . '&amount=' . $validated['amount'] . '&payment_type=' . $validated['payment_type'] . '&merchant_oid=' . $merchant_oid,
+                'merchant_fail_url' => route('customer-facing.invoice.paytr.failure') . '?invoice_id=' . $invoice->id,
                 'timeout_limit' => 30,
                 'currency' => $credentials['currency'],
                 'test_mode' => 1,
@@ -145,7 +145,7 @@ class InvoicePayTRPaymentController extends Controller
             $merchantOid = $request->input('merchant_oid');
 
             if (!$invoiceId || !$amount || !$paymentType || !$merchantOid) {
-                return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Invalid payment parameters'));
+                return redirect()->route('customer-facing.invoices.public', ['invoice' => 'unknown'])->with('error', __('Invalid payment parameters'));
             }
 
             $invoice = Invoice::findOrFail($invoiceId);
@@ -165,7 +165,7 @@ class InvoicePayTRPaymentController extends Controller
                 'merchant_oid' => $merchantOid,
             ]);
 
-            return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('success', __('Payment completed successfully!'));
+            return redirect()->route('customer-facing.invoices.public', ['invoice' => encrypt($invoiceId)])->with('success', __('Payment completed successfully!'));
 
         } catch (Exception $e) {
             Log::error('PayTR invoice success callback error', [
@@ -173,7 +173,7 @@ class InvoicePayTRPaymentController extends Controller
                 'request' => $request->all(),
             ]);
 
-            return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment verification failed.'));
+            return redirect()->route('customer-facing.invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment verification failed.'));
         }
     }
 
@@ -188,12 +188,12 @@ class InvoicePayTRPaymentController extends Controller
             ]);
 
             if ($invoiceId) {
-                return redirect()->route('invoices.public', ['invoice' => encrypt($invoiceId)])->with('error', __('Payment failed. Please try again.'));
+                return redirect()->route('customer-facing.invoices.public', ['invoice' => encrypt($invoiceId)])->with('error', __('Payment failed. Please try again.'));
             }
 
-            return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment failed.'));
+            return redirect()->route('customer-facing.invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment failed.'));
         } catch (Exception $e) {
-            return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment failed.'));
+            return redirect()->route('customer-facing.invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment failed.'));
         }
     }
 

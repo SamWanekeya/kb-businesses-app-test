@@ -46,13 +46,13 @@ class InvoicePayHerePaymentController extends Controller
 
             $paymentData = [
                 'merchant_id' => $settings['payment_settings']['payhere_merchant_id'],
-                'return_url' => route('invoice.payhere.success', [
+                'return_url' => route('customer-facing.invoice.payhere.success', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
                 ]),
-                'cancel_url' => route('invoices.public', $invoice->id),
-                'notify_url' => route('invoice.payhere.callback'),
+                'cancel_url' => route('customer-facing.invoices.public', $invoice->id),
+                'notify_url' => route('customer-facing.invoice.payhere.callback'),
                 'order_id' => $orderId,
                 'items' => 'Invoice Payment - ' . $invoice->invoice_number,
                 'currency' => 'LKR',
@@ -145,17 +145,17 @@ class InvoicePayHerePaymentController extends Controller
                         'payment_type' => $paymentType,
                     ]);
 
-                    return redirect()->route('invoices.public', $invoice->id)->with('success', __('Payment successful'));
+                    return redirect()->route('customer-facing.invoices.public', $invoice->id)->with('success', __('Payment successful'));
                 }
             }
 
-            return redirect()->route('invoices.public', $invoiceId)->with('error', __('Payment verification failed'));
+            return redirect()->route('customer-facing.invoices.public', $invoiceId)->with('error', __('Payment verification failed'));
         } catch (Exception $e) {
             Log::error('PayHere success callback error', [
                 'error' => $e->getMessage(),
             ]);
 
-            return redirect()->route('invoices.public', $request->input('invoice_id'))->with('error', __('Payment processing failed'));
+            return redirect()->route('customer-facing.invoices.public', $request->input('invoice_id'))->with('error', __('Payment processing failed'));
         }
     }
 

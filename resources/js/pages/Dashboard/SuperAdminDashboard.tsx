@@ -277,7 +277,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                             {
                                 icon: Settings,
                                 label: translate('Settings'),
-                                href: route('settings'),
+                                href: route('settings.index'),
                                 color: 'text-slate-300 hover:text-slate-200',
                                 bg: 'hover:bg-white/10',
                             },
@@ -299,7 +299,7 @@ export default function SuperAdminDashboard({ dashboardData }: { dashboardData: 
                 {/* ── KPI Row ── */}
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
                     {/* Revenue */}
-                    <Link href={route('subscriptions/plan-orders.index')} className={`group ${fadeUp(100)}`}>
+                    <Link href={route('subscriptions.plan-orders.index')} className={`group ${fadeUp(100)}`}>
                         <Card className="h-full cursor-pointer border border-emerald-300 bg-emerald-50 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg dark:border-emerald-800 dark:bg-emerald-950/40">
                             <CardContent className="relative overflow-hidden p-4 sm:p-5">
                                 <span

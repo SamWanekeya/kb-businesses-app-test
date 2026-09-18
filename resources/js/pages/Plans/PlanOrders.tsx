@@ -48,7 +48,7 @@ export default function PlanOrdersPage() {
 
     const applyFilters = () => {
         router.get(
-            route('subscriptions/plan-orders.index'),
+            route('subscriptions.plan-orders.index'),
             {
                 page: 1,
                 search: searchTerm || undefined,
@@ -66,7 +66,7 @@ export default function PlanOrdersPage() {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
 
         router.get(
-            route('subscriptions/plan-orders.index'),
+            route('subscriptions.plan-orders.index'),
             {
                 sort_field: field,
                 sort_direction: direction,
@@ -88,7 +88,7 @@ export default function PlanOrdersPage() {
             }
 
             router.post(
-                route('subscriptions/plan-orders.approve', item.id),
+                route('subscriptions.plan-orders.approve', item.id),
                 {},
                 {
                     onSuccess: (page) => {
@@ -128,7 +128,7 @@ export default function PlanOrdersPage() {
         }
 
         router.post(
-            route('subscriptions/plan-orders.reject', currentItem.id),
+            route('subscriptions.plan-orders.reject', currentItem.id),
             { notes },
             {
                 onSuccess: (page) => {
@@ -170,7 +170,7 @@ export default function PlanOrdersPage() {
         setSelectedStatus('all');
         setDateFrom('');
         setDateTo('');
-        router.get(route('subscriptions/plan-orders.index'));
+        router.get(route('subscriptions.plan-orders.index'));
     };
 
     const breadcrumbs = [
@@ -405,7 +405,7 @@ export default function PlanOrdersPage() {
                     currentPerPage={pageFilters.per_page?.toString() || '10'}
                     onPerPageChange={(value) => {
                         router.get(
-                            route('subscriptions/plan-orders.index'),
+                            route('subscriptions.plan-orders.index'),
                             {
                                 page: 1,
                                 per_page: parseInt(value) !== 10 ? parseInt(value) : undefined,

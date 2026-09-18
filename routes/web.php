@@ -149,7 +149,7 @@ require __DIR__ . '/auth.php';
 //Route::match(['GET', 'POST'], 'subscriptions/payments/iyzipay/success', [IyzipayPaymentController::class, 'success'])->name('iyzipay.success');
 //
 // Public invoice payment provider callbacks.
-//Route::match(['GET', 'POST'], 'invoices/payment/iyzipay/callback', [InvoiceIyzipayPaymentController::class, 'callback'])->name('invoice.iyzipay.callback')->withoutMiddleware(VerifyCsrfToken::class);
+//Route::match(['GET', 'POST'], 'invoices/payment/iyzipay/callback', [InvoiceIyzipayPaymentController::class, 'callback'])->name('customer-facing.invoice.iyzipay.callback')->withoutMiddleware(VerifyCsrfToken::class);
 //
 // Public payment provider webhooks and callbacks.
 //Route::get('subscriptions/payments/payfast/success', [PayfastPaymentController::class, 'success'])->name('payfast.success');
@@ -268,7 +268,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Media library operations and storage configuration endpoints.
         Route::get('media-library', [MediaController::class, 'mediaLibrary'])
             ->middleware('permission:manage-media')
-            ->name('media-library');
+            ->name('media-library.media-library');
         Route::get('media-library/media', [MediaController::class, 'index'])->middleware('permission:manage-media')->name('media-library.media.index');
         Route::post('media-library/media/batch', [MediaController::class, 'batchStore'])->middleware('permission:create-media')->name('media-library.media.batch');
         Route::get('media-library/media/{id}/download', [MediaController::class, 'download'])->middleware('permission:download-media')->name('media-library.media.download');
@@ -331,9 +331,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Subscription plan order review and approval workflow.
         Route::middleware('permission:manage-plan-orders')->group(function () {
-            Route::get('subscriptions/plan-orders', [PlanOrderController::class, 'index'])->middleware('permission:manage-plan-orders')->name('subscriptions/plan-orders.index');
-            Route::post('subscriptions/plan-orders/{planOrder}/approve', [PlanOrderController::class, 'approve'])->middleware('permission:approve-plan-orders')->name('subscriptions/plan-orders.approve');
-            Route::post('subscriptions/plan-orders/{planOrder}/reject', [PlanOrderController::class, 'reject'])->middleware('permission:reject-plan-orders')->name('subscriptions/plan-orders.reject');
+            Route::get('subscriptions/plan-orders', [PlanOrderController::class, 'index'])->middleware('permission:manage-plan-orders')->name('subscriptions.plan-orders.index');
+            Route::post('subscriptions/plan-orders/{planOrder}/approve', [PlanOrderController::class, 'approve'])->middleware('permission:approve-plan-orders')->name('subscriptions.plan-orders.approve');
+            Route::post('subscriptions/plan-orders/{planOrder}/reject', [PlanOrderController::class, 'reject'])->middleware('permission:reject-plan-orders')->name('subscriptions.plan-orders.reject');
         });
 
         // Organization administration, account access, and subscription management.
@@ -422,10 +422,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('products/{product}/toggle-status', [ProductController::class, 'toggleStatus'])->middleware('permission:toggle-status-products')->name('products.toggle-status');
 
             // Product import, export, and template download operations.
-            Route::get('products/file/export/', [ProductController::class, 'fileExport'])->middleware('permission:export-products')->name('product.export');
-            Route::post('products/file/parse', [ProductController::class, 'parseFile'])->middleware('permission:import-products')->name('product.parse');
-            Route::post('products/file/import', [ProductController::class, 'fileImport'])->middleware('permission:import-products')->name('product.import');
-            Route::get('products/download/template', [ProductController::class, 'downloadTemplate'])->name('product.download.template');
+            Route::get('products/file/export/', [ProductController::class, 'fileExport'])->middleware('permission:export-products')->name('products.export');
+            Route::post('products/file/parse', [ProductController::class, 'parseFile'])->middleware('permission:import-products')->name('products.parse');
+            Route::post('products/file/import', [ProductController::class, 'fileImport'])->middleware('permission:import-products')->name('products.import');
+            Route::get('products/download/template', [ProductController::class, 'downloadTemplate'])->name('products.download.template');
         });
 
         // CRM reporting endpoints covering leads, sales, products, customers, and projects.
@@ -470,7 +470,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('accounts/{account}/activities/{activity}', [AccountController::class, 'deleteActivity'])->middleware('permission:delete-accounts')->name('accounts.delete-activity');
 
             // Account data export.
-            Route::get('accounts/file/export/', [AccountController::class, 'fileExport'])->middleware('permission:export-accounts')->name('account.export');
+            Route::get('accounts/file/export/', [AccountController::class, 'fileExport'])->middleware('permission:export-accounts')->name('accounts.export');
 
             // Account comments and activity comment management.
             Route::post('accounts/{account}/comments', [AccountCommentController::class, 'store'])->middleware('permission:create-accounts')->name('accounts.comments.store');
@@ -487,7 +487,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('contacts/{contact}/toggle-status', [ContactController::class, 'toggleStatus'])->middleware('permission:toggle-status-contacts')->name('contacts.toggle-status');
 
             // Contact data export.
-            Route::get('contacts/file/export/', [ContactController::class, 'fileExport'])->middleware('permission:export-contacts')->name('contact.export');
+            Route::get('contacts/file/export/', [ContactController::class, 'fileExport'])->middleware('permission:export-contacts')->name('contacts.export');
         });
 
         // Lead status configuration and status management.
@@ -526,10 +526,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('leads/{lead}/activities/{activity}', [LeadController::class, 'deleteActivity'])->middleware('permission:delete-leads')->name('leads.delete-activity');
 
             // Lead import, export, and template download operations.
-            Route::get('leads/file/export/', [LeadController::class, 'fileExport'])->middleware('permission:export-leads')->name('lead.export');
-            Route::post('leads/file/parse', [LeadController::class, 'parseFile'])->middleware('permission:import-leads')->name('lead.parse');
-            Route::post('leads/file/import', [LeadController::class, 'fileImport'])->middleware('permission:import-leads')->name('lead.import');
-            Route::get('leads/download/template', [LeadController::class, 'downloadTemplate'])->name('lead.download.template');
+            Route::get('leads/file/export/', [LeadController::class, 'fileExport'])->middleware('permission:export-leads')->name('leads.export');
+            Route::post('leads/file/parse', [LeadController::class, 'parseFile'])->middleware('permission:import-leads')->name('leads.parse');
+            Route::post('leads/file/import', [LeadController::class, 'fileImport'])->middleware('permission:import-leads')->name('leads.import');
+            Route::get('leads/download/template', [LeadController::class, 'downloadTemplate'])->name('leads.download.template');
 
             // Lead comment and activity comment management.
             Route::post('leads/{lead}/comments', [LeadCommentController::class, 'store'])->middleware('permission:create-leads')->name('leads.comments.store');
@@ -571,7 +571,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('opportunities/{opportunity}/activities/{activity}', [OpportunityController::class, 'deleteActivity'])->middleware('permission:delete-opportunities')->name('opportunities.delete-activity');
 
             // Opportunity data export.
-            Route::get('opportunities/file/export/', [OpportunityController::class, 'fileExport'])->middleware('permission:export-opportunities')->name('opportunity.export');
+            Route::get('opportunities/file/export/', [OpportunityController::class, 'fileExport'])->middleware('permission:export-opportunities')->name('opportunities.export');
 
             // Opportunity comments and activity comment management.
             Route::post('opportunities/{opportunity}/comments', [OpportunityCommentController::class, 'store'])->middleware('permission:create-opportunities')->name('opportunities.comments.store');
@@ -630,7 +630,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('cases/{case}/toggle-status', [CaseController::class, 'toggleStatus'])->middleware('permission:toggle-status-cases')->name('cases.toggle-status');
 
             // Case data export.
-            Route::get('cases/file/export/', [CaseController::class, 'fileExport'])->middleware('permission:export-cases')->name('case.export');
+            Route::get('cases/file/export/', [CaseController::class, 'fileExport'])->middleware('permission:export-cases')->name('cases.export');
         });
 
         // Quote management, opportunity association, user assignment, activity history, comments, and data export.
@@ -647,7 +647,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('quotes/{quote}/add-opportunity', [QuoteController::class, 'addOpportunity'])->middleware('permission:edit-quotes')->name('quotes.add-opportunity');
 
             // Quote data export.
-            Route::get('quotes/file/export/', [QuoteController::class, 'fileExport'])->middleware('permission:export-quotes')->name('quote.export');
+            Route::get('quotes/file/export/', [QuoteController::class, 'fileExport'])->middleware('permission:export-quotes')->name('quotes.export');
 
             // Quote comments and activity comment management.
             Route::post('quotes/{quote}/comments', [QuoteCommentController::class, 'store'])->middleware('permission:create-quotes')->name('quotes.comments.store');
@@ -673,7 +673,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('sales-orders/{salesOrder}/assign-user', [SalesOrderController::class, 'assignUser'])->middleware('permission:edit-sales-orders')->name('sales-orders.assign-user');
 
             // Sales order data export.
-            Route::get('sales-orders/file/export/', [SalesOrderController::class, 'fileExport'])->middleware('permission:export-sales-orders')->name('sales-order.export');
+            Route::get('sales-orders/file/export/', [SalesOrderController::class, 'fileExport'])->middleware('permission:export-sales-orders')->name('sales-orders.export');
 
             // Sales order comments and activity comment management.
             Route::post('sales-orders/{salesOrder}/comments', [SalesOrderCommentController::class, 'store'])->middleware('permission:create-sales-orders')->name('sales-orders.comments.store');
@@ -712,7 +712,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('invoices/{invoice}/assign-user', [InvoiceController::class, 'assignUser'])->middleware('permission:edit-invoices')->name('invoices.assign-user');
 
             // Invoice data export.
-            Route::get('invoices/file/export/', [InvoiceController::class, 'fileExport'])->middleware('permission:export-invoices')->name('invoice.export');
+            Route::get('invoices/file/export/', [InvoiceController::class, 'fileExport'])->middleware('permission:export-invoices')->name('invoices.export');
 
             // Invoice comments and activity comment management.
             Route::post('invoices/{invoice}/comments', [InvoiceCommentController::class, 'store'])->middleware('permission:create-invoices')->name('invoices.comments.store');
@@ -737,7 +737,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('delivery-orders/{deliveryOrder}/assign-user', [DeliveryOrderController::class, 'assignUser'])->middleware('permission:edit-delivery-orders')->name('delivery-orders.assign-user');
 
             // Delivery order data export.
-            Route::get('delivery-orders/file/export/', [DeliveryOrderController::class, 'fileExport'])->middleware('permission:export-delivery-orders')->name('delivery-order.export');
+            Route::get('delivery-orders/file/export/', [DeliveryOrderController::class, 'fileExport'])->middleware('permission:export-delivery-orders')->name('delivery-orders.export');
         });
 
         // Return order management, status changes, and data export.
@@ -751,7 +751,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('return-orders/{returnOrder}', [ReturnOrderController::class, 'destroy'])->middleware('permission:delete-return-orders')->name('return-orders.destroy');
 
             // Return order data export.
-            Route::get('return-orders/file/export/', [ReturnOrderController::class, 'fileExport'])->middleware('permission:export-return-orders')->name('return-order.export');
+            Route::get('return-orders/file/export/', [ReturnOrderController::class, 'fileExport'])->middleware('permission:export-return-orders')->name('return-orders.export');
         });
 
         // Purchase order management, sales order association, user assignment, activity history, comments, and data export.
@@ -772,7 +772,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('purchase-orders/{purchaseOrder}/activities/{activity}', [PurchaseOrderController::class, 'deleteActivity'])->middleware('permission:delete-purchase-orders')->name('purchase-orders.delete-activity');
 
             // Purchase order data export.
-            Route::get('purchase-orders/file/export/', [PurchaseOrderController::class, 'fileExport'])->middleware('permission:export-purchase-orders')->name('purchase-order.export');
+            Route::get('purchase-orders/file/export/', [PurchaseOrderController::class, 'fileExport'])->middleware('permission:export-purchase-orders')->name('purchase-orders.export');
         });
 
         // Receipt order management, user assignment, status changes, and data export.
@@ -789,7 +789,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('receipt-orders/{receiptOrder}/assign-user', [ReceiptOrderController::class, 'assignUser'])->middleware('permission:edit-receipt-orders')->name('receipt-orders.assign-user');
 
             // Receipt order data export.
-            Route::get('receipt-orders/file/export/', [ReceiptOrderController::class, 'fileExport'])->middleware('permission:export-receipt-orders')->name('receipt-order.export');
+            Route::get('receipt-orders/file/export/', [ReceiptOrderController::class, 'fileExport'])->middleware('permission:export-receipt-orders')->name('receipt-orders.export');
         });
 
         // Project management, status changes, and data export.
@@ -802,7 +802,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('projects/{project}/toggle-status', [ProjectController::class, 'toggleStatus'])->middleware('permission:toggle-status-projects')->name('projects.toggle-status');
 
             // Project data export.
-            Route::get('projects/file/export/', [ProjectController::class, 'fileExport'])->middleware('permission:export-projects')->name('project.export');
+            Route::get('projects/file/export/', [ProjectController::class, 'fileExport'])->middleware('permission:export-projects')->name('projects.export');
         });
 
         // Project task management, status changes, project views, task relationships, and data export.
@@ -820,7 +820,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('api/projects/{projectId}/details', [ProjectTaskController::class, 'getProjectDetails'])->name('api.projects.details');
 
             // Project task data export.
-            Route::get('project-tasks/file/export/', [ProjectTaskController::class, 'fileExport'])->middleware('permission:export-project-tasks')->name('project-task.export');
+            Route::get('project-tasks/file/export/', [ProjectTaskController::class, 'fileExport'])->middleware('permission:export-project-tasks')->name('project-tasks.export');
         });
 
         // Project task status configuration and status management.
@@ -860,15 +860,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('calendar', [CalendarController::class, 'index'])->name('calendar.index');
 
         // Google Calendar synchronization and connection status endpoints.
-        Route::get('api/google-calendar/events', [GoogleCalendarController::class, 'getEvents'])->name('google-calendar.events');
-        Route::post('api/google-calendar/sync', [GoogleCalendarController::class, 'syncEvents'])->name('google-calendar.sync');
-        Route::get('api/google-calendar/status', [GoogleCalendarController::class, 'checkStatus'])->name('google-calendar.status');
+        Route::get('calendar/google-calendar/events', [GoogleCalendarController::class, 'getEvents'])->name('calendar.google-calendar.events');
+        Route::post('calendar/google-calendar/sync', [GoogleCalendarController::class, 'syncEvents'])->name('calendar.google-calendar.sync');
+        Route::get('calendar/google-calendar/status', [GoogleCalendarController::class, 'checkStatus'])->name('calendar.google-calendar.status');
 
         // Document folder management and status controls.
         Route::middleware('permission:manage-document-folders')->group(function () {
-            Route::get('document-folders', [DocumentFolderController::class, 'index'])->middleware('permission:manage-document-folders')->name('document-folders.index');
-            Route::get('document-folders/{documentFolder}', [DocumentFolderController::class, 'show'])->middleware('permission:view-document-folders')->name('document-folders.show');
-            Route::put('document-folders/{documentFolder}/toggle-status', [DocumentFolderController::class, 'toggleStatus'])->middleware('permission:toggle-status-document-folders')->name('document-folders.toggle-status');
+            Route::get('document-folders', [DocumentFolderController::class, 'index'])->middleware('permission:manage-document-folders')->name('documents.document-folders.index');
+            Route::get('document-folders/{documentFolder}', [DocumentFolderController::class, 'show'])->middleware('permission:view-document-folders')->name('documents.document-folders.show');
+            Route::put('document-folders/{documentFolder}/toggle-status', [DocumentFolderController::class, 'toggleStatus'])->middleware('permission:toggle-status-document-folders')->name('documents.document-folders.toggle-status');
         });
 
         // Activity stream access and cleanup across CRM records.
@@ -951,9 +951,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('documents/{document}', [DocumentController::class, 'update'])->middleware('permission:edit-documents')->name('documents.update');
             Route::delete('documents/{document}', [DocumentController::class, 'destroy'])->middleware('permission:delete-documents')->name('documents.destroy');
             Route::put('documents/{document}/toggle-status', [DocumentController::class, 'toggleStatus'])->middleware('permission:toggle-status-documents')->name('documents.toggle-status');
-            Route::post('document-folders', [DocumentFolderController::class, 'store'])->middleware('permission:create-document-folders')->name('document-folders.store');
-            Route::put('document-folders/{documentFolder}', [DocumentFolderController::class, 'update'])->middleware('permission:edit-document-folders')->name('document-folders.update');
-            Route::delete('document-folders/{documentFolder}', [DocumentFolderController::class, 'destroy'])->middleware('permission:delete-document-folders')->name('document-folders.destroy');
+            Route::post('document-folders', [DocumentFolderController::class, 'store'])->middleware('permission:create-document-folders')->name('documents.document-folders.store');
+            Route::put('document-folders/{documentFolder}', [DocumentFolderController::class, 'update'])->middleware('permission:edit-document-folders')->name('documents.document-folders.update');
+            Route::delete('document-folders/{documentFolder}', [DocumentFolderController::class, 'destroy'])->middleware('permission:delete-document-folders')->name('documents.document-folders.destroy');
             Route::get('documents/folder/{folder}', [DocumentFolderController::class, 'show'])->middleware('permission:view-documents')->name('documents.folder');
         });
 
@@ -978,93 +978,92 @@ Route::middleware(['auth', 'verified'])->group(function () {
 //Route::post('subscriptions/payments/easebuzz/callback', [EasebuzzPaymentController::class, 'callback'])->name('easebuzz.callback');
 
 // Public invoice access and customer-facing payment page endpoints.
-Route::get('invoices/public/{invoice}', [InvoiceController::class, 'publicView'])->name('invoices.public');
-Route::get('invoice-payment/{method}', [InvoiceController::class, 'showPaymentPage'])->name('invoice.payment.page');
+Route::get('invoices/public/{invoice}', [InvoiceController::class, 'publicView'])->name('customer-facing.invoices.public');
+Route::get('invoice-payment/{method}', [InvoiceController::class, 'showPaymentPage'])->name('customer-facing.invoice.payment.page');
 
 // Public quote and sales order access for customer-facing workflows.
-Route::get('quotes/public/{quote}', [QuoteController::class, 'publicView'])->name('quotes.public');
-Route::get('sales-orders/public/{salesOrder}', [SalesOrderController::class, 'publicView'])->name('sales-orders.public');
-
-//Route::post('invoices/payment/stripe', [InvoiceStripePaymentController::class, 'processPayment'])->name('invoice.subscriptions.stripe.payment');
-//Route::post('invoices/payment/stripe/confirm', [InvoiceStripePaymentController::class, 'confirmPayment'])->name('invoice.stripe.confirm');
-//Route::post('invoices/payment/paypal', [InvoicePayPalPaymentController::class, 'processPayment'])->name('invoice.subscriptions.paypal.payment');
-//Route::post('invoices/payment/razorpay/create-order', [InvoiceRazorpayPaymentController::class, 'createOrder'])->name('invoice.razorpay.create-order');
-//Route::post('invoices/payment/razorpay', [InvoiceRazorpayPaymentController::class, 'processPayment'])->name('invoice.razorpay.payment');
-//Route::post('invoices/payment/mercadopago/create-preference', [InvoiceMercadoPagoPaymentController::class, 'createPreference'])->name('invoice.mercadopago.create-preference');
-//Route::get('invoices/payment/mercadopago/success', [InvoiceMercadoPagoPaymentController::class, 'success'])->name('invoice.mercadopago.success');
-//Route::get('invoices/payment/mercadopago/failure', [InvoiceMercadoPagoPaymentController::class, 'failure'])->name('invoice.mercadopago.failure');
-//Route::get('invoices/payment/mercadopago/pending', [InvoiceMercadoPagoPaymentController::class, 'pending'])->name('invoice.mercadopago.pending');
-Route::post('invoices/payment/paystack', [InvoicePaystackPaymentController::class, 'processPayment'])->name('invoice.subscriptions.paystack.payment');
-//Route::post('invoices/payment/flutterwave', [InvoiceFlutterwavePaymentController::class, 'processPayment'])->name('invoice.subscriptions.flutterwave.payment');
-//Route::post('invoices/payment/paytabs', [InvoicePayTabsPaymentController::class, 'processPayment'])->name('invoice.subscriptions.paytabs.payment');
-//Route::get('invoices/payment/paytabs/success', [InvoicePayTabsPaymentController::class, 'success'])->name('invoice.paytabs.success');
-//Route::match(['GET', 'POST'], 'invoices/payment/paytabs/callback', [InvoicePayTabsPaymentController::class, 'callback'])->name('invoice.paytabs.callback');
-//Route::post('invoices/payment/skrill', [InvoiceSkrillPaymentController::class, 'processPayment'])->name('invoice.subscriptions.skrill.payment');
-//Route::post('invoices/payment/skrill/callback', [InvoiceSkrillPaymentController::class, 'callback'])->name('invoice.skrill.callback');
-//Route::post('invoices/payment/coingate', [InvoiceCoingatePaymentController::class, 'processPayment'])->name('invoice.subscriptions.coingate.payment');
-//Route::match(['GET', 'POST'], 'invoices/payment/coingate/callback', [InvoiceCoingatePaymentController::class, 'callback'])->name('invoice.coingate.callback');
-Route::post('invoices/payment/bank', [InvoiceBankPaymentController::class, 'processPayment'])->name('invoice.subscriptions.bank.payment');
-//Route::post('invoices/payment/benefit', [InvoiceBenefitPaymentController::class, 'processPayment'])->name('invoice.subscriptions.benefit.payment');
-//Route::get('invoices/payment/benefit/success', [InvoiceBenefitPaymentController::class, 'success'])->name('invoice.benefit.success');
-//Route::post('invoices/payment/benefit/callback', [InvoiceBenefitPaymentController::class, 'callback'])->name('invoice.benefit.callback');
-//Route::post('invoices/payment/payfast', [InvoicePayfastPaymentController::class, 'processPayment'])->name('invoice.subscriptions.payfast.payment');
-//Route::get('invoices/payment/payfast/success', [InvoicePayfastPaymentController::class, 'success'])->name('invoice.payfast.success');
-//Route::post('invoices/payment/payfast/callback', [InvoicePayfastPaymentController::class, 'callback'])->name('invoice.payfast.callback');
-//Route::post('invoices/payment/tap', [InvoiceTapPaymentController::class, 'processPayment'])->name('invoice.tap.payment');
-//Route::get('invoices/payment/tap/success', [InvoiceTapPaymentController::class, 'success'])->name('invoice.tap.success');
-//Route::post('invoices/payment/tap/callback', [InvoiceTapPaymentController::class, 'callback'])->name('invoice.tap.callback');
-//Route::post('invoices/payment/xendit', [InvoiceXenditPaymentController::class, 'createPayment'])->name('invoice.xendit.payment');
-//Route::get('invoices/payment/xendit/success', [InvoiceXenditPaymentController::class, 'success'])->name('invoice.xendit.success');
-//Route::post('invoices/payment/xendit/callback', [InvoiceXenditPaymentController::class, 'callback'])->name('invoice.xendit.callback');
-//Route::post('invoices/payment/paytr/create-token', [InvoicePayTRPaymentController::class, 'createPaymentToken'])->name('invoice.paytr.create-token');
-//Route::get('invoices/payment/paytr/success', [InvoicePayTRPaymentController::class, 'success'])->name('invoice.paytr.success');
-//Route::get('invoices/payment/paytr/failure', [InvoicePayTRPaymentController::class, 'failure'])->name('invoice.paytr.failure');
-//Route::post('invoices/payment/paytr/callback', [InvoicePayTRPaymentController::class, 'callback'])->name('invoice.paytr.callback');
-//Route::post('invoices/payment/mollie', [InvoiceMolliePaymentController::class, 'processPayment'])->name('invoice.subscriptions.mollie.payment');
-//Route::get('invoices/payment/mollie/success', [InvoiceMolliePaymentController::class, 'success'])->name('invoice.mollie.success');
-//Route::post('invoices/payment/mollie/callback', [InvoiceMolliePaymentController::class, 'callback'])->name('invoice.mollie.callback');
-//Route::post('invoices/payment/toyyibpay', [InvoiceToyyibPayPaymentController::class, 'processPayment'])->name('invoice.subscriptions.toyyibpay.payment');
-//Route::match(['GET', 'POST'], 'invoices/payment/toyyibpay/success', [InvoiceToyyibPayPaymentController::class, 'success'])->name('invoice.toyyibpay.success');
-//Route::post('invoices/payment/toyyibpay/callback', [InvoiceToyyibPayPaymentController::class, 'callback'])->name('invoice.toyyibpay.callback');
-//Route::post('invoices/payment/iyzipay/create-form', [InvoiceIyzipayPaymentController::class, 'createPaymentForm'])->name('invoice.iyzipay.create-form');
-//Route::post('invoices/payment/aamarpay/create', [InvoiceAamarpayPaymentController::class, 'createPayment'])->name('invoice.aamarpay.create');
-//Route::match(['GET', 'POST'], 'invoices/payment/aamarpay/success', [InvoiceAamarpayPaymentController::class, 'success'])->name('invoice.aamarpay.success');
-//Route::post('invoices/payment/aamarpay/callback', [InvoiceAamarpayPaymentController::class, 'callback'])->name('invoice.aamarpay.callback');
-//Route::post('invoices/payment/midtrans/create', [InvoiceMidtransPaymentController::class, 'createPayment'])->name('invoice.midtrans.create');
-//Route::match(['GET', 'POST'], 'invoices/payment/midtrans/success', [InvoiceMidtransPaymentController::class, 'success'])->name('invoice.midtrans.success');
-//Route::post('invoices/payment/midtrans/callback', [InvoiceMidtransPaymentController::class, 'callback'])->name('invoice.midtrans.callback');
-//Route::post('invoices/payment/yookassa/create-payment', [InvoiceYooKassaPaymentController::class, 'createPayment'])->name('invoice.yookassa.create-payment');
-//Route::get('invoices/payment/yookassa/success', [InvoiceYooKassaPaymentController::class, 'success'])->name('invoice.yookassa.success');
-//Route::post('invoices/payment/yookassa/callback', [InvoiceYooKassaPaymentController::class, 'callback'])->name('invoice.yookassa.callback');
-//Route::post('invoices/payment/paiement/create-payment', [InvoicePaiementPaymentController::class, 'createPayment'])->name('invoice.paiement.create-payment');
-//Route::get('invoices/payment/paiement/success', [InvoicePaiementPaymentController::class, 'success'])->name('invoice.paiement.success');
-//Route::post('invoices/payment/paiement/callback', [InvoicePaiementPaymentController::class, 'callback'])->name('invoice.paiement.callback');
-//Route::post('invoices/payment/cinetpay/create-payment', [InvoiceCinetPayPaymentController::class, 'createPayment'])->name('invoice.cinetpay.create-payment');
-//Route::get('invoices/payment/cinetpay/success', [InvoiceCinetPayPaymentController::class, 'success'])->name('invoice.cinetpay.success');
-//Route::post('invoices/payment/cinetpay/callback', [InvoiceCinetPayPaymentController::class, 'callback'])->name('invoice.cinetpay.callback');
-//Route::post('invoices/payment/payhere/create-payment', [InvoicePayHerePaymentController::class, 'createPayment'])->name('invoice.payhere.create-payment');
-//Route::get('invoices/payment/payhere/success', [InvoicePayHerePaymentController::class, 'success'])->name('invoice.payhere.success');
-//Route::post('invoices/payment/payhere/callback', [InvoicePayHerePaymentController::class, 'callback'])->name('invoice.payhere.callback');
-//Route::post('invoices/payment/fedapay/create-payment', [InvoiceFedaPayPaymentController::class, 'createPayment'])->name('invoice.fedapay.create-payment');
-//Route::match(['GET', 'POST'], 'invoices/payment/fedapay/callback', [InvoiceFedaPayPaymentController::class, 'callback'])->name('invoice.fedapay.callback');
-//Route::post('invoices/payment/authorizenet', [InvoiceAuthorizeNetPaymentController::class, 'processPayment'])->name('invoice.subscriptions.authorizenet.payment');
-//Route::post('invoices/payment/khalti/create-payment', [InvoiceKhaltiPaymentController::class, 'createPayment'])->name('invoice.khalti.create-payment');
-//Route::post('invoices/payment/khalti', [InvoiceKhaltiPaymentController::class, 'processPayment'])->name('invoice.subscriptions.khalti.payment');
-//Route::post('invoices/payment/easebuzz/create-payment', [InvoiceEasebuzzPaymentController::class, 'createPayment'])->name('invoice.easebuzz.create-payment');
-//Route::match(['GET', 'POST'], 'invoices/payment/easebuzz/success', [InvoiceEasebuzzPaymentController::class, 'success'])->name('invoice.easebuzz.success');
-//Route::match(['GET', 'POST'], 'invoices/payment/easebuzz/failure', [InvoiceEasebuzzPaymentController::class, 'failure'])->name('invoice.easebuzz.failure');
-//Route::post('invoices/payment/easebuzz/callback', [InvoiceEasebuzzPaymentController::class, 'callback'])->name('invoice.easebuzz.callback');
-//Route::post('invoices/payment/ozow/create-payment', [InvoiceOzowPaymentController::class, 'createPayment'])->name('invoice.ozow.create-payment');
-//Route::get('invoices/payment/ozow/success', [InvoiceOzowPaymentController::class, 'success'])->name('invoice.ozow.success');
-//Route::post('invoices/payment/ozow/callback', [InvoiceOzowPaymentController::class, 'callback'])->name('invoice.ozow.callback');
-//Route::post('invoices/payment/cashfree/create-session', [InvoiceCashfreePaymentController::class, 'createPaymentSession'])->name('invoice.cashfree.create-session');
-//Route::post('invoices/payment/cashfree/verify-payment', [InvoiceCashfreePaymentController::class, 'verifyPayment'])->name('invoice.cashfree.verify-payment');
-//Route::post('invoices/payment/cashfree/webhook', [InvoiceCashfreePaymentController::class, 'webhook'])->name('invoice.cashfree.webhook')->withoutMiddleware(VerifyCsrfToken::class);
+Route::get('quotes/public/{quote}', [QuoteController::class, 'publicView'])->name('customer-facing.quotes.public');
+Route::get('sales-orders/public/{salesOrder}', [SalesOrderController::class, 'publicView'])->name('customer-facing.sales-orders.public');
+//Route::post('invoices/payment/stripe', [InvoiceStripePaymentController::class, 'processPayment'])->name('customer-facing.invoice.stripe.payment');
+//Route::post('invoices/payment/stripe/confirm', [InvoiceStripePaymentController::class, 'confirmPayment'])->name('customer-facing.invoice.stripe.confirm');
+//Route::post('invoices/payment/paypal', [InvoicePayPalPaymentController::class, 'processPayment'])->name('customer-facing.invoice.paypal.payment');
+//Route::post('invoices/payment/razorpay/create-order', [InvoiceRazorpayPaymentController::class, 'createOrder'])->name('customer-facing.invoice.razorpay.create-order');
+//Route::post('invoices/payment/razorpay', [InvoiceRazorpayPaymentController::class, 'processPayment'])->name('customer-facing.invoice.razorpay.payment');
+//Route::post('invoices/payment/mercadopago/create-preference', [InvoiceMercadoPagoPaymentController::class, 'createPreference'])->name('customer-facing.invoice.mercadopago.create-preference');
+//Route::get('invoices/payment/mercadopago/success', [InvoiceMercadoPagoPaymentController::class, 'success'])->name('customer-facing.invoice.mercadopago.success');
+//Route::get('invoices/payment/mercadopago/failure', [InvoiceMercadoPagoPaymentController::class, 'failure'])->name('customer-facing.invoice.mercadopago.failure');
+//Route::get('invoices/payment/mercadopago/pending', [InvoiceMercadoPagoPaymentController::class, 'pending'])->name('customer-facing.invoice.mercadopago.pending');
+Route::post('invoices/payment/paystack', [InvoicePaystackPaymentController::class, 'processPayment'])->name('customer-facing.invoice.paystack.payment');
+//Route::post('invoices/payment/flutterwave', [InvoiceFlutterwavePaymentController::class, 'processPayment'])->name('customer-facing.invoice.flutterwave.payment');
+//Route::post('invoices/payment/paytabs', [InvoicePayTabsPaymentController::class, 'processPayment'])->name('customer-facing.invoice.paytabs.payment');
+//Route::get('invoices/payment/paytabs/success', [InvoicePayTabsPaymentController::class, 'success'])->name('customer-facing.invoice.paytabs.success');
+//Route::match(['GET', 'POST'], 'invoices/payment/paytabs/callback', [InvoicePayTabsPaymentController::class, 'callback'])->name('customer-facing.invoice.paytabs.callback');
+//Route::post('invoices/payment/skrill', [InvoiceSkrillPaymentController::class, 'processPayment'])->name('customer-facing.invoice.skrill.payment');
+//Route::post('invoices/payment/skrill/callback', [InvoiceSkrillPaymentController::class, 'callback'])->name('customer-facing.invoice.skrill.callback');
+//Route::post('invoices/payment/coingate', [InvoiceCoingatePaymentController::class, 'processPayment'])->name('customer-facing.invoice.coingate.payment');
+//Route::match(['GET', 'POST'], 'invoices/payment/coingate/callback', [InvoiceCoingatePaymentController::class, 'callback'])->name('customer-facing.invoice.coingate.callback');
+Route::post('invoices/payment/bank', [InvoiceBankPaymentController::class, 'processPayment'])->name('customer-facing.invoice.bank.payment');
+//Route::post('invoices/payment/benefit', [InvoiceBenefitPaymentController::class, 'processPayment'])->name('customer-facing.invoice.benefit.payment');
+//Route::get('invoices/payment/benefit/success', [InvoiceBenefitPaymentController::class, 'success'])->name('customer-facing.invoice.benefit.success');
+//Route::post('invoices/payment/benefit/callback', [InvoiceBenefitPaymentController::class, 'callback'])->name('customer-facing.invoice.benefit.callback');
+//Route::post('invoices/payment/payfast', [InvoicePayfastPaymentController::class, 'processPayment'])->name('customer-facing.invoice.payfast.payment');
+//Route::get('invoices/payment/payfast/success', [InvoicePayfastPaymentController::class, 'success'])->name('customer-facing.invoice.payfast.success');
+//Route::post('invoices/payment/payfast/callback', [InvoicePayfastPaymentController::class, 'callback'])->name('customer-facing.invoice.payfast.callback');
+//Route::post('invoices/payment/tap', [InvoiceTapPaymentController::class, 'processPayment'])->name('customer-facing.invoice.tap.payment');
+//Route::get('invoices/payment/tap/success', [InvoiceTapPaymentController::class, 'success'])->name('customer-facing.invoice.tap.success');
+//Route::post('invoices/payment/tap/callback', [InvoiceTapPaymentController::class, 'callback'])->name('customer-facing.invoice.tap.callback');
+//Route::post('invoices/payment/xendit', [InvoiceXenditPaymentController::class, 'createPayment'])->name('customer-facing.invoice.xendit.payment');
+//Route::get('invoices/payment/xendit/success', [InvoiceXenditPaymentController::class, 'success'])->name('customer-facing.invoice.xendit.success');
+//Route::post('invoices/payment/xendit/callback', [InvoiceXenditPaymentController::class, 'callback'])->name('customer-facing.invoice.xendit.callback');
+//Route::post('invoices/payment/paytr/create-token', [InvoicePayTRPaymentController::class, 'createPaymentToken'])->name('customer-facing.invoice.paytr.create-token');
+//Route::get('invoices/payment/paytr/success', [InvoicePayTRPaymentController::class, 'success'])->name('customer-facing.invoice.paytr.success');
+//Route::get('invoices/payment/paytr/failure', [InvoicePayTRPaymentController::class, 'failure'])->name('customer-facing.invoice.paytr.failure');
+//Route::post('invoices/payment/paytr/callback', [InvoicePayTRPaymentController::class, 'callback'])->name('customer-facing.invoice.paytr.callback');
+//Route::post('invoices/payment/mollie', [InvoiceMolliePaymentController::class, 'processPayment'])->name('customer-facing.invoice.mollie.payment');
+//Route::get('invoices/payment/mollie/success', [InvoiceMolliePaymentController::class, 'success'])->name('customer-facing.invoice.mollie.success');
+//Route::post('invoices/payment/mollie/callback', [InvoiceMolliePaymentController::class, 'callback'])->name('customer-facing.invoice.mollie.callback');
+//Route::post('invoices/payment/toyyibpay', [InvoiceToyyibPayPaymentController::class, 'processPayment'])->name('customer-facing.invoice.toyyibpay.payment');
+//Route::match(['GET', 'POST'], 'invoices/payment/toyyibpay/success', [InvoiceToyyibPayPaymentController::class, 'success'])->name('customer-facing.invoice.toyyibpay.success');
+//Route::post('invoices/payment/toyyibpay/callback', [InvoiceToyyibPayPaymentController::class, 'callback'])->name('customer-facing.invoice.toyyibpay.callback');
+//Route::post('invoices/payment/iyzipay/create-form', [InvoiceIyzipayPaymentController::class, 'createPaymentForm'])->name('customer-facing.invoice.iyzipay.create-form');
+//Route::post('invoices/payment/aamarpay/create', [InvoiceAamarpayPaymentController::class, 'createPayment'])->name('customer-facing.invoice.aamarpay.create');
+//Route::match(['GET', 'POST'], 'invoices/payment/aamarpay/success', [InvoiceAamarpayPaymentController::class, 'success'])->name('customer-facing.invoice.aamarpay.success');
+//Route::post('invoices/payment/aamarpay/callback', [InvoiceAamarpayPaymentController::class, 'callback'])->name('customer-facing.invoice.aamarpay.callback');
+//Route::post('invoices/payment/midtrans/create', [InvoiceMidtransPaymentController::class, 'createPayment'])->name('customer-facing.invoice.midtrans.create');
+//Route::match(['GET', 'POST'], 'invoices/payment/midtrans/success', [InvoiceMidtransPaymentController::class, 'success'])->name('customer-facing.invoice.midtrans.success');
+//Route::post('invoices/payment/midtrans/callback', [InvoiceMidtransPaymentController::class, 'callback'])->name('customer-facing.invoice.midtrans.callback');
+//Route::post('invoices/payment/yookassa/create-payment', [InvoiceYooKassaPaymentController::class, 'createPayment'])->name('customer-facing.invoice.yookassa.create-payment');
+//Route::get('invoices/payment/yookassa/success', [InvoiceYooKassaPaymentController::class, 'success'])->name('customer-facing.invoice.yookassa.success');
+//Route::post('invoices/payment/yookassa/callback', [InvoiceYooKassaPaymentController::class, 'callback'])->name('customer-facing.invoice.yookassa.callback');
+//Route::post('invoices/payment/paiement/create-payment', [InvoicePaiementPaymentController::class, 'createPayment'])->name('customer-facing.invoice.paiement.create-payment');
+//Route::get('invoices/payment/paiement/success', [InvoicePaiementPaymentController::class, 'success'])->name('customer-facing.invoice.paiement.success');
+//Route::post('invoices/payment/paiement/callback', [InvoicePaiementPaymentController::class, 'callback'])->name('customer-facing.invoice.paiement.callback');
+//Route::post('invoices/payment/cinetpay/create-payment', [InvoiceCinetPayPaymentController::class, 'createPayment'])->name('customer-facing.invoice.cinetpay.create-payment');
+//Route::get('invoices/payment/cinetpay/success', [InvoiceCinetPayPaymentController::class, 'success'])->name('customer-facing.invoice.cinetpay.success');
+//Route::post('invoices/payment/cinetpay/callback', [InvoiceCinetPayPaymentController::class, 'callback'])->name('customer-facing.invoice.cinetpay.callback');
+//Route::post('invoices/payment/payhere/create-payment', [InvoicePayHerePaymentController::class, 'createPayment'])->name('customer-facing.invoice.payhere.create-payment');
+//Route::get('invoices/payment/payhere/success', [InvoicePayHerePaymentController::class, 'success'])->name('customer-facing.invoice.payhere.success');
+//Route::post('invoices/payment/payhere/callback', [InvoicePayHerePaymentController::class, 'callback'])->name('customer-facing.invoice.payhere.callback');
+//Route::post('invoices/payment/fedapay/create-payment', [InvoiceFedaPayPaymentController::class, 'createPayment'])->name('customer-facing.invoice.fedapay.create-payment');
+//Route::match(['GET', 'POST'], 'invoices/payment/fedapay/callback', [InvoiceFedaPayPaymentController::class, 'callback'])->name('customer-facing.invoice.fedapay.callback');
+//Route::post('invoices/payment/authorizenet', [InvoiceAuthorizeNetPaymentController::class, 'processPayment'])->name('customer-facing.invoice.authorizenet.payment');
+//Route::post('invoices/payment/khalti/create-payment', [InvoiceKhaltiPaymentController::class, 'createPayment'])->name('customer-facing.invoice.khalti.create-payment');
+//Route::post('invoices/payment/khalti', [InvoiceKhaltiPaymentController::class, 'processPayment'])->name('customer-facing.invoice.khalti.payment');
+//Route::post('invoices/payment/easebuzz/create-payment', [InvoiceEasebuzzPaymentController::class, 'createPayment'])->name('customer-facing.invoice.easebuzz.create-payment');
+//Route::match(['GET', 'POST'], 'invoices/payment/easebuzz/success', [InvoiceEasebuzzPaymentController::class, 'success'])->name('customer-facing.invoice.easebuzz.success');
+//Route::match(['GET', 'POST'], 'invoices/payment/easebuzz/failure', [InvoiceEasebuzzPaymentController::class, 'failure'])->name('customer-facing.invoice.easebuzz.failure');
+//Route::post('invoices/payment/easebuzz/callback', [InvoiceEasebuzzPaymentController::class, 'callback'])->name('customer-facing.invoice.easebuzz.callback');
+//Route::post('invoices/payment/ozow/create-payment', [InvoiceOzowPaymentController::class, 'createPayment'])->name('customer-facing.invoice.ozow.create-payment');
+//Route::get('invoices/payment/ozow/success', [InvoiceOzowPaymentController::class, 'success'])->name('customer-facing.invoice.ozow.success');
+//Route::post('invoices/payment/ozow/callback', [InvoiceOzowPaymentController::class, 'callback'])->name('customer-facing.invoice.ozow.callback');
+//Route::post('invoices/payment/cashfree/create-session', [InvoiceCashfreePaymentController::class, 'createPaymentSession'])->name('customer-facing.invoice.cashfree.create-session');
+//Route::post('invoices/payment/cashfree/verify-payment', [InvoiceCashfreePaymentController::class, 'verifyPayment'])->name('customer-facing.invoice.cashfree.verify-payment');
+//Route::post('invoices/payment/cashfree/webhook', [InvoiceCashfreePaymentController::class, 'webhook'])->name('customer-facing.invoice.cashfree.webhook')->withoutMiddleware(VerifyCsrfToken::class);
 
 // Authenticated invoice payment approval and rejection workflow. All application routes below require an authenticated and verified user. Subscription-gated modules are isolated in the nested group.
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::post('invoices/payments/{paymentId}/approve', [InvoiceController::class, 'approvePayment'])->name('invoice.payments.approve');
-    Route::post('invoices/payments/{paymentId}/reject', [InvoiceController::class, 'rejectPayment'])->name('invoice.payments.reject');
+    Route::post('invoices/payments/{paymentId}/approve', [InvoiceController::class, 'approvePayment'])->name('customer-facing.invoice.payments.approve');
+    Route::post('invoices/payments/{paymentId}/reject', [InvoiceController::class, 'rejectPayment'])->name('customer-facing.invoice.payments.reject');
 });
 
 // Cookie consent persistence and user-accessible consent record download.
@@ -1073,7 +1072,7 @@ Route::get('/cookie-consent/download', [CookieConsentController::class, 'downloa
 
 // Authenticated invoice template preview. All application routes below require an authenticated and verified user. Subscription-gated modules are isolated in the nested group.
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('invoices/preview/{templateId}/{color}', [InvoiceController::class, 'previewTemplate'])->name('invoice.preview');
+    Route::get('invoices/preview/{templateId}/{color}', [InvoiceController::class, 'previewTemplate'])->name('customer-facing.invoice.preview');
 });
 
 Route::fallback(function () {

@@ -43,13 +43,13 @@ class InvoiceOzowPaymentController extends Controller
             $apiKey = $settings['payment_settings']['ozow_api_key'];
             $isTest = $settings['payment_settings']['ozow_mode'] == 'sandbox' ? 'true' : 'false';
             $amount = $validated['amount'];
-            $cancelUrl = route('invoices.public', encrypt($invoice->id));
-            $successUrl = route('invoice.ozow.success', [
+            $cancelUrl = route('customer-facing.invoices.public', encrypt($invoice->id));
+            $successUrl = route('customer-facing.invoice.ozow.success', [
                 'invoice_id' => $invoice->id,
                 'amount' => $validated['amount'],
                 'payment_type' => $validated['payment_type'],
             ]);
-            $notifyUrl = route('invoice.ozow.callback');
+            $notifyUrl = route('customer-facing.invoice.ozow.callback');
             $bankReference = 'INV' . $invoice->id . time();
             $transactionReference = 'inv_' . $invoice->id . '_' . time();
             $countryCode = 'ZA';
@@ -146,7 +146,7 @@ class InvoiceOzowPaymentController extends Controller
 
             $invoice = Invoice::find($invoiceId);
             if (!$invoice) {
-                return redirect()->route('invoices.public', encrypt($invoiceId))->with('error', __('Invoice not found'));
+                return redirect()->route('customer-facing.invoices.public', encrypt($invoiceId))->with('error', __('Invoice not found'));
             }
 
             InvoicePayment::storePayment([
@@ -163,14 +163,14 @@ class InvoiceOzowPaymentController extends Controller
                 'payment_type' => $paymentType,
             ]);
 
-            return redirect()->route('invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
+            return redirect()->route('customer-facing.invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
 
         } catch (Exception $e) {
             Log::error('Ozow success callback error', [
                 'error' => $e->getMessage(),
             ]);
 
-            return redirect()->route('invoices.public', encrypt($request->input('invoice_id')))->with('error', __('Payment processing failed'));
+            return redirect()->route('customer-facing.invoices.public', encrypt($request->input('invoice_id')))->with('error', __('Payment processing failed'));
         }
     }
 

@@ -46,7 +46,7 @@ export default function Documents() {
         delete formData.status;
         if (folderFormMode === 'create') {
             const toastId = toast.loading(translate('Creating folder...'));
-            router.post(route('document-folders.store'), formData, {
+            router.post(route('documents.document-folders.store'), formData, {
                 preserveState: false,
                 onSuccess: (page) => {
                     setIsFolderModalOpen(false);
@@ -62,7 +62,7 @@ export default function Documents() {
             });
         } else {
             const toastId = toast.loading(translate('Updating folder...'));
-            router.put(route('document-folders.update', currentFolder.id), formData, {
+            router.put(route('documents.document-folders.update', currentFolder.id), formData, {
                 preserveState: false,
                 onSuccess: (page) => {
                     setIsFolderModalOpen(false);
@@ -81,7 +81,7 @@ export default function Documents() {
 
     const handleFolderDeleteConfirm = () => {
         const toastId = toast.loading(translate('Deleting folder...'));
-        router.delete(route('document-folders.destroy', currentFolder.id), {
+        router.delete(route('documents.document-folders.destroy', currentFolder.id), {
             onSuccess: (page) => {
                 setIsFolderDeleteModalOpen(false);
                 toast.dismiss(toastId);

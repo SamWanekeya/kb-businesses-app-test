@@ -556,7 +556,7 @@ class InvoiceController extends Controller
             $invoice->update(['status' => 'paid']);
         }
 
-        return redirect()->route('invoices.public', $invoiceId)
+        return redirect()->route('customer-facing.invoices.public', $invoiceId)
             ->with('success', __('Payment processed successfully!'));
     }
 
@@ -565,7 +565,7 @@ class InvoiceController extends Controller
         $paymentOrder = PlanOrder::findOrFail($request->order);
         $paymentOrder->update(['status' => 'cancelled']);
 
-        return redirect()->route('invoices.public', $invoiceId)
+        return redirect()->route('customer-facing.invoices.public', $invoiceId)
             ->with('error', __('Payment was cancelled.'));
     }
 

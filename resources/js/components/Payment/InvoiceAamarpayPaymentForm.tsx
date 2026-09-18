@@ -42,7 +42,7 @@ export function InvoiceAamarpayPaymentForm({
         setError(null);
 
         try {
-            const response = await fetch(route('invoice.aamarpay.create'), {
+            const response = await fetch(route('customer-facing.invoice.aamarpay.create'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

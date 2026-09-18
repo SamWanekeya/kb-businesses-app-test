@@ -48,7 +48,7 @@ export function InvoiceToyyibPayPaymentForm({
 
         try {
             const response = await axios.post(
-                route('invoice.subscriptions.toyyibpay.payment'),
+                route('customer-facing.invoice.toyyibpay.payment'),
                 {
                     invoice_id: invoiceId,
                     amount: amount,

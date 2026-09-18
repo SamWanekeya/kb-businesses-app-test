@@ -80,7 +80,7 @@ export function InvoicePayfastPaymentForm({
         setIsProcessing(true);
 
         try {
-            const response = await fetch(route('invoice.subscriptions.payfast.payment'), {
+            const response = await fetch(route('customer-facing.invoice.payfast.payment'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

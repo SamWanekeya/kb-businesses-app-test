@@ -71,7 +71,7 @@ export function InvoicePayTRPaymentForm({
         setIsProcessing(true);
 
         try {
-            const response = await axios.post(route('invoice.paytr.create-token'), {
+            const response = await axios.post(route('customer-facing.invoice.paytr.create-token'), {
                 invoice_id: invoiceId,
                 amount: amount,
                 payment_type: paymentType,

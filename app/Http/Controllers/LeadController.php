@@ -117,7 +117,7 @@ class LeadController extends Controller
             'accountTypes' => $accountTypes,
             'users' => $users,
             'allUsers' => $allUsers,
-            'samplePath' => file_exists(storage_path('uploads/sample/sample-lead.xlsx')) ? route('lead.download.template') : null,
+            'samplePath' => file_exists(storage_path('uploads/sample/sample-lead.xlsx')) ? route('leads.download.template') : null,
             'filters' => $request->all(['view', 'search', 'lead_status_id', 'lead_source_id', 'status', 'is_converted', 'assigned_to', 'sort_field', 'sort_direction', 'per_page', 'page']),
         ]);
     }

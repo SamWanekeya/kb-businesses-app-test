@@ -57,7 +57,7 @@ export function InvoiceRazorpayPaymentForm({
     const handlePayment = async () => {
         try {
             // Create order on the server first
-            const response = await axios.post(route('invoice.razorpay.create-order'), {
+            const response = await axios.post(route('customer-facing.invoice.razorpay.create-order'), {
                 invoice_id: invoiceId,
                 amount: amount,
                 payment_type: paymentType,
@@ -85,7 +85,7 @@ export function InvoiceRazorpayPaymentForm({
                 handler: function (response: any) {
                     // Process payment on server
                     axios
-                        .post(route('invoice.razorpay.payment'), {
+                        .post(route('customer-facing.invoice.razorpay.payment'), {
                             invoice_id: invoiceId,
                             amount: amount,
                             payment_type: paymentType,

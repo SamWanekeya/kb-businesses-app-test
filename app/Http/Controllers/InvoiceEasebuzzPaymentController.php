@@ -62,12 +62,12 @@ class InvoiceEasebuzzPaymentController extends Controller
                 'firstname' => $invoice->name ?? 'Customer',
                 'email' => $invoice->email ?? $organization->email,
                 'phone' => $invoice->phone ?? '9999999999',
-                'surl' => route('invoice.easebuzz.success', [
+                'surl' => route('customer-facing.invoice.easebuzz.success', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
                 ]),
-                'furl' => route('invoice.easebuzz.failure', [
+                'furl' => route('customer-facing.invoice.easebuzz.failure', [
                     'invoice_id' => $invoice->id,
                 ]),
                 'udf1' => $validated['payment_type'],
@@ -137,7 +137,7 @@ class InvoiceEasebuzzPaymentController extends Controller
 
             $invoice = Invoice::find($invoiceId);
             if (!$invoice) {
-                return redirect()->route('invoices.public', encrypt($invoiceId))->with('error', __('Invoice not found'));
+                return redirect()->route('customer-facing.invoices.public', encrypt($invoiceId))->with('error', __('Invoice not found'));
             }
 
             $organizationId = $invoice->created_by;
@@ -168,17 +168,17 @@ class InvoiceEasebuzzPaymentController extends Controller
                     'payment_type' => $paymentType,
                 ]);
 
-                return redirect()->route('invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
+                return redirect()->route('customer-facing.invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
             }
 
-            return redirect()->route('invoices.public', encrypt($invoiceId))->with('error', __('Payment verification failed'));
+            return redirect()->route('customer-facing.invoices.public', encrypt($invoiceId))->with('error', __('Payment verification failed'));
 
         } catch (Exception $e) {
             Log::error('Easebuzz success callback error', [
                 'error' => $e->getMessage(),
             ]);
 
-            return redirect()->route('invoices.public', encrypt($request->input('invoice_id')))->with('error', __('Payment processing failed'));
+            return redirect()->route('customer-facing.invoices.public', encrypt($request->input('invoice_id')))->with('error', __('Payment processing failed'));
         }
     }
 
@@ -195,17 +195,17 @@ class InvoiceEasebuzzPaymentController extends Controller
                     'status' => $request->input('status'),
                 ]);
 
-                return redirect()->route('invoices.public', encrypt($invoice->id))->with('error', __('Payment failed or cancelled'));
+                return redirect()->route('customer-facing.invoices.public', encrypt($invoice->id))->with('error', __('Payment failed or cancelled'));
             }
 
-            return redirect()->route('invoices.public', encrypt($invoiceId))->with('error', __('Payment failed'));
+            return redirect()->route('customer-facing.invoices.public', encrypt($invoiceId))->with('error', __('Payment failed'));
 
         } catch (Exception $e) {
             Log::error('Easebuzz failure callback error', [
                 'error' => $e->getMessage(),
             ]);
 
-            return redirect()->route('invoices.public', encrypt($request->input('invoice_id')))->with('error', __('Payment failed'));
+            return redirect()->route('customer-facing.invoices.public', encrypt($request->input('invoice_id')))->with('error', __('Payment failed'));
         }
     }
 

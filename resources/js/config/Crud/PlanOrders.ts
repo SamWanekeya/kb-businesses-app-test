@@ -3,7 +3,7 @@ import { CrudConfig } from '@/types/crud.d';
 export const usePlanOrdersConfig: CrudConfig = {
     entity: {
         name: 'organization-plan-orders',
-        endpoint: route('organization.plan-orders.index'),
+        endpoint: route('subscriptions.plan-orders.index'),
         permissions: {
             view: 'view-plan-orders',
             create: 'create-plan-orders',

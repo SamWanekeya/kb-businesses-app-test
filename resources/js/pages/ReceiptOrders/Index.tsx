@@ -196,7 +196,7 @@ export default function ReceiptOrders() {
             label: translate('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[470px]:mr-2" />,
             variant: 'outline',
-            onClick: () => (window.location.href = route('receipt-order.export')),
+            onClick: () => (window.location.href = route('receipt-orders.export')),
             className: 'h-8 w-8 min-[470px]:h-9 min-[470px]:w-auto px-0 min-[470px]:px-4',
             labelClassName: 'hidden min-[470px]:inline',
             tooltip: translate('Export'),

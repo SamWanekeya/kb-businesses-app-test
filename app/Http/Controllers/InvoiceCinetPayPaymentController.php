@@ -51,8 +51,8 @@ class InvoiceCinetPayPaymentController extends Controller
                 'amount' => (int)($validated['amount']),
                 'currency' => 'XOF',
                 'description' => 'Invoice Payment - ' . $invoice->invoice_number . ' - ' . ucfirst($validated['payment_type']) . ' payment',
-                'notify_url' => route('invoice.cinetpay.callback'),
-                'return_url' => route('invoice.cinetpay.success', [
+                'notify_url' => route('customer-facing.invoice.cinetpay.callback'),
+                'return_url' => route('customer-facing.invoice.cinetpay.success', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
@@ -182,17 +182,17 @@ class InvoiceCinetPayPaymentController extends Controller
                         'payment_type' => $paymentType,
                     ]);
 
-                    return redirect()->route('invoices.public', $invoice->id)->with('success', __('Payment successful'));
+                    return redirect()->route('customer-facing.invoices.public', $invoice->id)->with('success', __('Payment successful'));
                 }
             }
 
-            return redirect()->route('invoices.public', $invoiceId)->with('error', __('Payment verification failed'));
+            return redirect()->route('customer-facing.invoices.public', $invoiceId)->with('error', __('Payment verification failed'));
         } catch (Exception $e) {
             \Log::error('CinetPay success callback error', [
                 'error' => $e->getMessage(),
             ]);
 
-            return redirect()->route('invoices.public', $request->input('invoice_id'))->with('error', __('Payment processing failed'));
+            return redirect()->route('customer-facing.invoices.public', $request->input('invoice_id'))->with('error', __('Payment processing failed'));
         }
     }
 

@@ -668,7 +668,7 @@ export default function Projects() {
                 }}
                 onSubmit={handleFormSubmit}
                 formConfig={{
-                    ...(useHasPermission('export-projects') && { exportRoute: 'project.export' }),
+                    ...(useHasPermission('export-projects') && { exportRoute: 'projects.export' }),
                     fields: [
                         {
                             name: 'name',

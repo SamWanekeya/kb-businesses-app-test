@@ -66,7 +66,7 @@ export function InvoiceBankTransferForm({ invoiceId, amount, paymentType, bankDe
         formData.append('amount', amount.toString());
         formData.append('receipt', receipt);
 
-        router.post(route('invoice.subscriptions.bank.payment'), formData, {
+        router.post(route('customer-facing.invoice.bank.payment'), formData, {
             onSuccess: () => {
                 toast.success(translate('Payment request submitted successfully'));
                 onSuccess();

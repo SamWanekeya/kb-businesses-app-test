@@ -55,8 +55,8 @@ class InvoicePaiementPaymentController extends Controller
                 'customerFirstName' => $invoice->name ?? 'Customer',
                 'customerLastname' => $invoice->name ?? 'User',
                 'customerPhoneNumber' => $invoice->phone ?? '01234567',
-                'notificationURL' => route('invoice.paiement.callback'),
-                'returnURL' => route('invoice.paiement.success', [
+                'notificationURL' => route('customer-facing.invoice.paiement.callback'),
+                'returnURL' => route('customer-facing.invoice.paiement.success', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
@@ -151,17 +151,17 @@ class InvoicePaiementPaymentController extends Controller
                         'payment_type' => $paymentType,
                     ]);
 
-                    return redirect()->route('invoices.public', $invoice->id)->with('success', __('Payment successful'));
+                    return redirect()->route('customer-facing.invoices.public', $invoice->id)->with('success', __('Payment successful'));
                 }
             }
 
-            return redirect()->route('invoices.public', $invoiceId)->with('error', __('Payment verification failed'));
+            return redirect()->route('customer-facing.invoices.public', $invoiceId)->with('error', __('Payment verification failed'));
         } catch (Exception $e) {
             Log::error('Paiement Pro success callback error', [
                 'error' => $e->getMessage(),
             ]);
 
-            return redirect()->route('invoices.public', $request->input('invoice_id'))->with('error', __('Payment processing failed'));
+            return redirect()->route('customer-facing.invoices.public', $request->input('invoice_id'))->with('error', __('Payment processing failed'));
         }
     }
 

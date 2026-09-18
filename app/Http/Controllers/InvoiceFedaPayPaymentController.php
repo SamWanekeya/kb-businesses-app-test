@@ -50,7 +50,7 @@ class InvoiceFedaPayPaymentController extends Controller
                 'description' => 'Invoice Payment - ' . $invoice->invoice_number . ' - ' . ucfirst($validated['payment_type']) . ' payment',
                 'amount' => (int)($validated['amount']),
                 'currency' => ['iso' => 'XOF'],
-                'callback_url' => route('invoice.fedapay.callback') . '?organization_id=' . $organizationId . '&invoice_id=' . $invoice->id,
+                'callback_url' => route('customer-facing.invoice.fedapay.callback') . '?organization_id=' . $organizationId . '&invoice_id=' . $invoice->id,
                 'customer' => [
                     'firstname' => $invoice->name ?? 'Customer',
                     'email' => $invoice->email ?? $organization->email,
@@ -135,18 +135,18 @@ class InvoiceFedaPayPaymentController extends Controller
                         'transaction_id' => $transactionId,
                     ]);
 
-                    return redirect()->route('invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
+                    return redirect()->route('customer-facing.invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
                 }
             }
 
-            return redirect()->route('invoices.public', encrypt($metadata['invoice_id'] ?? null))->with('error', __('Payment was not completed'));
+            return redirect()->route('customer-facing.invoices.public', encrypt($metadata['invoice_id'] ?? null))->with('error', __('Payment was not completed'));
         } catch (Exception $e) {
             Log::error('FedaPay callback error', [
                 'error' => $e->getMessage(),
             ]);
 
             // return response()->json(['error' => __('Callback processing failed')], 500);
-            return redirect()->route('invoices.public', encrypt($request->input('invoice_id')))->with('error', __('Callback processing failed'));
+            return redirect()->route('customer-facing.invoices.public', encrypt($request->input('invoice_id')))->with('error', __('Callback processing failed'));
         }
     }
 }

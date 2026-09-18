@@ -196,7 +196,7 @@ export default function Accounts() {
             label: translate('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[400px]:mr-2" />,
             variant: 'outline',
-            onClick: () => (window.location.href = route('account.export')),
+            onClick: () => (window.location.href = route('accounts.export')),
             className: 'h-8 w-8 min-[400px]:h-9 min-[400px]:w-auto px-0 min-[400px]:px-4',
             labelClassName: 'hidden min-[400px]:inline',
             tooltip: translate('Export'),

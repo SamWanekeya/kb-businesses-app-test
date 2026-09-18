@@ -52,9 +52,9 @@ class InvoiceSkrillPaymentController extends Controller
             $paymentData = [
                 'pay_to_email' => $settings['payment_settings']['skrill_merchant_id'],
                 'transaction_id' => $transactionId,
-                'return_url' => route('invoices.public', encrypt($invoice->id)),
-                'cancel_url' => route('invoices.public', encrypt($invoice->id)),
-                'status_url' => route('invoice.skrill.callback'),
+                'return_url' => route('customer-facing.invoices.public', encrypt($invoice->id)),
+                'cancel_url' => route('customer-facing.invoices.public', encrypt($invoice->id)),
+                'status_url' => route('customer-facing.invoice.skrill.callback'),
                 'language' => 'EN',
                 'amount' => $validated['amount'],
                 'currency' => $currency,

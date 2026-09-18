@@ -42,7 +42,7 @@ export function InvoiceEasebuzzPaymentForm({
         setError(null);
 
         try {
-            const response = await fetch(route('invoice.easebuzz.create-payment'), {
+            const response = await fetch(route('customer-facing.invoice.easebuzz.create-payment'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

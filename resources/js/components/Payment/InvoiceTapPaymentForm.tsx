@@ -39,7 +39,7 @@ export function InvoiceTapPaymentForm({ invoiceId, amount, paymentType, tapSecre
             // Create form and submit to handle redirect properly
             const form = document.createElementranslate('form');
             form.method = 'POST';
-            form.action = route('invoice.tap.payment');
+            form.action = route('customer-facing.invoice.tap.payment');
 
             // Add CSRF token
             const csrfInput = document.createElementranslate('input');

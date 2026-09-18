@@ -65,8 +65,8 @@ class InvoiceCashfreePaymentController extends Controller
                     'customer_phone' => $phone,
                 ],
                 'order_meta' => [
-                    'return_url' => route('invoices.public', encrypt($invoice->id)),
-                    'notify_url' => route('invoice.cashfree.webhook'),
+                    'return_url' => route('customer-facing.invoices.public', encrypt($invoice->id)),
+                    'notify_url' => route('customer-facing.invoice.cashfree.webhook'),
                 ],
                 'order_note' => 'Invoice Payment - ' . $invoice->invoice_number,
                 'order_tags' => [

@@ -41,13 +41,10 @@ Route::middleware(['auth', 'verified', 'check.subscription'])->group(function ()
         ->name('payment.settings');
 
     Route::post('/organization-payment-settings', [OrganizationPaymentSettingController::class, 'store'])
-        ->name('organization.payment.settings');
+        ->name('payment.organization.settings');
 
     Route::get('/organization-payment-methods', [OrganizationPaymentSettingController::class, 'getOrganizationPaymentMethods'])
-        ->name('organization.payment.methods');
-
-    Route::post('/invoice-stripe-payment', [InvoiceStripePaymentController::class, 'processPayment'])
-        ->name('settings.invoice.subscriptions.stripe.payment');
+        ->name('payment.organization.methods');
 
     Route::get('my-kakbima-account', ProfileController::class)
         ->name('my-kakbima-account.success');
@@ -64,7 +61,7 @@ Route::middleware(['auth', 'verified', 'check.subscription'])->group(function ()
         ->name('my-kakbima-account.password.update');
 
     Route::get('settings', [SettingsController::class, 'index'])
-        ->name('settings');
+        ->name('settings.index');
 
     // Routes for managing application email configuration and testing
     Route::prefix('settings/email')

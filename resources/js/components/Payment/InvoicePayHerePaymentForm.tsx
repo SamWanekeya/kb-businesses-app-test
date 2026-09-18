@@ -42,7 +42,7 @@ export function InvoicePayHerePaymentForm({
         setError(null);
 
         try {
-            const response = await fetch(route('invoice.payhere.create-payment'), {
+            const response = await fetch(route('customer-facing.invoice.payhere.create-payment'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

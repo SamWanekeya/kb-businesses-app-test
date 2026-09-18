@@ -57,7 +57,7 @@ export default function CalendarIndex() {
         if (value === 'google') {
             setIsSyncing(true);
             try {
-                const response = await fetch(route('google-calendar.sync'), {
+                const response = await fetch(route('calendar.google-calendar.sync'), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

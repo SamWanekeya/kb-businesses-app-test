@@ -42,7 +42,7 @@ export function InvoiceOzowPaymentForm({
         setError(null);
 
         try {
-            const response = await fetch(route('invoice.ozow.create-payment'), {
+            const response = await fetch(route('customer-facing.invoice.ozow.create-payment'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

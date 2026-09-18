@@ -51,7 +51,7 @@ export function InvoiceCashfreePaymentForm({
 
     const handlePayment = async () => {
         try {
-            const response = await axios.post(route('invoice.cashfree.create-session'), {
+            const response = await axios.post(route('customer-facing.invoice.cashfree.create-session'), {
                 invoice_id: invoiceId,
                 amount: amount,
                 payment_type: paymentType,
@@ -115,7 +115,7 @@ export function InvoiceCashfreePaymentForm({
 
                     if (result.paymentDetails) {
                         axios
-                            .post(route('invoice.cashfree.verify-payment'), {
+                            .post(route('customer-facing.invoice.cashfree.verify-payment'), {
                                 order_id: order_id,
                                 invoice_id: invoiceId,
                                 amount: amount,

@@ -41,7 +41,7 @@ export function InvoicePayTabsPaymentForm({
                 _token: document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
             };
 
-            const response = await axios.post(route('invoice.subscriptions.paytabs.payment'), paymentData, {
+            const response = await axios.post(route('customer-facing.invoice.paytabs.payment'), paymentData, {
                 headers: {
                     'Content-Type': 'application/json',
                     Accept: 'application/json',

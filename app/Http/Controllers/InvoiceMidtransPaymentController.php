@@ -72,7 +72,7 @@ class InvoiceMidtransPaymentController extends Controller
                     ],
                 ],
                 'callbacks' => [
-                    'finish' => route('invoice.midtrans.success', [
+                    'finish' => route('customer-facing.invoice.midtrans.success', [
                         'invoice_id' => $invoice->id,
                         'amount' => $validated['amount'],
                         'payment_type' => $validated['payment_type'],
@@ -179,18 +179,18 @@ class InvoiceMidtransPaymentController extends Controller
                         'payment_id' => $orderId,
                     ]);
 
-                    return redirect()->route('invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
+                    return redirect()->route('customer-facing.invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
                 }
             }
 
-            return redirect()->route('invoices.public', encrypt($invoiceId ?? 0))->withErrors(['error' => __('Payment failed or cancelled')]);
+            return redirect()->route('customer-facing.invoices.public', encrypt($invoiceId ?? 0))->withErrors(['error' => __('Payment failed or cancelled')]);
 
         } catch (Exception $e) {
             Log::error('Midtrans invoice payment success error', [
                 'error' => $e->getMessage(),
             ]);
 
-            return redirect()->route('invoices.public', encrypt($request->input('invoice_id') ?? 0))->withErrors(['error' => __('Payment processing failed')]);
+            return redirect()->route('customer-facing.invoices.public', encrypt($request->input('invoice_id') ?? 0))->withErrors(['error' => __('Payment processing failed')]);
         }
     }
 

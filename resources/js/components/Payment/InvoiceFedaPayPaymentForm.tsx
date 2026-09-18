@@ -42,7 +42,7 @@ export function InvoiceFedaPayPaymentForm({
         setError(null);
 
         try {
-            const response = await fetch(route('invoice.fedapay.create-payment'), {
+            const response = await fetch(route('customer-facing.invoice.fedapay.create-payment'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

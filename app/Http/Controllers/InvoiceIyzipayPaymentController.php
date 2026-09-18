@@ -68,7 +68,7 @@ class InvoiceIyzipayPaymentController extends Controller
             $checkoutRequest->setCurrency(Currency::USD);
             $checkoutRequest->setBasketId('invoice_' . $invoice->id);
             $checkoutRequest->setPaymentGroup(PaymentGroup::PRODUCT);
-            $callbackUrl = route('invoice.iyzipay.callback') . '?invoice_id=' . $invoice->id . '&amount=' . $validated['amount'] . '&payment_type=' . $validated['payment_type'];
+            $callbackUrl = route('customer-facing.invoice.iyzipay.callback') . '?invoice_id=' . $invoice->id . '&amount=' . $validated['amount'] . '&payment_type=' . $validated['payment_type'];
             $checkoutRequest->setCallbackUrl($callbackUrl);
             $checkoutRequest->setEnabledInstallments([1]);
 
@@ -170,7 +170,7 @@ class InvoiceIyzipayPaymentController extends Controller
             $paymentType = $request->input('payment_type');
 
             if (!$token || !$invoiceId) {
-                return redirect()->route('invoices.public', encrypt($invoiceId ?? 0))->withErrors(['error' => __('Invalid payment response')]);
+                return redirect()->route('customer-facing.invoices.public', encrypt($invoiceId ?? 0))->withErrors(['error' => __('Invalid payment response')]);
             }
 
             $invoice = Invoice::findOrFail($invoiceId);
@@ -196,10 +196,10 @@ class InvoiceIyzipayPaymentController extends Controller
                     'payment_id' => $paymentResult->getPaymentId(),
                 ]);
 
-                return redirect()->route('invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
+                return redirect()->route('customer-facing.invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
             }
 
-            return redirect()->route('invoices.public', encrypt($invoice->id))->withErrors(['error' => __('Payment failed or cancelled')]);
+            return redirect()->route('customer-facing.invoices.public', encrypt($invoice->id))->withErrors(['error' => __('Payment failed or cancelled')]);
 
         } catch (Exception $e) {
             Log::error('Iyzipay invoice payment callback error', [
@@ -207,7 +207,7 @@ class InvoiceIyzipayPaymentController extends Controller
                 'trace' => $e->getTraceAsString(),
             ]);
 
-            return redirect()->route('invoices.public', encrypt($request->input('invoice_id') ?? 0))->withErrors(['error' => __('Payment processing failed')]);
+            return redirect()->route('customer-facing.invoices.public', encrypt($request->input('invoice_id') ?? 0))->withErrors(['error' => __('Payment processing failed')]);
         }
     }
 

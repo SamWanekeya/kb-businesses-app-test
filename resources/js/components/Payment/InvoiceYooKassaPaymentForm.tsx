@@ -42,7 +42,7 @@ export function InvoiceYooKassaPaymentForm({
         setError(null);
 
         try {
-            const response = await fetch(route('invoice.yookassa.create-payment'), {
+            const response = await fetch(route('customer-facing.invoice.yookassa.create-payment'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -54,9 +54,9 @@ class InvoicePayfastPaymentController extends Controller
             $data = [
                 'merchant_id' => $settings['payment_settings']['payfast_merchant_id'],
                 'merchant_key' => $settings['payment_settings']['payfast_merchant_key'],
-                'return_url' => route('invoice.payfast.success') . '?invoice_id=' . $invoice->id . '&amount=' . $validated['amount'] . '&payment_type=' . $validated['payment_type'] . '&m_payment_id=' . $paymentId,
-                'cancel_url' => route('invoices.public', encrypt($invoice->id)),
-                'notify_url' => route('invoice.payfast.callback'),
+                'return_url' => route('customer-facing.invoice.payfast.success') . '?invoice_id=' . $invoice->id . '&amount=' . $validated['amount'] . '&payment_type=' . $validated['payment_type'] . '&m_payment_id=' . $paymentId,
+                'cancel_url' => route('customer-facing.invoices.public', encrypt($invoice->id)),
+                'notify_url' => route('customer-facing.invoice.payfast.callback'),
                 'name_first' => $validated['customer_details']['firstName'],
                 'name_last' => $validated['customer_details']['lastName'],
                 'email_address' => $validated['customer_details']['email'],
@@ -221,7 +221,7 @@ class InvoicePayfastPaymentController extends Controller
                 'payment_id' => $paymentId,
             ]);
 
-            return redirect()->route('invoices.public', encrypt($invoiceId))
+            return redirect()->route('customer-facing.invoices.public', encrypt($invoiceId))
                 ->with('success', __('Payment completed successfully!'));
 
         } catch (Exception $e) {

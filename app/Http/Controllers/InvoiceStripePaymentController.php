@@ -62,7 +62,7 @@ class InvoiceStripePaymentController extends Controller
                 'payment_method' => $validated['payment_method_id'],
                 'confirmation_method' => 'manual',
                 'confirm' => true,
-                'return_url' => route('invoices.public', $invoice->id),
+                'return_url' => route('customer-facing.invoices.public', $invoice->id),
                 'description' => 'Invoice Payment - ' . $invoice->invoice_number . ' - ' . ucfirst($validated['payment_type']) . ' payment',
                 'shipping' => [
                     'name' => $validated['cardholder_name'],

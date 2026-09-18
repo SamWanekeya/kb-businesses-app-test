@@ -63,7 +63,7 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
 
         const form = document.createElementranslate('form');
         form.method = 'POST';
-        form.action = route('invoice.subscriptions.stripe.payment');
+        form.action = route('customer-facing.invoice.stripe.payment');
 
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
         if (csrfToken) {
@@ -121,7 +121,7 @@ const StripeCheckoutForm = ({ invoice, amount, paymentType }: any) => {
                 <Button
                     type="button"
                     variant="outline"
-                    onClick={() => (window.location.href = route('invoices.public', invoice.id))}
+                    onClick={() => (window.location.href = route('customer-facing.invoices.public', invoice.id))}
                     disabled={processing}
                     className="flex-1"
                 >
@@ -167,7 +167,7 @@ export default function InvoicePayment({ invoice, paymentMethod, amount, payment
                     <div className="mb-6">
                         <Button
                             variant="outline"
-                            onClick={() => (window.location.href = route('invoices.public', invoice.id))}
+                            onClick={() => (window.location.href = route('customer-facing.invoices.public', invoice.id))}
                             className="flex items-center gap-2"
                         >
                             <ArrowLeft className="h-4 w-4" />

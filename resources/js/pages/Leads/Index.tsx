@@ -1230,7 +1230,7 @@ export default function Leads() {
                     onClose={() => {}}
                     onSubmit={() => {}}
                     formConfig={{
-                        exportRoute: 'lead.export',
+                        exportRoute: 'leads.export',
                         fields: [],
                     }}
                     initialData={null}
@@ -1480,8 +1480,8 @@ export default function Leads() {
                     setIsImportModalOpen(false);
                 }}
                 title={translate('Import Leads from CSV/Excel')}
-                importRoute="lead.import"
-                parseRoute="lead.parse"
+                importRoute="leads.import"
+                parseRoute="leads.parse"
                 samplePath={samplePath}
                 importNotes={translate(
                     'Ensure that the values entered for Lead Status, Lead Source, Account Industry, Campaign match the existing records in your system.',

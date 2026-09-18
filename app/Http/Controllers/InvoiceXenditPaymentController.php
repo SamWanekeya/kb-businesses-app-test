@@ -38,13 +38,13 @@ class InvoiceXenditPaymentController extends Controller
                     'given_names' => $invoice->account->name ?? $invoice->contact->name ?? 'Customer',
                     'email' => $invoice->account->email ?? $invoice->contact->email ?? 'customer@kakbima.dev',
                 ],
-                'success_redirect_url' => route('invoice.xendit.success', [
+                'success_redirect_url' => route('customer-facing.invoice.xendit.success', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
                     'external_id' => $externalId,
                 ]),
-                'failure_redirect_url' => route('invoices.public', encrypt($invoice->id)),
+                'failure_redirect_url' => route('customer-facing.invoices.public', encrypt($invoice->id)),
             ];
 
             $response = Http::withHeaders([
@@ -114,13 +114,13 @@ class InvoiceXenditPaymentController extends Controller
                     'given_names' => $invoice->account->name ?? $invoice->contact->name ?? 'Customer',
                     'email' => $invoice->account->email ?? $invoice->contact->email ?? 'customer@kakbima.dev',
                 ],
-                'success_redirect_url' => route('invoice.xendit.success', [
+                'success_redirect_url' => route('customer-facing.invoice.xendit.success', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
                     'external_id' => $externalId,
                 ]),
-                'failure_redirect_url' => route('invoices.public', encrypt($invoice->id)),
+                'failure_redirect_url' => route('customer-facing.invoices.public', encrypt($invoice->id)),
             ];
 
             $response = Http::withHeaders([
@@ -175,7 +175,7 @@ class InvoiceXenditPaymentController extends Controller
                 'external_id' => $externalId,
             ]);
 
-            return redirect()->route('invoices.public', encrypt($invoiceId))
+            return redirect()->route('customer-facing.invoices.public', encrypt($invoiceId))
                 ->with('success', __('Payment completed successfully!'));
 
         } catch (Exception $e) {
@@ -185,7 +185,7 @@ class InvoiceXenditPaymentController extends Controller
             ]);
             $invoiceId = $request->input('invoice_id');
             if ($invoiceId) {
-                return redirect()->route('invoices.public', encrypt($invoiceId))->with('error', __('Payment verification failed'));
+                return redirect()->route('customer-facing.invoices.public', encrypt($invoiceId))->with('error', __('Payment verification failed'));
             }
 
             return redirect()->back()->with('error', __('Payment verification failed'));

@@ -191,7 +191,7 @@ export default function AppSidebar() {
                 },
                 {
                     title: translate('Orders'),
-                    href: route('subscriptions/plan-orders.index'),
+                    href: route('subscriptions.plan-orders.index'),
                 },
             ],
         },
@@ -930,7 +930,7 @@ export default function AppSidebar() {
             planChildren.push({ title: translate('Plan requests'), href: route('subscriptions.plan-requests.index') });
         }
         if (canViewPlanOrders) {
-            planChildren.push({ title: translate('Plan orders'), href: route('subscriptions/plan-orders.index') });
+            planChildren.push({ title: translate('Plan orders'), href: route('subscriptions.plan-orders.index') });
         }
         if (planChildren.length > 0) {
             items.push({

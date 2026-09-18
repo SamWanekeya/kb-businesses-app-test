@@ -95,7 +95,7 @@ class ProductController extends Controller
             'taxes' => $taxes,
             'users' => $users,
             'allUsers' => $allUsers,
-            'samplePath' => file_exists(storage_path('uploads/sample/sample-product.xlsx')) ? route('product.download.template') : null,
+            'samplePath' => file_exists(storage_path('uploads/sample/sample-product.xlsx')) ? route('products.download.template') : null,
             'filters' => $request->all(['search', 'category', 'brand', 'status', 'assigned_to', 'sort_field', 'sort_direction', 'per_page', 'view', 'page']),
         ]);
     }

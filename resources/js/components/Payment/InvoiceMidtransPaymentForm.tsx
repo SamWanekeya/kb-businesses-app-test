@@ -42,7 +42,7 @@ export function InvoiceMidtransPaymentForm({
         setError(null);
 
         try {
-            const response = await fetch(route('invoice.midtrans.create'), {
+            const response = await fetch(route('customer-facing.invoice.midtrans.create'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ export function InvoiceMidtransPaymentForm({
 
     const handlePaymentSuccess = (result: any, orderId: string) => {
         router.visit(
-            route('invoice.midtrans.success', {
+            route('customer-facing.invoice.midtrans.success', {
                 invoice_id: invoiceId,
                 amount: amount,
                 payment_type: paymentType,

@@ -321,7 +321,7 @@ export default function Dashboard({ dashboardData }: { dashboardData: Organizati
                             useHasPermission('manage-settings') && {
                                 icon: Settings,
                                 label: translate('Settings'),
-                                href: route('settings'),
+                                href: route('settings.index'),
                                 color: 'text-slate-300 hover:text-slate-200',
                                 bg: 'hover:bg-white/10',
                             },

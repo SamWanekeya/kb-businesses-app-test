@@ -56,9 +56,9 @@ class InvoiceCoingatePaymentController extends Controller
                 'price_amount' => $validated['amount'],
                 'price_currency' => $currency,
                 'receive_currency' => $currency,
-                'callback_url' => route('invoice.coingate.callback'),
-                'cancel_url' => route('invoices.public', encrypt($invoice->id)),
-                'success_url' => route('invoice.coingate.callback'),
+                'callback_url' => route('customer-facing.invoice.coingate.callback'),
+                'cancel_url' => route('customer-facing.invoices.public', encrypt($invoice->id)),
+                'success_url' => route('customer-facing.invoice.coingate.callback'),
                 'title' => 'Invoice #' . $invoice->invoice_number . ' - ' . ucfirst($validated['payment_type']) . ' payment',
                 'description' => 'Payment for Invoice #' . $invoice->invoice_number,
             ];
@@ -133,7 +133,7 @@ class InvoiceCoingatePaymentController extends Controller
             if (!$coingateData) {
                 Log::error('Coingate callback: Data not found in session');
 
-                return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment session expired'));
+                return redirect()->route('customer-facing.invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment session expired'));
             }
 
             $orderId = is_object($coingateData) ? $coingateData->order_id : $coingateData['order_id'];
@@ -143,7 +143,7 @@ class InvoiceCoingatePaymentController extends Controller
                     'session_data' => $coingateData,
                 ]);
 
-                return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Order ID not found'));
+                return redirect()->route('customer-facing.invoices.public', ['invoice' => 'unknown'])->with('error', __('Order ID not found'));
             }
 
             // Only create payment entry on successful callback (no pending status)
@@ -164,7 +164,7 @@ class InvoiceCoingatePaymentController extends Controller
                 'amount' => $coingateData['amount'],
             ]);
 
-            return redirect()->route('invoices.public', encrypt($coingateData['invoice_id']))
+            return redirect()->route('customer-facing.invoices.public', encrypt($coingateData['invoice_id']))
                 ->with('success', __('Payment successful'));
 
         } catch (Exception $e) {
@@ -174,7 +174,7 @@ class InvoiceCoingatePaymentController extends Controller
                 'request_data' => $request->all(),
             ]);
 
-            return redirect()->route('invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment processing failed'));
+            return redirect()->route('customer-facing.invoices.public', ['invoice' => 'unknown'])->with('error', __('Payment processing failed'));
         }
     }
 }

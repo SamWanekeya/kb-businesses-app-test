@@ -55,7 +55,7 @@ export function InvoicePaystackPaymentForm({
 
                     // Process payment on server
                     axios
-                        .post(route('invoice.subscriptions.paystack.payment'), {
+                        .post(route('customer-facing.invoice.paystack.payment'), {
                             invoice_id: invoiceId,
                             amount: amount,
                             payment_type: paymentType,

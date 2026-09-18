@@ -60,8 +60,8 @@ class InvoiceTapPaymentController extends Controller
                     'email' => $invoice->account->email ?? $invoice->contact->email ?? 'customer@kakbima.dev',
                 ],
                 'source' => ['id' => 'src_card'],
-                'post' => ['url' => route('invoice.tap.callback')],
-                'redirect' => ['url' => route('invoice.tap.success', [
+                'post' => ['url' => route('customer-facing.invoice.tap.callback')],
+                'redirect' => ['url' => route('customer-facing.invoice.tap.success', [
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
@@ -149,10 +149,10 @@ class InvoiceTapPaymentController extends Controller
                     'charge_id' => $chargeId,
                 ]);
 
-                return redirect()->route('invoices.public', encrypt($invoiceId))
+                return redirect()->route('customer-facing.invoices.public', encrypt($invoiceId))
                     ->with('success', __('Payment completed successfully!'));
             } else {
-                return redirect()->route('invoices.public', encrypt($invoiceId))->with('error', __('Payment failed'));
+                return redirect()->route('customer-facing.invoices.public', encrypt($invoiceId))->with('error', __('Payment failed'));
             }
 
         } catch (Exception $e) {
@@ -162,7 +162,7 @@ class InvoiceTapPaymentController extends Controller
             ]);
             $invoiceId = $request->input('invoice_id');
             if ($invoiceId) {
-                return redirect()->route('invoices.public', encrypt($invoiceId))->with('error', __('Payment verification failed'));
+                return redirect()->route('customer-facing.invoices.public', encrypt($invoiceId))->with('error', __('Payment verification failed'));
             }
 
             return redirect()->back()->with('error', __('Payment verification failed'));

@@ -275,7 +275,7 @@ export default function Opportunities() {
             label: translate('Export'),
             icon: <FileDown className="mr-0 h-4 w-4 min-[450px]:mr-2" />,
             variant: 'outline',
-            onClick: () => (window.location.href = route('opportunity.export')),
+            onClick: () => (window.location.href = route('opportunities.export')),
             className: 'h-8 w-8 min-[450px]:h-9 min-[450px]:w-auto px-0 min-[450px]:px-4',
             labelClassName: 'hidden min-[450px]:inline',
             tooltip: translate('Export'),

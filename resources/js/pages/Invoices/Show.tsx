@@ -85,7 +85,7 @@ export default function InvoiceShow() {
 
     const handleRejectPaymentConfirm = (reason: string) => {
         router.post(
-            route('invoice.payments.reject', currentPayment.payment_id),
+            route('customer-facing.invoice.payments.reject', currentPayment.payment_id),
             { reason },
             {
                 preserveScroll: true,
@@ -581,7 +581,7 @@ export default function InvoiceShow() {
                                                                         className="h-7 w-7 p-0 text-green-600"
                                                                         onClick={() => {
                                                                             router.post(
-                                                                                route('invoice.payments.approve', payment.payment_id),
+                                                                                route('customer-facing.invoice.payments.approve', payment.payment_id),
                                                                                 {},
                                                                                 {
                                                                                     preserveScroll: true,

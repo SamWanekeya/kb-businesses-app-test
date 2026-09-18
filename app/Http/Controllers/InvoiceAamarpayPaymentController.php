@@ -63,18 +63,18 @@ class InvoiceAamarpayPaymentController extends Controller
                 'cus_postcode' => $invoice->billing_postal_code ?? '',
                 'cus_country' => $invoice->billing_country ?? '',
                 'cus_phone' => '1234567890',
-                'success_url' => route('invoice.aamarpay.success', [
+                'success_url' => route('customer-facing.invoice.aamarpay.success', [
                     'response' => 'success',
                     'invoice_id' => $invoice->id,
                     'amount' => $validated['amount'],
                     'payment_type' => $validated['payment_type'],
                     'order_id' => $orderID,
                 ]),
-                'fail_url' => route('invoice.aamarpay.success', [
+                'fail_url' => route('customer-facing.invoice.aamarpay.success', [
                     'response' => 'failure',
                     'invoice_id' => $invoice->id,
                 ]),
-                'cancel_url' => route('invoice.aamarpay.success', ['response' => 'cancel']),
+                'cancel_url' => route('customer-facing.invoice.aamarpay.success', ['response' => 'cancel']),
                 'signature_key' => $settings['payment_settings']['aamarpay_signature'],
                 'desc' => 'Invoice #' . $invoice->invoice_number,
             ];
@@ -150,18 +150,18 @@ class InvoiceAamarpayPaymentController extends Controller
                         'payment_id' => $orderId,
                     ]);
 
-                    return redirect()->route('invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
+                    return redirect()->route('customer-facing.invoices.public', encrypt($invoice->id))->with('success', __('Payment successful'));
                 }
             }
 
-            return redirect()->route('invoices.public', encrypt($invoiceId ?? 0))->withErrors(['error' => __('Payment failed or cancelled')]);
+            return redirect()->route('customer-facing.invoices.public', encrypt($invoiceId ?? 0))->withErrors(['error' => __('Payment failed or cancelled')]);
 
         } catch (Exception $e) {
             Log::error('Aamarpay invoice payment success error', [
                 'error' => $e->getMessage(),
             ]);
 
-            return redirect()->route('invoices.public', encrypt($request->input('invoice_id') ?? 0))->withErrors(['error' => __('Payment processing failed')]);
+            return redirect()->route('customer-facing.invoices.public', encrypt($request->input('invoice_id') ?? 0))->withErrors(['error' => __('Payment processing failed')]);
         }
     }
 

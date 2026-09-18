@@ -90,7 +90,7 @@ export default function DocumentFolders() {
     });
 
     const applyFilters = () => {
-        router.get(route('document-folders.index'), { page: 1, ...buildParams() }, { preserveState: true, preserveScroll: true });
+        router.get(route('documents.document-folders.index'), { page: 1, ...buildParams() }, { preserveState: true, preserveScroll: true });
     };
 
     const handleSearch = (e?: React.FormEvent) => {
@@ -101,7 +101,7 @@ export default function DocumentFolders() {
     const handleSort = (field: string) => {
         const direction = pageFilters.sort_field === field && pageFilters.sort_direction === 'asc' ? 'desc' : 'asc';
         router.get(
-            route('document-folders.index'),
+            route('documents.document-folders.index'),
             { page: 1, ...buildParams(), sort_field: field, sort_direction: direction },
             { preserveState: true, preserveScroll: true },
         );
@@ -111,7 +111,7 @@ export default function DocumentFolders() {
         setSearchTerm('');
         setSelectedStatus('all');
         setSelectedParentFolder('all');
-        router.get(route('document-folders.index'), {}, { preserveState: true, preserveScroll: true });
+        router.get(route('documents.document-folders.index'), {}, { preserveState: true, preserveScroll: true });
     };
 
     const handleAction = (action: string, item: any) => {
@@ -136,7 +136,7 @@ export default function DocumentFolders() {
         const payload = { ...formData, parent_folder_id: formData.parent_folder_id === 'null' ? null : formData.parent_folder_id };
 
         if (formMode === 'create') {
-            router.post(route('document-folders.store'), payload, {
+            router.post(route('documents.document-folders.store'), payload, {
                 onSuccess: (page) => {
                     if (page.props.flash.success) {
                         toast.success(page.props.flash.success);
@@ -149,7 +149,7 @@ export default function DocumentFolders() {
                 },
             });
         } else {
-            router.put(route('document-folders.update', currentItem.id), payload, {
+            router.put(route('documents.document-folders.update', currentItem.id), payload, {
                 onSuccess: (page) => {
                     if (page.props.flash.success) {
                         toast.success(page.props.flash.success);
@@ -165,7 +165,7 @@ export default function DocumentFolders() {
     };
 
     const handleDeleteConfirm = () => {
-        router.delete(route('document-folders.destroy', currentItem.id), {
+        router.delete(route('documents.document-folders.destroy', currentItem.id), {
             onSuccess: (page) => {
                 setIsDeleteModalOpen(false);
                 if (page.props.flash.success) {
@@ -182,7 +182,7 @@ export default function DocumentFolders() {
 
     const handleToggleStatus = (item: any) => {
         router.put(
-            route('document-folders.toggle-status', item.id),
+            route('documents.document-folders.toggle-status', item.id),
             {},
             {
                 onSuccess: (page) => {

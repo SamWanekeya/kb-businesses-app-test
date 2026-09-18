@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use App\Models\Currency;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
 
@@ -135,8 +134,8 @@ class HandleInertiaRequests extends Middleware
                     $guestZiggy['routes'] = array_filter(
                         $guestZiggy['routes'],
                         function ($key) {
-                            // Hide any routes starting with 'payment.', 'settings.', 'my-kakbima-account.', etc.
-                            return !preg_match('/^(payment|settings|my-kakbima-account|verification|subscriptions|coupons|bank|paystack|media-library|permissions|plan-orders|organizations|plan-requests|referral-program|currencies|kakbima-intelligence|sign-in-history|on-behalf-of|dashboard)\./', $key);
+                            // Hide any routes starting with 'storage.', 'payment.', 'settings.', 'my-kakbima-account.', etc.
+                            return !preg_match('/^(storage|payment|settings|my-kakbima-account|verification|subscriptions|coupons|bank|paystack|media-library|notification-templates|permissions|users-permissions|organizations|referral-program|currencies|taxes|brands|categories|products|reports|account-types|account-industries|accounts|contacts|lead-statuses|lead-sources|leads|opportunity-stages|opportunity-sources|opportunities|campaign-types|target-lists|campaigns|shipping-provider-types|cases|quotes|sales-orders|api|invoices|delivery-orders|return-orders|purchase-orders|receipt-orders|projects|project-tasks|task-statuses|meetings|calls|calendar|document-folders|stream|notes|announcement-categories|announcements|document-types|documents|kakbima-intelligence|sign-in-history|on-behalf-of|dashboard)\./', $key);
                         },
                         ARRAY_FILTER_USE_KEY
                     );

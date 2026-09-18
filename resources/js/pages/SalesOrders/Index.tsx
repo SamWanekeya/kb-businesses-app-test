@@ -183,7 +183,7 @@ export default function SalesOrders() {
             tooltip: translate('Export'),
             tooltipClassName: 'min-[450px]:hidden',
             onClick: () => {
-                window.location.href = route('sales-order.export');
+                window.location.href = route('sales-orders.export');
             },
         });
     }
