@@ -64,7 +64,7 @@ class PayTabsPaymentController extends Controller
                     'State',
                     'SA',
                     '12345',
-                    request()->ip_address()
+                    request()->ip()
                 )
                 ->sendURLs(
                     route('paytabs.success') . '?cart_id=' . $cartId,

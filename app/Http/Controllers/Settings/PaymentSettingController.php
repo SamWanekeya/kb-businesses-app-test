@@ -17,7 +17,7 @@ class PaymentSettingController extends Controller
         $paymentSettings = getPaymentSettings();
 
         return Inertia::render('settings/Index', [
-            'paymentSettings' => $paymentSettings,
+            'payment_settings' => $paymentSettings,
         ]);
     }
 

@@ -83,7 +83,7 @@ class InvoiceIyzipayPaymentController extends Controller
             $buyer->setLastLoginDate(now()->format('Y-m-d H:i:s'));
             $buyer->setRegistrationDate($organization->created_at->format('Y-m-d H:i:s'));
             $buyer->setRegistrationAddress($invoice->billing_address ?? '123 Main Street');
-            $buyer->setIp($request->ip_address());
+            $buyer->setIp($request->ip());
             $buyer->setCity($invoice->billing_city ?? 'New York');
             $buyer->setCountry($invoice->billing_country ?? 'United States');
             $buyer->setZipCode($invoice->billing_postal_code ?? '10001');

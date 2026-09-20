@@ -25,7 +25,7 @@ class Payment extends Reference implements Tap
     public function card(Request $request, $data)
     {
         $this->cardValidator($data);
-        $IP = $request->ip_address();
+        $IP = $request->ip();
         $curl = curl_init();
         curl_setopt_array($curl, [
           CURLOPT_URL => "https://api.tap.organization/v2/tokens",

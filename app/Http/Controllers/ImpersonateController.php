@@ -16,7 +16,7 @@ class ImpersonateController extends Controller
         Log::info('Impersonation started', [
             'acting_user_id' => auth()->id(),
             'impersonated_user_id' => $userId,
-            'ip_address' => $request->ip_address(),
+            'ip_address' => $request->ip(),
             'timestamp' => now(),
         ]);
 

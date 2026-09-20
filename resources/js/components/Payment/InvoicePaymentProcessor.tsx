@@ -42,9 +42,9 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
     useEffect(() => {
         // Build payment methods from invoice.paymentMethods like plans page does
         const methods = [];
-        const paymentSettings = invoice.paymentMethods;
+        const payment_settings = invoice.paymentMethods;
 
-        if (paymentSettings?.is_bank_payment_mode_enabled === true || paymentSettings?.is_bank_payment_mode_enabled === '1') {
+        if (payment_settings?.is_bank_payment_mode_enabled === true || payment_settings?.is_bank_payment_mode_enabled === '1') {
             methods.push({
                 id: 'bank',
                 name: 'Bank Transfer',
@@ -53,7 +53,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
             });
         }
 
-        // if (paymentSettings?.is_stripe_payment_mode_enabled === true || paymentSettings?.is_stripe_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_stripe_payment_mode_enabled === true || payment_settings?.is_stripe_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'stripe',
         //         name: 'Stripe',
@@ -62,7 +62,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_paypal_payment_mode_enabled === true || paymentSettings?.is_paypal_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_paypal_payment_mode_enabled === true || payment_settings?.is_paypal_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'paypal',
         //         name: 'PayPal',
@@ -71,7 +71,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_razorpay_payment_mode_enabled === true || paymentSettings?.is_razorpay_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_razorpay_payment_mode_enabled === true || payment_settings?.is_razorpay_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'razorpay',
         //         name: 'Razorpay',
@@ -80,7 +80,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_mercadopago_payment_mode_enabled === true || paymentSettings?.is_mercadopago_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_mercadopago_payment_mode_enabled === true || payment_settings?.is_mercadopago_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'mercadopago',
         //         name: 'Mercado Pago',
@@ -89,7 +89,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
 
-        if (paymentSettings?.is_paystack_payment_mode_enabled === true || paymentSettings?.is_paystack_payment_mode_enabled === '1') {
+        if (payment_settings?.is_paystack_payment_mode_enabled === true || payment_settings?.is_paystack_payment_mode_enabled === '1') {
             methods.push({
                 id: 'paystack',
                 name: 'Paystack',
@@ -98,7 +98,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
             });
         }
 
-        // if (paymentSettings?.is_flutterwave_payment_mode_enabled === true || paymentSettings?.is_flutterwave_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_flutterwave_payment_mode_enabled === true || payment_settings?.is_flutterwave_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'flutterwave',
         //         name: 'Flutterwave',
@@ -107,7 +107,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_paytabs_payment_mode_enabled === true || paymentSettings?.is_paytabs_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_paytabs_payment_mode_enabled === true || payment_settings?.is_paytabs_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'paytabs',
         //         name: 'PayTabs',
@@ -116,7 +116,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_skrill_payment_mode_enabled === true || paymentSettings?.is_skrill_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_skrill_payment_mode_enabled === true || payment_settings?.is_skrill_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'skrill',
         //         name: 'Skrill',
@@ -125,7 +125,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_coingate_payment_mode_enabled === true || paymentSettings?.is_coingate_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_coingate_payment_mode_enabled === true || payment_settings?.is_coingate_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'coingate',
         //         name: 'Coingate',
@@ -134,7 +134,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_payfast_payment_mode_enabled === true || paymentSettings?.is_payfast_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_payfast_payment_mode_enabled === true || payment_settings?.is_payfast_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'payfast',
         //         name: 'PayFast',
@@ -143,7 +143,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_tap_payment_mode_enabled === true || paymentSettings?.is_tap_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_tap_payment_mode_enabled === true || payment_settings?.is_tap_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'tap',
         //         name: 'Tap',
@@ -152,7 +152,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_xendit_payment_mode_enabled === true || paymentSettings?.is_xendit_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_xendit_payment_mode_enabled === true || payment_settings?.is_xendit_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'xendit',
         //         name: 'Xendit',
@@ -161,7 +161,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_paytr_payment_mode_enabled === true || paymentSettings?.is_paytr_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_paytr_payment_mode_enabled === true || payment_settings?.is_paytr_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'paytr',
         //         name: 'PayTR',
@@ -170,7 +170,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_mollie_payment_mode_enabled === true || paymentSettings?.is_mollie_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_mollie_payment_mode_enabled === true || payment_settings?.is_mollie_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'mollie',
         //         name: 'Mollie',
@@ -179,7 +179,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_toyyibpay_payment_mode_enabled === true || paymentSettings?.is_toyyibpay_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_toyyibpay_payment_mode_enabled === true || payment_settings?.is_toyyibpay_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'toyyibpay',
         //         name: 'ToyyibPay',
@@ -188,7 +188,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_benefit_payment_mode_enabled === true || paymentSettings?.is_benefit_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_benefit_payment_mode_enabled === true || payment_settings?.is_benefit_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'benefit',
         //         name: 'Benefit',
@@ -197,7 +197,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_iyzipay_payment_mode_enabled === true || paymentSettings?.is_iyzipay_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_iyzipay_payment_mode_enabled === true || payment_settings?.is_iyzipay_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'iyzipay',
         //         name: 'Iyzipay',
@@ -206,7 +206,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_aamarpay_payment_mode_enabled === true || paymentSettings?.is_aamarpay_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_aamarpay_payment_mode_enabled === true || payment_settings?.is_aamarpay_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'aamarpay',
         //         name: 'Aamarpay',
@@ -215,7 +215,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_midtrans_payment_mode_enabled === true || paymentSettings?.is_midtrans_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_midtrans_payment_mode_enabled === true || payment_settings?.is_midtrans_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'midtrans',
         //         name: 'Midtrans',
@@ -224,7 +224,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_yookassa_payment_mode_enabled === true || paymentSettings?.is_yookassa_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_yookassa_payment_mode_enabled === true || payment_settings?.is_yookassa_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'yookassa',
         //         name: 'YooKassa',
@@ -233,7 +233,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_paiement_payment_mode_enabled === true || paymentSettings?.is_paiement_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_paiement_payment_mode_enabled === true || payment_settings?.is_paiement_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'paiement',
         //         name: 'Paiement Pro',
@@ -242,7 +242,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_cinetpay_payment_mode_enabled === true || paymentSettings?.is_cinetpay_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_cinetpay_payment_mode_enabled === true || payment_settings?.is_cinetpay_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'cinetpay',
         //         name: 'CinetPay',
@@ -251,7 +251,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_payhere_payment_mode_enabled === true || paymentSettings?.is_payhere_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_payhere_payment_mode_enabled === true || payment_settings?.is_payhere_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'payhere',
         //         name: 'PayHere',
@@ -260,7 +260,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_fedapay_payment_mode_enabled === true || paymentSettings?.is_fedapay_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_fedapay_payment_mode_enabled === true || payment_settings?.is_fedapay_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'fedapay',
         //         name: 'FedaPay',
@@ -269,7 +269,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_authorizenet_payment_mode_enabled === true || paymentSettings?.is_authorizenet_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_authorizenet_payment_mode_enabled === true || payment_settings?.is_authorizenet_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'authorizenet',
         //         name: 'AuthorizeNet',
@@ -278,7 +278,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_khalti_payment_mode_enabled === true || paymentSettings?.is_khalti_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_khalti_payment_mode_enabled === true || payment_settings?.is_khalti_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'khalti',
         //         name: 'Khalti',
@@ -287,7 +287,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_easebuzz_payment_mode_enabled === true || paymentSettings?.is_easebuzz_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_easebuzz_payment_mode_enabled === true || payment_settings?.is_easebuzz_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'easebuzz',
         //         name: 'Easebuzz',
@@ -296,7 +296,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_ozow_payment_mode_enabled === true || paymentSettings?.is_ozow_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_ozow_payment_mode_enabled === true || payment_settings?.is_ozow_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'ozow',
         //         name: 'Ozow',
@@ -305,7 +305,7 @@ export function InvoicePaymentProcessor({ invoice, amount, onAmountChange, onSuc
         //     });
         // }
         //
-        // if (paymentSettings?.is_cashfree_payment_mode_enabled === true || paymentSettings?.is_cashfree_payment_mode_enabled === '1') {
+        // if (payment_settings?.is_cashfree_payment_mode_enabled === true || payment_settings?.is_cashfree_payment_mode_enabled === '1') {
         //     methods.push({
         //         id: 'cashfree',
         //         name: 'Cashfree',

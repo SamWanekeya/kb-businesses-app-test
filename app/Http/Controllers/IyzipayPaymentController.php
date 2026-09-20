@@ -133,7 +133,7 @@ class IyzipayPaymentController extends Controller
             $buyer->setLastLoginDate(now()->format('Y-m-d H:i:s'));
             $buyer->setRegistrationDate($user->created_at->format('Y-m-d H:i:s'));
             $buyer->setRegistrationAddress('123 Main Street');
-            $buyer->setIp($request->ip_address());
+            $buyer->setIp($request->ip());
             $buyer->setCity('New York');
             $buyer->setCountry('United States');
             $buyer->setZipCode('10001');

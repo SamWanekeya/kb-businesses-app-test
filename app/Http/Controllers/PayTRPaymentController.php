@@ -49,7 +49,7 @@ class PayTRPaymentController extends Controller
 
             // Generate hash according to PayTR documentation
             $hashStr = $credentials['merchant_id'] .
-                $request->ip_address() .
+                $request->ip() .
                 $merchant_oid .
                 $validated['user_email'] .
                 $payment_amount .
@@ -64,7 +64,7 @@ class PayTRPaymentController extends Controller
 
             $post_data = [
                 'merchant_id' => $credentials['merchant_id'],
-                'user_ip' => $request->ip_address(),
+                'user_ip' => $request->ip(),
                 'merchant_oid' => $merchant_oid,
                 'email' => $validated['user_email'],
                 'payment_amount' => $payment_amount,

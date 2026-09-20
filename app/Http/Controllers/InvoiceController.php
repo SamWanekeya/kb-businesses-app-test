@@ -697,7 +697,7 @@ class InvoiceController extends Controller
             'paymentMethod' => $method,
             'amount' => $amount,
             'paymentType' => $paymentType,
-            'paymentSettings' => $paymentSettings,
+            'payment_settings' => $paymentSettings,
             'currency' => $currency,
         ]);
     }

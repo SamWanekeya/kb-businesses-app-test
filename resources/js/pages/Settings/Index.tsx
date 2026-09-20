@@ -61,7 +61,7 @@ export default function Settings() {
         timezones = {},
         dateFormats = {},
         timeFormats = {},
-        paymentSettings = {},
+        payment_settings = {},
         webhooks = [],
         auth = {},
     } = usePage().props;
@@ -464,14 +464,14 @@ export default function Settings() {
                     {/* Payment Settings Section */}
                     {(useHasPermission('manage-payment-settings') || auth?.user?.type === 'super_admin') && (
                         <section id="payment-settings" ref={paymentSettingsRef} className="mb-8">
-                            <PaymentSettings settings={paymentSettings} />
+                            <PaymentSettings settings={payment_settings} />
                         </section>
                     )}
 
                     {/* Organization Payment Settings Section */}
                     {useHasPermission('settings') && (
                         <section id="organization-payment-settings" ref={organizationPaymentSettingsRef} className="mb-8">
-                            <PaymentSettings settings={paymentSettings} />
+                            <PaymentSettings settings={payment_settings} />
                         </section>
                     )}
 

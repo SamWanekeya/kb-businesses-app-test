@@ -58,7 +58,7 @@ class InvoicePayTabsPaymentController extends Controller
                     'State',
                     'SA',
                     '12345',
-                    request()->ip_address()
+                    request()->ip()
                 )
                 ->sendURLs(
                     route('customer-facing.invoice.paytabs.success') . '?cart_id=' . $cartId . '&invoice_id=' . $invoice->id . '&amount=' . $validated['amount'] . '&payment_type=' . $validated['payment_type'],

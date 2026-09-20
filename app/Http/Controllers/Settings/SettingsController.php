@@ -105,7 +105,7 @@ class SettingsController extends Controller
             'timezones' => config('time-zones'),
             'dateFormats' => config('date-format'),
             'timeFormats' => config('time-format'),
-            'paymentSettings' => $paymentSettings,
+            'payment_settings' => $paymentSettings,
             'currentWorkspace' => $currentWorkspace,
             'webhooks' => $webhooks,
         ]);
