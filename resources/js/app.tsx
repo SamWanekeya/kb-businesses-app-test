@@ -6,7 +6,7 @@
  */
 
 // Security bootstrap — must be the absolute first import
-import '@/utils/Helpers/SecurityInit';
+import '@utils/Helpers/SecurityInit';
 import { scrubFingerprints } from '@utils/Helpers/SecurityInit';
 
 // Styles
